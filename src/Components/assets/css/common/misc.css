@@ -1,0 +1,278 @@
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(5px);
+    z-index: 9999;
+    background-color: #0000004b;
+}
+
+.popup .content {
+    background-color: #fff;
+    padding: 20px 10px;
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.popup .content .iconWrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.popup .content .iconWrapper i {
+    font-size: 35px;
+    color: rgb(255, 102, 0);
+}
+
+.extensionStatus {
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: red;
+}
+
+.extensionStatus.online {
+    background-color: green;
+}
+
+.pagination_slider {
+    display: flex;
+    justify-content: center;
+    margin: 25px 0px 0px 0px;
+}
+
+.css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
+    color: #fff;
+    background-color: #1976d2;
+    padding: 10px;
+}
+
+.pricing_section .pricing_box {
+    padding: 20px;
+    border: 1px solid #21212126;
+    border-radius: 8px;
+    margin: 60px 0px 0px 0px;
+    text-align: center;
+}
+
+.pricing_section .pricing_box h3 {
+    font-family: Roboto;
+    color: var(--ui-accent);
+    font-weight: 600;
+    font-size: 23px;
+    padding: 30px 0px 0px 0px;
+}
+
+.pricing_section .pricing_box p {
+    font-family: var(--paragraph);
+    font-weight: 400;
+    font-size: 13px;
+    margin: 0px 0px 8px 0px;
+}
+
+.pricing_section .pricing_box h5 {
+    font-family: Roboto;
+    color: #8d8d8d;
+    font-weight: 500;
+    font-size: 13px !important;
+    margin: 40px 0px 0px 0px;
+}
+
+.pricing_section .pricing_box h5 span {
+    font-size: 15px;
+    margin: 0px 0px 0px 6px;
+    border-radius: 100px;
+    background: #ebe4ff !important;
+    color: var(--ui-accent) !important;
+}
+
+.pricing_section .pricing_box h2 {
+    font-family: Roboto;
+    color: var(--ui-accent);
+    font-weight: 700;
+    font-size: 36px;
+    padding: 0px 0px 10px 0px;
+}
+
+.pricing_section .pricing_box h2 sub {
+    font-size: 16px;
+    color: #212121;
+    font-weight: 400;
+}
+
+.pricing_section .pricing_box a {
+    display: block;
+    background: linear-gradient(135deg, #871fff, #7ec9f4);
+    padding: 10px 10px;
+    color: #fff;
+    font-family: Roboto;
+    border-radius: 4px;
+    margin: 0px 0px 10px 0px;
+}
+
+.pricing_section .pricing_box .border_line {
+    width: 100%;
+    height: 2px;
+    background: rgb(103 61 230 / 12%);
+    margin: 15px 0px 10px 0px;
+}
+
+.pricing_section .pricing_box .feture_list h4 {
+    text-align: left;
+    font-family: Roboto;
+    font-size: 18px !important;
+    font-weight: 500;
+}
+
+.pricing_section .pricing_box .feture_list ul {
+    text-align: left;
+    margin: 15px 0px 0px 0px !important;
+    list-style: none;
+    padding: 0;
+}
+
+.pricing_section .pricing_box .feture_list ul li p {
+    font-family: var(--paragraph);
+    font-weight: 400;
+}
+
+.pricing_section .pricing_box .feture_list ul li p i {
+    color: #00b090;
+}
+
+.pricing_section .pricing_box {
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.header {
+    border-left: 4px solid var(--ui-accent);
+    margin-left: -10px;
+    padding: 5px 10px;
+    font-weight: 500;
+}
+
+.searchList {
+    padding: 10px 15px;
+    background-color: #fff;
+    border-radius: 10px;
+    border-left: 1px solid #ddd;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.searchList ul {
+    list-style: none;
+    padding-left: 0;
+    padding-top: 5px;
+    margin-bottom: 0;
+}
+
+.searchList ul li {
+    padding: 7px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+
+.searchList.cart ul {
+    padding-top: 0px;
+
+}
+
+.searchList.cart ul li {
+    border: none;
+    font-weight: 600;
+    color: #454545;
+    font-size: 13px;
+    color: #454545;
+    font-family: Open Sans;
+    padding: 0px 0 3px 0;
+}
+
+.searchList.cart ul li:last-child {
+    border-top: 1px solid #ddd;
+    color: #000;
+    padding-top: 3px;
+    font-size: 14px;
+}
+
+.searchList.checkout ul li {
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 10px;
+    transition: 0.3s;
+    position: relative;
+}
+
+.searchList.checkout ul li:hover {
+    background-color: #e7e7e7;
+}
+
+.searchList.checkout input[type="radio"] {
+    position: absolute;
+    width: 100%;
+    opacity: 0;
+    left: 0;
+    top: 0;
+    height: 100%;
+    cursor: pointer;
+}
+
+.searchList.checkout input[type="radio"]:checked~.checkmark {
+    border: 1px solid var(--ui-accent);
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 10px;
+}
+
+.sidePannel {
+    height: calc(100% - 111px);
+    position: absolute;
+    padding: 10px;
+    top: 111px;
+    right: 0;
+    width: 200px;
+    z-index: 0;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.sidePannel .wrapper {
+    height: 100%;
+    padding: 15px 10px 10px 10px;
+    border-radius: 10px;
+    border: 1px solid var(--ui-accent);
+}
+
+.sidePannel .wrapper ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.sidePannel .wrapper .label li {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.sidePannel .wrapper ul li {
+    font-family: Open Sans;
+    font-size: 14px;
+    font-weight: 500;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid #cecece;
+}

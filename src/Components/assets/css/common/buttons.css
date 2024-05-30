@@ -1,0 +1,344 @@
+.clearButton {
+    background: none;
+    border: 0;
+    /* background-color: var(--color1); */
+    color: var(--ui-accent);
+    text-decoration: none;
+}
+
+.panelButton {
+    /* border: 2px solid var(--ui-accent);
+    color: var(--ui-accent);
+    background: none; */
+    --ripple-background: var(--ui-accent);
+    /* --ripple-opacity: 0.1;
+    --ripple-duration: 900ms; */
+
+    /* background-color: #0e111e; */
+    /* border: 1px solid #868686; */
+    border: none;
+    /* color: #fff; */
+    padding: 5px 10px;
+    margin: 5px 5px;
+    border-radius: 3px;
+    background-color: var(--button-dark);
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;
+    text-decoration: none;
+    color: #fff;
+}
+
+.panelButtonWhite {
+    border: 1px solid #868686;
+    padding: 5px 10px;
+    margin: 5px 5px;
+    border-radius: 3px;
+    background-color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;
+    text-decoration: none;
+    color: #000;
+}
+
+.formButton {
+    background-color: #0e111e;
+    color: #fff;
+    border-radius: 3px;
+    border: none;
+    padding: 7px 13px;
+    margin: 0 5px;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.appPanelButton {
+    /* background-color: #0e111e; */
+    background-color: var(--nav-color);
+    border: none;
+    color: #fff;
+    width: 35px;
+    height: 35px;
+    margin: 0 3px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.getApp {
+    background-color: var(--nav-color);
+    border: none;
+    color: #fff;
+    padding: 0 15px;
+    height: 36px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;
+    text-decoration: none;
+}
+
+.clearColorButton {
+    color: var(--color2);
+    text-decoration: none;
+    background-color: #5b2a8646;
+    font-size: 16px;
+    font-weight: 400;
+    border: 1px solid var(--color2);
+    border-radius: 50px;
+    display: block;
+    width: 100%;
+    padding: 4px 20px;
+    text-decoration: none;
+}
+
+.clearColorButton.activation {
+    border: 1px solid var(--ui-accent);
+    color: var(--ui-accent);
+    background-color: #439fdd33;
+}
+
+.clearColorButton.setup {
+    border: 1px solid var(--color3);
+    color: var(--color3);
+    background-color: #f191012d;
+}
+
+.clearColorButton i {
+    margin-right: 5px;
+}
+
+.tabButton {
+    border: none;
+    background-color: #fff;
+    border-radius: 50px;
+    border: 1px solid #c9c9c970;
+    /* box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px; */
+    color: #454545;
+    font-weight: 500;
+    width: 100%;
+    padding: 5px 20px;
+    text-decoration: none;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+}
+
+.tabButton.active {
+    background-color: #439fdd33;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    color: var(--ui-accent);
+    border: 1px solid var(--ui-accent);
+}
+
+/* .tabButtonParent:first-child .tabButton {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.tabButtonParent:last-child .tabButton {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+} */
+
+.addToCart {
+    background-color: rgba(0, 159, 255, 1);
+    border: none;
+    padding: 0px 0px;
+    color: #fff;
+    font-size: 13px;
+    border-radius: 5px !important;
+    overflow: hidden;
+    display: flex;
+    text-decoration: none;
+}
+
+.addToCart .cart {
+    background-color: rgba(0, 159, 255, 1);
+    padding: 5px 20px;
+    width: 100%;
+    height: 100%;
+}
+
+.addToCart .cart2 {
+    background-color: rgba(0, 95, 153, 1);
+    padding: 5px 20px;
+    width: 100%;
+    height: 100%;
+}
+
+.cartButton {
+    background-color: #2bad8d;
+    border: none;
+    padding: 5px 25px;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 5px !important;
+    text-decoration: none;
+}
+
+.logoutBtn {
+    background-color: #ff0000;
+    padding: 5px 10px;
+    color: #fff !important;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    width: 100%;
+    margin-top: 7px;
+    text-align: center;
+    font-weight: 500 !important;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.otherButton {
+    background-color: #0099ff;
+    padding: 5px 10px;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.callButton {
+    background-color: #1ac444;
+    border: none;
+    color: #fff;
+    font-size: 22px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.appPanelButton {
+    background-color: #0e111e;
+    border: none;
+    color: #fff;
+    width: 35px;
+    height: 35px;
+    margin: 0 3px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.appPanelButton2 {
+    background-color: #0e111e;
+    border: none;
+    color: #fff;
+    padding: 5px 10px;
+    margin: 0 3px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.appPanelButtonColor {
+    background-color: var(--color2);
+    border: none;
+    color: #fff;
+    width: 35px;
+    height: 35px;
+    margin: 0 3px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.appPanelButtonCaller {
+    background-color: #171922;
+    border: none;
+    color: #fff;
+    width: 35px;
+    height: 35px;
+    margin: 0 3px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.appPanelButtonColor2 {
+    background-color: transparent;
+    border: none;
+    color: var(--color2);
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+    margin: 0 3px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tableLabel {
+    color: #fff;
+    padding: 1px 7px;
+    border-radius: 5px;
+    width: 62px;
+    text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.tableLabel.success {
+    background-color: #00ab2b;
+}
+
+.tableLabel.fail {
+    background-color: #ff0000;
+}
+
+.payNow {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #00892f;
+    border: none;
+    color: white;
+    font-weight: 600;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.103);
+    position: relative;
+    overflow: hidden;
+    transition-duration: .3s;
+}
+
+.payNow::before {
+    width: 100%;
+    height: 130px;
+    position: absolute;
+    content: "";
+    background-color: #7eecf4;
+    border-radius: 50%;
+    left: -100%;
+    top: 0;
+    transition-duration: .3s;
+    mix-blend-mode: hard-light;
+}
+
+.payNow:hover::before {
+    transition-duration: .3s;
+    transform: translate(100%, -50%);
+    border-radius: 0;
+}
+
+.payNow:active {
+    transform: translate(5px, 5px);
+    transition-duration: .3s;
+}

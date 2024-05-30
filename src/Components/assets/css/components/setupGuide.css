@@ -1,0 +1,80 @@
+/* .setup .content {
+    margin-top: 5px;
+} */
+
+.setup .content h3 {
+    font-weight: 400;
+    color: #363636;
+}
+
+.setup .content p {
+    font-weight: 300;
+    font-size: 12px;
+    color: #6a6a6a;
+}
+
+.setup .content .title {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.setup .content .iconWrapperX,
+.setup .content .iconWrapperY {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.setup .content .iconWrapperX i {
+    color: var(--color1);
+    font-size: 22px;
+}
+
+.setup .content .iconWrapperY {
+    width: 50px;
+    height: 50px;
+}
+
+.setup .content .iconWrapperY i {
+    color: var(--ui-accent);
+    font-size: 45px;
+}
+
+.setup .content .imgWrapper {
+    width: 135px;
+    height: 215px;
+    margin: 0 auto;
+}
+
+.setup .content .imgWrapper img {
+    width: 100%;
+    height: 100%;
+    /* object-fit: cover; */
+}
+
+.setup .content h5 {
+    font-size: 14px !important;
+    color: #454545;
+    font-weight: 400;
+}
+
+.setup .content .numberWrapper {
+    text-align: left;
+    border-radius: 5px;
+    background-color: #5b2a8646;
+    border: 1px solid var(--color2);
+    width: max-content;
+    padding: 20px;
+}
+
+.setup .content .numberWrapper h5 {
+    color: var(--color2);
+    font-weight: 500;
+}
+
+.setup .content .numberWrapper h4,
+.setup .content .numberWrapper h5 {
+    margin-bottom: 12px;
+}

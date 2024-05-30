@@ -1,0 +1,209 @@
+.mainContentApp .tab-content .callList{overflow: hidden auto; height: calc(100vh - 150px);}
+.mainContentApp .tab-content .callDetailsList {overflow: auto; height: calc(100vh - 320px)}
+.mainContentApp .tab-content .callListItem{
+    padding: 10px 10px;
+    position: relative;
+}
+
+.mainContentApp .tab-content .callListItem h4{
+    font-size: 16px !important;
+    margin: 0;
+}
+.mainContentApp .tab-content .callListItem h5{
+    font-size: 14px !important;
+    margin: 5px 0;
+    font-family: Outfit;
+    font-weight: 500;
+    color: #505050;
+}
+.mainContentApp .tab-content .callListItem h6{
+    font-size: 12px;
+    margin: 0;
+    font-family: Outfit;
+    font-weight: 500;
+    color: #505050;
+}
+.mainContentApp .tab-content .callListItem span{
+    font-size: 16px;
+    margin: 0;
+    font-family: Outfit;
+    font-weight: 500;
+    color: #525252;
+}
+/* Contact List Item Start*/
+.mainContentApp .tab-content .contactListItem{
+    padding: 10px 10px;
+    position: relative;
+}
+
+.mainContentApp .tab-content .contactListItem h4{
+    font-size: 17px !important;
+    margin: 0;
+}
+.mainContentApp .tab-content .contactListItem h5{
+    font-size: 14px !important;
+    margin: 5px 0;
+    font-family: Outfit;
+    font-weight: 500;
+    color: #505050;
+}
+.mainContentApp .tab-content .contactListItem h6{
+    font-size: 12px;
+    margin: 0;
+    font-family: Outfit;
+    font-weight: 500;
+    color: #505050;
+}
+.mainContentApp .tab-content .contactListItem span{
+    font-size: 17px;
+    margin: 0;
+    /* font-family: Outfit !important; */
+    font-weight: 500;
+    color: var(--ui-accent);
+}
+.mainContentApp .contactListItem .profileHolder{
+    width: 50px;
+    height: 50px;
+    margin: auto 15px auto 0;
+    text-align: center;
+    cursor: pointer;
+    background-color: var(--ui-accent);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    /* overflow: hidden; */
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+#profileOnline::after{
+    content: '';
+    width: 115%;
+    height: 115%;
+    border: 2px solid #4eff6c;
+    border-radius: 50px;
+    position: absolute;
+}
+#profileOffline::after{
+    content: '';
+    width: 115%;
+    height: 115%;
+    border: 2px solid #ff1e1e;
+    border-radius: 50px;
+    position: absolute;
+}
+#profileBusy::after{
+    content: '';
+    width: 115%;
+    height: 117%;
+    border: 2px solid #ffb01e;
+    border-radius: 50px;
+    position: absolute;
+    top: -4px;
+}
+/* Contact List Item End */
+.missed h4{
+    color: #ff0000;
+}
+.missed::after{
+    content: '\f061';
+    font-family: 'Font Awesome 6 Pro';
+    position: absolute;
+    left: 0px;
+    top: 20px;
+    /* width: 50px;
+    height: 50px; */
+    color: red;
+    font-size: 24px;
+    transform: rotate(130deg);
+    /* background: url(''); */
+}
+.incoming::after{
+    content: '\f061';
+    font-family: 'Font Awesome 6 Pro';
+    position: absolute;
+    left: 0px;
+    top: 20px;
+    /* width: 50px;
+    height: 50px; */
+    color: green;
+    font-size: 24px;
+    transform: rotate(130deg);
+    /* background: url(''); */
+}
+.outgoing::after{
+    content: '\f061';
+    font-family: 'Font Awesome 6 Pro';
+    position: absolute;
+    left: 0px;
+    top: 20px;
+    /* width: 50px;
+    height: 50px; */
+    color: green;
+    font-size: 24px;
+    transform: rotate(-45deg);
+    /* background: url(''); */
+}
+.active-item {
+    display: block !important;
+}
+
+.mainContentApp .callListItem .profileHolder{
+    width: 50px;
+    height: 50px;
+    margin: auto 15px auto 0;
+    text-align: center;
+    cursor: pointer;
+    background-color: var(--ui-accent);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.profileHolder img{width: 100%; height: 100%; object-fit: cover; border-radius: 50px;}
+
+
+.mainContentApp .profileInfoHolder{
+    text-align: center;
+    padding: 20px 2px;
+    background: linear-gradient(0deg, rgba(67,159,221,1) 0%, rgba(22,27,46,1) 100%);
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.mainContentApp .profileInfoHolder .profileHolder{
+    width: 70px;
+    height: 70px;
+    margin: 15px auto;
+    text-align: center;
+    cursor: pointer;
+    background-color: var(--ui-accent);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.mainContentApp .profileInfoHolder h4{
+    color: #fff;
+    font-family: Outfit;
+    font-size: 20px !important;
+    font-weight: 400;
+}
+
+.mainContentApp .profileInfoHolder h5{
+    color: #fff;
+    font-family: Outfit;
+    font-size: 15px !important;
+    font-weight: 300;
+}
+
+/* Filter Item */
+.filterItem{display: none;}

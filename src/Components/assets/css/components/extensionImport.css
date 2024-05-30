@@ -1,0 +1,215 @@
+#detailsContent {
+    /* position: sticky;
+    top: 45px;
+    background-color: var(--div-color); */
+    z-index: 1;
+    padding: 0px 10px !important;
+    margin: 0px 8px;
+    /* border-radius: 7px; */
+    /* color: #fff; */
+    /* box-shadow: rgba(0, 0, 0, 0.35) 0px 10px 15px; */
+}
+
+/* #detailsContent  */
+/* #detailsContent form {
+    display: flex;
+    flex-wrap: wrap;
+} */
+
+.formRow {
+    /* display: flex; */
+    /* justify-content: space-between; */
+    /* margin-bottom: 5px; */
+    padding-bottom: 10px;
+    border-bottom: 1px solid #8f8f8f47;
+    /* width: 25%; */
+    padding: 7px 10px;
+}
+
+/* #detailsContent .formRow   */
+.formLabel {
+    font-size: 14px;
+    /* width: 130px; */
+    padding: 5px 0px;
+    font-weight: 500;
+    color: var(--color-subtext);
+    margin-top: auto;
+    margin-bottom: auto;
+    position: relative;
+}
+
+.formLabel .status {
+    float: inline-end;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.formLabel .status.success {
+    color: #00a900;
+}
+
+.formLabel .status.success::before {
+    content: '\f00c';
+    font-size: 14px;
+    font-weight: 600;
+    color: #00a900;
+    font-family: 'Font Awesome 6 Pro';
+    margin-right: 3px;
+}
+
+.formLabel .status.fail {
+    color: red;
+}
+
+.formLabel .status.fail::before {
+    content: '\f071';
+    font-size: 14px;
+    font-weight: 600;
+    color: red;
+    font-family: 'Font Awesome 6 Pro';
+    margin-right: 3px;
+}
+
+.formLabel .status.missing {
+    color: #ffa500;
+}
+
+.formLabel .status.missing::before {
+    content: '\f06a';
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffa500;
+    font-family: 'Font Awesome 6 Pro';
+    margin-right: 3px;
+}
+
+
+/* #detailsContent .formRow  */
+.formItem {
+    /* background-color: #0e111e; */
+    border: 1px solid var(--color4);
+    /* color: #fff; */
+    padding: 5px 5px;
+    border-radius: 2px;
+    outline: none;
+    font-size: 14px;
+    width: 100%;
+    margin: 0px 5px 5px 0px;
+    height: 32px;
+}
+
+#detailsContent .formRow select {
+    width: 170px;
+}
+
+/* #detailsContent  */
+.listRow {
+    display: flex;
+    justify-content: space-evenly;
+    /* margin-bottom: 10px;
+    padding-bottom: 10px; */
+    border-bottom: 1px solid #afafaf47;
+    padding: 5px;
+}
+
+/* #detailsContent .listRow  */
+.listLabel {
+    display: flex;
+    font-size: 14px;
+    width: 50px;
+    padding: 0 10px;
+    margin-top: 2px;
+    /* margin-bottom: auto; */
+}
+
+/* #detailsContent .listRow  */
+.listItem {
+    background-color: #0e111e;
+    border: none;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 7px;
+    outline: none;
+    font-size: 12px;
+}
+
+.formTextArea {
+    /* background-color: #0e111e; */
+    border: 1px solid var(--color4);
+    /* color: #fff; */
+    padding: 10px 10px;
+    border-radius: 2px;
+    outline: none;
+    font-size: 14px;
+}
+
+#detailsContent .formRow textarea {
+    width: 65%;
+}
+
+#detailsContent #advancedOptions {
+    max-height: 0px;
+    overflow: hidden;
+    transition: 0.7s ease-in-out;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#apiKey {
+    display: none;
+    width: 250px;
+}
+
+input[type="file"] {
+    font-size: 11px;
+}
+
+input[type="file"]::file-selector-button {
+    background-color: var(--bg-color);
+    border: 1px solid var(--color4);
+    color: #000;
+    padding: 5px 10px;
+    border-radius: 2px;
+    outline: none;
+    font-size: 12px;
+}
+
+#detailsContent .formRow .formItemDesc {
+    font-size: 11px;
+    line-height: 15px;
+    margin-top: 8px;
+}
+
+#detailsContent .listRow .listItemDesc {
+    font-size: 11px;
+    line-height: 15px;
+    /* margin-top: 8px; */
+}
+
+
+/* Input Type Number No Arrow */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* input[type=number] {
+    -moz-appearance: textfield;
+} */
+
+/* Input Type Number No Arrow */
+
+
+#detailsContent table tbody tr td {
+    font-weight: 500;
+}
+
+#detailsContent table tr th:first-child,
+#detailsContent table tr td:first-child {
+    padding-left: 5px;
+}
+
+#detailsContent .vtablerow select {
+    height: 24px;
+}

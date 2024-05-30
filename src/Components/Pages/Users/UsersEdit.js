@@ -1,0 +1,793 @@
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  backToTop,
+  generalGetFunction,
+  generalPutFunction,
+} from "../../GlobalFunction/globalFunction";
+import { useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useLocation } from "react-router-dom";
+import CircularLoader from "../Misc/CircularLoader";
+
+const UsersEdit = () => {
+  const navigate = useNavigate();
+  const [domains, setDomains] = useState("");
+  const [timeZone, setTimeZone] = useState("");
+  const account = useSelector((state) => state.account);
+  const [group, setGroup] = useState("");
+  const [loading, setLoading] = useState(true);
+  const queryParams = new URLSearchParams(useLocation().search);
+  const value = queryParams.get("id");
+
+  const [userState, setUserState] = useState({
+    userName: "",
+    password: "",
+    cPassword: "",
+    email: "",
+    language: "",
+    timeZone: "",
+    status: "",
+    firstName: "",
+    lastName: "",
+    organization: "",
+    groups: "",
+    type: "",
+    domain: "",
+    useNameValidation: false,
+    isUserNameAvailable: false,
+    userNameMissing: false,
+    passwordMissing: false,
+    cPasswordMissing: false,
+    emailMissing: false,
+    languageMissing: false,
+    timeZoneMissing: false,
+    statusMissing: false,
+    firstNameMissing: false,
+    lastNameMissing: false,
+    organizationMissing: false,
+    groupMissing: false,
+    typeMissing: false,
+    domainMissing: false,
+  });
+
+  useEffect(() => {
+    if (account && account.id) {
+      async function getDomain() {
+        const domain = await generalGetFunction(
+          `/domain/search?account=${account.account_id}`
+        );
+        const timeZ = await generalGetFunction(`/auth/timezones`);
+        const apiGroup = await generalGetFunction(`/groups`);
+        if (domain.status) {
+          setDomains(
+            domain.data.map((item) => {
+              return [item.id, item.domain_name];
+            })
+          );
+        } else {
+          navigate("/");
+        }
+        if (timeZ.status) {
+          setTimeZone(
+            timeZ.data.map((item) => {
+              return [item.id, item.name];
+            })
+          );
+        }
+        if (apiGroup.status) {
+          setGroup(
+            apiGroup.data.map((item) => {
+              return [item.id, item.group_name];
+            })
+          );
+        }
+      }
+      getDomain();
+      if (value) {
+        async function getData() {
+          const apiData = await generalGetFunction(`/user/${value}`);
+          if (apiData.status) {
+            setLoading(false);
+            console.log("This is suer details", apiData);
+            setUserState((prevState) => ({
+              ...prevState,
+              userName: apiData.data.username,
+              password: apiData.data.password,
+              // name:apiData.data.name,
+              firstName: apiData.data.name.split(" ")[0],
+              lastName: apiData.data.name.split(" ")[1],
+              email: apiData.data.email,
+              groups: apiData.data.group_id,
+              domain: apiData.data.domain_id,
+              timeZone: apiData.data.timezone_id,
+              status: apiData.data.status,
+              type: apiData.data.usertype,
+              id: apiData.data.account_id,
+            }));
+          }
+        }
+        if (account.id) {
+          getData();
+        } else {
+          setLoading(false);
+          navigate("/");
+        }
+      } else {
+        navigate("/");
+      }
+    } else {
+      navigate("/");
+    }
+  }, [value]);
+
+  //   Validating form and creating new user
+  async function handleSubmit() {
+    if (userState.userName.length > 3 && userState.userName.length < 20) {
+      setUserState((prevState) => ({
+        ...prevState,
+        userNameMissing: false,
+      }));
+    } else {
+      setUserState((prevState) => ({
+        ...prevState,
+        userNameMissing: true,
+      }));
+    }
+
+    if (userState.email.length > 3 && userState.email.includes("@")) {
+      setUserState((prevState) => ({
+        ...prevState,
+        emailMissing: false,
+      }));
+    } else {
+      setUserState((prevState) => ({
+        ...prevState,
+        emailMissing: true,
+      }));
+    }
+    if (userState.language === "" || userState.language === "Select Language") {
+      setUserState((prevState) => ({
+        ...prevState,
+        languageMissing: true,
+      }));
+    } else {
+      setUserState((prevState) => ({
+        ...prevState,
+        languageMissing: false,
+      }));
+    }
+    if (
+      userState.timeZone === "" ||
+      userState.timeZone === "Select Time Zone"
+    ) {
+      setUserState((prevState) => ({
+        ...prevState,
+        timeZoneMissing: true,
+      }));
+    } else {
+      setUserState((prevState) => ({
+        ...prevState,
+        timeZoneMissing: false,
+      }));
+    }
+    if (userState.status === "" || userState.status === "Choose Status") {
+      setUserState((prevState) => ({
+        ...prevState,
+        statusMissing: true,
+      }));
+    } else {
+      setUserState((prevState) => ({
+        ...prevState,
+        statusMissing: false,
+      }));
+    }
+    if (userState.groups === "" || userState.groups === "Choose Group") {
+      setUserState((prevState) => ({
+        ...prevState,
+        groupMissing: true,
+      }));
+    } else {
+      setUserState((prevState) => ({
+        ...prevState,
+        groupMissing: false,
+      }));
+    }
+    if (userState.type === "" || userState.type === "Choose Type") {
+      setUserState((prevState) => ({
+        ...prevState,
+        typeMissing: true,
+      }));
+    } else {
+      setUserState((prevState) => ({
+        ...prevState,
+        typeMissing: false,
+      }));
+    }
+    if (userState.domain === "" || userState.domain === "Choose Domain") {
+      setUserState((prevState) => ({
+        ...prevState,
+        domainMissing: true,
+      }));
+    } else {
+      setUserState((prevState) => ({
+        ...prevState,
+        domainMissing: false,
+      }));
+    }
+    if (
+      userState.organization.length > 3 &&
+      userState.organization.length < 50
+    ) {
+      setUserState((prevState) => ({
+        ...prevState,
+        organizationMissing: false,
+      }));
+    } else {
+      setUserState((prevState) => ({
+        ...prevState,
+        organizationMissing: true,
+      }));
+    }
+    if (userState.firstName.length > 3 && userState.firstName.length < 20) {
+      setUserState((prevState) => ({
+        ...prevState,
+        firstNameMissing: false,
+      }));
+    } else {
+      setUserState((prevState) => ({
+        ...prevState,
+        firstNameMissing: true,
+      }));
+    }
+
+    if (
+      userState.userName.length > 3 &&
+      userState.userName.length < 20 &&
+      userState.email.length > 3 &&
+      userState.email.includes("@") &&
+      !(
+        userState.timeZone === "" || userState.timeZone === "Select Time Zone"
+      ) &&
+      !(userState.status === "" || userState.status === "Choose Status") &&
+      !(userState.groups === "" || userState.groups === "Choose Group") &&
+      !(userState.type === "" || userState.type === "Choose Type") &&
+      !(userState.domain === "" || userState.domain === "Choose Domain") &&
+      userState.firstName.length > 3 &&
+      userState.firstName.length < 20
+    ) {
+      setLoading(true);
+      const parsedData = {
+        name: userState.firstName + " " + userState.lastName,
+        email: userState.email,
+        group_id: userState.groups,
+        domain_id: userState.domain,
+        timezone_id: userState.timeZone,
+        status: userState.status,
+        usertype: userState.type,
+        account_id: account.id,
+      };
+      const addUser = await generalPutFunction(`/user/${value}`, parsedData);
+      if (addUser.status) {
+        setLoading(false);
+        toast.success(addUser.message);
+      } else {
+        setLoading(false);
+        toast.error(addUser.message);
+      }
+    }
+  }
+  return (
+    <main className="mainContent">
+      <section id="phonePage">
+        <div className="container-fluid">
+          <div className="row justify-content-center">
+            <div className="col-12" id="subPageHeader">
+              <div className="row px-xl-3">
+                <div className="col-6 my-auto">
+                  <h4 className="my-auto">User Update</h4>
+                </div>
+                <div className="col-6 ps-2">
+                  <div className="d-flex justify-content-end">
+                    <button
+                      effect="ripple"
+                      className="panelButton"
+                      onClick={() => {
+                        navigate(-1);
+                        backToTop();
+                      }}
+                    >
+                      Back
+                    </button>
+                    <button
+                      effect="ripple"
+                      className="panelButton"
+                      onClick={handleSubmit}
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+                <div className="col-12 my-1">
+                  <p className="p-0 m-0">
+                    Edit user information and group membership.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="col-xl-12" style={{ overflow: "auto" }}>
+              {loading ? (
+                <div colSpan={99}>
+                  <CircularLoader />
+                </div>
+              ) : (
+                ""
+              )}
+              <div className="mx-2" id="detailsContent">
+                <form action="#" className="row">
+                  <div className="formRow col-xl-3">
+                    <div className="formLabel">
+                      <label htmlFor="">Username</label>
+                      {/* {userState.userName===""?<label className='status missing'>Field Missing</label>:userState.isUserNameAvailable? <label className='status success'>Username Available</label>: <label className='status fail'>Not Available</label>} */}
+
+                      {/* {userState.useNameValidation ? <img className='loaderSpinner' src={require("../../assets/images/loader-gif.webp")} alt="loading.." /> : ""} */}
+                    </div>
+                    <div className="col-12">
+                      <input
+                        type="text"
+                        name="extension"
+                        className="formItem"
+                        value={userState.userName}
+                        onChange={(e) => {
+                          setUserState((prevState) => ({
+                            ...prevState,
+                            userName: e.target.value,
+                          }));
+                        }}
+                        disabled
+                        required="required"
+                      />
+                    </div>
+                  </div>
+                  {/* <div className="formRow col-xl-3">
+                                        <div className="formLabel">
+                                            <label htmlFor="">Password</label>
+                                            {userState.passwordMissing?<label className='status missing'>Invalid Password</label>:""}
+                                        </div>
+                                        <div className="col-12">
+                                            <input
+                                                type="password"
+                                                name="extension"
+                                                value={userState.password}
+                                                className="formItem"
+                                                onChange={(e) => {
+                                                    setUserState(prevState => ({
+                                                        ...prevState,
+                                                        password: e.target.value,
+                                                    }));
+                                                }}
+                                                required="required"
+                                            />
+                                            <br />
+                                            <label htmlFor="data" className="formItemDesc">
+                                                Required: At least 4 character
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div className="formRow col-xl-3">
+                                        <div className="formLabel">
+                                            <label htmlFor="">Confirm Password</label>
+                                            {userState.cPasswordMissing?<label className='status missing'>Password not matched</label>:""}
+                                        </div>
+                                        <div className="col-12">
+                                            <input
+                                                type="password"
+                                                name="extension"
+                                                value={userState.cPassword}
+                                                className="formItem"
+                                                onChange={(e) => {
+                                                    setUserState(prevState => ({
+                                                        ...prevState,
+                                                        cPassword: e.target.value
+
+                                                    }))
+                                                }}
+                                                required="required"
+                                            />
+                                            <br />
+                                            <label htmlFor="data" className="formItemDesc">
+                                                Green field borders indicate typed passwords match.
+                                            </label>
+                                        </div>
+                                    </div> */}
+                  <div className="formRow col-xl-3">
+                    <div className="formLabel">
+                      <label htmlFor="">Email</label>
+                      {userState.emailMissing ? (
+                        <label className="status missing">Invalid Email</label>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                    <div className="col-12">
+                      <input
+                        type="email"
+                        name="extension"
+                        value={userState.email}
+                        className="formItem"
+                        onChange={(e) => {
+                          setUserState((prevState) => ({
+                            ...prevState,
+                            email: e.target.value,
+                          }));
+                        }}
+                        required="required"
+                      />
+                    </div>
+                  </div>
+                  <div className="formRow col-xl-3">
+                    <div className="formLabel">
+                      <label htmlFor="">First Name</label>
+                      {userState.firstNameMissing ? (
+                        <label className="status missing">Invalid Name</label>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                    <div className="col-12">
+                      <input
+                        type="text"
+                        name="extension"
+                        value={userState.firstName}
+                        className="formItem"
+                        onChange={(e) => {
+                          setUserState((prevState) => ({
+                            ...prevState,
+                            firstName: e.target.value,
+                          }));
+                        }}
+                        required="required"
+                      />
+                    </div>
+                  </div>
+                  <div className="formRow col-xl-3">
+                    <div className="formLabel">
+                      <label htmlFor="">Last Name</label>
+                    </div>
+                    <div className="col-12">
+                      <input
+                        type="text"
+                        name="extension"
+                        value={userState.lastName}
+                        className="formItem"
+                        onChange={(e) => {
+                          setUserState((prevState) => ({
+                            ...prevState,
+                            lastName: e.target.value,
+                          }));
+                        }}
+                        required="required"
+                      />
+                    </div>
+                  </div>
+                  {/* <div className="formRow col-xl-3">
+                                        <div className="formLabel">
+                                            <label htmlFor="selectFormRow">Language</label>
+                                            {userState.languageMissing?<label className='status missing'>Select Language</label>:""}
+                                        </div>
+                                        <div className="col-12">
+                                            <select className="formItem" name="" value={userState.language} onChange={(e) => {
+                                                setUserState(prevState => ({
+                                                    ...prevState,
+                                                    language: e.target.value
+                                                }))
+                                            }}>
+                                                <option>Select Language</option>
+                                                <option >Afrikaans</option>
+                                                <option >Albanian</option>
+                                                <option >Arabic</option>
+                                                <option >Armenian</option>
+                                                <option >Basque</option>
+                                                <option >English</option>
+                                                <option >Estonian</option>
+                                                <option >Fiji</option>
+                                                <option >Finnish</option>
+                                                <option >French</option>
+                                                <option >Georgian</option>
+                                                <option >German</option>
+                                                <option >Greek</option>
+                                                <option >Punjabi</option>
+                                                <option >Quechua</option>
+                                                <option >Ukrainian</option>
+                                                <option >Urdu</option>
+                                                <option >Uzbek</option>
+                                                <option >Vietnamese</option>
+                                                <option >Welsh</option>
+                                                <option >Xhosa</option>
+                                            </select>
+                                            <br />
+                                            <label htmlFor="data" className="formItemDesc">
+                                                Select the language.
+                                            </label>
+                                        </div>
+                                    </div> */}
+                  <div className="formRow col-xl-3">
+                    <div className="formLabel">
+                      <label htmlFor="selectFormRow">Time Zone</label>
+                      {userState.timeZoneMissing ? (
+                        <label className="status missing">
+                          Select Timezone
+                        </label>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                    <div className="col-12">
+                      <select
+                        className="formItem"
+                        name=""
+                        value={userState.timeZone}
+                        onChange={(e) => {
+                          setUserState((prevState) => ({
+                            ...prevState,
+                            timeZone: e.target.value,
+                          }));
+                        }}
+                      >
+                        <option>Select Time Zone</option>
+                        {timeZone &&
+                          timeZone.map((item, key) => {
+                            return (
+                              <option key={key} value={item[0]}>
+                                {item[1]}
+                              </option>
+                            );
+                          })}
+                      </select>
+                      <br />
+                      <label htmlFor="data" className="formItemDesc">
+                        Select the default time zone.
+                      </label>
+                    </div>
+                  </div>
+                  <div className="formRow col-xl-3">
+                    <div className="formLabel">
+                      <label htmlFor="selectFormRow">Status</label>
+                      {userState.statusMissing ? (
+                        <label className="status missing">Select Status</label>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                    <div className="col-12">
+                      <select
+                        className="formItem"
+                        name=""
+                        value={userState.status}
+                        onChange={(e) => {
+                          setUserState((prevState) => ({
+                            ...prevState,
+                            status: e.target.value,
+                          }));
+                        }}
+                      >
+                        <option>Choose Status</option>
+                        {/* <option value="avail">Available</option>
+                                                <option value="aod">Available(On Demand)</option>
+                                                <option value="logout">Logged Out</option>
+                                                <option value="break">On Break</option>
+                                                <option value="dnd">Do Not Disturn</option> */}
+                        <option value="E">Enable</option>
+                        <option value="D">Disable</option>
+                      </select>
+                      <br />
+                      <label htmlFor="data" className="formItemDesc">
+                        Set the user's presence.
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* <div className="formRow col-xl-3">
+                                        <div className="formLabel">
+                                            <label htmlFor="">Organization</label>
+                                            {userState.organizationMissing?<label className='status missing'>Invalid Organization</label>:""}
+                                        </div>
+                                        <div className="col-12">
+                                            <input
+                                                type="text"
+                                                name="extension"
+                                                value={userState.organization}
+                                                className="formItem"
+                                                onChange={(e) => {
+                                                    setUserState(prevState => ({
+                                                        ...prevState,
+                                                        organization: e.target.value
+                                                    }))
+                                                }}
+                                                required="required"
+                                            />
+                                        </div>
+                                    </div> */}
+                  <div className="formRow col-xl-3">
+                    <div className="formLabel">
+                      <label htmlFor="selectFormRow">Groups</label>
+                      {userState.groupMissing ? (
+                        <label className="status missing">Select Group</label>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                    <div className="col-12">
+                      <select
+                        className="formItem"
+                        name=""
+                        value={userState.groups}
+                        onChange={(e) => {
+                          setUserState((prevState) => ({
+                            ...prevState,
+                            groups: e.target.value,
+                          }));
+                        }}
+                      >
+                        <option>Choose Group</option>
+                        {group &&
+                          group.map((item, key) => {
+                            return (
+                              <option key={key} value={item[0]}>
+                                {item[1]}
+                              </option>
+                            );
+                          })}
+                        {/* <option value="1">Admin</option>
+                                                <option value="2">Agent</option>
+                                                <option value="3">Fax</option>
+                                                <option value="4">Public</option>
+                                                <option value="5">Superadmin</option>
+                                                <option value="6">User</option> */}
+                      </select>
+                      <br />
+                      <label htmlFor="data" className="formItemDesc">
+                        Set the user's presence.
+                      </label>
+                    </div>
+                  </div>
+                  <div className="formRow col-xl-3">
+                    <div className="formLabel">
+                      <label htmlFor="selectFormRow">Type</label>
+                      {userState.typeMissing ? (
+                        <label className="status missing">Select Type</label>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                    <div className="col-12">
+                      <select
+                        className="formItem"
+                        name=""
+                        value={userState.type}
+                        onChange={(e) => {
+                          setUserState((prevState) => ({
+                            ...prevState,
+                            type: e.target.value,
+                          }));
+                        }}
+                      >
+                        <option>Choose Type</option>
+                        <option value="Primary">Primary</option>
+                        <option value="General">General</option>
+                      </select>
+                      <br />
+                      <label htmlFor="data" className="formItemDesc">
+                        Select Default to enable login or to disable login
+                        select Virtual.
+                      </label>
+                    </div>
+                  </div>
+                  {/* {console.log("This is domain",userState.domain)} */}
+                  {console.log("This is domian", userState.domain, domains)}
+                  <div className="formRow col-xl-3">
+                    <div className="formLabel">
+                      <label htmlFor="selectFormRow">Domain</label>
+                      {userState.domainMissing ? (
+                        <label className="status missing">Select Domain</label>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                    <div className="col-12">
+                      <select
+                        className="formItem"
+                        name=""
+                        value={userState.domain}
+                        onChange={(e) => {
+                          setUserState((prevState) => ({
+                            ...prevState,
+                            domain: e.target.value,
+                          }));
+                        }}
+                      >
+                        <option>Choose Domain</option>
+                        {domains &&
+                          domains.map((item, key) => {
+                            return (
+                              <option key={key} value={item[0]}>
+                                {item[1]}
+                              </option>
+                            );
+                          })}
+                      </select>
+                      <br />
+                      <label htmlFor="data" className="formItemDesc">
+                        Select the Domain.
+                      </label>
+                    </div>
+                  </div>
+                  <div className="formRow col-xl-3 d-flex align-items-center">
+                    {/* <div className="formLabel">
+                                            <label htmlFor="">API Key</label>
+                                        </div> */}
+                    <div className="col-12">
+                      {/* <input
+                                                type="text"
+                                                name="extension"
+                                                id="apiKey"
+                                                className="formItem"
+                                                defaultValue="FPu5WczSWDxCcWD5pI15SN0MdKqB"
+                                                required="required"
+                                                disabled=""
+                                            /> */}
+                      <button
+                        className="panelButton"
+                        effect="ripple"
+                        type="button"
+                        onClick={handleSubmit}
+                      >
+                        Update User
+                      </button>
+                      <br />
+                      {/* <label htmlFor="data" className="formItemDesc">
+                                                Use the generate button to create a key.
+                                            </label> */}
+                    </div>
+                  </div>
+                  {/* <div className="formRow col-xl-3">
+                                        <div className="formLabel">
+                                            <label htmlFor="selectFormRow">Enabled</label>
+                                        </div>
+                                        <div className="col-12">
+                                            <div className="my-auto position-relative mx-1">
+                                                <label className="switch">
+                                                    <input type="checkbox" id="showAllCheck" />
+                                                    <span className="slider round" />
+                                                </label>
+                                                <br />
+                                                <label htmlFor="data" className="formItemDesc">
+                                                    Set the status of this account.
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div> */}
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+    </main>
+  );
+};
+
+export default UsersEdit;

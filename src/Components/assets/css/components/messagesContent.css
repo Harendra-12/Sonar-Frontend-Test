@@ -1,0 +1,33 @@
+.mainContentApp .nav-tabs{
+    border: none;
+
+}
+.mainContentApp .nav-link{
+    color: #444444;
+}
+.mainContentApp .tabLink{
+    background: transparent;
+    border: none;
+    padding: 10px 30px;
+    color: #9f9f9f;
+}
+.mainContentApp .tabLink i{font-size: 20px;}
+.mainContentApp .tabLink.active{
+    color: var(--ui-accent) !important;
+    border-bottom: 3px solid var(--ui-accent) !important;
+    border: none;
+}
+.mainContentApp .nav-link:hover{
+    border: none;
+}
+.mainContentApp .nav-link:focus{
+    border: none;
+}
+
+.mainContentApp #headerSearch {
+    border: 1px solid #ddd;
+    padding: 5px 30px;
+    width: 100%;
+    color: #000000;
+    background: var(--bg-color) url(../../images/search_b.png) no-repeat 7px center / 17px 17px;
+}

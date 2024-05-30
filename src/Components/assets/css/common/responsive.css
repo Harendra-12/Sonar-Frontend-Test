@@ -1,0 +1,50 @@
+@media only screen and (max-width : 991px) {
+    .menuWrapper .accordion-header .tabButton {
+        right: 27px !important;
+    }
+
+    .mainContent {
+        margin-left: inherit;
+        padding-left: inherit;
+    }
+
+    #sidenNav {
+        width: 0;
+    }
+
+    .mainContent #subPageHeader {
+        padding: 10px 10px !important;
+    }
+
+    table tr th:first-child {
+        padding-left: 5px !important;
+        width: 10px !important;
+    }
+
+    table tr td:first-child {
+        padding-left: 5px !important;
+        width: 10px !important;
+    }
+
+    .getApp {
+        font-size: 14px;
+    }
+
+    .masterList ul li input {
+        width: 82%;
+    }
+
+    #detailsContent {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .formItem {
+        padding-right: 0;
+    }
+
+    .circularLoader{
+        width: 100vw;
+    }
+
+}

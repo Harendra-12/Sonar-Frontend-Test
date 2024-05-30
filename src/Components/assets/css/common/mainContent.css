@@ -1,0 +1,9 @@
+.mainContent {
+    margin-left: var(--sideNav-width);
+    padding-left: 0px;
+}
+
+.mainContentApp {
+    margin-left: var(--sideNav-width);
+    padding-left: 0px;
+}

@@ -1,0 +1,147 @@
+/* --------- BootStrap Style Overrides ----------- */
+.accordion-body {
+    padding: inherit !important;
+}
+
+.accordion-header {
+    position: relative;
+}
+
+.accordion-button::after {
+    position: absolute;
+    right: 10px;
+}
+
+.accordion-button:not(.collapsed) {
+    color: var(--color1);
+    background-color: var(--ui-accent);
+}
+
+.accordion-button:not(.collapsed)::after {
+    background-image: var(--bs-accordion-btn-icon) !important;
+}
+
+/* --------- BootStrap Style Overrides ----------- */
+
+/* ------- MenuWrapper Tab Menu Styling (Call History / etc) ------- */
+/* .sidenNavSubMenu{
+    position: absolute;
+    left: 100px;
+    top: 50px;
+    max-height: 0;
+    transition: max-height 0.3s ease-in-out;
+    overflow: hidden;
+    background-color: #ddd;
+    z-index: 3;
+}
+.showSub {
+    max-height: 700px !important;
+}
+.menuWrapper .tabMenu{
+    list-style: none;
+    padding: 0;
+}
+.menuWrapper .tabMenu .tabItem a{
+    padding: 10px 25px;
+    width: 100%;
+    text-align: start;
+    font-weight: 500;
+}
+.menuWrapper .tabMenu .tabItem .active{
+    background-color: var(--color2);
+    color: var(--color-text);
+}
+.menuWrapper .accordion-header .tabButton{
+    position: absolute; 
+    top: 12px; 
+    right: 35px; 
+    z-index: 10;
+    font-size: 22px;
+} */
+.menuWrapper ul .tabItem {
+    margin: 0 !important;
+    padding: 0px 0px !important;
+    height: 31px;
+}
+
+.menuWrapper ul .tabItem a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 300;
+}
+
+/* ------- MenuWrapper Tab Menu Styling (Call History / etc) ------- */
+
+/* --------- Tab Content Common Styles ---------- */
+.tab-content .title {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+/* --------- Tab Content Common Styles ---------- */
+
+/* SearchBox Text */
+#phonePage .searchBox span {
+    position: absolute;
+    top: 5px;
+    left: 25px;
+    font-weight: 300;
+    /* color: var(--ui-accent); */
+    color: #fff;
+}
+
+/* SearchBox Icon */
+#phonePage .searchBox i {
+    font-size: 14px;
+    color: var(--ui-accent);
+}
+
+/* Input Search */
+#phonePage #headerSearch {
+    border: 1px solid var(--bg-color);
+    border-radius: 50px;
+    padding: 5px 30px;
+    background: var(--bg-color) url("../../images/search_b.png") no-repeat 7px center / 17px 17px;
+    width: 100%;
+    outline: none;
+    transition: 0.3s ease-out;
+}
+
+.masterList #headerSearch {
+    padding: 2px 5px 2px 30px !important;
+}
+
+#phonePage #headerSearch::placeholder {
+    color: #868686;
+    font-weight: 300;
+    position: relative;
+    top: 1px;
+}
+
+#phonePage #headerSearch:focus {
+    border: 1px solid var(--color2);
+}
+
+[type=search] {
+    outline-offset: 0px;
+}
+
+/* -------- Call List Item Section ---------- */
+#phonePage .tab-content .callListItem {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+}
+
+/* Call List Item Image */
+#phonePage .callListItem .profileHolder {
+    overflow: hidden;
+    width: 45px;
+    height: 45px;
+    margin-left: 15px;
+    padding: 0;
+}
+
+/* -------- Call List Item Section ---------- */
