@@ -63,7 +63,7 @@ function CallCenterQueueEdit() {
       setAgent(locationState.agents.map((item,index)=>{
         return(
           {
-            id:index+1,
+            id:item.id,
             name:item.agent_name,
             level:item.tier_level,
             position:item.tier_position
@@ -185,6 +185,7 @@ function CallCenterQueueEdit() {
         agents: agent.map((item) => {
           if (item.name !== "") {
             return {
+              id:item.id,
               agent_name: item.name,
               tier_level: item.level,
               tier_position: item.position,
