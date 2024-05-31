@@ -1,22 +1,36 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable eqeqeq */
 import React, { useEffect, useState } from "react";
 import {
   backToTop,
   generalGetFunction,
-  generalPostFunction,
+  generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CircularLoader from "../Misc/CircularLoader";
 
 function CallCenterQueueEdit() {
   const navigate = useNavigate();
-  const queryParams = new URLSearchParams(useLocation().search);
-  const value = queryParams.get("id");
+  const location = useLocation()
+  const locationState = location.state
+  const [loading,setLoading]=useState(false)
   const [ringGroup, setRingGroup] = useState();
   const [extension, setExtension] = useState();
   const account = useSelector((state) => state.account);
-
+  const [callCenter, setCallCenter] = useState({
+    name: "",
+    extension: "",
+    greeting: "say",
+    strategy: "ring-all",
+    musicHold: "",
+    record: "true",
+    action: "",
+    abandoned: "",
+    prefix: "",
+  });
   useEffect(() => {
     async function getData() {
       const apidata = await generalGetFunction(
@@ -32,19 +46,35 @@ function CallCenterQueueEdit() {
         setExtension(extensionData.data);
       }
     }
-    getData();
-  }, []);
-  const [callCenter, setCallCenter] = useState({
-    name: "",
-    extension: "",
-    greeting: "say",
-    strategy: "ring-all",
-    musicHold: "",
-    record: "true",
-    action: "",
-    abandoned: "",
-    prefix: "",
-  });
+    getData()
+    if(locationState){
+      setCallCenter(prevData=>({
+        ...prevData,
+        name:locationState.queue_name,
+        extension:locationState.extension,
+        greeting:locationState.greeting,
+        strategy:locationState.strategy,
+        musicHold:locationState.moh_sound,
+        record:locationState.record_template=="0"?"false":"true",
+        action:locationState.queue_timeout_action,
+        abandoned:locationState.discard_abandoned_after,
+        prefix:locationState.queue_cid_prefix
+      }))
+      setAgent(locationState.agents.map((item,index)=>{
+        return(
+          {
+            id:index+1,
+            name:item.agent_name,
+            level:item.tier_level,
+            position:item.tier_position
+          }
+        )
+      }))
+    }else{
+    navigate(-1)
+    }
+  }, [account.account_id, locationState, navigate]);
+  
 
   const [error, setError] = useState({
     name: false,
@@ -140,6 +170,7 @@ function CallCenterQueueEdit() {
       !(callCenter.abandoned === "") &&
       !(callCenter.prefix === "")
     ) {
+      setLoading(true)
       const parsedData = {
         queue_name: callCenter.name,
         greeting: callCenter.greeting,
@@ -161,13 +192,15 @@ function CallCenterQueueEdit() {
         }),
       };
 
-      const apiData = await generalPostFunction(
-        "/call-center-queue/store",
+      const apiData = await generalPutFunction(
+        `/call-center-queue/update/${locationState.id}`,
         parsedData
       );
       if (apiData.status) {
+        setLoading(false)
         toast.success(apiData.message);
       } else {
+        setLoading(false)
         toast.error(apiData.message);
       }
       //   console.log("All condition verified !");
@@ -212,6 +245,13 @@ function CallCenterQueueEdit() {
               </div>
             </div>
             <div className="col-xl-12">
+            {loading ? (
+                <div colSpan={99}>
+                  <CircularLoader />
+                </div>
+              ) : (
+                ""
+              )}
               <div className="mx-2" id="detailsContent">
                 <form action="#" className="row">
                   <div className="formRow col-xl-3">

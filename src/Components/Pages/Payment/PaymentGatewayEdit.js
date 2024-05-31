@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { generalPostFunction, generalPutFunction } from "../../GlobalFunction/globalFunction";
+import {  generalPutFunction } from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../Misc/CircularLoader";
 
 function PaymentGatewayEdit() {

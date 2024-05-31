@@ -1,5 +1,5 @@
 // reducer.js
-var account = JSON.parse(sessionStorage.getItem("account"));
+var account = JSON.parse(localStorage.getItem("account"));
 var registerUser = [];
 var loginUser = [];
 var callState = [];

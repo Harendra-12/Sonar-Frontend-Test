@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
     },
   });
 
-const token = sessionStorage.getItem("token")
+const token = localStorage.getItem("token")
 if(token!==null){
     axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`
 }
@@ -35,7 +35,7 @@ export async function login(userName, password) {
   return axiosInstance.post(`/auth/login`, parsedData)
     .then(res => {
       const token = res.data.token;
-      sessionStorage.setItem('token', token);
+      localStorage.setItem('token', token);
       setAuthToken(token);
       return res.data;
     })

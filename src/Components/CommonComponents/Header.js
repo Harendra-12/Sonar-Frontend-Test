@@ -22,9 +22,9 @@ function Header(props) {
   // Handle log out function
   async function logOut() {
     const apiData = await generalGetFunction("/logout")
-    sessionStorage.clear()
+    localStorage.clear()
     if (apiData.data) {
-      sessionStorage.clear();
+      localStorage.clear();
       dispatch({
         type: "SET_ACCOUNT",
         account: null

@@ -1604,6 +1604,7 @@ const ExtensionsEdit = () => {
                     <p>
                       Are you sure you want to assign this extension to user{" "}
                       {users &&
+                        // eslint-disable-next-line array-callback-return
                         users.map((item) => {
                           // eslint-disable-next-line eqeqeq
                           if (item.id == extensionState.user) {

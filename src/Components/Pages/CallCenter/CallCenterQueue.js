@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   backToTop,
   generalGetFunction,
@@ -8,6 +8,7 @@ import {
 import ContentLoader from "../Misc/ContentLoader";
 
 function CallCenterQueue() {
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(true);
   const [callCenter, setCallCenter] = useState();
   useEffect(() => {
@@ -92,7 +93,7 @@ function CallCenterQueue() {
                     {callCenter &&
                       callCenter.map((item) => {
                         return (
-                          <tr>
+                          <tr onClick={()=>navigate("/cal-center-queue-edit",{state:item})}>
                             <td>{item.queue_name}</td>
                             <td>{item.extension}</td>
                             <td>{item.strategy}</td>

@@ -6,7 +6,7 @@ const Socket = () => {
   const ip = "192.168.1.88";
   const port = "8093";
   const account = useSelector((state) => state.account);
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
   const socketRef = useRef(null);
 
   useEffect(() => {

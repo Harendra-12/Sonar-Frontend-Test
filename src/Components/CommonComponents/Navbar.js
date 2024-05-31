@@ -10,9 +10,9 @@ function Navbar() {
   const dispatch = useDispatch()
   async function logOut() {
     const apiData = await generalGetFunction("/logout")
-    sessionStorage.clear()
+    localStorage.clear()
     if (apiData.data) {
-      sessionStorage.clear();
+      localStorage.clear();
       dispatch({
         action: "SET_ACCOUNT",
         account: null

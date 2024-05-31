@@ -67,6 +67,7 @@ import PaymentGateway from "./Components/Pages/Payment/PaymentGateway";
 import PaymentGatewayEdit from "./Components/Pages/Payment/PaymentGatewayEdit";
 import CallCenterQueue from "./Components/Pages/CallCenter/CallCenterQueue";
 import CallCenterQueueAdd from "./Components/Pages/CallCenter/CallCenterQueueAdd";
+import CallCenterQueueEdit from "./Components/Pages/CallCenter/CallCenterQueueEdit";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -201,8 +202,11 @@ function App() {
             <Route path="/payment-gateway-edit" element={<PaymentGatewayEdit />} />
             {/* Payment path end */}
 
+            {/* Call Center queue path start */}
             <Route path="/cal-center-queue" element={<CallCenterQueue />} />
+            <Route path="/cal-center-queue-edit" element={<CallCenterQueueEdit />} />
             <Route path="/cal-center-queue-add" element={<CallCenterQueueAdd />} />
+             {/* Call Center queue path End */}
           </Route>
           {/* 404 Redirection */}
           <Route path="*" element={<Navigate to="/dashboard" />} />

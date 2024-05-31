@@ -44,7 +44,7 @@ async function userLogin(){
             type: "SET_ACCOUNT",
             account: profile.data,
           });
-          sessionStorage.setItem("account",JSON.stringify(profile.data))
+          localStorage.setItem("account",JSON.stringify(profile.data))
           window.scrollTo(0,0)
           navigate("/dashboard")
         }

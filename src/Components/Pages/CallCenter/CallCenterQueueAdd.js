@@ -8,9 +8,11 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CircularLoader from "../Misc/CircularLoader";
 
 function CallCenterQueueAdd() {
   const navigate = useNavigate();
+  const [loading,setLoading]=useState(false)
   const [ringGroup, setRingGroup] = useState();
   const [extension, setExtension] = useState();
   const account = useSelector((state) => state.account);
@@ -31,7 +33,7 @@ function CallCenterQueueAdd() {
       }
     }
     getData();
-  }, []);
+  }, [account.account_id]);
   const [callCenter, setCallCenter] = useState({
     name: "",
     extension: "",
@@ -138,6 +140,7 @@ function CallCenterQueueAdd() {
       !(callCenter.abandoned === "") &&
       !(callCenter.prefix === "")
     ) {
+      setLoading(true)
       const parsedData = {
         queue_name: callCenter.name,
         greeting: callCenter.greeting,
@@ -164,16 +167,24 @@ function CallCenterQueueAdd() {
         parsedData
       );
       if (apiData.status) {
+        setLoading(false)
         toast.success(apiData.message);
+        setCallCenter({
+          name: "",
+          extension: "",
+          greeting: "say",
+          strategy: "ring-all",
+          musicHold: "",
+          record: "true",
+          action: "",
+          abandoned: "",
+          prefix: "",
+        });
       } else {
+        setLoading(false)
         toast.error(apiData.message);
       }
-      //   console.log("All condition verified !");
     }
-
-    // console.log("This is all consdition",callCenter.name,!(callCenter.name==="")  , !callCenter.extension==="" , !callCenter.action==="" , !callCenter.abandoned==="" , !callCenter.prefix==="" , ...agent.map((item)=>{
-    //     return(item.name===""?true:false)
-    // }));
   }
   console.log("This is agent", agent);
   return (
@@ -210,6 +221,13 @@ function CallCenterQueueAdd() {
               </div>
             </div>
             <div className="col-xl-12">
+            {loading ? (
+                <div colSpan={99}>
+                  <CircularLoader />
+                </div>
+              ) : (
+                ""
+              )}
               <div className="mx-2" id="detailsContent">
                 <form action="#" className="row">
                   <div className="formRow col-xl-3">
