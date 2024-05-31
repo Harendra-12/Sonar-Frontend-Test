@@ -172,6 +172,7 @@ function CallCenterQueueEdit() {
     ) {
       setLoading(true)
       const parsedData = {
+        id:locationState.id,
         queue_name: callCenter.name,
         greeting: callCenter.greeting,
         extension: callCenter.extension,
