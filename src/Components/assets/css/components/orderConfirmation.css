@@ -1,0 +1,164 @@
+.checkOutHeader {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: var(--nav-color);
+    z-index: 100;
+}
+
+.checkOutHeader .imgWrapper {
+    width: 140px;
+}
+
+.checkOutHeader .imgWrapper img {
+    width: 100%;
+}
+
+.orderSummaryHeader {
+    background-color: #00c4ff12;
+    padding: 5px 10px;
+    text-align: end;
+    font-size: 11px;
+    color: #000;
+    font-weight: 600;
+    margin-top: 54px;
+}
+
+.orderSummary {
+    margin-top: 25px;
+}
+
+.orderSummary table tr {
+    background-color: transparent !important;
+}
+
+.orderSummary table tr td {
+    font-weight: 500;
+    color: #454545;
+    /* padding: 5px 0; */
+}
+
+.orderSummary table tr td.label {
+    color: #000;
+    font-weight: 600;
+}
+
+.orderSummary table tr:first-child {
+    border-bottom: 1px solid #c9c9c9;
+}
+
+.orderSummary table tr:first-child:hover {
+    background-color: transparent !important;
+}
+
+.orderSummary table tr td:first-child {
+    width: 65%;
+    padding-left: 0;
+}
+
+/* .orderSummary table tr th {
+    padding: 5px 0;
+} */
+
+.orderSummary table tr th:first-child {
+    padding-left: 0;
+}
+
+.orderSummary table tr td:last-child {
+    font-weight: 700;
+    color: #000;
+}
+
+.orderSummary table .totalDue {
+    border-top: 1px solid #c9c9c9;
+}
+
+.orderSummary table .totalDue td {
+    font-size: 16px;
+    color: #000;
+    padding: 10px 0;
+}
+
+.paymentMethod {
+    background-color: #fff;
+    /* border: 1px solid #ddd; */
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+
+.paymentMethod .content {
+    margin-top: 15px;
+}
+
+.paymentMethod .content h6 {
+    text-transform: uppercase;
+    color: #454545;
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+
+.paymentMethod .content p {
+    margin-bottom: 3px;
+    font-size: 13px;
+    color: #454545;
+}
+
+.formWrapper .headingLabel {
+    font-size: 18px;
+    color: #000;
+    font-weight: 500;
+    padding: 0px 15px;
+    position: relative;
+}
+
+.formWrapper .headingLabel::after {
+    content: '';
+    background-color: var(--funky-boy3);
+    width: 5px;
+    height: 30px;
+    top: 0;
+    left: 2px;
+    position: absolute;
+}
+
+.formWrapper {
+    height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+.thankYou {
+    text-align: center;
+}
+
+.thankYou h5 {
+    margin-bottom: 15px;
+}
+
+.thankYou h6 {
+    color: #6b6b6b;
+    font-size: 13px;
+}
+
+.thankYou p {
+    color: #6b6b6b;
+    font-size: 13px;
+}
+
+.thankYou .iconWrapper {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 25px auto;
+}
+
+.thankYou .iconWrapper i {
+    font-size: 46px;
+    color: var(--ui-accent);
+}
+
+.thankYou .addToCart {
+    padding: 5px 10px;
+    border-radius: 3px !important;
+}

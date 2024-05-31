@@ -1,0 +1,138 @@
+/* --------- Header Group Section ------*/
+
+/* Header Parent */
+#headerTitle {
+    background-color: var(--nav-color);
+    padding: 10px;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+/* Header Group */
+#headerTitle .group {
+    display: flex;
+}
+
+/* Header Group Icons */
+#headerTitle .group i {
+    color: var(--color-text);
+}
+
+/* Header Group Texts & IconBoxes */
+#headerTitle .group span {
+    color: var(--color-text);
+}
+
+/* --------- Header Group Section ------*/
+
+/* --------- Header SearchBox Section ------*/
+
+/* SearchBox Text */
+#headerTitle .searchBox span {
+    position: absolute;
+    top: 4px;
+    left: 20px;
+    font-weight: 300;
+    color: #fff;
+}
+
+/* SearchBox Icon */
+#headerTitle .searchBox i {
+    font-size: 14px;
+    color: var(--ui-accent);
+}
+
+/* Input Search */
+#headerTitle #headerSearch {
+    border: 2px solid var(--bg-color);
+    border-radius: 50px;
+    padding: 3px 5px;
+    margin: 0px 10px;
+    width: 100%;
+    color: #fff;
+    background: var(--bg-color) url("../../images/search_b.png") no-repeat 7px center / 17px 17px;
+}
+
+#headerTitle #headerSearch::placeholder {
+    color: #ddd;
+    font-weight: 300;
+    padding-left: 25px;
+    position: relative;
+    top: 1px;
+}
+
+/* --------- Header SearchBox Section ------*/
+
+/* --------- Header ProfilePicute Section ------*/
+#headerTitle .profileHolder {
+    margin: auto 10px auto 10px;
+    text-align: center;
+    border-radius: 50px;
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+}
+
+#headerTitle .profileHolder img {
+    object-fit: cover;
+}
+
+/* --------- Header ProfilePicute Section ------*/
+
+/* --------- Domain Changer SideNav Style --------- */
+#domainNav {
+    position: fixed;
+    top: 0;
+    right: -210px;
+    background: var(--div-color);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    height: 100vh;
+    width: 200px;
+    transition: 0.3s ease-in-out;
+}
+
+/* DomainNav ListBlock Style */
+#domainNav .domainListWrap {
+    border: 1px solid var(--ui-accent);
+    border-radius: 7px;
+    min-height: 150px;
+    overflow: hidden;
+}
+
+/* DomainNav List Style */
+#domainNav .domainListBlock {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+/* DomainNav List Style Item Style */
+#domainNav .domainListBlock li {
+    padding: 5px 10px;
+    color: #fff;
+    font-size: 14px;
+    border-bottom: 1px solid #ffffff47;
+}
+
+/* DomainNav List Item Active Style */
+#domainNav .domainListBlock .active {
+    background-color: #1b4b726b;
+    font-weight: 500;
+    font-size: 15px;
+}
+
+/* --------- Domain Changer SideNav Style --------- */
+
+#detailsHeader p {
+    font-weight: 300;
+    font-family: Outfit;
+    font-size: 14px;
+}
+
+#detailsHeader {
+    background-color: #fff;
+    /* border-bottom: 1px solid #ddd; */
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}

@@ -1,0 +1,145 @@
+.storeExtension .itemWrapper {
+    height: 410px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.storeExtension .itemWrapper .heading {
+    text-align: center;
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.storeExtension .itemWrapper .label {
+    position: initial;
+    transform: none;
+    line-height: 26px;
+    font-size: 14px;
+}
+
+.storeExtension .itemWrapper .label2 {
+    font-size: 14px;
+    color: var(--color-subtext);
+    font-family: Roboto;
+    width: 100%;
+    position: absolute;
+    bottom: 75px;
+}
+
+.storeExtension .addCartGroup {
+    position: absolute;
+    bottom: 5px;
+    width: 100%;
+}
+
+.storeExtension .addCartGroup input {
+    width: 35px;
+    text-align: center;
+    border: 1px solid #cfcfcf;
+    background-color: #fff;
+    border-radius: 2px;
+}
+
+.storeExtension .addCartGroup .clearButton {
+    font-size: 28px;
+    font-weight: 300;
+}
+
+.storeExtension .itemWrapper.a .banner {
+    padding: 20px 0;
+    background: linear-gradient(180deg, rgba(0, 159, 255, 1) 0%, rgba(0, 134, 215, 1) 50%, rgba(0, 95, 153, 1) 100%);
+}
+
+.storeExtension .itemWrapper.b .banner {
+    padding: 20px 0;
+    background: linear-gradient(180deg, rgba(255, 192, 0, 1) 0%, rgba(255, 188, 0, 1) 50%, rgba(207, 100, 0, 1) 100%);
+}
+
+.storeExtension .itemWrapper.c .banner {
+    padding: 20px 0;
+    background: linear-gradient(180deg, rgba(107, 107, 107, 1) 0%, rgba(69, 69, 69, 1) 50%, rgba(37, 37, 37, 1) 100%);
+}
+
+.storeExtension .banner .iconWrapper {
+    width: 70px;
+    height: 70px;
+    border: none;
+    background-color: #fff;
+    margin: 0 auto;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.storeExtension .banner .iconWrapper i {
+    transform: none !important;
+    background: -webkit-linear-gradient(rgba(0, 159, 255, 1), rgba(0, 134, 215, 1));
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent;
+    font-size: 45px !important;
+}
+
+.storeExtension .shoppingCartPopup {
+    position: absolute;
+    top: 45px;
+    right: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 20px;
+    width: 350px;
+    display: none;
+}
+
+.shoppingCartPopup h3 {
+    font-size: 22px;
+    font-weight: 400;
+    color: rgb(66, 66, 66);
+    text-align: center;
+    padding: 16px 0;
+}
+
+.shoppingCartPopup h4 {
+    color: rgb(155, 155, 155);
+    font-size: 18px !important;
+}
+
+.shoppingCartPopup h5 {
+    font-size: 14px !important;
+}
+
+.shoppingCartPopup table td {
+    width: inherit !important;
+    padding-left: 0 !important;
+    color: rgb(66, 66, 66);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.shoppingCartPopup table td span {
+    font-weight: 300;
+}
+
+.shoppingCartPopup table tr {
+    background-color: #fff !important;
+}
+
+.shoppingCartPopup table tr:last-child td {
+    font-size: 16px;
+    color: black;
+}
+
+.shoppingCartPopup p {
+    font-size: 11px;
+    color: #454545;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.shoppingCartPopup .clearButton {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 20px;
+}

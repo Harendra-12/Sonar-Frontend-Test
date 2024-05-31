@@ -1,0 +1,84 @@
+/* Font Imports */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap');
+
+/* CSS Modules */
+@import url('./components/headerTitle.css');
+@import url('./common/iconStuff.css');
+@import url('./common/ripple.css');
+@import url('./common/scrollbar.css');
+@import url('./components/sideNav.css');
+@import url('./components/sideNavApp.css');
+@import url('./common/mainContent.css');
+@import url('./components/menuWrapper.css');
+@import url('./common/buttons.css');
+@import url('./common/tableStuff.css');
+@import url('./common/toggleSwitch.css');
+@import url('./common/fontSizes.css');
+@import url('./components/extensionImport.css');
+@import url('./components/subPage.css');
+@import url('./components/messagesContent.css');
+@import url('./components/callContent.css');
+@import url('./common/audio-player.css');
+@import url('./components/dashboard.css');
+@import url('./components/loginPage.css');
+@import url('./common/misc.css');
+@import url('./components/setupGuide.css');
+@import url('./components/storeExtension.css');
+@import url('./components/orderConfirmation.css');
+@import url('./components/profilesPage.css');
+@import url('./components/dialPad.css');
+@import url('./components/loader.css');
+@import url('./components/caller.css');
+@import url('./components/master.css');
+
+/* Responsive CSS */
+@import url('./common/responsive.css');
+
+
+:root {
+    /* --bg-color: #e7f8ff; */
+    --bg-color: #5d6aff1f;
+    --bgdark-color: #111525;
+    /* Dark Mode */
+    --nav-color: #161b2e;
+    --button-dark: #2d3864;
+    /* --nav-color: #0676a9; */
+    --div-color: #161c31;
+    --color1: #360568;
+    /* Primary Color */
+    --color2: #5b2a86;
+    /* Accent Color */
+    --ui-accent: #439fdd;
+    --ui-icon: #00ffe0;
+    /* --ui-accent: #d76394; */
+    /* --ui-accent: #d763c9; */
+    --color3: #f18f01;
+    /* Highlight, Notification & Alert Color */
+    --color-text: #fff;
+    /* Contrast Text Color */
+
+    /* Light Mode */
+    --color4: #ababab;
+    /* UI Items Color */
+    --color-subtext: #7c7c7c;
+    /* Contrast Subtext Color */
+    --sideNav-width: 190px;
+}
+
+html {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    /* overflow: hidden; */
+}
+
+body {
+    font-family: Roboto;
+    background-color: var(--bg-color);
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    /* overflow: hidden; */
+}

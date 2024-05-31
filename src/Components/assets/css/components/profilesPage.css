@@ -1,0 +1,99 @@
+.profileView {
+    padding: 10px;
+}
+
+.profileView .profileDetailsHolder {
+    /* border: 1px solid #ddd; */
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.profileView .baseDetails {
+    display: flex;
+    padding: 5px;
+    flex-wrap: wrap;
+}
+
+.profileView .baseDetails .profilePicHolder {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.profileView .baseDetails .profilePicHolder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* .profileView .baseDetails .content {
+    margin: auto 0 auto 18px;
+} */
+
+.profileView .baseDetails .content h5 {
+    font-size: 19px !important;
+    margin-bottom: 5px;
+}
+
+.profileView .baseDetails .content p {
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-subtext);
+}
+
+.profileView .baseDetails .content p a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.profileView .baseDetails .content p span {
+    width: 18px;
+    display: inline-block;
+    color: var(--ui-accent);
+}
+
+.profileView .baseDetails .summaryDetails {
+    margin-top: 15px;
+}
+
+.profileView .baseDetails .summaryDetails .content p {
+    font-weight: 400;
+}
+
+.profileView .profileDetailsHolder .qLinkContent {
+    padding: 5px;
+}
+
+.profileDetailsHolder .qLinkContent ul {
+    padding-left: 0;
+    list-style: none;
+}
+
+.qLinkContent ul li a {
+    text-decoration: none;
+    color: var(--color-subtext);
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.qLinkContent h5 {
+    padding-bottom: 10px;
+}
+
+.qLinkContent p {
+    margin: 5px 0;
+    font-weight: 500;
+    font-size: 16px;
+    font-family: 'Open Sans';
+}
+
+.profileView .profileDetailsHolder .header {
+    border-left: 4px solid var(--ui-accent);
+    margin-left: -10px;
+    padding: 5px 10px;
+    font-weight: 500;
+}

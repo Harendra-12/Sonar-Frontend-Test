@@ -1,0 +1,88 @@
+/* -------- SideNav MainMenu Styles ------- */
+#sidenNavApp{
+    width: 190px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    overflow-y: auto;
+    z-index: 2;
+    background-color: var(--nav-color);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+/* #sidenNavApp .sidenavItems .active{
+    background-color: var(--ui-accent);
+} */
+#sidenNavApp .sidenavItems ul{
+    list-style: none;
+    padding: 5px 0px;
+    line-height: 20px;
+}
+#sidenNavApp .sidenavItems ul li{
+    padding: 7px 8px 7px 0px;
+    margin: 2px 0;
+}
+#sidenNavApp .sidenavItems ul li i{
+    font-size: 17px;
+}
+#sidenNavApp .sidenavItems .iconHolder{
+    width: 35px;
+}
+
+#sidenNavApp .sidenavItems ul li button{
+    color: var(--ui-accent);
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    background: none;
+    width: 100%;
+    display: flex;
+}
+#sidenNavApp .sidenavItems .itemTitle{
+    font-size: 14px;
+    font-weight: 300;
+    color: #fff !important;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+#sidenNavApp .sidenavItems .profileHolder{
+    width: 35px;
+    height: 35px;
+    margin: auto 10px auto 10px;
+    text-align: center;
+    cursor: pointer;
+    background-color: var(--ui-accent);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    overflow: hidden;
+}
+#profileOnlineNav::after {
+    content: '';
+    background-color: transparent;
+    border: 2px solid #4effef;
+    border-radius: 50px;
+    width: 41px;
+    height: 41px;
+    position: absolute;
+}
+#profileOfflineNav::after {
+    content: '';
+    background-color: transparent;
+    border: 2px solid #ff1e1e;
+    border-radius: 50px;
+    width: 41px;
+    height: 41px;
+    position: absolute;
+}
+
+#sidenNavApp .sidenavItems .userTitle{
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ui-accent) !important;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+/* -------- SideNav MainMenu Styles ------- */
+

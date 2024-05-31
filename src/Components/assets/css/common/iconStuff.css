@@ -1,0 +1,27 @@
+/* ----------- IconHolder and IconParent ------------ */
+.iconHolder, .iconHolderOther{
+    margin: auto 10px auto 10px;
+    text-align: center;
+    cursor: pointer;
+}
+/* Feature Button Icon */
+.iconHolder span{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--ui-accent);
+    width: 32px;
+    height: 32px;
+    border-radius: 50px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.iconHolder span i{
+    color: #fff !important;
+}
+/* Navigation & Form Button Icons */
+.iconHolderOther span{
+    background-color: var(--bg-color);
+    padding: 5px 10px;
+    border-radius: 50px;
+}
+/* ----------- IconHolder and IconParent ------------ */

@@ -1,0 +1,208 @@
+main.login {
+    /* background-image: url('../../images/login_bg2.jpg'); */
+    background-size: cover;
+    background-position: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.loginWrapper {
+    backdrop-filter: blur(10px);
+    background-color: #ffffff25;
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid #fff;
+    height: 435px;
+}
+
+.loginFormItem {
+    border: 1px solid #fff;
+    background-color: #ffffff45;
+    border-radius: 50px;
+    width: 100%;
+    height: 35px;
+    color: #fff;
+    margin-bottom: 25px;
+    padding: 5px 15px 5px 40px;
+    font-family: Outfit;
+    font-size: 16px;
+    font-weight: 200;
+    outline: none;
+}
+
+.loginFormItem::placeholder {
+    color: #fff;
+    font-family: Outfit;
+    font-weight: 200;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.loginWrapper form i {
+    position: absolute;
+    top: 10px;
+    left: 13px;
+    font-size: 18px;
+    color: #fff;
+}
+
+.formSubmit {
+    background-color: #fff;
+    color: var(--ui-accent);
+    font-weight: 900;
+    letter-spacing: 1px;
+    font-size: 14px;
+    border: none;
+    border-radius: 50px;
+    width: 100%;
+    padding: 5px 10px;
+    margin-bottom: 25px;
+}
+
+.loginLabel {
+    color: #fff;
+    font-size: 13px;
+    font-family: Outfit;
+}
+
+a.loginLabel {
+    font-style: italic;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.loginWrapper .iconWrapper {
+    position: relative;
+    margin: auto;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 5px solid #ffffff45;
+    margin-bottom: 35px;
+}
+
+.loginWrapper .iconWrapper i {
+    font-size: 52px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff45;
+}
+
+.login .someText {
+    position: absolute;
+    bottom: 15px;
+    left: 30px;
+    max-width: 196px;
+}
+
+.login .someText h1 {
+    font-family: Open Sans;
+    font-weight: 900;
+    letter-spacing: -1px;
+    color: #fff;
+}
+
+.login .someText p {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 200;
+}
+
+.login .someLogo {
+    position: absolute;
+    top: 15px;
+    left: 30px;
+}
+
+.login .someLogo h3 {
+    font-family: Outfit;
+    font-weight: 700;
+    color: #fff;
+    position: relative;
+    margin-bottom: 5px;
+}
+
+.login .someLogo h3::after {
+    content: '';
+    position: absolute;
+    top: 18px;
+    right: 0px;
+    width: 22px;
+    height: 3px;
+    background-color: #fff;
+}
+
+.login .someLogo p {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 100;
+}
+
+.loginWrapper form {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.forgotPassword {
+    display: none;
+}
+
+
+
+
+
+/* Particle JS */
+
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #08091d;
+    /* background-image: url("http://192.168.1.136/ringerappCI/assets/images/login_bgX.jpg"); */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+
+/* ---- stats.js ---- */
+.count-particles {
+    background: #000022;
+    position: absolute;
+    top: 48px;
+    left: 0;
+    width: 80px;
+    color: #13E8E9;
+    font-size: .8em;
+    text-align: left;
+    text-indent: 4px;
+    line-height: 14px;
+    padding-bottom: 2px;
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: bold;
+}
+
+.js-count-particles {
+    font-size: 1.1em;
+}
+
+#stats,
+.count-particles {
+    -webkit-user-select: none;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+#stats {
+    border-radius: 3px 3px 0 0;
+    overflow: hidden;
+}
+
+.count-particles {
+    border-radius: 0 0 3px 3px;
+}
