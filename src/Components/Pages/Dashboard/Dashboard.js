@@ -294,12 +294,12 @@ const Dashboard = () => {
                             <div className="row">
                                 <div className="col-xl-3">
                                     <div className='wrapper'>
-                                        <DoughnutChart fields={["Completed Calls", "Missed Calls"]} percentage={[(69 - extensionList) * 100 / 69, extensionList * 100 / 69]} centerTitle={`${extensionList}/69`} centerDesc="Total Calls Occurred" colors={['#FF6384', '#36A2EB']} />
+                                        <DoughnutChart fields={["Online Extension","Available Extension", "Register Extension"]} percentage={[10,extensionList, 69]} centerTitle={`${extensionList}/69`} centerDesc="Total Calls Occurred" colors={['#9999','#FF6384', '#36A2EB']} />
                                     </div>
                                 </div>
                                 <div className="col-xl-3">
                                     <div className='wrapper'>
-                                        <DoughnutChart fields={["Available Users ", "Registered Users "]} percentage={[(10 - userList) * 100 / 10, userList * 100 / 10]} centerTitle={`${userList}/10`} centerDesc="Total Users Available" colors={['#FF6384', '#36A2EB']} />
+                                        <DoughnutChart fields={["Available Users ", "Registered Users "]} percentage={[userList, 10]} centerTitle={`${userList}/10`} centerDesc="Total Users Available" colors={['#FF6384', '#36A2EB']} />
                                     </div>
                                     {/* <div className='circularProgressWrapper'>
                                         <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `50` }}>
