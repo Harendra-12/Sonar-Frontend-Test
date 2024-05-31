@@ -230,6 +230,37 @@ function DestinationAdd() {
       };
       const apiData = await generalPostFunction(`/dialplan/store`, parsedData);
       if (apiData.status) {
+        setDestination({
+          type: "Inbound",
+          countryCode: "",
+          countryCodeMissing: false,
+          destination: "",
+          destinationMissing: false,
+          context: "",
+          contextMissing: false,
+          usage: "",
+          usageMissing: false,
+          domain: "",
+          domainMissing: false,
+          order: "",
+          orderMissing: false,
+          enabled: false,
+          enabledMissing: false,
+          description: "",
+          descriptionMissing: false,
+          callerIdName: "",
+          callerIdNumber: "",
+          condition: "",
+          action: "",
+          user: "",
+          group: "",
+          callerIdNamePrefix: "",
+          record: "",
+          holdMusic: "",
+          distinctiveRing: "",
+          accountCode: "",
+          actionMissing: false
+        })
         toast.success(apiData.message);
       } else {
         toast.error(apiData.message);

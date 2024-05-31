@@ -400,6 +400,47 @@ const RingGroupAdd = () => {
       };
       const apiData = await generalPostFunction("/ringgroup/store", parsedData);
       if (apiData.status) {
+        setGroup({
+          name: "",
+          nameMissing: false,
+          extension: "",
+          extensionMissing: false,
+          email: "",
+          emailMissing: "",
+          followMe: false,
+          followMeMissing: false,
+          strategy: "enterprise",
+          strategyMissing: false,
+          timeOutDestination: "",
+          timeOutDestinationMissing: false,
+          callTimeOut: "",
+          callTimeOutMissing: false,
+          distinctiveRing: "",
+          distinctiveRingMissing: false,
+          ringBack: "us-ring",
+          ringBackMissing: false,
+          user: "",
+          userMissing: false,
+          callForward: "false",
+          callForwardMissing: false,
+          missedCall: "",
+          missedCallMissing: false,
+          groupForward: "false",
+          groupForwardMissing: false,
+          tollAllow: "",
+          tollAllowMissing: false,
+          context: "",
+          contextMissing: false,
+          description: "",
+          descriptionMissing: false,
+          enabled: false,
+          enabledMissing: false,
+          forwardNumber: "",
+          forwardNumberMissing: false,
+          number: "",
+          destinationMissing:false,
+          greeting:"",
+        })
         toast.success(apiData.message);
       } else {
         toast.error(apiData.message);

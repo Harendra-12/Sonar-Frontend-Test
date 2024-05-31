@@ -32,7 +32,6 @@ const UsersAdd = () => {
         languageMissing:false,
         timeZoneMissing:false,
         statusMissing:false,
-        statusMissing:false,
         firstNameMissing:false,
         lastNameMissing:false,
         organizationMissing:false,
@@ -272,6 +271,36 @@ const UsersAdd = () => {
             }
             const addUser = await generalPostFunction("/user/create",parsedData)
             if(addUser.status){
+                setUserState({
+                    userName: "",
+                    password: "",
+                    cPassword: "",
+                    email: "",
+                    language: "",
+                    timeZone: "",
+                    status: "",
+                    firstName: "",
+                    lastName: "",
+                    organization: "",
+                    groups: "",
+                    type: "",
+                    domain: "",
+                    useNameValidation: false,
+                    isUserNameAvailable: false,
+                    userNameMissing:false,
+                    passwordMissing:false,
+                    cPasswordMissing:false,
+                    emailMissing:false,
+                    languageMissing:false,
+                    timeZoneMissing:false,
+                    statusMissing:false,
+                    firstNameMissing:false,
+                    lastNameMissing:false,
+                    organizationMissing:false,
+                    groupMissing:false,
+                    typeMissing:false,
+                    domainMissing:false,
+                })
                 toast.success(addUser.message)
             }else{
                 toast.error(addUser.message)

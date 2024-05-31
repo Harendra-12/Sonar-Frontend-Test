@@ -512,6 +512,64 @@ const ExtensionsAdd = () => {
       };
       const apiData = await generalPostFunction("/extension/store", parseddata);
       if (apiData.status) {
+        setExtensionState({
+          extension: "",
+          extensionMissing: false,
+          voicePass: "",
+          voicePassMissing: false,
+          accountCode: "",
+          accountCodeMissing: false,
+          effCallerIdName: "",
+          effCallerIdNameMissing: false,
+          effCallerIdNumber: "",
+          effCallerIdNumberMissing: false,
+          outCallerIdName: "",
+          outCallerIdNameMissing: false,
+          outCallerIdNumber: "",
+          outCallerIdNumberMissing: false,
+          emeCallerIdName: "",
+          emeCallerIdNameMissing: false,
+          emeCallerIdNumber: "",
+          emeCallerIdNumberMissing: false,
+          dirFullName: "",
+          dirFullNameMissing: false,
+          dirVisible: "",
+          dirVisibleMissing: false,
+          dirExtensionVisible: "true",
+          dirExtensionVisibleMissing: false,
+          maxRegistration: "",
+          maxRegistrationMissing: false,
+          limitMax: "",
+          limitMaxMissing: false,
+          limitDest: "",
+          limitDestMissing: false,
+          voiceMailEnable: "N",
+          voiceMailEnableMissing: false,
+          voiceEmailTo: "",
+          voiceEmailToMissing: false,
+          voiceMialFile: "",
+          voiceMialFileMissing: false,
+          voiceMailKeepFile: "false",
+          voiceMailKeepFileMissing: false,
+          missedCall: "none",
+          missedCallMissing: false,
+          toAllowValue: "",
+          toAllowValueMissing: false,
+          callTimeOut: "",
+          callTimeOutMissing: false,
+          callGroup: "",
+          callGroupMissing: false,
+          callScreen: "Disable",
+          callScreenMissing: false,
+          record: "A",
+          recordMissing: false,
+          domain: "",
+          domainMissing: false,
+          desc: "",
+          descMissing: false,
+          password: "",
+          passwordMising: false,
+        })
         setLoading(false);
         toast.success(apiData.message);
       } else {
@@ -662,41 +720,6 @@ const ExtensionsAdd = () => {
                       </label>
                     </div>
                   </div>
-
-                  {/* <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="selectFormRow">Range</label>
-                    </div>
-                    <div className="col-12">
-                      <select className="formItem" name="" id="selectFormRow">
-                        <option>Select Range</option>
-                        <option value={1}>1</option>
-                        <option value={2}>2</option>
-                        <option value={3}>3</option>
-                      </select>
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        Enter the number of extensions to create. Increments
-                        each extension by 1.
-                      </label>
-                    </div>
-                  </div> */}
-                  {/* <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="selectFormRow">User</label>
-                    </div>
-                    <div className="col-12">
-                      <select className="formItem" name="" id="selectFormRow">
-                        <option>Select User</option>
-                        <option value="admin">Admin</option>
-                        <option value='""' />
-                      </select>
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        Assign users to this extension.
-                      </label>
-                    </div>
-                  </div> */}
                   <div className="formRow col-xl-3">
                     <div className="formLabel">
                       <label htmlFor="">Voicemail Password</label>
@@ -757,40 +780,6 @@ const ExtensionsAdd = () => {
                       </label>
                     </div>
                   </div>
-                  {/* <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="">Device Provisioning</label>
-                    </div>
-                    <div className="col-12">
-                      <select
-                        className="formItem w-auto"
-                        name=""
-                        id="selectFormRow"
-                      >
-                        <option />
-                        <option value={1}>1</option>
-                        <option value={2}>2</option>
-                        <option value={3}>3</option>
-                      </select>
-                      <select className="formItem" name="" id="selectFormRow">
-                        <option />
-                        <option value="" />
-                        <option value="" />
-                      </select>
-                      <select className="formItem" name="" id="selectFormRow">
-                        <option />
-                        <option value="aastra480i">aastra/480i</option>
-                        <option value="aastra673x">aastra/673x</option>
-                        <option value="aastra675x">aastra/675x</option>
-                        <option value="aastra686x">aastra/686x</option>
-                      </select>
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        Select a device and line number to assign to this
-                        extension.
-                      </label>
-                    </div>
-                  </div> */}
                   <div className="formRow col-xl-3">
                     <div className="formLabel">
                       <label htmlFor="">Effective Caller ID Name</label>
@@ -1180,25 +1169,6 @@ const ExtensionsAdd = () => {
                       </label>
                     </div>
                   </div>
-                  {/* <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="selectFormRow">
-                        Transcription Enabled
-                      </label>
-                    </div>
-                    <div className="col-12">
-                      <select className="formItem" name="" id="selectFormRow">
-                        <option>Select User</option>
-                        <option value="true">True</option>
-                        <option value="false">False</option>
-                      </select>
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        Choose if voicemail transcription is enabled for this
-                        extension.
-                      </label>
-                    </div>
-                  </div> */}
                   <div className="formRow col-xl-3">
                     <div className="formLabel">
                       <label htmlFor="selectFormRow">Voicemail File</label>
@@ -1465,40 +1435,6 @@ const ExtensionsAdd = () => {
                       </label>
                     </div>
                   </div>
-                  {/* <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="selectFormRow">Hold Music</label>
-                    </div>
-                    <div className="col-12">
-                      <select className="formItem" name="" id="selectFormRow">
-                        <option>Select MOH</option>
-                        <option value="all">default</option>
-                        <option value="local">none</option>
-                      </select>
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        Select the MOH Category here.
-                      </label>
-                    </div>
-                  </div>
-                  <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="selectFormRow">Type</label>
-                    </div>
-                    <div className="col-12">
-                      <select className="formItem" name="" id="selectFormRow">
-                        <option>Select Type</option>
-                        <option value="default">Default</option>
-                        <option value="virtual">Virtual</option>
-                      </select>
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        Select Default to enable registration or to disable
-                        registration select Virtual.
-                      </label>
-                    </div>
-                  </div> */}
-
                   <div className="formRow col-xl-3">
                     <div className="formLabel">
                       <label htmlFor="selectFormRow">Description</label>
@@ -1528,235 +1464,6 @@ const ExtensionsAdd = () => {
                       </label>
                     </div>
                   </div>
-                  {/* <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="selectFormRow">Context</label>
-                    </div>
-                    <div className="col-12">
-                      <input
-                        type="text"
-                        name="extension"
-                        id=""
-                        className="formItem"
-                        defaultValue="0.0.0.0"
-                        required="required"
-                      />
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        Enter the user context here.
-                      </label>
-                    </div>
-                  </div> */}
-                  {/* <div id="advancedOptions">
-                                        <div className="formRow col-xl-3">
-                                            <div className="formLabel">
-                                                <label htmlFor="selectFormRow">Auth ACL</label>
-                                            </div>
-                                            <div className="col-12">
-                                                <input
-                                                    type="text"
-                                                    name="extension"
-                                                    id=""
-                                                    className="formItem"
-                                                    defaultValue=""
-                                                    required="required"
-                                                />
-                                                <br />
-                                                <label htmlFor="data" className="formItemDesc">
-                                                    Enter the Auth ACL here.
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div className="formRow col-xl-3">
-                                            <div className="formLabel">
-                                                <label htmlFor="selectFormRow">CIDR</label>
-                                            </div>
-                                            <div className="col-12">
-                                                <input
-                                                    type="text"
-                                                    name="extension"
-                                                    id=""
-                                                    className="formItem"
-                                                    defaultValue=""
-                                                    required="required"
-                                                />
-                                                <br />
-                                                <label htmlFor="data" className="formItemDesc">
-                                                    Enter allowed address/ranges in CIDR notation (comma
-                                                    separated).
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div className="formRow col-xl-3">
-                                            <div className="formLabel">
-                                                <label htmlFor="selectFormRow">SIP Force Contact</label>
-                                            </div>
-                                            <div className="col-12">
-                                                <select className="formItem" name="" id="selectFormRow">
-                                                    <option >Choose to rewrite</option>
-                                                    <option value="NDLB-connectile-dysfunction">
-                                                        Rewrite Contact IP and Port
-                                                    </option>
-                                                    <option value="NDLB-connectile-dysfunction-2.0">
-                                                        Rewrite Contact IP and Port 2.0
-                                                    </option>
-                                                    <option value="NDLB-tls-connectile-dysfunction">
-                                                        Rewrite TLS and Port
-                                                    </option>
-                                                </select>
-                                                <br />
-                                                <label htmlFor="data" className="formItemDesc">
-                                                    Choose whether to rewrite the contact port, or rewrite
-                                                    both the contact IP and port.
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div className="formRow col-xl-3">
-                                            <div className="formLabel">
-                                                <label htmlFor="selectFormRow">SIP Force Expires</label>
-                                            </div>
-                                            <div className="col-12">
-                                                <input
-                                                    type="text"
-                                                    name="extension"
-                                                    id=""
-                                                    className="formItem"
-                                                    defaultValue=""
-                                                    required="required"
-                                                />
-                                                <br />
-                                                <label htmlFor="data" className="formItemDesc">
-                                                    To prevent stale registrations SIP Force expires can
-                                                    override the client expire.
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div className="formRow col-xl-3">
-                                            <div className="formLabel">
-                                                <label htmlFor="selectFormRow">MWI Account</label>
-                                            </div>
-                                            <div className="col-12">
-                                                <input
-                                                    type="text"
-                                                    name="extension"
-                                                    id=""
-                                                    className="formItem"
-                                                    defaultValue=""
-                                                    required="required"
-                                                />
-                                                <br />
-                                                <label htmlFor="data" className="formItemDesc">
-                                                    MWI Account with user@domain of the voicemail to monitor.
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div className="formRow col-xl-3">
-                                            <div className="formLabel">
-                                                <label htmlFor="selectFormRow">SIP Bypass Media</label>
-                                            </div>
-                                            <div className="col-12">
-                                                <select className="formItem" name="" id="selectFormRow">
-                                                    <option >Choose Media Stream</option>
-                                                    <option value="NDLB-connectile-dysfunction">
-                                                        Bypass Media
-                                                    </option>
-                                                    <option value="NDLB-connectile-dysfunction-2.0">
-                                                        Bypass Media After Bridge
-                                                    </option>
-                                                    <option value="NDLB-tls-connectile-dysfunction">
-                                                        Proxy Media
-                                                    </option>
-                                                </select>
-                                                <br />
-                                                <label htmlFor="data" className="formItemDesc">
-                                                    Choose whether to send the media stream point to point or
-                                                    in transparent proxy mode.
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div className="formRow col-xl-3">
-                                            <div className="formLabel">
-                                                <label htmlFor="selectFormRow">Absolute Codec String</label>
-                                            </div>
-                                            <div className="col-12">
-                                                <input
-                                                    type="text"
-                                                    name="extension"
-                                                    id=""
-                                                    className="formItem"
-                                                    defaultValue=""
-                                                    required="required"
-                                                />
-                                                <br />
-                                                <label htmlFor="data" className="formItemDesc">
-                                                    Absolute Codec String for the extension.
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div className="formRow col-xl-3">
-                                            <div className="formLabel">
-                                                <label htmlFor="selectFormRow">Force ping</label>
-                                            </div>
-                                            <div className="col-12">
-                                                <select className="formItem" name="" id="selectFormRow">
-                                                    <option >Choose Media Stream</option>
-                                                    <option value="true">True</option>
-                                                    <option value="false">False</option>
-                                                </select>
-                                                <br />
-                                                <label htmlFor="data" className="formItemDesc">
-                                                    Use OPTIONS to detect if extension is reacheable.
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div className="formRow col-xl-3">
-                                            <div className="formLabel">
-                                                <label htmlFor="selectFormRow">Dial String</label>
-                                            </div>
-                                            <div className="col-12">
-                                                <input
-                                                    type="text"
-                                                    name="extension"
-                                                    id=""
-                                                    className="formItem"
-                                                    defaultValue=""
-                                                    required="required"
-                                                />
-                                                <br />
-                                                <label htmlFor="data" className="formItemDesc">
-                                                    Location of the endpoint.
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="formRow flex-row-reverse col-xl-3">
-                                        <div className="col-12">
-                                            <div className="formLabel">
-                                                <button
-                                                    className="panelButton"
-                                                    type="button"
-                                                    effect="ripple"
-                                                    id="advancedOptionsButton"
-                                                >
-                                                    <i className="fa-duotone fa-screwdriver-wrench" />{" "}
-                                                    Advanced
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div> */}
-                  {/* <div className="formRow d-flex align-items-center col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="selectFormRow">Enabled</label>
-                    </div>
-                    <div className="col-2 ms-2">
-                      <div className="my-auto position-relative mx-1">
-                        <label className="switch">
-                          <input type="checkbox" id="showAllCheck" />
-                          <span className="slider round" />
-                        </label>
-                      </div>
-                    </div>
-                  </div> */}
                   <div />
                 </form>
               </div>

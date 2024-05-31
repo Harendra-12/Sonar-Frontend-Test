@@ -223,6 +223,34 @@ function GatewayAdd() {
       }
       const apidata = await generalPostFunction("/gateway/store",parsedData)
       if(apidata.status){
+        setGatwewayState({
+          gateway: "",
+          username: "",
+          password: "",
+          fromuser: "",
+          fromdomain: "",
+          proxy: "",
+          realm: "",
+          expiry: "",
+          register: "",
+          retry: "",
+          profile: "",
+          status: "",
+          desc: "",
+          gatewayMissing: "",
+          usernameMissing: "",
+          passwordMissing: "",
+          fromuserMissing: "",
+          fromdomainMissing: "",
+          proxyMissing: "",
+          realmMissing: "",
+          expiryMissing: "",
+          registerMissing: "",
+          retryMissing: "",
+          profileMissing: "",
+          statusMissing: "",
+          descMissing: "",
+        })
           toast.success(apidata.message)
       }else{
         toast.error(apidata.message)

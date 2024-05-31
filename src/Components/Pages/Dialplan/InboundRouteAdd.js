@@ -83,11 +83,19 @@ function InboundRouteAdd() {
         }
         const apiData = await generalPostFunction(`/inbound/routing/store`,parsedData)
         if(apiData.status){
+          setInboundRoute({
+            name: "",
+            nameMissing: false,
+            destination: "",
+            destinationMissing: false,
+            action: "",
+            other: "",
+            prefix: "",
+            status: "E",
+          })
           toast.success(apiData.message)
-          console.log("This is parsed data",apiData);
         }else{
           toast.error(apiData.message)
-          console.log("This is parsed data",apiData);
         }
         
     }
