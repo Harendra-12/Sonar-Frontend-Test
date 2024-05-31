@@ -205,12 +205,7 @@ function CallCenterQueueEdit() {
         setLoading(false)
         toast.error(apiData.message);
       }
-      //   console.log("All condition verified !");
     }
-
-    // console.log("This is all consdition",callCenter.name,!(callCenter.name==="")  , !callCenter.extension==="" , !callCenter.action==="" , !callCenter.abandoned==="" , !callCenter.prefix==="" , ...agent.map((item)=>{
-    //     return(item.name===""?true:false)
-    // }));
   }
   console.log("This is agent", agent);
   return (
