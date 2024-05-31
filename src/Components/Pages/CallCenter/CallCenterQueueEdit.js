@@ -98,7 +98,7 @@ function CallCenterQueueEdit() {
     setAgent([
       ...agent,
       {
-        id: agent.length + 1,
+        id: agent.length + 100000,
         name: "",
         level: "0",
         position: "0",
@@ -185,7 +185,7 @@ function CallCenterQueueEdit() {
         agents: agent.map((item) => {
           if (item.name !== "") {
             return {
-              id:item.id,
+              ...(item.id < 10000 && { id: item.id }),
               agent_name: item.name,
               tier_level: item.level,
               tier_position: item.position,

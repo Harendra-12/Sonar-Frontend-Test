@@ -204,6 +204,7 @@ const RingGroupEdit = () => {
     setDestination([
       ...destination,
       {
+        id:destination.length + 10000,
         destination: "",
         delay: 0,
         timeOut: "30",
@@ -454,7 +455,7 @@ const RingGroupEdit = () => {
                 status: item.status,
                 destination_timeout: item.timeOut,
                 created_by: account.account_id,
-                id: item.id,
+                ...(item.id < 10000 && { id: item.id }),
               };
             } else {
               return null;
