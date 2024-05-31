@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 import Header from '../../CommonComponents/Header'
 import GlobalCalls from '../../GlobalFunction/GlobalCalls'
 import DoughnutChart from '../../CommonComponents/DoughnutChart'
+import GraphChart from '../../CommonComponents/GraphChart'
 const Dashboard = () => {
 
     const [calls, setCalls] = useState(false)
@@ -79,7 +80,7 @@ const Dashboard = () => {
                                 </div>
                             </div> */}
 
-                        <div className='col-12 mt-3'>
+                        <div className='col-12 mt-3 tangoNavs'>
                             <nav>
                                 <div className="nav nav-tabs" id="nav-tab" role="tablist">
                                     <button className="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-calls" type="button" role="tab" aria-controls="nav-calls" aria-selected="true">Calls</button>
@@ -88,7 +89,7 @@ const Dashboard = () => {
                                     <button className="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-ring" type="button" role="tab" aria-controls="nav-ring" aria-selected="false">Ring Group</button>
                                 </div>
                             </nav>
-                            <div className="tab-content" id="nav-tabContent">
+                            <div className="tab-content mt-3" id="nav-tabContent">
                                 <div className="tab-pane fade show active" id="nav-calls" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
                                     <div className="row">
                                         <div className="col-xl-3">
@@ -289,13 +290,17 @@ const Dashboard = () => {
                         {group ? <RingGroup /> : ""}
                         {queue ? <CallQueueDetails /> : ""} */}
 
-                        <div className="col-12 mt-4 mb-2">
+                        <div className="col-12 mt-4 mb-2 chartWrapper">
                             <div className="row">
-                                <div className="col-xl-4">
-                                    <DoughnutChart fields={["Completed Calls", "Missed Calls", "Active Calls", "Total Calls"]} percentage={[(69 - extensionList) * 100 / 69, extensionList * 100 / 69]} centerTitle={`${extensionList}/69`} centerDesc="Total Calls Occurred" colors={['#FF6384', '#36A2EB']} />
+                                <div className="col-xl-3">
+                                    <div className='wrapper'>
+                                        <DoughnutChart fields={["Completed Calls", "Missed Calls"]} percentage={[(69 - extensionList) * 100 / 69, extensionList * 100 / 69]} centerTitle={`${extensionList}/69`} centerDesc="Total Calls Occurred" colors={['#FF6384', '#36A2EB']} />
+                                    </div>
                                 </div>
-                                <div className="col-xl-4">
-                                    <DoughnutChart fields={["Available Users ", "Registered Users "]} percentage={[(10 - userList) * 100 / 10, userList * 100 / 10]} centerTitle={`${userList}/10`} centerDesc="Total Users Available" colors={['#FF6384', '#36A2EB']} />
+                                <div className="col-xl-3">
+                                    <div className='wrapper'>
+                                        <DoughnutChart fields={["Available Users ", "Registered Users "]} percentage={[(10 - userList) * 100 / 10, userList * 100 / 10]} centerTitle={`${userList}/10`} centerDesc="Total Users Available" colors={['#FF6384', '#36A2EB']} />
+                                    </div>
                                     {/* <div className='circularProgressWrapper'>
                                         <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `50` }}>
                                             <circle className="bg"
@@ -314,8 +319,10 @@ const Dashboard = () => {
                                         </div>
                                     </div> */}
                                 </div>
-                                <div className="col-xl-4">
-                                    <DoughnutChart fields={["Available Extension", "Registered Extension"]} percentage={[(69 - extensionList) * 100 / 69, extensionList * 100 / 69]} centerTitle={`${extensionList}/69`} centerDesc="Total Extensions" colors={['#f18f01', '#36A2EB']} />
+                                <div className="col-xl-6">
+                                    <div className='wrapper'>
+                                        <GraphChart fields={["Available Extension", "Registered Extension"]} percentage={[(69 - extensionList) * 100 / 69, extensionList * 100 / 69]} centerTitle={`${extensionList}/69`} centerDesc="Total Extensions" colors={['#f18f01', '#36A2EB']} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -323,7 +330,7 @@ const Dashboard = () => {
                 </div>
             </section>
             <GlobalCalls />
-        </main>
+        </main >
     )
 }
 
