@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import { backToTop, generalGetFunction, login } from "../GlobalFunction/globalFunction";
@@ -6,14 +6,14 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-// import { Helmet } from 'react-helmet';
 
 function Login() {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  //  Init Particle js and use it
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // Init Particle js and use it
   const [init, setInit] = useState(false);
-  const [loading,setLoading]=useState(false)
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     initParticlesEngine(async (engine) => {
       await loadSlim(engine);
@@ -22,42 +22,56 @@ function Login() {
     });
   }, []);
 
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
 
-
- const [userName,setUserName]=useState("")
- const [password,setPassword]=useState("")
-//  Login function
-async function userLogin(){
-  if(userName===""){
-    toast.error("Username is required!")
-  }else if(password===""){
-    toast.error("Password is required!")
-  }else{
-    setLoading(true)
-    const data = await login(userName,password)
-    if(data){
-      if(data.status){
-        const profile = await generalGetFunction("/user")
-        if(profile.status){
-          setLoading(false)
-          dispatch({
-            type: "SET_ACCOUNT",
-            account: profile.data,
-          });
-          localStorage.setItem("account",JSON.stringify(profile.data))
-          window.scrollTo(0,0)
-          navigate("/dashboard")
+  // Function to handle login
+  const userLogin = useCallback(async () => {
+    if (userName === "") {
+      toast.error("Username is required!");
+    } else if (password === "") {
+      toast.error("Password is required!");
+    } else {
+      setLoading(true);
+      const data = await login(userName, password);
+      if (data) {
+        if (data.status) {
+          const profile = await generalGetFunction("/user");
+          if (profile.status) {
+            setLoading(false);
+            dispatch({
+              type: "SET_ACCOUNT",
+              account: profile.data,
+            });
+            localStorage.setItem("account", JSON.stringify(profile.data));
+            window.scrollTo(0, 0);
+            navigate("/dashboard");
+          }
+        } else {
+          setLoading(false);
+          toast.error(data.message);
         }
-      
-      }else{
-        setLoading(false)
-        toast.error(data.message)
       }
     }
-  }
- 
-}
+  }, [userName, password, dispatch, navigate]);
 
+  // Function to handle Enter key press
+  const handleKeyDown = useCallback((event) => {
+    if (event.key === 'Enter') {
+      userLogin();
+    }
+  }, [userLogin]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleKeyDown]);
+
+console.log("This is username and password",userName,password);
   return (
     <>
       <style>

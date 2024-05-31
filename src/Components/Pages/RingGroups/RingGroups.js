@@ -53,13 +53,13 @@ const RingGroups = () => {
               </div>
               <div className="col-xl-8 pt-3 pt-xl-0">
                 <div className="d-flex justify-content-end">
-                  <button
+                  {/* <button
                     onClick={() => window.location.reload()}
                     effect="ripple"
                     className="panelButton"
                   >
                     Refresh
-                  </button>
+                  </button> */}
                   <Link
                     to="/ring-groups-add"
                     onClick={backToTop}
