@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import AllCalls from "./AllCallsDetails"
-import CallQueueDetails from "./CallQueueDetails"
-import RingGroup from "./RingGroupDetails"
+// import AllCalls from "./AllCallsDetails"
+// import CallQueueDetails from "./CallQueueDetails"
+// import RingGroup from "./RingGroupDetails"
 import { useNavigate } from 'react-router-dom'
 import { generalGetFunction } from '../../GlobalFunction/globalFunction'
 import { useSelector } from 'react-redux'
@@ -11,13 +11,15 @@ import DoughnutChart from '../../CommonComponents/DoughnutChart'
 import GraphChart from '../../CommonComponents/GraphChart'
 const Dashboard = () => {
 
-    const [calls, setCalls] = useState(false)
-    const [group, setGroup] = useState(false)
-    const [queue, setQueue] = useState(false)
+    // const [calls, setCalls] = useState(false)
+    // const [group, setGroup] = useState(false)
+    // const [queue, setQueue] = useState(false)
     const navigate = useNavigate()
     const account = useSelector((state) => state.account)
     const [extensionList, setExtensionList] = useState(0)
     const [userList, setUserList] = useState(0)
+    const registerUser = useSelector((state) => state.registerUser);
+    const loginUser = useSelector((state) => state.loginUser);
     useEffect(() => {
         if (account && account.account_id) {
             async function getData() {
@@ -294,12 +296,12 @@ const Dashboard = () => {
                             <div className="row">
                                 <div className="col-xl-3">
                                     <div className='wrapper'>
-                                        <DoughnutChart fields={["Online Extension","Available Extension", "Register Extension"]} percentage={[10,extensionList, 69]} centerTitle={`${extensionList}/69`} centerDesc="Total Calls Occurred" colors={['#9999','#FF6384', '#36A2EB']} />
+                                        <DoughnutChart fields={["Online Extension", "Register Extension","Available Extension"]} percentage={[registerUser.length,extensionList, 69-extensionList]} centerTitle={`${extensionList}/69`} centerDesc="Extensions Details" colors={['#9999','#FF6384', '#36A2EB']} />
                                     </div>
                                 </div>
                                 <div className="col-xl-3">
                                     <div className='wrapper'>
-                                        <DoughnutChart fields={["Available Users ", "Registered Users "]} percentage={[userList, 10]} centerTitle={`${userList}/10`} centerDesc="Total Users Available" colors={['#FF6384', '#36A2EB']} />
+                                        <DoughnutChart fields={["Online Users", "Registered Users ","Available Users "]} percentage={[loginUser.length,userList, 10-userList]} centerTitle={`${userList}/10`} centerDesc="Total Users Available" colors={['#9999','#FF6384', '#36A2EB']} />
                                     </div>
                                     {/* <div className='circularProgressWrapper'>
                                         <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `50` }}>
