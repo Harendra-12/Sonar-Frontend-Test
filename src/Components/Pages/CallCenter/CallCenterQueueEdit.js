@@ -20,6 +20,17 @@ function CallCenterQueueEdit() {
   const [ringGroup, setRingGroup] = useState();
   const [extension, setExtension] = useState();
   const account = useSelector((state) => state.account);
+  
+  const [agent, setAgent] = useState([
+    {
+      id: 1,
+      name: "",
+      level: "0",
+      position: "0",
+      type:"callBack",
+      status:"Logged Out",
+    },
+  ]);
   const [callCenter, setCallCenter] = useState({
     name: "",
     extension: "",
@@ -66,14 +77,16 @@ function CallCenterQueueEdit() {
             id:item.id,
             name:item.agent_name,
             level:item.tier_level,
-            position:item.tier_position
+            position:item.tier_position,
+            type:item.type,
+            status:item.status,
           }
         )
       }))
     }else{
     navigate(-1)
     }
-  }, [account.account_id, locationState, navigate]);
+  }, []);
   
 
   const [error, setError] = useState({
@@ -85,14 +98,6 @@ function CallCenterQueueEdit() {
     prefix: false,
   });
 
-  const [agent, setAgent] = useState([
-    {
-      id: 1,
-      name: "",
-      level: "0",
-      position: "0",
-    },
-  ]);
 
   function addNewAgent() {
     setAgent([
@@ -102,6 +107,8 @@ function CallCenterQueueEdit() {
         name: "",
         level: "0",
         position: "0",
+        type:"callBack",
+        status:"Logged Out",
       },
     ]);
   }
@@ -112,10 +119,11 @@ function CallCenterQueueEdit() {
   }
 
   const handleAgentChange = (event, index) => {
+   
     const { name, value } = event.target;
     const newAgent = [...agent];
     newAgent[index][name] = value;
-    setAgent(agent);
+    setAgent(newAgent);
     if (name === "name") {
       setError((prevState) => ({
         ...prevState,
@@ -189,6 +197,8 @@ function CallCenterQueueEdit() {
               agent_name: item.name,
               tier_level: item.level,
               tier_position: item.position,
+              type:item.type,
+              status:item.status
             };
           }
         }),
@@ -207,7 +217,7 @@ function CallCenterQueueEdit() {
       }
     }
   }
-  console.log("This is agent", agent);
+  console.log("This is agenty",agent);
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -373,17 +383,17 @@ function CallCenterQueueEdit() {
                     </div>
                   </div>
                   <div className="formRow col-xl-12 row">
-                    {agent &&
+                  {agent &&
                       agent.map((item, index) => {
                         return (
                           <div className="row" key={index}>
                             <div
                               className="formLabel pe-2 m-0 mt-auto"
-                              style={{ width: 17 }}
+                              style={{ width: 14 }}
                             >
                               <label>{index + 1}.</label>
                             </div>
-                            <div className="col-3 pe-2">
+                            <div className="col-2 pe-2">
                               <div className="formLabel">
                                 {index === 0 ? (
                                   <label htmlFor="">Agent Name</label>
@@ -409,7 +419,7 @@ function CallCenterQueueEdit() {
                                 />
                               </div>
                             </div>
-                            <div className="col-3 pe-2">
+                            <div className="col-2 pe-2">
                               <div className="formLabel">
                                 {index === 0 ? (
                                   <label htmlFor="">Tier Level</label>
@@ -421,6 +431,7 @@ function CallCenterQueueEdit() {
                                 className="formItem me-0"
                                 style={{ width: "100%" }}
                                 name="level"
+                                value={item.level}
                                 onChange={(e) => handleAgentChange(e, index)}
                                 id="selectFormRow"
                               >
@@ -436,7 +447,7 @@ function CallCenterQueueEdit() {
                                 <option value={9}>9</option>
                               </select>
                             </div>
-                            <div className="col-3 pe-2">
+                            <div className="col-2 pe-2">
                               <div className="formLabel">
                                 {index === 0 ? (
                                   <label htmlFor="">Tier Position</label>
@@ -448,6 +459,7 @@ function CallCenterQueueEdit() {
                                 className="formItem me-0"
                                 style={{ width: "100%" }}
                                 name="position"
+                                value={item.position}
                                 onChange={(e) => handleAgentChange(e, index)}
                                 id="selectFormRow"
                               >
@@ -463,6 +475,49 @@ function CallCenterQueueEdit() {
                                 <option value={9}>9</option>
                               </select>
                             </div>
+                            <div className="col-2 pe-2">
+                              <div className="formLabel">
+                                {index === 0 ? (
+                                  <label htmlFor="">Type</label>
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                              <select
+                                className="formItem me-0"
+                                style={{ width: "100%" }}
+                                name="type"
+                                value={item.type}
+                                onChange={(e) => handleAgentChange(e, index)}
+                                id="selectFormRow"
+                              >
+                                <option value={"callback"}>Call Back</option>
+                                <option value={"uuid-standby"}>UUID Standbu</option>
+                              </select>
+                            </div>
+                            <div className="col-2 pe-2">
+                              <div className="formLabel">
+                                {index === 0 ? (
+                                  <label htmlFor="">Status</label>
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                              <select
+                                className="formItem me-0"
+                                style={{ width: "100%" }}
+                                name="status"
+                                value={item.status}
+                                onChange={(e) => handleAgentChange(e, index)}
+                                id="selectFormRow"
+                              >
+                                <option value={"Logged Out"}>Logged Out</option>
+                                <option value={"Available"}>Available</option>
+                                <option value={"Available (On Demand)"}>Available (On Demand)</option>
+                                <option value={"On Break"}>On Break</option>
+                              </select>
+                            </div>
+                            
                             {index === 0 ? (
                               ""
                             ) : (

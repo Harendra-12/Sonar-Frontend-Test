@@ -67,7 +67,7 @@ const Users = () => {
       } else if (selectedOption === "domain") {
         setFilterUser(
           user.data.filter((item) =>
-            item.domain.domain_name.includes(userInput)
+            item?.domain?.domain_name?.includes(userInput)
           )
         );
       } else if (selectedOption === "online") {
@@ -232,8 +232,16 @@ const Users = () => {
                                     handleStatusChange(item.id, item.status)
                                   }
                                 >
-                                  <label className={item.status === "E" ? "tableLabel success" : "tableLabel fail"}>
-                                    {item.status === "E" ? "Enabled" : "Disabled"}
+                                  <label
+                                    className={
+                                      item.status === "E"
+                                        ? "tableLabel success"
+                                        : "tableLabel fail"
+                                    }
+                                  >
+                                    {item.status === "E"
+                                      ? "Enabled"
+                                      : "Disabled"}
                                   </label>
                                 </td>
                               </tr>

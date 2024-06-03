@@ -61,6 +61,8 @@ function CallCenterQueueAdd() {
       name: "",
       level: "0",
       position: "0",
+      type:"callBack",
+      status:"Logged Out",
     },
   ]);
 
@@ -72,6 +74,8 @@ function CallCenterQueueAdd() {
         name: "",
         level: "0",
         position: "0",
+        type:"callBack",
+        status:"Logged Out",
       },
     ]);
   }
@@ -151,14 +155,14 @@ function CallCenterQueueAdd() {
         queue_timeout_action: callCenter.action,
         discard_abandoned_after: callCenter.abandoned,
         queue_cid_prefix: callCenter.prefix,
-        type:"callback",
-        status:"Logged Out",
         agents: agent.map((item) => {
           if (item.name !== "") {
             return {
               agent_name: item.name,
               tier_level: item.level,
               tier_position: item.position,
+              type:item.type,
+              status:"Logged Out",
             };
           }
         }),
@@ -360,11 +364,11 @@ function CallCenterQueueAdd() {
                           <div className="row" key={index}>
                             <div
                               className="formLabel pe-2 m-0 mt-auto"
-                              style={{ width: 17 }}
+                              style={{ width: 14 }}
                             >
                               <label>{index + 1}.</label>
                             </div>
-                            <div className="col-3 pe-2">
+                            <div className="col-2 pe-2">
                               <div className="formLabel">
                                 {index === 0 ? (
                                   <label htmlFor="">Agent Name</label>
@@ -390,7 +394,7 @@ function CallCenterQueueAdd() {
                                 />
                               </div>
                             </div>
-                            <div className="col-3 pe-2">
+                            <div className="col-2 pe-2">
                               <div className="formLabel">
                                 {index === 0 ? (
                                   <label htmlFor="">Tier Level</label>
@@ -417,7 +421,7 @@ function CallCenterQueueAdd() {
                                 <option value={9}>9</option>
                               </select>
                             </div>
-                            <div className="col-3 pe-2">
+                            <div className="col-2 pe-2">
                               <div className="formLabel">
                                 {index === 0 ? (
                                   <label htmlFor="">Tier Position</label>
@@ -444,6 +448,47 @@ function CallCenterQueueAdd() {
                                 <option value={9}>9</option>
                               </select>
                             </div>
+                            <div className="col-2 pe-2">
+                              <div className="formLabel">
+                                {index === 0 ? (
+                                  <label htmlFor="">Type</label>
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                              <select
+                                className="formItem me-0"
+                                style={{ width: "100%" }}
+                                name="type"
+                                onChange={(e) => handleAgentChange(e, index)}
+                                id="selectFormRow"
+                              >
+                                <option value={"callback"}>Call Back</option>
+                                <option value={"uuid-standby"}>UUID Standbu</option>
+                              </select>
+                            </div>
+                            <div className="col-2 pe-2">
+                              <div className="formLabel">
+                                {index === 0 ? (
+                                  <label htmlFor="">Status</label>
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                              <select
+                                className="formItem me-0"
+                                style={{ width: "100%" }}
+                                name="status"
+                                onChange={(e) => handleAgentChange(e, index)}
+                                id="selectFormRow"
+                              >
+                                <option value={"Logged Out"}>Logged Out</option>
+                                <option value={"Available"}>Available</option>
+                                <option value={"Available (On Demand)"}>Available (On Demand)</option>
+                                <option value={"On Break"}>On Break</option>
+                              </select>
+                            </div>
+                            
                             {index === 0 ? (
                               ""
                             ) : (
