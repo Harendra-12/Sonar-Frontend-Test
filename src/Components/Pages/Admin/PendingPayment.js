@@ -13,7 +13,7 @@ function PaymentVerification() {
   // Getting packes value from inital state
   useEffect(() => {
     async function getData() {
-      const apiData = await generalGetFunction(`/accounts?company_status=applied`);
+      const apiData = await generalGetFunction(`/accounts?company_status=1`);
       if (apiData.status) {
         setLoading(false);
         setAccount(apiData.data);
@@ -46,7 +46,7 @@ function PaymentVerification() {
                         <th>Email</th>
                         <th>Phone Number</th>
                         <th>Address</th>
-                        <th>Payment Status</th>
+                        {/* <th>Payment Status</th> */}
                         <th>
                           Verification
                         </th>
@@ -77,11 +77,11 @@ function PaymentVerification() {
                                   <td>{item.email}</td>
                                   <td>{item.contact_no}</td>
                                   <td>{item.unit}</td>
-                                  <td>
+                                  {/* <td>
                                     <label className={item.payment_url === null ? "tableLabel success" : "tableLabel fail"}>{item.payment_url === null ? "True" : "False"}</label>
-                                  </td>
+                                  </td> */}
                                   <td>
-                                    {item.company_status === "applied"
+                                    {item.company_status === "1"
                                       ? "Pending"
                                       : ""}
                                   </td>
