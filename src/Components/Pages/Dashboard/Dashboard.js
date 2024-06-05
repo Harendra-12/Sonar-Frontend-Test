@@ -21,7 +21,6 @@ const Dashboard = () => {
     const registerUser = useSelector((state) => state.registerUser);
     const loginUser = useSelector((state) => state.loginUser);
     useEffect(() => {
-        if (account && account.account_id) {
             async function getData() {
                 const apiData = await generalGetFunction(`/extension/search?account=${account.account_id}`, navigate)
                 const userApi = await generalGetFunction(`/user/search?account=${account.account_id}`, navigate)
@@ -33,9 +32,6 @@ const Dashboard = () => {
                 }
             }
             getData()
-        } else {
-            navigate("/")
-        }
     }, [account, navigate])
     return (
         <main className="mainContent">

@@ -12,7 +12,7 @@ function PendingDocument() {
   // Getting packes value from inital state
   useEffect(() => {
     async function getData() {
-      const apiData = await generalGetFunction(`/accounts?company_status=new`);
+      const apiData = await generalGetFunction(`/accounts?company_status=2`);
       if (apiData.status) {
         setLoading(false);
         setAccount(apiData.data);

@@ -24,11 +24,11 @@ import ExtensionsSettings from "./Components/Pages/Extensions/ExtensionsSettings
 import ExtensionSettingsEdit from "./Components/Pages/Extensions/ExtensionSettingsEdit";
 import ExtensionSummary from "./Components/Pages/Extensions/ExtensionSummary";
 import Dashboard from "./Components/Pages/Dashboard/Dashboard";
-import Profile from "./Components/CommonComponents/Profile";
+import Profile from "./Components/Pages/Profile/Profile";
 import Gateway from "./Components/Pages/Gateway/Gateway";
 import GatewayAdd from "./Components/Pages/Gateway/GatewayAdd";
 import GatewayEdit from "./Components/Pages/Gateway/GatewayEdit";
-import Master from "./Components/CommonComponents/Master";
+import Master from "./Components/Pages/Setting/Master";
 import Destination from "./Components/Pages/Dialplan/Destination";
 import DestinationAdd from "./Components/Pages/Dialplan/DestinationAdd";
 import DestinationEdit from "./Components/Pages/Dialplan/DestinationEdit";
@@ -44,10 +44,10 @@ import CdrReport from "./Components/Pages/WebRtc/CdrReport";
 import InboundRoute from "./Components/Pages/Dialplan/InboundRouteAdd";
 import CallSettings from "./Components/CommonComponents/CallSettings";
 import ChangePassword from "./Components/CommonComponents/ChangePassword";
-import PackageAdd from "./Components/Pages/Admin/PackageAdd";
-import Package from "./Components/Pages/Admin/Package";
-import PackageEdit from "./Components/Pages/Admin/PackageEdit";
-import Feature from "./Components/Pages/Admin/Feature";
+import PackageAdd from "./Components/Pages/Setting/PackageAdd";
+import Package from "./Components/Pages/Setting/Package";
+import PackageEdit from "./Components/Pages/Setting/PackageEdit";
+import Feature from "./Components/Pages/Setting/Feature";
 import PendingRequest from "./Components/Pages/Admin/PendingDocument";
 import UserDetails from "./Components/Pages/Admin/UserDetails";
 import PaymentVerification from "./Components/Pages/Admin/PendingPayment";
@@ -68,6 +68,11 @@ import PaymentGatewayEdit from "./Components/Pages/Payment/PaymentGatewayEdit";
 import CallCenterQueue from "./Components/Pages/CallCenter/CallCenterQueue";
 import CallCenterQueueAdd from "./Components/Pages/CallCenter/CallCenterQueueAdd";
 import CallCenterQueueEdit from "./Components/Pages/CallCenter/CallCenterQueueEdit";
+import Roles from "./Components/Pages/Setting/Roles";
+import CustomerDetails from "./Components/Pages/Profile/CustomerDetails";
+import DocumentUpload from "./Components/Pages/Profile/DocumentUpload";
+import { useSelector } from "react-redux";
+import SuperAdminDashboard from "./Components/Pages/Dashboard/SuperAdminDashboard";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -83,7 +88,7 @@ const NavigationSetter = () => {
 };
 
 function App() {
-  // const account = useSelector((state)=>state.account)
+  const account = useSelector((state)=>state.account)
   Socket();
 
   // Unlock this if want push notification add account edit here if id is available
@@ -92,7 +97,7 @@ function App() {
   //   if(token){
   //     console.log(account,"This is token from app",token);
   //   }
-   
+
   //   onMessage(messaging,(payload)=>{
   //     console.log(payload);
   //   })
@@ -105,7 +110,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route element={<ProtectedRoute />}>
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={account.usertype==="SupreAdmin"?<SuperAdminDashboard/>:<Dashboard />} />
             <Route path="/my-profile" element={<Profile />} />
             <Route path="/master" element={<Master />} />
             <Route path="/change-password" element={<ChangePassword />} />
@@ -172,10 +177,6 @@ function App() {
             {/* WebRtc path end */}
 
             {/* Admin Packages path start */}
-            <Route path="/admin/package" element={<Package />} />
-            <Route path="/admin/package-add" element={<PackageAdd />} />
-            <Route path="/admin/package-edit" element={<PackageEdit />} />
-            <Route path="/admin/feature" element={<Feature />} />
             <Route path="/document-verification" element={<PendingRequest />} />
             <Route
               path="/payment-verification"
@@ -197,16 +198,38 @@ function App() {
             {/* Number Management Path End */}
 
             {/* Payment path start */}
-            <Route path="/add-payment-gateway" element={<PaymentGatewayAdd />} />
+            <Route
+              path="/add-payment-gateway"
+              element={<PaymentGatewayAdd />}
+            />
             <Route path="/payment-gateway" element={<PaymentGateway />} />
-            <Route path="/payment-gateway-edit" element={<PaymentGatewayEdit />} />
+            <Route
+              path="/payment-gateway-edit"
+              element={<PaymentGatewayEdit />}
+            />
             {/* Payment path end */}
 
             {/* Call Center queue path start */}
             <Route path="/cal-center-queue" element={<CallCenterQueue />} />
-            <Route path="/cal-center-queue-edit" element={<CallCenterQueueEdit />} />
-            <Route path="/cal-center-queue-add" element={<CallCenterQueueAdd />} />
-             {/* Call Center queue path End */}
+            <Route
+              path="/cal-center-queue-edit"
+              element={<CallCenterQueueEdit />}
+            />
+            <Route
+              path="/cal-center-queue-add"
+              element={<CallCenterQueueAdd />}
+            />
+            {/* Call Center queue path End */}
+
+            {/* Setting path start */}
+            <Route path="/admin/package" element={<Package />} />
+            <Route path="/admin/package-add" element={<PackageAdd />} />
+            <Route path="/admin/package-edit" element={<PackageEdit />} />
+            <Route path="/admin/feature" element={<Feature />} />
+            <Route path="/roles" element={<Roles />} />
+            <Route path="/customer-details" element={<CustomerDetails />} />
+            <Route path="/upload-document" element={<DocumentUpload />} />
+            {/* Setting path end */}
           </Route>
           {/* 404 Redirection */}
           <Route path="*" element={<Navigate to="/dashboard" />} />

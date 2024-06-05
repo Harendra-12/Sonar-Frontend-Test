@@ -1,23 +1,28 @@
-import React from 'react'
-import "../assets/css/style.css"
-import { Link, useNavigate } from 'react-router-dom'
-import { backToTop, generalGetFunction } from '../GlobalFunction/globalFunction'
-import { NavLink } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import React from "react";
+import "../assets/css/style.css";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  backToTop,
+  generalGetFunction,
+} from "../GlobalFunction/globalFunction";
+import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 function Navbar() {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const account = useSelector((state) => state.account);
+  const userType = account.usertype; // "Company"
   async function logOut() {
-    const apiData = await generalGetFunction("/logout")
-    localStorage.clear()
+    const apiData = await generalGetFunction("/logout");
+    localStorage.clear();
     if (apiData.data) {
       localStorage.clear();
       dispatch({
         action: "SET_ACCOUNT",
-        account: null
-      })
-      navigate("/")
+        account: null,
+      });
+      navigate("/");
     }
   }
   return (
@@ -27,7 +32,7 @@ function Navbar() {
           <div className="sidenavItems">
             <ul>
               <li className="dashboard">
-                <Link to="/dashboard" onClick={backToTop} >
+                <Link to="/dashboard" onClick={backToTop}>
                   <div className="imgWrapper">
                     <img
                       src={require("../assets/images/logo.webp")}
@@ -37,14 +42,63 @@ function Navbar() {
                 </Link>
               </li>
               <li className="dashboard ">
-                <NavLink to="/dashboard" onClick={backToTop}
+                <NavLink
+                  to="/dashboard"
+                  onClick={backToTop}
                   type="button"
                   effect="ripple"
-
                 >
                   <div className="itemTitle">Dashboard</div>
                 </NavLink>
               </li>
+
+              <li className="">
+                <button
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapse8"
+                  aria-expanded="false"
+                  aria-controls="collapse5"
+                  effect="ripple"
+                >
+                  <div className="itemTitle">Account Details</div>
+                </button>
+                <div
+                  id="collapse8"
+                  className="accordion-collapse collapse"
+                  data-bs-parent="#sidenNav"
+                >
+                  <div className="menuWrapper">
+                    <ul className="tabMenu">
+                      <li className="tabItem" effect="ripple">
+                        <NavLink
+                          to="/my-profile"
+                          onClick={backToTop}
+                          className="nav-link"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-duotone fa-swap-arrows" />
+                          </div>
+                          <div className="itemTitle">my profile</div>
+                        </NavLink>
+                      </li>
+
+                      <li className="tabItem" effect="ripple">
+                        <NavLink
+                          to="/customer-details"
+                          onClick={backToTop}
+                          className="nav-link"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-duotone fa-swap-arrows" />
+                          </div>
+                          <div className="itemTitle">Details</div>
+                        </NavLink>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+
               <li className="">
                 <button
                   data-bs-toggle="collapse"
@@ -62,6 +116,7 @@ function Navbar() {
                 >
                   <div className="menuWrapper">
                     <ul className="tabMenu">
+                      {userType==="SupreAdmin"?
                       <li className="tabItem" effect="ripple">
                         <NavLink
                           to="/master"
@@ -73,8 +128,22 @@ function Navbar() {
                           </div>
                           <div className="itemTitle">Master</div>
                         </NavLink>
+                      </li>:""}
+
+                      <li className="tabItem" effect="ripple">
+                        <NavLink
+                          to="/roles"
+                          onClick={backToTop}
+                          className="nav-link"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-duotone fa-swap-arrows" />
+                          </div>
+                          <div className="itemTitle">Roles and Permisson</div>
+                        </NavLink>
                       </li>
 
+                      {userType==="SupreAdmin"?
                       <li className="tabItem" effect="ripple">
                         <NavLink
                           to="/admin/package"
@@ -86,12 +155,13 @@ function Navbar() {
                           </div>
                           <div className="itemTitle">Packages</div>
                         </NavLink>
-                      </li>
+                      </li>:""}
                     </ul>
                   </div>
                 </div>
               </li>
 
+              {userType==="SupreAdmin"?
               <li className="">
                 <button
                   data-bs-toggle="collapse"
@@ -109,8 +179,6 @@ function Navbar() {
                 >
                   <div className="menuWrapper">
                     <ul className="tabMenu">
-                      
-
                       <li className="tabItem" effect="ripple">
                         <NavLink
                           to="/document-verification"
@@ -152,8 +220,7 @@ function Navbar() {
                     </ul>
                   </div>
                 </div>
-              </li>
-
+              </li>:""}
 
               <li className="">
                 <button
@@ -182,27 +249,25 @@ function Navbar() {
                           <div className="itemTitle">Devices</div>
                         </a>
                       </li> */}
-                      <li
-                        className="tabItem "
-                        effect="ripple"
-                      >
-                        <NavLink to='/extensions'>
+                      <li className="tabItem " effect="ripple">
+                        <NavLink to="/extensions">
                           <div className="iconHolder">
                             <i className="fa-duotone fa-phone-office" />
                           </div>
                           <div className="itemTitle">Extensions</div>
                         </NavLink>
                       </li>
+                      {userType==="SupreAdmin"?
                       <li className="tabItem" effect="ripple">
-                        <NavLink to='/gateway'>
+                        <NavLink to="/gateway">
                           <div className="iconHolder">
                             <i className="fa-duotone fa-arrow-progress" />
                           </div>
                           <div className="itemTitle">Gateways</div>
                         </NavLink>
-                      </li>
+                      </li>:""}
                       <li className="tabItem" effect="ripple">
-                        <NavLink to='/users'>
+                        <NavLink to="/users">
                           <div className="iconHolder">
                             <i className="fa-duotone fa-users" />
                           </div>
@@ -210,7 +275,7 @@ function Navbar() {
                         </NavLink>
                       </li>
                       <li className="tabItem" effect="ripple">
-                        <NavLink to='/ring-groups'>
+                        <NavLink to="/ring-groups">
                           <div className="iconHolder">
                             <i className="fa-duotone fa-user-group-simple"></i>
                           </div>
@@ -218,7 +283,7 @@ function Navbar() {
                         </NavLink>
                       </li>
                       <li className="tabItem" effect="ripple">
-                        <NavLink to='/cal-center-queue'>
+                        <NavLink to="/cal-center-queue">
                           <div className="iconHolder">
                             <i className="fa-duotone fa-user-group-simple"></i>
                           </div>
@@ -229,6 +294,7 @@ function Navbar() {
                   </div>
                 </div>
               </li>
+              {userType==="SupreAdmin"?
               <li className="">
                 <button
                   data-bs-toggle="collapse"
@@ -247,10 +313,7 @@ function Navbar() {
                   <div className="menuWrapper">
                     <ul className="tabMenu">
                       <li className="tabItem" effect="ripple">
-                        <NavLink
-                          to="/destination"
-                          className="nav-link"
-                        >
+                        <NavLink to="/destination" className="nav-link">
                           <div className="iconHolder">
                             <i className="fa-duotone fa-swap-arrows" />
                           </div>
@@ -293,9 +356,9 @@ function Navbar() {
                     </ul>
                   </div>
                 </div>
-              </li>
+              </li>:""}
 
-
+              {userType==="SupreAdmin"?
               <li className="">
                 <button
                   data-bs-toggle="collapse"
@@ -340,7 +403,8 @@ function Navbar() {
                     </ul>
                   </div>
                 </div>
-              </li>
+              </li>:""}
+             
               <li className="">
                 <button
                   data-bs-toggle="collapse"
@@ -387,6 +451,7 @@ function Navbar() {
                 </div>
               </li>
 
+              {userType==="SupreAdmin"?
               <li className="">
                 <button
                   data-bs-toggle="collapse"
@@ -443,8 +508,9 @@ function Navbar() {
                     </ul>
                   </div>
                 </div>
-              </li>
+              </li>:""}
 
+                      {userType==="SupreAdmin"?
               <li className="">
                 <button
                   data-bs-toggle="collapse"
@@ -477,9 +543,11 @@ function Navbar() {
                     </ul>
                   </div>
                 </div>
-              </li>
+              </li>:""}
               <li className="dashboard ">
-                <NavLink to="/my-profile" onClick={backToTop}
+                <NavLink
+                  to="/my-profile"
+                  onClick={backToTop}
                   type="button"
                   effect="ripple"
                 >
@@ -487,11 +555,11 @@ function Navbar() {
                 </NavLink>
               </li>
               <li className="dashboard ">
-                <NavLink to="/" onClick={logOut}
-                  type="button"
-                  effect="ripple"
-                >
-                  <div className="iconHolder" style={{ margin: '0 0', textAlign: 'left', width: 27 }}>
+                <NavLink to="/" onClick={logOut} type="button" effect="ripple">
+                  <div
+                    className="iconHolder"
+                    style={{ margin: "0 0", textAlign: "left", width: 27 }}
+                  >
                     <i className="fa-duotone fa-power-off"></i>
                   </div>
                   <div className="itemTitle">Log Out</div>
@@ -501,9 +569,8 @@ function Navbar() {
           </div>
         </div>
       </section>
-
     </div>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;

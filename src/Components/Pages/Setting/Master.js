@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction } from "../GlobalFunction/globalFunction";
+import { generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Header from "./Header";
+import Header from "../../CommonComponents/Header";
 
 function Master() {
   const navigate = useNavigate();
@@ -399,125 +399,6 @@ function Master() {
                   </ul>
                 </div>
               </div>
-              <div className="col-xl-4 ">
-                <div className="masterSegment">
-                  <h6>
-                    <div className="row align-items-center">
-                      <div className="col-auto">
-                        List of Roles{" "}
-                      </div>
-                      <div className="col pe-0">
-                        <input type="search" name="Search" id="headerSearch" placeholder="Search a role" onChange={(e) => setSearchDomain(e.target.value)} />
-                      </div>
-                      <div className="col-auto ps-0 mt-1">
-                        <button className="clearButton" style={{ width: '100%', height: '100%', fontSize: 22 }}>
-                          <i
-                            className="fa-duotone fa-circle-plus"
-                            onClick={() => {
-                              setAddDomain(true);
-                            }}
-                          ></i>
-                        </button>
-                      </div>
-                    </div>
-                  </h6>
-                  <ul>
-                    {addDomain ? (
-                      <li>
-                        <input
-                          type="text"
-                          value={newDomain}
-                          onChange={(e) => setNewDomain(e.target.value)}
-                          placeholder="Add new Domain"
-                        ></input>
-                        <button className="clearButton text-success">
-                          <i
-                            className="fa-duotone fa-circle-check"
-                            onClick={() => {
-                              setPopUp(true);
-                              setDomainSaveClick(true);
-                            }}
-                          ></i>
-                        </button>
-                        <button className="clearButton text-danger">
-                          <i
-                            className="fa-duotone fa-trash"
-                            onClick={() => {
-                              setAddDomain(false);
-                            }}
-                          ></i>
-                        </button>
-                      </li>
-                    ) : (
-                      ""
-                    )}
-                    {domain &&
-                      filterDomain.map((item, index) => {
-                        return (
-                          <li key={index}>
-                            <input
-                              type="text"
-                              placeholder={item[1]}
-                              onChange={(e) => setUpdateDomain(e.target.value)}
-                              disabled={
-                                editIndex === item[0] && editType === "Domain"
-                                  ? false
-                                  : true
-                              }
-                            ></input>
-                            <button className="clearButton text-success">
-                              {editIndex === item[0] &&
-                                editType === "Domain" ? (
-                                <i
-                                  className="fa-duotone fa-circle-check"
-                                  onClick={() => {
-                                    setPopUp(true);
-                                    setEditClick(true);
-                                  }}
-                                ></i>
-                              ) : (
-                                <i
-                                  className="fa-duotone fa-pen-to-square"
-                                  onClick={() => {
-                                    setEditIndex(item[0]);
-                                    setEditType("Domain");
-                                  }}
-                                ></i>
-                              )}
-                            </button>
-                            <button className="clearButton text-danger">
-                              <i
-                                className="fa-duotone fa-trash"
-                                onClick={() => {
-                                  setPopUp(true);
-                                  setName("Domain");
-                                  setValue(item[1]);
-                                  setEditIndex(item[0]);
-                                }}
-                              ></i>
-                            </button>
-                          </li>
-                        );
-                      })}
-                  </ul>
-                </div>
-              </div>
-              {/* <div className="col-xl-4">
-                <div className="p-3">
-                  <h6>Timezone</h6>
-                  <div className="row mt-3">
-                    <div className="col-10 pe-0">
-                      <select className="formItem" name="" id="selectFormRow">
-                        <option>+5:30 GMT</option>
-                        <option value="admin">Admin</option>
-                      </select>
-                    </div>
-                    <div className="col-2 px-0">
-                      <button className="panelButton">Save</button>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
             </div>
           </div>
         </div>

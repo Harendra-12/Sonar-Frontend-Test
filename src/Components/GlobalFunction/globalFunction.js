@@ -103,6 +103,19 @@ export async function generalDeleteFunction (endpoint){
   })
 }
 
+// ImageUpload function
+export async function imageUploadFunction (endpoint,data){
+  return  axiosInstance.post(endpoint,data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }).then(res=>{
+      return res.data
+  }).catch(err=>{
+      return err.response.data
+      
+  })
+}
 
 
 // Back to top function
