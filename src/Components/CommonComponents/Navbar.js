@@ -12,7 +12,7 @@ function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
-  const userType = account.usertype; // "Company"
+  const userType = account?.usertype; // "Company"
   async function logOut() {
     const apiData = await generalGetFunction("/logout");
     localStorage.clear();

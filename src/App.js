@@ -110,7 +110,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route element={<ProtectedRoute />}>
-            <Route path="/dashboard" element={account.usertype==="SupreAdmin"?<SuperAdminDashboard/>:<Dashboard />} />
+            <Route path="/dashboard" element={account?.usertype==="SupreAdmin"?<SuperAdminDashboard/>:<Dashboard />} />
             <Route path="/my-profile" element={<Profile />} />
             <Route path="/master" element={<Master />} />
             <Route path="/change-password" element={<ChangePassword />} />
