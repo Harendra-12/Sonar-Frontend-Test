@@ -120,7 +120,7 @@ const RingGroups = () => {
                       })}
                     {ringGroup && ringGroup.length === 0 ? (
                       <td colSpan={99}>
-                        <EmptyPrompt name="Extension" link="extensions-add" />
+                        <EmptyPrompt name="Ring Group" link="ring-groups-add" />
                       </td>
                     ) : (
                       ""

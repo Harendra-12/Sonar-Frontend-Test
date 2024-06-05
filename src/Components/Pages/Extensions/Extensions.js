@@ -197,7 +197,7 @@ const Extensions = () => {
                           </tr>
                         );
                       })}
-                    {extension && extension.length === 0 ? (
+                    {extension && extension.data.length === 0 ? (
                       <td colSpan={99}>
                         <EmptyPrompt name="Extension" link="extensions-add" />
                       </td>

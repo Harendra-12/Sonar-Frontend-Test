@@ -78,7 +78,7 @@ function Navbar() {
                           <div className="iconHolder">
                             <i className="fa-duotone fa-swap-arrows" />
                           </div>
-                          <div className="itemTitle">my profile</div>
+                          <div className="itemTitle">My Profile</div>
                         </NavLink>
                       </li>
 
@@ -92,6 +92,19 @@ function Navbar() {
                             <i className="fa-duotone fa-swap-arrows" />
                           </div>
                           <div className="itemTitle">Details</div>
+                        </NavLink>
+                      </li>
+
+                      <li className="tabItem" effect="ripple">
+                        <NavLink
+                          to="/change-password"
+                          onClick={backToTop}
+                          className="nav-link"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-duotone fa-swap-arrows" />
+                          </div>
+                          <div className="itemTitle">Change Password</div>
                         </NavLink>
                       </li>
                     </ul>
@@ -116,19 +129,22 @@ function Navbar() {
                 >
                   <div className="menuWrapper">
                     <ul className="tabMenu">
-                      {userType==="SupreAdmin"?
-                      <li className="tabItem" effect="ripple">
-                        <NavLink
-                          to="/master"
-                          onClick={backToTop}
-                          className="nav-link"
-                        >
-                          <div className="iconHolder">
-                            <i className="fa-duotone fa-swap-arrows" />
-                          </div>
-                          <div className="itemTitle">Master</div>
-                        </NavLink>
-                      </li>:""}
+                      {userType === "SupreAdmin" ? (
+                        <li className="tabItem" effect="ripple">
+                          <NavLink
+                            to="/master"
+                            onClick={backToTop}
+                            className="nav-link"
+                          >
+                            <div className="iconHolder">
+                              <i className="fa-duotone fa-swap-arrows" />
+                            </div>
+                            <div className="itemTitle">Master</div>
+                          </NavLink>
+                        </li>
+                      ) : (
+                        ""
+                      )}
 
                       <li className="tabItem" effect="ripple">
                         <NavLink
@@ -143,84 +159,94 @@ function Navbar() {
                         </NavLink>
                       </li>
 
-                      {userType==="SupreAdmin"?
-                      <li className="tabItem" effect="ripple">
-                        <NavLink
-                          to="/admin/package"
-                          onClick={backToTop}
-                          className="nav-link"
-                        >
-                          <div className="iconHolder">
-                            <i className="fa-duotone fa-swap-arrows" />
-                          </div>
-                          <div className="itemTitle">Packages</div>
-                        </NavLink>
-                      </li>:""}
+                      {userType === "SupreAdmin" ? (
+                        <li className="tabItem" effect="ripple">
+                          <NavLink
+                            to="/admin/package"
+                            onClick={backToTop}
+                            className="nav-link"
+                          >
+                            <div className="iconHolder">
+                              <i className="fa-duotone fa-swap-arrows" />
+                            </div>
+                            <div className="itemTitle">Packages</div>
+                          </NavLink>
+                        </li>
+                      ) : (
+                        ""
+                      )}
                     </ul>
                   </div>
                 </div>
               </li>
 
-              {userType==="SupreAdmin"?
-              <li className="">
-                <button
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapse0"
-                  aria-expanded="false"
-                  aria-controls="collapse4"
-                  effect="ripple"
-                >
-                  <div className="itemTitle">USER</div>
-                </button>
-                <div
-                  id="collapse0"
-                  className="accordion-collapse collapse"
-                  data-bs-parent="#sidenNav"
-                >
-                  <div className="menuWrapper">
-                    <ul className="tabMenu">
-                      <li className="tabItem" effect="ripple">
-                        <NavLink
-                          to="/document-verification"
-                          onClick={backToTop}
-                          className="nav-link"
-                        >
-                          <div className="iconHolder">
-                            <i className="fa-duotone fa-swap-arrows" />
-                          </div>
-                          <div className="itemTitle">Document verification</div>
-                        </NavLink>
-                      </li>
+              {userType === "SupreAdmin" ? (
+                <li className="">
+                  <button
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse0"
+                    aria-expanded="false"
+                    aria-controls="collapse4"
+                    effect="ripple"
+                  >
+                    <div className="itemTitle">USER</div>
+                  </button>
+                  <div
+                    id="collapse0"
+                    className="accordion-collapse collapse"
+                    data-bs-parent="#sidenNav"
+                  >
+                    <div className="menuWrapper">
+                      <ul className="tabMenu">
+                        <li className="tabItem" effect="ripple">
+                          <NavLink
+                            to="/document-verification"
+                            onClick={backToTop}
+                            className="nav-link"
+                          >
+                            <div className="iconHolder">
+                              <i className="fa-duotone fa-swap-arrows" />
+                            </div>
+                            <div className="itemTitle">
+                              Document verification
+                            </div>
+                          </NavLink>
+                        </li>
 
-                      <li className="tabItem" effect="ripple">
-                        <NavLink
-                          to="/payment-verification"
-                          onClick={backToTop}
-                          className="nav-link"
-                        >
-                          <div className="iconHolder">
-                            <i className="fa-duotone fa-swap-arrows" />
-                          </div>
-                          <div className="itemTitle">Payment verification</div>
-                        </NavLink>
-                      </li>
+                        <li className="tabItem" effect="ripple">
+                          <NavLink
+                            to="/payment-verification"
+                            onClick={backToTop}
+                            className="nav-link"
+                          >
+                            <div className="iconHolder">
+                              <i className="fa-duotone fa-swap-arrows" />
+                            </div>
+                            <div className="itemTitle">
+                              Payment verification
+                            </div>
+                          </NavLink>
+                        </li>
 
-                      <li className="tabItem" effect="ripple">
-                        <NavLink
-                          to="/approved-customer"
-                          onClick={backToTop}
-                          className="nav-link"
-                        >
-                          <div className="iconHolder">
-                            <i className="fa-duotone fa-swap-arrows" />
-                          </div>
-                          <div className="itemTitle">Customer</div>
-                        </NavLink>
-                      </li>
-                    </ul>
+                        <li className="tabItem" effect="ripple">
+                          <NavLink
+                            to="/approved-customer"
+                            onClick={backToTop}
+                            className="nav-link"
+                          >
+                            <div className="iconHolder">
+                              <i className="fa-duotone fa-swap-arrows" />
+                            </div>
+                            <div className="itemTitle">Customer</div>
+                          </NavLink>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                </div>
-              </li>:""}
+                </li>
+              ) : (
+                ""
+              )}
 
               <li className="">
                 <button
@@ -257,24 +283,27 @@ function Navbar() {
                           <div className="itemTitle">Extensions</div>
                         </NavLink>
                       </li>
-                      {userType==="SupreAdmin"?
-                      <li className="tabItem" effect="ripple">
-                        <NavLink to="/gateway">
-                          <div className="iconHolder">
-                            <i className="fa-duotone fa-arrow-progress" />
-                          </div>
-                          <div className="itemTitle">Gateways</div>
-                        </NavLink>
-                      </li>:""}
-                      <li className="tabItem" effect="ripple">
+                      {userType === "SupreAdmin" ? (
+                        <li className="tabItem" effect="ripple">
+                          <NavLink to="/gateway">
+                            <div className="iconHolder">
+                              <i className="fa-duotone fa-arrow-progress" />
+                            </div>
+                            <div className="itemTitle">Gateways</div>
+                          </NavLink>
+                        </li>
+                      ) : (
+                        ""
+                      )}
+                      {/* <li className="tabItem" effect="ripple">
                         <NavLink to="/users">
                           <div className="iconHolder">
                             <i className="fa-duotone fa-users" />
                           </div>
                           <div className="itemTitle">Users</div>
                         </NavLink>
-                      </li>
-                      <li className="tabItem" effect="ripple">
+                      </li> */}
+                      {/* <li className="tabItem" effect="ripple">
                         <NavLink to="/ring-groups">
                           <div className="iconHolder">
                             <i className="fa-duotone fa-user-group-simple"></i>
@@ -289,12 +318,11 @@ function Navbar() {
                           </div>
                           <div className="itemTitle">Call Center</div>
                         </NavLink>
-                      </li>
+                      </li> */}
                     </ul>
                   </div>
                 </div>
               </li>
-              {userType==="SupreAdmin"?
               <li className="">
                 <button
                   data-bs-toggle="collapse"
@@ -356,55 +384,58 @@ function Navbar() {
                     </ul>
                   </div>
                 </div>
-              </li>:""}
+              </li>
 
-              {userType==="SupreAdmin"?
-              <li className="">
-                <button
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapse3"
-                  aria-expanded="false"
-                  aria-controls="collapse3"
-                  effect="ripple"
-                >
-                  <div className="itemTitle">Sofia</div>
-                </button>
-                <div
-                  id="collapse3"
-                  className="accordion-collapse collapse"
-                  data-bs-parent="#sidenNav"
-                >
-                  <div className="menuWrapper">
-                    <ul className="tabMenu">
-                      <li className="tabItem" effect="ripple">
-                        <NavLink
-                          to="/sofia-status"
-                          onClick={backToTop}
-                          className="nav-link"
-                        >
-                          <div className="iconHolder">
-                            <i className="fa-duotone fa-swap-arrows" />
-                          </div>
-                          <div className="itemTitle">Sofia Status</div>
-                        </NavLink>
-                      </li>
-                      <li className="tabItem" effect="ripple">
-                        <NavLink
-                          to="/sofia-setting"
-                          onClick={backToTop}
-                          className="nav-link"
-                        >
-                          <div className="iconHolder">
-                            <i className="fa-duotone fa-swap-arrows" />
-                          </div>
-                          <div className="itemTitle">Sofia Settings</div>
-                        </NavLink>
-                      </li>
-                    </ul>
+              {userType === "SupreAdmin" ? (
+                <li className="">
+                  <button
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse3"
+                    aria-expanded="false"
+                    aria-controls="collapse3"
+                    effect="ripple"
+                  >
+                    <div className="itemTitle">Sofia</div>
+                  </button>
+                  <div
+                    id="collapse3"
+                    className="accordion-collapse collapse"
+                    data-bs-parent="#sidenNav"
+                  >
+                    <div className="menuWrapper">
+                      <ul className="tabMenu">
+                        <li className="tabItem" effect="ripple">
+                          <NavLink
+                            to="/sofia-status"
+                            onClick={backToTop}
+                            className="nav-link"
+                          >
+                            <div className="iconHolder">
+                              <i className="fa-duotone fa-swap-arrows" />
+                            </div>
+                            <div className="itemTitle">Sofia Status</div>
+                          </NavLink>
+                        </li>
+                        <li className="tabItem" effect="ripple">
+                          <NavLink
+                            to="/sofia-setting"
+                            onClick={backToTop}
+                            className="nav-link"
+                          >
+                            <div className="iconHolder">
+                              <i className="fa-duotone fa-swap-arrows" />
+                            </div>
+                            <div className="itemTitle">Sofia Settings</div>
+                          </NavLink>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                </div>
-              </li>:""}
-             
+                </li>
+              ) : (
+                ""
+              )}
+
               <li className="">
                 <button
                   data-bs-toggle="collapse"
@@ -413,7 +444,7 @@ function Navbar() {
                   aria-controls="collapse4"
                   effect="ripple"
                 >
-                  <div className="itemTitle">Browser phone</div>
+                  <div className="itemTitle">Reports</div>
                 </button>
                 <div
                   id="collapse4"
@@ -422,7 +453,7 @@ function Navbar() {
                 >
                   <div className="menuWrapper">
                     <ul className="tabMenu">
-                      <li className="tabItem" effect="ripple">
+                      {/* <li className="tabItem" effect="ripple">
                         <NavLink
                           to="/call"
                           onClick={backToTop}
@@ -433,7 +464,7 @@ function Navbar() {
                           </div>
                           <div className="itemTitle">Call</div>
                         </NavLink>
-                      </li>
+                      </li> */}
                       <li className="tabItem" effect="ripple">
                         <NavLink
                           to="/cdr-report"
@@ -451,107 +482,133 @@ function Navbar() {
                 </div>
               </li>
 
-              {userType==="SupreAdmin"?
-              <li className="">
-                <button
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapse6"
-                  aria-expanded="false"
-                  aria-controls="collapse6"
-                  effect="ripple"
-                >
-                  <div className="itemTitle">DID Management</div>
-                </button>
-                <div
-                  id="collapse6"
-                  className="accordion-collapse collapse"
-                  data-bs-parent="#sidenNav"
-                >
-                  <div className="menuWrapper">
-                    <ul className="tabMenu">
-                      <li className="tabItem" effect="ripple">
-                        <NavLink
-                          to="/rate-card"
-                          onClick={backToTop}
-                          className="nav-link"
-                        >
-                          <div className="iconHolder">
-                            <i className="fa-duotone fa-swap-arrows" />
-                          </div>
-                          <div className="itemTitle">Rate Card</div>
-                        </NavLink>
-                      </li>
-                      <li className="tabItem" effect="ripple">
-                        <NavLink
-                          to="/vendors"
-                          onClick={backToTop}
-                          className="nav-link"
-                        >
-                          <div className="iconHolder">
-                            <i className="fa-duotone fa-swap-arrows" />
-                          </div>
-                          <div className="itemTitle">Vendors</div>
-                        </NavLink>
-                      </li>
-                      <li className="tabItem" effect="ripple">
-                        <NavLink
-                          to="/get-did"
-                          onClick={backToTop}
-                          className="nav-link"
-                        >
-                          <div className="iconHolder">
-                            <i className="fa-duotone fa-swap-arrows" />
-                          </div>
-                          <div className="itemTitle">Get DID</div>
-                        </NavLink>
-                      </li>
-                    </ul>
+              {userType === "SupreAdmin" ? (
+                <li className="">
+                  <button
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse6"
+                    aria-expanded="false"
+                    aria-controls="collapse6"
+                    effect="ripple"
+                  >
+                    <div className="itemTitle">DID Management</div>
+                  </button>
+                  <div
+                    id="collapse6"
+                    className="accordion-collapse collapse"
+                    data-bs-parent="#sidenNav"
+                  >
+                    <div className="menuWrapper">
+                      <ul className="tabMenu">
+                        <li className="tabItem" effect="ripple">
+                          <NavLink
+                            to="/rate-card"
+                            onClick={backToTop}
+                            className="nav-link"
+                          >
+                            <div className="iconHolder">
+                              <i className="fa-duotone fa-swap-arrows" />
+                            </div>
+                            <div className="itemTitle">Rate Card</div>
+                          </NavLink>
+                        </li>
+                        <li className="tabItem" effect="ripple">
+                          <NavLink
+                            to="/vendors"
+                            onClick={backToTop}
+                            className="nav-link"
+                          >
+                            <div className="iconHolder">
+                              <i className="fa-duotone fa-swap-arrows" />
+                            </div>
+                            <div className="itemTitle">Vendors</div>
+                          </NavLink>
+                        </li>
+                        <li className="tabItem" effect="ripple">
+                          <NavLink
+                            to="/get-did"
+                            onClick={backToTop}
+                            className="nav-link"
+                          >
+                            <div className="iconHolder">
+                              <i className="fa-duotone fa-swap-arrows" />
+                            </div>
+                            <div className="itemTitle">Get DID</div>
+                          </NavLink>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                </div>
-              </li>:""}
+                </li>
+              ) : (
+                ""
+              )}
 
-                      {userType==="SupreAdmin"?
-              <li className="">
-                <button
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapse7"
-                  aria-expanded="false"
-                  aria-controls="collapse7"
-                  effect="ripple"
-                >
-                  <div className="itemTitle">Payment Gateway</div>
-                </button>
-                <div
-                  id="collapse7"
-                  className="accordion-collapse collapse"
-                  data-bs-parent="#sidenNav"
-                >
-                  <div className="menuWrapper">
-                    <ul className="tabMenu">
-                      <li className="tabItem" effect="ripple">
-                        <NavLink
-                          to="/payment-gateway"
-                          onClick={backToTop}
-                          className="nav-link"
-                        >
-                          <div className="iconHolder">
-                            <i className="fa-duotone fa-swap-arrows" />
-                          </div>
-                          <div className="itemTitle">gateways</div>
-                        </NavLink>
-                      </li>
-                    </ul>
+              {userType === "SupreAdmin" ? (
+                <li className="">
+                  <button
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse7"
+                    aria-expanded="false"
+                    aria-controls="collapse7"
+                    effect="ripple"
+                  >
+                    <div className="itemTitle">Payment Gateway</div>
+                  </button>
+                  <div
+                    id="collapse7"
+                    className="accordion-collapse collapse"
+                    data-bs-parent="#sidenNav"
+                  >
+                    <div className="menuWrapper">
+                      <ul className="tabMenu">
+                        <li className="tabItem" effect="ripple">
+                          <NavLink
+                            to="/payment-gateway"
+                            onClick={backToTop}
+                            className="nav-link"
+                          >
+                            <div className="iconHolder">
+                              <i className="fa-duotone fa-swap-arrows" />
+                            </div>
+                            <div className="itemTitle">gateways</div>
+                          </NavLink>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                </div>
-              </li>:""}
-              <li className="dashboard ">
+                </li>
+              ) : (
+                ""
+              )}
+               <li className="dashboard ">
                 <NavLink
-                  to="/my-profile"
+                  to="/ring-groups"
                   onClick={backToTop}
                   type="button"
                   effect="ripple"
                 >
-                  <div className="itemTitle">My Profile</div>
+                  <div className="itemTitle">Ring Group</div>
+                </NavLink>
+              </li>
+              <li className="dashboard ">
+                <NavLink
+                  to="/users"
+                  onClick={backToTop}
+                  type="button"
+                  effect="ripple"
+                >
+                  <div className="itemTitle">Users</div>
+                </NavLink>
+              </li>
+              <li className="dashboard ">
+                <NavLink
+                  to="/cal-center-queue"
+                  onClick={backToTop}
+                  type="button"
+                  effect="ripple"
+                >
+                  <div className="itemTitle">Call Center</div>
                 </NavLink>
               </li>
               <li className="dashboard ">

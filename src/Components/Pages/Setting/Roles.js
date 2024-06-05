@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction'
+import { generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction } from '../../GlobalFunction/globalFunction'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "../../CommonComponents/Header";
@@ -21,7 +21,7 @@ function Roles() {
     const [loading,setLoading]=useState(false)
     useEffect(()=>{
         async function getData(){
-            const apiData = await generalGetFunction("/roles")
+            const apiData = await generalGetFunction(`/roles?acount_id=${account.account_id}`)
             if(apiData.status){
                 setRole(apiData.data)
             }
@@ -47,10 +47,45 @@ function Roles() {
                     toast.success(apiData.message)
                     setPopup(false)
                     setSaveClick(false)
+                    setNewRole("")
+                    setAddRole(false)
                 }else{
                     setLoading(false)
                     toast.error(apiData.message)
                 }
+            }
+        }else if(editClick){
+            if(updateRole===""){
+                toast.error("Please fill the role")
+            }else{
+                setLoading(true)
+                const parsedData = {
+                    name:updateRole
+                }
+                const apiData = await generalPutFunction(`/role/${role[editIndex].id}`,parsedData)
+                if(apiData.status){
+                    toast.success(apiData.message);
+                    setEditClick(false);
+                    setUpdateRole("")
+                    setLoading(false)
+                    setEditIndex()
+                }else{
+                    setLoading(false)
+                    toast.error(apiData.message)
+                }
+            }
+
+        }else{
+            setLoading(true)
+            const apiData = await generalDeleteFunction(`/role/${role[deleteIndex].id}`)
+            if(apiData.status){
+                setEditClick(false)
+                setDeleteIndex()
+                toast.success(apiData.success)
+                setLoading(false)
+            }else{
+                setLoading(false)
+                toast.error(apiData.message)
             }
         }
     }
@@ -77,6 +112,7 @@ function Roles() {
                             className="fa-duotone fa-circle-plus"
                             onClick={() => {
                               setAddRole(true);
+                              setEditClick(false)
                             }}
                           ></i>
                         </button>
@@ -90,7 +126,7 @@ function Roles() {
                           type="text"
                           value={newRole}
                           onChange={(e) => setNewRole(e.target.value)}
-                          placeholder="Add new Domain"
+                          placeholder="Add new Role"
                         ></input>
                         <button className="clearButton text-success">
                           <i
@@ -119,28 +155,29 @@ function Roles() {
                           <li key={index}>
                             <input
                               type="text"
-                              placeholder={item[1]}
+                              placeholder={item.name}
                               onChange={(e) => setUpdateRole(e.target.value)}
                               disabled={
-                                editIndex === item[0] 
+                                editIndex === index
                                   ? false
                                   : true
                               }
                             ></input>
                             <button className="clearButton text-success">
-                              {editIndex === item[0]  ? (
+                              {editIndex === index  ? (
                                 <i
                                   className="fa-duotone fa-circle-check"
                                   onClick={() => {
                                     setPopup(true);
                                     setEditClick(true);
+                                    setAddRole(false);
                                   }}
                                 ></i>
                               ) : (
                                 <i
                                   className="fa-duotone fa-pen-to-square"
                                   onClick={() => {
-                                    setEditIndex(item[0]);
+                                    setEditIndex(index);
                                   }}
                                 ></i>
                               )}
@@ -151,7 +188,8 @@ function Roles() {
                                 onClick={() => {
                                   setPopup(true);
                                   setDeleteIndex(index)
-                                  setEditIndex(item[0]);
+                                  setEditClick(false);
+                                  setAddRole(false)
                                 }}
                               ></i>
                             </button>
@@ -179,16 +217,16 @@ function Roles() {
                   <h4>Warning!</h4>
                   {saveClick ? (
                     <p>
-                      Are you sure you want to add this Domain: {newRole}?
+                      Are you sure you want to add this Role: {newRole}?
                     </p>
                   ) : editClick ? (
                     <p>
-                      Are you sure you want to change {role[editIndex - 1]}{" "}
+                      Are you sure you want to change {role[editIndex].name}{" "}
                       to {updateRole}?
                     </p>
                   ): (
                     <p>
-                      Are you sure you want to delete this {deleteIndex} ?
+                      Are you sure you want to delete this {role[deleteIndex].name} ?
                     </p>
                   )}
 
