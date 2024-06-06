@@ -158,7 +158,19 @@ function Navbar() {
                           <div className="itemTitle">Roles and Permisson</div>
                         </NavLink>
                       </li>
-
+                      
+                      <li className="tabItem" effect="ripple">
+                        <NavLink
+                          to="/roles"
+                          onClick={backToTop}
+                          className="nav-link"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-duotone fa-swap-arrows" />
+                          </div>
+                          <div className="itemTitle">Device Provisioning</div>
+                        </NavLink>
+                      </li>
                       {userType === "SupreAdmin" ? (
                         <li className="tabItem" effect="ripple">
                           <NavLink
@@ -346,6 +358,15 @@ function Navbar() {
                             <i className="fa-duotone fa-swap-arrows" />
                           </div>
                           <div className="itemTitle">Destinations</div>
+                        </NavLink>
+                      </li>
+
+                      <li className="tabItem" effect="ripple">
+                        <NavLink to="/destinations" className="nav-link">
+                          <div className="iconHolder">
+                            <i className="fa-duotone fa-swap-arrows" />
+                          </div>
+                          <div className="itemTitle">Routes</div>
                         </NavLink>
                       </li>
                       {/* <li className="tabItem" effect="ripple">
@@ -581,6 +602,149 @@ function Navbar() {
               ) : (
                 ""
               )}
+
+<li className="">
+                <button
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapse10"
+                  aria-expanded="false"
+                  aria-controls="collapse10"
+                  effect="ripple"
+                >
+                  <div className="itemTitle">DID</div>
+                </button>
+                <div
+                  id="collapse10"
+                  className="accordion-collapse collapse"
+                  data-bs-parent="#sidenNav"
+                >
+                  <div className="menuWrapper">
+                    <ul className="tabMenu">
+                      {/* <li className="tabItem" effect="ripple">
+                        <NavLink
+                          to="/call"
+                          onClick={backToTop}
+                          className="nav-link"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-duotone fa-swap-arrows" />
+                          </div>
+                          <div className="itemTitle">Call</div>
+                        </NavLink>
+                      </li> */}
+                      <li className="tabItem" effect="ripple">
+                        <NavLink
+                          to="/cdr-report"
+                          onClick={backToTop}
+                          className="nav-link"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-duotone fa-swap-arrows" />
+                          </div>
+                          <div className="itemTitle">Did list</div>
+                        </NavLink>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+
+
+              <li className="">
+                <button
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapse9"
+                  aria-expanded="false"
+                  aria-controls="collapse9"
+                  effect="ripple"
+                >
+                  <div className="itemTitle">Billing</div>
+                </button>
+                <div
+                  id="collapse9"
+                  className="accordion-collapse collapse"
+                  data-bs-parent="#sidenNav"
+                >
+                  <div className="menuWrapper">
+                    <ul className="tabMenu">
+                      {/* <li className="tabItem" effect="ripple">
+                        <NavLink
+                          to="/call"
+                          onClick={backToTop}
+                          className="nav-link"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-duotone fa-swap-arrows" />
+                          </div>
+                          <div className="itemTitle">Call</div>
+                        </NavLink>
+                      </li> */}
+                      <li className="tabItem" effect="ripple">
+                        <NavLink
+                          to="/cdr-report1"
+                          onClick={backToTop}
+                          className="nav-link"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-duotone fa-swap-arrows" />
+                          </div>
+                          <div className="itemTitle">My wallet</div>
+                        </NavLink>
+                      </li>
+                      <li className="tabItem" effect="ripple">
+                        <NavLink
+                          to="/cdr-report2"
+                          onClick={backToTop}
+                          className="nav-link"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-duotone fa-swap-arrows" />
+                          </div>
+                          <div className="itemTitle">Call Reports</div>
+                        </NavLink>
+                      </li>
+                      <li className="tabItem" effect="ripple">
+                        <NavLink
+                          to="/cdr-report3"
+                          onClick={backToTop}
+                          className="nav-link"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-duotone fa-swap-arrows" />
+                          </div>
+                          <div className="itemTitle">Payment Details</div>
+                        </NavLink>
+                      </li>
+
+                      <li className="tabItem" effect="ripple">
+                        <NavLink
+                          to="/cdr-report4"
+                          onClick={backToTop}
+                          className="nav-link"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-duotone fa-swap-arrows" />
+                          </div>
+                          <div className="itemTitle">Billins and notification</div>
+                        </NavLink>
+                      </li>
+                      <li className="tabItem" effect="ripple">
+                        <NavLink
+                          to="/cdr-report5"
+                          onClick={backToTop}
+                          className="nav-link"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-duotone fa-swap-arrows" />
+                          </div>
+                          <div className="itemTitle">Auto Payment</div>
+                        </NavLink>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+
                <li className="dashboard ">
                 <NavLink
                   to="/ring-groups"
