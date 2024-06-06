@@ -61,7 +61,7 @@ function CallCenterQueueAdd() {
       name: "",
       level: "0",
       position: "0",
-      type:"callBack",
+      type:"callback",
       status:"Logged Out",
     },
   ]);
@@ -74,7 +74,7 @@ function CallCenterQueueAdd() {
         name: "",
         level: "0",
         position: "0",
-        type:"callBack",
+        type:"callback",
         status:"Logged Out",
       },
     ]);

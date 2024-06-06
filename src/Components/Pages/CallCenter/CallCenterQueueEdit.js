@@ -27,7 +27,7 @@ function CallCenterQueueEdit() {
       name: "",
       level: "0",
       position: "0",
-      type:"callBack",
+      type:"callback",
       status:"Logged Out",
     },
   ]);
@@ -107,7 +107,7 @@ function CallCenterQueueEdit() {
         name: "",
         level: "0",
         position: "0",
-        type:"callBack",
+        type:"callback",
         status:"Logged Out",
       },
     ]);
