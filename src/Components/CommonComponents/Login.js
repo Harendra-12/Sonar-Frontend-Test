@@ -71,7 +71,6 @@ function Login() {
     };
   }, [handleKeyDown]);
 
-console.log("This is username and password",userName,password);
   return (
     <>
       <style>

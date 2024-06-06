@@ -72,7 +72,6 @@ import Roles from "./Components/Pages/Setting/Roles";
 import CustomerDetails from "./Components/Pages/Profile/CustomerDetails";
 import DocumentUpload from "./Components/Pages/Profile/DocumentUpload";
 import { useSelector } from "react-redux";
-import SuperAdminDashboard from "./Components/Pages/Dashboard/SuperAdminDashboard";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -110,7 +109,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route element={<ProtectedRoute />}>
-            <Route path="/dashboard" element={account?.usertype==="SupreAdmin"?<SuperAdminDashboard/>:<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/my-profile" element={<Profile />} />
             <Route path="/master" element={<Master />} />
             <Route path="/change-password" element={<ChangePassword />} />

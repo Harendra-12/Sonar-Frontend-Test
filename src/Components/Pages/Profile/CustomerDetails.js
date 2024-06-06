@@ -8,6 +8,7 @@ import CircularLoader from "../Misc/CircularLoader";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 function CustomerDetails() {
   const [loading, setLoading] = useState(true);
@@ -195,9 +196,9 @@ function CustomerDetails() {
                     {accountDetails?.details == null ? (
                       <div className="approvalButton">
                         {" "}
-                        <button className="float-end btn btn-danger btn-sm">
-                          <i class="fa-light fa-triangle-exclamation"></i> Document Not Uploaded
-                        </button>{" "}
+                        <Link to="/upload-document" className="float-end btn btn-danger btn-sm">
+                          <i class="fa-light fa-triangle-exclamation"></i> Please Upload Document
+                        </Link>{" "}
                       </div>
                     ) : accountDetails?.company_status === "approved" ? (
                       <div className="approvalButton">
@@ -673,9 +674,9 @@ function CustomerDetails() {
                       </div>
                     </div>
                   ) : (
-                    <div className="qLinkContent">
-                      <h5 className="mb-0 danger">Documents Not Uploaded</h5>
-                    </div>
+                    <Link to="/upload-document" className="qLinkContent">
+                      <h5 className="mb-0 danger">Upload Document</h5>
+                    </Link>
                   )}
                 </div>
               </div>
