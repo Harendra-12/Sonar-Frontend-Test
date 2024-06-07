@@ -72,6 +72,7 @@ import Roles from "./Components/Pages/Setting/Roles";
 import CustomerDetails from "./Components/Pages/Profile/CustomerDetails";
 import DocumentUpload from "./Components/Pages/Profile/DocumentUpload";
 import { useSelector } from "react-redux";
+import UserRegistrationProcessOverview from "./Components/Pages/Admin/UserRegistrationProcessOverview";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -87,7 +88,7 @@ const NavigationSetter = () => {
 };
 
 function App() {
-  const account = useSelector((state)=>state.account)
+  const account = useSelector((state) => state.account)
   Socket();
 
   // Unlock this if want push notification add account edit here if id is available
@@ -228,6 +229,7 @@ function App() {
             <Route path="/roles" element={<Roles />} />
             <Route path="/customer-details" element={<CustomerDetails />} />
             <Route path="/upload-document" element={<DocumentUpload />} />
+            <Route path="/new-user-verify" element={<UserRegistrationProcessOverview />} />
             {/* Setting path end */}
           </Route>
           {/* 404 Redirection */}

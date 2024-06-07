@@ -97,3 +97,81 @@
     padding: 5px 10px;
     font-weight: 500;
 }
+
+/* Progress Bar Start */
+
+.baseDetails .accountProgress {
+    width: 500px;
+    height: 5px;
+    background-color: #ababab;
+    margin: 20px auto 50px auto;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    border-radius: 50px;
+}
+
+.baseDetails .accountProgress .progressbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 5px;
+    background-color: green;
+    border-radius: 50px;
+}
+
+.progress {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.progressStepWrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    position: absolute;
+    top: -20px;
+}
+
+.progressStepWrapper .stepWrapper.success .step {
+    background-color: green !important;
+}
+
+.progressStepWrapper .stepWrapper.success label {
+    color: #000 !important;
+}
+
+.progressStepWrapper .stepWrapper {
+    text-align: center;
+}
+
+.progressStepWrapper .step {
+    width: 55px;
+    height: 55px;
+    background-color: #ababab;
+    border-radius: 50%;
+    /* margin-top: -18px; */
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.progressStepWrapper .step i {
+    color: #fff;
+    font-size: 18px;
+}
+
+.progressStepWrapper label {
+    /* position: absolute; */
+    bottom: -30px;
+    margin-top: 10px;
+    font-family: 'Open Sans';
+    font-weight: 500;
+    color: #7c7c7c;
+    text-wrap: nowrap;
+}
+
+/* Progress Bar End */
