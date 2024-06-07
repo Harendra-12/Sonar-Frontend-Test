@@ -183,7 +183,7 @@ function PaymentGatewayAdd() {
                             marginTop: 5,
                           }}
                         >
-                          Password must be at lease 4 character
+                          Password must be at-lease 4 character
                         </label>
                       </div>
                     </div>
