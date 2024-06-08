@@ -155,6 +155,8 @@ function CallCenterQueueAdd() {
         queue_timeout_action: callCenter.action,
         discard_abandoned_after: callCenter.abandoned,
         queue_cid_prefix: callCenter.prefix,
+        account_id:account.account_id,
+        created_by:account.id,
         agents: agent.map((item) => {
           if (item.name !== "") {
             return {

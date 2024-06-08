@@ -38,7 +38,7 @@ function Roles() {
                 setLoading(true)
                 const parsedData = {
                     name:newRole,
-                    created_by:account.account_id
+                    // created_by:account.account_id
                 }
                 const apiData = await generalPostFunction("/role/store",parsedData)
                 if(apiData.status){

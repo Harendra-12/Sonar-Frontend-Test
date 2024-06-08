@@ -35,9 +35,9 @@ function Login() {
       setLoading(true);
       const data = await login(userName, password);
       if (data) {
-        if (data.status) {
+        if (data.status ) {
           const profile = await generalGetFunction("/user");
-          if (profile.status) {
+          if (profile.status && profile.data.usertype==="Company") {
             setLoading(false);
             dispatch({
               type: "SET_ACCOUNT",
@@ -46,6 +46,9 @@ function Login() {
             localStorage.setItem("account", JSON.stringify(profile.data));
             window.scrollTo(0, 0);
             navigate("/dashboard");
+          }else{
+            setLoading(false)
+            toast.error("unauthorized access!")
           }
         } else {
           setLoading(false);
