@@ -1,7 +1,7 @@
 /* width */
 ::-webkit-scrollbar {
   width: 5px;
-  display: none;
+  /* display: none; */
 }
 
 /* Track */
@@ -12,11 +12,11 @@
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #ddd;
+  background: #a2c7ff;
   border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #aaaaaa;
+  background: var(--ui-accent);
 }
