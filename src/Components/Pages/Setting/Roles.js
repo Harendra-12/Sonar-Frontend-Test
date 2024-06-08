@@ -1,94 +1,141 @@
-import React, { useEffect, useState } from 'react'
-import { generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction } from '../../GlobalFunction/globalFunction'
+import React, { useEffect, useState } from "react";
+import {
+  generalDeleteFunction,
+  generalGetFunction,
+  generalPostFunction,
+  generalPutFunction,
+} from "../../GlobalFunction/globalFunction";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "../../CommonComponents/Header";
-import { useSelector } from 'react-redux';
-import CircularLoader from '../Misc/CircularLoader';
+import { useSelector } from "react-redux";
+import CircularLoader from "../Misc/CircularLoader";
 
 function Roles() {
-  const account = useSelector((state) => state.account)
-  const [role, setRole] = useState()
-  const [popup, setPopup] = useState(false)
-  const [editClick, setEditClick] = useState(false)
-  const [saveClick, setSaveClick] = useState(false)
-  const [updateRole, setUpdateRole] = useState()
-  const [editIndex, setEditIndex] = useState()
-  const [newRole, setNewRole] = useState("")
-  const [addRole, setAddRole] = useState(false)
-  const [deleteIndex, setDeleteIndex] = useState()
-  const [refresh, setRefresh] = useState(0)
-  const [loading, setLoading] = useState(false)
+  const account = useSelector((state) => state.account);
+  const [role, setRole] = useState();
+  const [popup, setPopup] = useState(false);
+  const [editClick, setEditClick] = useState(false);
+  const [saveClick, setSaveClick] = useState(false);
+  const [updateRole, setUpdateRole] = useState();
+  const [editIndex, setEditIndex] = useState();
+  const [newRole, setNewRole] = useState("");
+  const [addRole, setAddRole] = useState(false);
+  const [deleteIndex, setDeleteIndex] = useState();
+  const [refresh, setRefresh] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [selectedRoleId, setSelectedRoleId] = useState();
+  const [selectedRole, setSelectedRole] = useState();
+  const [selectedPermission, setSelectedPermission] = useState([]);
+  const [defaultPermission, setDefaultPermission] = useState();
   useEffect(() => {
     async function getData() {
-      const apiData = await generalGetFunction(`/roles?acount_id=${account.account_id}`)
+      const apiData = await generalGetFunction(
+        `/roles?acount_id=${account.account_id}`
+      );
+      const permissionData = await generalGetFunction("/permission");
       if (apiData.status) {
-        setRole(apiData.data)
+        setRole(apiData.data);
+      }
+      if (permissionData.status) {
+        setDefaultPermission(permissionData.data);
       }
     }
-    getData()
-  }, [refresh])
+    getData();
+  }, [refresh]);
 
   async function handleSubmit() {
-    setPopup(false)
+    setPopup(false);
     if (addRole) {
       if (newRole === "") {
-        toast.error("Please enter new role")
+        toast.error("Please enter new role");
       } else {
-        setLoading(true)
+        setLoading(true);
         const parsedData = {
           name: newRole,
           // created_by:account.account_id
-        }
-        const apiData = await generalPostFunction("/role/store", parsedData)
+        };
+        const apiData = await generalPostFunction("/role/store", parsedData);
         if (apiData.status) {
-          setLoading(false)
-          setRefresh(refresh + 1)
-          toast.success(apiData.message)
-          setPopup(false)
-          setSaveClick(false)
-          setNewRole("")
-          setAddRole(false)
+          setLoading(false);
+          setRefresh(refresh + 1);
+          toast.success(apiData.message);
+          setPopup(false);
+          setSaveClick(false);
+          setNewRole("");
+          setAddRole(false);
         } else {
-          setLoading(false)
-          toast.error(apiData.message)
+          setLoading(false);
+          toast.error(apiData.message);
         }
       }
     } else if (editClick) {
       if (updateRole === "") {
-        toast.error("Please fill the role")
+        toast.error("Please fill the role");
       } else {
-        setLoading(true)
+        setLoading(true);
         const parsedData = {
-          name: updateRole
-        }
-        const apiData = await generalPutFunction(`/role/${role[editIndex].id}`, parsedData)
+          name: updateRole,
+        };
+        const apiData = await generalPutFunction(
+          `/role/${role[editIndex].id}`,
+          parsedData
+        );
         if (apiData.status) {
           toast.success(apiData.message);
           setEditClick(false);
-          setUpdateRole("")
-          setLoading(false)
-          setEditIndex()
+          setUpdateRole("");
+          setLoading(false);
+          setEditIndex();
         } else {
-          setLoading(false)
-          toast.error(apiData.message)
+          setLoading(false);
+          toast.error(apiData.message);
         }
       }
-
     } else {
-      setLoading(true)
-      const apiData = await generalDeleteFunction(`/role/${role[deleteIndex].id}`)
+      setLoading(true);
+      const apiData = await generalDeleteFunction(
+        `/role/${role[deleteIndex].id}`
+      );
       if (apiData.status) {
-        setEditClick(false)
-        setDeleteIndex()
-        toast.success(apiData.success)
-        setLoading(false)
+        setEditClick(false);
+        setDeleteIndex();
+        toast.success(apiData.success);
+        setLoading(false);
       } else {
-        setLoading(false)
-        toast.error(apiData.message)
+        setLoading(false);
+        toast.error(apiData.message);
       }
     }
   }
+
+  const handleCheckboxChange = (id) => {
+    if (selectedPermission.includes(id)) {
+      setSelectedPermission(selectedPermission.filter((item) => item !== id));
+    } else {
+      setSelectedPermission([...selectedPermission, id]);
+    }
+  };
+
+  async function handlePermissionSave() {
+    setLoading(true);
+    const parsedData = {
+      role_id: selectedRoleId,
+      permissions: selectedPermission,
+    };
+    const apiData = await generalPostFunction(
+      "/assign-permission-role",
+      parsedData
+    );
+    if (apiData.status) {
+      setLoading(false);
+      toast.success(apiData.message);
+    } else {
+      setLoading(false);
+      toast.error(apiData.message);
+    }
+  }
+  console.log("This is permission index", selectedPermission);
   return (
     <>
       <style>
@@ -102,6 +149,20 @@ function Roles() {
         font-size: 16px;
         color: #3c3c3c;
       }
+      .masterSegment{
+      position: sticky;
+      top: 10px;
+      }
+      .approvalButton{
+        position:absolute;
+        top: 0;
+        right: 0;
+      }
+      .approvalButton button {
+        border-radius: 0;
+        border-bottom-left-radius: 7px;
+        border-top-right-radius: 7px;
+      }
       `}
       </style>
       <main className="mainContent">
@@ -114,19 +175,24 @@ function Roles() {
                   <div className="masterSegment">
                     <h6>
                       <div className="row align-items-center">
-                        <div className="col-auto">
-                          List of Roles{" "}
-                        </div>
+                        <div className="col-auto">List of Roles </div>
                         {/* <div className="col pe-0">
                         <input type="search" name="Search" id="headerSearch" placeholder="Search a role" onChange={(e) => setSearchDomain(e.target.value)} />
                       </div> */}
                         <div className="col-auto ps-0 mt-1">
-                          <button className="clearButton" style={{ width: '100%', height: '100%', fontSize: 22 }}>
+                          <button
+                            className="clearButton"
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              fontSize: 22,
+                            }}
+                          >
                             <i
                               className="fa-duotone fa-circle-plus"
                               onClick={() => {
                                 setAddRole(true);
-                                setEditClick(false)
+                                setEditClick(false);
                               }}
                             ></i>
                           </button>
@@ -136,12 +202,15 @@ function Roles() {
                     <ul>
                       {addRole ? (
                         <li>
+                          <div className="col-8">
                           <input
                             type="text"
                             value={newRole}
                             onChange={(e) => setNewRole(e.target.value)}
                             placeholder="Add new Role"
                           ></input>
+                          </div>
+                          <div className="col-auto">
                           <button className="clearButton text-success">
                             <i
                               className="fa-duotone fa-circle-check"
@@ -159,6 +228,7 @@ function Roles() {
                               }}
                             ></i>
                           </button>
+                          </div>
                         </li>
                       ) : (
                         ""
@@ -166,20 +236,18 @@ function Roles() {
                       {role &&
                         role.map((item, index) => {
                           return (
-                            <li key={index}>
-                              <div className='col-8'>
+                            <li key={index} className={selectedRoleId===item.id?"active":""}>
+                              <div className="col-8">
                                 <input
                                   type="text"
                                   placeholder={item.name}
-                                  onChange={(e) => setUpdateRole(e.target.value)}
-                                  disabled={
-                                    editIndex === index
-                                      ? false
-                                      : true
+                                  onChange={(e) =>
+                                    setUpdateRole(e.target.value)
                                   }
+                                  disabled={editIndex === index ? false : true}
                                 ></input>
                               </div>
-                              <div className='col-auto'>
+                              <div className="col-auto">
                                 <button className="clearButton text-success">
                                   {editIndex === index ? (
                                     <i
@@ -204,14 +272,23 @@ function Roles() {
                                     className="fa-duotone fa-trash"
                                     onClick={() => {
                                       setPopup(true);
-                                      setDeleteIndex(index)
+                                      setDeleteIndex(index);
                                       setEditClick(false);
-                                      setAddRole(false)
+                                      setAddRole(false);
                                     }}
                                   ></i>
                                 </button>
                                 <button className="clearButton text-primary">
-                                  <i class="fa-duotone fa-sliders"></i>
+                                  <i
+                                    class="fa-duotone fa-sliders"
+                                    onClick={() => {
+                                      setSelectedRoleId(item.id);
+                                      setSelectedRole(item.name);
+                                      setSelectedPermission(
+                                        item.rolepermission
+                                      );
+                                    }}
+                                  ></i>
                                 </button>
                               </div>
                             </li>
@@ -220,44 +297,90 @@ function Roles() {
                     </ul>
                   </div>
                 </div>
-                <div className='col-xl-8'>
-                  <div className='profileView'>
-                    <div className='profileDetailsHolder position-relative'>
-                      <div className='col-xl-12'>
-                        <div class="headerCommon d-flex align-items-center">
-                          <div class="col-5">Permissions for <span style={{ color: 'var(--ui-accent)', fontWeight: 600 }}>Role Name</span></div>
+                {selectedRoleId && (
+                  <div className="col-xl-8 pe-0">
+                    <div className="profileView">
+                      <div className="profileDetailsHolder position-relative">
+                        <div className="col-xl-12">
+                          <div class="headerCommon d-flex align-items-center">
+                            <div class="col-5">
+                              Permissions for{" "}
+                              <span
+                                style={{
+                                  color: "var(--ui-accent)",
+                                  fontWeight: 600,
+                                }}
+                              >
+                                {selectedRole}
+                              </span>
+                            </div>
+                            <div class="approvalButton">
+                              {" "}
+                              <button
+                                class="float-end btn btn-success btn-sm"
+                                onClick={handlePermissionSave}
+                                style={{
+                                  fontWeight: 600,
+                                }}
+                              >
+                                <i class="fa-duotone fa-check-double"></i>{" "}
+                                Save
+                              </button>{" "}
+                            </div>
+                            {/* <div class="col-5">
+                              <span
+                                style={{
+                                  color: "var(--ui-accent)",
+                                  fontWeight: 600,
+                                  cursor: "pointer",
+                                }}
+                                onClick={handlePermissionSave}
+                              >
+                                Save
+                              </span>
+                            </div> */}
+                          </div>
                         </div>
-                      </div>
-                      <div className='permissionListWrapper'>
-                        <div class="header d-flex align-items-center">
-                          <div class="col-5">Accounts</div>
-                        </div>
-                        <div className="row px-2 pt-1 border-bottom">
-                          <div className="formRow col-xl-2 col-md-4 col-6">
-                            <input type="checkbox" className="" />
-                            <label className="formLabel">Read</label>
-                          </div>
-                          <div className="formRow col-xl-2 col-md-4 col-6">
-                            <input type="checkbox" className="" />
-                            <label className="formLabel">Read</label>
-                          </div>
-                          <div className="formRow col-xl-2 col-md-4 col-6">
-                            <input type="checkbox" className="" />
-                            <label className="formLabel">Read</label>
-                          </div>
-                          <div className="formRow col-xl-2 col-md-4 col-6">
-                            <input type="checkbox" className="" />
-                            <label className="formLabel">Read</label>
-                          </div>
-                          <div className="formRow col-xl-2 col-md-4 col-6">
-                            <input type="checkbox" className="" />
-                            <label className="formLabel">Read</label>
-                          </div>
-                        </div>
+                        {defaultPermission &&
+                          Object.keys(defaultPermission).map((item, key) => {
+                            return (
+                              <div className="permissionListWrapper" key={key}>
+                                <div class="header d-flex align-items-center">
+                                  <div class="col-5">{item}</div>
+                                </div>
+                                <div className="row px-2 pt-1 border-bottom">
+                                  {defaultPermission[item].map(
+                                    (innerItem, key) => {
+                                      return (
+                                        <div
+                                          className="formRow col-xl-2 col-md-4 col-6"
+                                          key={key}
+                                        >
+                                          <input
+                                            type="checkbox"
+                                            id={`permission-${innerItem.id}`}
+                                            checked={selectedPermission.includes(
+                                              innerItem.id
+                                            )}
+                                            onChange={() =>
+                                              handleCheckboxChange(innerItem.id)
+                                            }
+                                          />
+                                          <label className="formLabel">
+                                            {innerItem.action}
+                                          </label>
+                                        </div>
+                                      );
+                                    }
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })}
                       </div>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
@@ -275,9 +398,7 @@ function Roles() {
                   <div className="col-10 ps-0">
                     <h4>Warning!</h4>
                     {saveClick ? (
-                      <p>
-                        Are you sure you want to add this Role: {newRole}?
-                      </p>
+                      <p>Are you sure you want to add this Role: {newRole}?</p>
                     ) : editClick ? (
                       <p>
                         Are you sure you want to change {role[editIndex].name}{" "}
@@ -285,11 +406,17 @@ function Roles() {
                       </p>
                     ) : (
                       <p>
-                        Are you sure you want to delete this {role[deleteIndex].name} ?
+                        Are you sure you want to delete this{" "}
+                        {role[deleteIndex].name} ?
                       </p>
                     )}
 
-                    <button className="panelButton m-0" onClick={() => { handleSubmit() }} >
+                    <button
+                      className="panelButton m-0"
+                      onClick={() => {
+                        handleSubmit();
+                      }}
+                    >
                       Confirm
                     </button>
                     <button
@@ -326,7 +453,7 @@ function Roles() {
         />
       </main>
     </>
-  )
+  );
 }
 
-export default Roles
+export default Roles;
