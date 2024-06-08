@@ -73,6 +73,7 @@ import CustomerDetails from "./Components/Pages/Profile/CustomerDetails";
 import DocumentUpload from "./Components/Pages/Profile/DocumentUpload";
 import { useSelector } from "react-redux";
 import UserRegistrationProcessOverview from "./Components/Pages/Admin/UserRegistrationProcessOverview";
+import AccountBillingOverall from "./Components/Pages/Billing/AccountBillingOverall";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -185,6 +186,7 @@ function App() {
             <Route path="/document-details" element={<UserDocumentDetails />} />
             <Route path="/user-details" element={<UserDetails />} />
             <Route path="/approved-customer" element={<ApprovedCustomer />} />
+            <Route path="/new-user-verify" element={<UserRegistrationProcessOverview />} />
             {/* Admin Packages path end */}
 
             {/* Number Management Path Start */}
@@ -221,7 +223,7 @@ function App() {
             />
             {/* Call Center queue path End */}
 
-            {/* Setting path start */}
+            {/* Settings path start */}
             <Route path="/admin/package" element={<Package />} />
             <Route path="/admin/package-add" element={<PackageAdd />} />
             <Route path="/admin/package-edit" element={<PackageEdit />} />
@@ -229,8 +231,12 @@ function App() {
             <Route path="/roles" element={<Roles />} />
             <Route path="/customer-details" element={<CustomerDetails />} />
             <Route path="/upload-document" element={<DocumentUpload />} />
-            <Route path="/new-user-verify" element={<UserRegistrationProcessOverview />} />
-            {/* Setting path end */}
+            {/* Settings path end */}
+
+            {/* Billing Pages Start */}
+            <Route path="/billing-overview" element={<AccountBillingOverall />} />
+            {/* Billing Pages End */}
+
           </Route>
           {/* 404 Redirection */}
           <Route path="*" element={<Navigate to="/dashboard" />} />

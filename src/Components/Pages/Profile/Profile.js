@@ -103,8 +103,8 @@ const Profile = () => {
                                                     <p className='fw-light'>TimeZone:</p>
                                                 </div>
                                                 <div className='text-end'>
-                                                    <p><img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/255px-Flag_of_India.svg.png" width={20}  alt="img"/>&nbsp;&nbsp;+91 (IN)</p>
-                                                    <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Flag_of_the_United_Kingdom_%281-2%29.svg/255px-Flag_of_the_United_Kingdom_%281-2%29.svg.png" width={20} height={12}  alt="img"/>&nbsp;&nbsp;English</p>
+                                                    <p><img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/255px-Flag_of_India.svg.png" width={20} alt="img" />&nbsp;&nbsp;+91 (IN)</p>
+                                                    <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Flag_of_the_United_Kingdom_%281-2%29.svg/255px-Flag_of_the_United_Kingdom_%281-2%29.svg.png" width={20} height={12} alt="img" />&nbsp;&nbsp;English</p>
                                                     <p>+5:30 GMT</p>
                                                 </div>
                                             </div>

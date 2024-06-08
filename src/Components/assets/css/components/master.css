@@ -14,7 +14,7 @@
 }
 
 .masterList ul {
-    margin-top: 15px;
+    margin-top: 10px;
     list-style: none;
     padding-left: 0;
 }
@@ -23,6 +23,10 @@
     border-bottom: 1px solid #868686;
     /* width: 150px; */
     margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.3s ease-in-out;
 }
 
 .masterList ul li input {
@@ -30,6 +34,22 @@
     border: none;
     /* border-bottom: 1px solid #868686; */
     outline: none;
-    width: calc(100% - 55px);
+    /* width: calc(100% - 55px); */
     font-size: 14px;
+}
+
+.masterList ul li.active {
+    background-color: var(--ui-accent);
+    border-bottom: 1px solid transparent;
+    border-radius: 8px;
+    padding: 4px 5px;
+}
+
+.masterList ul li.active input::placeholder {
+    color: #fff;
+    font-weight: 500;
+}
+
+.masterList ul li.active button i {
+    color: #fff !important;
 }
