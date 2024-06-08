@@ -72,18 +72,14 @@ function UserDetails() {
       <style>
         {`
       .formRow{
-        padding: 5px 10px;
+        border: none;
       }
       .formItem{
-        border: none;
+        margin: 0px 5px 0px 0px;
         color: #000;
-        font-weight: 500;
-        padding: 0;
-        margin: 0;
-        height: auto;
       }
       .formLabel{
-        padding: 0 0 2px 0;
+        padding: 0px 0px 5px;
       }
       .qLinkContent .imgWrapper{
         width: 50px;

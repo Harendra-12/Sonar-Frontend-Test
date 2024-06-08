@@ -36,6 +36,7 @@
     outline: none;
     /* width: calc(100% - 55px); */
     font-size: 14px;
+    color: #fff;
 }
 
 .masterList ul li.active {
