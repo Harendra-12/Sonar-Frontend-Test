@@ -32,6 +32,7 @@ function GetDid() {
         searchType: searchType,
         quantity: quantity,
         npa: npa,
+        companyId:1,
       };
       const apiData = await generalPostFunction("/searchTfn", parsedData);
       if (apiData.status) {

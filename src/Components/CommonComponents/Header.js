@@ -88,7 +88,8 @@ function Header(props) {
         <Tippy content={accounName}>
           <div className="profileName">{accounName}</div>
         </Tippy>
-        <div className="statusProfile" />
+        &nbsp; &nbsp;
+        {/* <div className="statusProfile" /> */}
         <div
           ref={wrapperRef}
           className="profileHolder"
