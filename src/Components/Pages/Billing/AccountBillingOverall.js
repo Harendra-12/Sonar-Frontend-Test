@@ -42,7 +42,25 @@ function AccountBillingOverall() {
                                     </div>
                                 </div>
                                 <div className='col-xl-3'>
-
+                                    <div class="itemWrapper c">
+                                        <div class="heading">
+                                            <i class="fa-duotone fa-phone-office"></i> Invoices
+                                        </div>
+                                        <ul className='invoiceList'>
+                                            <li>
+                                                <div className='col-7'>
+                                                    <p>March, 01, 2024</p>
+                                                    <span>#MS-415646</span>
+                                                </div>
+                                                <div className='me-2' style={{ width: 55 }}>
+                                                    <p>$100</p>
+                                                </div>
+                                                <div>
+                                                    <a><i class="fa-duotone fa-file-pdf me-1"></i> PDF</a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -320,3 +320,36 @@
         width: 14.28%;
     }
 }
+
+.itemWrapper .invoiceList {
+    padding-left: 0;
+    list-style: none;
+    text-align: left;
+    padding-top: 10px;
+}
+
+.itemWrapper .invoiceList li {
+    display: flex;
+    font-size: 14px;
+    justify-content: space-between;
+}
+
+.itemWrapper .invoiceList li p {
+    font-family: Roboto;
+    margin-bottom: 0;
+    font-weight: 600;
+}
+
+.itemWrapper .invoiceList li span {
+    font-size: 13px;
+    color: var(--color-subtext);
+}
+
+.itemWrapper .invoiceList li a {
+    font-weight: 600;
+    font-family: Roboto;
+}
+
+.itemWrapper .invoiceList li a i {
+    color: var(--color3);
+}

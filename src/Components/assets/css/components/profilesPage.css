@@ -133,7 +133,7 @@
 }
 
 .progressStepWrapper .stepWrapper.success .step {
-    background-color: green !important;
+    background-color: #198754 !important;
 }
 
 .progressStepWrapper .stepWrapper.success label {
