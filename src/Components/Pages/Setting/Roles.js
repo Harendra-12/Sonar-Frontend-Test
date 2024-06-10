@@ -8,11 +8,11 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "../../CommonComponents/Header";
-import { useSelector } from "react-redux";
 import CircularLoader from "../Misc/CircularLoader";
+import { useSelector } from "react-redux";
 
 function Roles() {
-  const account = useSelector((state) => state.account);
+  const account = useSelector((state)=>state.account)
   const [role, setRole] = useState();
   const [popup, setPopup] = useState(false);
   const [editClick, setEditClick] = useState(false);
@@ -28,10 +28,13 @@ function Roles() {
   const [selectedRole, setSelectedRole] = useState();
   const [selectedPermission, setSelectedPermission] = useState([]);
   const [defaultPermission, setDefaultPermission] = useState();
+
+
+  // Getting the role and permission information at the very initial state
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(
-        `/roles?acount_id=${account.account_id}`
+        `/roles`
       );
       const permissionData = await generalGetFunction("/permission");
       if (apiData.status) {
@@ -44,6 +47,7 @@ function Roles() {
     getData();
   }, [refresh]);
 
+  // Handle Role pop up confirm click
   async function handleSubmit() {
     setPopup(false);
     if (addRole) {
@@ -109,6 +113,7 @@ function Roles() {
     }
   }
 
+  // Handel permission check box click
   const handleCheckboxChange = (id) => {
     if (selectedPermission.includes(id)) {
       setSelectedPermission(selectedPermission.filter((item) => item !== id));
@@ -117,6 +122,7 @@ function Roles() {
     }
   };
 
+  // Handle permission save click
   async function handlePermissionSave() {
     setLoading(true);
     const parsedData = {
@@ -135,7 +141,22 @@ function Roles() {
       toast.error(apiData.message);
     }
   }
-  console.log("This is permission index", selectedPermission);
+
+  // Filter out permissions base on the availabe id's inside user section
+  const filterPermissionById = (data, idArray) => {
+    const result = {};
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        const filteredItems = data[key].filter(item => idArray?.includes(item.id));
+        if (filteredItems.length > 0) {
+          result[key] = filteredItems;
+        }
+      }
+    }
+    return result;
+  };
+  
+  const filteredPermission = filterPermissionById(defaultPermission, account.role_permissions.permissions);
   return (
     <>
       <style>
@@ -285,7 +306,9 @@ function Roles() {
                                       setSelectedRoleId(item.id);
                                       setSelectedRole(item.name);
                                       setSelectedPermission(
-                                        item.rolepermission
+                                        item.permissions.map((item)=>{
+                                          return(item.permission_id)
+                                        })
                                       );
                                     }}
                                   ></i>
@@ -327,29 +350,18 @@ function Roles() {
                                 Save
                               </button>{" "}
                             </div>
-                            {/* <div class="col-5">
-                              <span
-                                style={{
-                                  color: "var(--ui-accent)",
-                                  fontWeight: 600,
-                                  cursor: "pointer",
-                                }}
-                                onClick={handlePermissionSave}
-                              >
-                                Save
-                              </span>
-                            </div> */}
+                          
                           </div>
                         </div>
-                        {defaultPermission &&
-                          Object.keys(defaultPermission).map((item, key) => {
+                        {filteredPermission &&
+                          Object.keys(filteredPermission).map((item, key) => {
                             return (
                               <div className="permissionListWrapper" key={key}>
                                 <div class="header d-flex align-items-center">
                                   <div class="col-5">{item}</div>
                                 </div>
                                 <div className="row px-2 pt-1 border-bottom">
-                                  {defaultPermission[item].map(
+                                  {filteredPermission[item].map(
                                     (innerItem, key) => {
                                       return (
                                         <div
