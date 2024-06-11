@@ -173,7 +173,7 @@ function AccountBillingOverall() {
                                             </ul>
                                         </div>
                                     </div>
-                                    <div className='col-xl-12'>
+                                    <div className='col-xl-12 mt-2'>
                                         <div class="itemWrapper a">
                                             <div class="heading">
                                                 <i class="fa-duotone fa-ballot-check"></i> Last Transaction
