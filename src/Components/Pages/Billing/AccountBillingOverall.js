@@ -10,7 +10,7 @@ function AccountBillingOverall() {
                         <Header title="Payment Details" />
                         <div className='col-xl-12 pt-3'>
                             <div className='row gy-3'>
-                                <div className='col-xl-9'>
+                                <div className='col-xl-8'>
                                     <div className='row gy-3'>
                                         <div className='col-xl-6'>
                                             <div className='cardWrapper row align-items-center col-12 mx-auto'>
@@ -32,18 +32,7 @@ function AccountBillingOverall() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className='col-xl-3'>
-                                            <div class="itemWrapper a">
-                                                <div class="heading">
-                                                    <i class="fa-duotone fa-ballot-check"></i> Last Transaction
-                                                </div>
-                                                <div class="data-number">$ 200.<sub style={{ fontSize: 14 }}>00</sub></div>
-                                                <div class="label">Date: <span className='float-end'>16-01-2023</span></div>
-                                                <div class="label">Package: <span className='float-end'>Basic Package</span></div>
-                                                <div class="label">Tenure: <span className='float-end'>Yearly Basis</span></div>
-                                            </div>
-                                        </div>
-                                        <div className='col-xl-3'>
+                                        <div className='col-xl-6'>
                                             <div class="itemWrapper b">
                                                 <div class="heading">
                                                     <i class="fa-duotone fa-ballot"></i> Upcoming Transaction
@@ -102,85 +91,98 @@ function AccountBillingOverall() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-xl-3'>
-                                    <div class="itemWrapper c h-100">
-                                        <div class="heading">
-                                            <i class="fa-duotone fa-file-invoice"></i> Invoices
+                                <div className='col-xl-4'>
+                                    <div className='col-xl-12'>
+                                        <div class="itemWrapper c h-100">
+                                            <div class="heading">
+                                                <i class="fa-duotone fa-file-invoice"></i> Invoices
+                                            </div>
+                                            <ul className='invoiceList'>
+                                                <li>
+                                                    <div className='col-7'>
+                                                        <p>March 01, 2024</p>
+                                                        <span>#MS-415646</span>
+                                                    </div>
+                                                    <div className='me-2' style={{ width: 55 }}>
+                                                        <p>$100</p>
+                                                    </div>
+                                                    <div>
+                                                        <a><i class="fa-duotone fa-files me-1"></i> PDF</a>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div className='col-7'>
+                                                        <p>March 02, 2024</p>
+                                                        <span>#MS-415646</span>
+                                                    </div>
+                                                    <div className='me-2' style={{ width: 55 }}>
+                                                        <p>$100</p>
+                                                    </div>
+                                                    <div>
+                                                        <a><i class="fa-duotone fa-files me-1"></i> PDF</a>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div className='col-7'>
+                                                        <p>March 03, 2024</p>
+                                                        <span>#MS-415646</span>
+                                                    </div>
+                                                    <div className='me-2' style={{ width: 55 }}>
+                                                        <p>$100</p>
+                                                    </div>
+                                                    <div>
+                                                        <a><i class="fa-duotone fa-files me-1"></i> PDF</a>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div className='col-7'>
+                                                        <p>March 04, 2024</p>
+                                                        <span>#MS-415646</span>
+                                                    </div>
+                                                    <div className='me-2' style={{ width: 55 }}>
+                                                        <p>$100</p>
+                                                    </div>
+                                                    <div>
+                                                        <a><i class="fa-duotone fa-files me-1"></i> PDF</a>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div className='col-7'>
+                                                        <p>March 05, 2024</p>
+                                                        <span>#MS-415646</span>
+                                                    </div>
+                                                    <div className='me-2' style={{ width: 55 }}>
+                                                        <p>$100</p>
+                                                    </div>
+                                                    <div>
+                                                        <a><i class="fa-duotone fa-files me-1"></i> PDF</a>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div className='col-7'>
+                                                        <p>March 06, 2024</p>
+                                                        <span>#MS-415646</span>
+                                                    </div>
+                                                    <div className='me-2' style={{ width: 55 }}>
+                                                        <p>$100</p>
+                                                    </div>
+                                                    <div>
+                                                        <a><i class="fa-duotone fa-files me-1"></i> PDF</a>
+                                                    </div>
+                                                </li>
+                                            </ul>
                                         </div>
-                                        <ul className='invoiceList'>
-                                            <li>
-                                                <div className='col-7'>
-                                                    <p>March 01, 2024</p>
-                                                    <span>#MS-415646</span>
-                                                </div>
-                                                <div className='me-2' style={{ width: 55 }}>
-                                                    <p>$100</p>
-                                                </div>
-                                                <div>
-                                                    <a><i class="fa-duotone fa-files me-1"></i> PDF</a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div className='col-7'>
-                                                    <p>March 02, 2024</p>
-                                                    <span>#MS-415646</span>
-                                                </div>
-                                                <div className='me-2' style={{ width: 55 }}>
-                                                    <p>$100</p>
-                                                </div>
-                                                <div>
-                                                    <a><i class="fa-duotone fa-files me-1"></i> PDF</a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div className='col-7'>
-                                                    <p>March 03, 2024</p>
-                                                    <span>#MS-415646</span>
-                                                </div>
-                                                <div className='me-2' style={{ width: 55 }}>
-                                                    <p>$100</p>
-                                                </div>
-                                                <div>
-                                                    <a><i class="fa-duotone fa-files me-1"></i> PDF</a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div className='col-7'>
-                                                    <p>March 04, 2024</p>
-                                                    <span>#MS-415646</span>
-                                                </div>
-                                                <div className='me-2' style={{ width: 55 }}>
-                                                    <p>$100</p>
-                                                </div>
-                                                <div>
-                                                    <a><i class="fa-duotone fa-files me-1"></i> PDF</a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div className='col-7'>
-                                                    <p>March 05, 2024</p>
-                                                    <span>#MS-415646</span>
-                                                </div>
-                                                <div className='me-2' style={{ width: 55 }}>
-                                                    <p>$100</p>
-                                                </div>
-                                                <div>
-                                                    <a><i class="fa-duotone fa-files me-1"></i> PDF</a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div className='col-7'>
-                                                    <p>March 06, 2024</p>
-                                                    <span>#MS-415646</span>
-                                                </div>
-                                                <div className='me-2' style={{ width: 55 }}>
-                                                    <p>$100</p>
-                                                </div>
-                                                <div>
-                                                    <a><i class="fa-duotone fa-files me-1"></i> PDF</a>
-                                                </div>
-                                            </li>
-                                        </ul>
+                                    </div>
+                                    <div className='col-xl-12'>
+                                        <div class="itemWrapper a">
+                                            <div class="heading">
+                                                <i class="fa-duotone fa-ballot-check"></i> Last Transaction
+                                            </div>
+                                            <div class="data-number">$ 200.<sub style={{ fontSize: 14 }}>00</sub></div>
+                                            <div class="label">Date: <span className='float-end'>16-01-2023</span></div>
+                                            <div class="label">Package: <span className='float-end'>Basic Package</span></div>
+                                            <div class="label">Tenure: <span className='float-end'>Yearly Basis</span></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
