@@ -186,7 +186,7 @@ function AccountBillingOverall() {
                                     </div>
                                 </div>
                             </div>
-                            <div className='row gy-3 pt-2'>
+                            {/* <div className='row gy-3 pt-2'>
                                 <div className='col-xl-6'>
                                     <div className='profileView px-0'>
                                         <div className='profileDetailsHolder position-relative'>
@@ -208,7 +208,7 @@ function AccountBillingOverall() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
