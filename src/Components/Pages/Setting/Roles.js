@@ -156,7 +156,7 @@ function Roles() {
     return result;
   };
   
-  const filteredPermission = filterPermissionById(defaultPermission, account.role_permissions.permissions);
+  const filteredPermission = filterPermissionById(defaultPermission, account.permissions);
   return (
     <>
       <style>
@@ -306,7 +306,7 @@ function Roles() {
                                       setSelectedRoleId(item.id);
                                       setSelectedRole(item.name);
                                       setSelectedPermission(
-                                        item.permissions.map((item)=>{
+                                        item.permissions?.map((item)=>{
                                           return(item.permission_id)
                                         })
                                       );
