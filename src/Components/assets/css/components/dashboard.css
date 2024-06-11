@@ -326,6 +326,7 @@
     list-style: none;
     text-align: left;
     padding-top: 10px;
+    margin-bottom: 0;
 }
 
 .itemWrapper .invoiceList li {

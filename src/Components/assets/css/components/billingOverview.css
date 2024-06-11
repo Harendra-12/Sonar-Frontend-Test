@@ -1,4 +1,63 @@
 .cardWrapper {
     padding: 10px;
     border-radius: 10px;
+    background: linear-gradient(316deg, rgba(0, 0, 0, 1) 0%, rgba(34, 34, 34, 1) 100%);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100%;
+    color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.cardWrapper .imgWrapper {
+    margin-left: auto;
+}
+
+.cardWrapper .imgWrapper,
+.savedCardWrapper .imgWrapper {
+    width: 50px;
+    height: 30px;
+}
+
+.cardWrapper .imgWrapper img,
+.savedCardWrapper .imgWrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.cardWrapper label {
+    font-weight: 300;
+    font-size: 14px;
+    color: #ffffffb5;
+}
+
+.cardWrapper h5 {
+    font-size: 18px !important;
+}
+
+.cardWrapper p,
+.cardWrapper h5 {
+    margin-bottom: 0;
+    font-weight: 500;
+}
+
+.savedCardWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.savedCardWrapper label {
+    font-weight: 600;
+    color: #2a2a2a;
+}
+
+.savedCardWrapper.active {
+    border: 1px solid green;
+    box-shadow: #00ff1554 0px 3px 8px;
 }

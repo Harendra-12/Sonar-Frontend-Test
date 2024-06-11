@@ -681,7 +681,7 @@ function Navbar() {
                       </li> */}
                       <li className="tabItem" effect="ripple">
                         <NavLink
-                          to="/billing-overview"
+                          to="/"
                           onClick={backToTop}
                           className="nav-link"
                         >
@@ -705,7 +705,7 @@ function Navbar() {
                       </li>
                       <li className="tabItem" effect="ripple">
                         <NavLink
-                          to="/cdr-report3"
+                          to="/billing-overview"
                           onClick={backToTop}
                           className="nav-link"
                         >
