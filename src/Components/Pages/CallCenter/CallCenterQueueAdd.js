@@ -12,7 +12,7 @@ import CircularLoader from "../Misc/CircularLoader";
 
 function CallCenterQueueAdd() {
   const navigate = useNavigate();
-  const [loading,setLoading]=useState(false)
+  const [loading, setLoading] = useState(false);
   const [ringGroup, setRingGroup] = useState();
   const [extension, setExtension] = useState();
   const account = useSelector((state) => state.account);
@@ -61,8 +61,8 @@ function CallCenterQueueAdd() {
       name: "",
       level: "0",
       position: "0",
-      type:"callback",
-      status:"Logged Out",
+      type: "callback",
+      status: "Logged Out",
     },
   ]);
 
@@ -74,8 +74,8 @@ function CallCenterQueueAdd() {
         name: "",
         level: "0",
         position: "0",
-        type:"callback",
-        status:"Logged Out",
+        type: "callback",
+        status: "Logged Out",
       },
     ]);
   }
@@ -144,7 +144,7 @@ function CallCenterQueueAdd() {
       !(callCenter.abandoned === "") &&
       !(callCenter.prefix === "")
     ) {
-      setLoading(true)
+      setLoading(true);
       const parsedData = {
         queue_name: callCenter.name,
         greeting: callCenter.greeting,
@@ -155,16 +155,16 @@ function CallCenterQueueAdd() {
         queue_timeout_action: callCenter.action,
         discard_abandoned_after: callCenter.abandoned,
         queue_cid_prefix: callCenter.prefix,
-        account_id:account.account_id,
-        created_by:account.id,
+        account_id: account.account_id,
+        created_by: account.id,
         agents: agent.map((item) => {
           if (item.name !== "") {
             return {
               agent_name: item.name,
               tier_level: item.level,
               tier_position: item.position,
-              type:item.type,
-              status:"Logged Out",
+              type: item.type,
+              status: "Logged Out",
             };
           }
         }),
@@ -175,7 +175,7 @@ function CallCenterQueueAdd() {
         parsedData
       );
       if (apiData.status) {
-        setLoading(false)
+        setLoading(false);
         toast.success(apiData.message);
         setCallCenter({
           name: "",
@@ -189,7 +189,7 @@ function CallCenterQueueAdd() {
           prefix: "",
         });
       } else {
-        setLoading(false)
+        setLoading(false);
         toast.error(apiData.message);
       }
     }
@@ -198,396 +198,400 @@ function CallCenterQueueAdd() {
   return (
     <main className="mainContent">
       <section id="phonePage">
-        <div className="container-fluid">
-          <div className="row justify-content-center">
-            <div className="col-12" id="subPageHeader">
-              <div className="row px-xl-3">
-                <div className="col-xl-6 my-auto">
-                  <h4 className="my-auto">Add Call Center Queue</h4>
-                </div>
-                <div className="col-xl-6 ps-2">
-                  <div className="d-flex justify-content-end">
-                    <button
-                      effect="ripple"
-                      className="panelButton"
-                      onClick={() => {
-                        backToTop();
-                        navigate(-1);
-                      }}
-                    >
-                      Back
-                    </button>
-                    <button
-                      effect="ripple"
-                      className="panelButton"
-                      onClick={handleSubmit}
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
+        <div className="container-fluid px-0">
+          <div className="row justify-content-center" id="subPageHeader">
+            <div className="col-xl-6 my-auto">
+              <h4 className="my-auto">Add Call Center Queue</h4>
+            </div>
+            <div className="col-xl-6 ps-2">
+              <div className="d-flex justify-content-end">
+                <button
+                  effect="ripple"
+                  className="panelButton"
+                  onClick={() => {
+                    backToTop();
+                    navigate(-1);
+                  }}
+                >
+                  Back
+                </button>
+                <button
+                  effect="ripple"
+                  className="panelButton"
+                  onClick={handleSubmit}
+                >
+                  Save
+                </button>
               </div>
             </div>
-            <div className="col-xl-12">
-            {loading ? (
-                <div colSpan={99}>
-                  <CircularLoader />
+          </div>
+        </div>
+        <div className="col-xl-12">
+          {loading ? (
+            <div colSpan={99}>
+              <CircularLoader />
+            </div>
+          ) : (
+            ""
+          )}
+          <div className="mx-2" id="detailsContent">
+            <form action="#" className="row">
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Queue Name</label>
+                  {error.name ? (
+                    <label className="status missing">Field missing</label>
+                  ) : (
+                    ""
+                  )}
                 </div>
-              ) : (
-                ""
-              )}
-              <div className="mx-2" id="detailsContent">
-                <form action="#" className="row">
-                  <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="">Queue Name</label>
-                      {error.name ? (
-                        <label className="status missing">Field missing</label>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                    <div className="col-12">
-                      <input
-                        type="text"
-                        name="extension"
-                        value={callCenter.name}
-                        onChange={(e) => {
-                          setCallCenter((prevState) => ({
-                            ...prevState,
-                            name: e.target.value,
-                          }));
-                          setError((prevState) => ({
-                            ...prevState,
-                            name: false,
-                          }));
-                        }}
-                        className="formItem"
-                      />
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        Enter the queue name.
-                      </label>
-                    </div>
-                  </div>
-                  <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="">Extension</label>
-                      {error.extension ? (
-                        <label className="status missing">Field missing</label>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                    <div className="col-12">
-                      <input
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                        value={callCenter.extension}
-                        onChange={(e) => {
-                          setCallCenter((prevState) => ({
-                            ...prevState,
-                            extension: e.target.value,
-                          }));
-                          setError((prevState) => ({
-                            ...prevState,
-                            extension: false,
-                          }));
-                        }}
-                      />
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        Enter the extension number.
-                      </label>
-                    </div>
-                  </div>
-                  <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="">Greeting</label>
-                    </div>
-                    <div className="col-12">
-                      <select
-                        value={callCenter.greeting}
-                        onChange={(e) => {
-                          setCallCenter((prevState) => ({
-                            ...prevState,
-                            greeting: e.target.value,
-                          }));
-                        }}
-                        className="formItem w-100"
-                      >
-                        <option>say</option>
-                        <option>tone_stream</option>
-                      </select>
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        Select the desired Greeting.
-                      </label>
-                    </div>
-                  </div>
-                  <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="">Strategy</label>
-                    </div>
-                    <div className="col-12">
-                      <select
-                        value={callCenter.strategy}
-                        onChange={(e) => {
-                          setCallCenter((prevState) => ({
-                            ...prevState,
-                            strategy: e.target.value,
-                          }));
-                        }}
-                        className="formItem w-100"
-                      >
-                        <option value="ring-all">Ring All</option>
-                        <option value="longest-idle-agent">
-                          Longest Idle Agent
-                        </option>
-                        <option value="round-robin">Round Robin</option>
-                        <option value="top-down">Top Down</option>
-                        <option value="agent-with-least-talk-time">Agent with least talk time</option>
-                        <option value="agent-with-fewest-calls">Agent with fewest calls</option>
-                        <option value="sequentially-by-aget-order">Sequentially by agent order</option>
-                        <option value="ring-progressively">Ring Progressively</option>
-                        <option value="random">Random</option>
-                      </select>
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        Select the queue ring strategy.
-                      </label>
-                    </div>
-                  </div>
-                  <div className="formRow col-xl-12 row">
-                    {agent &&
-                      agent.map((item, index) => {
-                        return (
-                          <div className="row" key={index}>
-                            <div
-                              className="formLabel pe-2 m-0 mt-auto"
-                              style={{ width: 14 }}
-                            >
-                              <label>{index + 1}.</label>
-                            </div>
-                            <div className="col-2 pe-2">
-                              <div className="formLabel">
-                                {index === 0 ? (
-                                  <label htmlFor="">Agent Name</label>
-                                ) : (
-                                  ""
-                                )}
-                                {error.agentName && item.name === "" ? (
-                                  <label className="status missing">
-                                    Field missing
-                                  </label>
-                                ) : (
-                                  ""
-                                )}
-                              </div>
-                              <div className="position-relative">
-                                <input
-                                  type="text"
-                                  name="name"
-                                  value={item.name}
-                                  onChange={(e) => handleAgentChange(e, index)}
-                                  className="formItem"
-                                  placeholder="Destination"
-                                />
-                              </div>
-                            </div>
-                            <div className="col-2 pe-2">
-                              <div className="formLabel">
-                                {index === 0 ? (
-                                  <label htmlFor="">Tier Level</label>
-                                ) : (
-                                  ""
-                                )}
-                              </div>
-                              <select
-                                className="formItem me-0"
-                                style={{ width: "100%" }}
-                                name="level"
-                                onChange={(e) => handleAgentChange(e, index)}
-                                id="selectFormRow"
-                              >
-                                <option value={0}>0</option>
-                                <option value={1}>1</option>
-                                <option value={2}>2</option>
-                                <option value={3}>3</option>
-                                <option value={4}>4</option>
-                                <option value={5}>5</option>
-                                <option value={6}>6</option>
-                                <option value={7}>7</option>
-                                <option value={8}>8</option>
-                                <option value={9}>9</option>
-                              </select>
-                            </div>
-                            <div className="col-2 pe-2">
-                              <div className="formLabel">
-                                {index === 0 ? (
-                                  <label htmlFor="">Tier Position</label>
-                                ) : (
-                                  ""
-                                )}
-                              </div>
-                              <select
-                                className="formItem me-0"
-                                style={{ width: "100%" }}
-                                name="position"
-                                onChange={(e) => handleAgentChange(e, index)}
-                                id="selectFormRow"
-                              >
-                                <option value={0}>0</option>
-                                <option value={1}>1</option>
-                                <option value={2}>2</option>
-                                <option value={3}>3</option>
-                                <option value={4}>4</option>
-                                <option value={5}>5</option>
-                                <option value={6}>6</option>
-                                <option value={7}>7</option>
-                                <option value={8}>8</option>
-                                <option value={9}>9</option>
-                              </select>
-                            </div>
-                            <div className="col-2 pe-2">
-                              <div className="formLabel">
-                                {index === 0 ? (
-                                  <label htmlFor="">Type</label>
-                                ) : (
-                                  ""
-                                )}
-                              </div>
-                              <select
-                                className="formItem me-0"
-                                style={{ width: "100%" }}
-                                name="type"
-                                onChange={(e) => handleAgentChange(e, index)}
-                                id="selectFormRow"
-                              >
-                                <option value={"callback"}>Call Back</option>
-                                <option value={"uuid-standby"}>UUID Standbu</option>
-                              </select>
-                            </div>
-                            <div className="col-2 pe-2">
-                              <div className="formLabel">
-                                {index === 0 ? (
-                                  <label htmlFor="">Status</label>
-                                ) : (
-                                  ""
-                                )}
-                              </div>
-                              <select
-                                className="formItem me-0"
-                                style={{ width: "100%" }}
-                                name="status"
-                                onChange={(e) => handleAgentChange(e, index)}
-                                id="selectFormRow"
-                              >
-                                <option value={"Logged Out"}>Logged Out</option>
-                                <option value={"Available"}>Available</option>
-                                <option value={"Available (On Demand)"}>Available (On Demand)</option>
-                                <option value={"On Break"}>On Break</option>
-                              </select>
-                            </div>
-                            
+                <div className="col-12">
+                  <input
+                    type="text"
+                    name="extension"
+                    value={callCenter.name}
+                    onChange={(e) => {
+                      setCallCenter((prevState) => ({
+                        ...prevState,
+                        name: e.target.value,
+                      }));
+                      setError((prevState) => ({
+                        ...prevState,
+                        name: false,
+                      }));
+                    }}
+                    className="formItem"
+                  />
+                  <br />
+                  <label htmlFor="data" className="formItemDesc">
+                    Enter the queue name.
+                  </label>
+                </div>
+              </div>
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Extension</label>
+                  {error.extension ? (
+                    <label className="status missing">Field missing</label>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div className="col-12">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={callCenter.extension}
+                    onChange={(e) => {
+                      setCallCenter((prevState) => ({
+                        ...prevState,
+                        extension: e.target.value,
+                      }));
+                      setError((prevState) => ({
+                        ...prevState,
+                        extension: false,
+                      }));
+                    }}
+                  />
+                  <br />
+                  <label htmlFor="data" className="formItemDesc">
+                    Enter the extension number.
+                  </label>
+                </div>
+              </div>
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Greeting</label>
+                </div>
+                <div className="col-12">
+                  <select
+                    value={callCenter.greeting}
+                    onChange={(e) => {
+                      setCallCenter((prevState) => ({
+                        ...prevState,
+                        greeting: e.target.value,
+                      }));
+                    }}
+                    className="formItem w-100"
+                  >
+                    <option>say</option>
+                    <option>tone_stream</option>
+                  </select>
+                  <br />
+                  <label htmlFor="data" className="formItemDesc">
+                    Select the desired Greeting.
+                  </label>
+                </div>
+              </div>
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Strategy</label>
+                </div>
+                <div className="col-12">
+                  <select
+                    value={callCenter.strategy}
+                    onChange={(e) => {
+                      setCallCenter((prevState) => ({
+                        ...prevState,
+                        strategy: e.target.value,
+                      }));
+                    }}
+                    className="formItem w-100"
+                  >
+                    <option value="ring-all">Ring All</option>
+                    <option value="longest-idle-agent">
+                      Longest Idle Agent
+                    </option>
+                    <option value="round-robin">Round Robin</option>
+                    <option value="top-down">Top Down</option>
+                    <option value="agent-with-least-talk-time">
+                      Agent with least talk time
+                    </option>
+                    <option value="agent-with-fewest-calls">
+                      Agent with fewest calls
+                    </option>
+                    <option value="sequentially-by-aget-order">
+                      Sequentially by agent order
+                    </option>
+                    <option value="ring-progressively">
+                      Ring Progressively
+                    </option>
+                    <option value="random">Random</option>
+                  </select>
+                  <br />
+                  <label htmlFor="data" className="formItemDesc">
+                    Select the queue ring strategy.
+                  </label>
+                </div>
+              </div>
+              <div className="formRow col-xl-12 row">
+                {agent &&
+                  agent.map((item, index) => {
+                    return (
+                      <div className="row" key={index}>
+                        <div
+                          className="formLabel pe-2 m-0 mt-auto"
+                          style={{ width: 14 }}
+                        >
+                          <label>{index + 1}.</label>
+                        </div>
+                        <div className="col-2 pe-2">
+                          <div className="formLabel">
                             {index === 0 ? (
-                              ""
+                              <label htmlFor="">Agent Name</label>
                             ) : (
-                              <div
-                                onClick={() => removeAgenet(item.id)}
-                                className="col-auto h-100 d-flex align-items-center"
-                              >
-                                <button
-                                  type="button"
-                                  className="clearButton text-danger my-auto"
-                                >
-                                  <i className="fa-duotone fa-trash"></i>
-                                </button>
-                              </div>
+                              ""
                             )}
-                            {index === agent.length - 1 ? (
-                              <div
-                                onClick={addNewAgent}
-                                className="col-auto h-100 d-flex align-items-center"
-                              >
-                                <button
-                                  type="button"
-                                  className={
-                                    index === 0
-                                      ? "panelButton mt-4 mb-0"
-                                      : "panelButton my-auto"
-                                  }
-                                >
-                                  Add
-                                </button>
-                              </div>
+                            {error.agentName && item.name === "" ? (
+                              <label className="status missing">
+                                Field missing
+                              </label>
                             ) : (
                               ""
                             )}
                           </div>
-                        );
-                      })}
-                  </div>
+                          <div className="position-relative">
+                            <input
+                              type="text"
+                              name="name"
+                              value={item.name}
+                              onChange={(e) => handleAgentChange(e, index)}
+                              className="formItem"
+                              placeholder="Destination"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-2 pe-2">
+                          <div className="formLabel">
+                            {index === 0 ? (
+                              <label htmlFor="">Tier Level</label>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                          <select
+                            className="formItem me-0"
+                            style={{ width: "100%" }}
+                            name="level"
+                            onChange={(e) => handleAgentChange(e, index)}
+                            id="selectFormRow"
+                          >
+                            <option value={0}>0</option>
+                            <option value={1}>1</option>
+                            <option value={2}>2</option>
+                            <option value={3}>3</option>
+                            <option value={4}>4</option>
+                            <option value={5}>5</option>
+                            <option value={6}>6</option>
+                            <option value={7}>7</option>
+                            <option value={8}>8</option>
+                            <option value={9}>9</option>
+                          </select>
+                        </div>
+                        <div className="col-2 pe-2">
+                          <div className="formLabel">
+                            {index === 0 ? (
+                              <label htmlFor="">Tier Position</label>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                          <select
+                            className="formItem me-0"
+                            style={{ width: "100%" }}
+                            name="position"
+                            onChange={(e) => handleAgentChange(e, index)}
+                            id="selectFormRow"
+                          >
+                            <option value={0}>0</option>
+                            <option value={1}>1</option>
+                            <option value={2}>2</option>
+                            <option value={3}>3</option>
+                            <option value={4}>4</option>
+                            <option value={5}>5</option>
+                            <option value={6}>6</option>
+                            <option value={7}>7</option>
+                            <option value={8}>8</option>
+                            <option value={9}>9</option>
+                          </select>
+                        </div>
+                        <div className="col-2 pe-2">
+                          <div className="formLabel">
+                            {index === 0 ? <label htmlFor="">Type</label> : ""}
+                          </div>
+                          <select
+                            className="formItem me-0"
+                            style={{ width: "100%" }}
+                            name="type"
+                            onChange={(e) => handleAgentChange(e, index)}
+                            id="selectFormRow"
+                          >
+                            <option value={"callback"}>Call Back</option>
+                            <option value={"uuid-standby"}>UUID Standbu</option>
+                          </select>
+                        </div>
+                        <div className="col-2 pe-2">
+                          <div className="formLabel">
+                            {index === 0 ? (
+                              <label htmlFor="">Status</label>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                          <select
+                            className="formItem me-0"
+                            style={{ width: "100%" }}
+                            name="status"
+                            onChange={(e) => handleAgentChange(e, index)}
+                            id="selectFormRow"
+                          >
+                            <option value={"Logged Out"}>Logged Out</option>
+                            <option value={"Available"}>Available</option>
+                            <option value={"Available (On Demand)"}>
+                              Available (On Demand)
+                            </option>
+                            <option value={"On Break"}>On Break</option>
+                          </select>
+                        </div>
 
-                  <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="">Music on Hold</label>
-                    </div>
-                    <div className="col-12">
-                      <select
-                        value={callCenter.musicHold}
-                        onChange={(e) => {
-                          setCallCenter((prevState) => ({
-                            ...prevState,
-                            musicHold: e.target.value,
-                          }));
-                        }}
-                        className="formItem w-100"
-                      >
-                        <option>test</option>
-                      </select>
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        Select the desired hold music.
-                      </label>
-                    </div>
-                  </div>
-                  <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="">Record</label>
-                    </div>
-                    <div className="col-12">
-                      <select
-                        value={callCenter.record}
-                        onChange={(e) => {
-                          setCallCenter((prevState) => ({
-                            ...prevState,
-                            record: e.target.value,
-                          }));
-                        }}
-                        className="formItem w-100"
-                      >
-                        <option>True</option>
-                        <option>False</option>
-                      </select>
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        Save the recording.
-                      </label>
-                    </div>
-                  </div>
-                  <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="">Timeout Action</label>
-                      {error.action ? (
-                        <label className="status missing">Field missing</label>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                    <div className="col-12">
-                      {/* <input
+                        {index === 0 ? (
+                          ""
+                        ) : (
+                          <div
+                            onClick={() => removeAgenet(item.id)}
+                            className="col-auto h-100 d-flex align-items-center"
+                          >
+                            <button
+                              type="button"
+                              className="clearButton text-danger my-auto"
+                            >
+                              <i className="fa-duotone fa-trash"></i>
+                            </button>
+                          </div>
+                        )}
+                        {index === agent.length - 1 ? (
+                          <div
+                            onClick={addNewAgent}
+                            className="col-auto h-100 d-flex align-items-center"
+                          >
+                            <button
+                              type="button"
+                              className={
+                                index === 0
+                                  ? "panelButton mt-4 mb-0"
+                                  : "panelButton my-auto"
+                              }
+                            >
+                              Add
+                            </button>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    );
+                  })}
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Music on Hold</label>
+                </div>
+                <div className="col-12">
+                  <select
+                    value={callCenter.musicHold}
+                    onChange={(e) => {
+                      setCallCenter((prevState) => ({
+                        ...prevState,
+                        musicHold: e.target.value,
+                      }));
+                    }}
+                    className="formItem w-100"
+                  >
+                    <option>test</option>
+                  </select>
+                  <br />
+                  <label htmlFor="data" className="formItemDesc">
+                    Select the desired hold music.
+                  </label>
+                </div>
+              </div>
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Record</label>
+                </div>
+                <div className="col-12">
+                  <select
+                    value={callCenter.record}
+                    onChange={(e) => {
+                      setCallCenter((prevState) => ({
+                        ...prevState,
+                        record: e.target.value,
+                      }));
+                    }}
+                    className="formItem w-100"
+                  >
+                    <option>True</option>
+                    <option>False</option>
+                  </select>
+                  <br />
+                  <label htmlFor="data" className="formItemDesc">
+                    Save the recording.
+                  </label>
+                </div>
+              </div>
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Timeout Action</label>
+                  {error.action ? (
+                    <label className="status missing">Field missing</label>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div className="col-12">
+                  {/* <input
                         type="text"
                         name="extension"
                         className="formItem"
@@ -603,117 +607,114 @@ function CallCenterQueueAdd() {
                             }))
                         }}
                       /> */}
-                      <select
-                        className="formItem"
-                        name=""
-                        id="selectFormRow"
-                        value={callCenter.action}
-                        onChange={(e) => {
-                          setCallCenter((prevState) => ({
-                            ...prevState,
-                            action: e.target.value,
-                          }));
-                          setError((prevState) => ({
-                            ...prevState,
-                            action: false,
-                          }));
-                        }}
-                      >
-                        <option selected="" value="" />
-                        <optgroup label="Extension" disabled />
-                        {extension &&
-                          extension.map((item, key) => {
-                            return (
-                              <option key={key} value={item.extension}>
-                                {item.extension}
-                              </option>
-                            );
-                          })}
-                        <optgroup label="Ring Group" disabled />
-                        {ringGroup &&
-                          ringGroup.map((item, key) => {
-                            return (
-                              <option key={key} value={item.extension}>
-                                {item.extension}
-                              </option>
-                            );
-                          })}
-                      </select>
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        Set the action to perform when the max wait time is
-                        reached.
-                      </label>
-                    </div>
-                  </div>
-                  <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="">Discard Abandoned After</label>
-                      {error.abandoned ? (
-                        <label className="status missing">Field missing</label>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                    <div className="col-12">
-                      <input
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                        value={callCenter.abandoned}
-                        onChange={(e) => {
-                          setCallCenter((prevState) => ({
-                            ...prevState,
-                            abandoned: e.target.value,
-                          }));
-                          setError((prevState) => ({
-                            ...prevState,
-                            abandoned: false,
-                          }));
-                        }}
-                      />
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        The number of seconds before the abandoned call is
-                        removed from the queue.
-                      </label>
-                    </div>
-                  </div>
-                  <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="">Caller ID Name Prefix</label>
-                      {error.prefix ? (
-                        <label className="status missing">Field missing</label>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                    <div className="col-12">
-                      <input
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                        value={callCenter.prefix}
-                        onChange={(e) => {
-                          setCallCenter((prevState) => ({
-                            ...prevState,
-                            prefix: e.target.value,
-                          }));
-                          setError((prevState) => ({
-                            ...prevState,
-                            prefix: false,
-                          }));
-                        }}
-                      />
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        Set a prefix on the caller ID name.
-                      </label>
-                    </div>
-                  </div>
-                </form>
+                  <select
+                    className="formItem"
+                    name=""
+                    id="selectFormRow"
+                    value={callCenter.action}
+                    onChange={(e) => {
+                      setCallCenter((prevState) => ({
+                        ...prevState,
+                        action: e.target.value,
+                      }));
+                      setError((prevState) => ({
+                        ...prevState,
+                        action: false,
+                      }));
+                    }}
+                  >
+                    <option selected="" value="" />
+                    <optgroup label="Extension" disabled />
+                    {extension &&
+                      extension.map((item, key) => {
+                        return (
+                          <option key={key} value={item.extension}>
+                            {item.extension}
+                          </option>
+                        );
+                      })}
+                    <optgroup label="Ring Group" disabled />
+                    {ringGroup &&
+                      ringGroup.map((item, key) => {
+                        return (
+                          <option key={key} value={item.extension}>
+                            {item.extension}
+                          </option>
+                        );
+                      })}
+                  </select>
+                  <br />
+                  <label htmlFor="data" className="formItemDesc">
+                    Set the action to perform when the max wait time is reached.
+                  </label>
+                </div>
               </div>
-            </div>
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Discard Abandoned After</label>
+                  {error.abandoned ? (
+                    <label className="status missing">Field missing</label>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div className="col-12">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={callCenter.abandoned}
+                    onChange={(e) => {
+                      setCallCenter((prevState) => ({
+                        ...prevState,
+                        abandoned: e.target.value,
+                      }));
+                      setError((prevState) => ({
+                        ...prevState,
+                        abandoned: false,
+                      }));
+                    }}
+                  />
+                  <br />
+                  <label htmlFor="data" className="formItemDesc">
+                    The number of seconds before the abandoned call is removed
+                    from the queue.
+                  </label>
+                </div>
+              </div>
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Caller ID Name Prefix</label>
+                  {error.prefix ? (
+                    <label className="status missing">Field missing</label>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div className="col-12">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={callCenter.prefix}
+                    onChange={(e) => {
+                      setCallCenter((prevState) => ({
+                        ...prevState,
+                        prefix: e.target.value,
+                      }));
+                      setError((prevState) => ({
+                        ...prevState,
+                        prefix: false,
+                      }));
+                    }}
+                  />
+                  <br />
+                  <label htmlFor="data" className="formItemDesc">
+                    Set a prefix on the caller ID name.
+                  </label>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </section>

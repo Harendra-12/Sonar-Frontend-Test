@@ -581,10 +581,9 @@ const ExtensionsAdd = () => {
   return (
     <main className="mainContent">
       <section id="phonePage">
-        <div className="container-fluid">
-          <div className="row justify-content-center">
-            <div className="col-12" id="subPageHeader">
-              <div className="row px-xl-3">
+        <div className="container-fluid px-0">
+          <div className="row justify-content-center" id="subPageHeader">
+            
                 <div className="col-xl-6 my-auto">
                   <h4 className="my-auto">Extension Add</h4>
                 </div>
@@ -1467,8 +1466,7 @@ const ExtensionsAdd = () => {
                   <div />
                 </form>
               </div>
-            </div>
-          </div>
+           
         </div>
       </section>
       <ToastContainer
