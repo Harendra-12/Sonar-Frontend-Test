@@ -78,7 +78,15 @@ const UsersAdd = () => {
           );
         }
         if (apiRole.status) {
-          setRole(apiRole.data);
+          if(apiRole.data.length>0){
+            setRole(apiRole.data);
+          }else{
+            toast.error("Please add Role first")
+            setTimeout(()=>{
+              navigate("/roles")
+            },3000)
+          }
+          
         }
         if (permissionData.status) {
           setDefaultPermission(permissionData.data);
