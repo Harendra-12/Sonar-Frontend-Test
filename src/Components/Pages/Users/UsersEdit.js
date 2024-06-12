@@ -4,6 +4,7 @@ import {
   backToTop,
   generalGetFunction,
   generalPostFunction,
+  generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
@@ -11,6 +12,8 @@ import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../Misc/CircularLoader";
 const UsersEdit = () => {
   const navigate = useNavigate();
+  const location = useLocation()
+  const locationState = location.state
   const [domains, setDomains] = useState("");
   const [timeZone, setTimeZone] = useState("");
   const [loading, setLoading] = useState(false);
@@ -88,29 +91,29 @@ const UsersEdit = () => {
         }
       }
       getDomain();
-      if (value) {
+      if (locationState) {
         async function getData() {
-          const apiData = await generalGetFunction(`/user/${value}`);
-          if (apiData.status) {
+          // const apiData = await generalGetFunction(`/user/${value}`);
+          if (locationState) {
             setLoading(false);
-            console.log("This is suer details", apiData);
             setUserState((prevState) => ({
               ...prevState,
-              userName: apiData.data.username,
-              password: apiData.data.password,
+              userName: locationState.username,
+              password: locationState.password,
               // name:apiData.data.name,
-              firstName: apiData.data.name.split(" ")[0],
-              lastName: apiData.data.name.split(" ")[1],
-              email: apiData.data.email,
-              groups: apiData.data.group_id,
-              domain: apiData.data.domain_id,
-              timeZone: apiData.data.timezone_id,
-              status: apiData.data.status,
-              type: apiData.data.usertype,
-              id: apiData.data.account_id,
+              firstName: locationState.name.split(" ")[0],
+              lastName: locationState.name.split(" ")[1],
+              email: locationState.email,
+              groups: locationState.group_id,
+              domain: locationState.domain_id,
+              timeZone: locationState.timezone_id,
+              status: locationState.status,
+              type: locationState.usertype,
+              id: locationState.account_id,
               
             }));
-            setSelectedPermission(apiData.data.permissions)
+            setSelectedPermission(locationState.permissions);
+            setSelectedRole(locationState.user_role["roles"].name)
           }
         }
         if (account.id) {
@@ -123,50 +126,50 @@ const UsersEdit = () => {
         navigate("/");
       }
     }
-  }, []);
+  }, [account, navigate, value]);
 
   //Calling useName api for availability check after user stop typing
-  async function checkUserName() {
-    if (userState.userName.length > 2) {
-      setUserState((prevState) => ({
-        ...prevState,
-        useNameValidation: true,
-      }));
-      const parsedData = {
-        username: userState.userName,
-      };
-      const userName = await generalPostFunction("/check/username", parsedData);
-      if (userName.status) {
-        setUserState((prevState) => ({
-          ...prevState,
-          isUserNameAvailable: true,
-        }));
-        setUserState((prevState) => ({
-          ...prevState,
-          useNameValidation: false,
-        }));
-      } else {
-        setUserState((prevState) => ({
-          ...prevState,
-          isUserNameAvailable: false,
-        }));
-        setUserState((prevState) => ({
-          ...prevState,
-          useNameValidation: false,
-        }));
-      }
-    }
-  }
+  // async function checkUserName() {
+  //   if (userState.userName.length > 2) {
+  //     setUserState((prevState) => ({
+  //       ...prevState,
+  //       useNameValidation: true,
+  //     }));
+  //     const parsedData = {
+  //       username: userState.userName,
+  //     };
+  //     const userName = await generalPostFunction("/check/username", parsedData);
+  //     if (userName.status) {
+  //       setUserState((prevState) => ({
+  //         ...prevState,
+  //         isUserNameAvailable: true,
+  //       }));
+  //       setUserState((prevState) => ({
+  //         ...prevState,
+  //         useNameValidation: false,
+  //       }));
+  //     } else {
+  //       setUserState((prevState) => ({
+  //         ...prevState,
+  //         isUserNameAvailable: false,
+  //       }));
+  //       setUserState((prevState) => ({
+  //         ...prevState,
+  //         useNameValidation: false,
+  //       }));
+  //     }
+  //   }
+  // }
 
   // Listning for user typing
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      checkUserName();
-    }, 600);
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [userState.userName]);
+  // useEffect(() => {
+  //   const timeoutId = setTimeout(() => {
+  //     checkUserName();
+  //   }, 600);
+  //   return () => {
+  //     clearTimeout(timeoutId);
+  //   };
+  // }, [userState.userName]);
 
   //   Validating form and creating new user
   async function handleSubmit() {
@@ -181,28 +184,28 @@ const UsersEdit = () => {
         userNameMissing: true,
       }));
     }
-    if (userState.password.length > 3) {
-      setUserState((prevState) => ({
-        ...prevState,
-        passwordMissing: false,
-      }));
-    } else {
-      setUserState((prevState) => ({
-        ...prevState,
-        passwordMissing: true,
-      }));
-    }
-    if (userState.password === userState.cPassword) {
-      setUserState((prevState) => ({
-        ...prevState,
-        cPasswordMissing: false,
-      }));
-    } else {
-      setUserState((prevState) => ({
-        ...prevState,
-        cPasswordMissing: true,
-      }));
-    }
+    // if (userState.password.length > 3) {
+    //   setUserState((prevState) => ({
+    //     ...prevState,
+    //     passwordMissing: false,
+    //   }));
+    // } else {
+    //   setUserState((prevState) => ({
+    //     ...prevState,
+    //     passwordMissing: true,
+    //   }));
+    // }
+    // if (userState.password === userState.cPassword) {
+    //   setUserState((prevState) => ({
+    //     ...prevState,
+    //     cPasswordMissing: false,
+    //   }));
+    // } else {
+    //   setUserState((prevState) => ({
+    //     ...prevState,
+    //     cPasswordMissing: true,
+    //   }));
+    // }
     if (userState.email.length > 3 && userState.email.includes("@")) {
       setUserState((prevState) => ({
         ...prevState,
@@ -317,8 +320,8 @@ const UsersEdit = () => {
       selectedPermission.length>0 &&
       userState.userName.length > 3 &&
       userState.userName.length < 20 &&
-      userState.password.length > 3 &&
-      userState.password === userState.cPassword &&
+      // userState.password.length > 3 &&
+      // userState.password === userState.cPassword &&
       userState.email.length > 3 &&
       userState.email.includes("@") &&
       !(
@@ -328,15 +331,13 @@ const UsersEdit = () => {
       !(userState.type === "" || userState.type === "Choose Type") &&
       !(userState.domain === "" || userState.domain === "Choose Domain") &&
       userState.firstName.length > 3 &&
-      userState.firstName.length < 20 &&
-      userState.isUserNameAvailable
+      userState.firstName.length < 20
     ) {
       setLoading(true);
       const parsedData = {
         name: userState.firstName + " " + userState.lastName,
         email: userState.email,
-        password: userState.password,
-        username: userState.userName,
+        // password: userState.password,
         // group_id: userState.groups,
         domain_id: userState.domain,
         timezone_id: userState.timeZone,
@@ -346,7 +347,7 @@ const UsersEdit = () => {
         permissions:selectedPermission,
         role_id:userState.type
       };
-      const addUser = await generalPostFunction(`user/${value}`, parsedData);
+      const addUser = await generalPutFunction(`user/${value}`, parsedData);
       if (addUser.status) {
         setUserState({
           userName: "",
@@ -411,6 +412,7 @@ const UsersEdit = () => {
     }
   };
   const filteredPermission = filterPermissionById(defaultPermission, account.permissions);
+  console.log("This is uiser type",userState.type)
   return (
     <>
     <style>
@@ -467,11 +469,7 @@ const UsersEdit = () => {
                   <label htmlFor="">Username</label>
                   {userState.userName === "" ? (
                     <label className="status missing">Field Missing</label>
-                  ) : userState.isUserNameAvailable ? (
-                    <label className="status success">Username Available</label>
-                  ) : (
-                    <label className="status fail">Not Available</label>
-                  )}
+                  ) : ""}
                   {userState.useNameValidation ? (
                     <img
                       className="loaderSpinner"
@@ -495,10 +493,11 @@ const UsersEdit = () => {
                       }));
                     }}
                     required="required"
+                    disabled
                   />
                 </div>
               </div>
-              <div className="formRow col-xl-3">
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Password</label>
                   {userState.passwordMissing ? (
@@ -557,7 +556,7 @@ const UsersEdit = () => {
                     Green field borders indicate typed passwords match.
                   </label>
                 </div>
-              </div>
+              </div> */}
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Email</label>

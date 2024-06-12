@@ -25,9 +25,6 @@ import ExtensionSettingsEdit from "./Components/Pages/Extensions/ExtensionSettin
 import ExtensionSummary from "./Components/Pages/Extensions/ExtensionSummary";
 import Dashboard from "./Components/Pages/Dashboard/Dashboard";
 import Profile from "./Components/Pages/Profile/Profile";
-import Gateway from "./Components/Pages/Gateway/Gateway";
-import GatewayAdd from "./Components/Pages/Gateway/GatewayAdd";
-import GatewayEdit from "./Components/Pages/Gateway/GatewayEdit";
 import Master from "./Components/Pages/Setting/Master";
 import Destination from "./Components/Pages/Dialplan/Destination";
 import DestinationAdd from "./Components/Pages/Dialplan/DestinationAdd";
@@ -71,7 +68,7 @@ import CallCenterQueueEdit from "./Components/Pages/CallCenter/CallCenterQueueEd
 import Roles from "./Components/Pages/Setting/Roles";
 import CustomerDetails from "./Components/Pages/Profile/CustomerDetails";
 import DocumentUpload from "./Components/Pages/Profile/DocumentUpload";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import UserRegistrationProcessOverview from "./Components/Pages/Admin/UserRegistrationProcessOverview";
 import AccountBillingOverall from "./Components/Pages/Billing/AccountBillingOverall";
 
@@ -89,7 +86,7 @@ const NavigationSetter = () => {
 };
 
 function App() {
-  const account = useSelector((state) => state.account)
+  // const account = useSelector((state) => state.account)
   Socket();
 
   // Unlock this if want push notification add account edit here if id is available
@@ -146,12 +143,6 @@ function App() {
             />
             <Route path="/call-settings" element={<CallSettings />} />
             {/* Extensions Path End */}
-
-            {/* Gateway path start */}
-            <Route path="/gateway" element={<Gateway />} />
-            <Route path="/gateway-add" element={<GatewayAdd />} />
-            <Route path="/gateway-edit" element={<GatewayEdit />} />
-            {/* Gateway path end */}
 
             {/* Dialplan path start */}
             <Route path="/destination" element={<Destination />} />

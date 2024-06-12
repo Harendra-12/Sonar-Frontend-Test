@@ -121,19 +121,6 @@ const Users = () => {
               </div>
               <div className="col-xl-8 mt-3 mt-xl-0">
                 <div className="d-flex justify-content-end flex-wrap gap-2">
-                  {/* <button effect="ripple" className="panelButton">
-                                            Start
-                                        </button>
-                                        <button effect="ripple" className="panelButton">
-                                            Stop
-                                        </button> */}
-                  {/* <button
-                      effect="ripple"
-                      className="panelButton"
-                      onClick={() => window.location.reload()}
-                    >
-                      Refresh
-                    </button> */}
                   <Link
                     to="/users-add"
                     onClick={backToTop}
@@ -157,14 +144,6 @@ const Users = () => {
                 <table>
                   <thead>
                     <tr>
-                      {/* <th>
-                                                <input
-                                                    type="checkbox"
-                                                    id="tableCheckbox"
-                                                    name="demoValue"
-                                                    defaultValue="demoValue"
-                                                />
-                                            </th> */}
                       <th>Username (Extension)</th>
                       <th>Account ID</th>
                       <th>Domain</th>
@@ -188,7 +167,9 @@ const Users = () => {
                               <tr key={index}>
                                 <td
                                   onClick={() =>
-                                    navigate(`/users-edit?id=${item.id}`)
+                                    navigate(`/users-edit?id=${item.id}`, {
+                                      state: item,
+                                    })
                                   }
                                 >
                                   {item.username} ({item.extension?.extension})

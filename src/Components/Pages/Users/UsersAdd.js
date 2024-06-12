@@ -213,17 +213,6 @@ const UsersAdd = () => {
         statusMissing: false,
       }));
     }
-    // if (userState.groups === "" || userState.groups === "Choose Group") {
-    //   setUserState((prevState) => ({
-    //     ...prevState,
-    //     groupMissing: true,
-    //   }));
-    // } else {
-    //   setUserState((prevState) => ({
-    //     ...prevState,
-    //     groupMissing: false,
-    //   }));
-    // }
     if (userState.type === "" || userState.type === "Choose Type") {
       setUserState((prevState) => ({
         ...prevState,
