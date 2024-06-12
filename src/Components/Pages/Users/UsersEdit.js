@@ -53,6 +53,7 @@ const UsersEdit = () => {
     groupMissing: false,
     typeMissing: false,
     domainMissing: false,
+    roleId:""
   });
 
   const account = useSelector((state) => state.account);
@@ -84,7 +85,21 @@ const UsersEdit = () => {
           );
         }
         if (apiRole.status) {
-          setRole(apiRole.data);
+          if(apiRole.data.length>0){
+            setRole(apiRole.data);
+            apiRole.data.map((item,key)=>{
+              if(item.id===locationState.user_role.role_id){
+               setUserState((prevData)=>({
+                ...prevData,
+                roleId:key
+               }))
+              }
+              
+            })
+          }else{
+            navigate("/roles")
+          }
+          
         }
         if (permissionData.status) {
           setDefaultPermission(permissionData.data);
@@ -764,22 +779,24 @@ const UsersEdit = () => {
                   <select
                     className="formItem"
                     name=""
-                    value={role[userState.type]}
+                    value={userState.roleId}
                     onChange={(e) => {
+
                       setUserState((prevState) => ({
                         ...prevState,
-                        type: role[e.target.value].id,
+                        type: e.target.value===""?"":role[e.target.value].id,
+                        roleId:e.target.value
                       }));
-                      setSelectedRole(role[e.target.value].name);
+                      setSelectedRole(e.target.value===""?"":role[e.target.value].name);
                       setSelectedPermission(
-
+                        e.target.value===""?"":
                         role[e.target.value].permissions.map((item)=>{
                           return(item.permission_id)
                         })
                       );
                     }}
                   >
-                    <option>Choose Type</option>
+                    <option value="">Choose Type</option>
                     {role.map((item,key) => {
                       return <option value={key}>{item.name}</option>;
                     })}

@@ -47,6 +47,7 @@ const UsersAdd = () => {
     groupMissing: false,
     typeMissing: false,
     domainMissing: false,
+    roleId:""
   });
 
   const account = useSelector((state) => state.account);
@@ -773,24 +774,29 @@ const UsersAdd = () => {
                     )}
                   </div>
                   <div className="col-12">
+                   
                     <select
                       className="formItem"
                       name=""
-                      value={role[userState.type]}
+                      value={userState.roleId}
                       onChange={(e) => {
+                      
                         setUserState((prevState) => ({
                           ...prevState,
-                          type: role[e.target.value].id,
+                          type:e.target.value===""?"":role[e.target.value].id,
+                          roleId:e.target.value
                         }));
-                        setSelectedRole(role[e.target.value].name);
+                        setSelectedRole(e.target.value===""?"":role[e.target.value].name);
                         setSelectedPermission(
+                          e.target.value===""?"":
                           role[e.target.value].permissions.map((item) => {
                             return item.permission_id;
                           })
                         );
+                        console.log("This is value",e.target.value);
                       }}
                     >
-                      <option>Choose Type</option>
+                      <option value="">Choose Type</option>
                       {role.map((item, key) => {
                         return <option value={key}>{item.name}</option>;
                       })}

@@ -167,7 +167,7 @@ const Users = () => {
                               <tr key={index}>
                                 <td
                                   onClick={() =>
-                                    navigate(`/users-edit?id=${item.id}`, {
+                                    navigate(`/users-edit`, {
                                       state: item,
                                     })
                                   }
@@ -176,21 +176,27 @@ const Users = () => {
                                 </td>
                                 <td
                                   onClick={() =>
-                                    navigate(`/users-edit?id=${item.id}`)
+                                    navigate(`/users-edit`, {
+                                      state: item,
+                                    })
                                   }
                                 >
                                   {item.account_id}
                                 </td>
                                 <td
                                   onClick={() =>
-                                    navigate(`/users-edit?id=${item.id}`)
+                                    navigate(`/users-edit`, {
+                                      state: item,
+                                    })
                                   }
                                 >
                                   {item?.domain?.domain_name}
                                 </td>
                                 <td
                                   onClick={() =>
-                                    navigate(`/users-edit?id=${item.id}`)
+                                    navigate(`/users-edit`, {
+                                      state: item,
+                                    })
                                   }
                                 >
                                   <span
@@ -203,7 +209,9 @@ const Users = () => {
                                 </td>
                                 <td
                                   onClick={() =>
-                                    navigate(`/users-edit?id=${item.id}`)
+                                    navigate(`/users-edit`, {
+                                      state: item,
+                                    })
                                   }
                                 >
                                   True
