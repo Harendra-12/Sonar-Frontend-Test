@@ -14,6 +14,7 @@ const UsersEdit = () => {
   const navigate = useNavigate();
   const location = useLocation()
   const locationState = location.state
+  console.log("this is location state",locationState);
   const [domains, setDomains] = useState("");
   const [timeZone, setTimeZone] = useState("");
   const [loading, setLoading] = useState(false);
@@ -123,7 +124,7 @@ const UsersEdit = () => {
               domain: locationState.domain_id,
               timeZone: locationState.timezone_id,
               status: locationState.status,
-              type: locationState.usertype,
+              type: locationState.user_role.role_id,
               id: locationState.account_id,
               
             }));
@@ -362,38 +363,8 @@ const UsersEdit = () => {
         permissions:selectedPermission,
         role_id:userState.type
       };
-      const addUser = await generalPutFunction(`user/${value}`, parsedData);
+      const addUser = await generalPutFunction(`user/${locationState.id}`, parsedData);
       if (addUser.status) {
-        setUserState({
-          userName: "",
-          password: "",
-          cPassword: "",
-          email: "",
-          language: "",
-          timeZone: "",
-          status: "",
-          firstName: "",
-          lastName: "",
-          organization: "",
-          groups: "",
-          type: "",
-          domain: "",
-          useNameValidation: false,
-          isUserNameAvailable: false,
-          userNameMissing: false,
-          passwordMissing: false,
-          cPasswordMissing: false,
-          emailMissing: false,
-          languageMissing: false,
-          timeZoneMissing: false,
-          statusMissing: false,
-          firstNameMissing: false,
-          lastNameMissing: false,
-          organizationMissing: false,
-          groupMissing: false,
-          typeMissing: false,
-          domainMissing: false,
-        });
         toast.success(addUser.message);
         setLoading(false);
       } else {
