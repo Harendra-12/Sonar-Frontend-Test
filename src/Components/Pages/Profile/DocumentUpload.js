@@ -61,12 +61,11 @@ function DocumentUpload() {
         parsedData
       );
       if (apiData.status) {
-        console.log("Document uploaded", apiData);
+        toast.success(apiData.message)
         setLoading(false);
       } else {
         setLoading(false);
         toast.error(apiData.message);
-        console.log("Document not uploaded", apiData);
       }
     }
   }
@@ -135,8 +134,9 @@ function DocumentUpload() {
     text-overflow: ellipsis;
   }
     .formItem{
-    boder: none;
+    border: none;
     height: inherit;
+    padding: 5px 0;
     }
       `}
       </style>
@@ -151,7 +151,7 @@ function DocumentUpload() {
               <div className="col-xl-4 my-auto">
                 <div className="wrapper" id="register">
                   <div className="formItem d-flex">
-                    <div className="col-10 me-2">
+                    <div className="col-12 me-2">
                       <label htmlFor="">Reg </label>
                       <label for="file-upload1" class="custom-file-upload">
                         {formData.reg ? (
@@ -190,7 +190,7 @@ function DocumentUpload() {
                     </div>
                   </div>
                   <div className="formItem d-flex">
-                    <div className="col-10 me-2">
+                    <div className="col-12 me-2">
                       <label htmlFor="">Tin</label>
                       <label for="file-upload2" class="custom-file-upload">
                         {formData.tin ? (
@@ -230,7 +230,7 @@ function DocumentUpload() {
                     </div>
                   </div>
                   <div className="formItem d-flex">
-                    <div className="col-10 me-2">
+                    <div className="col-12 me-2">
                       <label htmlFor="">Moa</label>
                       <label for="file-upload3" class="custom-file-upload">
                         {formData.moa ? (
@@ -269,8 +269,8 @@ function DocumentUpload() {
                       )}
                     </div>
                   </div>
-                  <div onClick={handleSubmit}>
-                    <p className="serviceBtn w-100">Submit</p>
+                  <div style={{cursor:"pointer"}} onClick={handleSubmit}>
+                    <div className="formButton mx-0 text-center">Submit</div>
                   </div>
                 </div>
               </div>

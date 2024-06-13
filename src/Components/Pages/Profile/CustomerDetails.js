@@ -70,6 +70,8 @@ function CustomerDetails() {
       toast.error(apiData.message);
     }
   }
+
+  console.log("This is account details",accountDetails);
   return (
     <>
       <style>
@@ -193,18 +195,24 @@ function CustomerDetails() {
                 <div className="profileDetailsHolder position-relative">
                   <div className="header d-flex align-items-center">
                     <div className="col-5">Account Details</div>
-                    {accountDetails?.details == null ? (
+                    {accountDetails?.company_status == "1" ? 
+                    <div className="approvalButton">
+                    {" "}
+                    <div  className="float-end btn btn-danger btn-sm">
+                      <i class="fa-light fa-triangle-exclamation"></i> Payment verification under process
+                    </div>{" "}
+                  </div>: accountDetails?.company_status == "2"?
                       <div className="approvalButton">
                         {" "}
                         <Link to="/upload-document" className="float-end btn btn-danger btn-sm">
                           <i class="fa-light fa-triangle-exclamation"></i> Please Upload Document
                         </Link>{" "}
                       </div>
-                    ) : accountDetails?.company_status === "approved" ? (
+                     : accountDetails?.company_status === "3" ? (
                       <div className="approvalButton">
                         {" "}
                         <button className="float-end btn btn-success btn-sm">
-                          <i class="fa-duotone fa-check-double"></i> Approved
+                          <i class="fa-duotone fa-check-double"></i> Document verification under process
                         </button>{" "}
                       </div>
                     ) : (
@@ -215,9 +223,6 @@ function CustomerDetails() {
                         >
                           <i class="fa-duotone fa-check"></i> Approve
                         </button>{" "}
-                        {/* <button className="float-end btn btn-danger mx-2 btn-sm">
-                    <i class="fa-regular fa-xmark"></i> Refuse
-                  </button> */}
                       </div>
                     )}
                   </div>

@@ -46,8 +46,6 @@ import Package from "./Components/Pages/Setting/Package";
 import PackageEdit from "./Components/Pages/Setting/PackageEdit";
 import Feature from "./Components/Pages/Setting/Feature";
 import PendingRequest from "./Components/Pages/Admin/PendingDocument";
-import UserDetails from "./Components/Pages/Admin/UserDetails";
-import PaymentVerification from "./Components/Pages/Admin/PendingPayment";
 import ApprovedCustomer from "./Components/Pages/Admin/ApprovedCustomer";
 import UserDocumentDetails from "./Components/Pages/Admin/UserDocumentDetails";
 import RateChargeAdd from "./Components/Pages/NumberManagement/RateChargeAdd";
@@ -170,12 +168,7 @@ function App() {
 
             {/* Admin Packages path start */}
             <Route path="/document-verification" element={<PendingRequest />} />
-            <Route
-              path="/payment-verification"
-              element={<PaymentVerification />}
-            />
             <Route path="/document-details" element={<UserDocumentDetails />} />
-            <Route path="/user-details" element={<UserDetails />} />
             <Route path="/approved-customer" element={<ApprovedCustomer />} />
             <Route path="/new-user-verify" element={<UserRegistrationProcessOverview />} />
             {/* Admin Packages path end */}
