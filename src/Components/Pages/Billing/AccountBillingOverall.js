@@ -90,6 +90,61 @@ function AccountBillingOverall() {
                                             </div>
                                         </div>
                                     </div>
+                                    <div className='row gy-3 pt-2'>
+                                        <div className='col-xl-12'>
+                                            <div className='profileView px-0'>
+                                                <div className='profileDetailsHolder position-relative'>
+                                                    <div className='col-xl-12'>
+                                                        <div class="header d-flex align-items-center justify-content-between">
+                                                            <div class="col-5">Billing Information</div>
+                                                        </div>
+                                                        <div className='row px-2 pt-2 gy-3'>
+                                                            <div className='col-10 col-xl-9' style={{ padding: '15px 25px' }}>
+                                                                <h5 className='mb-3'>John Doe</h5>
+                                                                <ul className='billingDetails'>
+                                                                    <div className='pe-3'>
+                                                                        <li><span>Company Name:</span></li>
+                                                                        <li><span>Email Address:</span></li>
+                                                                        <li><span>Card Number:</span> </li>
+                                                                    </div>
+                                                                    <div>
+                                                                        <li>XY Co.</li>
+                                                                        <li>john.doe@website.com</li>
+                                                                        <li>**** **** **** 9999</li>
+                                                                    </div>
+                                                                </ul>
+                                                            </div>
+                                                            <div className='col-3 d-flex justify-content-between' style={{ padding: '15px 25px' }}>
+                                                                <div><button className='clearButton fw-medium'><i class="fa-duotone fa-pen-to-square me-1"></i> Edit</button></div>
+                                                                <div><button className='clearButton fw-medium text-danger'><i class="fa-duotone fa-trash me-2"></i>Delete</button></div>
+                                                            </div>
+                                                        </div>
+                                                        <div className='row px-2 pt-2 gy-3'>
+                                                            <div className='col-10 col-xl-9' style={{ padding: '15px 25px' }}>
+                                                                <h5 className='mb-3'>Jane Dane</h5>
+                                                                <ul className='billingDetails'>
+                                                                    <div className='pe-3'>
+                                                                        <li><span>Company Name:</span></li>
+                                                                        <li><span>Email Address:</span></li>
+                                                                        <li><span>Card Number:</span> </li>
+                                                                    </div>
+                                                                    <div>
+                                                                        <li>XY Co.</li>
+                                                                        <li>john.doe@website.com</li>
+                                                                        <li>**** **** **** 9999</li>
+                                                                    </div>
+                                                                </ul>
+                                                            </div>
+                                                            <div className='col-3 d-flex justify-content-between' style={{ padding: '15px 25px' }}>
+                                                                <div><button className='clearButton fw-medium'><i class="fa-duotone fa-pen-to-square me-1"></i> Edit</button></div>
+                                                                <div><button className='clearButton fw-medium text-danger'><i class="fa-duotone fa-trash me-2"></i>Delete</button></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className='col-xl-4'>
                                     <div className='col-xl-12'>
@@ -173,7 +228,7 @@ function AccountBillingOverall() {
                                             </ul>
                                         </div>
                                     </div>
-                                    <div className='col-xl-12 mt-2'>
+                                    <div className='col-xl-12 mt-3'>
                                         <div class="itemWrapper a">
                                             <div class="heading">
                                                 <i class="fa-duotone fa-ballot-check"></i> Last Transaction
@@ -186,29 +241,6 @@ function AccountBillingOverall() {
                                     </div>
                                 </div>
                             </div>
-                            {/* <div className='row gy-3 pt-2'>
-                                <div className='col-xl-6'>
-                                    <div className='profileView px-0'>
-                                        <div className='profileDetailsHolder position-relative'>
-                                            <div className='col-xl-12'>
-                                                <div class="header d-flex align-items-center justify-content-between">
-                                                    <div class="col-5">Billing Information</div>
-                                                </div>
-                                                <div className='row px-2 pt-2 gy-3'>
-                                                    <div className='col-9'>
-                                                        <ul>
-                                                            <li>Company Name: </li>
-                                                        </ul>
-                                                    </div>
-                                                    <div className='col-3'>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> */}
                         </div>
                     </div>
                 </div>
