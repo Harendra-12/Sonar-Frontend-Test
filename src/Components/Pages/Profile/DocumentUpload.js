@@ -61,7 +61,7 @@ function DocumentUpload() {
         parsedData
       );
       if (apiData.status) {
-        toast.success(apiData.message)
+        toast.success(apiData.message);
         setLoading(false);
       } else {
         setLoading(false);
@@ -269,7 +269,7 @@ function DocumentUpload() {
                       )}
                     </div>
                   </div>
-                  <div style={{cursor:"pointer"}} onClick={handleSubmit}>
+                  <div style={{ cursor: "pointer" }} onClick={handleSubmit}>
                     <div className="formButton mx-0 text-center">Submit</div>
                   </div>
                 </div>
