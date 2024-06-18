@@ -27,7 +27,6 @@ function UserDocumentDetails() {
     getData();
   }, [value]);
 
-  console.log("This is account Details", accountDetails);
   const downloadImage = async (imageUrl, fileName) => {
     try {
       const response = await fetch(imageUrl);
@@ -103,13 +102,6 @@ function UserDocumentDetails() {
       .qLinkContent p{
         font-size: 16px;
       }
-      .clearButton{
-        color: #fff;
-      }
-      .clearButton a{
-        text-decoration: none;
-        color: #fff;
-      }
       .wrapper{
         padding: 10px 15px 0 ;
       }
@@ -165,17 +157,6 @@ function UserDocumentDetails() {
 
       .qLinkContent .iconWrapper i{
         font-size: 20px;
-      }
-
-      .buttonPopup{
-        width: 120px;
-        border-radius: 10px;
-        background-color: #303030;
-        padding: 10px;
-        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-        position: absolute;
-        right: 10px;
-        bottom: -45px;
       }
      
     `}

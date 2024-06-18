@@ -1,7 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
-import { backToTop, generalGetFunction, login } from "../GlobalFunction/globalFunction";
+import {
+  backToTop,
+  generalGetFunction,
+  login,
+} from "../GlobalFunction/globalFunction";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
@@ -35,22 +39,43 @@ function Login() {
       setLoading(true);
       const data = await login(userName, password);
       if (data) {
-        if (data.status ) {
+        if (data.status) {
           const profile = await generalGetFunction("/user");
-          if (profile.status ) {
-            setLoading(false);
+          if (profile.status) {
             dispatch({
               type: "SET_ACCOUNT",
               account: profile.data,
             });
             localStorage.setItem("account", JSON.stringify(profile.data));
-            window.scrollTo(0, 0);
-            navigate("/dashboard");
+            if (profile.data.usertype === "Company") {
+              const accountData = await generalGetFunction(
+                `/account/${profile.data.account_id}`
+              );
+              if (accountData.status) {
+                dispatch({
+                  type: "SET_TEMPACCOUNT",
+                  tempAccount: accountData.data,
+                });
+                localStorage.setItem(
+                  "tempAccount",
+                  JSON.stringify(accountData.data)
+                );
+                setLoading(false);
+                window.scrollTo(0, 0);
+                navigate("/temporary-dashboard");
+              } else {
+                setLoading(false);
+                toast.error("Server error !");
+              }
+            } else {
+              setLoading(false);
+              window.scrollTo(0, 0);
+              navigate("/dashboard");
+            }
+          } else {
+            setLoading(false);
+            toast.error("unauthorized access!");
           }
-          // else{
-          //   setLoading(false)
-          //   toast.error("unauthorized access!")
-          // }
         } else {
           setLoading(false);
           toast.error(data.message);
@@ -60,18 +85,21 @@ function Login() {
   }, [userName, password, dispatch, navigate]);
 
   // Function to handle Enter key press
-  const handleKeyDown = useCallback((event) => {
-    if (event.key === 'Enter') {
-      userLogin();
-    }
-  }, [userLogin]);
+  const handleKeyDown = useCallback(
+    (event) => {
+      if (event.key === "Enter") {
+        userLogin();
+      }
+    },
+    [userLogin]
+  );
 
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
 
     // Clean up the event listener on component unmount
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [handleKeyDown]);
 
@@ -85,91 +113,96 @@ function Login() {
       <div>
         <main className="login">
           <div>
-          {init && (
-            <Particles
-              id="tsparticles"
-              options={{
-                background: {
-                  color: {
-                    value: "#111525",
+            {init && (
+              <Particles
+                id="tsparticles"
+                options={{
+                  background: {
+                    color: {
+                      value: "#111525",
+                    },
                   },
-                },
-                fpsLimit: 120,
-                interactivity: {
-                  events: {
-                    onClick: {
-                      enable: true,
-                      mode: "push",
+                  fpsLimit: 120,
+                  interactivity: {
+                    events: {
+                      onClick: {
+                        enable: true,
+                        mode: "push",
+                      },
+                      onHover: {
+                        enable: true,
+                        mode: "attract",
+                      },
+                      resize: true,
                     },
-                    onHover: {
-                      enable: true,
-                      mode: "attract",
+                    modes: {
+                      pull: {
+                        quantity: 20,
+                      },
+                      attract: {
+                        distance: 150,
+                        duration: 10,
+                        speed: 6,
+                      },
                     },
-                    resize: true,
                   },
-                  modes: {
-                    pull: {
-                      quantity: 20,
+                  particles: {
+                    color: {
+                      value: "#00d1ff",
                     },
-                    attract: {
+                    links: {
+                      color: "#28316f",
                       distance: 150,
-                      duration: 10,
-                      speed: 6,
-                    },
-                  },
-                },
-                particles: {
-                  color: {
-                    value: "#00d1ff",
-                  },
-                  links: {
-                    color: "#28316f",
-                    distance: 150,
-                    enable: true,
-                    opacity: 0.5,
-                    width: 1,
-                  },
-                  move: {
-                    direction: "none",
-                    enable: true,
-                    outModes: {
-                      default: "bounce",
-                    },
-                    random: false,
-                    speed: 3,
-                    straight: false,
-                    attract: { enable: false, rotateX: 600, rotateY: 1200 },
-                  },
-                  number: {
-                    density: {
                       enable: true,
-                      area: 800,
+                      opacity: 0.5,
+                      width: 1,
                     },
-                    value: 600,
-                  },
-                  opacity: {
-                    value: 0.5,
-                    random: false,
-                    anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false },
-                  },
-                  shape: {
-                    type: "circle",
-                  },
-                  size: {
-                    value: 3,
-                    random: true,
-                    anim: {
+                    move: {
+                      direction: "none",
                       enable: true,
-                      speed: 4.872463273808071,
-                      size_min: 0.1,
-                      sync: false,
+                      outModes: {
+                        default: "bounce",
+                      },
+                      random: false,
+                      speed: 3,
+                      straight: false,
+                      attract: { enable: false, rotateX: 600, rotateY: 1200 },
+                    },
+                    number: {
+                      density: {
+                        enable: true,
+                        area: 800,
+                      },
+                      value: 600,
+                    },
+                    opacity: {
+                      value: 0.5,
+                      random: false,
+                      anim: {
+                        enable: false,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false,
+                      },
+                    },
+                    shape: {
+                      type: "circle",
+                    },
+                    size: {
+                      value: 3,
+                      random: true,
+                      anim: {
+                        enable: true,
+                        speed: 4.872463273808071,
+                        size_min: 0.1,
+                        sync: false,
+                      },
                     },
                   },
-                },
-                detectRetina: true,
-              }}
-            />
-          )}
+                  detectRetina: true,
+                }}
+              />
+            )}
           </div>
           <div className="container h-100">
             <div className="row h-100">
@@ -186,7 +219,7 @@ function Login() {
                         placeholder="USERNAME"
                         className="loginFormItem"
                         value={userName}
-                        onChange={(e)=>setUserName(e.target.value)}
+                        onChange={(e) => setUserName(e.target.value)}
                       />
                     </div>
                     <div className="position-relative">
@@ -196,17 +229,28 @@ function Login() {
                         placeholder="PASSWORD"
                         className="loginFormItem"
                         value={password}
-                        onChange={(e)=>setPassword(e.target.value)}
+                        onChange={(e) => setPassword(e.target.value)}
                       />
                     </div>
-                    <div  onClick={backToTop}>
+                    <div onClick={backToTop}>
                       <button
                         className="formSubmit"
                         type="button"
                         effect="ripple"
-                        onClick={()=>{localStorage.clear();userLogin()}}
+                        onClick={() => {
+                          localStorage.clear();
+                          userLogin();
+                        }}
                       >
-                       {loading?<img width="6%" src={require("../assets/images/loader-gif.webp")} alt=""/>:"LOGIN"} 
+                        {loading ? (
+                          <img
+                            width="6%"
+                            src={require("../assets/images/loader-gif.webp")}
+                            alt=""
+                          />
+                        ) : (
+                          "LOGIN"
+                        )}
                       </button>
                     </div>
                   </div>

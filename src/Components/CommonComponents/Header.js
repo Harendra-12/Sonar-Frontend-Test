@@ -103,12 +103,12 @@ function Header(props) {
         </div>
         {dropDown ? (
           <div ref={wrapperRef} className="profileDropdown">
-            <div onClick={() => navigate("/my-profile")}>
+            {/* <div onClick={() => navigate("/my-profile")}>
               <label className="me-2">
                 <i className="fa-duotone fa-user"></i>
               </label>
               <Link to="/my-profile">My Profile</Link>
-            </div>
+            </div> */}
             <div onClick={() => navigate("/change-password")}>
               <label className="me-2">
                 <i className="fa-duotone fa-lock"></i>

@@ -4,9 +4,11 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { imageUploadFunction } from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../Misc/CircularLoader";
+import { useNavigate } from "react-router-dom";
 
 function DocumentUpload() {
   const account = useSelector((state) => state.account);
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     reg: null,
@@ -63,6 +65,7 @@ function DocumentUpload() {
       if (apiData.status) {
         toast.success(apiData.message);
         setLoading(false);
+        navigate(-1)
       } else {
         setLoading(false);
         toast.error(apiData.message);

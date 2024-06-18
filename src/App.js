@@ -64,11 +64,10 @@ import CallCenterQueue from "./Components/Pages/CallCenter/CallCenterQueue";
 import CallCenterQueueAdd from "./Components/Pages/CallCenter/CallCenterQueueAdd";
 import CallCenterQueueEdit from "./Components/Pages/CallCenter/CallCenterQueueEdit";
 import Roles from "./Components/Pages/Setting/Roles";
-import CustomerDetails from "./Components/Pages/Profile/CustomerDetails";
 import DocumentUpload from "./Components/Pages/Profile/DocumentUpload";
-// import { useSelector } from "react-redux";
 import UserRegistrationProcessOverview from "./Components/Pages/Admin/UserRegistrationProcessOverview";
 import AccountBillingOverall from "./Components/Pages/Billing/AccountBillingOverall";
+import TempDashboard from "./Components/Pages/Dashboard/TempDashboard";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -107,6 +106,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/temporary-dashboard" element={<TempDashboard />} />
             <Route path="/my-profile" element={<Profile />} />
             <Route path="/master" element={<Master />} />
             <Route path="/change-password" element={<ChangePassword />} />
@@ -213,7 +213,6 @@ function App() {
             <Route path="/admin/package-edit" element={<PackageEdit />} />
             <Route path="/admin/feature" element={<Feature />} />
             <Route path="/roles" element={<Roles />} />
-            <Route path="/customer-details" element={<CustomerDetails />} />
             <Route path="/upload-document" element={<DocumentUpload />} />
             {/* Settings path end */}
 

@@ -136,12 +136,25 @@
     background-color: #198754 !important;
 }
 
+.progressStepWrapper .stepWrapper.pending .step {
+    background-color: #ffae00 !important;
+}
+
+.progressStepWrapper .stepWrapper.success .status{
+    background-color: #198754 !important;
+}
+
+.progressStepWrapper .stepWrapper.pending .status{
+    background-color: #ffae00 !important;
+}
+
 .progressStepWrapper .stepWrapper.success label {
     color: #000 !important;
 }
 
 .progressStepWrapper .stepWrapper {
     text-align: center;
+    position: relative;
 }
 
 .progressStepWrapper .step {
@@ -174,4 +187,34 @@
     text-wrap: nowrap;
 }
 
+.progressStepWrapper .status{
+    position: absolute;
+    top: -25px;
+    left: 10px;
+    transform: translate(-50%);
+    color: #fff;
+    padding: 0px 5px;
+    border-radius: 0 10px;
+    width: 125px;
+}
+
+.progressStepWrapper .status::after{
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 15px solid rgb(80, 80, 80);
+}
+
+.progressStepWrapper .stepWrapper.success .status::after{
+    border-top-color: #12603c;
+}
+
+.progressStepWrapper .stepWrapper.pending .status::after{
+    border-top-color: #cb8a00;
+}
 /* Progress Bar End */

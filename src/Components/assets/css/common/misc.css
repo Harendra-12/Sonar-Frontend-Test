@@ -280,3 +280,31 @@
 .permissionListWrapper{
     padding-bottom: 10px;
 }
+
+.buttonPopup{
+    width: 120px;
+    border-radius: 10px;
+    background-color: #303030;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    position: absolute;
+    right: 10px;
+    bottom: -45px;
+    z-index: 9;
+  }
+
+.buttonPopup  .clearButton{
+    color: #fff;
+}
+
+.buttonPopup  .clearButton:hover{
+    color: var(--ui-accent);
+}
+.buttonPopup  .clearButton a{
+    text-decoration: none;
+    color: #fff;
+}
+
+.buttonPopup  .clearButton a:hover{
+    color: var(--ui-accent);
+}
