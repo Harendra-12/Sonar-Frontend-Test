@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import CircularLoader from "../Misc/CircularLoader";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { Link, useNavigate } from "react-router-dom";
+import Tippy from "@tippyjs/react";
 
 function TempDashboard() {
   const dispatch = useDispatch();
@@ -84,6 +85,7 @@ function TempDashboard() {
       .wrapper ul{
         padding: 0;
         list-style: none;
+        margin-bottom: 0;
       }
 
       .wrapper ul li{
@@ -117,6 +119,26 @@ function TempDashboard() {
           background-color: var(--ui-accent);
           color: #fff;
       }
+
+      .profileDetailsHolder .imgWrapper{
+        width: 100px;
+        height: 130px;
+        margin: auto;
+        padding-top: 20px;
+      }
+      .profileDetailsHolder .imgWrapper img{
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      .profileDetailsHolder h5 {
+        color: var(--color-subtext);
+        font-weight: 400;
+      }
+        .getApp,.clearColorButton{
+        display:none;
+        }
+      .profileDetailsHolder a {text-decoration: none}
       `}
       </style>
       <div className="mainContent">
@@ -158,7 +180,9 @@ function TempDashboard() {
                         <div className="stepWrapper col-3 success">
                           <div className="status">Verified</div>
                           <div class="step">
+                          <Tippy content="Your Account is verified">
                             <i class="fa-sharp fa-solid fa-check"></i>
+                          </Tippy>
                           </div>
                           <label>Accounts</label>
                         </div>
@@ -177,9 +201,13 @@ function TempDashboard() {
                           </div>
                           <div class="step">
                             {Number(account.company_status) > 2 ? (
+                              <Tippy content="Your payment is verified">
                               <i class="fa-sharp fa-solid fa-check"></i>
+                              </Tippy>
                             ) : (
+                              <Tippy content="Your payment is under verification">
                               <i class="fa-sharp fa-solid fa-credit-card"></i>
+                              </Tippy>
                             )}
                           </div>
                           <label>Payment</label>
@@ -202,9 +230,13 @@ function TempDashboard() {
                           )}
                           <div class="step ">
                             {Number(account.company_status) > 3 ? (
+                              <Tippy content="Your Document is verified">
                               <i class="fa-sharp fa-solid fa-check"></i>
+                              </Tippy>
                             ) : (
+                              <Tippy content="Your Document is under verification">
                               <i class="fa-sharp fa-solid fa-credit-card"></i>
+                              </Tippy>
                             )}
                           </div>
                           <label>Documents</label>
@@ -225,11 +257,15 @@ function TempDashboard() {
                           ) : (
                             " "
                           )}
-                          <div class="step" style={{ cursor: "pointer" }}>
+                          <div class="step">
                             {Number(account.company_status) > 4 ? (
+                              <Tippy content="Your Account is configured successfully">
                               <i class="fa-sharp fa-solid fa-check"></i>
+                              </Tippy>
                             ) : (
+                              <Tippy content="Your Account is being configured">
                               <i class="fa-sharp fa-solid fa-credit-card"></i>
+                              </Tippy>
                             )}
                           </div>
                           <label>Configure Account</label>
@@ -411,7 +447,7 @@ function TempDashboard() {
                   <div className="profileView">
                     <div className="profileDetailsHolder position-relative">
                       <div className="header d-flex align-items-center">
-                        <div className="col-12">Payment Details</div>
+                        <div className="col-12">Payment & Subscription Details</div>
                       </div>
                       <div class="row" style={{ padding: "5px" }}>
                         <div class="wrapper">
@@ -435,65 +471,22 @@ function TempDashboard() {
                               </label>
                             </li>
                             <li>
-                              <label>Time of Payment</label>{" "}
+                              <label>Subscription Start</label>{" "}
                               <label class="details">
-                                {
-                                  account?.payments[0].transaction_date?.split(
-                                    " "
-                                  )[0]
-                                }
+                              {account?.payments[0].subscription.start_date}
                               </label>
                             </li>
                             <li>
-                              <label>Payment Status</label>{" "}
+                              <label>Subscription End</label>{" "}
                               <label class="details">
-                                {account?.payments[0].payment_status}
-                              </label>
-                            </li>
-                            <li>
-                              <label>Transaction Id</label>{" "}
-                              <label class="details">
-                                {account?.payments[0].transaction_id}
-                              </label>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="profileView">
-                    <div className="profileDetailsHolder position-relative">
-                      <div className="header d-flex align-items-center">
-                        <div className="col-12">Subscription Details</div>
-                      </div>
-                      <div class="row" style={{ padding: "5px" }}>
-                        <div class="wrapper">
-                          <ul>
-                          <li>
-                              <label>Package Name</label>{" "}
-                              <label class="details">
-                                {account.package.name}
-                              </label>
-                            </li>
-                            <li>
-                              <label>Package Price</label>{" "}
-                              <label class="details">
-                                ${account.package.offer_price}
-                              </label>
-                            </li>
-                            <li>
-                              <label>Package Type</label>{" "}
-                              <label class="details">
-                                {account.package.subscription_type}
+                              {account?.payments[0].subscription.end_date}
                               </label>
                             </li>
                             <li>
                               <label>Time of Payment</label>{" "}
                               <label class="details">
                                 {
-                                  account?.payments[0].transaction_date?.split(
-                                    " "
-                                  )[0]
+                                  account?.payments[0].transaction_date
                                 }
                               </label>
                             </li>
@@ -557,59 +550,6 @@ function TempDashboard() {
                             <li>
                               <label>Country</label>{" "}
                               <label class="details">{account?.payments[0]?.billing_address.country}</label>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="profileView">
-                    <div className="profileDetailsHolder position-relative">
-                      <div className="header d-flex align-items-center">
-                        <div className="col-12">Subscription Details</div>
-                      </div>
-                      <div class="row" style={{ padding: "5px" }}>
-                        <div class="wrapper">
-                          <ul>
-                          <li>
-                              <label>Package Name</label>{" "}
-                              <label class="details">
-                                {account.package.name}
-                              </label>
-                            </li>
-                            <li>
-                              <label>Package Price</label>{" "}
-                              <label class="details">
-                                ${account.package.offer_price}
-                              </label>
-                            </li>
-                            <li>
-                              <label>Package Type</label>{" "}
-                              <label class="details">
-                                {account.package.subscription_type}
-                              </label>
-                            </li>
-                            <li>
-                              <label>Time of Payment</label>{" "}
-                              <label class="details">
-                                {
-                                  account?.payments[0].transaction_date?.split(
-                                    " "
-                                  )[0]
-                                }
-                              </label>
-                            </li>
-                            <li>
-                              <label>Payment Status</label>{" "}
-                              <label class="details">
-                                {account?.payments[0].payment_status}
-                              </label>
-                            </li>
-                            <li>
-                              <label>Transaction Id</label>{" "}
-                              <label class="details">
-                                {account?.payments[0].transaction_id}
-                              </label>
                             </li>
                           </ul>
                         </div>
@@ -788,7 +728,12 @@ function TempDashboard() {
                       </div>
                     </div>
                   ) : (
-                    <Link to="/upload-document">Upload document</Link>
+                    <Link to="/upload-document">
+                      <div className="imgWrapper">
+                      <img src={require('../../assets/images/upload-file.png')} />
+                      </div>
+                      <div class="text-center mt-3"><h5>Please upload the <span style={{color: 'var(--ui-accent)', cursor: 'pointer'}}><b>required documents</b></span>.</h5></div>
+                    </Link>
                   )}
                 </div>
               </div>

@@ -10,6 +10,7 @@ const Socket = () => {
   const socketRef = useRef(null);
 
   useEffect(() => {
+    var reconnectValue = 0
     const connectWebSocket = () => {
       const socket = new WebSocket(`ws://${ip}:${port}?token=${token}`);
 
@@ -48,10 +49,12 @@ const Socket = () => {
       socket.onerror = (error) => {
         console.error('WebSocket error:', error);
       };
-
       socket.onclose = () => {
         console.log('WebSocket connection closed. Reconnecting...');
-        setTimeout(connectWebSocket, 5000); // Retry after 3 seconds
+        if(reconnectValue<5){
+          reconnectValue = reconnectValue+1
+          setTimeout(connectWebSocket, 5000); // Retry after 3 seconds
+        }
       };
 
       socketRef.current = socket;
