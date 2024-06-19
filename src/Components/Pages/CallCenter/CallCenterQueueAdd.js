@@ -119,12 +119,12 @@ function CallCenterQueueAdd() {
         extension: true,
       }));
     }
-    if (callCenter.action === "") {
-      setError((prevState) => ({
-        ...prevState,
-        action: true,
-      }));
-    }
+    // if (callCenter.action === "") {
+    //   setError((prevState) => ({
+    //     ...prevState,
+    //     action: true,
+    //   }));
+    // }
     if (callCenter.abandoned === "") {
       setError((prevState) => ({
         ...prevState,
@@ -140,7 +140,7 @@ function CallCenterQueueAdd() {
     if (
       !(callCenter.name === "") &&
       !(callCenter.extension === "") &&
-      !(callCenter.action === "") &&
+      // !(callCenter.action === "") &&
       !(callCenter.abandoned === "") &&
       !(callCenter.prefix === "")
     ) {

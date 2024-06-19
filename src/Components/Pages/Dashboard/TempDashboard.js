@@ -200,7 +200,7 @@ function TempDashboard() {
                               : "Verified"}
                           </div>
                           <div class="step">
-                            {Number(account.company_status) > 2 ? (
+                            {Number(account.company_status) > 1 ? (
                               <Tippy content="Your payment is verified">
                               <i class="fa-sharp fa-solid fa-check"></i>
                               </Tippy>
@@ -473,13 +473,13 @@ function TempDashboard() {
                             <li>
                               <label>Subscription Start</label>{" "}
                               <label class="details">
-                              {account?.payments[0].subscription.start_date}
+                              {account?.payments[0].subscription?.start_date}
                               </label>
                             </li>
                             <li>
                               <label>Subscription End</label>{" "}
                               <label class="details">
-                              {account?.payments[0].subscription.end_date}
+                              {account?.payments[0].subscription?.end_date}
                               </label>
                             </li>
                             <li>
@@ -519,37 +519,37 @@ function TempDashboard() {
                           <ul>
                             <li>
                               <label>Full Name</label>{" "}
-                              <label class="details">{account?.payments[0]?.billing_address.fullname}</label>
+                              <label class="details">{account?.payments[0]?.billing_address?.fullname}</label>
                             </li>
                             <li>
                               <label>Email</label>{" "}
-                              <label class="details">{account?.payments[0]?.billing_address.email}</label>
+                              <label class="details">{account?.payments[0]?.billing_address?.email}</label>
                             </li>
                             <li>
                               <label>Phone Number</label>{" "}
-                              <label class="details">{account?.payments[0]?.billing_address.contact_no}</label>
+                              <label class="details">{account?.payments[0]?.billing_address?.contact_no}</label>
                             </li>
                             <li>
                               <label>Address</label>{" "}
                               <label class="details">
-                              {account?.payments[0]?.billing_address.address}
+                              {account?.payments[0]?.billing_address?.address}
                               </label>
                             </li>
                             <li>
                               <label>Zip Code</label>{" "}
-                              <label class="details">{account?.payments[0]?.billing_address.zip}</label>
+                              <label class="details">{account?.payments[0]?.billing_address?.zip}</label>
                             </li>
                             <li>
                               <label>City</label>{" "}
-                              <label class="details">{account?.payments[0]?.billing_address.city}</label>
+                              <label class="details">{account?.payments[0]?.billing_address?.city}</label>
                             </li>
                             <li>
                               <label>State</label>{" "}
-                              <label class="details">{account?.payments[0]?.billing_address.state}</label>
+                              <label class="details">{account?.payments[0]?.billing_address?.state}</label>
                             </li>
                             <li>
                               <label>Country</label>{" "}
-                              <label class="details">{account?.payments[0]?.billing_address.country}</label>
+                              <label class="details">{account?.payments[0]?.billing_address?.country}</label>
                             </li>
                           </ul>
                         </div>
