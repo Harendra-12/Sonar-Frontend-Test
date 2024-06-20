@@ -178,7 +178,7 @@ function TempDashboard() {
                       </div>
                       <div className="progressStepWrapper">
                         <div className="stepWrapper col-3 success">
-                          <div className="status">Verified</div>
+                          {/* <div className="status">Verified</div> */}
                           <div class="step">
                           <Tippy content="Your Account is verified">
                             <i class="fa-sharp fa-solid fa-check"></i>
@@ -193,12 +193,12 @@ function TempDashboard() {
                               : "pending"
                           }`}
                         >
-                          <div className="status">
+                          {/* <div className="status">
                             {" "}
                             {Number(account.company_status) === 1
                               ? "Under Process"
                               : "Verified"}
-                          </div>
+                          </div> */}
                           <div class="step">
                             {Number(account.company_status) > 1 ? (
                               <Tippy content="Your payment is verified">
@@ -221,13 +221,13 @@ function TempDashboard() {
                               : ""
                           }`}
                         >
-                          {Number(account.company_status) === 3 ? (
+                          {/* {Number(account.company_status) === 3 ? (
                             <div className="status">Under Process</div>
                           ) : Number(account.company_status) > 3 ? (
                             <div className="status">Verified</div>
                           ) : (
                             " "
-                          )}
+                          )} */}
                           <div class="step ">
                             {Number(account.company_status) > 3 ? (
                               <Tippy content="Your Document is verified">
@@ -250,13 +250,13 @@ function TempDashboard() {
                               : ""
                           }`}
                         >
-                          {Number(account.company_status) === 4 ? (
+                          {/* {Number(account.company_status) === 4 ? (
                             <div className="status">Under Process</div>
                           ) : Number(account.company_status) > 3 ? (
                             <div className="status">Verified</div>
                           ) : (
                             " "
-                          )}
+                          )} */}
                           <div class="step">
                             {Number(account.company_status) > 4 ? (
                               <Tippy content="Your Account is configured successfully">
