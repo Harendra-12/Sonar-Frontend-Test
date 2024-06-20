@@ -28,10 +28,25 @@ function CallCenterQueueAdd() {
       );
       const userData = await generalGetFunction("/user/all")
       if(userData.status){
-        setUser(userData.data)
-        if(userData.data.length===0){
+        setUser(userData.data.data)
+        if(userData.data.data.length===0){
           toast.error("Please create user first")
+          setTimeout(()=>{
+            navigate("/users-add")
+          },4000)
+        }else{
+          const filterUser = userData.data.data.filter((item)=> item.extension_id !== null)
+          console.log("This is filter user",filterUser);
+          if(filterUser.length>0){
+            setUser(filterUser)
+          }else{
+            toast.error("No user found with assign extension")
+            setTimeout(()=>{
+              navigate("/extensions")
+            },4000)
+          }
         }
+       
       }
       if (apidata.status) {
         setRingGroup(apidata.data);
@@ -127,24 +142,25 @@ function CallCenterQueueAdd() {
         extension: true,
       }));
     }
-    if (callCenter.abandoned === "") {
-      setError((prevState) => ({
-        ...prevState,
-        abandoned: true,
-      }));
-    }
-    if (callCenter.prefix === "") {
-      setError((prevState) => ({
-        ...prevState,
-        prefix: true,
-      }));
-    }
+    // if (callCenter.abandoned === "") {
+    //   setError((prevState) => ({
+    //     ...prevState,
+    //     abandoned: true,
+    //   }));
+    // }
+    // if (callCenter.prefix === "") {
+    //   setError((prevState) => ({
+    //     ...prevState,
+    //     prefix: true,
+    //   }));
+    // }
     if (
       !(callCenter.name === "") &&
-      !(callCenter.extension === "") &&
+      !(callCenter.extension === "") 
+      // &&
       // !(callCenter.action === "") &&
-      !(callCenter.abandoned === "") &&
-      !(callCenter.prefix === "")
+      // !(callCenter.abandoned === "") &&
+      // !(callCenter.prefix === "")
     ) {
       setLoading(true);
       const parsedData = {
@@ -394,14 +410,22 @@ function CallCenterQueueAdd() {
                             )}
                           </div>
                           <div className="position-relative">
-                            <input
+                            <select
                               type="text"
                               name="name"
                               value={item.name}
                               onChange={(e) => handleAgentChange(e, index)}
                               className="formItem"
                               placeholder="Destination"
-                            />
+                            >
+                              <option value="">Choose agent</option>
+                              {user && user.map((item)=>{
+                                return(
+                                  <option value={item.id}>{item.name}({item.extension?.extension})</option>
+                                )
+                              })}
+                              
+                            </select>
                           </div>
                         </div>
                         <div className="col-2 pe-2">

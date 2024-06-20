@@ -41,7 +41,7 @@ function TempDashboard() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [account.id, dispatch, navigate]);
 
   const downloadImage = async (imageUrl, fileName) => {
     try {
@@ -624,118 +624,11 @@ function TempDashboard() {
                      </div>
                      )
                    })}
-                  
-                   {/* <div className="row position-relative mb-2 align-items-center">
-                     <div className="col-auto ps-0 pe-2">
-                       <div className="iconWrapper2">
-                         <i class="fa-solid fa-image"></i>
-                       </div>
-                     </div>
-                     <div className="col-8 my-auto ps-1">
-                       <p>MOA</p>
-                     </div>
-                     <div
-                       className="col-auto px-0 my-auto ms-auto"
-                       onClick={() => {
-                         setOpenPopup(!openPopup);
-                         setOpenNumber(2);
-                       }}
-                     >
-                       <div className="iconWrapper">
-                         <i class="fa-solid fa-ellipsis"></i>
-                       </div>
-                     </div>
-                     <div class="border mt-2 mx-auto col-10"></div>
-                     {openPopup && openNumber === 2 ? (
-                       <div className="buttonPopup">
-                         <div style={{ cursor: "pointer" }}>
-                           <div
-                             className="clearButton"
-                             onClick={() =>
-                               downloadImage(
-                                 account?.details.moa_path,
-                                 "Register file"
-                               )
-                             }
-                           >
-                             <i class="fa-solid fa-file-arrow-down"></i>{" "}
-                             Download
-                           </div>
-                         </div>
-                         <div style={{ cursor: "pointer" }}>
-                           <div className="clearButton">
-                             <a
-                               href={account?.details.moa_path}
-                               target="_blank"
-                               rel="noreferrer"
-                             >
-                               <i class="fa-sharp fa-solid fa-eye"></i> View
-                             </a>
-                           </div>
-                         </div>
-                       </div>
-                     ) : (
-                       ""
-                     )}
-                   </div>
-                   <div className="row position-relative mb-2 align-items-center">
-                     <div className="col-auto ps-0 pe-2">
-                       <div className="iconWrapper2">
-                         <i class="fa-solid fa-image"></i>
-                       </div>
-                     </div>
-                     <div className="col-8 my-auto ps-1">
-                       <p>TIN</p>
-                     </div>
-                     <div
-                       className="col-auto px-0 my-auto ms-auto"
-                       onClick={() => {
-                         setOpenPopup(!openPopup);
-                         setOpenNumber(3);
-                       }}
-                     >
-                       <div className="iconWrapper">
-                         <i class="fa-solid fa-ellipsis"></i>
-                       </div>
-                     </div>
-                     <div class="border mt-2 mx-auto col-10"></div>
-                     {openPopup && openNumber === 3 ? (
-                       <div className="buttonPopup">
-                         <div style={{ cursor: "pointer" }}>
-                           <div
-                             className="clearButton"
-                             onClick={() =>
-                               downloadImage(
-                                 account?.details.tin_path,
-                                 "Register file"
-                               )
-                             }
-                           >
-                             <i class="fa-solid fa-file-arrow-down"></i>{" "}
-                             Download
-                           </div>
-                         </div>
-                         <div style={{ cursor: "pointer" }}>
-                           <div className="clearButton">
-                             <a
-                               href={account?.details.tin_path}
-                               target="_blank"
-                               rel="noreferrer"
-                             >
-                               <i class="fa-sharp fa-solid fa-eye"></i> View
-                             </a>
-                           </div>
-                         </div>
-                       </div>
-                     ) : (
-                       ""
-                     )}
-                   </div> */}
                  </div>
                   ) : (
                     <Link to="/upload-document">
                       <div className="imgWrapper">
-                      <img src={require('../../assets/images/upload-file.png')} />
+                      <img src={require('../../assets/images/upload-file.png')} alt=""/>
                       </div>
                       <div class="text-center mt-3"><h5>Please upload the <span style={{color: 'var(--ui-accent)', cursor: 'pointer'}}><b>required documents</b></span>.</h5></div>
                     </Link>
