@@ -119,12 +119,6 @@ function CallCenterQueueAdd() {
         extension: true,
       }));
     }
-    // if (callCenter.action === "") {
-    //   setError((prevState) => ({
-    //     ...prevState,
-    //     action: true,
-    //   }));
-    // }
     if (callCenter.abandoned === "") {
       setError((prevState) => ({
         ...prevState,

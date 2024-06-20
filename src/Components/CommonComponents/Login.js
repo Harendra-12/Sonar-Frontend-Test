@@ -52,17 +52,23 @@ function Login() {
                 `/account/${profile.data.account_id}`
               );
               if (accountData.status) {
-                dispatch({
-                  type: "SET_TEMPACCOUNT",
-                  tempAccount: accountData.data,
-                });
-                localStorage.setItem(
-                  "tempAccount",
-                  JSON.stringify(accountData.data)
-                );
-                setLoading(false);
-                window.scrollTo(0, 0);
-                navigate("/temporary-dashboard");
+                if(Number(accountData.data.company_status)<5){
+                  dispatch({
+                    type: "SET_TEMPACCOUNT",
+                    tempAccount: accountData.data,
+                  });
+                  localStorage.setItem(
+                    "tempAccount",
+                    JSON.stringify(accountData.data)
+                  );
+                  setLoading(false);
+                  window.scrollTo(0, 0);
+                  navigate("/temporary-dashboard");
+                }else{
+                  setLoading(false);
+                  window.scrollTo(0, 0);
+                  navigate("/dashboard");
+                }                
               } else {
                 setLoading(false);
                 toast.error("Server error !");
