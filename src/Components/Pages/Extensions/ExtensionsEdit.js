@@ -282,9 +282,7 @@ const ExtensionsEdit = () => {
           domain: extensionState.domain,
           description: extensionState.desc,
           password: extensionState.password,
-          ...(extensionState.user === "" || extensionState.user === null
-            ? {}
-            : { user: extensionState.user }),
+         user: extensionState.user,
         };
       }
 

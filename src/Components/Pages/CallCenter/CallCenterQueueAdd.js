@@ -31,9 +31,6 @@ function CallCenterQueueAdd() {
         setUser(userData.data.data)
         if(userData.data.data.length===0){
           toast.error("Please create user first")
-          setTimeout(()=>{
-            navigate("/users-add")
-          },4000)
         }else{
           const filterUser = userData.data.data.filter((item)=> item.extension_id !== null)
           console.log("This is filter user",filterUser);
@@ -41,9 +38,6 @@ function CallCenterQueueAdd() {
             setUser(filterUser)
           }else{
             toast.error("No user found with assign extension")
-            setTimeout(()=>{
-              navigate("/extensions")
-            },4000)
           }
         }
        
@@ -212,7 +206,6 @@ function CallCenterQueueAdd() {
       }
     }
   }
-  console.log("This is agent", agent);
   return (
     <main className="mainContent">
       <section id="phonePage">
