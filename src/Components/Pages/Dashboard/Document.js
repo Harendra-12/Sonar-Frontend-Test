@@ -1,52 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
-import Header from "../../CommonComponents/Header";
-import { useDispatch, useSelector } from "react-redux";
-// import CircularLoader from "../Misc/CircularLoader";
-import { generalGetFunction } from "../../GlobalFunction/globalFunction";
-import { Link, useNavigate } from "react-router-dom";
-import Tippy from "@tippyjs/react";
-import ConfigureStepDashboard from "./ConfigureStepDashboard"
-import Account from "./Account";
-import Payment from "./Payment";
-import Document from "./Document";
+import React, { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom';
 
-function TempDashboard() {
-  const dispatch = useDispatch();
-  const wrapperRef = useRef(null);
-  const [statusClick,setStatusClick]=useState("account")
+function Document({account}) {
+    const wrapperRef = useRef(null);
   const [openPopup, setOpenPopup] = useState(false);
   const [openNumber, setOpenNumber] = useState(0);
-  const navigate = useNavigate();
-  const [account, setAccount] = useState(
-    useSelector((state) => state.tempAccount)
-  );
-  useEffect(() => {
-    async function getData() {
-      const apiData = await generalGetFunction(`/account/${account.id}`);
-      if (apiData.status) {
-        setAccount(apiData.data);
-        dispatch({
-          type: "SET_TEMPACCOUNT",
-          tempAccount: apiData.data,
-        });
-        localStorage.setItem("tempAccount", JSON.stringify(apiData.data));
-        if (Number(apiData.data.company_status) > 4) {
-          navigate("/dashboard");
+  useEffect(()=>{
+    
+    function handleClickOutside(event) {
+        if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+          setOpenPopup(false);
         }
       }
-    }
-    getData();
-
-    function handleClickOutside(event) {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-        setOpenPopup(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [account.id, dispatch, navigate]);
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+  },[])
 
   const downloadImage = async (imageUrl, fileName) => {
     try {
@@ -71,219 +41,8 @@ function TempDashboard() {
     }
   };
   return (
-    <>
-      <style>
-        {`
-      .formRow{
-        border: none;
-      }
-      .formItem{
-        margin: 0px 5px 0px 0px;
-        color: #000;
-      }
-      .formLabel{
-        padding: 0px 0px 5px;
-      }
-      .wrapper{
-        padding: 10px 10px 0 ;
-      }
-      .wrapper ul{
-        padding: 0;
-        list-style: none;
-        margin-bottom: 0;
-      }
-
-      .wrapper ul li{
-        padding-bottom: 5px;
-        margin-bottom: 7px;
-        border-bottom: 1px solid #ddd;
-      }
-
-      .wrapper ul label{
-        font-size: 14px;
-        color: #5e5e5e;
-        font-weight: 500;
-        font-family: Roboto;
-      }
-
-      .wrapper ul .details{
-        float: inline-end;
-        color: #000;
-        font-size: 14px;
-        font-weight: 600;
-        font-family: Roboto;
-      }
-
-      .qLinkContent .iconWrapper2{
-          width: 35px;
-          border-radius: 50%;
-          height: 35px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background-color: var(--ui-accent);
-          color: #fff;
-      }
-
-      .profileDetailsHolder .imgWrapper{
-        width: 100px;
-        height: 130px;
-        margin: auto;
-        padding-top: 20px;
-      }
-      .profileDetailsHolder .imgWrapper img{
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-      }
-      .profileDetailsHolder h5 {
-        color: var(--color-subtext);
-        font-weight: 400;
-      }
-        .getApp,.clearColorButton{
-        display:none;
-        }
-      .profileDetailsHolder a {text-decoration: none}
-      `}
-      </style>
-      <div className="mainContent">
-        <div className="col-12">
-          <Header title="New User Details" />
-          <div class="d-flex flex-wrap">
-            <div className="col-xl-12">
-              <div className="profileView">
-                <div className="profileDetailsHolder position-relative">
-                  <div
-                    class="baseDetails row align-items-center mt-3"
-                    style={{ padding: "30px 10px 55px" }}
-                  >
-                    <div className="col-xl-8 px-0 mx-auto position-relative">
-                      <div
-                        class="progress"
-                        role="progressbar"
-                        aria-label="Animated striped example"
-                        aria-valuenow="50"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      >
-                        <div
-                          class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                          style={{
-                            width: `${Number(account.company_status) === 1
-                              ? "40"
-                              : Number(account.company_status) === 2
-                                ? "55"
-                                : Number(account.company_status) === 3
-                                  ? "65"
-                                  : "85"
-                              }%`,
-                          }}
-                        ></div>
-                      </div>
-                      <div className="progressStepWrapper">
-                        <div className="stepWrapper col-3 success" onClick={()=>setStatusClick("account")}>
-                          {/* <div className="status">Verified</div> */}
-                          <div class="step">
-                            <Tippy content="Your Account is verified">
-                              <i class="fa-sharp fa-solid fa-check"></i>
-                            </Tippy>
-                          </div>
-                          <label>Accounts</label>
-                        </div>
-                        <div
-                        onClick={()=>setStatusClick("payment")}
-                          className={`stepWrapper col-3 ${Number(account.company_status) > 1
-                            ? "success"
-                            : "pending"
-                            }`}
-                        >
-                          {/* <div className="status">
-                            {" "}
-                            {Number(account.company_status) === 1
-                              ? "Under Process"
-                              : "Verified"}
-                          </div> */}
-                          <div class="step">
-                            {Number(account.company_status) > 1 ? (
-                              <Tippy content="Your payment is verified">
-                                <i class="fa-sharp fa-solid fa-check"></i>
-                              </Tippy>
-                            ) : (
-                              <Tippy content="Your payment is under verification">
-                                <i class="fa-sharp fa-solid fa-credit-card"></i>
-                              </Tippy>
-                            )}
-                          </div>
-                          <label>Payment</label>
-                        </div>
-                        <div
-                        onClick={()=>setStatusClick("document")}
-                          className={`stepWrapper col-3 ${Number(account.company_status) === 3
-                            ? "pending"
-                            : Number(account.company_status) > 3
-                              ? "success"
-                              : ""
-                            }`}
-                        >
-                          {/* {Number(account.company_status) === 3 ? (
-                            <div className="status">Under Process</div>
-                          ) : Number(account.company_status) > 3 ? (
-                            <div className="status">Verified</div>
-                          ) : (
-                            " "
-                          )} */}
-                          <div class="step ">
-                            {Number(account.company_status) > 3 ? (
-                              <Tippy content="Your Document is verified">
-                                <i class="fa-sharp fa-solid fa-check"></i>
-                              </Tippy>
-                            ) : (
-                              <Tippy content="Your Document is under verification">
-                                <i class="fa-sharp fa-solid fa-credit-card"></i>
-                              </Tippy>
-                            )}
-                          </div>
-                          <label>Documents</label>
-                        </div>
-                        <div
-                        onClick={()=>setStatusClick("config")}
-                          className={`stepWrapper col-3 ${Number(account.company_status) === 4
-                            ? "pending"
-                            : Number(account.company_status) > 4
-                              ? "success"
-                              : ""
-                            }`}
-                        >
-                          {/* {Number(account.company_status) === 4 ? (
-                            <div className="status">Under Process</div>
-                          ) : Number(account.company_status) > 3 ? (
-                            <div className="status">Verified</div>
-                          ) : (
-                            " "
-                          )} */}
-                          <div class="step">
-                            {Number(account.company_status) > 4 ? (
-                              <Tippy content="Your Account is configured successfully">
-                                <i class="fa-sharp fa-solid fa-check"></i>
-                              </Tippy>
-                            ) : (
-                              <Tippy content="Your Account is being configured">
-                                <i class="fa-sharp fa-solid fa-credit-card"></i>
-                              </Tippy>
-                            )}
-                          </div>
-                          <label>Configure Account</label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-xl-12">
-              {statusClick==="account"? <Account account={account} />:statusClick==="payment"?<Payment account={account} />:statusClick==="document"? <Document account={account} />:<ConfigureStepDashboard />}
-            </div>
-            {/* <div className="col-xl-9">
+    <div className='d-flex flex-wrap'>
+       <div className="col-xl-9">
               <div className="profileView">
                 <div className="profileDetailsHolder position-relative">
                   <div className="header d-flex align-items-center">
@@ -642,13 +401,9 @@ function TempDashboard() {
                   )}
                 </div>
               </div>
-            </div> */}
-          </div>
-        </div>
-      </div>
-      {/* {loading ? <CircularLoader /> : ""} */}
-    </>
-  );
+            </div>
+    </div>
+  )
 }
 
-export default TempDashboard;
+export default Document
