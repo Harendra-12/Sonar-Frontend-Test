@@ -565,7 +565,7 @@ function TempDashboard() {
                   <div className="header d-flex align-items-center">
                     <div className="col-12">Documents Uploaded</div>
                   </div>
-                  {account.details ? (
+                  {account.details.length>0 ? (
                     <div className="qLinkContent px-3 mt-2" ref={wrapperRef}>
                       <div className="row position-relative mb-2 align-items-center">
                         <div className="col-auto ps-0 pe-2">
