@@ -33,6 +33,8 @@
 @import url('./components/caller.css');
 @import url('./components/master.css');
 @import url('./components/billingOverview.css');
+@import url('./components/temporaryDashboard.css');
+
 
 /* Responsive CSS */
 @import url('./common/responsive.css');

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { Link, useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
+import ConfigureStepDashboard from "./ConfigureStepDashboard"
 
 function TempDashboard() {
   const dispatch = useDispatch();
@@ -164,15 +165,14 @@ function TempDashboard() {
                         <div
                           class="progress-bar progress-bar-striped progress-bar-animated bg-success"
                           style={{
-                            width: `${
-                              Number(account.company_status) === 1
-                                ? "40"
-                                : Number(account.company_status) === 2
+                            width: `${Number(account.company_status) === 1
+                              ? "40"
+                              : Number(account.company_status) === 2
                                 ? "55"
                                 : Number(account.company_status) === 3
-                                ? "65"
-                                : "85"
-                            }%`,
+                                  ? "65"
+                                  : "85"
+                              }%`,
                           }}
                         ></div>
                       </div>
@@ -180,18 +180,17 @@ function TempDashboard() {
                         <div className="stepWrapper col-3 success">
                           {/* <div className="status">Verified</div> */}
                           <div class="step">
-                          <Tippy content="Your Account is verified">
-                            <i class="fa-sharp fa-solid fa-check"></i>
-                          </Tippy>
+                            <Tippy content="Your Account is verified">
+                              <i class="fa-sharp fa-solid fa-check"></i>
+                            </Tippy>
                           </div>
                           <label>Accounts</label>
                         </div>
                         <div
-                          className={`stepWrapper col-3 ${
-                            Number(account.company_status) > 1
-                              ? "success"
-                              : "pending"
-                          }`}
+                          className={`stepWrapper col-3 ${Number(account.company_status) > 1
+                            ? "success"
+                            : "pending"
+                            }`}
                         >
                           {/* <div className="status">
                             {" "}
@@ -202,24 +201,23 @@ function TempDashboard() {
                           <div class="step">
                             {Number(account.company_status) > 1 ? (
                               <Tippy content="Your payment is verified">
-                              <i class="fa-sharp fa-solid fa-check"></i>
+                                <i class="fa-sharp fa-solid fa-check"></i>
                               </Tippy>
                             ) : (
                               <Tippy content="Your payment is under verification">
-                              <i class="fa-sharp fa-solid fa-credit-card"></i>
+                                <i class="fa-sharp fa-solid fa-credit-card"></i>
                               </Tippy>
                             )}
                           </div>
                           <label>Payment</label>
                         </div>
                         <div
-                          className={`stepWrapper col-3 ${
-                            Number(account.company_status) === 3
-                              ? "pending"
-                              : Number(account.company_status) > 3
+                          className={`stepWrapper col-3 ${Number(account.company_status) === 3
+                            ? "pending"
+                            : Number(account.company_status) > 3
                               ? "success"
                               : ""
-                          }`}
+                            }`}
                         >
                           {/* {Number(account.company_status) === 3 ? (
                             <div className="status">Under Process</div>
@@ -231,24 +229,23 @@ function TempDashboard() {
                           <div class="step ">
                             {Number(account.company_status) > 3 ? (
                               <Tippy content="Your Document is verified">
-                              <i class="fa-sharp fa-solid fa-check"></i>
+                                <i class="fa-sharp fa-solid fa-check"></i>
                               </Tippy>
                             ) : (
                               <Tippy content="Your Document is under verification">
-                              <i class="fa-sharp fa-solid fa-credit-card"></i>
+                                <i class="fa-sharp fa-solid fa-credit-card"></i>
                               </Tippy>
                             )}
                           </div>
                           <label>Documents</label>
                         </div>
                         <div
-                          className={`stepWrapper col-3 ${
-                            Number(account.company_status) === 4
-                              ? "pending"
-                              : Number(account.company_status) > 4
+                          className={`stepWrapper col-3 ${Number(account.company_status) === 4
+                            ? "pending"
+                            : Number(account.company_status) > 4
                               ? "success"
                               : ""
-                          }`}
+                            }`}
                         >
                           {/* {Number(account.company_status) === 4 ? (
                             <div className="status">Under Process</div>
@@ -260,11 +257,11 @@ function TempDashboard() {
                           <div class="step">
                             {Number(account.company_status) > 4 ? (
                               <Tippy content="Your Account is configured successfully">
-                              <i class="fa-sharp fa-solid fa-check"></i>
+                                <i class="fa-sharp fa-solid fa-check"></i>
                               </Tippy>
                             ) : (
                               <Tippy content="Your Account is being configured">
-                              <i class="fa-sharp fa-solid fa-credit-card"></i>
+                                <i class="fa-sharp fa-solid fa-credit-card"></i>
                               </Tippy>
                             )}
                           </div>
@@ -275,6 +272,9 @@ function TempDashboard() {
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="col-xl-12">
+              <ConfigureStepDashboard />
             </div>
             <div className="col-xl-9">
               <div className="profileView">
@@ -452,7 +452,7 @@ function TempDashboard() {
                       <div class="row" style={{ padding: "5px" }}>
                         <div class="wrapper">
                           <ul>
-                          <li>
+                            <li>
                               <label>Package Name</label>{" "}
                               <label class="details">
                                 {account.package.name}
@@ -473,13 +473,13 @@ function TempDashboard() {
                             <li>
                               <label>Subscription Start</label>{" "}
                               <label class="details">
-                              {account?.payments[0].subscription?.start_date}
+                                {account?.payments[0].subscription?.start_date}
                               </label>
                             </li>
                             <li>
                               <label>Subscription End</label>{" "}
                               <label class="details">
-                              {account?.payments[0].subscription?.end_date}
+                                {account?.payments[0].subscription?.end_date}
                               </label>
                             </li>
                             <li>
@@ -532,7 +532,7 @@ function TempDashboard() {
                             <li>
                               <label>Address</label>{" "}
                               <label class="details">
-                              {account?.payments[0]?.billing_address?.address}
+                                {account?.payments[0]?.billing_address?.address}
                               </label>
                             </li>
                             <li>
@@ -730,9 +730,9 @@ function TempDashboard() {
                   ) : (
                     <Link to="/upload-document">
                       <div className="imgWrapper">
-                      <img src={require('../../assets/images/upload-file.png')} />
+                        <img src={require('../../assets/images/upload-file.png')} />
                       </div>
-                      <div class="text-center mt-3"><h5>Please upload the <span style={{color: 'var(--ui-accent)', cursor: 'pointer'}}><b>required documents</b></span>.</h5></div>
+                      <div class="text-center mt-3"><h5>Please upload the <span style={{ color: 'var(--ui-accent)', cursor: 'pointer' }}><b>required documents</b></span>.</h5></div>
                     </Link>
                   )}
                 </div>
