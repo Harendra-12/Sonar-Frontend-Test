@@ -77,10 +77,10 @@ function PendingDocument() {
                                   <td>{item.contact_no}</td>
                                   <td>{item.unit}</td>
                                   <td>
-                                    <label className={item.details !== null ? "tableLabel success" : "tableLabel fail"}>{item.details !== null ? "True" : "False"}</label>
+                                    <label className={item.details.length !== 0 ? "tableLabel success" : "tableLabel fail"}>{item.details.length !== 0 ? "True" : "False"}</label>
                                   </td>
                                   <td>
-                                    {item.company_status === "new"
+                                    {item.company_status === "1"
                                       ? "Pending" : ""
                                     }
                                   </td>

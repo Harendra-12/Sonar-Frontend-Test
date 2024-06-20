@@ -83,9 +83,6 @@ const UsersAdd = () => {
             setRole(apiRole.data);
           }else{
             toast.error("Please add Role first")
-            setTimeout(()=>{
-              navigate("/roles")
-            },3000)
           }
           
         }
@@ -323,6 +320,7 @@ const UsersAdd = () => {
           groups: "",
           type: "",
           domain: "",
+          roleId:"",
           useNameValidation: false,
           isUserNameAvailable: false,
           userNameMissing: false,
