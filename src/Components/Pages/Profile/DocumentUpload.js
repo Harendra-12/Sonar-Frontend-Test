@@ -61,20 +61,20 @@ function DocumentUpload() {
       const parsedData = {
         "account_id": account.account_id,
         "documents": [
-            {
-                "document_id": 1,
-                "path": formData.reg
-            },
-            {
-                "document_id": 2,
-                "path":formData.tin
-            },
-            {
-                "document_id": 3,
-                "path": formData.moa
-            }
+          {
+            "document_id": 1,
+            "path": formData.reg
+          },
+          {
+            "document_id": 2,
+            "path": formData.tin
+          },
+          {
+            "document_id": 3,
+            "path": formData.moa
+          }
         ]
-    }
+      }
       const apiData = await imageUploadFunction(
         "/account-detail/store",
         parsedData
