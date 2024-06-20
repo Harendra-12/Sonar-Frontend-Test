@@ -323,6 +323,7 @@ const UsersAdd = () => {
           groups: "",
           type: "",
           domain: "",
+          roleId:"",
           useNameValidation: false,
           isUserNameAvailable: false,
           userNameMissing: false,

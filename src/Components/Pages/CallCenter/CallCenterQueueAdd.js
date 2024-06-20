@@ -15,6 +15,7 @@ function CallCenterQueueAdd() {
   const [loading, setLoading] = useState(false);
   const [ringGroup, setRingGroup] = useState();
   const [extension, setExtension] = useState();
+  const [user,setUser]=useState()
   const account = useSelector((state) => state.account);
 
   useEffect(() => {
@@ -25,6 +26,13 @@ function CallCenterQueueAdd() {
       const extensionData = await generalGetFunction(
         `/extension/search?account=${account.account_id}`
       );
+      const userData = await generalGetFunction("/user/all")
+      if(userData.status){
+        setUser(userData.data)
+        if(userData.data.length===0){
+          toast.error("Please create user first")
+        }
+      }
       if (apidata.status) {
         setRingGroup(apidata.data);
       }
