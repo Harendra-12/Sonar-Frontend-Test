@@ -18,6 +18,7 @@ function CallCenterQueueEdit() {
   const locationState = location.state;
   const [loading, setLoading] = useState(false);
   const [ringGroup, setRingGroup] = useState();
+  const [user,setUser]=useState()
   const [extension, setExtension] = useState();
   const account = useSelector((state) => state.account);
 
@@ -50,6 +51,22 @@ function CallCenterQueueEdit() {
       const extensionData = await generalGetFunction(
         `/extension/search?account=${account.account_id}`
       );
+      const userData = await generalGetFunction("/user/all")
+      if(userData.status){
+        setUser(userData.data.data)
+        if(userData.data.data.length===0){
+          toast.error("Please create user first")
+        }else{
+          const filterUser = userData.data.data.filter((item)=> item.extension_id !== null)
+          console.log("This is filter user",filterUser);
+          if(filterUser.length>0){
+            setUser(filterUser)
+          }else{
+            toast.error("No user found with assign extension")
+          }
+        }
+       
+      }
       if (apidata.status) {
         setRingGroup(apidata.data);
       }
@@ -399,7 +416,7 @@ function CallCenterQueueEdit() {
                         <div className="col-2 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
-                              <label htmlFor="">Agent Name</label>
+                              <label htmlFor="">Choose Agent</label>
                             ) : (
                               ""
                             )}
@@ -412,14 +429,22 @@ function CallCenterQueueEdit() {
                             )}
                           </div>
                           <div className="position-relative">
-                            <input
+                            <select
                               type="text"
                               name="name"
                               value={item.name}
                               onChange={(e) => handleAgentChange(e, index)}
                               className="formItem"
                               placeholder="Destination"
-                            />
+                            >
+                              <option value="">Choose agent</option>
+                              {user && user.map((item)=>{
+                                return(
+                                  <option value={item.id}>{item.name}({item.extension?.extension})</option>
+                                )
+                              })}
+                              
+                            </select>
                           </div>
                         </div>
                         <div className="col-2 pe-2">
