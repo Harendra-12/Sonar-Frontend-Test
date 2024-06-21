@@ -8,7 +8,7 @@ function ConfigureStepDashboard() {
         <div>
             <div className="profileView">
                 <div className="profileDetailsHolder position-relative">
-                    <div className='content'>
+                    <div className='contentFinal'>
                         <h2>Congratulations<span>!</span></h2>
                         <p>You are at the final step of getting access to <b>Angel PBX</b>, please <span>configure your account</span> to proceed further.</p>
                         <div className='col-xl-2 mx-auto'><button className='payNow'>Configure Now <i class="ms-1 fa-duotone fa-circle-arrow-right"></i></button></div>

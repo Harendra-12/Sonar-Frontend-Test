@@ -13,7 +13,7 @@ import Document from "./Document";
 function TempDashboard() {
   const dispatch = useDispatch();
   const wrapperRef = useRef(null);
-  const [statusClick,setStatusClick]=useState("account")
+  const [statusClick, setStatusClick] = useState("account")
   const [openPopup, setOpenPopup] = useState(false);
   const [openNumber, setOpenNumber] = useState(0);
   const navigate = useNavigate();
@@ -181,7 +181,7 @@ function TempDashboard() {
                         ></div>
                       </div>
                       <div className="progressStepWrapper">
-                        <div className="stepWrapper col-3 success" onClick={()=>setStatusClick("account")}>
+                        <div className="stepWrapper col-3 success" onClick={() => setStatusClick("account")}>
                           {/* <div className="status">Verified</div> */}
                           <div class="step">
                             <Tippy content="Your Account is verified">
@@ -191,7 +191,7 @@ function TempDashboard() {
                           <label>Accounts</label>
                         </div>
                         <div
-                        onClick={()=>setStatusClick("payment")}
+                          onClick={() => setStatusClick("payment")}
                           className={`stepWrapper col-3 ${Number(account.company_status) > 1
                             ? "success"
                             : "pending"
@@ -217,7 +217,7 @@ function TempDashboard() {
                           <label>Payment</label>
                         </div>
                         <div
-                        onClick={()=>setStatusClick("document")}
+                          onClick={() => setStatusClick("document")}
                           className={`stepWrapper col-3 ${Number(account.company_status) === 3
                             ? "pending"
                             : Number(account.company_status) > 3
@@ -239,14 +239,14 @@ function TempDashboard() {
                               </Tippy>
                             ) : (
                               <Tippy content="Your Document is under verification">
-                                <i class="fa-sharp fa-solid fa-credit-card"></i>
+                                <i class="fa-sharp fa-solid fa-file-contract"></i>
                               </Tippy>
                             )}
                           </div>
                           <label>Documents</label>
                         </div>
                         <div
-                        onClick={()=>setStatusClick("config")}
+                          onClick={() => setStatusClick("config")}
                           className={`stepWrapper col-3 ${Number(account.company_status) === 4
                             ? "pending"
                             : Number(account.company_status) > 4
@@ -268,7 +268,7 @@ function TempDashboard() {
                               </Tippy>
                             ) : (
                               <Tippy content="Your Account is being configured">
-                                <i class="fa-sharp fa-solid fa-credit-card"></i>
+                                <i class="fa-sharp fa-solid fa-gears"></i>
                               </Tippy>
                             )}
                           </div>
@@ -281,7 +281,7 @@ function TempDashboard() {
               </div>
             </div>
             <div className="col-xl-12">
-              {statusClick==="account"? <Account account={account} />:statusClick==="payment"?<Payment account={account} />:statusClick==="document"? <Document account={account} />:<ConfigureStepDashboard />}
+              {statusClick === "account" ? <Account account={account} /> : statusClick === "payment" ? <Payment account={account} /> : statusClick === "document" ? <Document account={account} /> : <ConfigureStepDashboard />}
             </div>
             {/* <div className="col-xl-9">
               <div className="profileView">

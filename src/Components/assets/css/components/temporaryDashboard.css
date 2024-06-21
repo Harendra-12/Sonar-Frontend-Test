@@ -1,21 +1,21 @@
-.profileView .profileDetailsHolder .content {
+.profileView .profileDetailsHolder .contentFinal {
     text-align: center;
     padding: 10px 0;
 }
 
-.profileView .profileDetailsHolder .content h2 {
+.profileView .profileDetailsHolder .contentFinal h2 {
     font-family: Outfit;
     margin-bottom: 20px;
 
 }
 
-.profileView .profileDetailsHolder .content p {
+.profileView .profileDetailsHolder .contentFinal p {
     font-family: Roboto;
     font-size: 18px;
     color: #454545;
 }
 
-.profileView .profileDetailsHolder .content span {
+.profileView .profileDetailsHolder .contentFinal span {
     color: var(--ui-accent);
     font-weight: 700;
 }
