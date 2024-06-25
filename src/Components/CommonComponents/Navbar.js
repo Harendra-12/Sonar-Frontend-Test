@@ -26,7 +26,6 @@ function Navbar() {
       navigate("/");
     }
   }
-  console.log("This is temp account", tempAccount);
   return (
     <div>
       <section>

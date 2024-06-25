@@ -65,6 +65,11 @@ function Login() {
                   window.scrollTo(0, 0);
                   navigate("/temporary-dashboard");
                 }else{
+                  localStorage.clear("tempAccount")
+                  dispatch({
+                    type: "SET_TEMPACCOUNT",
+                    tempAccount: null,
+                  });
                   setLoading(false);
                   window.scrollTo(0, 0);
                   navigate("/dashboard");

@@ -28,12 +28,10 @@ function CallCenterQueueAdd() {
       );
       const userData = await generalGetFunction("/user/all")
       if(userData.status){
-        setUser(userData.data.data)
         if(userData.data.data.length===0){
           toast.error("Please create user first")
         }else{
           const filterUser = userData.data.data.filter((item)=> item.extension_id !== null)
-          console.log("This is filter user",filterUser);
           if(filterUser.length>0){
             setUser(filterUser)
           }else{
@@ -51,6 +49,7 @@ function CallCenterQueueAdd() {
     }
     getData();
   }, [account.account_id]);
+
   const [callCenter, setCallCenter] = useState({
     name: "",
     extension: "",
@@ -70,6 +69,7 @@ function CallCenterQueueAdd() {
     action: false,
     abandoned: false,
     prefix: false,
+    password:false,
   });
 
   const [agent, setAgent] = useState([
@@ -80,6 +80,7 @@ function CallCenterQueueAdd() {
       position: "0",
       type: "callback",
       status: "Logged Out",
+      password:"1234"
     },
   ]);
 
@@ -93,6 +94,7 @@ function CallCenterQueueAdd() {
         position: "0",
         type: "callback",
         status: "Logged Out",
+        password:"1234"
       },
     ]);
   }
@@ -113,6 +115,13 @@ function CallCenterQueueAdd() {
         agentName: false,
       }));
     }
+
+    if (name === "password") {
+      setError((prevState) => ({
+        ...prevState,
+        password: false,
+      }));
+    }
   };
 
   async function handleSubmit() {
@@ -121,6 +130,12 @@ function CallCenterQueueAdd() {
         setError((prevState) => ({
           ...prevState,
           agentName: true,
+        }));
+      }
+      if (item.password === "") {
+        setError((prevState) => ({
+          ...prevState,
+          password: true,
         }));
       }
     });
@@ -150,7 +165,9 @@ function CallCenterQueueAdd() {
     // }
     if (
       !(callCenter.name === "") &&
-      !(callCenter.extension === "") 
+      !(callCenter.extension === "") &&
+      !agent.map((item)=>{if(item.password===""){return true}}).includes(true) &&
+      !agent.map((item)=>{if(item.name===""){return true}}).includes(true)
       // &&
       // !(callCenter.action === "") &&
       // !(callCenter.abandoned === "") &&
@@ -177,6 +194,7 @@ function CallCenterQueueAdd() {
               tier_position: item.position,
               type: item.type,
               status: "Logged Out",
+              password:item.password,
             };
           }
         }),
@@ -424,6 +442,33 @@ function CallCenterQueueAdd() {
                         <div className="col-2 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
+                              <label htmlFor="">Password</label>
+                            ) : (
+                              ""
+                            )}
+                            {error.password && item.password === "" ? (
+                              <label className="status missing">
+                                Field missing
+                              </label>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                          <div className="position-relative">
+                            <input
+                              type="text"
+                              name="password"
+                              value={item.password}
+                              onChange={(e) => handleAgentChange(e, index)}
+                              className="formItem"
+                              placeholder="Password"
+                            />
+                             
+                          </div>
+                        </div>
+                        <div className="col-1 pe-2">
+                          <div className="formLabel">
+                            {index === 0 ? (
                               <label htmlFor="">Tier Level</label>
                             ) : (
                               ""
@@ -448,7 +493,7 @@ function CallCenterQueueAdd() {
                             <option value={9}>9</option>
                           </select>
                         </div>
-                        <div className="col-2 pe-2">
+                        <div className="col-1 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Tier Position</label>
@@ -542,7 +587,7 @@ function CallCenterQueueAdd() {
                                   : "panelButton my-auto"
                               }
                             >
-                              Add
+                              Add more
                             </button>
                           </div>
                         ) : (
