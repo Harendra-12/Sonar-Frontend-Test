@@ -31,6 +31,7 @@ function CallCenterQueueEdit() {
       type: "callback",
       status: "Logged Out",
       password:"1234",
+      contact:""
     },
   ]);
   const [callCenter, setCallCenter] = useState({
@@ -97,7 +98,8 @@ function CallCenterQueueEdit() {
             position: item.tier_position,
             type: item.type,
             status: item.status,
-            password:item?.password
+            password:item?.password,
+            contact:item.contact,
           };
         })
       );
@@ -126,6 +128,8 @@ function CallCenterQueueEdit() {
         position: "0",
         type: "callback",
         status: "Logged Out",
+        password:"1234",
+        contact:""
       },
     ]);
   }
@@ -224,7 +228,8 @@ function CallCenterQueueEdit() {
               tier_position: item.position,
               type: item.type,
               status: item.status,
-              password:item.password
+              password:item.password,
+              contact:item.contact,
             };
           }
         }),
@@ -444,7 +449,13 @@ function CallCenterQueueEdit() {
                               type="text"
                               name="name"
                               value={item.name}
-                              onChange={(e) => handleAgentChange(e, index)}
+                              onChange={(e) => {handleAgentChange(e, index); user.map((item)=>{
+                                if(item.id==e.target.value){
+                                  const newAgent = [...agent];
+                                  newAgent[index]["contact"] = `${item.username}/${item.extension.extension}@${item.domain.domain_name}`;
+                                  setAgent(agent);
+                                }
+                              })}}
                               className="formItem"
                               placeholder="Destination"
                             >
