@@ -3,6 +3,7 @@ import { Outlet, Navigate } from 'react-router-dom'
 
 function ProtectedRoute() {
     const account = useSelector((state)=>state.account)
+    console.log("This is account id",account);
   return (
     (account && account.account_id)? <Outlet/> : <Navigate to="/"/>
   )

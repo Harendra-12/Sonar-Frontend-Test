@@ -17,6 +17,7 @@ function CallCenterQueueAdd() {
   const [extension, setExtension] = useState();
   const [user,setUser]=useState()
   const account = useSelector((state) => state.account);
+  console.log("This is account",account);
 
   useEffect(() => {
     async function getData() {
@@ -188,6 +189,14 @@ function CallCenterQueueAdd() {
         queue_cid_prefix: callCenter.prefix,
         account_id: account.account_id,
         created_by: account.id,
+        xml:`<extension name=${callCenter.name}>
+	<condition field="destination_number" expression="^(callcenter\+)?${callCenter.extension}$" >
+		<action application="answer" data=""/>
+		<action application="set" data="hangup_after_bridge=true"/>
+		<action application="sleep" data="1000"/>
+		<action application="callcenter" data="${callCenter.name}@"/>
+	</condition>
+</extension>`,
         agents: agent.map((item) => {
           if (item.name !== "") {
             return {
