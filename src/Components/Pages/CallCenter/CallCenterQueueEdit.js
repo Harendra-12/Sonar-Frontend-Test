@@ -452,7 +452,7 @@ function CallCenterQueueEdit() {
                               onChange={(e) => {handleAgentChange(e, index); user.map((item)=>{
                                 if(item.id==e.target.value){
                                   const newAgent = [...agent];
-                                  newAgent[index]["contact"] = `${item.username}/${item.extension.extension}@${item.domain.domain_name}`;
+                                  newAgent[index]["contact"] = `user/${item.extension.extension}@${item.domain.domain_name}`;
                                   setAgent(agent);
                                 }
                               })}}
