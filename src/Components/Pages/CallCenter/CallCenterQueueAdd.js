@@ -15,9 +15,9 @@ function CallCenterQueueAdd() {
   const [loading, setLoading] = useState(false);
   const [ringGroup, setRingGroup] = useState();
   const [extension, setExtension] = useState();
-  const [user,setUser]=useState()
+  const [user, setUser] = useState();
   const account = useSelector((state) => state.account);
-  console.log("This is account",account);
+  console.log("This is account", account);
 
   useEffect(() => {
     async function getData() {
@@ -27,19 +27,20 @@ function CallCenterQueueAdd() {
       const extensionData = await generalGetFunction(
         `/extension/search?account=${account.account_id}`
       );
-      const userData = await generalGetFunction("/user/all")
-      if(userData.status){
-        if(userData.data.data.length===0){
-          toast.error("Please create user first")
-        }else{
-          const filterUser = userData.data.data.filter((item)=> item.extension_id !== null)
-          if(filterUser.length>0){
-            setUser(filterUser)
-          }else{
-            toast.error("No user found with assign extension")
+      const userData = await generalGetFunction("/user/all");
+      if (userData.status) {
+        if (userData.data.data.length === 0) {
+          toast.error("Please create user first");
+        } else {
+          const filterUser = userData.data.data.filter(
+            (item) => item.extension_id !== null
+          );
+          if (filterUser.length > 0) {
+            setUser(filterUser);
+          } else {
+            toast.error("No user found with assign extension");
           }
         }
-       
       }
       if (apidata.status) {
         setRingGroup(apidata.data);
@@ -70,7 +71,7 @@ function CallCenterQueueAdd() {
     action: false,
     abandoned: false,
     prefix: false,
-    password:false,
+    password: false,
   });
 
   const [agent, setAgent] = useState([
@@ -81,8 +82,8 @@ function CallCenterQueueAdd() {
       position: "0",
       type: "callback",
       status: "Logged Out",
-      password:"1234",
-      contact:""
+      password: "1234",
+      contact: "",
     },
   ]);
 
@@ -96,8 +97,8 @@ function CallCenterQueueAdd() {
         position: "0",
         type: "callback",
         status: "Logged Out",
-        password:"1234",
-        contact:""
+        password: "1234",
+        contact: "",
       },
     ]);
   }
@@ -169,8 +170,20 @@ function CallCenterQueueAdd() {
     if (
       !(callCenter.name === "") &&
       !(callCenter.extension === "") &&
-      !agent.map((item)=>{if(item.password===""){return true}}).includes(true) &&
-      !agent.map((item)=>{if(item.name===""){return true}}).includes(true)
+      !agent
+        .map((item) => {
+          if (item.password === "") {
+            return true;
+          }
+        })
+        .includes(true) &&
+      !agent
+        .map((item) => {
+          if (item.name === "") {
+            return true;
+          }
+        })
+        .includes(true)
       // &&
       // !(callCenter.action === "") &&
       // !(callCenter.abandoned === "") &&
@@ -189,12 +202,12 @@ function CallCenterQueueAdd() {
         queue_cid_prefix: callCenter.prefix,
         account_id: account.account_id,
         created_by: account.id,
-        xml:`<extension name=${callCenter.name}>
+        xml: `<extension name=${callCenter.name.trim}>
 	<condition field="destination_number" expression="^(callcenter\+)?${callCenter.extension}$" >
 		<action application="answer" data=""/>
 		<action application="set" data="hangup_after_bridge=true"/>
 		<action application="sleep" data="1000"/>
-		<action application="callcenter" data="${callCenter.name}@"/>
+		<action application="callcenter" data="${callCenter.name.trim}@${account.domain.domain_name}"/>
 	</condition>
 </extension>`,
         agents: agent.map((item) => {
@@ -205,8 +218,8 @@ function CallCenterQueueAdd() {
               tier_position: item.position,
               type: item.type,
               status: "Logged Out",
-              password:item.password,
-              contact:item.contact
+              password: item.password,
+              contact: item.contact,
             };
           }
         }),
@@ -437,23 +450,30 @@ function CallCenterQueueAdd() {
                               type="text"
                               name="name"
                               value={item.name}
-                              onChange={(e) => {handleAgentChange(e, index); user.map((item)=>{
-                                if(item.id==e.target.value){
-                                  const newAgent = [...agent];
-                                  newAgent[index]["contact"] = `user/${item.extension.extension}@${item.domain.domain_name}`;
-                                  setAgent(agent);
-                                }
-                              })}}
+                              onChange={(e) => {
+                                handleAgentChange(e, index);
+                                user.map((item) => {
+                                  if (item.id == e.target.value) {
+                                    const newAgent = [...agent];
+                                    newAgent[index][
+                                      "contact"
+                                    ] = `user/${item.extension.extension}@${item.domain.domain_name}`;
+                                    setAgent(agent);
+                                  }
+                                });
+                              }}
                               className="formItem"
                               placeholder="Destination"
                             >
                               <option value="">Choose agent</option>
-                              {user && user.map((item)=>{
-                                return(
-                                  <option value={item.id}>{item.name}({item.extension?.extension})</option>
-                                )
-                              })}
-                              
+                              {user &&
+                                user.map((item) => {
+                                  return (
+                                    <option value={item.id}>
+                                      {item.name}({item.extension?.extension})
+                                    </option>
+                                  );
+                                })}
                             </select>
                           </div>
                         </div>
@@ -481,7 +501,6 @@ function CallCenterQueueAdd() {
                               className="formItem"
                               placeholder="Password"
                             />
-                             
                           </div>
                         </div>
                         <div className="col-1 pe-2">
