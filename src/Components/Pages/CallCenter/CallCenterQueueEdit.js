@@ -219,6 +219,14 @@ function CallCenterQueueEdit() {
         queue_timeout_action: callCenter.action,
         discard_abandoned_after: callCenter.abandoned,
         queue_cid_prefix: callCenter.prefix,
+        xml: `<extension name="${callCenter.name.trim()}">
+        <condition field="destination_number" expression="^(callcenter\+)?${callCenter.extension}$" >
+          <action application="answer" data=""/>
+          <action application="set" data="hangup_after_bridge=true"/>
+          <action application="sleep" data="1000"/>
+          <action application="callcenter" data="${callCenter.name.trim()}@${account.domain.domain_name}"/>
+        </condition>
+      </extension>`,
         agents: agent.map((item) => {
           if (item.name !== "") {
             return {

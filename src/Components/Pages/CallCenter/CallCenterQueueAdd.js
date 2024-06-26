@@ -202,14 +202,14 @@ function CallCenterQueueAdd() {
         queue_cid_prefix: callCenter.prefix,
         account_id: account.account_id,
         created_by: account.id,
-        xml: `<extension name=${callCenter.name.trim}>
-	<condition field="destination_number" expression="^(callcenter\+)?${callCenter.extension}$" >
-		<action application="answer" data=""/>
-		<action application="set" data="hangup_after_bridge=true"/>
-		<action application="sleep" data="1000"/>
-		<action application="callcenter" data="${callCenter.name.trim}@${account.domain.domain_name}"/>
-	</condition>
-</extension>`,
+        xml: `<extension name="${callCenter.name.trim()}">
+        <condition field="destination_number" expression="^(callcenter\+)?${callCenter.extension}$" >
+          <action application="answer" data=""/>
+          <action application="set" data="hangup_after_bridge=true"/>
+          <action application="sleep" data="1000"/>
+          <action application="callcenter" data="${callCenter.name.trim()}@${account.domain.domain_name}"/>
+        </condition>
+      </extension>`,
         agents: agent.map((item) => {
           if (item.name !== "") {
             return {
