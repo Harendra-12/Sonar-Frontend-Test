@@ -516,7 +516,7 @@ function Navbar() {
                           </li>
                           <li className="tabItem" effect="ripple">
                             <NavLink
-                              to="/billing-overview"
+                              to="/card-details"
                               onClick={backToTop}
                               className="nav-link"
                             >

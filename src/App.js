@@ -66,7 +66,7 @@ import CallCenterQueueEdit from "./Components/Pages/CallCenter/CallCenterQueueEd
 import Roles from "./Components/Pages/Setting/Roles";
 import DocumentUpload from "./Components/Pages/Profile/DocumentUpload";
 import UserRegistrationProcessOverview from "./Components/Pages/Admin/UserRegistrationProcessOverview";
-import AccountBillingOverall from "./Components/Pages/Billing/AccountBillingOverall";
+import CardAndBilling from "./Components/Pages/Billing/CardAndBilling";
 import TempDashboard from "./Components/Pages/Dashboard/TempDashboard";
 
 // Unlock this if want push notification
@@ -217,7 +217,7 @@ function App() {
             {/* Settings path end */}
 
             {/* Billing Pages Start */}
-            <Route path="/billing-overview" element={<AccountBillingOverall />} />
+            <Route path="/card-details" element={<CardAndBilling />} />
             {/* Billing Pages End */}
 
           </Route>
