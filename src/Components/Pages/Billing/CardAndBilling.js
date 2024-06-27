@@ -4,15 +4,41 @@ import Cards from "react-credit-cards-2";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
 import BillingCardSave from "./BillingCardSave";
 import RechargeWalletPopup from "./RechargeWalletPopup";
+import { useSelector } from "react-redux";
 
 function CardAndBilling() {
   const [cardPopUp, setCardPopUp] = useState(false);
+  const accountDetails = useSelector((state)=>state.accountDetails)
   const [rechargePopUp, setRechargePopUp] = useState(false);
   const handleCardPopup = (value) => {
     setCardPopUp(value);
   };
   const handleRechargePopup = (value) => {
     setRechargePopUp(value);
+  };
+
+  const downloadImage = async (imageUrl, fileName) => {
+    console.log("This is invoice",imageUrl,fileName);
+    try {
+      const response = await fetch(imageUrl);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileName);
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading the image:", error);
+    }
   };
   return (
     <main className="mainContent">
@@ -61,7 +87,7 @@ function CardAndBilling() {
                           <i class="fa-duotone fa-ballot-check"></i>Wallet Balance
                         </div>
                         <div class="data-number">
-                          $ 200.<sub style={{ fontSize: 14 }}>00</sub>
+                          $ {accountDetails?.balance?.amount.split(".")[0]}.<sub style={{ fontSize: 14 }}>{accountDetails?.balance?.amount.split(".")[1]}</sub>
                         </div>
                         <div class="label">
                           Active Card:{" "}
@@ -419,90 +445,25 @@ function CardAndBilling() {
                         <i class="fa-duotone fa-file-invoice"></i> Invoices
                       </div>
                       <ul className="invoiceList">
-                        <li>
-                          <div className="col-7">
-                            <p>March 01, 2024</p>
-                            <span>#MS-415646</span>
-                          </div>
-                          <div className="me-2" style={{ width: 55 }}>
-                            <p>$100</p>
-                          </div>
-                          <div>
-                            <a>
-                              <i class="fa-duotone fa-files me-1"></i> PDF
-                            </a>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="col-7">
-                            <p>March 02, 2024</p>
-                            <span>#MS-415646</span>
-                          </div>
-                          <div className="me-2" style={{ width: 55 }}>
-                            <p>$100</p>
-                          </div>
-                          <div>
-                            <a>
-                              <i class="fa-duotone fa-files me-1"></i> PDF
-                            </a>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="col-7">
-                            <p>March 03, 2024</p>
-                            <span>#MS-415646</span>
-                          </div>
-                          <div className="me-2" style={{ width: 55 }}>
-                            <p>$100</p>
-                          </div>
-                          <div>
-                            <a>
-                              <i class="fa-duotone fa-files me-1"></i> PDF
-                            </a>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="col-7">
-                            <p>March 04, 2024</p>
-                            <span>#MS-415646</span>
-                          </div>
-                          <div className="me-2" style={{ width: 55 }}>
-                            <p>$100</p>
-                          </div>
-                          <div>
-                            <a>
-                              <i class="fa-duotone fa-files me-1"></i> PDF
-                            </a>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="col-7">
-                            <p>March 05, 2024</p>
-                            <span>#MS-415646</span>
-                          </div>
-                          <div className="me-2" style={{ width: 55 }}>
-                            <p>$100</p>
-                          </div>
-                          <div>
-                            <a>
-                              <i class="fa-duotone fa-files me-1"></i> PDF
-                            </a>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="col-7">
-                            <p>March 06, 2024</p>
-                            <span>#MS-415646</span>
-                          </div>
-                          <div className="me-2" style={{ width: 55 }}>
-                            <p>$100</p>
-                          </div>
-                          <div>
-                            <a>
-                              <i class="fa-duotone fa-files me-1"></i> PDF
-                            </a>
-                          </div>
-                        </li>
+                        {accountDetails.payments.map((item)=>{
+                          return(
+                            <li>
+                            <div className="col-7">
+                              <p>{item.transaction_date}</p>
+                              <span>#{item.transaction_id}</span>
+                            </div>
+                            <div className="me-2" style={{ width: 55 }}>
+                              <p>${item.amount_subtotal}</p>
+                            </div>
+                            <div style={{cursor:"pointer"}} onClick={()=>downloadImage(item.invoice_url,`invoice${item.transaction_date.split(" ")[0]}`)}>
+                              
+                                <i class="fa-duotone fa-files me-1"></i> PDF
+                              
+                            </div>
+                          </li>
+                          )
+                          
+                        })}
                       </ul>
                     </div>
                   </div>
@@ -513,18 +474,18 @@ function CardAndBilling() {
                         Transaction
                       </div>
                       <div class="data-number">
-                        $ 200.<sub style={{ fontSize: 14 }}>00</sub>
+                        $ {accountDetails?.payments[0].amount_subtotal.split(".")[0]}.<sub style={{ fontSize: 14 }}>{accountDetails?.payments[0].amount_subtotal.split(".")[1]}</sub>
                       </div>
                       <div class="label">
-                        Date: <span className="float-end">16-01-2023</span>
+                        Date: <span className="float-end">{accountDetails?.payments[0].transaction_date.split(" ")[0]}</span>
                       </div>
-                      <div class="label">
+                      {/* <div class="label">
                         Package:{" "}
                         <span className="float-end">Basic Package</span>
                       </div>
                       <div class="label">
                         Tenure: <span className="float-end">Yearly Basis</span>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>

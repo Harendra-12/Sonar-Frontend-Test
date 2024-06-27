@@ -8,6 +8,8 @@ import { generalGetFunction } from "../GlobalFunction/globalFunction";
 function Header(props) {
   const dispatch = useDispatch()
   const account = useSelector((state) => state.account);
+  const accountDetails = useSelector((state)=>state.accountDetails)
+  console.log("This is account details",accountDetails);
   const [accounName, setAccountName] = useState();
   const [dropDown, setDropDown] = useState(false);
   const navigate = useNavigate();
@@ -78,7 +80,7 @@ function Header(props) {
                 className="clearColorButton"
               >
                 <i className="fa-regular fa-wallet" />{" "}
-                <span className="d-none d-xl-inline-block">$420.69</span>
+                <span className="d-none d-xl-inline-block">${accountDetails?.balance?.amount}</span>
               </div>
             </Tippy>
           </div>

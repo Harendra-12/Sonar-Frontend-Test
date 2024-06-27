@@ -6,6 +6,7 @@ var callState = [];
 var channelHangupComplete = [];
 var allCall = [];
 var tempAccount = JSON.parse(localStorage.getItem("tempAccount"));
+var accountDetails = JSON.parse(localStorage.getItem("accountDetails"));
 
 const initialState = {
   account,
@@ -15,6 +16,7 @@ const initialState = {
   channelHangupComplete,
   allCall,
   tempAccount,
+  accountDetails,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -33,6 +35,8 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, allCall: action.allCall };
     case "SET_TEMPACCOUNT":
       return { ...state, tempAccount: action.tempAccount };
+    case "SET_ACCOUNTDETAILS":
+      return { ...state, accountDetails: action.accountDetails };
     default:
       return state;
   }

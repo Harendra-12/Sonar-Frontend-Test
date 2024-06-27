@@ -52,6 +52,11 @@ function Login() {
                 `/account/${profile.data.account_id}`
               );
               if (accountData.status) {
+                dispatch({
+                  type:"SET_ACCOUNTDETAILS",
+                  accountDetails:accountData.data
+                })
+                localStorage.setItem("accountDetails",JSON.stringify(accountData.data))
                 if(Number(accountData.data.company_status)<5){
                   dispatch({
                     type: "SET_TEMPACCOUNT",
