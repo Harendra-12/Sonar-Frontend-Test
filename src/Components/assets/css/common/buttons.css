@@ -179,6 +179,7 @@
     font-size: 14px;
     border-radius: 5px !important;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .logoutBtn {

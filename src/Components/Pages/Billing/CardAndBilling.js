@@ -3,11 +3,16 @@ import Header from "../../CommonComponents/Header";
 import Cards from "react-credit-cards-2";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
 import BillingCardSave from "./BillingCardSave";
+import RechargeWalletPopup from "./RechargeWalletPopup";
 
 function CardAndBilling() {
   const [cardPopUp, setCardPopUp] = useState(false);
-  const handlePopup = (value) => {
+  const [rechargePopUp, setRechargePopUp] = useState(false);
+  const handleCardPopup = (value) => {
     setCardPopUp(value);
+  };
+  const handleRechargePopup = (value) => {
+    setRechargePopUp(value);
   };
   return (
     <main className="mainContent">
@@ -53,23 +58,20 @@ function CardAndBilling() {
                     <div className="col-xl-4">
                       <div class="itemWrapper a">
                         <div class="heading">
-                          <i class="fa-duotone fa-ballot-check"></i> Last
-                          Transaction
+                          <i class="fa-duotone fa-ballot-check"></i>Wallet Balance
                         </div>
                         <div class="data-number">
                           $ 200.<sub style={{ fontSize: 14 }}>00</sub>
                         </div>
                         <div class="label">
-                          Date: <span className="float-end">16-01-2023</span>
+                          Active Card:{" "}
+                          <span className="float-end">**** **** **** 4444</span>
                         </div>
                         <div class="label">
-                          Package:{" "}
-                          <span className="float-end">Basic Package</span>
+                          Holder's Name:{" "}
+                          <span className="float-end">John Adam Eve Smith</span>
                         </div>
-                        <div class="label">
-                          Tenure:{" "}
-                          <span className="float-end">Yearly Basis</span>
-                        </div>
+                        <div onClick={()=>setRechargePopUp(true)} class="cartButton mt-1">Recharge Now</div>
                       </div>
                     </div>
                   </div>
@@ -198,7 +200,10 @@ function CardAndBilling() {
                                 >
                                   <div class="accordion-body">
                                     <ul className="billingDetails">
-                                      <div className="pe-3" style={{width: '25%'}}>
+                                      <div
+                                        className="pe-3"
+                                        style={{ width: "25%" }}
+                                      >
                                         <li>
                                           <span>Full Name:</span>
                                         </li>
@@ -225,14 +230,70 @@ function CardAndBilling() {
                                         </li>
                                       </div>
                                       <div>
-                                        <li><input type="text" className="formItem" value={'John Doe'} disabled/></li>
-                                        <li><input type="text" className="formItem" value={'999 999-9999'} disabled/></li>
-                                        <li><input type="text" className="formItem" value={'john.doe@example.com'} disabled/></li>
-                                        <li><input type="text" className="formItem" value={'Here goes Full Address'} disabled/></li>
-                                        <li><input type="text" className="formItem" value={'City'} disabled/></li>
-                                        <li><input type="text" className="formItem" value={'State'} disabled/></li>
-                                        <li><input type="text" className="formItem" value={'999999'} disabled/></li>
-                                        <li><input type="text" className="formItem" value={'Country'} disabled/></li>
+                                        <li>
+                                          <input
+                                            type="text"
+                                            className="formItem"
+                                            value={"John Doe"}
+                                            disabled
+                                          />
+                                        </li>
+                                        <li>
+                                          <input
+                                            type="text"
+                                            className="formItem"
+                                            value={"999 999-9999"}
+                                            disabled
+                                          />
+                                        </li>
+                                        <li>
+                                          <input
+                                            type="text"
+                                            className="formItem"
+                                            value={"john.doe@example.com"}
+                                            disabled
+                                          />
+                                        </li>
+                                        <li>
+                                          <input
+                                            type="text"
+                                            className="formItem"
+                                            value={"Here goes Full Address"}
+                                            disabled
+                                          />
+                                        </li>
+                                        <li>
+                                          <input
+                                            type="text"
+                                            className="formItem"
+                                            value={"City"}
+                                            disabled
+                                          />
+                                        </li>
+                                        <li>
+                                          <input
+                                            type="text"
+                                            className="formItem"
+                                            value={"State"}
+                                            disabled
+                                          />
+                                        </li>
+                                        <li>
+                                          <input
+                                            type="text"
+                                            className="formItem"
+                                            value={"999999"}
+                                            disabled
+                                          />
+                                        </li>
+                                        <li>
+                                          <input
+                                            type="text"
+                                            className="formItem"
+                                            value={"Country"}
+                                            disabled
+                                          />
+                                        </li>
                                       </div>
                                     </ul>
                                   </div>
@@ -445,16 +506,49 @@ function CardAndBilling() {
                       </ul>
                     </div>
                   </div>
+                  <div className="col-xl-12 mt-3">
+                    <div class="itemWrapper a">
+                      <div class="heading">
+                        <i class="fa-duotone fa-ballot-check"></i> Last
+                        Transaction
+                      </div>
+                      <div class="data-number">
+                        $ 200.<sub style={{ fontSize: 14 }}>00</sub>
+                      </div>
+                      <div class="label">
+                        Date: <span className="float-end">16-01-2023</span>
+                      </div>
+                      <div class="label">
+                        Package:{" "}
+                        <span className="float-end">Basic Package</span>
+                      </div>
+                      <div class="label">
+                        Tenure: <span className="float-end">Yearly Basis</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        {rechargePopUp ? (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <RechargeWalletPopup closePopup={handleRechargePopup} />
+              </div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+
         {cardPopUp ? (
           <div className="popup">
             <div className="container h-100">
               <div className="row h-100 justify-content-center align-items-center">
-                <BillingCardSave closePopup={handlePopup} />
+                <BillingCardSave closePopup={handleCardPopup} />
               </div>
             </div>
           </div>
