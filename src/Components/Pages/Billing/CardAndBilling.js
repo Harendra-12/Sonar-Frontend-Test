@@ -4,6 +4,7 @@ import Cards from "react-credit-cards-2";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
 import BillingCardSave from "./BillingCardSave";
 import RechargeWalletPopup from "./RechargeWalletPopup";
+import NewCardPaymentMethod from "./NewCardPaymentMethod";
 
 function CardAndBilling() {
   const [cardPopUp, setCardPopUp] = useState(false);
@@ -71,7 +72,7 @@ function CardAndBilling() {
                           Holder's Name:{" "}
                           <span className="float-end">John Adam Eve Smith</span>
                         </div>
-                        <div onClick={()=>setRechargePopUp(true)} class="cartButton mt-1">Recharge Now</div>
+                        <div onClick={() => setRechargePopUp(true)} class="cartButton mt-1">Recharge Now</div>
                       </div>
                     </div>
                   </div>
@@ -555,6 +556,13 @@ function CardAndBilling() {
         ) : (
           ""
         )}
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <NewCardPaymentMethod />
+            </div>
+          </div>
+        </div>
       </section>
     </main>
   );

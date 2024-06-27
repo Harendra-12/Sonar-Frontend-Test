@@ -41,93 +41,202 @@ function RechargeWalletPopup({ closePopup }) {
             <div className="profileDetailsHolder position-relative">
               <div className="header d-flex align-items-center">
                 <div className="col-12">
-                  Please Verify Payment Details
-                  <span
+                  Choose Your Card
+                  {/* <span
                     onClick={() => closePopup(false)}
                     className="float-end clearButton text-danger fs-4"
                     style={{ cursor: "pointer" }}
                   >
                     <i class="fa-sharp fa-solid fa-xmark"></i>
-                  </span>
+                  </span> */}
                 </div>
               </div>
               <div class="row" style={{ padding: "5px" }}>
-                <div className="col-12 mb-3">
-                    <Cards
-                        number={"4242424242424242"}
-                        expiry={"12/26"}
-                        cvc={"895"}
-                        name={"Test card"}
-                        focused={"cardDetails.focused"}
-                    />
+                <div className="col-12">
+                  <div className="savedCardWrapper active">
+                    <div className="imgWrapper">
+                      <img
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mastercard_2019_logo.svg/200px-Mastercard_2019_logo.svg.png"
+                        alt=""
+                      />
+                    </div>
+                    <div className="ms-4">
+                      <label>**** **** **** 9999</label>
+                    </div>
+                    <div className="ms-auto">
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          id="showAllCheck"
+                          defaultChecked={true}
+                        />
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                  </div>
                 </div>
-                <div class="wrapper col-12">
-                  <ul>
-                    <li>
-                      <label>Full Name</label>{" "}
-                      <label class="details">asdasd</label>
-                    </li>
-                    <li>
-                      <label>Phone Number:</label>{" "}
-                      <label class="details">asdasd</label>
-                    </li>
-                    <li>
-                      <label>Email:</label>{" "}
-                      <label class="details">asdasd</label>
-                    </li>
-                    <li>
-                      <label>Address:</label>{" "}
-                      <label class="details">asdasd</label>
-                    </li>
-                    <li>
-                      <label>Zip Code</label>{" "}
-                      <label class="details">asdasd</label>
-                    </li>
-                    <li>
-                      <label>City</label> <label class="details">asdasd</label>
-                    </li>
-                    <li>
-                      <label>State</label> <label class="details">asdasd</label>
-                    </li>
-                    <li>
-                      <label>Country</label>{" "}
-                      <label class="details">asdasd</label>
-                    </li>
-                  </ul>
+              </div>
+              <div className="row" style={{ padding: "5px" }}>
+                <div className="col-12">
+                  <div className="text-center">
+                    <label style={{ fontWeight: 500, fontSize: 18, color: 'var(--color-subtext)' }}>OR</label>
+                  </div>
                 </div>
-                {/* <div class="wrapper col-6">
-                  <ul>
-                    <li>
-                      <label>Full Name</label>{" "}
-                      <label class="details">asdasd</label>
-                    </li>
-                    <li>
-                      <label>Email</label> <label class="details">asdasd</label>
-                    </li>
-                    <li>
-                      <label>Phone Number</label>{" "}
-                      <label class="details">asdasd</label>
-                    </li>
-                    <li>
-                      <label>Address</label>{" "}
-                      <label class="details">asdasd</label>
-                    </li>
-                    <li>
-                      <label>Zip Code</label>{" "}
-                      <label class="details">asdasd</label>
-                    </li>
-                    <li>
-                      <label>City</label> <label class="details">asdasd</label>
-                    </li>
-                    <li>
-                      <label>State</label> <label class="details">asdasd</label>
-                    </li>
-                    <li>
-                      <label>Country</label>{" "}
-                      <label class="details">asdasd</label>
-                    </li>
-                  </ul>
-                </div> */}
+                <div className="col-12">
+                  <button className="clearButton w-100">
+                    Choose a new Payment Method <i class="fa-sharp fa-solid fa-arrow-right"></i>
+                  </button>
+                </div>
+              </div>
+              <div className="header d-flex align-items-center">
+                <div className="col-12">
+                  Choose Billing Address
+                </div>
+              </div>
+              <div className="row" style={{ padding: "5px" }}>
+                <div class="col-12">
+                  <div
+                    class="accordion accordion-flush cardPopup"
+                    id="accordionFlushExample"
+                  >
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" style={{ border: '1px solid green', boxShadow: '#00ff1554 0px 3px 8px', borderRadius: '10px' }}>
+                        <div className="d-flex flex-wrap align-items-center" style={{ padding: '0 10px' }}>
+                          <div className="col-10">
+                            <button
+                              class="accordion-button collapsed justify-content-between px-2"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target="#flush-collapse2"
+                              aria-expanded="false"
+                              aria-controls="flush-collapse2"
+                              style={{ padding: '15px 0' }}
+                            >
+                              <h5 className="mb-0">John Doe</h5>
+                            </button>
+                          </div>
+                          <div className="ms-auto d-flex">
+                            <label class="switch">
+                              <input
+                                type="checkbox"
+                                id="showAllCheck"
+                                defaultChecked={true}
+                              />
+                              <span class="slider round"></span>
+                            </label>
+                          </div>
+                        </div>
+                      </h2>
+                      <div
+                        id="flush-collapse2"
+                        class="accordion-collapse collapse"
+                        data-bs-parent="#accordionFlushExample"
+                      >
+                        <div class="accordion-body">
+                          <ul className="billingDetails">
+                            <div
+                              className="pe-3"
+                              style={{ width: '45%' }}
+                            >
+                              <li>
+                                <span>Full Name:</span>
+                              </li>
+                              <li>
+                                <span>Phone:</span>
+                              </li>
+                              <li>
+                                <span>Email Address:</span>
+                              </li>
+                              <li>
+                                <span>Address:</span>{" "}
+                              </li>
+                              <li>
+                                <span>City:</span>{" "}
+                              </li>
+                              <li>
+                                <span>State:</span>{" "}
+                              </li>
+                              <li>
+                                <span>Zip Code:</span>{" "}
+                              </li>
+                              <li>
+                                <span>Country:</span>{" "}
+                              </li>
+                            </div>
+                            <div style={{ width: '55%' }}>
+                              <li>
+                                <input
+                                  type="text"
+                                  className="formItem"
+                                  value={"John Doe"}
+                                  disabled
+                                />
+                              </li>
+                              <li>
+                                <input
+                                  type="text"
+                                  className="formItem"
+                                  value={"999 999-9999"}
+                                  disabled
+                                />
+                              </li>
+                              <li>
+                                <input
+                                  type="text"
+                                  className="formItem"
+                                  value={"john.doe@example.com"}
+                                  disabled
+                                />
+                              </li>
+                              <li>
+                                <input
+                                  type="text"
+                                  className="formItem"
+                                  value={"Here goes Full Address"}
+                                  disabled
+                                />
+                              </li>
+                              <li>
+                                <input
+                                  type="text"
+                                  className="formItem"
+                                  value={"City"}
+                                  disabled
+                                />
+                              </li>
+                              <li>
+                                <input
+                                  type="text"
+                                  className="formItem"
+                                  value={"State"}
+                                  disabled
+                                />
+                              </li>
+                              <li>
+                                <input
+                                  type="text"
+                                  className="formItem"
+                                  value={"999999"}
+                                  disabled
+                                />
+                              </li>
+                              <li>
+                                <input
+                                  type="text"
+                                  className="formItem"
+                                  value={"Country"}
+                                  disabled
+                                />
+                              </li>
+                            </div>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="row" style={{ padding: "5px" }}>
                 <div className="col-6">
                   <div className="form-group">
                     <label className="review-label">
@@ -138,7 +247,7 @@ function RechargeWalletPopup({ closePopup }) {
                       <input
                         placeholder="cvv"
                         className={`form-control travellerdetails payment_exp_date`}
-                        name="cvv"
+                        name="CVV"
                         type="number"
                       />
                       <small
@@ -160,7 +269,7 @@ function RechargeWalletPopup({ closePopup }) {
                     </label>
                     <div className="position-relative">
                       <input
-                        placeholder="cvv"
+                        placeholder="Amount"
                         className={`form-control travellerdetails payment_exp_date`}
                         name="cvv"
                         type="number"

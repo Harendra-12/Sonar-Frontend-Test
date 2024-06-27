@@ -277,11 +277,11 @@
     border-bottom: 1px solid #cecece;
 }
 
-.permissionListWrapper{
+.permissionListWrapper {
     padding-bottom: 10px;
 }
 
-.buttonPopup{
+.buttonPopup {
     width: 120px;
     border-radius: 10px;
     background-color: #303030;
@@ -291,25 +291,26 @@
     right: 10px;
     bottom: -45px;
     z-index: 9;
-  }
+}
 
-.buttonPopup  .clearButton{
+.buttonPopup .clearButton {
     color: #fff;
 }
 
-.buttonPopup  .clearButton:hover{
+.buttonPopup .clearButton:hover {
     color: var(--ui-accent);
 }
-.buttonPopup  .clearButton a{
+
+.buttonPopup .clearButton a {
     text-decoration: none;
     color: #fff;
 }
 
-.buttonPopup  .clearButton a:hover{
+.buttonPopup .clearButton a:hover {
     color: var(--ui-accent);
 }
 
-.cardDetailsWrapper{
+.cardDetailsWrapper {
     align-items: center;
     justify-content: space-between;
     border: 1px solid #ddd;
@@ -320,26 +321,34 @@
     background-color: #fff;
 }
 
-.billinCardWrapper .rccs{
+.billinCardWrapper .rccs {
     width: 100%;
     height: 100%;
     margin: 0;
 }
-.billinCardWrapper .rccs__card{
+
+.billinCardWrapper .rccs__card {
     width: 100%;
     height: 100%;
 }
 
-.profileDetailsHolder .accordion-body{
+.profileDetailsHolder .accordion-body,
+.cardDetailsWrapper .accordion-body {
     padding: 15px 20px !important;
 }
 
-.profileDetailsHolder  .accordion-button:not(.collapsed){
+.profileDetailsHolder .cardPopup .accordion-body {
+    padding: 15px 10px !important;
+}
+
+.profileDetailsHolder .accordion-button:not(.collapsed),
+.cardDetailsWrapper .accordion-button:not(.collapsed) {
     background-color: #fff;
     color: var(--ui-accent);
 }
 
-.profileDetailsHolder .billingDetails .formItem{
+.profileDetailsHolder .billingDetails .formItem,
+.cardDetailsWrapper .billingDetails .formItem {
     border: 0;
     color: #000;
     font-weight: 700;
@@ -349,6 +358,7 @@
     height: 100%;
 }
 
-.profileDetailsHolder .billingDetails .formItem:not(:disabled){
+.profileDetailsHolder .billingDetails .formItem:not(:disabled),
+.cardDetailsWrapper .billingDetails .formItem:not(:disabled) {
     border-bottom: 1px solid #bbbbbb;
 }
