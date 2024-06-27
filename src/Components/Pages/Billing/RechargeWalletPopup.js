@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import Cards from "react-credit-cards-2";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
+import NewCardPaymentMethod from "./NewCardPaymentMethod";
+
 
 function RechargeWalletPopup({ closePopup }) {
+  const [newCardPopUp,setNewCardPopUp]=useState(false)
+  function closeNewPopUp (){
+    setNewCardPopUp(false)
+  }
   return (
     <>
       <style>
@@ -35,20 +41,22 @@ function RechargeWalletPopup({ closePopup }) {
       }
         `}
       </style>
-      <div className="row">
+     
+     
+       {newCardPopUp?  <NewCardPaymentMethod closePopUp2={closeNewPopUp}/>: <div className="row">
         <div className="col-xl-4 mx-auto">
           <div className="profileView">
             <div className="profileDetailsHolder position-relative">
               <div className="header d-flex align-items-center">
                 <div className="col-12">
                   Choose Your Card
-                  {/* <span
+                  <span
                     onClick={() => closePopup(false)}
                     className="float-end clearButton text-danger fs-4"
                     style={{ cursor: "pointer" }}
                   >
                     <i class="fa-sharp fa-solid fa-xmark"></i>
-                  </span> */}
+                  </span>
                 </div>
               </div>
               <div class="row" style={{ padding: "5px" }}>
@@ -83,7 +91,7 @@ function RechargeWalletPopup({ closePopup }) {
                   </div>
                 </div>
                 <div className="col-12">
-                  <button className="clearButton w-100">
+                  <button className="clearButton w-100" onClick={()=>setNewCardPopUp(true)}>
                     Choose a new Payment Method <i class="fa-sharp fa-solid fa-arrow-right"></i>
                   </button>
                 </div>
@@ -294,7 +302,8 @@ function RechargeWalletPopup({ closePopup }) {
             </div>
           </div>
         </div>
-      </div>
+      </div>}      
+           
     </>
   );
 }

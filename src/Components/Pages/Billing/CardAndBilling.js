@@ -517,13 +517,7 @@ function CardAndBilling() {
         ) : (
           ""
         )}
-        <div className="popup">
-          <div className="container h-100">
-            <div className="row h-100 justify-content-center align-items-center">
-              <NewCardPaymentMethod />
-            </div>
-          </div>
-        </div>
+       
       </section>
     </main>
   );
