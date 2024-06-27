@@ -5,8 +5,8 @@ import NewCardPaymentMethod from "./NewCardPaymentMethod";
 
 
 function RechargeWalletPopup({ closePopup }) {
-  const [newCardPopUp,setNewCardPopUp]=useState(false)
-  function closeNewPopUp (){
+  const [newCardPopUp, setNewCardPopUp] = useState(false)
+  function closeNewPopUp() {
     setNewCardPopUp(false)
   }
   return (
@@ -41,9 +41,9 @@ function RechargeWalletPopup({ closePopup }) {
       }
         `}
       </style>
-     
-     
-       {newCardPopUp?  <NewCardPaymentMethod closePopUp2={closeNewPopUp}/>: <div className="row">
+
+
+      {newCardPopUp ? <NewCardPaymentMethod closePopUp2={closeNewPopUp} /> : <div className="row">
         <div className="col-xl-4 mx-auto">
           <div className="profileView">
             <div className="profileDetailsHolder position-relative">
@@ -91,7 +91,7 @@ function RechargeWalletPopup({ closePopup }) {
                   </div>
                 </div>
                 <div className="col-12">
-                  <button className="clearButton w-100" onClick={()=>setNewCardPopUp(true)}>
+                  <button className="clearButton w-100" onClick={() => setNewCardPopUp(true)}>
                     Choose a new Payment Method <i class="fa-sharp fa-solid fa-arrow-right"></i>
                   </button>
                 </div>
@@ -108,7 +108,7 @@ function RechargeWalletPopup({ closePopup }) {
                     id="accordionFlushExample"
                   >
                     <div class="accordion-item">
-                      <h2 class="accordion-header" style={{ border: '1px solid green', boxShadow: '#00ff1554 0px 3px 8px', borderRadius: '10px' }}>
+                      <h2 class="accordion-header addressDrawer active">
                         <div className="d-flex flex-wrap align-items-center" style={{ padding: '0 10px' }}>
                           <div className="col-10">
                             <button
@@ -302,8 +302,8 @@ function RechargeWalletPopup({ closePopup }) {
             </div>
           </div>
         </div>
-      </div>}      
-           
+      </div>}
+
     </>
   );
 }

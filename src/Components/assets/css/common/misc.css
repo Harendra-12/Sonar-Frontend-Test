@@ -362,3 +362,15 @@
 .cardDetailsWrapper .billingDetails .formItem:not(:disabled) {
     border-bottom: 1px solid #bbbbbb;
 }
+
+.addressDrawer {
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: none;
+}
+
+.addressDrawer.active {
+
+    border: 1px solid green;
+    box-shadow: #00ff1554 0px 3px 8px;
+}

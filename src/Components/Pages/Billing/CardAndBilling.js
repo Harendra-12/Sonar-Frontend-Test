@@ -9,7 +9,7 @@ import NewCardPaymentMethod from "./NewCardPaymentMethod";
 
 function CardAndBilling() {
   const [cardPopUp, setCardPopUp] = useState(false);
-  const accountDetails = useSelector((state)=>state.accountDetails)
+  const accountDetails = useSelector((state) => state.accountDetails)
   const [rechargePopUp, setRechargePopUp] = useState(false);
   const handleCardPopup = (value) => {
     setCardPopUp(value);
@@ -19,7 +19,7 @@ function CardAndBilling() {
   };
 
   const downloadImage = async (imageUrl, fileName) => {
-    console.log("This is invoice",imageUrl,fileName);
+    console.log("This is invoice", imageUrl, fileName);
     try {
       const response = await fetch(imageUrl);
       if (!response.ok) {
@@ -85,7 +85,7 @@ function CardAndBilling() {
                     <div className="col-xl-4">
                       <div class="itemWrapper a">
                         <div class="heading">
-                          <i class="fa-duotone fa-ballot-check"></i>Wallet Balance
+                          <i class="fa-duotone fa-credit-card"></i> Wallet Balance
                         </div>
                         <div class="data-number">
                           $ {accountDetails?.balance?.amount.split(".")[0]}.<sub style={{ fontSize: 14 }}>{accountDetails?.balance?.amount.split(".")[1]}</sub>
@@ -186,39 +186,45 @@ function CardAndBilling() {
                           <div className="col-xl-12">
                             <div class="header d-flex align-items-center justify-content-between">
                               <div class="col-5">Billing Information</div>
+                              <button
+                                className="panelButton m-0"
+                                onClick={() => setCardPopUp(true)}
+                              >
+                                <i class="fa-regular fa-plus"></i> Add New Address
+                              </button>
                             </div>
                             <div
-                              class="accordion accordion-flush"
+                              class="accordion accordion-flush pt-3"
                               id="accordionFlushExample"
                             >
                               <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                  <button
-                                    class="accordion-button collapsed justify-content-between"
-                                    type="button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapseOne"
-                                    aria-expanded="false"
-                                    aria-controls="flush-collapseOne"
-                                  >
-                                    <div>
-                                      <h5 className="mb-0">John Doe</h5>
+                                <h2 class="accordion-header addressDrawer active">
+                                  <div className="d-flex flex-wrap align-items-center" style={{ padding: '0 10px' }}>
+                                    <div className="col-11">
+                                      <button
+                                        class="accordion-button collapsed justify-content-between"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseOne"
+                                        aria-expanded="false"
+                                        aria-controls="flush-collapseOne"
+                                      >
+                                        <div>
+                                          <h5 className="mb-0">John Doe</h5>
+                                        </div>
+                                      </button>
                                     </div>
-                                    <div className="d-flex me-3">
-                                      <div className="me-2">
-                                        <button className="clearButton fw-medium">
-                                          <i class="fa-duotone fa-pen-to-square me-1"></i>{" "}
-                                          Edit
-                                        </button>
-                                      </div>
-                                      <div>
-                                        <button className="clearButton fw-medium text-danger">
-                                          <i class="fa-duotone fa-trash me-2"></i>
-                                          Delete
-                                        </button>
-                                      </div>
+                                    <div className="ms-auto d-flex">
+                                      <label class="switch">
+                                        <input
+                                          type="checkbox"
+                                          id="showAllCheck"
+                                          defaultChecked={true}
+                                        />
+                                        <span class="slider round"></span>
+                                      </label>
                                     </div>
-                                  </button>
+                                  </div>
                                 </h2>
                                 <div
                                   id="flush-collapseOne"
@@ -323,6 +329,20 @@ function CardAndBilling() {
                                         </li>
                                       </div>
                                     </ul>
+                                    <div className="d-flex mt-2">
+                                      <div className="me-3">
+                                        <button className="clearButton fw-medium ps-0">
+                                          <i class="fa-duotone fa-pen-to-square me-1"></i>{" "}
+                                          Edit
+                                        </button>
+                                      </div>
+                                      <div>
+                                        <button className="clearButton fw-medium text-danger">
+                                          <i class="fa-duotone fa-trash me-1"></i>{" "}
+                                          Delete
+                                        </button>
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -446,30 +466,30 @@ function CardAndBilling() {
                         <i class="fa-duotone fa-file-invoice"></i> Invoices
                       </div>
                       <ul className="invoiceList">
-                        {accountDetails.payments.map((item)=>{
-                          return(
+                        {accountDetails.payments.map((item) => {
+                          return (
                             <li>
-                            <div className="col-7">
-                              <p>{item.transaction_date}</p>
-                              <span>#{item.transaction_id}</span>
-                            </div>
-                            <div className="me-2" style={{ width: 55 }}>
-                              <p>${item.amount_subtotal}</p>
-                            </div>
-                            <div style={{cursor:"pointer"}} onClick={()=>downloadImage(item.invoice_url,`invoice${item.transaction_date.split(" ")[0]}`)}>
-                              
+                              <div className="col-7">
+                                <p>{item.transaction_date}</p>
+                                <span>#{item.transaction_id}</span>
+                              </div>
+                              <div className="me-2" style={{ width: 55 }}>
+                                <p>${item.amount_subtotal}</p>
+                              </div>
+                              <div style={{ cursor: "pointer" }} onClick={() => downloadImage(item.invoice_url, `invoice${item.transaction_date.split(" ")[0]}`)}>
+
                                 <i class="fa-duotone fa-files me-1"></i> PDF
-                              
-                            </div>
-                          </li>
+
+                              </div>
+                            </li>
                           )
-                          
+
                         })}
                       </ul>
                     </div>
                   </div>
                   <div className="col-xl-12 mt-3">
-                    <div class="itemWrapper a">
+                    <div class="itemWrapper c">
                       <div class="heading">
                         <i class="fa-duotone fa-ballot-check"></i> Last
                         Transaction
@@ -517,7 +537,7 @@ function CardAndBilling() {
         ) : (
           ""
         )}
-       
+
       </section>
     </main>
   );

@@ -176,7 +176,8 @@
     color: var(--ui-accent);
 }
 
-.itemWrapper.c .heading i {
+.itemWrapper.c .heading i,
+.itemWrapper.c i {
     color: var(--color3);
 }
 
