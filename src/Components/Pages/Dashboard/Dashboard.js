@@ -40,43 +40,6 @@ const Dashboard = () => {
                     <div className="row ">
 
                         <Header title="Dashboard" />
-                        {/* <div
-                                className="row pt-3 justify-content-between"
-                                style={{}}
-                            >
-                                <div className="col-xl-4 col-6 my-auto">
-                                    <div className="position-relative searchBox">
-                                        <input
-                                            type="search"
-                                            name="Search"
-                                            id="headerSearch"
-                                            placeholder="Looking for an option?"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="col-xl-8 col-6">
-                                    <div className="d-flex justify-content-end">
-                                        <button
-                                            effect="ripple"
-                                            className="appPanelButton"
-                                        >
-                                            <i className="fa-duotone fa-pen" />
-                                        </button>
-                                        <button
-                                            effect="ripple"
-                                            className="appPanelButton"
-                                        >
-                                            <i className="fa-duotone fa-message" />
-                                        </button>
-                                        <button
-                                            effect="ripple"
-                                            className="appPanelButton"
-                                        >
-                                            <i className="fa-duotone fa-gear" />
-                                        </button>
-                                    </div>
-                                </div>
-                            </div> */}
 
                         <div className='col-12 mt-3 tangoNavs'>
                             <nav>
@@ -88,11 +51,11 @@ const Dashboard = () => {
                                 </div>
                             </nav>
                             <div className="tab-content mt-3" id="nav-tabContent">
-                                <div className="tab-pane fade show active" id="nav-calls" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+                                <div className="tab-pane fade show active" id="nav-calls" role="tabpanel" aria-labelledby="nav-home-tab" tabIndex="0">
                                     <div className="row">
                                         <div className="col-xl-3">
                                             <div className="itemWrapper a">
-                                                <div className="heading"><i class="fa-duotone fa-phone-office"></i> Handled Calls</div>
+                                                <div className="heading"><i className="fa-duotone fa-phone-office"></i> Handled Calls</div>
                                                 <div className="data-number">2</div>
                                                 <div className="label">21 Inbound (Answered)</div>
                                                 <div className="label">0 Connected Callbacks</div>
@@ -102,7 +65,7 @@ const Dashboard = () => {
                                         </div>
                                         <div className="col-xl-3">
                                             <div className="itemWrapper b">
-                                                <div className="heading"><i class="fa-duotone fa-clock"></i> Total Minutes</div>
+                                                <div className="heading"><i className="fa-duotone fa-clock"></i> Total Minutes</div>
                                                 <div className="data-number">1075</div>
                                                 <div className="label">21 Inbound (Answered)</div>
                                                 <div className="label">17 Outbound (Connected)</div>
@@ -111,7 +74,7 @@ const Dashboard = () => {
                                         </div>
                                         <div className="col-xl-3">
                                             <div className="itemWrapper c">
-                                                <div className="heading"><i class="fa-duotone fa-phone-missed"></i> Missed Calls</div>
+                                                <div className="heading"><i className="fa-duotone fa-phone-missed"></i> Missed Calls</div>
                                                 <div className="data-number">5</div>
                                                 <div className="label">1 Voicecall Missed</div>
                                                 <div className="label">4 Calls Missed</div>
@@ -120,7 +83,7 @@ const Dashboard = () => {
                                         </div>
                                         <div className="col-xl-3">
                                             <div className="itemWrapper d">
-                                                <div className="heading"><i class="fa-duotone fa-phone-xmark"></i> Abandoned Calls</div>
+                                                <div className="heading"><i className="fa-duotone fa-phone-xmark"></i> Abandoned Calls</div>
                                                 <div className="data-number">5</div>
                                                 <div className="label">1 Internal Call</div>
                                                 <div className="label">4 External Calls</div>
@@ -129,11 +92,11 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="tab-pane fade" id="nav-messages" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+                                <div className="tab-pane fade" id="nav-messages" role="tabpanel" aria-labelledby="nav-profile-tab" tabIndex="0">
                                     <div className="row">
                                         <div className="col-xl-3">
                                             <div className="itemWrapper a">
-                                                <div className="heading"><i class="fa-duotone fa-message-arrow-down"></i> Received Messages</div>
+                                                <div className="heading"><i className="fa-duotone fa-message-arrow-down"></i> Received Messages</div>
                                                 <div className="data-number">10</div>
                                                 <div className="label">7 UnRead Messages</div>
                                                 <div className="label">3 Read Messages</div>
@@ -142,7 +105,7 @@ const Dashboard = () => {
                                         </div>
                                         <div className="col-xl-3">
                                             <div className="itemWrapper b">
-                                                <div className="heading"><i class="fa-duotone fa-message-arrow-up"></i> Messages Sent</div>
+                                                <div className="heading"><i className="fa-duotone fa-message-arrow-up"></i> Messages Sent</div>
                                                 <div className="data-number">20</div>
                                                 <div className="label">17 Internal Messages</div>
                                                 <div className="label">3 External Messages</div>
@@ -151,7 +114,7 @@ const Dashboard = () => {
                                         </div>
                                         <div className="col-xl-3">
                                             <div className="itemWrapper c">
-                                                <div className="heading"><i class="fa-duotone fa-inbox"></i> Total Inbox</div>
+                                                <div className="heading"><i className="fa-duotone fa-inbox"></i> Total Inbox</div>
                                                 <div className="data-number">50</div>
                                                 <div className="label">1.26 KB Used</div>
                                                 <div className="label">100 GB Available</div>
@@ -160,7 +123,7 @@ const Dashboard = () => {
                                         </div>
                                         <div className="col-xl-3">
                                             <div className="itemWrapper d">
-                                                <div className="heading"><i class="fa-duotone fa-envelopes"></i> Emails</div>
+                                                <div className="heading"><i className="fa-duotone fa-envelopes"></i> Emails</div>
                                                 <div className="data-number">6</div>
                                                 <div className="label">1 Sent Email</div>
                                                 <div className="label">5 Unread Email</div>
@@ -170,11 +133,11 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="tab-pane fade" id="nav-queue" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
+                                <div className="tab-pane fade" id="nav-queue" role="tabpanel" aria-labelledby="nav-contact-tab" tabIndex="0">
                                     <div className="row">
                                         <div className="col-xl-3">
                                             <div className="itemWrapper a">
-                                                <div className="heading"><i class="fa-duotone fa-phone-volume"></i> Total Queues</div>
+                                                <div className="heading"><i className="fa-duotone fa-phone-volume"></i> Total Queues</div>
                                                 <div className="data-number"> 10 </div>
                                                 <div className="label">3 Currently Active Queue</div>
                                                 <div className="label">7 Inactive Queue</div>
@@ -183,7 +146,7 @@ const Dashboard = () => {
                                         </div>
                                         <div className="col-xl-3">
                                             <div className="itemWrapper b">
-                                                <div className="heading"><i class="fa-duotone fa-users"></i> Total Agents</div>
+                                                <div className="heading"><i className="fa-duotone fa-users"></i> Total Agents</div>
                                                 <div className="data-number">25 </div>
                                                 <div className="label">15 Agents in Queue</div>
                                                 <div className="label">5 Agents Not in Queue</div>
@@ -192,7 +155,7 @@ const Dashboard = () => {
                                         </div>
                                         <div className="col-xl-3">
                                             <div className="itemWrapper c">
-                                                <div className="heading"><i class="fa-duotone fa-circle-pause"></i> Calls Waiting</div>
+                                                <div className="heading"><i className="fa-duotone fa-circle-pause"></i> Calls Waiting</div>
                                                 <div className="data-number">5</div>
                                                 <div className="label">1 Waiting in Queue 1</div>
                                                 <div className="label">4 Waiting in Queue 2</div>
@@ -201,7 +164,7 @@ const Dashboard = () => {
                                         </div>
                                         <div className="col-xl-3">
                                             <div className="itemWrapper d">
-                                                <div className="heading"><i class="fa-duotone fa-phone-xmark"></i> Calls Overflow</div>
+                                                <div className="heading"><i className="fa-duotone fa-phone-xmark"></i> Calls Overflow</div>
                                                 <div className="data-number">6</div>
                                                 <div className="label">4 Calls Overflown</div>
                                                 <div className="label">2 Calls Abandoned</div>
@@ -210,11 +173,11 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="tab-pane fade" id="nav-ring" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
+                                <div className="tab-pane fade" id="nav-ring" role="tabpanel" aria-labelledby="nav-contact-tab" tabIndex="0">
                                     <div className="row">
                                         <div className="col-xl-3">
                                             <div className="itemWrapper a">
-                                                <div className="heading"><i class="fa-duotone fa-phone-rotary"></i> Total Ring Group</div>
+                                                <div className="heading"><i className="fa-duotone fa-phone-rotary"></i> Total Ring Group</div>
                                                 <div className="data-number"> 10 </div>
                                                 <div className="label">3 Currently Active in Group</div>
                                                 <div className="label">7 Inactive in Group</div>
@@ -223,7 +186,7 @@ const Dashboard = () => {
                                         </div>
                                         <div className="col-xl-3">
                                             <div className="itemWrapper b">
-                                                <div className="heading"><i class="fa-duotone fa-phone-volume"></i> Active Calls </div>
+                                                <div className="heading"><i className="fa-duotone fa-phone-volume"></i> Active Calls </div>
                                                 <div className="data-number">25 </div>
                                                 <div className="label">15 Agents in Group</div>
                                                 <div className="label">5 Agents Not in Group</div>
@@ -232,7 +195,7 @@ const Dashboard = () => {
                                         </div>
                                         <div className="col-xl-3">
                                             <div className="itemWrapper c">
-                                                <div className="heading"><i class="fa-duotone fa-circle-pause"></i> Calls Waiting</div>
+                                                <div className="heading"><i className="fa-duotone fa-circle-pause"></i> Calls Waiting</div>
                                                 <div className="data-number">5</div>
                                                 <div className="label">1 Waiting in Queue 1</div>
                                                 <div className="label">4 Waiting in Queue 2</div>
@@ -241,7 +204,7 @@ const Dashboard = () => {
                                         </div>
                                         <div className="col-xl-3">
                                             <div className="itemWrapper d">
-                                                <div className="heading"><i class="fa-duotone fa-phone-xmark"></i> Calls Overflow</div>
+                                                <div className="heading"><i className="fa-duotone fa-phone-xmark"></i> Calls Overflow</div>
                                                 <div className="data-number">6</div>
                                                 <div className="label">4 Calls Overflown</div>
                                                 <div className="label">2 Calls Abandoned</div>

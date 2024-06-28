@@ -9,7 +9,6 @@ function Header(props) {
   const dispatch = useDispatch()
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state)=>state.accountDetails)
-  console.log("This is account details",accountDetails);
   const [accounName, setAccountName] = useState();
   const [dropDown, setDropDown] = useState(false);
   const navigate = useNavigate();

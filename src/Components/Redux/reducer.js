@@ -7,6 +7,11 @@ var channelHangupComplete = [];
 var allCall = [];
 var tempAccount = JSON.parse(localStorage.getItem("tempAccount"));
 var accountDetails = JSON.parse(localStorage.getItem("accountDetails"));
+var acountDetailsUpdate = 0;
+var cardListRefresh = 0;
+var billingListRefresh = 0;
+var cardList = JSON.parse(localStorage.getItem("cardList"));
+var billingList = JSON.parse(localStorage.getItem("billingList"));
 
 const initialState = {
   account,
@@ -17,6 +22,11 @@ const initialState = {
   allCall,
   tempAccount,
   accountDetails,
+  acountDetailsUpdate,
+  cardListRefresh,
+  billingListRefresh,
+  cardList,
+  billingList,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -37,6 +47,14 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, tempAccount: action.tempAccount };
     case "SET_ACCOUNTDETAILS":
       return { ...state, accountDetails: action.accountDetails };
+    case "SET_CARDLISTREFRESH":
+      return { ...state, cardListRefresh: action.cardListRefresh };
+    case "SET_CARDLIST":
+      return { ...state, cardList: action.cardList };
+    case "SET_BILLINGLISTREFRESH":
+      return { ...state, billingListRefresh: action.billingListRefresh };
+    case "SET_BILLINGLIST":
+      return { ...state, billingList: action.billingList };
     default:
       return state;
   }

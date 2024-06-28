@@ -1,32 +1,70 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { generalGetFunction } from './globalFunction'
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { generalGetFunction } from "./globalFunction";
 
 function GlobalCalls() {
-    const account = useSelector((state)=>state.account)
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
-    useEffect(()=>{
-        if(account && account.account_id){
-            async function getData(){
-                const apiData = await generalGetFunction(`/call-details?account=${account.account_id}`)
-                if(apiData.status){
-                    dispatch({
-                        type:"SET_ALLCALL",
-                        allCall:apiData.data
-                    })
-                }
-            }
-            getData()
-        }else{
-            navigate("/")
+  const account = useSelector((state) => state.account);
+  const navigate = useNavigate();
+  const cardListRefresh = useSelector((state) => state.cardListRefresh);
+  const billingListRefresh = useSelector((state) => state.billingListRefresh);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (account && account.account_id) {
+      async function getData() {
+        const apiData = await generalGetFunction(
+          `/call-details?account=${account.account_id}`
+        );
+        if (apiData.status) {
+          dispatch({
+            type: "SET_ALLCALL",
+            allCall: apiData.data,
+          });
         }
-    },[account, dispatch, navigate])
-  return (
-    <div>
-    </div>
-  )
+      }
+      getData();
+    } else {
+      navigate("/");
+    }
+  }, [account, dispatch, navigate]);
+
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction(
+        `/all-cards?account_id=${account.account_id}`
+      );
+      if (apiData.status) {
+        dispatch({
+          type: "SET_CARDLIST",
+          cardList: apiData.data,
+        });
+        localStorage.setItem("cardList",JSON.stringify(apiData.data))
+      }
+    }
+    if(cardListRefresh>0){
+        getData();
+    }
+   
+  }, [cardListRefresh]);
+
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction(`/billing-address`);
+      if (apiData.status) {
+        dispatch({
+          type: "SET_BILLINGLIST",
+          billingList: apiData.data,
+        });
+        localStorage.setItem("billingList",JSON.stringify(apiData.data))
+      }
+    }
+    if(billingListRefresh>0){
+        getData();
+    }
+    
+  }, [billingListRefresh]);
+  return <div></div>;
 }
 
-export default GlobalCalls
+export default GlobalCalls;

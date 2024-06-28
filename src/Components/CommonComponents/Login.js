@@ -46,6 +46,14 @@ function Login() {
               type: "SET_ACCOUNT",
               account: profile.data,
             });
+            dispatch({
+              type: "SET_BILLINGLISTREFRESH",
+              billingListRefresh: 1,
+            });
+            dispatch({
+              type: "SET_CARDLISTREFRESH",
+              cardListRefresh: 1,
+            });
             localStorage.setItem("account", JSON.stringify(profile.data));
             if (profile.data.usertype === "Company") {
               const accountData = await generalGetFunction(
@@ -53,11 +61,14 @@ function Login() {
               );
               if (accountData.status) {
                 dispatch({
-                  type:"SET_ACCOUNTDETAILS",
-                  accountDetails:accountData.data
-                })
-                localStorage.setItem("accountDetails",JSON.stringify(accountData.data))
-                if(Number(accountData.data.company_status)<5){
+                  type: "SET_ACCOUNTDETAILS",
+                  accountDetails: accountData.data,
+                });
+                localStorage.setItem(
+                  "accountDetails",
+                  JSON.stringify(accountData.data)
+                );
+                if (Number(accountData.data.company_status) < 5) {
                   dispatch({
                     type: "SET_TEMPACCOUNT",
                     tempAccount: accountData.data,
@@ -69,7 +80,7 @@ function Login() {
                   setLoading(false);
                   window.scrollTo(0, 0);
                   navigate("/temporary-dashboard");
-                }else{
+                } else {
                   // localStorage.clear("tempAccount")
                   dispatch({
                     type: "SET_TEMPACCOUNT",
@@ -78,7 +89,7 @@ function Login() {
                   setLoading(false);
                   window.scrollTo(0, 0);
                   navigate("/dashboard");
-                }                
+                }
               } else {
                 setLoading(false);
                 toast.error("Server error !");

@@ -5,8 +5,6 @@ import { useCreditCardValidator, images } from "react-creditcard-validator";
 import { useDispatch } from "react-redux";
 import * as cardValidator from "card-validator";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
-// import { generalGetFunction } from '../../GlobalFunction/globalFunction';
-// import { useNavigate } from 'react-router-dom';
 
 function NewCardPaymentMethod({ closePopUp2 }) {
   // const navigate = useNavigate()

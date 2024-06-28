@@ -374,3 +374,49 @@
     border: 1px solid green;
     box-shadow: #00ff1554 0px 3px 8px;
 }
+
+/* Card logo css start */
+.card-logo-container .rccs {
+    width: auto;
+    height: auto;
+    position: relative;
+  }
+  
+  .card-logo-container .rccs__card {
+    width: 50px;
+    height: 30px; 
+    overflow: hidden;
+    position: relative;
+  }
+
+  .card-logo-container .rccs__card--front{
+    border-radius: 5.5px;
+  }
+  
+  .card-logo-container .rccs__card--unknown .rccs__issuer {
+    display: none;
+  }
+  
+  .card-logo-container .rccs__number,
+  .card-logo-container .rccs__name,
+  .card-logo-container .rccs__expiry,
+  .card-logo-container .rccs__cvc,
+  .card-logo-container .rccs__chip {
+    display: none;
+  }
+  
+  .card-logo-container .rccs__issuer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-size: contain;
+    background-position: center;
+  }
+
+  .card-logo-container .rccs__card--american-express .rccs__issuer{
+    background-size: cover;
+  }
+  
+/* Card logo css end*/
