@@ -10,6 +10,8 @@ import AddNewAddress from "./AddNewAddress";
 function CardAndBilling() {
   const [cardPopUp, setCardPopUp] = useState(false);
   const [billingPopUp, setBillingPopUp] = useState(false);
+  // const cardRefresh = useSelector((state)=>state.cardListRefresh)
+  // console.log("This is card refresh",cardRefresh);
   const accountDetails = useSelector((state) => state.accountDetails);
   const cardList = useSelector((state) => state.cardList);
   const billingList = useSelector((state) => state.billingList);
@@ -137,9 +139,9 @@ function CardAndBilling() {
                           </div>
                           <div className="row px-2 pt-2 gy-3">
                             {cardList &&
-                              cardList.map((item) => {
+                              cardList.map((item,key) => {
                                 return (
-                                  <div className="col-xl-6">
+                                  <div className="col-xl-6" key={key}>
                                     <div className="savedCardWrapper active">
                                       <div className="imgWrapper">
                                         <div className="card-logo-container">
@@ -201,6 +203,7 @@ function CardAndBilling() {
                               billingList.map((item, key) => {
                                 return (
                                   <div
+                                  key={key}
                                     className="accordion accordion-flush pt-3"
                                     id={key}
                                   >

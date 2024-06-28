@@ -7,6 +7,7 @@ function GlobalCalls() {
   const account = useSelector((state) => state.account);
   const navigate = useNavigate();
   const cardListRefresh = useSelector((state) => state.cardListRefresh);
+  console.log("Card refresh from global",cardListRefresh);
   const billingListRefresh = useSelector((state) => state.billingListRefresh);
 
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ function GlobalCalls() {
         getData();
     }
    
-  }, [cardListRefresh]);
+  }, [account.account_id, cardListRefresh, dispatch]);
 
   useEffect(() => {
     async function getData() {
@@ -63,7 +64,7 @@ function GlobalCalls() {
         getData();
     }
     
-  }, [billingListRefresh]);
+  }, [billingListRefresh, dispatch]);
   return <div></div>;
 }
 

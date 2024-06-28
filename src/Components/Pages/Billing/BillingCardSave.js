@@ -3,13 +3,15 @@ import { useCreditCardValidator, images } from "react-creditcard-validator";
 import Cards from "react-credit-cards-2";
 import * as cardValidator from "card-validator";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../Misc/CircularLoader";
 
 function BillingCardSave({ closePopup }) {
+  const dispatch = useDispatch()
+  const cardListRefresh = useSelector((state)=>state.cardListRefresh)
   const [loading, setLoading] = useState(false);
   const account = useSelector((state) => state.account);
   const {
@@ -118,11 +120,17 @@ function BillingCardSave({ closePopup }) {
       if (apiData.status) {
         toast.success(apiData.message);
         setLoading(false);
+        dispatch({
+          type:"SET_CARDLISTREFRESH",
+          cardListRefresh: cardListRefresh+1
+        })
+        setTimeout(()=>{
+          closePopup(false)
+        },2000)
        
       } else {
         setLoading(false);
         const errorMessage = Object.keys(apiData.error)
-        console.log(apiData.error,"Error meaage",errorMessage);
         toast.error(apiData.error[errorMessage[0]][0]);
       }
     }

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 
 function AddNewAddress({ closePopup }) {
+  const account = useSelector((state)=>state.account)
   const [billing, setBilling] = useState({
     name: "",
     phone: "",
@@ -79,11 +82,55 @@ function AddNewAddress({ closePopup }) {
         })
         .includes(true)
     ) {
-      console.log("All constion vewrified and inside submit");
+      const parsedData ={
+        account_id:account.account_id,
+        fullname:billing.name,
+        contact_no:billing.phone,
+        email:billing.email,
+        address:billing.address,
+        zip:billing.zip,
+        city:billing.city,
+        state:billing.state,
+        country:billing.country
+      }
+      // const apiData = await generalPostFunction()
     }
   }
   return (
     <div className="col-xl-4">
+       <style>
+        {`
+            .form-control.error-border{
+                border: 1px solid red;
+            }
+                .wrapper ul{
+        padding: 0;
+        list-style: none;
+        margin-bottom: 0;
+      }
+
+      .wrapper ul li{
+        padding-bottom: 5px;
+        margin-bottom: 7px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .wrapper ul label{
+        font-size: 14px;
+        color: #5e5e5e;
+        font-weight: 500;
+        font-family: Roboto;
+      }
+
+      .wrapper ul .details{
+        float: inline-end;
+        color: #000;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: Roboto;
+      }
+        `}
+      </style>
       <div className="cardDetailsWrapper">
         <div className="row">
           <div className="col-12 border-start border-4 border-success mb-3 px-3 d-flex jusitfy-content-between align-items-center">
@@ -199,7 +246,7 @@ function AddNewAddress({ closePopup }) {
                 errorBilling.zip ? "error-border" : ""
               }`}
               onChange={(e) => billingChnage(e)}
-              type="text"
+              type="number"
             />
           </div>
           <div className="form-group mb-1">

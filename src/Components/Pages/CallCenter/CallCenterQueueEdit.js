@@ -221,6 +221,7 @@ function CallCenterQueueEdit() {
         queue_cid_prefix: callCenter.prefix,
         xml: `<extension name="${callCenter.name.trim()}">
         <condition field="destination_number" expression="^(callcenter\+)?${callCenter.extension}$" >
+           <action application="transfer" data="${callCenter.action} XML ${account.domain.domain_name}"/>
           <action application="answer" data=""/>
           <action application="set" data="hangup_after_bridge=true"/>
           <action application="sleep" data="1000"/>

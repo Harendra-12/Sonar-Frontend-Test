@@ -68,6 +68,7 @@ import DocumentUpload from "./Components/Pages/Profile/DocumentUpload";
 import UserRegistrationProcessOverview from "./Components/Pages/Admin/UserRegistrationProcessOverview";
 import CardAndBilling from "./Components/Pages/Billing/CardAndBilling";
 import TempDashboard from "./Components/Pages/Dashboard/TempDashboard";
+import GlobalCalls from "./Components/GlobalFunction/GlobalCalls";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -101,6 +102,7 @@ function App() {
     <>
       <Router>
         <NavigationSetter />
+        <GlobalCalls />
         <Navbar />
         <Routes>
           <Route path="/" element={<Login />} />
