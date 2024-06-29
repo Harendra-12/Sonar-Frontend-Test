@@ -7,6 +7,7 @@ import CircularLoader from "../Misc/CircularLoader";
 
 function AddNewAddress({ closePopup }) {
   const account = useSelector((state)=>state.account)
+
   const dispatch = useDispatch()
   const billingListRefresh = useSelector((state)=>state.billingListRefresh)
   const [loading,setLoading]=useState(false)
@@ -287,6 +288,7 @@ function AddNewAddress({ closePopup }) {
           </div>
         </div>
       </div>
+      
       {loading ? <CircularLoader /> : ""}
       <ToastContainer
         position="bottom-right"

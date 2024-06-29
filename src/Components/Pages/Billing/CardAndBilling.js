@@ -10,6 +10,9 @@ import AddNewAddress from "./AddNewAddress";
 function CardAndBilling() {
   const [cardPopUp, setCardPopUp] = useState(false);
   const [billingPopUp, setBillingPopUp] = useState(false);
+  const [cardConfirmationPopUp, setCardConfirmationPopUp] = useState(false);
+  const [billingConfirmationPopUp, setBillingConfirmationPopUp] =
+    useState(false);
   // const cardRefresh = useSelector((state)=>state.cardListRefresh)
   // console.log("This is card refresh",cardRefresh);
   const accountDetails = useSelector((state) => state.accountDetails);
@@ -139,10 +142,10 @@ function CardAndBilling() {
                           </div>
                           <div className="row px-2 pt-2 gy-3">
                             {cardList &&
-                              cardList.map((item,key) => {
+                              cardList.map((item, key) => {
                                 return (
                                   <div className="col-xl-6" key={key}>
-                                    <div className="savedCardWrapper active">
+                                    <div className={`savedCardWrapper ${item.default?"active":""}`}>
                                       <div className="imgWrapper">
                                         <div className="card-logo-container">
                                           <Cards
@@ -165,7 +168,7 @@ function CardAndBilling() {
                                           <input
                                             type="checkbox"
                                             id="showAllCheck"
-                                            defaultChecked={true}
+                                            defaultChecked={item.default}
                                           />
                                           <span className="slider round"></span>
                                         </label>
@@ -203,7 +206,7 @@ function CardAndBilling() {
                               billingList.map((item, key) => {
                                 return (
                                   <div
-                                  key={key}
+                                    key={key}
                                     className="accordion accordion-flush pt-3"
                                     id={key}
                                   >
@@ -481,6 +484,66 @@ function CardAndBilling() {
           ""
         )}
       </section>
+      {cardConfirmationPopUp ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-4">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-triangle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-0">
+                  <h4>Warning!</h4>
+                  Are you sure you want to add this Domain: ?
+                  <button className="panelButton m-0">Confirm</button>
+                  <button
+                    className="panelButtonWhite m-0 float-end"
+                    onClick={() => {
+                      setCardConfirmationPopUp(false);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+      {billingConfirmationPopUp ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-4">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-triangle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-0">
+                  <h4>Warning!</h4>
+                  Are you sure you want to add this Domain: ?
+                  <button className="panelButton m-0">Confirm</button>
+                  <button
+                    className="panelButtonWhite m-0 float-end"
+                    onClick={() => {
+                      setBillingConfirmationPopUp(false);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </main>
   );
 }

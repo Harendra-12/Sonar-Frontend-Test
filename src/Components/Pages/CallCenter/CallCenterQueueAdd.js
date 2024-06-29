@@ -203,14 +203,20 @@ function CallCenterQueueAdd() {
         account_id: account.account_id,
         created_by: account.id,
         xml: `<extension name="${callCenter.name.trim()}">
-        <condition field="destination_number" expression="^(callcenter\+)?${callCenter.extension}$" >
+        <condition field="destination_number" expression="^(callcenter\+)?${
+          callCenter.extension
+        }$" >
           <action application="answer" data=""/>
           <action application="set" data="hangup_after_bridge=true"/>
           <action application="sleep" data="1000"/>
-          <action application="callcenter" data="${callCenter.extension}@${account.domain.domain_name}"/>
-           <action application="transfer" data="${callCenter.action} XML ${account.domain.domain_name}"/>
+          <action application="callcenter" data="${callCenter.extension}@${
+          account.domain.domain_name
+        }"/>
+           <action application="transfer" data="${callCenter.action} XML ${
+          account.domain.domain_name
+        }"/>
         </condition>
-      </extension>`,
+</extension>`,
         agents: agent.map((item) => {
           if (item.name !== "") {
             return {
