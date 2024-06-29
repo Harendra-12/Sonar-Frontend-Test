@@ -1,9 +1,15 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import CircularLoader from "../Misc/CircularLoader";
 
 function AddNewAddress({ closePopup }) {
   const account = useSelector((state)=>state.account)
+  const dispatch = useDispatch()
+  const billingListRefresh = useSelector((state)=>state.billingListRefresh)
+  const [loading,setLoading]=useState(false)
   const [billing, setBilling] = useState({
     name: "",
     phone: "",
@@ -82,6 +88,7 @@ function AddNewAddress({ closePopup }) {
         })
         .includes(true)
     ) {
+      setLoading(true)
       const parsedData ={
         account_id:account.account_id,
         fullname:billing.name,
@@ -93,7 +100,18 @@ function AddNewAddress({ closePopup }) {
         state:billing.state,
         country:billing.country
       }
-      // const apiData = await generalPostFunction()
+      const apiData = await generalPostFunction("/billing-address/store",parsedData)
+      if(apiData.status){
+        setLoading(false)
+        toast.success(apiData.message)
+        dispatch({
+          type:"SET_BILLINGLISTREFRESH",
+          billingListRefresh: billingListRefresh+1
+        })
+        setTimeout(()=>{
+          closePopup(false)
+        },2000)
+      }
     }
   }
   return (
@@ -269,6 +287,19 @@ function AddNewAddress({ closePopup }) {
           </div>
         </div>
       </div>
+      {loading ? <CircularLoader /> : ""}
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 }
