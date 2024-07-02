@@ -6,11 +6,11 @@ import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../Misc/CircularLoader";
 
 function AddNewAddress({ closePopup }) {
-  const account = useSelector((state)=>state.account)
+  const account = useSelector((state) => state.account);
 
-  const dispatch = useDispatch()
-  const billingListRefresh = useSelector((state)=>state.billingListRefresh)
-  const [loading,setLoading]=useState(false)
+  const dispatch = useDispatch();
+  const billingListRefresh = useSelector((state) => state.billingListRefresh);
+  const [loading, setLoading] = useState(false);
   const [billing, setBilling] = useState({
     name: "",
     phone: "",
@@ -89,35 +89,38 @@ function AddNewAddress({ closePopup }) {
         })
         .includes(true)
     ) {
-      setLoading(true)
-      const parsedData ={
-        account_id:account.account_id,
-        fullname:billing.name,
-        contact_no:billing.phone,
-        email:billing.email,
-        address:billing.address,
-        zip:billing.zip,
-        city:billing.city,
-        state:billing.state,
-        country:billing.country
-      }
-      const apiData = await generalPostFunction("/billing-address/store",parsedData)
-      if(apiData.status){
-        setLoading(false)
-        toast.success(apiData.message)
+      setLoading(true);
+      const parsedData = {
+        account_id: account.account_id,
+        fullname: billing.name,
+        contact_no: billing.phone,
+        email: billing.email,
+        address: billing.address,
+        zip: billing.zip,
+        city: billing.city,
+        state: billing.state,
+        country: billing.country,
+      };
+      const apiData = await generalPostFunction(
+        "/billing-address/store",
+        parsedData
+      );
+      if (apiData.status) {
+        setLoading(false);
+        toast.success(apiData.message);
         dispatch({
-          type:"SET_BILLINGLISTREFRESH",
-          billingListRefresh: billingListRefresh+1
-        })
-        setTimeout(()=>{
-          closePopup(false)
-        },2000)
+          type: "SET_BILLINGLISTREFRESH",
+          billingListRefresh: billingListRefresh + 1,
+        });
+        setTimeout(() => {
+          closePopup(false);
+        }, 2000);
       }
     }
   }
   return (
     <div className="col-xl-4">
-       <style>
+      <style>
         {`
             .form-control.error-border{
                 border: 1px solid red;
@@ -284,12 +287,22 @@ function AddNewAddress({ closePopup }) {
             />
           </div>
           <div className="col-12 mt-2">
-            <button className="payNow" onClick={handleSubmit}> Confirm</button>
+            <button className="payNow" onClick={handleSubmit}>
+              {" "}
+              {loading ? (
+                <img
+                  width="6%"
+                  src={require("../../assets/images/loader-gif.webp")}
+                  alt=""
+                />
+              ) : (
+                "Confirm"
+              )}
+            </button>
           </div>
         </div>
       </div>
-      
-      {loading ? <CircularLoader /> : ""}
+
       <ToastContainer
         position="bottom-right"
         autoClose={3000}

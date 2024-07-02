@@ -12,7 +12,7 @@ function GlobalCalls() {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if (account && account.account_id) {
+    if (account && account?.account_id) {
       async function getData() {
         const apiData = await generalGetFunction(
           `/call-details?account=${account.account_id}`

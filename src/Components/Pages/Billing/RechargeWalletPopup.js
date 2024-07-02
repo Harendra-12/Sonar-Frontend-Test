@@ -1,13 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Cards from "react-credit-cards-2";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
 import NewCardPaymentMethod from "./NewCardPaymentMethod";
-
+import { useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import CircularLoader from "../Misc/CircularLoader";
 
 function RechargeWalletPopup({ closePopup }) {
-  const [newCardPopUp, setNewCardPopUp] = useState(false)
+  const [newCardPopUp, setNewCardPopUp] = useState(false);
+  const cardList = useSelector((state) => state.cardList);
+  const billingList = useSelector((state) => state.billingList);
+  const [loading, setLoading] = useState(false);
+  const [cvv, setCvv] = useState("");
+  const [amount, setAmount] = useState("");
+  const [selectedCardId, setSelectedCardId] = useState();
+  const [selectedBillId, setSelectedBillId] = useState();
+  useEffect(() => {
+    cardList.map((item) => {
+      if (item.default) {
+        setSelectedCardId(item.id);
+      }
+    });
+
+    billingList.map((item) => {
+      if (item.default) {
+        setSelectedBillId(item.id);
+      }
+    });
+  }, []);
   function closeNewPopUp() {
-    setNewCardPopUp(false)
+    setNewCardPopUp(false);
+  }
+  function handleSubmit() {
+    if (selectedCardId === null || selectedCardId === undefined) {
+      toast.error("Please select a card");
+    } else if (selectedBillId === null || selectedBillId === undefined) {
+      toast.error("Please selcet a billing address");
+    } else if (cvv === "") {
+      toast.error("Please enter CVV");
+    } else if (cvv.length < 3 || cvv.length > 4) {
+      toast.error("Please enter correct cvv");
+    } else if (amount === "") {
+      toast.error("Please enter amout");
+    } else {
+      console.log("This is card and billing", selectedBillId, selectedCardId);
+    }
   }
   return (
     <>
@@ -42,268 +80,344 @@ function RechargeWalletPopup({ closePopup }) {
         `}
       </style>
 
-
-      {newCardPopUp ? <NewCardPaymentMethod closePopUp2={closeNewPopUp} /> : <div className="row">
-        <div className="col-xl-4 mx-auto">
-          <div className="profileView">
-            <div className="profileDetailsHolder position-relative">
-              <div className="header d-flex align-items-center">
-                <div className="col-12">
-                  Choose Your Card
-                  <span
-                    onClick={() => closePopup(false)}
-                    className="float-end clearButton text-danger fs-4"
-                    style={{ cursor: "pointer" }}
-                  >
-                    <i class="fa-sharp fa-solid fa-xmark"></i>
-                  </span>
+      {newCardPopUp ? (
+        <NewCardPaymentMethod closePopUp2={closeNewPopUp} />
+      ) : (
+        <div className="row">
+          <div className="col-xl-4 mx-auto">
+            <div className="profileView">
+              <div className="profileDetailsHolder position-relative">
+                <div className="header d-flex align-items-center">
+                  <div className="col-12">
+                    Choose Your Card
+                    <span
+                      onClick={() => closePopup(false)}
+                      className="float-end clearButton text-danger fs-4"
+                      style={{ cursor: "pointer" }}
+                    >
+                      <i className="fa-sharp fa-solid fa-xmark"></i>
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div class="row" style={{ padding: "5px" }}>
-                <div className="col-12">
-                  <div className="savedCardWrapper active">
-                    <div className="imgWrapper">
-                      <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mastercard_2019_logo.svg/200px-Mastercard_2019_logo.svg.png"
-                        alt=""
-                      />
-                    </div>
-                    <div className="ms-4">
-                      <label>**** **** **** 9999</label>
-                    </div>
-                    <div className="ms-auto">
-                      <label class="switch">
-                        <input
-                          type="checkbox"
-                          id="showAllCheck"
-                          defaultChecked={true}
-                        />
-                        <span class="slider round"></span>
+                <div className="row" style={{ padding: "5px" }}>
+                  <div className="col-12">
+                    {cardList &&
+                      cardList.map((item, key) => {
+                        return (
+                          <div className="col-xl-12" key={key}>
+                            <div
+                              className={`savedCardWrapper ${
+                                item.id === selectedCardId ? "active" : ""
+                              }`}
+                            >
+                              <div className="imgWrapper">
+                                <div className="card-logo-container">
+                                  <Cards
+                                    number={item.card_number}
+                                    name=""
+                                    expiry=""
+                                    cvc=""
+                                    focused=""
+                                  />
+                                </div>
+                              </div>
+                              <div className="ms-4">
+                                <label>
+                                  **** **** **** {item.card_number.slice(-4)}
+                                </label>
+                              </div>
+                              <div className="ms-auto">
+                                <label className="switch">
+                                  <input
+                                    type="checkbox"
+                                    id="showAllCheck"
+                                    checked={
+                                      item.id === selectedCardId ? true : false
+                                    }
+                                    onChange={(e) => {
+                                      if (e.target.checked) {
+                                        setSelectedCardId(item.id);
+                                      } else {
+                                        setSelectedCardId();
+                                      }
+                                    }}
+                                  />
+                                  <span className="slider round"></span>
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </div>
+                <div className="row" style={{ padding: "5px" }}>
+                  <div className="col-12">
+                    <div className="text-center">
+                      <label
+                        style={{
+                          fontWeight: 500,
+                          fontSize: 18,
+                          color: "var(--color-subtext)",
+                        }}
+                      >
+                        OR
                       </label>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div className="row" style={{ padding: "5px" }}>
-                <div className="col-12">
-                  <div className="text-center">
-                    <label style={{ fontWeight: 500, fontSize: 18, color: 'var(--color-subtext)' }}>OR</label>
+                  <div className="col-12">
+                    <button
+                      className="clearButton w-100"
+                      onClick={() => setNewCardPopUp(true)}
+                    >
+                      Choose a new Payment Method{" "}
+                      <i className="fa-sharp fa-solid fa-arrow-right"></i>
+                    </button>
                   </div>
                 </div>
-                <div className="col-12">
-                  <button className="clearButton w-100" onClick={() => setNewCardPopUp(true)}>
-                    Choose a new Payment Method <i class="fa-sharp fa-solid fa-arrow-right"></i>
-                  </button>
+                <div className="header d-flex align-items-center">
+                  <div className="col-12">Choose Billing Address</div>
                 </div>
-              </div>
-              <div className="header d-flex align-items-center">
-                <div className="col-12">
-                  Choose Billing Address
-                </div>
-              </div>
-              <div className="row" style={{ padding: "5px" }}>
-                <div class="col-12">
-                  <div
-                    class="accordion accordion-flush cardPopup"
-                    id="accordionFlushExample"
-                  >
-                    <div class="accordion-item">
-                      <h2 class="accordion-header addressDrawer active">
-                        <div className="d-flex flex-wrap align-items-center" style={{ padding: '0 10px' }}>
-                          <div className="col-10">
-                            <button
-                              class="accordion-button collapsed justify-content-between px-2"
-                              type="button"
-                              data-bs-toggle="collapse"
-                              data-bs-target="#flush-collapse2"
-                              aria-expanded="false"
-                              aria-controls="flush-collapse2"
-                              style={{ padding: '15px 0' }}
+                <div className="row" style={{ padding: "5px" }}>
+                  {billingList &&
+                    billingList.map((item, key) => {
+                      return (
+                        <div
+                          key={key}
+                          className="accordion accordion-flush "
+                          id={key}
+                        >
+                          <div className="accordion-item">
+                            <h2
+                              className={`accordion-header addressDrawer ${
+                                item.id === selectedBillId ? "active" : ""
+                              }`}
                             >
-                              <h5 className="mb-0">John Doe</h5>
-                            </button>
-                          </div>
-                          <div className="ms-auto d-flex">
-                            <label class="switch">
-                              <input
-                                type="checkbox"
-                                id="showAllCheck"
-                                defaultChecked={true}
-                              />
-                              <span class="slider round"></span>
-                            </label>
-                          </div>
-                        </div>
-                      </h2>
-                      <div
-                        id="flush-collapse2"
-                        class="accordion-collapse collapse"
-                        data-bs-parent="#accordionFlushExample"
-                      >
-                        <div class="accordion-body">
-                          <ul className="billingDetails">
+                              <div
+                                className="d-flex flex-wrap align-items-center"
+                                style={{ padding: "0 10px" }}
+                              >
+                                <div className="col-10">
+                                  <button
+                                    className="accordion-button collapsed justify-content-between"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target={`#flush-collapse${key}recharge`}
+                                    aria-expanded="false"
+                                    aria-controls={`flush-collapse${key}recharge`}
+                                  >
+                                    <div>
+                                      <h5 className="mb-0">{item.fullname}</h5>
+                                    </div>
+                                  </button>
+                                </div>
+                                <div className="ms-auto d-flex">
+                                  <label className="switch">
+                                    <input
+                                      type="checkbox"
+                                      id="showAllCheck"
+                                      checked={
+                                        item.id === selectedBillId
+                                          ? true
+                                          : false
+                                      }
+                                      onChange={(e) => {
+                                        if (e.target.checked) {
+                                          setSelectedBillId(item.id);
+                                        } else {
+                                          setSelectedBillId();
+                                        }
+                                      }}
+                                    />
+                                    <span className="slider round"></span>
+                                  </label>
+                                </div>
+                              </div>
+                            </h2>
                             <div
-                              className="pe-3"
-                              style={{ width: '45%' }}
+                              id={`flush-collapse${key}recharge`}
+                              className="accordion-collapse collapse"
+                              data-bs-parent={`#${key}`}
                             >
-                              <li>
-                                <span>Full Name:</span>
-                              </li>
-                              <li>
-                                <span>Phone:</span>
-                              </li>
-                              <li>
-                                <span>Email Address:</span>
-                              </li>
-                              <li>
-                                <span>Address:</span>{" "}
-                              </li>
-                              <li>
-                                <span>City:</span>{" "}
-                              </li>
-                              <li>
-                                <span>State:</span>{" "}
-                              </li>
-                              <li>
-                                <span>Zip Code:</span>{" "}
-                              </li>
-                              <li>
-                                <span>Country:</span>{" "}
-                              </li>
+                              <div className="accordion-body">
+                                <ul className="billingDetails">
+                                  <div className="pe-3 col-auto">
+                                    <li>
+                                      <span>Full Name:</span>
+                                    </li>
+                                    <li>
+                                      <span>Phone:</span>
+                                    </li>
+                                    <li>
+                                      <span>Email Address:</span>
+                                    </li>
+                                    <li>
+                                      <span>Address:</span>{" "}
+                                    </li>
+                                    <li>
+                                      <span>City:</span>{" "}
+                                    </li>
+                                    <li>
+                                      <span>State:</span>{" "}
+                                    </li>
+                                    <li>
+                                      <span>Zip Code:</span>{" "}
+                                    </li>
+                                    <li>
+                                      <span>Country:</span>{" "}
+                                    </li>
+                                  </div>
+                                  <div style={{ width: "80%" }}>
+                                    <li>
+                                      <input
+                                        type="text"
+                                        className="formItem"
+                                        value={item.fullname}
+                                        disabled
+                                      />
+                                    </li>
+                                    <li>
+                                      <input
+                                        type="text"
+                                        className="formItem"
+                                        value={item.contact_no}
+                                        disabled
+                                      />
+                                    </li>
+                                    <li>
+                                      <input
+                                        type="text"
+                                        className="formItem"
+                                        value={item.email}
+                                        disabled
+                                      />
+                                    </li>
+                                    <li>
+                                      <input
+                                        type="text"
+                                        className="formItem"
+                                        value={item.address}
+                                        disabled
+                                      />
+                                    </li>
+                                    <li>
+                                      <input
+                                        type="text"
+                                        className="formItem"
+                                        value={item.city}
+                                        disabled
+                                      />
+                                    </li>
+                                    <li>
+                                      <input
+                                        type="text"
+                                        className="formItem"
+                                        value={item.state}
+                                        disabled
+                                      />
+                                    </li>
+                                    <li>
+                                      <input
+                                        type="text"
+                                        className="formItem"
+                                        value={item.zip}
+                                        disabled
+                                      />
+                                    </li>
+                                    <li>
+                                      <input
+                                        type="text"
+                                        className="formItem"
+                                        value={item.country}
+                                        disabled
+                                      />
+                                    </li>
+                                  </div>
+                                </ul>
+                              </div>
                             </div>
-                            <div style={{ width: '55%' }}>
-                              <li>
-                                <input
-                                  type="text"
-                                  className="formItem"
-                                  value={"John Doe"}
-                                  disabled
-                                />
-                              </li>
-                              <li>
-                                <input
-                                  type="text"
-                                  className="formItem"
-                                  value={"999 999-9999"}
-                                  disabled
-                                />
-                              </li>
-                              <li>
-                                <input
-                                  type="text"
-                                  className="formItem"
-                                  value={"john.doe@example.com"}
-                                  disabled
-                                />
-                              </li>
-                              <li>
-                                <input
-                                  type="text"
-                                  className="formItem"
-                                  value={"Here goes Full Address"}
-                                  disabled
-                                />
-                              </li>
-                              <li>
-                                <input
-                                  type="text"
-                                  className="formItem"
-                                  value={"City"}
-                                  disabled
-                                />
-                              </li>
-                              <li>
-                                <input
-                                  type="text"
-                                  className="formItem"
-                                  value={"State"}
-                                  disabled
-                                />
-                              </li>
-                              <li>
-                                <input
-                                  type="text"
-                                  className="formItem"
-                                  value={"999999"}
-                                  disabled
-                                />
-                              </li>
-                              <li>
-                                <input
-                                  type="text"
-                                  className="formItem"
-                                  value={"Country"}
-                                  disabled
-                                />
-                              </li>
-                            </div>
-                          </ul>
+                          </div>
                         </div>
+                      );
+                    })}
+                </div>
+                <div className="row" style={{ padding: "5px" }}>
+                  <div className="col-6">
+                    <div className="form-group">
+                      <label className="review-label">
+                        Enter Your CVV Code
+                        <span style={{ color: "red" }}>*</span>
+                      </label>
+                      <div className="position-relative">
+                        <input
+                          placeholder="cvv"
+                          className={`form-control travellerdetails payment_exp_date`}
+                          name="CVV"
+                          type="number"
+                          value={cvv}
+                          onChange={(e) => setCvv(e.target.value)}
+                        />
+                        <small
+                          className="text-muted p-1"
+                          style={{
+                            position: "absolute",
+                            right: 2,
+                            top: 2,
+                          }}
+                        ></small>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div className="row" style={{ padding: "5px" }}>
-                <div className="col-6">
-                  <div className="form-group">
-                    <label className="review-label">
-                      Enter Your CVV Code
-                      <span style={{ color: "red" }}>*</span>
-                    </label>
-                    <div className="position-relative">
-                      <input
-                        placeholder="cvv"
-                        className={`form-control travellerdetails payment_exp_date`}
-                        name="CVV"
-                        type="number"
-                      />
-                      <small
-                        className="text-muted p-1"
-                        style={{
-                          position: "absolute",
-                          right: 2,
-                          top: 2,
-                        }}
-                      ></small>
+                  <div className="col-6">
+                    <div className="form-group">
+                      <label className="review-label">
+                        Enter Your Amount
+                        <span style={{ color: "red" }}>*</span>
+                      </label>
+                      <div className="position-relative">
+                        <input
+                          placeholder="Amount"
+                          className={`form-control travellerdetails payment_exp_date`}
+                          name="cvv"
+                          type="number"
+                          value={amount}
+                          onChange={(e) => setAmount(e.target.value)}
+                        />
+                        <small
+                          className="text-muted p-1"
+                          style={{
+                            position: "absolute",
+                            right: 2,
+                            top: 2,
+                          }}
+                        ></small>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="col-6">
-                  <div className="form-group">
-                    <label className="review-label">
-                      Enter Your Amount
-                      <span style={{ color: "red" }}>*</span>
-                    </label>
-                    <div className="position-relative">
-                      <input
-                        placeholder="Amount"
-                        className={`form-control travellerdetails payment_exp_date`}
-                        name="cvv"
-                        type="number"
-                      />
-                      <small
-                        className="text-muted p-1"
-                        style={{
-                          position: "absolute",
-                          right: 2,
-                          top: 2,
-                        }}
-                      ></small>
-                    </div>
+                  <div className="col-12 mt-2">
+                    <button className="payNow" onClick={handleSubmit}>
+                      Pay Now <i className="mx-2 fa-duotone fa-credit-card"></i>
+                    </button>
                   </div>
-                </div>
-                <div className="col-12 mt-2">
-                  <button className="payNow">
-                    Pay Now <i class="mx-2 fa-duotone fa-credit-card"></i>
-                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>}
-
+      )}
+      {loading ? <CircularLoader /> : ""}
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </>
   );
 }

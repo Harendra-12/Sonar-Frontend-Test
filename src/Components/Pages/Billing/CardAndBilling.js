@@ -12,20 +12,20 @@ import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../Misc/CircularLoader";
 
 function CardAndBilling() {
-  const dispatch = useDispatch()
-  const billingListRefresh = useSelector((state)=>state.billingListRefresh)
-  const account = useSelector((state)=>state.account)
-  const cardListRefresh = useSelector((state)=>state.cardListRefresh)
+  const dispatch = useDispatch();
+  const billingListRefresh = useSelector((state) => state.billingListRefresh);
+  const account = useSelector((state) => state.account);
+  const cardListRefresh = useSelector((state) => state.cardListRefresh);
   const [cardPopUp, setCardPopUp] = useState(false);
   const [billingPopUp, setBillingPopUp] = useState(false);
   const [cardConfirmationPopUp, setCardConfirmationPopUp] = useState(false);
   const [billingConfirmationPopUp, setBillingConfirmationPopUp] =
     useState(false);
-  const [selectedCardID,setSelectedCardId]=useState()
-  const [loading,setLoading]=useState(false)
-  const [selectedBillingId,setSelecetedBillingId]=useState()
-  const [disableCard,setDisableCard]=useState(false)
-  const [disableBilling,setDisableBilling]=useState(false)
+  const [selectedCardID, setSelectedCardId] = useState();
+  const [loading, setLoading] = useState(false);
+  const [selectedBillingId, setSelecetedBillingId] = useState();
+  const [disableCard, setDisableCard] = useState(false);
+  const [disableBilling, setDisableBilling] = useState(false);
   const accountDetails = useSelector((state) => state.accountDetails);
   const cardList = useSelector((state) => state.cardList);
   const billingList = useSelector((state) => state.billingList);
@@ -63,113 +63,124 @@ function CardAndBilling() {
     }
   };
 
-  const selectedCard = cardList.filter((item)=>item.default===1)
-  const selectedBilling = billingList.filter((item)=>item.default===1)
+  const selectedCard = cardList?.filter((item) => item.default === 1);
+  const selectedBilling = billingList?.filter((item) => item.default === 1);
 
-  async function handleConfirmClick(){
-    if(selectedCardID){
-      setLoading(true)
-      if(disableCard){
+  async function handleConfirmClick() {
+    if (selectedCardID) {
+      setLoading(true);
+      if (disableCard) {
         const parsedData = {
-          id:selectedCardID,
-          account_id:account.account_id,
-          default:0
-        }
-        const apiData = await generalPostFunction("/set-default-card",parsedData)
-        if(apiData.status){
-          setCardConfirmationPopUp(false)
+          id: selectedCardID,
+          account_id: account.account_id,
+          default: 0,
+        };
+        const apiData = await generalPostFunction(
+          "/set-default-card",
+          parsedData
+        );
+        if (apiData.status) {
+          setCardConfirmationPopUp(false);
           dispatch({
-            type:"SET_CARDLISTREFRESH",
-            cardListRefresh: cardListRefresh+1
-          })
-          setTimeout(()=>{
-            toast.success(apiData.message)
-            setLoading(false)
-          },300)
-        }else{
-          setCardConfirmationPopUp(false)
+            type: "SET_CARDLISTREFRESH",
+            cardListRefresh: cardListRefresh + 1,
+          });
+          setTimeout(() => {
+            toast.success(apiData.message);
+            setLoading(false);
+          }, 300);
+        } else {
+          setCardConfirmationPopUp(false);
           setLoading(false);
-          const errorMessage = Object.keys(apiData.error)
+          const errorMessage = Object.keys(apiData.error);
           toast.error(apiData.error[errorMessage[0]][0]);
         }
-      }else{
+      } else {
         const parsedData = {
-          id:selectedCardID,
-          account_id:account.account_id,
-          default:1
-        }
-        const apiData = await generalPostFunction("/set-default-card",parsedData)
-        if(apiData.status){
-          setCardConfirmationPopUp(false)
+          id: selectedCardID,
+          account_id: account.account_id,
+          default: 1,
+        };
+        const apiData = await generalPostFunction(
+          "/set-default-card",
+          parsedData
+        );
+        if (apiData.status) {
+          setCardConfirmationPopUp(false);
           dispatch({
-            type:"SET_CARDLISTREFRESH",
-            cardListRefresh: cardListRefresh+1
-          })
-          setTimeout(()=>{
-            toast.success(apiData.message)
-            setLoading(false)
-          },300)
-        }else{
-          setCardConfirmationPopUp(false)
+            type: "SET_CARDLISTREFRESH",
+            cardListRefresh: cardListRefresh + 1,
+          });
+          setTimeout(() => {
+            toast.success(apiData.message);
+            setLoading(false);
+          }, 300);
+        } else {
+          setCardConfirmationPopUp(false);
           setLoading(false);
-          const errorMessage = Object.keys(apiData.error)
+          const errorMessage = Object.keys(apiData.error);
           toast.error(apiData.error[errorMessage[0]][0]);
         }
       }
-    }else{
-      setLoading(true)
-      if(disableBilling){
+    } else {
+      setLoading(true);
+      if (disableBilling) {
         const parsedData = {
-          id:selectedBillingId,
-          account_id:account.account_id,
-          default:0
-        }
-        const apiData = await generalPostFunction("/set-default-address",parsedData)
-        if(apiData.status){
-          setBillingConfirmationPopUp(false)
+          id: selectedBillingId,
+          account_id: account.account_id,
+          default: 0,
+        };
+        const apiData = await generalPostFunction(
+          "/set-default-address",
+          parsedData
+        );
+        if (apiData.status) {
+          setBillingConfirmationPopUp(false);
           dispatch({
-            type:"SET_BILLINGLISTREFRESH",
-            billingListRefresh: billingListRefresh+1
-          })
-          setTimeout(()=>{
-            toast.success(apiData.message)
-            setLoading(false)
-          },300)
-        }else{
-          setBillingConfirmationPopUp(false)
+            type: "SET_BILLINGLISTREFRESH",
+            billingListRefresh: billingListRefresh + 1,
+          });
+          setTimeout(() => {
+            toast.success(apiData.message);
+            setLoading(false);
+          }, 300);
+        } else {
+          setBillingConfirmationPopUp(false);
           setLoading(false);
-          const errorMessage = Object.keys(apiData.error)
+          const errorMessage = Object.keys(apiData.error);
           toast.error(apiData.error[errorMessage[0]][0]);
         }
-      
-      }else{
+      } else {
         const parsedData = {
-          id:selectedBillingId,
-          account_id:account.account_id,
-          default:1
-        }
-        const apiData = await generalPostFunction("/set-default-address",parsedData)
-        if(apiData.status){
-          setBillingConfirmationPopUp(false)
+          id: selectedBillingId,
+          account_id: account.account_id,
+          default: 1,
+        };
+        const apiData = await generalPostFunction(
+          "/set-default-address",
+          parsedData
+        );
+        if (apiData.status) {
+          console.log("Inside billing set");
+          setBillingConfirmationPopUp(false);
           dispatch({
-            type:"SET_BILLINGLISTREFRESH",
-            billingListRefresh: billingListRefresh+1
-          })
-          setTimeout(()=>{
-            toast.success(apiData.message)
-            setLoading(false)
-          },300)
-        }else{
-          setBillingConfirmationPopUp(false)
+            type: "SET_BILLINGLISTREFRESH",
+            billingListRefresh: billingListRefresh + 1,
+          });
+          setTimeout(() => {
+            toast.success(apiData.message);
+            setLoading(false);
+          }, 300);
+        } else {
+          setBillingConfirmationPopUp(false);
           setLoading(false);
-          const errorMessage = Object.keys(apiData.error)
+          const errorMessage = Object.keys(apiData.error);
           toast.error(apiData.error[errorMessage[0]][0]);
         }
-      
       }
     }
   }
-  console.log("Card =",selectedCard,"Billing =",selectedBilling);
+  console.log("Card =", selectedCard, "Billing =", selectedBilling);
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -184,7 +195,17 @@ function CardAndBilling() {
                       <Cards
                         className="cardWrapper row align-items-center col-12 mx-auto"
                         number={selectedCard?.[0]?.card_number}
-                        expiry={`${selectedCard?.[0]?.exp_month?selectedCard?.[0]?.exp_month<10?`0${selectedCard?.[0]?.exp_month}`:selectedCard?.[0]?.exp_month:""}/${selectedCard?.[0]?.exp_year?selectedCard?.[0]?.exp_year:""}`}
+                        expiry={`${
+                          selectedCard?.[0]?.exp_month
+                            ? selectedCard?.[0]?.exp_month < 10
+                              ? `0${selectedCard?.[0]?.exp_month}`
+                              : selectedCard?.[0]?.exp_month
+                            : ""
+                        }/${
+                          selectedCard?.[0]?.exp_year
+                            ? selectedCard?.[0]?.exp_year
+                            : ""
+                        }`}
                         cvc={selectedCard?.[0]?.cvc}
                         name={selectedCard?.[0]?.name}
                       />
@@ -218,18 +239,29 @@ function CardAndBilling() {
                           Balance
                         </div>
                         <div className="data-number">
-                          $ {accountDetails?.balance?.amount.split(".")[0]}.
+                          ${" "}
+                          {accountDetails?.balance?.amount.split(".")[0]
+                            ? accountDetails?.balance?.amount.split(".")[0]
+                            : 0}
+                          .
                           <sub style={{ fontSize: 14 }}>
-                            {accountDetails?.balance?.amount.split(".")[1]}
+                            {accountDetails?.balance?.amount.split(".")[1]
+                              ? accountDetails?.balance?.amount.split(".")[1]
+                              : "00"}
                           </sub>
                         </div>
                         <div className="label">
                           Active Card:{" "}
-                          <span className="float-end">**** **** **** {selectedCard?.[0]?.card_number.slice(-4)}</span>
+                          <span className="float-end">
+                            **** **** ****{" "}
+                            {selectedCard?.[0]?.card_number.slice(-4)}
+                          </span>
                         </div>
                         <div className="label">
                           Holder's Name:{" "}
-                          <span className="float-end">{selectedCard?.[0]?.name}</span>
+                          <span className="float-end">
+                            {selectedCard?.[0]?.name}
+                          </span>
                         </div>
                         <div
                           onClick={() => setRechargePopUp(true)}
@@ -261,7 +293,11 @@ function CardAndBilling() {
                               cardList.map((item, key) => {
                                 return (
                                   <div className="col-xl-6" key={key}>
-                                    <div className={`savedCardWrapper ${item.default?"active":""}`}>
+                                    <div
+                                      className={`savedCardWrapper ${
+                                        item.default ? "active" : ""
+                                      }`}
+                                    >
                                       <div className="imgWrapper">
                                         <div className="card-logo-container">
                                           <Cards
@@ -285,15 +321,15 @@ function CardAndBilling() {
                                             type="checkbox"
                                             id="showAllCheck"
                                             checked={item.default}
-                                            onChange={(e)=>{
-                                              if(e.target.checked){
+                                            onChange={(e) => {
+                                              if (e.target.checked) {
                                                 setSelectedCardId(item.id);
                                                 setCardConfirmationPopUp(true);
-                                                setDisableCard(false)
-                                              }else{
+                                                setDisableCard(false);
+                                              } else {
                                                 setSelectedCardId(item.id);
                                                 setCardConfirmationPopUp(true);
-                                                setDisableCard(true)
+                                                setDisableCard(true);
                                               }
                                             }}
                                           />
@@ -338,7 +374,11 @@ function CardAndBilling() {
                                     id={key}
                                   >
                                     <div className="accordion-item">
-                                      <h2 className={`accordion-header addressDrawer ${item.default?"active":""}`}>
+                                      <h2
+                                        className={`accordion-header addressDrawer ${
+                                          item.default ? "active" : ""
+                                        }`}
+                                      >
                                         <div
                                           className="d-flex flex-wrap align-items-center"
                                           style={{ padding: "0 10px" }}
@@ -365,15 +405,25 @@ function CardAndBilling() {
                                                 type="checkbox"
                                                 id="showAllCheck"
                                                 checked={item.default}
-                                                onChange={(e)=>{
-                                                  if(e.target.checked){
-                                                    setSelecetedBillingId(item.id);
-                                                    setBillingConfirmationPopUp(true);
-                                                    setDisableBilling(false)
-                                                  }else{
-                                                    setSelecetedBillingId(item.id);
-                                                    setBillingConfirmationPopUp(true);
-                                                    setDisableBilling(true)
+                                                onChange={(e) => {
+                                                  if (e.target.checked) {
+                                                    setSelecetedBillingId(
+                                                      item.id
+                                                    );
+                                                    setSelectedCardId();
+                                                    setBillingConfirmationPopUp(
+                                                      true
+                                                    );
+                                                    setDisableBilling(false);
+                                                  } else {
+                                                    setSelecetedBillingId(
+                                                      item.id
+                                                    );
+                                                    setSelectedCardId();
+                                                    setBillingConfirmationPopUp(
+                                                      true
+                                                    );
+                                                    setDisableBilling(true);
                                                   }
                                                 }}
                                               />
@@ -634,18 +684,25 @@ function CardAndBilling() {
                 </div>
                 <div className="col-10 ps-0">
                   <h4>Warning!</h4>
-                  {disableCard?"Are you sure you want to disable the selected card ?":"Are you sure you want to activate the selected card ?"}
+                  {disableCard
+                    ? "Are you sure you want to disable the selected card ?"
+                    : "Are you sure you want to activate the selected card ?"}
                   <div className="mt-2">
-                  <button className="panelButton m-0" onClick={handleConfirmClick}>Confirm</button>
-                  <button
-                    className="panelButtonWhite m-0 float-end"
-                    onClick={() => {
-                      setCardConfirmationPopUp(false);
-                      setSelectedCardId()
-                    }}
-                  >
-                    Cancel
-                  </button>
+                    <button
+                      className="panelButton m-0"
+                      onClick={handleConfirmClick}
+                    >
+                      Confirm
+                    </button>
+                    <button
+                      className="panelButtonWhite m-0 float-end"
+                      onClick={() => {
+                        setCardConfirmationPopUp(false);
+                        setSelectedCardId();
+                      }}
+                    >
+                      Cancel
+                    </button>
                   </div>
                 </div>
               </div>
@@ -667,18 +724,25 @@ function CardAndBilling() {
                 </div>
                 <div className="col-10 ps-0">
                   <h4>Warning!</h4>
-                  {disableBilling?"Are you sure you want to disable the selected billing address ?":"Are you sure you want to activate the selected billing address ?"}
+                  {disableBilling
+                    ? "Are you sure you want to disable the selected billing address ?"
+                    : "Are you sure you want to activate the selected billing address ?"}
                   <div className="mt-2">
-                  <button className="panelButton m-0" onClick={handleConfirmClick}>Confirm</button>
-                  <button
-                    className="panelButtonWhite m-0 float-end"
-                    onClick={() => {
-                      setBillingConfirmationPopUp(false);
-                      setSelecetedBillingId()
-                    }}
-                  >
-                    Cancel
-                  </button>
+                    <button
+                      className="panelButton m-0"
+                      onClick={handleConfirmClick}
+                    >
+                      Confirm
+                    </button>
+                    <button
+                      className="panelButtonWhite m-0 float-end"
+                      onClick={() => {
+                        setBillingConfirmationPopUp(false);
+                        setSelecetedBillingId();
+                      }}
+                    >
+                      Cancel
+                    </button>
                   </div>
                 </div>
               </div>
@@ -689,8 +753,7 @@ function CardAndBilling() {
         ""
       )}
 
-      
-{loading ? <CircularLoader /> : ""}
+      {loading ? <CircularLoader /> : ""}
       <ToastContainer
         position="bottom-right"
         autoClose={3000}

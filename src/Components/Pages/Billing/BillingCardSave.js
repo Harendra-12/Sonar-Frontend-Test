@@ -322,7 +322,12 @@ function BillingCardSave({ closePopup }) {
                 <div className="col-12">
                   <button onClick={handleSubmit} className="payNow">
                     {" "}
-                    Pay Now <i className="mx-2 fa-duotone fa-credit-card"></i>
+                    {loading?<img
+                            width="6%"
+                            src={require("../../assets/images/loader-gif.webp")}
+                            alt=""
+                          />:<> Add Card<i className="mx-2 fa-duotone fa-credit-card"></i></>}
+                  
                   </button>
                 </div>
               </div>
@@ -330,7 +335,7 @@ function BillingCardSave({ closePopup }) {
           </div>
         </div>
       </div>
-      {loading ? <CircularLoader /> : ""}
+      {/* {loading ? <CircularLoader /> : ""} */}
       <ToastContainer
         position="bottom-right"
         autoClose={3000}
