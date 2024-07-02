@@ -10,8 +10,8 @@ import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../Misc/CircularLoader";
 
 function BillingCardSave({ closePopup }) {
-  const dispatch = useDispatch()
-  const cardListRefresh = useSelector((state)=>state.cardListRefresh)
+  const dispatch = useDispatch();
+  const cardListRefresh = useSelector((state) => state.cardListRefresh);
   const [loading, setLoading] = useState(false);
   const account = useSelector((state) => state.account);
   const {
@@ -116,21 +116,20 @@ function BillingCardSave({ closePopup }) {
         save_card: 1,
         account_id: account.account_id,
       };
-      const apiData =await generalPostFunction("/add-card", parsedData);
+      const apiData = await generalPostFunction("/add-card", parsedData);
       if (apiData.status) {
         toast.success(apiData.message);
         setLoading(false);
         dispatch({
-          type:"SET_CARDLISTREFRESH",
-          cardListRefresh: cardListRefresh+1
-        })
-        setTimeout(()=>{
-          closePopup(false)
-        },2000)
-       
+          type: "SET_CARDLISTREFRESH",
+          cardListRefresh: cardListRefresh + 1,
+        });
+        setTimeout(() => {
+          closePopup(false);
+        }, 2000);
       } else {
         setLoading(false);
-        const errorMessage = Object.keys(apiData.error)
+        const errorMessage = Object.keys(apiData.error);
         toast.error(apiData.error[errorMessage[0]][0]);
       }
     }
@@ -322,12 +321,19 @@ function BillingCardSave({ closePopup }) {
                 <div className="col-12">
                   <button onClick={handleSubmit} className="payNow">
                     {" "}
-                    {loading?<img
-                            width="6%"
-                            src={require("../../assets/images/loader-gif.webp")}
-                            alt=""
-                          />:<> Add Card<i className="mx-2 fa-duotone fa-credit-card"></i></>}
-                  
+                    {loading ? (
+                      <img
+                        width="6%"
+                        src={require("../../assets/images/loader-gif.webp")}
+                        alt=""
+                      />
+                    ) : (
+                      <>
+                        {" "}
+                        Add Card
+                        <i className="mx-2 fa-duotone fa-credit-card"></i>
+                      </>
+                    )}
                   </button>
                 </div>
               </div>
