@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../Misc/CircularLoader";
 
 function NewCardPaymentMethod({ closePopUp2 }) {
+  const account = useSelector((state) => state.account);
   const billingList = useSelector((state) => state.billingList);
   const [newBilling, setNewBilling] = useState(false);
   const [selectedBillId, setSelectedBillId] = useState();
@@ -203,7 +204,45 @@ function NewCardPaymentMethod({ closePopUp2 }) {
           .includes(true)
       ) {
         setLoading(true);
-        console.log("Inside new billing validation");
+        const year = new Date().getFullYear();
+        const parsedData = {
+          type:"card",
+          account_id: account.account_id,
+          address_id: selectedBillId,
+          amount: cardDetails.amount,
+          card_number: cardDetails.cardNumber.split(" ").join(""),
+          name: cardDetails.cardName,
+          save_card:saveCard,
+          exp_month: cardDetails.expiryDate.split("/")[0],
+          exp_year: Number(
+            String(year).slice(0, 2) +
+              String(cardDetails.expiryDate.split("/")[1])
+          ),
+          cvc: cardDetails.cvv,
+          fullname:billing.name,
+          contact_no:billing.phone,
+          email:billing.email,
+          address:billing.address,
+          zip:billing.zip,
+          city:billing.city,
+          state:billing.state,
+          country:billing.country,
+
+        };
+        const apiData = await generalPostFunction(
+          "/wallet-recharge-fresh",
+          parsedData
+        );
+        if (apiData.status) {
+          toast.success(apiData.message);
+          setLoading(false);
+          console.log("Old address done", apiData);
+        } else {
+          setLoading(false);
+          const errorMessage = Object.keys(apiData.error);
+          toast.error(apiData.error[errorMessage[0]][0]);
+          console.log("Old address error", apiData);
+        }
       }
     } else {
       if (
@@ -213,15 +252,39 @@ function NewCardPaymentMethod({ closePopUp2 }) {
         !(cardDetails.cvv.length < 3 || cardDetails.cvv.length > 6) &&
         cardValidator.number(cardDetails.cardNumber).isValid
       ) {
+        console.log("This is card number",cardDetails.cardNumber);
         setLoading(true);
-        // const year = new Date().getFullYear();
-        //   exp_month: cardDetails.expiryDate.split("/")[0],
-        //   exp_year: Number(
-        //     String(year).slice(0, 2) +
-        //       String(cardDetails.expiryDate.split("/")[1])
-        //   ),
-
-        console.log("Inside validation of old card");
+        const year = new Date().getFullYear();
+        const parsedData = {
+          type:"card",
+          account_id: account.account_id,
+          address_id: selectedBillId,
+          amount: cardDetails.amount,
+          card_number: cardDetails.cardNumber.split(" ").join(""),
+          name: cardDetails.cardName,
+          save_card:saveCard,
+          exp_month: cardDetails.expiryDate.split("/")[0],
+          exp_year: Number(
+            String(year).slice(0, 2) +
+              String(cardDetails.expiryDate.split("/")[1])
+          ),
+          cvc: cardDetails.cvv,
+        };
+        const apiData = await generalPostFunction(
+          "/wallet-recharge",
+          parsedData
+        );
+        if (apiData.status) {
+          toast.success(apiData.message);
+          setLoading(false);
+          console.log("Old address done", apiData);
+        } else {
+          setLoading(false);
+          const errorMessage = Object.keys(apiData.error);
+          toast.error(apiData.error[errorMessage[0]][0]);
+          console.log("Old address error", apiData);
+        }
+        // console.log("Inside validation of old card");
       }
     }
   }
@@ -820,7 +883,7 @@ function NewCardPaymentMethod({ closePopUp2 }) {
           </div>
         </div>
       </div>
-      {loading ? <CircularLoader /> : ""}
+      {loading ? <CircularLoader widthAdjust={"w-100"}/> : ""}
       <ToastContainer
         position="bottom-right"
         autoClose={3000}
