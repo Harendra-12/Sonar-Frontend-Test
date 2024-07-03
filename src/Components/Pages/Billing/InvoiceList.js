@@ -107,7 +107,7 @@ function InvoiceList() {
                             </div>
                         </div>
                     </div>
-                    {extension && extension.data.length > 0 ? (
+                    {/* {extension && extension.data.length > 0 ? (
                         <PaginationComponent
                             pageNumber={(e) => setPageNumber(e)}
                             totalPage={extension.last_page}
@@ -117,7 +117,7 @@ function InvoiceList() {
                         />
                     ) : (
                         ""
-                    )}
+                    )} */}
                 </div>
             </section>
         </main>
