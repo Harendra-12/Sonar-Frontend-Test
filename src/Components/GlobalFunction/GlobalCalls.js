@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -28,7 +29,7 @@ function GlobalCalls() {
     } else {
       navigate("/");
     }
-  }, [account, dispatch, navigate]);
+  }, [account]);
 
   useEffect(() => {
     async function getData() {
@@ -47,7 +48,7 @@ function GlobalCalls() {
         getData();
     }
    
-  }, [account?.account_id, cardListRefresh, dispatch]);
+  }, [account?.account_id, cardListRefresh]);
 
   useEffect(() => {
     async function getData() {
@@ -64,7 +65,7 @@ function GlobalCalls() {
         getData();
     }
     
-  }, [billingListRefresh, dispatch]);
+  }, [billingListRefresh]);
 
   useEffect(()=>{
     async function getData(){
@@ -83,7 +84,7 @@ function GlobalCalls() {
       }
     }
     getData()
-  },[account?.account_id, accountDetailsRefresh, dispatch])
+  },[account?.account_id, accountDetailsRefresh])
   return <div></div>;
 }
 

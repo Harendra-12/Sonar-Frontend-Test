@@ -132,7 +132,7 @@ function RechargeWalletPopup({ closePopup }) {
                     </span>
                   </div>
                 </div>
-                <div className="row" style={{ padding: "5px" }}>
+                <div className="row" style={{ padding: "5px", height: 191, overflowY: 'auto' }}>
                   <div className="col-12">
                     {cardList &&
                       cardList.map((item, key) => {
@@ -211,7 +211,7 @@ function RechargeWalletPopup({ closePopup }) {
                 <div className="header d-flex align-items-center">
                   <div className="col-12">Choose Billing Address</div>
                 </div>
-                <div className="row" style={{ padding: "5px" }}>
+                <div className="row" style={{ padding: "5px",height: 189, overflowY: 'auto' }}>
                   {billingList &&
                     billingList.map((item, key) => {
                       return (

@@ -419,4 +419,7 @@
     background-size: cover;
   }
   
+  .rccs__cvc__front{
+    display: none;
+  }
 /* Card logo css end*/

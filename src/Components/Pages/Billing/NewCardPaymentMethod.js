@@ -327,7 +327,7 @@ function NewCardPaymentMethod({ closePopUp2 }) {
       <div className="col-xl-8">
         <div className="cardDetailsWrapper">
           <div className="row">
-            <div className="col-6">
+            <div className="col-6" style={{height: 538, overflowY: 'auto'}}>
               <div className="col-12 border-start border-4 border-success mb-3 px-3">
                 <h5>Billing Information</h5>
               </div>
