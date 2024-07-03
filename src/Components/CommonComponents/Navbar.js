@@ -478,42 +478,6 @@ function Navbar() {
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
-                          {/* <li className="tabItem" effect="ripple">
-                        <NavLink
-                          to="/call"
-                          onClick={backToTop}
-                          className="nav-link"
-                        >
-                          <div className="iconHolder">
-                            <i className="fa-duotone fa-swap-arrows" />
-                          </div>
-                          <div className="itemTitle">Call</div>
-                        </NavLink>
-                      </li> */}
-                          {/* <li className="tabItem" effect="ripple">
-                            <NavLink
-                              to="/"
-                              onClick={backToTop}
-                              className="nav-link"
-                            >
-                              <div className="iconHolder">
-                                <i className="fa-duotone fa-swap-arrows" />
-                              </div>
-                              <div className="itemTitle">My wallet</div>
-                            </NavLink>
-                          </li> */}
-                          {/* <li className="tabItem" effect="ripple">
-                            <NavLink
-                              to="/cdr-report2"
-                              onClick={backToTop}
-                              className="nav-link"
-                            >
-                              <div className="iconHolder">
-                                <i className="fa-duotone fa-swap-arrows" />
-                              </div>
-                              <div className="itemTitle">Call Reports</div>
-                            </NavLink>
-                          </li> */}
                           <li className="tabItem" effect="ripple">
                             <NavLink
                               to="/card-details"
@@ -526,7 +490,18 @@ function Navbar() {
                               <div className="itemTitle">Payment Details</div>
                             </NavLink>
                           </li>
-
+                          <li className="tabItem" effect="ripple">
+                            <NavLink
+                              to="/invoice-list"
+                              onClick={backToTop}
+                              className="nav-link"
+                            >
+                              <div className="iconHolder">
+                                <i className="fa-duotone fa-swap-arrows" />
+                              </div>
+                              <div className="itemTitle">Invoice Details</div>
+                            </NavLink>
+                          </li>
                           {/* <li className="tabItem" effect="ripple">
                             <NavLink
                               to="/cdr-report4"
