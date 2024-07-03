@@ -502,32 +502,42 @@ function Navbar() {
                               <div className="itemTitle">Invoice Details</div>
                             </NavLink>
                           </li>
-                          {/* <li className="tabItem" effect="ripple">
+                          <li className="tabItem" effect="ripple">
                             <NavLink
-                              to="/cdr-report4"
+                              to="/expense-list"
                               onClick={backToTop}
                               className="nav-link"
                             >
                               <div className="iconHolder">
                                 <i className="fa-duotone fa-swap-arrows" />
                               </div>
-                              <div className="itemTitle">
-                                Billins and notification
-                              </div>
+                              <div className="itemTitle">Expenses</div>
                             </NavLink>
-                          </li> */}
-                          {/* <li className="tabItem" effect="ripple">
+                          </li>
+                          <li className="tabItem" effect="ripple">
                             <NavLink
-                              to="/cdr-report5"
+                              to="/card-transaction-list"
                               onClick={backToTop}
                               className="nav-link"
                             >
                               <div className="iconHolder">
                                 <i className="fa-duotone fa-swap-arrows" />
                               </div>
-                              <div className="itemTitle">Auto Payment</div>
+                              <div className="itemTitle">Card Transactions</div>
                             </NavLink>
-                          </li> */}
+                          </li>
+                          <li className="tabItem" effect="ripple">
+                            <NavLink
+                              to="/wallet-transaction-list"
+                              onClick={backToTop}
+                              className="nav-link"
+                            >
+                              <div className="iconHolder">
+                                <i className="fa-duotone fa-swap-arrows" />
+                              </div>
+                              <div className="itemTitle">Wallet Transactions</div>
+                            </NavLink>
+                          </li>
                         </ul>
                       </div>
                     </div>

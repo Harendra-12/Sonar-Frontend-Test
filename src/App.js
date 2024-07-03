@@ -70,6 +70,9 @@ import CardAndBilling from "./Components/Pages/Billing/CardAndBilling";
 import TempDashboard from "./Components/Pages/Dashboard/TempDashboard";
 import GlobalCalls from "./Components/GlobalFunction/GlobalCalls";
 import InvoiceList from "./Components/Pages/Billing/InvoiceList";
+import ExpenseList from "./Components/Pages/Billing/ExpenseList";
+import CardTransactionsList from "./Components/Pages/Billing/CardTransactionsList";
+import WalletTransactionsList from "./Components/Pages/Billing/WalletTransactionsList";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -222,6 +225,9 @@ function App() {
             {/* Billing Pages Start */}
             <Route path="/card-details" element={<CardAndBilling />} />
             <Route path="/invoice-list" element={<InvoiceList />} />
+            <Route path="/expense-list" element={<ExpenseList />} />
+            <Route path="/card-transaction-list" element={<CardTransactionsList />} />
+            <Route path="/wallet-transaction-list" element={<WalletTransactionsList />} />
             {/* Billing Pages End */}
 
           </Route>
