@@ -3,13 +3,15 @@ import Cards from "react-credit-cards-2";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
 import NewCardPaymentMethod from "./NewCardPaymentMethod";
 import { useDispatch, useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../Misc/CircularLoader";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
+import { useNavigate } from "react-router-dom";
 
 function RechargeWalletPopup({ closePopup }) {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const accountDetailsRefresh = useSelector((state)=>state.accountDetailsRefresh)
   const [newCardPopUp, setNewCardPopUp] = useState(false);
   const account = useSelector((state)=>state.account)
@@ -59,19 +61,23 @@ function RechargeWalletPopup({ closePopup }) {
       }
       const apiData = await generalPostFunction("wallet-recharge",parsedData)
       if(apiData.status){
+
         setLoading(false)
         dispatch({
-          type: "SET_BILLINGLISTREFRESH",
+          type: "SET_ACCOUNTDETAILSREFRESH",
           accountDetailsRefresh: accountDetailsRefresh + 1,
         });
+       
+        setTimeout(()=>{
+          closePopup(false)
+        },2000)
         toast.success(apiData.message)
-        console.log("Done",apiData);
       }else{
+        setLoading(false)
+        navigate("/card-details")
         const errorMessage = Object.keys(apiData.error);
         toast.error(apiData.error[errorMessage[0]][0]);
-        console.log("Error",apiData);
       }
-      console.log("This is card and billing", selectedBillId, selectedCardId);
     }
   }
   return (
@@ -433,18 +439,6 @@ function RechargeWalletPopup({ closePopup }) {
         </div>
       )}
       {loading ? <CircularLoader /> : ""}
-      <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
     </>
   );
 }

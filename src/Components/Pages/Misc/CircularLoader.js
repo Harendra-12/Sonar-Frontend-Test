@@ -1,9 +1,9 @@
 import React from 'react'
 
-function CircularLoader() {
+function CircularLoader({widthAdjust}) {
   return (
-    <div className='circularLoader'>
-      <img src={require("../../assets/images/loader-gif.webp")} />
+    <div className={`circularLoader ${widthAdjust}`}>
+      <img  src={require("../../assets/images/loader-gif.webp")} />
     </div>
   )
 }
