@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import Cards from "react-credit-cards-2";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
 import NewCardPaymentMethod from "./NewCardPaymentMethod";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../Misc/CircularLoader";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 
 function RechargeWalletPopup({ closePopup }) {
+  const dispatch = useDispatch()
+  const accountDetailsRefresh = useSelector((state)=>state.accountDetailsRefresh)
   const [newCardPopUp, setNewCardPopUp] = useState(false);
   const account = useSelector((state)=>state.account)
   const cardList = useSelector((state) => state.cardList);
@@ -46,6 +48,7 @@ function RechargeWalletPopup({ closePopup }) {
     } else if (amount === "") {
       toast.error("Please enter amout");
     } else {
+      setLoading(true)
       const parsedData ={
         address_id:selectedBillId,
         account_id:account.account_id,
@@ -56,8 +59,16 @@ function RechargeWalletPopup({ closePopup }) {
       }
       const apiData = await generalPostFunction("wallet-recharge",parsedData)
       if(apiData.status){
+        setLoading(false)
+        dispatch({
+          type: "SET_BILLINGLISTREFRESH",
+          accountDetailsRefresh: accountDetailsRefresh + 1,
+        });
+        toast.success(apiData.message)
         console.log("Done",apiData);
       }else{
+        const errorMessage = Object.keys(apiData.error);
+        toast.error(apiData.error[errorMessage[0]][0]);
         console.log("Error",apiData);
       }
       console.log("This is card and billing", selectedBillId, selectedCardId);

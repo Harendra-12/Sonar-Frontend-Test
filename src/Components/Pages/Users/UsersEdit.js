@@ -369,7 +369,8 @@ const UsersEdit = () => {
         setLoading(false);
       } else {
         setLoading(false);
-        toast.error(addUser.message);
+        const errorMessage = Object.keys(addUser.error);
+        toast.error(addUser.error[errorMessage[0]][0]);
       }
     }
   }

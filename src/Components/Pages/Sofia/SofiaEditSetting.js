@@ -72,7 +72,8 @@ function SofiaEditSetting() {
       if (apiData.status) {
         toast.success(apiData.message)
       } else {
-        toast.error(apiData.message)
+        const errorMessage = Object.keys(apiData.error);
+        toast.error(apiData.error[errorMessage[0]][0]);
       }
     }
   }

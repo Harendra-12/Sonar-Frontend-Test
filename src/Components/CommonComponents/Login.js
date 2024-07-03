@@ -105,7 +105,8 @@ function Login() {
           }
         } else {
           setLoading(false);
-          toast.error(data.message);
+          const errorMessage = Object.keys(data.error);
+          toast.error(data.error[errorMessage[0]][0]);
         }
       }
     }

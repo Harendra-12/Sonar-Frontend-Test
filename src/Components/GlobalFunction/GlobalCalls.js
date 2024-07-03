@@ -7,8 +7,8 @@ function GlobalCalls() {
   const account = useSelector((state) => state.account);
   const navigate = useNavigate();
   const cardListRefresh = useSelector((state) => state.cardListRefresh);
-  console.log("Card refresh from global",cardListRefresh);
   const billingListRefresh = useSelector((state) => state.billingListRefresh);
+  const accountDetailsRefresh = useSelector((state)=>state.accountDetailsRefresh)
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -65,6 +65,25 @@ function GlobalCalls() {
     }
     
   }, [billingListRefresh, dispatch]);
+
+  useEffect(()=>{
+    async function getData(){
+      const accountData = await generalGetFunction(
+        `/account/${account.account_id}`
+      );
+      if (accountData.status) {
+        dispatch({
+          type: "SET_ACCOUNTDETAILS",
+          accountDetails: accountData.data,
+        });
+        localStorage.setItem(
+          "accountDetails",
+          JSON.stringify(accountData.data)
+        );
+      }
+    }
+    getData()
+  },[account?.account_id, accountDetailsRefresh, dispatch])
   return <div></div>;
 }
 

@@ -49,7 +49,8 @@ function RateChargeEdit() {
           toast.success(apidata.message)
         }else{
           setLoading(false)
-          toast.error(apidata.message)
+          const errorMessage = Object.keys(apidata.error);
+          toast.error(apidata.error[errorMessage[0]][0]);
         }
       }
      
