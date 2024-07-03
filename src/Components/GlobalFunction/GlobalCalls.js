@@ -47,7 +47,7 @@ function GlobalCalls() {
         getData();
     }
    
-  }, [account.account_id, cardListRefresh, dispatch]);
+  }, [account?.account_id, cardListRefresh, dispatch]);
 
   useEffect(() => {
     async function getData() {

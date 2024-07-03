@@ -490,7 +490,7 @@ function Navbar() {
                           <div className="itemTitle">Call</div>
                         </NavLink>
                       </li> */}
-                          <li className="tabItem" effect="ripple">
+                          {/* <li className="tabItem" effect="ripple">
                             <NavLink
                               to="/"
                               onClick={backToTop}
@@ -501,8 +501,8 @@ function Navbar() {
                               </div>
                               <div className="itemTitle">My wallet</div>
                             </NavLink>
-                          </li>
-                          <li className="tabItem" effect="ripple">
+                          </li> */}
+                          {/* <li className="tabItem" effect="ripple">
                             <NavLink
                               to="/cdr-report2"
                               onClick={backToTop}
@@ -513,7 +513,7 @@ function Navbar() {
                               </div>
                               <div className="itemTitle">Call Reports</div>
                             </NavLink>
-                          </li>
+                          </li> */}
                           <li className="tabItem" effect="ripple">
                             <NavLink
                               to="/card-details"
@@ -527,7 +527,7 @@ function Navbar() {
                             </NavLink>
                           </li>
 
-                          <li className="tabItem" effect="ripple">
+                          {/* <li className="tabItem" effect="ripple">
                             <NavLink
                               to="/cdr-report4"
                               onClick={backToTop}
@@ -540,8 +540,8 @@ function Navbar() {
                                 Billins and notification
                               </div>
                             </NavLink>
-                          </li>
-                          <li className="tabItem" effect="ripple">
+                          </li> */}
+                          {/* <li className="tabItem" effect="ripple">
                             <NavLink
                               to="/cdr-report5"
                               onClick={backToTop}
@@ -552,7 +552,7 @@ function Navbar() {
                               </div>
                               <div className="itemTitle">Auto Payment</div>
                             </NavLink>
-                          </li>
+                          </li> */}
                         </ul>
                       </div>
                     </div>

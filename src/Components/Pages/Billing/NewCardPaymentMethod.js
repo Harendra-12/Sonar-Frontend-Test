@@ -2,17 +2,19 @@ import React, { useEffect, useState } from "react";
 import Cards from "react-credit-cards-2";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
 import { useCreditCardValidator, images } from "react-creditcard-validator";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import * as cardValidator from "card-validator";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import CircularLoader from "../Misc/CircularLoader";
 
 function NewCardPaymentMethod({ closePopUp2 }) {
-  // const navigate = useNavigate()
-  const dispatch = useDispatch();
-  //   const routerData = router.query;
+  const billingList = useSelector((state) => state.billingList);
   const [newBilling, setNewBilling] = useState(false);
-  const [packages, setPackages] = useState();
+  const [selectedBillId, setSelectedBillId] = useState();
   const [loading, setLoading] = useState(false);
+  const [amount, setAmount] = useState();
   const [saveCard, setSaveCard] = useState(false);
   const [billing, setBilling] = useState({
     name: "",
@@ -61,6 +63,7 @@ function NewCardPaymentMethod({ closePopUp2 }) {
     cvv: "",
     cardName: "",
     focused: "",
+    amount: "",
   });
   const [errorCard, setErrorCard] = useState({
     cardNumber: false,
@@ -68,8 +71,17 @@ function NewCardPaymentMethod({ closePopUp2 }) {
     cvv: false,
     cardName: false,
     focused: false,
+    amount: false,
   });
 
+  // Filter out the default billing address
+  useEffect(() => {
+    billingList.map((item) => {
+      if (item.default) {
+        setSelectedBillId(item.id);
+      }
+    });
+  }, []);
   //   Handle change for getting values from form
   function handleChange(e) {
     const { name, value } = e.target;
@@ -109,32 +121,6 @@ function NewCardPaymentMethod({ closePopUp2 }) {
 
   async function handleSubmit() {
     // cardValidator.number(cardNumber).isValid;
-    Object.keys(billing).map((item) => {
-      if (billing[item] === "") {
-        setErrorBilling((prevData) => ({
-          ...prevData,
-          [item]: true,
-        }));
-      } else if (item === "phone") {
-        // console.log(billing[item].length,"This is loop",item);
-        if (billing[item].length > 15 || billing[item].length < 8) {
-          setErrorBilling((prevData) => ({
-            ...prevData,
-            phone: true,
-          }));
-        }
-      } else if (item === "email") {
-        if (
-          !billing["email"].includes("@") &&
-          !billing["email"].includes(".")
-        ) {
-          setErrorBilling((prevData) => ({
-            ...prevData,
-            email: true,
-          }));
-        }
-      }
-    });
     if (!cardValidator.number(cardDetails.cardNumber).isValid) {
       setErrorCard((prevData) => ({
         ...prevData,
@@ -159,82 +145,83 @@ function NewCardPaymentMethod({ closePopUp2 }) {
         cardName: true,
       }));
     }
-    console.log(
-      Object.keys(billing)
-        .map((item) => {
-          if (billing[item] === "") {
-            return true;
-          } else if (item === "phone") {
-            if (billing[item].length > 15 || billing[item].length < 8) {
-              return true;
-            }
-          } else if (item === "email") {
-            if (!(billing[item].includes("@") || billing[item].includes("."))) {
-              return true;
-            }
+    if (cardDetails.amount === "") {
+      setErrorCard((prevData) => ({
+        ...prevData,
+        amount: true,
+      }));
+    }
+    if (newBilling) {
+      Object.keys(billing).map((item) => {
+        if (billing[item] === "") {
+          setErrorBilling((prevData) => ({
+            ...prevData,
+            [item]: true,
+          }));
+        } else if (item === "phone") {
+          // console.log(billing[item].length,"This is loop",item);
+          if (billing[item].length > 15 || billing[item].length < 8) {
+            setErrorBilling((prevData) => ({
+              ...prevData,
+              phone: true,
+            }));
           }
-        })
-        .includes(true)
-    );
-    if (
-      !(cardDetails.cardName === "") &&
-      !(cardDetails.expiryDate === "") &&
-      !(cardDetails.cvv.length < 3 || cardDetails.cvv.length > 6) &&
-      cardValidator.number(cardDetails.cardNumber).isValid &&
-      !Object.keys(billing)
-        .map((item) => {
-          if (billing[item] === "") {
-            return true;
-          } else if (item === "phone") {
-            if (billing[item].length > 15 || billing[item].length < 8) {
-              return true;
-            }
-          } else if (item === "email") {
-            if (!(billing[item].includes("@") || billing[item].includes("."))) {
-              return true;
-            }
+        } else if (item === "email") {
+          if (
+            !billing["email"].includes("@") &&
+            !billing["email"].includes(".")
+          ) {
+            setErrorBilling((prevData) => ({
+              ...prevData,
+              email: true,
+            }));
           }
-        })
-        .includes(true)
-    ) {
-      setLoading(true);
-      const year = new Date().getFullYear();
-      const parsedData = {
-        // account_id: routerData.account_id,
-        amount: packages.offer_price,
-        type: "card",
-        card_number: Number(cardDetails.cardNumber.split(" ").join("")),
-        exp_month: cardDetails.expiryDate.split("/")[0],
-        exp_year: Number(
-          String(year).slice(0, 2) +
-          String(cardDetails.expiryDate.split("/")[1])
-        ),
-        cvc: cardDetails.cvv,
-        name: cardDetails.cardName,
-        // lead_id: routerData.leadId,
-        fullname: billing.name,
-        contact_no: billing.phone,
-        email: billing.email,
-        address: billing.address,
-        zip: billing.zip,
-        city: billing.city,
-        state: billing.state,
-        country: billing.country,
-        save_card: saveCard,
-      };
-      const apidata = await generalPostFunction("pay", parsedData);
-      if (apidata.status) {
-        dispatch({
-          type: "SET_INVOICE",
-          invoiceLink: apidata.data.invoice_url,
-        });
-        dispatch({
-          type: "SET_THANKYOUMESSAGE",
-          thankYouMessage: `Your Payment is successfull with transaction id ${apidata.data.transaction_id} you will get an email soon. You can download invoice now.`,
-        });
-      } else {
-        setLoading(false);
-        // toast.error(apidata.message);
+        }
+      });
+      if (
+        !(cardDetails.cardName === "") &&
+        !(cardDetails.amount === "") &&
+        !(cardDetails.expiryDate === "") &&
+        !(cardDetails.cvv.length < 3 || cardDetails.cvv.length > 6) &&
+        cardValidator.number(cardDetails.cardNumber).isValid &&
+        !Object.keys(billing)
+          .map((item) => {
+            if (billing[item] === "") {
+              return true;
+            } else if (item === "phone") {
+              if (billing[item].length > 15 || billing[item].length < 8) {
+                return true;
+              }
+            } else if (item === "email") {
+              if (
+                !(billing[item].includes("@") || billing[item].includes("."))
+              ) {
+                return true;
+              }
+            }
+          })
+          .includes(true)
+      ) {
+        setLoading(true);
+        console.log("Inside new billing validation");
+      }
+    } else {
+      if (
+        !(cardDetails.cardName === "") &&
+        !(cardDetails.amount === "") &&
+        !(cardDetails.expiryDate === "") &&
+        !(cardDetails.cvv.length < 3 || cardDetails.cvv.length > 6) &&
+        cardValidator.number(cardDetails.cardNumber).isValid
+      ) {
+        setLoading(true);
+        // const year = new Date().getFullYear();
+        //   exp_month: cardDetails.expiryDate.split("/")[0],
+        //   exp_year: Number(
+        //     String(year).slice(0, 2) +
+        //       String(cardDetails.expiryDate.split("/")[1])
+        //   ),
+
+        console.log("Inside validation of old card");
       }
     }
   }
@@ -291,8 +278,9 @@ function NewCardPaymentMethod({ closePopUp2 }) {
                     <input
                       placeholder="Name"
                       name="name"
-                      className={`form-control travellerdetails ${errorBilling.name ? "error-border" : ""
-                        }`}
+                      className={`form-control travellerdetails ${
+                        errorBilling.name ? "error-border" : ""
+                      }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
@@ -305,8 +293,9 @@ function NewCardPaymentMethod({ closePopUp2 }) {
                     <input
                       placeholder="Phone number"
                       name="phone"
-                      className={`form-control travellerdetails ${errorBilling.phone ? "error-border" : ""
-                        }`}
+                      className={`form-control travellerdetails ${
+                        errorBilling.phone ? "error-border" : ""
+                      }`}
                       onChange={(e) => billingChnage(e)}
                       type="number"
                     />
@@ -319,8 +308,9 @@ function NewCardPaymentMethod({ closePopUp2 }) {
                     <input
                       placeholder="Email Address"
                       name="email"
-                      className={`form-control travellerdetails ${errorBilling.email ? "error-border" : ""
-                        }`}
+                      className={`form-control travellerdetails ${
+                        errorBilling.email ? "error-border" : ""
+                      }`}
                       onChange={(e) => billingChnage(e)}
                       type="email"
                     />
@@ -333,8 +323,9 @@ function NewCardPaymentMethod({ closePopUp2 }) {
                     <input
                       placeholder="Full address"
                       name="address"
-                      className={`form-control travellerdetails ${errorBilling.address ? "error-border" : ""
-                        }`}
+                      className={`form-control travellerdetails ${
+                        errorBilling.address ? "error-border" : ""
+                      }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
@@ -347,8 +338,9 @@ function NewCardPaymentMethod({ closePopUp2 }) {
                     <input
                       placeholder="City"
                       name="city"
-                      className={`form-control travellerdetails ${errorBilling.city ? "error-border" : ""
-                        }`}
+                      className={`form-control travellerdetails ${
+                        errorBilling.city ? "error-border" : ""
+                      }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
@@ -361,8 +353,9 @@ function NewCardPaymentMethod({ closePopUp2 }) {
                     <input
                       placeholder="State"
                       name="state"
-                      className={`form-control travellerdetails ${errorBilling.state ? "error-border" : ""
-                        }`}
+                      className={`form-control travellerdetails ${
+                        errorBilling.state ? "error-border" : ""
+                      }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
@@ -375,8 +368,9 @@ function NewCardPaymentMethod({ closePopUp2 }) {
                     <input
                       placeholder="Zip Code"
                       name="zip"
-                      className={`form-control travellerdetails ${errorBilling.zip ? "error-border" : ""
-                        }`}
+                      className={`form-control travellerdetails ${
+                        errorBilling.zip ? "error-border" : ""
+                      }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
@@ -389,8 +383,9 @@ function NewCardPaymentMethod({ closePopUp2 }) {
                     <input
                       placeholder="Country"
                       name="country"
-                      className={`form-control travellerdetails ${errorBilling.country ? "error-border" : ""
-                        }`}
+                      className={`form-control travellerdetails ${
+                        errorBilling.country ? "error-border" : ""
+                      }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
@@ -408,147 +403,168 @@ function NewCardPaymentMethod({ closePopUp2 }) {
                 </div>
               ) : (
                 <>
-                  <div
-                    class="accordion accordion-flush cardPopup"
-                    id="accordionFlushExample"
-                  >
-                    <div class="accordion-item">
-                      <h2
-                        class="accordion-header addressDrawer active"
-                      >
+                  {billingList &&
+                    billingList.map((item, key) => {
+                      return (
                         <div
-                          className="d-flex flex-wrap align-items-center"
-                          style={{ padding: "0 10px" }}
+                          key={key}
+                          className="accordion accordion-flush pt-3"
+                          id={key}
                         >
-                          <div className="col-10">
-                            <button
-                              class="accordion-button collapsed justify-content-between px-2"
-                              type="button"
-                              data-bs-toggle="collapse"
-                              data-bs-target="#flush-collapse3"
-                              aria-expanded="false"
-                              aria-controls="flush-collapse3"
-                              style={{ padding: "15px 0" }}
+                          <div className="accordion-item">
+                            <h2
+                              className={`accordion-header addressDrawer ${
+                                selectedBillId === item.id ? "active" : ""
+                              }`}
                             >
-                              <h5 className="mb-0">John Doe</h5>
-                            </button>
-                          </div>
-                          <div className="ms-auto d-flex">
-                            <label class="switch">
-                              <input
-                                type="checkbox"
-                                id="showAllCheck"
-                                defaultChecked={true}
-                              />
-                              <span class="slider round"></span>
-                            </label>
+                              <div
+                                className="d-flex flex-wrap align-items-center"
+                                style={{ padding: "0 10px" }}
+                              >
+                                <div className="col-10">
+                                  <button
+                                    className="accordion-button collapsed justify-content-between"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target={`#flush-collapse${key}newBill`}
+                                    aria-expanded="false"
+                                    aria-controls={`flush-collapse${key}newBill`}
+                                  >
+                                    <div>
+                                      <h5 className="mb-0">{item.fullname}</h5>
+                                    </div>
+                                  </button>
+                                </div>
+                                <div className="ms-auto d-flex">
+                                  <label className="switch">
+                                    <input
+                                      type="checkbox"
+                                      id="showAllCheck"
+                                      checked={
+                                        selectedBillId === item.id
+                                          ? true
+                                          : false
+                                      }
+                                      onChange={(e) => {
+                                        if (e.target.checked) {
+                                          setSelectedBillId(item.id);
+                                        }
+                                      }}
+                                    />
+                                    <span className="slider round"></span>
+                                  </label>
+                                </div>
+                              </div>
+                            </h2>
+                            <div
+                              id={`flush-collapse${key}newBill`}
+                              className="accordion-collapse collapse"
+                              data-bs-parent={`#${key}`}
+                            >
+                              <div className="accordion-body">
+                                <ul className="billingDetails">
+                                  <div
+                                    className="pe-3"
+                                    style={{ width: "25%" }}
+                                  >
+                                    <li>
+                                      <span>Full Name:</span>
+                                    </li>
+                                    <li>
+                                      <span>Phone:</span>
+                                    </li>
+                                    <li>
+                                      <span>Email Address:</span>
+                                    </li>
+                                    <li>
+                                      <span>Address:</span>{" "}
+                                    </li>
+                                    <li>
+                                      <span>City:</span>{" "}
+                                    </li>
+                                    <li>
+                                      <span>State:</span>{" "}
+                                    </li>
+                                    <li>
+                                      <span>Zip Code:</span>{" "}
+                                    </li>
+                                    <li>
+                                      <span>Country:</span>{" "}
+                                    </li>
+                                  </div>
+                                  <div>
+                                    <li>
+                                      <input
+                                        type="text"
+                                        className="formItem"
+                                        value={item.fullname}
+                                        disabled
+                                      />
+                                    </li>
+                                    <li>
+                                      <input
+                                        type="text"
+                                        className="formItem"
+                                        value={item.contact_no}
+                                        disabled
+                                      />
+                                    </li>
+                                    <li>
+                                      <input
+                                        type="text"
+                                        className="formItem"
+                                        value={item.email}
+                                        disabled
+                                      />
+                                    </li>
+                                    <li>
+                                      <input
+                                        type="text"
+                                        className="formItem"
+                                        value={item.address}
+                                        disabled
+                                      />
+                                    </li>
+                                    <li>
+                                      <input
+                                        type="text"
+                                        className="formItem"
+                                        value={item.city}
+                                        disabled
+                                      />
+                                    </li>
+                                    <li>
+                                      <input
+                                        type="text"
+                                        className="formItem"
+                                        value={item.state}
+                                        disabled
+                                      />
+                                    </li>
+                                    <li>
+                                      <input
+                                        type="text"
+                                        className="formItem"
+                                        value={item.zip}
+                                        disabled
+                                      />
+                                    </li>
+                                    <li>
+                                      <input
+                                        type="text"
+                                        className="formItem"
+                                        value={item.country}
+                                        disabled
+                                      />
+                                    </li>
+                                  </div>
+                                </ul>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </h2>
-                      <div
-                        id="flush-collapse3"
-                        class="accordion-collapse collapse"
-                        data-bs-parent="#accordionFlushExample"
-                      >
-                        <div class="accordion-body">
-                          <ul className="billingDetails">
-                            <div className="pe-3" style={{ width: "45%" }}>
-                              <li>
-                                <span>Full Name:</span>
-                              </li>
-                              <li>
-                                <span>Phone:</span>
-                              </li>
-                              <li>
-                                <span>Email Address:</span>
-                              </li>
-                              <li>
-                                <span>Address:</span>{" "}
-                              </li>
-                              <li>
-                                <span>City:</span>{" "}
-                              </li>
-                              <li>
-                                <span>State:</span>{" "}
-                              </li>
-                              <li>
-                                <span>Zip Code:</span>{" "}
-                              </li>
-                              <li>
-                                <span>Country:</span>{" "}
-                              </li>
-                            </div>
-                            <div style={{ width: "55%" }}>
-                              <li>
-                                <input
-                                  type="text"
-                                  className="formItem"
-                                  value={"John Doe"}
-                                  disabled
-                                />
-                              </li>
-                              <li>
-                                <input
-                                  type="text"
-                                  className="formItem"
-                                  value={"999 999-9999"}
-                                  disabled
-                                />
-                              </li>
-                              <li>
-                                <input
-                                  type="text"
-                                  className="formItem"
-                                  value={"john.doe@example.com"}
-                                  disabled
-                                />
-                              </li>
-                              <li>
-                                <input
-                                  type="text"
-                                  className="formItem"
-                                  value={"Here goes Full Address"}
-                                  disabled
-                                />
-                              </li>
-                              <li>
-                                <input
-                                  type="text"
-                                  className="formItem"
-                                  value={"City"}
-                                  disabled
-                                />
-                              </li>
-                              <li>
-                                <input
-                                  type="text"
-                                  className="formItem"
-                                  value={"State"}
-                                  disabled
-                                />
-                              </li>
-                              <li>
-                                <input
-                                  type="text"
-                                  className="formItem"
-                                  value={"999999"}
-                                  disabled
-                                />
-                              </li>
-                              <li>
-                                <input
-                                  type="text"
-                                  className="formItem"
-                                  value={"Country"}
-                                  disabled
-                                />
-                              </li>
-                            </div>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                      );
+                    })}
                   <div className="col-12 mt-2">
                     <div className="text-center">
                       <label
@@ -589,11 +605,11 @@ function NewCardPaymentMethod({ closePopUp2 }) {
               </div>
               <div className="mb-4">
                 <Cards
-                  number={"cardDetails.cardNumber"}
-                  expiry={"cardDetails.expiryDate"}
-                  cvc={"cardDetails.cvv"}
-                  name={"cardDetails.cardName"}
-                  focused={"cardDetails.focused"}
+                  number={cardDetails.cardNumber}
+                  expiry={cardDetails.expiryDate}
+                  cvc={cardDetails.cvv}
+                  name={cardDetails.cardName}
+                  focused={cardDetails.focused}
                 />
               </div>
               <div className="card-details position-relative">
@@ -607,8 +623,9 @@ function NewCardPaymentMethod({ closePopUp2 }) {
                         </label>
                         <input
                           placeholder="Card Holder's Name"
-                          className={`form-control travellerdetails ${errorCard.cardName ? "error-border" : ""
-                            }`}
+                          className={`form-control travellerdetails ${
+                            errorCard.cardName ? "error-border" : ""
+                          }`}
                           name="cardName"
                           id="traveller_name_on_card"
                           type="text"
@@ -646,8 +663,9 @@ function NewCardPaymentMethod({ closePopUp2 }) {
                           <input
                             placeholder="Card Number"
                             maxLength={16}
-                            className={`form-control travellerdetails ${errorCard.cardNumber ? "error-border" : ""
-                              }`}
+                            className={`form-control travellerdetails ${
+                              errorCard.cardNumber ? "error-border" : ""
+                            }`}
                             name="cardNumber"
                             id="traveller_card_number"
                             type="text"
@@ -673,7 +691,7 @@ function NewCardPaymentMethod({ closePopUp2 }) {
                         </div>
                       </div>
                     </div>
-                    <div className="col-xl-6 mt-1 mb-3">
+                    <div className="col-xl-3 mt-1 mb-3">
                       <div className="row">
                         <div className="col-12">
                           <div className="form-group">
@@ -683,8 +701,9 @@ function NewCardPaymentMethod({ closePopUp2 }) {
                             </label>
                             <input
                               placeholder="YEAR"
-                              className={`form-control travellerdetails payment_exp_date ${errorCard.expiryDate ? "error-border" : ""
-                                }`}
+                              className={`form-control travellerdetails payment_exp_date ${
+                                errorCard.expiryDate ? "error-border" : ""
+                              }`}
                               name="traveller_card_cvv"
                               type="number"
                               {...getExpiryDateProps({
@@ -708,7 +727,7 @@ function NewCardPaymentMethod({ closePopUp2 }) {
                         </div>
                       </div>
                     </div>
-                    <div className="col-xl-6 mt-1 mb-3">
+                    <div className="col-xl-3 mt-1 mb-3">
                       <div className="form-group">
                         <label className="review-label">
                           CVV Code
@@ -717,8 +736,9 @@ function NewCardPaymentMethod({ closePopUp2 }) {
                         <div className="position-relative">
                           <input
                             placeholder="cvv"
-                            className={`form-control travellerdetails payment_exp_date ${errorCard.cvv ? "error-border" : ""
-                              }`}
+                            className={`form-control travellerdetails payment_exp_date ${
+                              errorCard.cvv ? "error-border" : ""
+                            }`}
                             name="cvv"
                             type="number"
                             onChange={(e) => {
@@ -730,6 +750,38 @@ function NewCardPaymentMethod({ closePopUp2 }) {
                                 focused: "cvc",
                               }))
                             }
+                          />
+                          {/* <small className="error">
+                              {errorCard.cvv ? "Enter correct CVV" : ""}
+                            </small> */}
+                          <small
+                            className="text-muted p-1"
+                            style={{
+                              position: "absolute",
+                              right: 2,
+                              top: 2,
+                            }}
+                          ></small>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xl-6 mt-1 mb-3">
+                      <div className="form-group">
+                        <label className="review-label">
+                          Amount
+                          <span style={{ color: "red" }}>*</span>
+                        </label>
+                        <div className="position-relative">
+                          <input
+                            placeholder="amount"
+                            className={`form-control travellerdetails payment_exp_date ${
+                              errorCard.amount ? "error-border" : ""
+                            }`}
+                            name="amount"
+                            type="number"
+                            onChange={(e) => {
+                              handleChange(e);
+                            }}
                           />
                           {/* <small className="error">
                               {errorCard.cvv ? "Enter correct CVV" : ""}
@@ -768,6 +820,19 @@ function NewCardPaymentMethod({ closePopUp2 }) {
           </div>
         </div>
       </div>
+      {loading ? <CircularLoader /> : ""}
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </>
   );
 }

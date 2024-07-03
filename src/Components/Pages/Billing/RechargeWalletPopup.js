@@ -6,9 +6,11 @@ import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../Misc/CircularLoader";
+import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 
 function RechargeWalletPopup({ closePopup }) {
   const [newCardPopUp, setNewCardPopUp] = useState(false);
+  const account = useSelector((state)=>state.account)
   const cardList = useSelector((state) => state.cardList);
   const billingList = useSelector((state) => state.billingList);
   const [loading, setLoading] = useState(false);
@@ -32,7 +34,7 @@ function RechargeWalletPopup({ closePopup }) {
   function closeNewPopUp() {
     setNewCardPopUp(false);
   }
-  function handleSubmit() {
+  async function handleSubmit() {
     if (selectedCardId === null || selectedCardId === undefined) {
       toast.error("Please select a card");
     } else if (selectedBillId === null || selectedBillId === undefined) {
@@ -44,6 +46,20 @@ function RechargeWalletPopup({ closePopup }) {
     } else if (amount === "") {
       toast.error("Please enter amout");
     } else {
+      const parsedData ={
+        address_id:selectedBillId,
+        account_id:account.account_id,
+        card_id:selectedCardId,
+        cvc:cvv,
+        amount:amount
+
+      }
+      const apiData = await generalPostFunction("wallet-recharge",parsedData)
+      if(apiData.status){
+        console.log("Done",apiData);
+      }else{
+        console.log("Error",apiData);
+      }
       console.log("This is card and billing", selectedBillId, selectedCardId);
     }
   }
@@ -104,7 +120,7 @@ function RechargeWalletPopup({ closePopup }) {
                     {cardList &&
                       cardList.map((item, key) => {
                         return (
-                          <div className="col-xl-12" key={key}>
+                          <div className="col-xl-12 mb-2" key={key}>
                             <div
                               className={`savedCardWrapper ${
                                 item.id === selectedCardId ? "active" : ""
@@ -184,7 +200,7 @@ function RechargeWalletPopup({ closePopup }) {
                       return (
                         <div
                           key={key}
-                          className="accordion accordion-flush "
+                          className="accordion accordion-flush mb-2"
                           id={key}
                         >
                           <div className="accordion-item">
