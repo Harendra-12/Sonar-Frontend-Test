@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 function Document({ account }) {
   const wrapperRef = useRef(null);
   const [openPopup, setOpenPopup] = useState(false);
   const [openNumber, setOpenNumber] = useState(0);
   useEffect(() => {
-
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         setOpenPopup(false);
@@ -16,7 +15,7 @@ function Document({ account }) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [])
+  }, []);
 
   const downloadImage = async (imageUrl, fileName) => {
     try {
@@ -41,7 +40,7 @@ function Document({ account }) {
     }
   };
   return (
-    <div className='d-flex flex-wrap'>
+    <div className="d-flex flex-wrap">
       <div className="col-xl-9">
         <div className="profileView">
           <div className="profileDetailsHolder position-relative">
@@ -208,6 +207,25 @@ function Document({ account }) {
             </div>
           </div>
         </div>
+        <div class="statusMessage">
+          <div className="statusWrapper">
+            <h4>We have faced an issue while validating your document!</h4>
+            <p>
+              The following document(s) have been rejected for various reasons
+            </p>
+            <ul>
+              <li>
+                <b>Registration</b>: The required information is not clear.
+              </li>
+              <li>
+                <b>Registration</b>: The required information is not clear.
+              </li>
+              <li>
+                <b>Registration</b>: The required information is not clear.
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
       <div className="col-xl-3">
         <div className="profileView">
@@ -246,10 +264,7 @@ function Document({ account }) {
                             <div
                               className="clearButton"
                               onClick={() =>
-                                downloadImage(
-                                  item.path,
-                                  "Register file"
-                                )
+                                downloadImage(item.path, "Register file")
                               }
                             >
                               <i class="fa-solid fa-file-arrow-down"></i>{" "}
@@ -272,22 +287,35 @@ function Document({ account }) {
                         ""
                       )}
                     </div>
-                  )
+                  );
                 })}
               </div>
             ) : (
               <Link to="/upload-document">
                 <div className="imgWrapper">
-                  <img src={require('../../assets/images/upload-file.png')} alt="" />
+                  <img
+                    src={require("../../assets/images/upload-file.png")}
+                    alt=""
+                  />
                 </div>
-                <div class="text-center mt-3"><h5>Please upload the <span style={{ color: 'var(--ui-accent)', cursor: 'pointer' }}><b>required documents</b></span>.</h5></div>
+                <div class="text-center mt-3">
+                  <h5>
+                    Please upload the{" "}
+                    <span
+                      style={{ color: "var(--ui-accent)", cursor: "pointer" }}
+                    >
+                      <b>required documents</b>
+                    </span>
+                    .
+                  </h5>
+                </div>
               </Link>
             )}
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Document
+export default Document;

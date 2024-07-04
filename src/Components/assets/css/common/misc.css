@@ -436,3 +436,22 @@ input.noinputfield{
 input.noinputfield.edit{
     border-bottom: 1px solid #000
 }
+
+.statusMessage{
+    padding: 10px;
+}
+
+.statusWrapper{
+    background-color: #ff000046;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid red;
+}
+
+.statusWrapper h4{
+    color: red
+}
+
+.statusWrapper ul{
+    list-style: upper-roman;
+}
