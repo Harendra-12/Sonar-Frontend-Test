@@ -83,7 +83,10 @@ function GlobalCalls() {
         );
       }
     }
-    getData()
+    if(accountDetailsRefresh>0){
+      getData()
+    }
+  
   },[account?.account_id, accountDetailsRefresh])
   return <div></div>;
 }
