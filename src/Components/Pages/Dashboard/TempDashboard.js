@@ -246,7 +246,7 @@ function TempDashboard() {
                           <label>Documents</label>
                         </div>
                         <div
-                          onClick={() => setStatusClick("config")}
+                          onClick={() =>{if(Number(account.company_status) === 4){setStatusClick("config")}}}
                           className={`stepWrapper col-3 ${Number(account.company_status) === 4
                             ? "pending"
                             : Number(account.company_status) > 4

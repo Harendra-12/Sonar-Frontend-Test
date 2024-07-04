@@ -5,7 +5,7 @@ import * as cardValidator from "card-validator";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
 import { useDispatch, useSelector } from "react-redux";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function BillingCardSave({ closePopup }) {
@@ -341,18 +341,6 @@ function BillingCardSave({ closePopup }) {
         </div>
       </div>
       {/* {loading ? <CircularLoader /> : ""} */}
-      <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
     </>
   );
 }

@@ -1,21 +1,25 @@
+/* eslint-disable array-callback-return */
 import React, { useEffect, useState } from "react";
 import Cards from "react-credit-cards-2";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
 import { useCreditCardValidator, images } from "react-creditcard-validator";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as cardValidator from "card-validator";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../Misc/CircularLoader";
 
-function NewCardPaymentMethod({ closePopUp2 }) {
+function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
+  const dispatch = useDispatch()
+  const accountDetailsRefresh = useSelector((state)=>state.accountDetailsRefresh)
+  const billingListRefresh = useSelector((state)=>state.billingListRefresh)
+  const cardListRefresh = useSelector((state)=>state.cardListRefresh)
   const account = useSelector((state) => state.account);
   const billingList = useSelector((state) => state.billingList);
   const [newBilling, setNewBilling] = useState(false);
   const [selectedBillId, setSelectedBillId] = useState();
   const [loading, setLoading] = useState(false);
-  const [amount, setAmount] = useState();
   const [saveCard, setSaveCard] = useState(false);
   const [billing, setBilling] = useState({
     name: "",
@@ -56,7 +60,6 @@ function NewCardPaymentMethod({ closePopUp2 }) {
     getCardImageProps,
     // getCVCProps,
     getExpiryDateProps,
-    meta: { erroredInputs },
   } = useCreditCardValidator();
   const [cardDetails, setCardDetails] = useState({
     cardNumber: "",
@@ -82,7 +85,7 @@ function NewCardPaymentMethod({ closePopUp2 }) {
         setSelectedBillId(item.id);
       }
     });
-  }, []);
+  }, [billingList]);
   //   Handle change for getting values from form
   function handleChange(e) {
     const { name, value } = e.target;
@@ -236,7 +239,21 @@ function NewCardPaymentMethod({ closePopUp2 }) {
         if (apiData.status) {
           toast.success(apiData.message);
           setLoading(false);
-          console.log("Old address done", apiData);
+          dispatch({
+            type: "SET_ACCOUNTDETAILSREFRESH",
+            accountDetailsRefresh: accountDetailsRefresh + 1,
+          });
+          dispatch({
+            type: "SET_BILLINGLISTREFRESH",
+            billingListRefresh: billingListRefresh + 1,
+          });
+          dispatch({
+            type: "SET_CARDLISTREFRESH",
+            cardListRefresh: cardListRefresh + 1,
+          });
+          setTimeout(()=>{
+            mainPopUpClose(false)
+          },2000)
         } else {
           setLoading(false);
           const errorMessage = Object.keys(apiData.error);
@@ -277,14 +294,22 @@ function NewCardPaymentMethod({ closePopUp2 }) {
         if (apiData.status) {
           toast.success(apiData.message);
           setLoading(false);
-          console.log("Old address done", apiData);
+          dispatch({
+            type: "SET_ACCOUNTDETAILSREFRESH",
+            accountDetailsRefresh: accountDetailsRefresh + 1,
+          });
+          dispatch({
+            type: "SET_CARDLISTREFRESH",
+            cardListRefresh: cardListRefresh + 1,
+          });
+          setTimeout(() => {
+            mainPopUpClose(false)
+          }, 2000);
         } else {
           setLoading(false);
           const errorMessage = Object.keys(apiData.error);
           toast.error(apiData.error[errorMessage[0]][0]);
-          console.log("Old address error", apiData);
         }
-        // console.log("Inside validation of old card");
       }
     }
   }
@@ -452,16 +477,6 @@ function NewCardPaymentMethod({ closePopUp2 }) {
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
-                  </div>
-                  <div className="col-12 mb-2">
-                    <input
-                      type="checkbox"
-                      checked={saveCard}
-                      onChange={(e) => setSaveCard(e.target.checked)}
-                    />
-                    <label class="formLabel ms-2">
-                      Save this card for future use
-                    </label>
                   </div>
                 </div>
               ) : (
@@ -884,18 +899,6 @@ function NewCardPaymentMethod({ closePopUp2 }) {
         </div>
       </div>
       {loading ? <CircularLoader widthAdjust={"w-100"}/> : ""}
-      <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
     </>
   );
 }

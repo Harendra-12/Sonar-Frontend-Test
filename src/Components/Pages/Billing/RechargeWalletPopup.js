@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useEffect, useState } from "react";
 import Cards from "react-credit-cards-2";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
@@ -34,9 +35,12 @@ function RechargeWalletPopup({ closePopup }) {
         setSelectedBillId(item.id);
       }
     });
-  }, []);
+  }, [billingList, cardList]);
   function closeNewPopUp() {
     setNewCardPopUp(false);
+  }
+  function mainClose() {
+    closePopup(false);
   }
   async function handleSubmit() {
     if (selectedCardId === null || selectedCardId === undefined) {
@@ -114,7 +118,7 @@ function RechargeWalletPopup({ closePopup }) {
       </style>
 
       {newCardPopUp ? (
-        <NewCardPaymentMethod closePopUp2={closeNewPopUp} />
+        <NewCardPaymentMethod closePopUp2={closeNewPopUp} mainPopUpClose={mainClose} />
       ) : (
         <div className="row">
           <div className="col-xl-4 mx-auto">

@@ -423,3 +423,16 @@
     display: none;
   }
 /* Card logo css end*/
+
+input.noinputfield{
+    border: none;
+    padding: 0;
+    color: #000;
+    font-weight: 400;
+    outline: none;
+}
+
+
+input.noinputfield.edit{
+    border-bottom: 1px solid #000
+}

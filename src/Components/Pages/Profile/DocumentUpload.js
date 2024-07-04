@@ -85,8 +85,7 @@ function DocumentUpload() {
         navigate(-1)
       } else {
         setLoading(false);
-        const errorMessage = Object.keys(apiData.error);
-        toast.error(apiData.error[errorMessage[0]][0]);
+        toast.error(apiData.message);
       }
     }
   }
