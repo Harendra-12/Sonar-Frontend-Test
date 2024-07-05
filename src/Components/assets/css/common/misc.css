@@ -444,10 +444,10 @@ input.noinputfield.edit {
 
 .statusWrapper {
     /* background-color: #ff800030; */
-    background-color: #f191012d;
+    background-color: #f101012d;
     padding: 10px;
     border-radius: 10px;
-    border: 2px solid var(--color3);
+    border: 2px solid #dc3545;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
@@ -465,4 +465,8 @@ input.noinputfield.edit {
 
 .statusContent ul li {
     margin-top: 5px;
+}
+
+.statusContent ul li b {
+    color: #dc3545;
 }

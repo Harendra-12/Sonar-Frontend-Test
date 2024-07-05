@@ -42,27 +42,27 @@ function Document({ account }) {
   return (
     <div className="d-flex flex-wrap">
       <div className="col-xl-9">
-        <div class="statusMessage">
+        <div className="statusMessage">
           <div className="statusWrapper">
-            <h5><i class="fa-solid fa-triangle-exclamation text-warning me-1"></i> We have faced an issue while validating your document(s)!</h5>
+            <h5><i className="fa-solid fa-triangle-exclamation text-danger me-1"></i> We have faced an issue while validating your document(s)!</h5>
           </div>
         </div>
         <div className="profileView">
           <div className="profileDetailsHolder position-relative">
-            <div className="row px-2 pb-2">
+            <div className="row px-2">
               <div className="statusContent">
                 <p className="mb-2">
                   The following document(s) have been rejected for various reasons :-
                 </p>
                 <ul>
                   <li>
-                    <b><i class="fa-solid fa-triangle-exclamation text-warning me-1"></i> Registration</b>: The required information is not clear. <div style={{ cursor: "pointer" }} className="pe-5 clearButton fw-bold float-end">Upload <i class="fa-duotone fa-upload"></i></div>
+                    <b><i className="fa-solid fa-triangle-exclamation me-1"></i> Registration</b>: The required information is not clear. <div style={{ cursor: "pointer" }} className="pe-5 clearButton fw-bold float-end">Upload <i className="fa-duotone fa-upload"></i></div>
                   </li>
                   <li>
-                    <b><i class="fa-solid fa-triangle-exclamation text-warning me-1"></i> Registration</b>: The required information is not clear.<div style={{ cursor: "pointer" }} className="pe-5 clearButton fw-bold float-end">Upload <i class="fa-duotone fa-upload"></i></div>
+                    <b><i className="fa-solid fa-triangle-exclamation me-1"></i> Registration</b>: The required information is not clear.<div style={{ cursor: "pointer" }} className="pe-5 clearButton fw-bold float-end">Upload <i className="fa-duotone fa-upload"></i></div>
                   </li>
                   <li>
-                    <b><i class="fa-solid fa-triangle-exclamation text-warning me-1"></i> Registration</b>: The required information is not clear.<div style={{ cursor: "pointer" }} className="pe-5 clearButton fw-bold float-end">Upload <i class="fa-duotone fa-upload"></i></div>
+                    <b><i className="fa-solid fa-triangle-exclamation me-1"></i> Registration</b>: The required information is not clear.<div style={{ cursor: "pointer" }} className="pe-5 clearButton fw-bold float-end">Upload <i className="fa-duotone fa-upload"></i></div>
                   </li>
                 </ul>
               </div>
@@ -74,7 +74,7 @@ function Document({ account }) {
             <div className="header d-flex align-items-center">
               <div className="col-5">Account Details</div>
             </div>
-            <div className="row px-2 pb-2 border-bottom">
+            <div className="row px-2 border-bottom">
               <div className="formRow col-xl-2 col-md-4 col-6">
                 <div className="formLabel">
                   <label htmlFor="data">Company Name</label>
@@ -248,7 +248,7 @@ function Document({ account }) {
                     <div className="row position-relative mb-2 align-items-center">
                       <div className="col-auto ps-0 pe-2">
                         <div className="iconWrapper2">
-                          <i class="fa-solid fa-image"></i>
+                          <i className="fa-solid fa-image"></i>
                         </div>
                       </div>
                       <div className="col-8 my-auto ps-1">
@@ -262,10 +262,10 @@ function Document({ account }) {
                         }}
                       >
                         <div className="iconWrapper">
-                          <i class="fa-solid fa-ellipsis"></i>
+                          <i className="fa-solid fa-ellipsis"></i>
                         </div>
                       </div>
-                      <div class="border mt-2 mx-auto col-10"></div>
+                      <div className="border mt-2 mx-auto col-10"></div>
                       {openPopup && openNumber === key ? (
                         <div className="buttonPopup">
                           <div style={{ cursor: "pointer" }}>
@@ -275,7 +275,7 @@ function Document({ account }) {
                                 downloadImage(item.path, "Register file")
                               }
                             >
-                              <i class="fa-solid fa-file-arrow-down"></i>{" "}
+                              <i className="fa-solid fa-file-arrow-down"></i>{" "}
                               Download
                             </div>
                           </div>
@@ -286,7 +286,7 @@ function Document({ account }) {
                                 target="_blank"
                                 rel="noreferrer"
                               >
-                                <i class="fa-sharp fa-solid fa-eye"></i> View
+                                <i className="fa-sharp fa-solid fa-eye"></i> View
                               </a>
                             </div>
                           </div>
@@ -306,7 +306,7 @@ function Document({ account }) {
                     alt=""
                   />
                 </div>
-                <div class="text-center mt-3">
+                <div className="text-center mt-3">
                   <h5>
                     Please upload the{" "}
                     <span
