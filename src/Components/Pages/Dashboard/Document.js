@@ -48,7 +48,7 @@ function Document({ account }) {
           </div>
         </div>
         <div className="profileView">
-          <div className="profileDetailsHolder position-relative">
+          <div className="profileDetailsHolder position-relative" style={{ border: '1px solid red' }}>
             <div className="row px-2">
               <div className="statusContent">
                 <p className="mb-2">
