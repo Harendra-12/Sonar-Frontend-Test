@@ -3,7 +3,7 @@ import Header from "../../CommonComponents/Header";
 import { useDispatch, useSelector } from "react-redux";
 // import CircularLoader from "../Misc/CircularLoader";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
 import ConfigureStepDashboard from "./ConfigureStepDashboard"
 import Account from "./Account";
@@ -26,11 +26,11 @@ function TempDashboard() {
           type: "SET_TEMPACCOUNT",
           tempAccount: apiData.data,
         });
-        if(Number(apiData.data.company_status) === 2){
+        if (Number(apiData.data.company_status) === 2) {
           setStatusClick("payment")
-        }else if(Number(apiData.data.company_status) === 3 ){
+        } else if (Number(apiData.data.company_status) === 3) {
           setStatusClick("document")
-        }else{
+        } else {
           setStatusClick("configure")
         }
         localStorage.setItem("tempAccount", JSON.stringify(apiData.data));
@@ -121,17 +121,17 @@ function TempDashboard() {
       <div className="mainContent">
         <div className="col-12">
           <Header title="New User Details" />
-          <div class="d-flex flex-wrap">
+          <div className="d-flex flex-wrap">
             <div className="col-xl-12">
               <div className="profileView">
                 <div className="profileDetailsHolder position-relative">
                   <div
-                    class="baseDetails row align-items-center mt-3"
+                    className="baseDetails row align-items-center mt-3"
                     style={{ padding: "30px 10px 55px" }}
                   >
                     <div className="col-xl-8 px-0 mx-auto position-relative">
                       <div
-                        class="progress"
+                        className="progress"
                         role="progressbar"
                         aria-label="Animated striped example"
                         aria-valuenow="50"
@@ -139,7 +139,7 @@ function TempDashboard() {
                         aria-valuemax="100"
                       >
                         <div
-                          class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                          className="progress-bar progress-bar-striped progress-bar-animated bg-success"
                           style={{
                             width: `${Number(account.company_status) === 1
                               ? "40"
@@ -155,9 +155,9 @@ function TempDashboard() {
                       <div className="progressStepWrapper">
                         <div className="stepWrapper col-3 success" onClick={() => setStatusClick("account")}>
                           {/* <div className="status">Verified</div> */}
-                          <div class="step">
+                          <div className="step">
                             <Tippy content="Your Account is verified">
-                              <i class="fa-sharp fa-solid fa-check"></i>
+                              <i className="fa-sharp fa-solid fa-check"></i>
                             </Tippy>
                           </div>
                           <label>Accounts</label>
@@ -175,14 +175,14 @@ function TempDashboard() {
                               ? "Under Process"
                               : "Verified"}
                           </div> */}
-                          <div class="step">
+                          <div className="step">
                             {Number(account.company_status) > 1 ? (
                               <Tippy content="Your payment is verified">
-                                <i class="fa-sharp fa-solid fa-check"></i>
+                                <i className="fa-sharp fa-solid fa-check"></i>
                               </Tippy>
                             ) : (
                               <Tippy content="Your payment is under verification">
-                                <i class="fa-sharp fa-solid fa-credit-card"></i>
+                                <i className="fa-sharp fa-solid fa-credit-card"></i>
                               </Tippy>
                             )}
                           </div>
@@ -204,21 +204,21 @@ function TempDashboard() {
                           ) : (
                             " "
                           )} */}
-                          <div class="step ">
+                          <div className="step ">
                             {Number(account.company_status) > 3 ? (
                               <Tippy content="Your Document is verified">
-                                <i class="fa-sharp fa-solid fa-check"></i>
+                                <i className="fa-sharp fa-solid fa-check"></i>
                               </Tippy>
                             ) : (
                               <Tippy content="Your Document is under verification">
-                                <i class="fa-sharp fa-solid fa-file-contract"></i>
+                                <i className="fa-sharp fa-solid fa-file-contract"></i>
                               </Tippy>
                             )}
                           </div>
                           <label>Documents</label>
                         </div>
                         <div
-                          onClick={() =>{if(Number(account.company_status) === 4){setStatusClick("config")}}}
+                          onClick={() => { if (Number(account.company_status) === 4) { setStatusClick("config") } }}
                           className={`stepWrapper col-3 ${Number(account.company_status) === 4
                             ? "pending"
                             : Number(account.company_status) > 4
@@ -233,14 +233,14 @@ function TempDashboard() {
                           ) : (
                             " "
                           )} */}
-                          <div class="step">
+                          <div className="step">
                             {Number(account.company_status) > 4 ? (
                               <Tippy content="Your Account is configured successfully">
-                                <i class="fa-sharp fa-solid fa-check"></i>
+                                <i className="fa-sharp fa-solid fa-check"></i>
                               </Tippy>
                             ) : (
                               <Tippy content="Your Account is being configured">
-                                <i class="fa-sharp fa-solid fa-gears"></i>
+                                <i className="fa-sharp fa-solid fa-gears"></i>
                               </Tippy>
                             )}
                           </div>
