@@ -62,6 +62,7 @@ function GlobalCalls() {
       }
     }
     if(billingListRefresh>0){
+      console.log("This is billing refresh",billingListRefresh);
         getData();
     }
     

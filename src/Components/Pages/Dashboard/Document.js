@@ -215,13 +215,13 @@ function Document({ account }) {
             </p>
             <ul>
               <li>
-                <b>Registration</b>: The required information is not clear.
+                <b>Registration</b>: The required information is not clear. <div style={{cursor:"pointer"}} className="pe-5 clearButton fw-bold float-end">Upload <i class="fa-duotone fa-upload"></i></div>
               </li>
               <li>
-                <b>Registration</b>: The required information is not clear.
+                <b>Registration</b>: The required information is not clear.<div style={{cursor:"pointer"}} className="pe-5 clearButton fw-bold float-end">Upload <i class="fa-duotone fa-upload"></i></div>
               </li>
               <li>
-                <b>Registration</b>: The required information is not clear.
+                <b>Registration</b>: The required information is not clear.<div style={{cursor:"pointer"}} className="pe-5 clearButton fw-bold float-end">Upload <i class="fa-duotone fa-upload"></i></div>
               </li>
             </ul>
           </div>

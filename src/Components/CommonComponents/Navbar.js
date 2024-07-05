@@ -109,7 +109,7 @@ function Navbar() {
                             </NavLink>
                           </li>
 
-                          <li className="tabItem" effect="ripple">
+                          {/* <li className="tabItem" effect="ripple">
                             <NavLink
                               to="/customer-details"
                               onClick={backToTop}
@@ -120,7 +120,7 @@ function Navbar() {
                               </div>
                               <div className="itemTitle">Details</div>
                             </NavLink>
-                          </li>
+                          </li> */}
 
                           <li className="tabItem" effect="ripple">
                             <NavLink

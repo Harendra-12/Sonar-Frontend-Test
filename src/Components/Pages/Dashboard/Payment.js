@@ -35,13 +35,13 @@ function Payment({ account }) {
                       <li>
                         <label>Subscription Start</label>{" "}
                         <label class="details">
-                          {account?.payments[0].subscription?.start_date}
+                          {account?.subscription?.[0].start_date}
                         </label>
                       </li>
                       <li>
                         <label>Subscription End</label>{" "}
                         <label class="details">
-                          {account?.payments[0].subscription?.end_date}
+                          {account?.subscription?.[0].end_date}
                         </label>
                       </li>
                       <li>
@@ -81,37 +81,37 @@ function Payment({ account }) {
                     <ul>
                       <li>
                         <label>Full Name</label>{" "}
-                        <label class="details">{account?.payments[0]?.billing_address?.fullname}</label>
+                        <label class="details">{account?.billing_address?.[0].fullname}</label>
                       </li>
                       <li>
                         <label>Email</label>{" "}
-                        <label class="details">{account?.payments[0]?.billing_address?.email}</label>
+                        <label class="details">{account?.billing_address?.[0].email}</label>
                       </li>
                       <li>
                         <label>Phone Number</label>{" "}
-                        <label class="details">{account?.payments[0]?.billing_address?.contact_no}</label>
+                        <label class="details">{account?.billing_address?.[0].contact_no}</label>
                       </li>
                       <li>
                         <label>Address</label>{" "}
                         <label class="details">
-                          {account?.payments[0]?.billing_address?.address}
+                          {account?.billing_address?.[0].address}
                         </label>
                       </li>
                       <li>
                         <label>Zip Code</label>{" "}
-                        <label class="details">{account?.payments[0]?.billing_address?.zip}</label>
+                        <label class="details">{account?.billing_address?.[0].zip}</label>
                       </li>
                       <li>
                         <label>City</label>{" "}
-                        <label class="details">{account?.payments[0]?.billing_address?.city}</label>
+                        <label class="details">{account?.billing_address?.[0].city}</label>
                       </li>
                       <li>
                         <label>State</label>{" "}
-                        <label class="details">{account?.payments[0]?.billing_address?.state}</label>
+                        <label class="details">{account?.billing_address?.[0].state}</label>
                       </li>
                       <li>
                         <label>Country</label>{" "}
-                        <label class="details">{account?.payments[0]?.billing_address?.country}</label>
+                        <label class="details">{account?.billing_address?.[0].country}</label>
                       </li>
                     </ul>
                   </div>
