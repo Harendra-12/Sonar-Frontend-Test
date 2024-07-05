@@ -42,6 +42,33 @@ function Document({ account }) {
   return (
     <div className="d-flex flex-wrap">
       <div className="col-xl-9">
+        <div class="statusMessage">
+          <div className="statusWrapper">
+            <h5><i class="fa-solid fa-triangle-exclamation text-warning me-1"></i> We have faced an issue while validating your document(s)!</h5>
+          </div>
+        </div>
+        <div className="profileView">
+          <div className="profileDetailsHolder position-relative">
+            <div className="row px-2 pb-2">
+              <div className="statusContent">
+                <p className="mb-2">
+                  The following document(s) have been rejected for various reasons :-
+                </p>
+                <ul>
+                  <li>
+                    <b><i class="fa-solid fa-triangle-exclamation text-warning me-1"></i> Registration</b>: The required information is not clear. <div style={{ cursor: "pointer" }} className="pe-5 clearButton fw-bold float-end">Upload <i class="fa-duotone fa-upload"></i></div>
+                  </li>
+                  <li>
+                    <b><i class="fa-solid fa-triangle-exclamation text-warning me-1"></i> Registration</b>: The required information is not clear.<div style={{ cursor: "pointer" }} className="pe-5 clearButton fw-bold float-end">Upload <i class="fa-duotone fa-upload"></i></div>
+                  </li>
+                  <li>
+                    <b><i class="fa-solid fa-triangle-exclamation text-warning me-1"></i> Registration</b>: The required information is not clear.<div style={{ cursor: "pointer" }} className="pe-5 clearButton fw-bold float-end">Upload <i class="fa-duotone fa-upload"></i></div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="profileView">
           <div className="profileDetailsHolder position-relative">
             <div className="header d-flex align-items-center">
@@ -205,25 +232,6 @@ function Document({ account }) {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="statusMessage">
-          <div className="statusWrapper">
-            <h4>We have faced an issue while validating your document!</h4>
-            <p>
-              The following document(s) have been rejected for various reasons
-            </p>
-            <ul>
-              <li>
-                <b>Registration</b>: The required information is not clear. <div style={{cursor:"pointer"}} className="pe-5 clearButton fw-bold float-end">Upload <i class="fa-duotone fa-upload"></i></div>
-              </li>
-              <li>
-                <b>Registration</b>: The required information is not clear.<div style={{cursor:"pointer"}} className="pe-5 clearButton fw-bold float-end">Upload <i class="fa-duotone fa-upload"></i></div>
-              </li>
-              <li>
-                <b>Registration</b>: The required information is not clear.<div style={{cursor:"pointer"}} className="pe-5 clearButton fw-bold float-end">Upload <i class="fa-duotone fa-upload"></i></div>
-              </li>
-            </ul>
           </div>
         </div>
       </div>

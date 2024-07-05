@@ -380,32 +380,32 @@
     width: auto;
     height: auto;
     position: relative;
-  }
-  
-  .card-logo-container .rccs__card {
+}
+
+.card-logo-container .rccs__card {
     width: 50px;
-    height: 30px; 
+    height: 30px;
     overflow: hidden;
     position: relative;
-  }
+}
 
-  .card-logo-container .rccs__card--front{
+.card-logo-container .rccs__card--front {
     border-radius: 5.5px;
-  }
-  
-  .card-logo-container .rccs__card--unknown .rccs__issuer {
+}
+
+.card-logo-container .rccs__card--unknown .rccs__issuer {
     display: none;
-  }
-  
-  .card-logo-container .rccs__number,
-  .card-logo-container .rccs__name,
-  .card-logo-container .rccs__expiry,
-  .card-logo-container .rccs__cvc,
-  .card-logo-container .rccs__chip {
+}
+
+.card-logo-container .rccs__number,
+.card-logo-container .rccs__name,
+.card-logo-container .rccs__expiry,
+.card-logo-container .rccs__cvc,
+.card-logo-container .rccs__chip {
     display: none;
-  }
-  
-  .card-logo-container .rccs__issuer {
+}
+
+.card-logo-container .rccs__issuer {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -413,18 +413,19 @@
     left: 0;
     background-size: contain;
     background-position: center;
-  }
+}
 
-  .card-logo-container .rccs__card--american-express .rccs__issuer{
+.card-logo-container .rccs__card--american-express .rccs__issuer {
     background-size: cover;
-  }
-  
-  .rccs__cvc__front{
+}
+
+.rccs__cvc__front {
     display: none;
-  }
+}
+
 /* Card logo css end*/
 
-input.noinputfield{
+input.noinputfield {
     border: none;
     padding: 0;
     color: #000;
@@ -433,25 +434,35 @@ input.noinputfield{
 }
 
 
-input.noinputfield.edit{
+input.noinputfield.edit {
     border-bottom: 1px solid #000
 }
 
-.statusMessage{
+.statusMessage {
     padding: 10px;
 }
 
-.statusWrapper{
-    background-color: #ff000046;
+.statusWrapper {
+    /* background-color: #ff800030; */
+    background-color: #f191012d;
     padding: 10px;
     border-radius: 10px;
-    border: 2px solid red;
+    border: 2px solid var(--color3);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
-.statusWrapper h4{
-    color: red
+.statusWrapper h5 {
+    /* color: #ff8100; */
+    margin-bottom: 0;
+    font-weight: 500;
 }
 
-.statusWrapper ul{
-    list-style: upper-roman;
+.statusContent ul {
+    list-style: none;
+    padding-left: 5px;
+    margin-bottom: 0;
+}
+
+.statusContent ul li {
+    margin-top: 5px;
 }
