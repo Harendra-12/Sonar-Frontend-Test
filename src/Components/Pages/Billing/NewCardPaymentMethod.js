@@ -498,9 +498,10 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose }) {
                                     data-bs-target={`#flush-collapse${key}newBill`}
                                     aria-expanded="false"
                                     aria-controls={`flush-collapse${key}newBill`}
+                                    style={{ boxShadow: 'none' }}
                                   >
                                     <div>
-                                      <h5 className="mb-0">{item.fullname}</h5>
+                                      <h5 className="mb-0">{item.fullname.substr(0, 30)}</h5>
                                     </div>
                                   </button>
                                 </div>

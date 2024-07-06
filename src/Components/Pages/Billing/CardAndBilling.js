@@ -411,7 +411,7 @@ function CardAndBilling() {
                         </div>
                         <div className="label">
                           Holder's Name:{" "}
-                          <span className="float-end">
+                          <span className="float-end" style={{ width: 120, textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>
                             {selectedCard?.[0]?.name}
                           </span>
                         </div>
