@@ -350,10 +350,10 @@ function CardAndBilling() {
                         className="cardWrapper row align-items-center col-12 mx-auto"
                         number={selectedCard?.[0]?.card_number}
                         expiry={`${selectedCard?.[0]?.exp_month
-                            ? selectedCard?.[0]?.exp_month < 10
-                              ? `0${selectedCard?.[0]?.exp_month}`
-                              : selectedCard?.[0]?.exp_month
-                            : ""
+                          ? selectedCard?.[0]?.exp_month < 10
+                            ? `0${selectedCard?.[0]?.exp_month}`
+                            : selectedCard?.[0]?.exp_month
+                          : ""
                           }/${selectedCard?.[0]?.exp_year
                             ? selectedCard?.[0]?.exp_year
                             : ""
@@ -621,13 +621,13 @@ function CardAndBilling() {
                                                 <span>Country:</span>{" "}
                                               </li>
                                             </div>
-                                            <div>
+                                            <div style={{ width: "75%" }}>
                                               <li>
                                                 <input
                                                   value={item.id === editBillId ? billing.name : item.fullname}
                                                   name="name"
-                                                  className={`noinputfield${errorBilling.name
-                                                      ? "error-border"
+                                                  className={`noinputfield ${errorBilling.name
+                                                    ? "error-border" : editBillId ? "edit"
                                                       : ""
                                                     }`}
                                                   onChange={(e) =>
@@ -642,9 +642,8 @@ function CardAndBilling() {
                                                   value={item.id === editBillId ? billing.phone : item.contact_no}
                                                   placeholder="Phone number"
                                                   name="phone"
-                                                  className={`noinputfield${errorBilling.phone
-                                                      ? "error-border"
-                                                      : ""
+                                                  className={`noinputfield ${errorBilling.phone
+                                                    ? "error-border" : editBillId ? "edit" : ""
                                                     }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
@@ -658,8 +657,8 @@ function CardAndBilling() {
                                                   value={item.id === editBillId ? billing.email : item.email}
                                                   placeholder="Email Address"
                                                   name="email"
-                                                  className={`noinputfield${errorBilling.email
-                                                      ? "error-border"
+                                                  className={`noinputfield ${errorBilling.email
+                                                    ? "error-border" : editBillId ? "edit"
                                                       : ""
                                                     }`}
                                                   onChange={(e) =>
@@ -674,8 +673,8 @@ function CardAndBilling() {
                                                   value={item.id === editBillId ? billing.address : item.address}
                                                   placeholder="Full address"
                                                   name="address"
-                                                  className={`noinputfield${errorBilling.address
-                                                      ? "error-border"
+                                                  className={`noinputfield ${errorBilling.address
+                                                    ? "error-border" : editBillId ? "edit"
                                                       : ""
                                                     }`}
                                                   onChange={(e) =>
@@ -691,7 +690,7 @@ function CardAndBilling() {
                                                   placeholder="City"
                                                   name="city"
                                                   className={`noinputfield ${errorBilling.city
-                                                      ? "error-border"
+                                                    ? "error-border" : editBillId ? "edit"
                                                       : ""
                                                     }`}
                                                   onChange={(e) =>
@@ -707,7 +706,7 @@ function CardAndBilling() {
                                                   placeholder="State"
                                                   name="state"
                                                   className={`noinputfield ${errorBilling.state
-                                                      ? "error-border"
+                                                    ? "error-border" : editBillId ? "edit"
                                                       : ""
                                                     }`}
                                                   onChange={(e) =>
@@ -723,7 +722,7 @@ function CardAndBilling() {
                                                   placeholder="Zip Code"
                                                   name="zip"
                                                   className={`noinputfield ${errorBilling.zip
-                                                      ? "error-border"
+                                                    ? "error-border" : editBillId ? "edit"
                                                       : ""
                                                     }`}
                                                   onChange={(e) =>
@@ -739,7 +738,7 @@ function CardAndBilling() {
                                                   placeholder="Country"
                                                   name="country"
                                                   className={`noinputfield ${errorBilling.country
-                                                      ? "error-border"
+                                                    ? "error-border" : editBillId ? "edit"
                                                       : ""
                                                     }`}
                                                   onChange={(e) =>
