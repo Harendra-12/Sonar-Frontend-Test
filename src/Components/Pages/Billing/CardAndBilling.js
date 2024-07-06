@@ -547,7 +547,7 @@ function CardAndBilling() {
                                             >
                                               <div>
                                                 <h5 className="mb-0">
-                                                  {item.fullname}
+                                                  {item.fullname.substr(0, 50)}
                                                 </h5>
                                               </div>
                                             </button>
