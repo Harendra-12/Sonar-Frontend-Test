@@ -535,7 +535,7 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose }) {
                                 <ul className="billingDetails">
                                   <div
                                     className="pe-3"
-                                    style={{ width: "25%" }}
+                                    style={{ width: "35%" }}
                                   >
                                     <li>
                                       <span>Full Name:</span>
@@ -562,7 +562,7 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose }) {
                                       <span>Country:</span>{" "}
                                     </li>
                                   </div>
-                                  <div>
+                                  <div style={{ width: '65%' }}>
                                     <li>
                                       <input
                                         type="text"
