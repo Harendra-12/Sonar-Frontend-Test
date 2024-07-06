@@ -334,12 +334,11 @@ function Login() {
           <div className="someText">
             <h1>Welcome.</h1>
             <p>
-              Magna labore nisi in officia qui quis. Labore dolore occaecat
-              voluptate culpa incididunt.
+              Experience seamless communication and collaboration with our UCaaS solution, designed for efficiency and innovation.
             </p>
           </div>
           <div className="someLogo">
-            <h3>PBX App</h3>
+            <h3>Angel PBX</h3>
             <p>Connecting Beyond Horizon</p>
           </div>
         </main>
