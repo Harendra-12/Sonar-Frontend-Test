@@ -242,7 +242,7 @@ function RechargeWalletPopup({ closePopup }) {
                                     aria-controls={`flush-collapse${key}recharge`}
                                   >
                                     <div>
-                                      <h5 className="mb-0">{item.fullname.substr(0, 30)}</h5>
+                                      <h5 className="mb-0" style={{ maxWidth: 150, textOverflow: 'ellipsis', overflow: 'hidden' }}>{item.fullname}</h5>
                                     </div>
                                   </button>
                                 </div>

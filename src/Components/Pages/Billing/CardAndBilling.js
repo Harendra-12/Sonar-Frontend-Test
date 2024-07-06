@@ -411,7 +411,7 @@ function CardAndBilling() {
                         </div>
                         <div className="label">
                           Holder's Name:{" "}
-                          <span className="float-end text-end" style={{ width: 120, textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>
+                          <span className="float-end" style={{ maxWidth: 120, textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>
                             {selectedCard?.[0]?.name}
                           </span>
                         </div>
@@ -546,8 +546,8 @@ function CardAndBilling() {
                                               aria-controls={`flush-collapse${key}`}
                                             >
                                               <div>
-                                                <h5 className="mb-0">
-                                                  {item.fullname.substr(0, 50)}
+                                                <h5 className="mb-0" style={{ maxWidth: 250, textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                                                  {item.fullname}
                                                 </h5>
                                               </div>
                                             </button>
