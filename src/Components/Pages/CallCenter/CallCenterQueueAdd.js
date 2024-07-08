@@ -431,14 +431,14 @@ function CallCenterQueueAdd() {
                 {agent &&
                   agent.map((item, index) => {
                     return (
-                      <div className="row" key={index}>
+                      <div className="d-flex flex-wrap" key={index}>
                         <div
                           className="formLabel pe-2 m-0 mt-auto"
                           style={{ width: 14 }}
                         >
                           <label>{index + 1}.</label>
                         </div>
-                        <div className="col-2 pe-2">
+                        <div className="col-auto pe-1">
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Agent Name</label>
