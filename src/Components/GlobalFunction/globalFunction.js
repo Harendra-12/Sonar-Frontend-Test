@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { handleNavigation } from './Navigation';
-const baseName = "http://192.168.2.220/UcaasS-Backend/api"
+const baseName = "http://192.168.1.88/UcaasS-Backend/api"
 
 
 // Creating instance of axios

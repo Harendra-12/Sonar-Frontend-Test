@@ -162,6 +162,9 @@
 
 input[type="file"] {
     font-size: 11px;
+    border: none;
+    height: auto;
+    padding-left: 0;
 }
 
 input[type="file"]::file-selector-button {
