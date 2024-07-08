@@ -52,12 +52,6 @@ function DocumentUpload() {
       toast.error("Please upload MOA image");
     } else {
       setLoading(true);
-      // const parsedData = {
-      //   account_id: account.account_id,
-      //   registration_path: formData.reg,
-      //   tin_path: formData.tin,
-      //   moa_path: formData.moa,
-      // };
       const parsedData = {
         "account_id": account.account_id,
         "documents": [
