@@ -94,7 +94,7 @@ const Users = () => {
         <div className="container-fluid">
           <div className="row">
             <Header title="Users" />
-            <div className="row px-xl-3 py-2" id="detailsHeader">
+            <div className="d-flex flex-wrap px-xl-3 py-2" id="detailsHeader">
               <div className="col-xl-4 my-auto">
                 <div className="position-relative searchBox">
                   <input

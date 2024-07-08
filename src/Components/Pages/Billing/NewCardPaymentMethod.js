@@ -10,11 +10,11 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../Misc/CircularLoader";
 
-function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
+function NewCardPaymentMethod({ closePopUp2, mainPopUpClose }) {
   const dispatch = useDispatch()
-  const accountDetailsRefresh = useSelector((state)=>state.accountDetailsRefresh)
-  const billingListRefresh = useSelector((state)=>state.billingListRefresh)
-  const cardListRefresh = useSelector((state)=>state.cardListRefresh)
+  const accountDetailsRefresh = useSelector((state) => state.accountDetailsRefresh)
+  const billingListRefresh = useSelector((state) => state.billingListRefresh)
+  const cardListRefresh = useSelector((state) => state.cardListRefresh)
   const account = useSelector((state) => state.account);
   const billingList = useSelector((state) => state.billingList);
   const [newBilling, setNewBilling] = useState(false);
@@ -209,27 +209,27 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
         setLoading(true);
         const year = new Date().getFullYear();
         const parsedData = {
-          type:"card",
+          type: "card",
           account_id: account.account_id,
           address_id: selectedBillId,
           amount: cardDetails.amount,
           card_number: cardDetails.cardNumber.split(" ").join(""),
           name: cardDetails.cardName,
-          save_card:saveCard,
+          save_card: saveCard,
           exp_month: cardDetails.expiryDate.split("/")[0],
           exp_year: Number(
             String(year).slice(0, 2) +
-              String(cardDetails.expiryDate.split("/")[1])
+            String(cardDetails.expiryDate.split("/")[1])
           ),
           cvc: cardDetails.cvv,
-          fullname:billing.name,
-          contact_no:billing.phone,
-          email:billing.email,
-          address:billing.address,
-          zip:billing.zip,
-          city:billing.city,
-          state:billing.state,
-          country:billing.country,
+          fullname: billing.name,
+          contact_no: billing.phone,
+          email: billing.email,
+          address: billing.address,
+          zip: billing.zip,
+          city: billing.city,
+          state: billing.state,
+          country: billing.country,
 
         };
         const apiData = await generalPostFunction(
@@ -251,9 +251,9 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
             type: "SET_CARDLISTREFRESH",
             cardListRefresh: cardListRefresh + 1,
           });
-          setTimeout(()=>{
+          setTimeout(() => {
             mainPopUpClose(false)
-          },2000)
+          }, 2000)
         } else {
           setLoading(false);
           const errorMessage = Object.keys(apiData.error);
@@ -269,21 +269,21 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
         !(cardDetails.cvv.length < 3 || cardDetails.cvv.length > 6) &&
         cardValidator.number(cardDetails.cardNumber).isValid
       ) {
-        console.log("This is card number",cardDetails.cardNumber);
+        console.log("This is card number", cardDetails.cardNumber);
         setLoading(true);
         const year = new Date().getFullYear();
         const parsedData = {
-          type:"card",
+          type: "card",
           account_id: account.account_id,
           address_id: selectedBillId,
           amount: cardDetails.amount,
           card_number: cardDetails.cardNumber.split(" ").join(""),
           name: cardDetails.cardName,
-          save_card:saveCard,
+          save_card: saveCard,
           exp_month: cardDetails.expiryDate.split("/")[0],
           exp_year: Number(
             String(year).slice(0, 2) +
-              String(cardDetails.expiryDate.split("/")[1])
+            String(cardDetails.expiryDate.split("/")[1])
           ),
           cvc: cardDetails.cvv,
         };
@@ -352,7 +352,7 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
       <div className="col-xl-8">
         <div className="cardDetailsWrapper">
           <div className="row">
-            <div className="col-6" style={{height: 538, overflowY: 'auto'}}>
+            <div className="col-6" style={{ maxHeight: 538, overflowY: 'auto' }}>
               <div className="col-12 border-start border-4 border-success mb-3 px-3">
                 <h5>Billing Information</h5>
               </div>
@@ -366,9 +366,8 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
                     <input
                       placeholder="Name"
                       name="name"
-                      className={`form-control travellerdetails ${
-                        errorBilling.name ? "error-border" : ""
-                      }`}
+                      className={`form-control travellerdetails ${errorBilling.name ? "error-border" : ""
+                        }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
@@ -381,9 +380,8 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
                     <input
                       placeholder="Phone number"
                       name="phone"
-                      className={`form-control travellerdetails ${
-                        errorBilling.phone ? "error-border" : ""
-                      }`}
+                      className={`form-control travellerdetails ${errorBilling.phone ? "error-border" : ""
+                        }`}
                       onChange={(e) => billingChnage(e)}
                       type="number"
                     />
@@ -396,9 +394,8 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
                     <input
                       placeholder="Email Address"
                       name="email"
-                      className={`form-control travellerdetails ${
-                        errorBilling.email ? "error-border" : ""
-                      }`}
+                      className={`form-control travellerdetails ${errorBilling.email ? "error-border" : ""
+                        }`}
                       onChange={(e) => billingChnage(e)}
                       type="email"
                     />
@@ -411,9 +408,8 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
                     <input
                       placeholder="Full address"
                       name="address"
-                      className={`form-control travellerdetails ${
-                        errorBilling.address ? "error-border" : ""
-                      }`}
+                      className={`form-control travellerdetails ${errorBilling.address ? "error-border" : ""
+                        }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
@@ -426,9 +422,8 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
                     <input
                       placeholder="City"
                       name="city"
-                      className={`form-control travellerdetails ${
-                        errorBilling.city ? "error-border" : ""
-                      }`}
+                      className={`form-control travellerdetails ${errorBilling.city ? "error-border" : ""
+                        }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
@@ -441,9 +436,8 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
                     <input
                       placeholder="State"
                       name="state"
-                      className={`form-control travellerdetails ${
-                        errorBilling.state ? "error-border" : ""
-                      }`}
+                      className={`form-control travellerdetails ${errorBilling.state ? "error-border" : ""
+                        }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
@@ -456,9 +450,8 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
                     <input
                       placeholder="Zip Code"
                       name="zip"
-                      className={`form-control travellerdetails ${
-                        errorBilling.zip ? "error-border" : ""
-                      }`}
+                      className={`form-control travellerdetails ${errorBilling.zip ? "error-border" : ""
+                        }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
@@ -471,9 +464,8 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
                     <input
                       placeholder="Country"
                       name="country"
-                      className={`form-control travellerdetails ${
-                        errorBilling.country ? "error-border" : ""
-                      }`}
+                      className={`form-control travellerdetails ${errorBilling.country ? "error-border" : ""
+                        }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
@@ -491,9 +483,8 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
                         >
                           <div className="accordion-item">
                             <h2
-                              className={`accordion-header addressDrawer ${
-                                selectedBillId === item.id ? "active" : ""
-                              }`}
+                              className={`accordion-header addressDrawer ${selectedBillId === item.id ? "active" : ""
+                                }`}
                             >
                               <div
                                 className="d-flex flex-wrap align-items-center"
@@ -507,9 +498,10 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
                                     data-bs-target={`#flush-collapse${key}newBill`}
                                     aria-expanded="false"
                                     aria-controls={`flush-collapse${key}newBill`}
+                                    style={{ boxShadow: 'none' }}
                                   >
                                     <div>
-                                      <h5 className="mb-0">{item.fullname}</h5>
+                                      <h5 className="mb-0" style={{ maxWidth: 200, textOverflow: 'ellipsis', overflow: 'hidden' }}>{item.fullname}</h5>
                                     </div>
                                   </button>
                                 </div>
@@ -543,7 +535,7 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
                                 <ul className="billingDetails">
                                   <div
                                     className="pe-3"
-                                    style={{ width: "25%" }}
+                                    style={{ width: "35%" }}
                                   >
                                     <li>
                                       <span>Full Name:</span>
@@ -570,7 +562,7 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
                                       <span>Country:</span>{" "}
                                     </li>
                                   </div>
-                                  <div>
+                                  <div style={{ width: '65%' }}>
                                     <li>
                                       <input
                                         type="text"
@@ -701,9 +693,8 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
                         </label>
                         <input
                           placeholder="Card Holder's Name"
-                          className={`form-control travellerdetails ${
-                            errorCard.cardName ? "error-border" : ""
-                          }`}
+                          className={`form-control travellerdetails ${errorCard.cardName ? "error-border" : ""
+                            }`}
                           name="cardName"
                           id="traveller_name_on_card"
                           type="text"
@@ -741,9 +732,8 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
                           <input
                             placeholder="Card Number"
                             maxLength={16}
-                            className={`form-control travellerdetails ${
-                              errorCard.cardNumber ? "error-border" : ""
-                            }`}
+                            className={`form-control travellerdetails ${errorCard.cardNumber ? "error-border" : ""
+                              }`}
                             name="cardNumber"
                             id="traveller_card_number"
                             type="text"
@@ -779,9 +769,8 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
                             </label>
                             <input
                               placeholder="YEAR"
-                              className={`form-control travellerdetails payment_exp_date ${
-                                errorCard.expiryDate ? "error-border" : ""
-                              }`}
+                              className={`form-control travellerdetails payment_exp_date ${errorCard.expiryDate ? "error-border" : ""
+                                }`}
                               name="traveller_card_cvv"
                               type="number"
                               {...getExpiryDateProps({
@@ -814,9 +803,8 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
                         <div className="position-relative">
                           <input
                             placeholder="cvv"
-                            className={`form-control travellerdetails payment_exp_date ${
-                              errorCard.cvv ? "error-border" : ""
-                            }`}
+                            className={`form-control travellerdetails payment_exp_date ${errorCard.cvv ? "error-border" : ""
+                              }`}
                             name="cvv"
                             type="number"
                             onChange={(e) => {
@@ -852,9 +840,8 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
                         <div className="position-relative">
                           <input
                             placeholder="amount"
-                            className={`form-control travellerdetails payment_exp_date ${
-                              errorCard.amount ? "error-border" : ""
-                            }`}
+                            className={`form-control travellerdetails payment_exp_date ${errorCard.amount ? "error-border" : ""
+                              }`}
                             name="amount"
                             type="number"
                             onChange={(e) => {
@@ -898,7 +885,7 @@ function NewCardPaymentMethod({ closePopUp2,mainPopUpClose }) {
           </div>
         </div>
       </div>
-      {loading ? <CircularLoader widthAdjust={"w-100"}/> : ""}
+      {loading ? <CircularLoader widthAdjust={"w-100"} /> : ""}
     </>
   );
 }

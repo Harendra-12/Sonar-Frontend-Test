@@ -48,7 +48,7 @@ function Destination() {
           <div className="container-fluid">
             <div className="row">
               <Header title="Destination" />
-              <div className="row px-xl-4 py-2" id="detailsHeader">
+              <div className="d-flex flex-wrap px-xl-4 py-2" id="detailsHeader">
                 <div className="col-xl-4 my-auto">
                   <div className="position-relative searchBox">
                     <input

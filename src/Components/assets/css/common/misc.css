@@ -347,6 +347,11 @@
     color: var(--ui-accent);
 }
 
+.profileDetailsHolder .accordion-button:focus {
+    box-shadow: none;
+}
+
+
 .profileDetailsHolder .billingDetails .formItem,
 .cardDetailsWrapper .billingDetails .formItem {
     border: 0;
@@ -431,11 +436,12 @@ input.noinputfield {
     color: #000;
     font-weight: 400;
     outline: none;
+    width: 100%;
 }
 
 
 input.noinputfield.edit {
-    border-bottom: 1px solid #000
+    border-bottom: 1px solid #b5b5b5
 }
 
 .statusMessage {
