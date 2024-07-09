@@ -29,6 +29,7 @@ const Extensions = () => {
     } else {
       setOnlineExtension([0]);
     }
+    generalGetFunction("/freeswitch/checkActiveExtensionOnServer")
   }, [registerUser]);
 
   useEffect(() => {
