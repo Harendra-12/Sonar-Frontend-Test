@@ -3,16 +3,23 @@ import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { imageUploadFunction } from "../../GlobalFunction/globalFunction";
+import CircularLoader from "../Misc/CircularLoader";
 
-function Document({ account }) {
-  console.log("This is account", account);
+function Document({ account, refreshCallback, refresh }) {
   const [rejectDocument, setRejectDocument] = useState([]);
+  const [reUploadId, setReUploadId] = useState();
   const wrapperRef = useRef(null);
   const [openPopup, setOpenPopup] = useState(false);
   const [openNumber, setOpenNumber] = useState(0);
   const [reUploadPopUp, setReUploadPopUp] = useState(false);
+  const [uploadDocument, setUploadDocument] = useState([])
   useEffect(() => {
     setRejectDocument(account.details.filter((item) => item.status == "2"));
+
+    const newUploadDocument = account.details.filter(item => item.status === "2").map(item => {
+      return account.details.some(item2 => item2.document_id === item.document_id && item2.status === "3");
+    });
+    setUploadDocument(newUploadDocument);
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         setOpenPopup(false);
@@ -85,19 +92,20 @@ function Document({ account }) {
     } else {
       setLoading(true);
       const parsedData = {
-        "account_id": account.account_id,
-        "documents": [
+        account_id: account.id,
+        documents: [
           {
-            "document_id": 1,
-            "path": formData.reg
-          }
-        ]
-      }
+            document_id: reUploadId,
+            path: formData.reg,
+          },
+        ],
+      };
       const apiData = await imageUploadFunction(
         "/account-detail/store",
         parsedData
       );
       if (apiData.status) {
+        refreshCallback(refresh + 1);
         toast.success(apiData.message);
         setLoading(false);
       } else {
@@ -106,6 +114,8 @@ function Document({ account }) {
       }
     }
   }
+
+  // console.log("This is rejected doc.", uploadDocument);
   return (
     <div className="d-flex flex-wrap documentPending">
       <div className="col-xl-9">
@@ -132,7 +142,7 @@ function Document({ account }) {
                       reasons :-
                     </p>
                     <ul>
-                      {rejectDocument.map((item) => {
+                      {rejectDocument.map((item, key) => {
                         return (
                           <li>
                             <b>
@@ -140,13 +150,23 @@ function Document({ account }) {
                               {item.document.name}
                             </b>
                             : {item.description}{" "}
-                            <div
-                              onClick={() => setReUploadPopUp(true)}
-                              style={{ cursor: "pointer" }}
-                              className="pe-5 clearButton fw-bold float-end"
-                            >
-                              Upload <i className="fa-duotone fa-upload"></i>
-                            </div>
+                            {uploadDocument[key] ? (
+                              <div className="pe-5 clearButton fw-bold float-end">
+                                Under Verification{" "}
+                                {/* <i className="fa-duotone fa-upload"></i> */}
+                              </div>
+                            ) : (
+                              <div
+                                onClick={() => {
+                                  setReUploadPopUp(true);
+                                  setReUploadId(item.document_id);
+                                }}
+                                style={{ cursor: "pointer" }}
+                                className="pe-5 clearButton fw-bold float-end"
+                              >
+                                Upload <i className="fa-duotone fa-upload"></i>
+                              </div>
+                            )}
                           </li>
                         );
                       })}
@@ -439,12 +459,23 @@ function Document({ account }) {
                 <div className="col-10 ps-0">
                   <h4>Warning!</h4>
                   "Please select the file you want to upload "
-                  <input className="formItem" type="file" />
+                  <input
+                    name="reg"
+                    className="formItem"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleChange}
+                  />
+                  {formDataError.reg ? (
+                    <span style={{ color: "red", fontSize: 12 }}>
+                      <i class="fa-solid fa-triangle-exclamation"></i> Image
+                      should be less than 1 MB
+                    </span>
+                  ) : (
+                    ""
+                  )}
                   <div className="mt-2">
-                    <button
-                      className="panelButton m-0"
-                      onClick={() => setReUploadPopUp(false)}
-                    >
+                    <button className="panelButton m-0" onClick={handleSubmit}>
                       Confirm
                     </button>
                     <button
@@ -462,6 +493,7 @@ function Document({ account }) {
       ) : (
         ""
       )}
+      {loading ? <CircularLoader /> : ""}
       <ToastContainer
         position="bottom-right"
         autoClose={3000}
