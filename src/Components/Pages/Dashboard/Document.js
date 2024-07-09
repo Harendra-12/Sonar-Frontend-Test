@@ -12,10 +12,10 @@ function Document({ account, refreshCallback, refresh }) {
   const [openPopup, setOpenPopup] = useState(false);
   const [openNumber, setOpenNumber] = useState(0);
   const [reUploadPopUp, setReUploadPopUp] = useState(false);
-  const [uploadDocument,setUploadDocument]=useState([])
+  const [uploadDocument, setUploadDocument] = useState([])
   useEffect(() => {
     setRejectDocument(account.details.filter((item) => item.status == "2"));
-    
+
     const newUploadDocument = account.details.filter(item => item.status === "2").map(item => {
       return account.details.some(item2 => item2.document_id === item.document_id && item2.status === "3");
     });
@@ -53,7 +53,7 @@ function Document({ account, refreshCallback, refresh }) {
       console.error("Error downloading the image:", error);
     }
   };
- 
+
 
   // Logic for re-upload documents
   const [loading, setLoading] = useState(false);
@@ -117,7 +117,7 @@ function Document({ account, refreshCallback, refresh }) {
 
   // console.log("This is rejected doc.", uploadDocument);
   return (
-    <div className="d-flex flex-wrap">
+    <div className="d-flex flex-wrap documentPending">
       <div className="col-xl-9">
         {rejectDocument.length !== 0 ? (
           <>
@@ -142,31 +142,32 @@ function Document({ account, refreshCallback, refresh }) {
                       reasons :-
                     </p>
                     <ul>
-                      {rejectDocument.map((item,key) => {
+                      {rejectDocument.map((item, key) => {
                         return (
-                          <li>
-                            <b>
-                              <i className="fa-solid fa-triangle-exclamation me-1"></i>{" "}
-                              {item.document.name}
-                            </b>
-                            : {item.description}{" "}
-                            {uploadDocument[key] ?  (
+                          <li className="d-flex justify-content-between">
+                            <div className="col-10">
+                              <b>
+                                <i className="fa-solid fa-triangle-exclamation me-1"></i>{" "}
+                                {item.document.name}
+                              </b>
+                              : {item.description}</div>{" "}
+                            {uploadDocument[key] ? (
                               <div className="pe-5 clearButton fw-bold float-end">
                                 Under Verification{" "}
                                 {/* <i className="fa-duotone fa-upload"></i> */}
                               </div>
-                            ) :(
+                            ) : (
                               <div
                                 onClick={() => {
                                   setReUploadPopUp(true);
                                   setReUploadId(item.document_id);
                                 }}
                                 style={{ cursor: "pointer" }}
-                                className="pe-5 clearButton fw-bold float-end"
+                                className="pe-5 clearButton fw-bold float-end col-auto"
                               >
                                 Upload <i className="fa-duotone fa-upload"></i>
                               </div>
-                            ) }
+                            )}
                           </li>
                         );
                       })}
@@ -353,62 +354,74 @@ function Document({ account, refreshCallback, refresh }) {
               <div className="col-12">Documents Uploaded</div>
             </div>
             {account.details.length > 0 ? (
-              <div className="qLinkContent px-3 mt-2" ref={wrapperRef}>
-                {account.details.map((item, key) => {
-                  return (
-                    <div className="row position-relative mb-2 align-items-center">
-                      <div className="col-auto ps-0 pe-2">
-                        <div className="iconWrapper2">
-                          <i className="fa-solid fa-image"></i>
-                        </div>
-                      </div>
-                      <div className="col-8 my-auto ps-1">
-                        <p>{item?.document?.name}</p>
-                      </div>
-                      <div
-                        className="col-auto px-0 my-auto ms-auto"
-                        onClick={() => {
-                          setOpenPopup(!openPopup);
-                          setOpenNumber(key);
-                        }}
-                      >
-                        <div className="iconWrapper">
-                          <i className="fa-solid fa-ellipsis"></i>
-                        </div>
-                      </div>
-                      <div className="border mt-2 mx-auto col-10"></div>
-                      {openPopup && openNumber === key ? (
-                        <div className="buttonPopup">
-                          <div style={{ cursor: "pointer" }}>
-                            <div
-                              className="clearButton"
-                              onClick={() =>
-                                downloadImage(item.path, "Register file")
-                              }
-                            >
-                              <i className="fa-solid fa-file-arrow-down"></i>{" "}
-                              Download
-                            </div>
-                          </div>
-                          <div style={{ cursor: "pointer" }}>
-                            <div className="clearButton">
-                              <a
-                                href={item.path}
-                                target="_blank"
-                                rel="noreferrer"
+              <div className="qLinkContent px-2 mt-2" ref={wrapperRef}>
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                  {account.details.map((item, key) => {
+                    return (
+                      <div class="accordion-item">
+                        <h2 class="accordion-header" id={`flush-heading${key}`}>
+                          <button class="accordion-button collapsed" style={{ padding: '15px 5px' }} type="button" data-bs-toggle="collapse" data-bs-target={`#flush-collapse${key}`} aria-expanded="false" aria-controls={`flush-collapse${key}`}>
+                            {item?.document?.name}
+                          </button>
+                        </h2>
+                        <div id={`flush-collapse${key}`} class="accordion-collapse collapse" aria-labelledby={`flush-heading${key}`} data-bs-parent="#accordionFlushExample">
+                          <div class="accordion-body">
+                            <div className="row position-relative align-items-center">
+                              <div className="col-auto ps-0 pe-2">
+                                <div className="iconWrapper2">
+                                  <i className="fa-solid fa-image"></i>
+                                </div>
+                              </div>
+                              <div className="col-8 my-auto ps-1">
+                                <p>{item?.document?.name}</p>
+                              </div>
+                              <div
+                                className="col-auto px-0 my-auto ms-auto"
+                                onClick={() => {
+                                  setOpenPopup(!openPopup);
+                                  setOpenNumber(key);
+                                }}
                               >
-                                <i className="fa-sharp fa-solid fa-eye"></i>{" "}
-                                View
-                              </a>
+                                <div className="iconWrapper">
+                                  <i className="fa-solid fa-ellipsis"></i>
+                                </div>
+                              </div>
+                              {openPopup && openNumber === key ? (
+                                <div className="buttonPopup">
+                                  <div style={{ cursor: "pointer" }}>
+                                    <div
+                                      className="clearButton"
+                                      onClick={() =>
+                                        downloadImage(item.path, "Register file")
+                                      }
+                                    >
+                                      <i className="fa-solid fa-file-arrow-down"></i>{" "}
+                                      Download
+                                    </div>
+                                  </div>
+                                  <div style={{ cursor: "pointer" }}>
+                                    <div className="clearButton">
+                                      <a
+                                        href={item.path}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                      >
+                                        <i className="fa-sharp fa-solid fa-eye"></i>{" "}
+                                        View
+                                      </a>
+                                    </div>
+                                  </div>
+                                </div>
+                              ) : (
+                                ""
+                              )}
                             </div>
                           </div>
                         </div>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                  );
-                })}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             ) : (
               <Link to="/upload-document">
@@ -446,7 +459,7 @@ function Document({ account, refreshCallback, refresh }) {
                 </div>
                 <div className="col-10 ps-0">
                   <h4>Warning!</h4>
-                  "Please select the file you want to upload "
+                  Please select the file you want to upload
                   <input
                     name="reg"
                     className="formItem"
