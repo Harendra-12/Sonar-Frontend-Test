@@ -82,7 +82,7 @@ function Document({ account }) {
       toast.error("Image size must be less then 1 MB");
     } else if (!formData.reg) {
       toast.error("Please upload reg image");
-    }  else {
+    } else {
       setLoading(true);
       const parsedData = {
         "account_id": account.account_id,
@@ -107,7 +107,7 @@ function Document({ account }) {
     }
   }
   return (
-    <div className="d-flex flex-wrap">
+    <div className="d-flex flex-wrap documentPending">
       <div className="col-xl-9">
         {rejectDocument.length !== 0 ? (
           <>
@@ -334,61 +334,73 @@ function Document({ account }) {
             </div>
             {account.details.length > 0 ? (
               <div className="qLinkContent px-3 mt-2" ref={wrapperRef}>
-                {account.details.map((item, key) => {
-                  return (
-                    <div className="row position-relative mb-2 align-items-center">
-                      <div className="col-auto ps-0 pe-2">
-                        <div className="iconWrapper2">
-                          <i className="fa-solid fa-image"></i>
-                        </div>
-                      </div>
-                      <div className="col-8 my-auto ps-1">
-                        <p>{item?.document?.name}</p>
-                      </div>
-                      <div
-                        className="col-auto px-0 my-auto ms-auto"
-                        onClick={() => {
-                          setOpenPopup(!openPopup);
-                          setOpenNumber(key);
-                        }}
-                      >
-                        <div className="iconWrapper">
-                          <i className="fa-solid fa-ellipsis"></i>
-                        </div>
-                      </div>
-                      <div className="border mt-2 mx-auto col-10"></div>
-                      {openPopup && openNumber === key ? (
-                        <div className="buttonPopup">
-                          <div style={{ cursor: "pointer" }}>
-                            <div
-                              className="clearButton"
-                              onClick={() =>
-                                downloadImage(item.path, "Register file")
-                              }
-                            >
-                              <i className="fa-solid fa-file-arrow-down"></i>{" "}
-                              Download
-                            </div>
-                          </div>
-                          <div style={{ cursor: "pointer" }}>
-                            <div className="clearButton">
-                              <a
-                                href={item.path}
-                                target="_blank"
-                                rel="noreferrer"
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                  {account.details.map((item, key) => {
+                    return (
+                      <div class="accordion-item">
+                        <h2 class="accordion-header" id={`flush-heading${key}`}>
+                          <button class="accordion-button collapsed" style={{ padding: '15px 5px' }} type="button" data-bs-toggle="collapse" data-bs-target={`#flush-collapse${key}`} aria-expanded="false" aria-controls={`flush-collapse${key}`}>
+                            {item?.document?.name}
+                          </button>
+                        </h2>
+                        <div id={`flush-collapse${key}`} class="accordion-collapse collapse" aria-labelledby={`flush-heading${key}`} data-bs-parent="#accordionFlushExample">
+                          <div class="accordion-body">
+                            <div className="row position-relative align-items-center">
+                              <div className="col-auto ps-0 pe-2">
+                                <div className="iconWrapper2">
+                                  <i className="fa-solid fa-image"></i>
+                                </div>
+                              </div>
+                              <div className="col-8 my-auto ps-1">
+                                <p>{item?.document?.name}</p>
+                              </div>
+                              <div
+                                className="col-auto px-0 my-auto ms-auto"
+                                onClick={() => {
+                                  setOpenPopup(!openPopup);
+                                  setOpenNumber(key);
+                                }}
                               >
-                                <i className="fa-sharp fa-solid fa-eye"></i>{" "}
-                                View
-                              </a>
+                                <div className="iconWrapper">
+                                  <i className="fa-solid fa-ellipsis"></i>
+                                </div>
+                              </div>
+                              {openPopup && openNumber === key ? (
+                                <div className="buttonPopup">
+                                  <div style={{ cursor: "pointer" }}>
+                                    <div
+                                      className="clearButton"
+                                      onClick={() =>
+                                        downloadImage(item.path, "Register file")
+                                      }
+                                    >
+                                      <i className="fa-solid fa-file-arrow-down"></i>{" "}
+                                      Download
+                                    </div>
+                                  </div>
+                                  <div style={{ cursor: "pointer" }}>
+                                    <div className="clearButton">
+                                      <a
+                                        href={item.path}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                      >
+                                        <i className="fa-sharp fa-solid fa-eye"></i>{" "}
+                                        View
+                                      </a>
+                                    </div>
+                                  </div>
+                                </div>
+                              ) : (
+                                ""
+                              )}
                             </div>
                           </div>
                         </div>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                  );
-                })}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             ) : (
               <Link to="/upload-document">
@@ -450,18 +462,18 @@ function Document({ account }) {
       ) : (
         ""
       )}
-       <ToastContainer
-          position="bottom-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        />
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 }

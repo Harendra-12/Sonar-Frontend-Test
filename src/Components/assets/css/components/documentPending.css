@@ -1,0 +1,16 @@
+.documentPending .qLinkContent p {
+    font-size: 15px;
+    color: #3e3e3e;
+}
+
+.documentPending .qLinkContent .iconWrapper2 {
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    font-size: 18px;
+    color: var(--ui-accent);
+}
+
+.documentPending .accordion-body {
+    padding: 10px 20px !important;
+}
