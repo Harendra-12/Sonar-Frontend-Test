@@ -144,12 +144,13 @@ function Document({ account, refreshCallback, refresh }) {
                     <ul>
                       {rejectDocument.map((item, key) => {
                         return (
-                          <li>
-                            <b>
-                              <i className="fa-solid fa-triangle-exclamation me-1"></i>{" "}
-                              {item.document.name}
-                            </b>
-                            : {item.description}{" "}
+                          <li className="d-flex justify-content-between">
+                            <div className="col-10">
+                              <b>
+                                <i className="fa-solid fa-triangle-exclamation me-1"></i>{" "}
+                                {item.document.name}
+                              </b>
+                              : {item.description}</div>{" "}
                             {uploadDocument[key] ? (
                               <div className="pe-5 clearButton fw-bold float-end">
                                 Under Verification{" "}
@@ -162,7 +163,7 @@ function Document({ account, refreshCallback, refresh }) {
                                   setReUploadId(item.document_id);
                                 }}
                                 style={{ cursor: "pointer" }}
-                                className="pe-5 clearButton fw-bold float-end"
+                                className="pe-5 clearButton fw-bold float-end col-auto"
                               >
                                 Upload <i className="fa-duotone fa-upload"></i>
                               </div>
