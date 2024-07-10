@@ -354,7 +354,7 @@ function Document({ account, refreshCallback, refresh }) {
               <div className="col-12">Documents Uploaded</div>
             </div>
             {account.details.length > 0 ? (
-              <div className="qLinkContent px-2 mt-2" ref={wrapperRef}>
+              <div className="qLinkContent" ref={wrapperRef}>
                 <div class="accordion accordion-flush" id="accordionFlushExample">
                   {account.details.map((item, key) => {
                     return (

@@ -65,7 +65,7 @@
 }
 
 .profileView .profileDetailsHolder .qLinkContent {
-    padding: 5px;
+    /* padding: 5px; */
 }
 
 .profileDetailsHolder .qLinkContent ul {
@@ -140,11 +140,11 @@
     background-color: #ffae00 !important;
 }
 
-.progressStepWrapper .stepWrapper.success .status{
+.progressStepWrapper .stepWrapper.success .status {
     background-color: #198754 !important;
 }
 
-.progressStepWrapper .stepWrapper.pending .status{
+.progressStepWrapper .stepWrapper.pending .status {
     background-color: #ffae00 !important;
 }
 
@@ -188,7 +188,7 @@
     text-wrap: nowrap;
 }
 
-.progressStepWrapper .status{
+.progressStepWrapper .status {
     position: absolute;
     top: -25px;
     left: 10px;
@@ -199,7 +199,7 @@
     width: 125px;
 }
 
-.progressStepWrapper .status::after{
+.progressStepWrapper .status::after {
     content: '';
     position: absolute;
     bottom: -15px;
@@ -211,11 +211,12 @@
     border-top: 15px solid rgb(80, 80, 80);
 }
 
-.progressStepWrapper .stepWrapper.success .status::after{
+.progressStepWrapper .stepWrapper.success .status::after {
     border-top-color: #12603c;
 }
 
-.progressStepWrapper .stepWrapper.pending .status::after{
+.progressStepWrapper .stepWrapper.pending .status::after {
     border-top-color: #cb8a00;
 }
+
 /* Progress Bar End */
