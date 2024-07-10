@@ -118,7 +118,7 @@ function Document({ account, refreshCallback, refresh }) {
   // console.log("This is rejected doc.", uploadDocument);
   return (
     <div className="d-flex flex-wrap documentPending">
-      <div className="col-xl-9">
+      <div className="col-xl-8">
         {rejectDocument.length !== 0 ? (
           <>
             <div className="statusMessage">
@@ -347,7 +347,7 @@ function Document({ account, refreshCallback, refresh }) {
           </div>
         </div>
       </div>
-      <div className="col-xl-3">
+      <div className="col-xl-4">
         <div className="profileView">
           <div className="profileDetailsHolder">
             <div className="header d-flex align-items-center">
@@ -385,6 +385,9 @@ function Document({ account, refreshCallback, refresh }) {
                                 <div className="iconWrapper">
                                   <i className="fa-solid fa-ellipsis"></i>
                                 </div>
+                              </div>
+                              <div className="col-12">
+                                <p style={{ fontSize: 12, paddingLeft: 20, color: '#ff2e2e' }}>Test Message LOL</p>
                               </div>
                               {openPopup && openNumber === key ? (
                                 <div className="buttonPopup">

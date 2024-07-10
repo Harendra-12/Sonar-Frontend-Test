@@ -13,13 +13,13 @@ import Document from "./Document";
 function TempDashboard() {
   const dispatch = useDispatch();
   const [statusClick, setStatusClick] = useState("account")
-  const [refreshDetails,setRefreshDetails]=useState(1)
- 
+  const [refreshDetails, setRefreshDetails] = useState(1)
+
   const navigate = useNavigate();
   const [account, setAccount] = useState(
     useSelector((state) => state.tempAccount)
   );
-  function handleRefresh(value){
+  function handleRefresh(value) {
     setRefreshDetails(value)
   }
   useEffect(() => {
@@ -45,7 +45,7 @@ function TempDashboard() {
       }
     }
     getData();
-  }, [account.id, dispatch, navigate,refreshDetails]);
+  }, [account.id, dispatch, navigate, refreshDetails]);
 
   return (
     <>
@@ -187,14 +187,14 @@ function TempDashboard() {
                               </Tippy>
                             ) : (
                               <Tippy content="Your payment is under verification">
-                                <i className="fa-sharp fa-solid fa-credit-card"></i>
+                                <i className="fa-sharp fa-solid fa-credit-card fa-fade"></i>
                               </Tippy>
                             )}
                           </div>
                           <label>Payment</label>
                         </div>
                         <div
-                          onClick={() =>{if(Number(account.company_status) > 1){ setStatusClick("document")}}}
+                          onClick={() => { if (Number(account.company_status) > 1) { setStatusClick("document") } }}
                           className={`stepWrapper col-3 ${Number(account.company_status) === 3
                             ? "pending"
                             : Number(account.company_status) > 3
@@ -204,21 +204,21 @@ function TempDashboard() {
                         >
                           <div className="step ">
                             {
-                              Number(account.company_status) <3 ? (
+                              Number(account.company_status) < 3 ? (
                                 <Tippy content="Document not uploaded">
-                                  <i className="fa-sharp fa-solid fa-check"></i>
+                                  <i className="fa-sharp fa-solid fa-file-contract"></i>
                                 </Tippy>
                               ) :
-                            
-                            Number(account.company_status) > 3 ? (
-                              <Tippy content="Your Document is verified">
-                                <i className="fa-sharp fa-solid fa-check"></i>
-                              </Tippy>
-                            ) : (
-                              <Tippy content="Your Document is under verification">
-                                <i className="fa-sharp fa-solid fa-file-contract"></i>
-                              </Tippy>
-                            )}
+
+                                Number(account.company_status) > 3 ? (
+                                  <Tippy content="Your Document is verified">
+                                    <i className="fa-sharp fa-solid fa-check"></i>
+                                  </Tippy>
+                                ) : (
+                                  <Tippy content="Your Document is under verification">
+                                    <i className="fa-sharp fa-solid fa-file-contract fa-fade"></i>
+                                  </Tippy>
+                                )}
                           </div>
                           <label>Documents</label>
                         </div>
@@ -232,15 +232,21 @@ function TempDashboard() {
                             }`}
                         >
                           <div className="step">
-                            {Number(account.company_status) > 4 ? (
-                              <Tippy content="Your Account is configured successfully">
-                                <i className="fa-sharp fa-solid fa-check"></i>
-                              </Tippy>
-                            ) : (
+                            {Number(account.company_status) >= 4 ? (
                               <Tippy content="Your Account is being configured">
-                                <i className="fa-sharp fa-solid fa-gears"></i>
+                                <i className="fa-sharp fa-solid fa-gear fa-spin"></i>
                               </Tippy>
-                            )}
+                            ) :
+                              Number(account.company_status) > 5 ? (
+                                <Tippy content="Your Account is configured successfully">
+                                  <i className="fa-sharp fa-solid fa-check"></i>
+                                </Tippy>
+                              ) :
+                                (
+                                  <Tippy content="Your Account will be configured">
+                                    <i className="fa-sharp fa-solid fa-gear"></i>
+                                  </Tippy>
+                                )}
                           </div>
                           <label>Configure Account</label>
                         </div>
