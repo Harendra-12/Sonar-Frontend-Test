@@ -45,7 +45,7 @@ function TempDashboard() {
       }
     }
     getData();
-  }, [account.id, dispatch, navigate, refreshDetails]);
+  }, [account?.id, dispatch, navigate, refreshDetails]);
 
   return (
     <>
