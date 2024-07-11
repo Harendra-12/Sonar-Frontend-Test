@@ -162,7 +162,7 @@ function Document({ account, refreshCallback, refresh }) {
                               </b>
                               : {item.description}</div>{" "}
                             {uploadDocument[key] ? (
-                              <div className="pe-5 clearButton fw-bold float-end">
+                              <div className="col-2 clearButton fw-bold float-end">
                                 Under Verification{" "}
                                 {/* <i className="fa-duotone fa-upload"></i> */}
                               </div>
