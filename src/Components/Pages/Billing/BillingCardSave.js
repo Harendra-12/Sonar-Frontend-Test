@@ -115,7 +115,7 @@ function BillingCardSave({ closePopup }) {
         save_card: 1,
         account_id: account.account_id,
       };
-      const apiData = await generalPostFunction("/add-card", parsedData);
+      const apiData = await generalPostFunction("/card/add", parsedData);
       if (apiData.status) {
         toast.success(apiData.message);
         setLoading(false);

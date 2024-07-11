@@ -34,7 +34,7 @@ function Roles() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(
-        `/roles`
+        `/role/all`
       );
       const permissionData = await generalGetFunction("/permission");
       if (apiData.status) {

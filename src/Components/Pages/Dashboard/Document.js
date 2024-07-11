@@ -12,24 +12,38 @@ function Document({ account, refreshCallback, refresh }) {
   const [openPopup, setOpenPopup] = useState(false);
   const [openNumber, setOpenNumber] = useState(0);
   const [reUploadPopUp, setReUploadPopUp] = useState(false);
-  const [uploadDocument, setUploadDocument] = useState([])
+  const [uploadDocument, setUploadDocument] = useState([]);
+  const [uploadApprove, setUploadApprove] = useState([]);
   const [docId, setDocId] = useState([]);
   useEffect(() => {
     setRejectDocument(account.details.filter((item) => item.status == "2"));
     const newDocItems = [...docId];
     account.details.forEach((item) => {
-      if (
-        !newDocItems.some((doc) => doc.document_id === item.document_id)
-      ) {
+      if (!newDocItems.some((doc) => doc.document_id === item.document_id)) {
         newDocItems.push(item);
       }
     });
 
     setDocId(newDocItems);
-    const newUploadDocument = account.details.filter(item => item.status === "2").map(item => {
-      return account.details.some(item2 => item2.document_id === item.document_id && item2.status === "3");
-    });
+    const newUploadDocument = account.details
+      .filter((item) => item.status === "2")
+      .map((item) => {
+        return account.details.some(
+          (item2) =>
+            item2.document_id === item.document_id && item2.status === "3"
+        );
+      });
     setUploadDocument(newUploadDocument);
+
+    const newApprovedDocument = account.details
+      .filter((item) => item.status === "2")
+      .map((item) => {
+        return account.details.some(
+          (item2) =>
+            item2.document_id === item.document_id && item2.status === "1"
+        );
+      });
+    setUploadApprove(newApprovedDocument);
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         setOpenPopup(false);
@@ -63,7 +77,6 @@ function Document({ account, refreshCallback, refresh }) {
       console.error("Error downloading the image:", error);
     }
   };
-
 
   // Logic for re-upload documents
   const [loading, setLoading] = useState(false);
@@ -129,7 +142,8 @@ function Document({ account, refreshCallback, refresh }) {
   return (
     <div className="d-flex flex-wrap documentPending">
       <div className="col-xl-8">
-        {rejectDocument.length !== 0 ? (
+        {rejectDocument.length !== 0 &&
+        rejectDocument.length !== uploadApprove.length ? (
           <>
             <div className="statusMessage">
               <div className="statusWrapper">
@@ -160,11 +174,24 @@ function Document({ account, refreshCallback, refresh }) {
                                 <i className="fa-solid fa-triangle-exclamation me-1"></i>{" "}
                                 {item.document.name}
                               </b>
-                              : {item.description}</div>{" "}
+                              : {item.description}
+                            </div>{" "}
                             {uploadDocument[key] ? (
                               <div className="col-2 clearButton fw-bold float-end">
                                 Under Verification{" "}
                                 {/* <i className="fa-duotone fa-upload"></i> */}
+                              </div>
+                            ) : uploadApprove[key] ? (
+                              <div
+                                onClick={() => {
+                                  setReUploadPopUp(true);
+                                  setReUploadId(item.document_id);
+                                }}
+                                style={{ cursor: "pointer" }}
+                                className="pe-5 clearButton fw-bold float-end col-auto"
+                              >
+                                Approved{" "}
+                                <i className="fa-duotone fa-upload"></i>
                               </div>
                             ) : (
                               <div
@@ -365,79 +392,110 @@ function Document({ account, refreshCallback, refresh }) {
             </div>
             {account.details.length > 0 ? (
               <div className="qLinkContent" ref={wrapperRef}>
-                <div class="accordion accordion-flush" id="accordionFlushExample">
+                <div
+                  class="accordion accordion-flush"
+                  id="accordionFlushExample"
+                >
                   {docId.map((item2, key) => {
                     return (
                       <div class="accordion-item">
                         <h2 class="accordion-header" id={`flush-heading${key}`}>
-                          <button class="accordion-button collapsed" style={{ padding: '15px 5px' }} type="button" data-bs-toggle="collapse" data-bs-target={`#flush-collapse${key}`} aria-expanded="false" aria-controls={`flush-collapse${key}`}>
+                          <button
+                            class="accordion-button collapsed"
+                            style={{ padding: "15px 5px" }}
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target={`#flush-collapse${key}`}
+                            aria-expanded="false"
+                            aria-controls={`flush-collapse${key}`}
+                          >
                             {item2?.document?.name}
                           </button>
                         </h2>
-                        <div id={`flush-collapse${key}`} class="accordion-collapse collapse" aria-labelledby={`flush-heading${key}`} data-bs-parent="#accordionFlushExample">
-                          {account.details.map((item)=>{
-                            if(item.document_id === item2.document_id){
-                              return(
+                        <div
+                          id={`flush-collapse${key}`}
+                          class="accordion-collapse collapse"
+                          aria-labelledby={`flush-heading${key}`}
+                          data-bs-parent="#accordionFlushExample"
+                        >
+                          {account.details.map((item) => {
+                            if (item.document_id === item2.document_id) {
+                              return (
                                 <div class="accordion-body">
-                                <div className="row position-relative align-items-center">
-                                  <div className="col-auto ps-0 pe-2">
-                                    <div className="iconWrapper2">
-                                      <i className="fa-solid fa-image"></i>
-                                    </div>
-                                  </div>
-                                  <div className="col-8 my-auto ps-1">
-                                    <p>{item?.document?.name}</p>
-                                  </div>
-                                  <div
-                                    className="col-auto px-0 my-auto ms-auto"
-                                    onClick={() => {
-                                      setOpenPopup(!openPopup);
-                                      setOpenNumber(key);
-                                    }}
-                                  >
-                                    <div className="iconWrapper">
-                                      <i className="fa-solid fa-ellipsis"></i>
-                                    </div>
-                                  </div>
-                                  <div className="col-12">
-                                    <p style={{ fontSize: 12, paddingLeft: 20, color: '#ff2e2e' }}>{item.description}</p>
-                                  </div>
-                                  {openPopup && openNumber === key ? (
-                                    <div className="buttonPopup">
-                                      <div style={{ cursor: "pointer" }}>
-                                        <div
-                                          className="clearButton"
-                                          onClick={() =>
-                                            downloadImage(item.path, "Register file")
-                                          }
-                                        >
-                                          <i className="fa-solid fa-file-arrow-down"></i>{" "}
-                                          Download
-                                        </div>
+                                  <div className="row position-relative align-items-center">
+                                    <div className="col-auto ps-0 pe-2">
+                                      <div className="iconWrapper2">
+                                        {item.status === "1" ? (
+                                          <i className="fa-solid fa-check text-success"></i>
+                                        ) : item.status === "2" ? (
+                                          <i className="fa-solid fa-xmark text-danger"></i>
+                                        ) : (
+                                          <i className="fa-solid fa-image"></i>
+                                        )}
                                       </div>
-                                      <div style={{ cursor: "pointer" }}>
-                                        <div className="clearButton">
-                                          <a
-                                            href={item.path}
-                                            target="_blank"
-                                            rel="noreferrer"
+                                    </div>
+                                    <div className="col-8 my-auto ps-1">
+                                      <p>{item?.document?.name}</p>
+                                    </div>
+                                    <div
+                                      className="col-auto px-0 my-auto ms-auto"
+                                      onClick={() => {
+                                        setOpenPopup(!openPopup);
+                                        setOpenNumber(key);
+                                      }}
+                                    >
+                                      <div className="iconWrapper">
+                                        <i className="fa-solid fa-ellipsis"></i>
+                                      </div>
+                                    </div>
+                                    <div className="col-12">
+                                      <p
+                                        style={{
+                                          fontSize: 12,
+                                          paddingLeft: 20,
+                                          color: "#ff2e2e",
+                                        }}
+                                      >
+                                        {item.description}
+                                      </p>
+                                    </div>
+                                    {openPopup && openNumber === key ? (
+                                      <div className="buttonPopup">
+                                        <div style={{ cursor: "pointer" }}>
+                                          <div
+                                            className="clearButton"
+                                            onClick={() =>
+                                              downloadImage(
+                                                item.path,
+                                                "Register file"
+                                              )
+                                            }
                                           >
-                                            <i className="fa-sharp fa-solid fa-eye"></i>{" "}
-                                            View
-                                          </a>
+                                            <i className="fa-solid fa-file-arrow-down"></i>{" "}
+                                            Download
+                                          </div>
+                                        </div>
+                                        <div style={{ cursor: "pointer" }}>
+                                          <div className="clearButton">
+                                            <a
+                                              href={item.path}
+                                              target="_blank"
+                                              rel="noreferrer"
+                                            >
+                                              <i className="fa-sharp fa-solid fa-eye"></i>{" "}
+                                              View
+                                            </a>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                  ) : (
-                                    ""
-                                  )}
+                                    ) : (
+                                      ""
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                              )
+                              );
                             }
-                          
                           })}
-                          
                         </div>
                       </div>
                     );

@@ -446,14 +446,14 @@ function Navbar() {
                       </li> */}
                           <li className="tabItem" effect="ripple">
                             <NavLink
-                              to="/cdr-report"
+                              to="/get-did"
                               onClick={backToTop}
                               className="nav-link"
                             >
                               <div className="iconHolder">
                                 <i className="fa-duotone fa-swap-arrows" />
                               </div>
-                              <div className="itemTitle">Did list</div>
+                              <div className="itemTitle">Get DID</div>
                             </NavLink>
                           </li>
                         </ul>

@@ -34,7 +34,7 @@ function GlobalCalls() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(
-        `/all-cards?account_id=${account.account_id}`
+        `/card/all?account_id=${account.account_id}`
       );
       if (apiData.status) {
         dispatch({
@@ -52,7 +52,7 @@ function GlobalCalls() {
 
   useEffect(() => {
     async function getData() {
-      const apiData = await generalGetFunction(`/billing-address`);
+      const apiData = await generalGetFunction(`/billing-address/all`);
       if (apiData.status) {
         dispatch({
           type: "SET_BILLINGLIST",

@@ -7,15 +7,18 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../Misc/CircularLoader";
+import { useSelector } from "react-redux";
 
 function GetDid() {
   const navigate = useNavigate();
+  const account = useSelector((state)=>state.account)
   const [did, setDid] = useState();
   const [selectedDid, setSelectedDid] = useState([]);
   const [searchType, setSearchType] = useState("tollfree");
   const [quantity, setQuantity] = useState("");
   const [npa, setNpa] = useState("");
   const [loading, setLoading] = useState(false);
+  const [paymentMethod,setPaymentMethod]=useState("wallet")
 
   async function handleSubmit() {
     if (quantity === "") {
@@ -59,30 +62,48 @@ function GetDid() {
     setSelectedDid(selectedDid.filter((item1) => item1 !== item));
   }
 
-  useEffect(()=>{
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      // Camera access is available
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(function(stream) {
-          console.log('Camera is available');
-          // Do something if camera is available
+
+  // Handle payment
+  async function handlePayment(){
+    if(paymentMethod==="wallet"){
+      setLoading(true)
+      const parsedData = {
+        companyId:account.account_id,
+        vendorId:selectedDid[0].vendorId,
+        didQty:selectedDid.length,
+        rate:Number(selectedDid[0].price)*selectedDid.length,
+        accountId:selectedDid[0].vendorAccountId,
+        dids:selectedDid.map((item)=>{
+          return(
+            {
+              dids:item.id
+            }
+          )
         })
-        .catch(function(error) {
-          console.log('Error accessing camera:', error);
-          // Do something if camera access is denied or unavailable
-        });
-    } else {
-      console.log('Camera access is not supported');
-      // Do something if camera access is not supported
+      }
+      const apiData = await generalPostFunction("/purchaseTfn",parsedData)
+      if(apiData.status){
+        setLoading(false)
+        toast.success(apiData.message)
+      }else{
+        setLoading(false)
+        const errorMessage = Object.keys(apiData.error);
+        toast.error(apiData.error[errorMessage[0]][0]);
+
+      }
+      console.log("Pay through wallet",parsedData);
+
+    }else{
+      console.log("Pay through card",selectedDid);
     }
-  },[])
+  }
   return (
     <main className="mainContent">
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row justify-content-center">
             <div className="col-12" id="subPageHeader">
-              <div className="row px-xl-3">
+              <div className="row px-xl-3 col-12">
                 <div className="col-xl-6 my-auto">
                   <h4 className="my-auto">Get DID</h4>
                 </div>
@@ -298,7 +319,11 @@ function GetDid() {
                                 style={{ color: "var(--ui-accent)" }}
                               ></i>{" "}
                               Wallet{" "}
-                              <input type="radio" name="fav_language"></input>{" "}
+                              <input type="radio" checked={paymentMethod==="wallet"?true:false} name="fav_language" onChange={(e)=>{
+                                if(e.target.checked){
+                                  setPaymentMethod("wallet")
+                                }
+                              }}></input>{" "}
                               <span className="checkmark"></span>
                             </li>
                             <li>
@@ -307,11 +332,15 @@ function GetDid() {
                                 style={{ color: "var(--ui-accent)" }}
                               ></i>{" "}
                               Credit Card{" "}
-                              <input type="radio" name="fav_language"></input>{" "}
+                              <input type="radio" checked={paymentMethod==="card"?true:false} name="fav_language" onChange={(e)=>{
+                                if(e.target.checked){
+                                  setPaymentMethod("card")
+                                }
+                              }}></input>{" "}
                               <span className="checkmark"></span>
                             </li>
                           </ul>
-                          <button className="payNow">
+                          <button className="payNow" onClick={handlePayment}>
                             Pay Now{" "}
                             <i class="fa-sharp fa-solid fa-arrow-right"></i>
                           </button>

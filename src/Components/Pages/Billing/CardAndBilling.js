@@ -75,7 +75,7 @@ function CardAndBilling() {
           default: 0,
         };
         const apiData = await generalPostFunction(
-          "/set-default-card",
+          "/card/set-default-card",
           parsedData
         );
         if (apiData.status) {
@@ -101,7 +101,7 @@ function CardAndBilling() {
           default: 1,
         };
         const apiData = await generalPostFunction(
-          "/set-default-card",
+          "/card/set-default-card",
           parsedData
         );
         if (apiData.status) {
@@ -130,7 +130,7 @@ function CardAndBilling() {
           default: 0,
         };
         const apiData = await generalPostFunction(
-          "/set-default-address",
+          "/billing-address/set-default-address",
           parsedData
         );
         if (apiData.status) {
@@ -156,7 +156,7 @@ function CardAndBilling() {
           default: 1,
         };
         const apiData = await generalPostFunction(
-          "/set-default-address",
+          "/billing-address/set-default-address",
           parsedData
         );
         if (apiData.status) {

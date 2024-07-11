@@ -37,7 +37,7 @@ const Extensions = () => {
     async function getData() {
       if (account && account.account_id) {
         const apiData = await generalGetFunction(
-          `/extensions?account=${account.account_id}&page=${pageNumber}`
+          `/extension/all?account=${account.account_id}&page=${pageNumber}`
         );
         if (apiData.status) {
           setLoading(false);

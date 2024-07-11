@@ -60,8 +60,8 @@ const UsersAdd = () => {
           `/domain/search?account=${account.account_id}`
         );
         const permissionData = await generalGetFunction("/permission");
-        const timeZ = await generalGetFunction(`/auth/timezones`);
-        const apiRole = await generalGetFunction(`/roles`);
+        const timeZ = await generalGetFunction(`/timezone/all`);
+        const apiRole = await generalGetFunction(`/role/all`);
         if (domain.status) {
           setDomains(
             domain.data.map((item) => {
