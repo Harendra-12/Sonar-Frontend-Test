@@ -81,37 +81,37 @@ function Payment({ account }) {
                     <ul>
                       <li>
                         <label>Full Name</label>{" "}
-                        <label className="details">{account?.billing_address?.[0].fullname}</label>
+                        <label className="details">{account?.billing_address?.[0]?.fullname}</label>
                       </li>
                       <li>
                         <label>Email</label>{" "}
-                        <label className="details">{account?.billing_address?.[0].email}</label>
+                        <label className="details">{account?.billing_address?.[0]?.email}</label>
                       </li>
                       <li>
                         <label>Phone Number</label>{" "}
-                        <label className="details">{account?.billing_address?.[0].contact_no}</label>
+                        <label className="details">{account?.billing_address?.[0]?.contact_no}</label>
                       </li>
                       <li>
                         <label>Address</label>{" "}
                         <label className="details">
-                          {account?.billing_address?.[0].address}
+                          {account?.billing_address?.[0]?.address}
                         </label>
                       </li>
                       <li>
                         <label>Zip Code</label>{" "}
-                        <label className="details">{account?.billing_address?.[0].zip}</label>
+                        <label className="details">{account?.billing_address?.[0]?.zip}</label>
                       </li>
                       <li>
                         <label>City</label>{" "}
-                        <label className="details">{account?.billing_address?.[0].city}</label>
+                        <label className="details">{account?.billing_address?.[0]?.city}</label>
                       </li>
                       <li>
                         <label>State</label>{" "}
-                        <label className="details">{account?.billing_address?.[0].state}</label>
+                        <label className="details">{account?.billing_address?.[0]?.state}</label>
                       </li>
                       <li>
                         <label>Country</label>{" "}
-                        <label className="details">{account?.billing_address?.[0].country}</label>
+                        <label className="details">{account?.billing_address?.[0]?.country}</label>
                       </li>
                     </ul>
                   </div>

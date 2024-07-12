@@ -68,7 +68,7 @@ function Login() {
                   "accountDetails",
                   JSON.stringify(accountData.data)
                 );
-                if (Number(accountData.data.company_status) < 5) {
+                if (Number(accountData.data.company_status) < 6) {
                   dispatch({
                     type: "SET_TEMPACCOUNT",
                     tempAccount: accountData.data,

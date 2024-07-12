@@ -39,7 +39,7 @@ function TempDashboard() {
           setStatusClick("configure")
         }
         localStorage.setItem("tempAccount", JSON.stringify(apiData.data));
-        if (Number(apiData.data.company_status) > 4) {
+        if (Number(apiData.data.company_status) > 5) {
           navigate("/dashboard");
         }
       }
@@ -151,8 +151,8 @@ function TempDashboard() {
                               : Number(account.company_status) === 2
                                 ? "55"
                                 : Number(account.company_status) === 3
-                                  ? "65"
-                                  : "85"
+                                  ?  "65" : Number(account.company_status) === 4 ?
+                                   "85" : "100"
                               }%`,
                           }}
                         ></div>
@@ -223,7 +223,7 @@ function TempDashboard() {
                           <label>Documents</label>
                         </div>
                         <div
-                          onClick={() => { if (Number(account.company_status) === 4) { setStatusClick("config") } }}
+                          onClick={() => { if (Number(account.company_status) >= 4) { setStatusClick("config") } }}
                           className={`stepWrapper col-3 ${Number(account.company_status) === 4
                             ? "pending"
                             : Number(account.company_status) > 4
@@ -257,7 +257,7 @@ function TempDashboard() {
               </div>
             </div>
             <div className="col-xl-12">
-              {statusClick === "account" ? <Account account={account} /> : statusClick === "payment" ? <Payment account={account} /> : statusClick === "document" ? <Document account={account} refreshCallback={handleRefresh} refresh={refreshDetails} /> : <ConfigureStepDashboard />}
+              {statusClick === "account" ? <Account account={account} /> : statusClick === "payment" ? <Payment account={account} /> : statusClick === "document" ? <Document account={account} refreshCallback={handleRefresh} refresh={refreshDetails} /> : <ConfigureStepDashboard account2={account} />}
             </div>
           </div>
         </div>

@@ -41,7 +41,7 @@ function GetDid() {
         searchType: searchType,
         quantity: quantity,
         npa: npa,
-        companyId:1,
+        companyId:account.account_id,
       };
       const apiData = await generalPostFunction("/searchTfn", parsedData);
       if (apiData.status) {
@@ -76,6 +76,8 @@ function GetDid() {
         companyId:account.account_id,
         vendorId:selectedDid[0].vendorId,
         didQty:selectedDid.length,
+        type: "wallet",
+        didType: "random",
         rate:Number(selectedDid[0].price)*selectedDid.length,
         accountId:selectedDid[0].vendorAccountId,
         dids:selectedDid.map((item)=>{
@@ -378,7 +380,7 @@ function GetDid() {
           <div className="popup">
             <div className="container h-100">
               <div className="row h-100 justify-content-center align-items-center">
-                <RechargeWalletPopup closePopup={handleBuyPopUp} rechargeType={"buyDid"} />
+                <RechargeWalletPopup closePopup={handleBuyPopUp} rechargeType={"buyDid"} selectedDid={selectedDid} />
               </div>
             </div>
           </div>

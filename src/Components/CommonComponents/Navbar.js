@@ -32,7 +32,7 @@ function Navbar() {
         <div id="sidenNav">
           <div className="sidenavItems">
             <ul>
-              {Number(tempAccount?.company_status) < 5 ? (
+              {Number(tempAccount?.company_status) < 6 ? (
                 <>
                   {" "}
                   <li className="dashboard">

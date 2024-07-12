@@ -10,12 +10,14 @@ import CircularLoader from "../Misc/CircularLoader";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 
-function RechargeWalletPopup({ closePopup,rechargeType }) {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const accountDetailsRefresh = useSelector((state) => state.accountDetailsRefresh)
+function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const accountDetailsRefresh = useSelector(
+    (state) => state.accountDetailsRefresh
+  );
   const [newCardPopUp, setNewCardPopUp] = useState(false);
-  const account = useSelector((state) => state.account)
+  const account = useSelector((state) => state.account);
   const cardList = useSelector((state) => state.cardList);
   const billingList = useSelector((state) => state.billingList);
   const [loading, setLoading] = useState(false);
@@ -35,8 +37,8 @@ function RechargeWalletPopup({ closePopup,rechargeType }) {
         setSelectedBillId(item.id);
       }
     });
-    if(cardList.length===0 || billingList.length===0){
-      setNewCardPopUp(true)
+    if (cardList.length === 0 || billingList.length === 0) {
+      setNewCardPopUp(true);
     }
   }, [billingList, cardList]);
   function closeNewPopUp() {
@@ -54,37 +56,77 @@ function RechargeWalletPopup({ closePopup,rechargeType }) {
       toast.error("Please enter CVV");
     } else if (cvv.length < 3 || cvv.length > 4) {
       toast.error("Please enter correct cvv");
-    } else if (amount === "") {
+    } else if (rechargeType!=="buyDid" && amount === "") {
       toast.error("Please enter amout");
     } else {
-      setLoading(true)
-      const parsedData = {
-        address_id: selectedBillId,
-        account_id: account.account_id,
-        card_id: selectedCardId,
-        cvc: cvv,
-        amount: amount
+      setLoading(true);
+      if( rechargeType === "buyDid"){
+        const parsedData = {
+          address_id: selectedBillId,
+          account_id: account.account_id,
+          card_id: selectedCardId,
+          cvc: cvv,
+          // amount: amount,
+          companyId: account.account_id,
+          vendorId: selectedDid[0].vendorId,
+          didQty: selectedDid.length,
+          type: "card",
+          didType: "random",
+          rate: Number(selectedDid[0].price) * selectedDid.length,
+          accountId: selectedDid[0].vendorAccountId,
+          dids: selectedDid.map((item) => {
+            return {
+              dids: item.id,
+            };
+          }),
+        }
 
-      }
-      const apiData = await generalPostFunction("wallet-recharge", parsedData)
+        const apiData = await generalPostFunction("/purchaseTfn", parsedData);
+        if (apiData.status) {
+          setLoading(false);
+          // dispatch({
+          //   type: "SET_ACCOUNTDETAILSREFRESH",
+          //   accountDetailsRefresh: accountDetailsRefresh + 1,
+          // });
+  
+          setTimeout(() => {
+            closePopup(false);
+          }, 2000);
+          toast.success(apiData.message);
+        } else {
+          setLoading(false);
+          // navigate("/card-details");
+          const errorMessage = Object.keys(apiData.error);
+          toast.error(apiData.error[errorMessage[0]][0]);
+        }
+      }else{
+        const parsedData ={
+              address_id: selectedBillId,
+              account_id: account.account_id,
+              card_id: selectedCardId,
+              cvc: cvv,
+              amount: amount,
+            };
+      const apiData = await generalPostFunction("/wallet-recharge", parsedData);
       if (apiData.status) {
-
-        setLoading(false)
+        setLoading(false);
         dispatch({
           type: "SET_ACCOUNTDETAILSREFRESH",
           accountDetailsRefresh: accountDetailsRefresh + 1,
         });
 
         setTimeout(() => {
-          closePopup(false)
-        }, 2000)
-        toast.success(apiData.message)
+          closePopup(false);
+        }, 2000);
+        toast.success(apiData.message);
       } else {
-        setLoading(false)
-        navigate("/card-details")
+        setLoading(false);
+        navigate("/card-details");
         const errorMessage = Object.keys(apiData.error);
         toast.error(apiData.error[errorMessage[0]][0]);
       }
+      }
+      
     }
   }
   return (
@@ -121,7 +163,11 @@ function RechargeWalletPopup({ closePopup,rechargeType }) {
       </style>
 
       {newCardPopUp ? (
-        <NewCardPaymentMethod closePopUp2={closeNewPopUp} mainPopUpClose={mainClose} rechargeType={rechargeType} />
+        <NewCardPaymentMethod
+          closePopUp2={closeNewPopUp}
+          mainPopUpClose={mainClose}
+          rechargeType={rechargeType}
+        />
       ) : (
         <div className="row">
           <div className="col-xl-4 mx-auto">
@@ -139,15 +185,19 @@ function RechargeWalletPopup({ closePopup,rechargeType }) {
                     </span>
                   </div>
                 </div>
-                <div className="row" style={{ padding: "5px", maxHeight: 191, overflowY: 'auto' }}>
+                <div
+                  className="row"
+                  style={{ padding: "5px", maxHeight: 191, overflowY: "auto" }}
+                >
                   <div className="col-12">
                     {cardList &&
                       cardList.map((item, key) => {
                         return (
                           <div className="col-xl-12 mb-2" key={key}>
                             <div
-                              className={`savedCardWrapper ${item.id === selectedCardId ? "active" : ""
-                                }`}
+                              className={`savedCardWrapper ${
+                                item.id === selectedCardId ? "active" : ""
+                              }`}
                             >
                               <div className="imgWrapper">
                                 <div className="card-logo-container">
@@ -217,7 +267,10 @@ function RechargeWalletPopup({ closePopup,rechargeType }) {
                 <div className="header d-flex align-items-center">
                   <div className="col-12">Choose Billing Address</div>
                 </div>
-                <div className="row" style={{ padding: "5px", maxHeight: 189, overflowY: 'auto' }}>
+                <div
+                  className="row"
+                  style={{ padding: "5px", maxHeight: 189, overflowY: "auto" }}
+                >
                   {billingList &&
                     billingList.map((item, key) => {
                       return (
@@ -228,8 +281,9 @@ function RechargeWalletPopup({ closePopup,rechargeType }) {
                         >
                           <div className="accordion-item">
                             <h2
-                              className={`accordion-header addressDrawer ${item.id === selectedBillId ? "active" : ""
-                                }`}
+                              className={`accordion-header addressDrawer ${
+                                item.id === selectedBillId ? "active" : ""
+                              }`}
                             >
                               <div
                                 className="d-flex flex-wrap align-items-center"
@@ -245,7 +299,16 @@ function RechargeWalletPopup({ closePopup,rechargeType }) {
                                     aria-controls={`flush-collapse${key}recharge`}
                                   >
                                     <div>
-                                      <h5 className="mb-0" style={{ maxWidth: 150, textOverflow: 'ellipsis', overflow: 'hidden' }}>{item.fullname}</h5>
+                                      <h5
+                                        className="mb-0"
+                                        style={{
+                                          maxWidth: 150,
+                                          textOverflow: "ellipsis",
+                                          overflow: "hidden",
+                                        }}
+                                      >
+                                        {item.fullname}
+                                      </h5>
                                     </div>
                                   </button>
                                 </div>
@@ -406,32 +469,36 @@ function RechargeWalletPopup({ closePopup,rechargeType }) {
                       </div>
                     </div>
                   </div>
-                  <div className="col-6">
-                    <div className="form-group">
-                      <label className="review-label">
-                        Enter Your Amount
-                        <span style={{ color: "red" }}>*</span>
-                      </label>
-                      <div className="position-relative">
-                        <input
-                          placeholder="Amount"
-                          className={`form-control travellerdetails payment_exp_date`}
-                          name="cvv"
-                          type="number"
-                          value={amount}
-                          onChange={(e) => setAmount(e.target.value)}
-                        />
-                        <small
-                          className="text-muted p-1"
-                          style={{
-                            position: "absolute",
-                            right: 2,
-                            top: 2,
-                          }}
-                        ></small>
+                  {rechargeType === "buyDid" ? (
+                    ""
+                  ) : (
+                    <div className="col-6">
+                      <div className="form-group">
+                        <label className="review-label">
+                          Enter Your Amount
+                          <span style={{ color: "red" }}>*</span>
+                        </label>
+                        <div className="position-relative">
+                          <input
+                            placeholder="Amount"
+                            className={`form-control travellerdetails payment_exp_date`}
+                            name="cvv"
+                            type="number"
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value)}
+                          />
+                          <small
+                            className="text-muted p-1"
+                            style={{
+                              position: "absolute",
+                              right: 2,
+                              top: 2,
+                            }}
+                          ></small>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                   <div className="col-12 mt-2">
                     <button className="payNow" onClick={handleSubmit}>
                       Pay Now <i className="mx-2 fa-duotone fa-credit-card"></i>
