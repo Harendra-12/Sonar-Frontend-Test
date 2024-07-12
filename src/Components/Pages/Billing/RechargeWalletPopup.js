@@ -10,7 +10,7 @@ import CircularLoader from "../Misc/CircularLoader";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 
-function RechargeWalletPopup({ closePopup }) {
+function RechargeWalletPopup({ closePopup,rechargeType }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const accountDetailsRefresh = useSelector((state) => state.accountDetailsRefresh)
@@ -35,6 +35,9 @@ function RechargeWalletPopup({ closePopup }) {
         setSelectedBillId(item.id);
       }
     });
+    if(cardList.length===0 || billingList.length===0){
+      setNewCardPopUp(true)
+    }
   }, [billingList, cardList]);
   function closeNewPopUp() {
     setNewCardPopUp(false);
@@ -118,7 +121,7 @@ function RechargeWalletPopup({ closePopup }) {
       </style>
 
       {newCardPopUp ? (
-        <NewCardPaymentMethod closePopUp2={closeNewPopUp} mainPopUpClose={mainClose} />
+        <NewCardPaymentMethod closePopUp2={closeNewPopUp} mainPopUpClose={mainClose} rechargeType={rechargeType} />
       ) : (
         <div className="row">
           <div className="col-xl-4 mx-auto">

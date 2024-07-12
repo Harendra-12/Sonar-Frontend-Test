@@ -7,11 +7,15 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../Misc/CircularLoader";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import RechargeWalletPopup from "../Billing/RechargeWalletPopup";
 
 function GetDid() {
   const navigate = useNavigate();
   const account = useSelector((state)=>state.account)
+  const accountDetails = useSelector((state)=>state.accountDetails)
+  const accountDetailsRefresh = useSelector((state)=>state.accountDetailsRefresh)
+  const dispatch = useDispatch()
   const [did, setDid] = useState();
   const [selectedDid, setSelectedDid] = useState([]);
   const [searchType, setSearchType] = useState("tollfree");
@@ -19,7 +23,9 @@ function GetDid() {
   const [npa, setNpa] = useState("");
   const [loading, setLoading] = useState(false);
   const [paymentMethod,setPaymentMethod]=useState("wallet")
+  const [didBuyPopUP,setDidBuyPopUp]=useState(false)
 
+  // Handle TFN search 
   async function handleSubmit() {
     if (quantity === "") {
       toast.error("Please enter quantity");
@@ -51,7 +57,6 @@ function GetDid() {
   //   Add did to selected did when a user click on add button
   function addSelect(item) {
     if (selectedDid.includes(item)) {
-      console.log("Previously available", selectedDid);
     } else {
       setSelectedDid([...selectedDid, item]);
     }
@@ -66,7 +71,7 @@ function GetDid() {
   // Handle payment
   async function handlePayment(){
     if(paymentMethod==="wallet"){
-      setLoading(true)
+      
       const parsedData = {
         companyId:account.account_id,
         vendorId:selectedDid[0].vendorId,
@@ -81,21 +86,36 @@ function GetDid() {
           )
         })
       }
-      const apiData = await generalPostFunction("/purchaseTfn",parsedData)
-      if(apiData.status){
-        setLoading(false)
-        toast.success(apiData.message)
+      if(Number(accountDetails?.balance?.amount)<Number(selectedDid[0].price)*selectedDid.length){
+        toast.error("Wallet balance is low")
       }else{
-        setLoading(false)
-        const errorMessage = Object.keys(apiData.error);
-        toast.error(apiData.error[errorMessage[0]][0]);
-
+        setLoading(true)
+        const apiData = await generalPostFunction("/purchaseTfn",parsedData)
+        if(apiData.status){
+          setLoading(false)
+          toast.success(apiData.message)
+          dispatch({
+            type: "SET_ACCOUNTDETAILSREFRESH",
+            accountDetailsRefresh: accountDetailsRefresh + 1,
+          });
+        }else{
+          setLoading(false)
+          // const errorMessage = Object.keys(apiData.error);
+          // toast.error(apiData.error[errorMessage[0]][0]);
+          toast.error(apiData.errors);
+  
+        }
       }
-      console.log("Pay through wallet",parsedData);
+     
 
     }else{
-      console.log("Pay through card",selectedDid);
+      setDidBuyPopUp(true)
     }
+  }
+
+  // Handle callBack for buying pop up
+  function handleBuyPopUp(value){
+    setDidBuyPopUp(value)
   }
   return (
     <main className="mainContent">
@@ -354,6 +374,17 @@ function GetDid() {
           </div>
         </div>
       </section>
+      {didBuyPopUP ? (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <RechargeWalletPopup closePopup={handleBuyPopUp} rechargeType={"buyDid"} />
+              </div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
       {loading ? <CircularLoader /> : ""}
       <ToastContainer
         position="bottom-right"

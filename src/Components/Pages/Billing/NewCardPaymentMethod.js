@@ -10,13 +10,14 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../Misc/CircularLoader";
 
-function NewCardPaymentMethod({ closePopUp2, mainPopUpClose }) {
+function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
   const dispatch = useDispatch()
   const accountDetailsRefresh = useSelector((state) => state.accountDetailsRefresh)
   const billingListRefresh = useSelector((state) => state.billingListRefresh)
   const cardListRefresh = useSelector((state) => state.cardListRefresh)
   const account = useSelector((state) => state.account);
   const billingList = useSelector((state) => state.billingList);
+  const cardList = useSelector((state) => state.cardList);
   const [newBilling, setNewBilling] = useState(false);
   const [selectedBillId, setSelectedBillId] = useState();
   const [loading, setLoading] = useState(false);
@@ -85,6 +86,9 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose }) {
         setSelectedBillId(item.id);
       }
     });
+    if(billingList.length===0){
+      setNewBilling(true)
+    }
   }, [billingList]);
   //   Handle change for getting values from form
   function handleChange(e) {
@@ -262,7 +266,11 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose }) {
         }
       }
     } else {
+      if(selectedBillId===undefined && newBilling===false){
+        toast.error("Please select a billing address")
+      }
       if (
+        !(selectedBillId===undefined && newBilling===false) &&
         !(cardDetails.cardName === "") &&
         !(cardDetails.amount === "") &&
         !(cardDetails.expiryDate === "") &&
@@ -665,7 +673,13 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose }) {
                 <h5>
                   Credit Card Information
                   <span
-                    onClick={() => closePopUp2(false)}
+                    onClick={() =>{
+                      if(billingList.length===0 && cardList.length===0){
+                        mainPopUpClose(false)
+                      }else{
+                        closePopUp2(false)}}
+                      }
+                      
                     className="float-end clearButton text-danger fs-4"
                     style={{ cursor: "pointer" }}
                   >
