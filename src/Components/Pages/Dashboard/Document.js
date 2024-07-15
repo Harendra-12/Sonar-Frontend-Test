@@ -138,12 +138,12 @@ function Document({ account, refreshCallback, refresh }) {
     }
   }
 
-  // console.log("This is rejected doc.", uploadDocument);
+  console.log(rejectDocument,"This is rejected doc.", uploadDocument);
   return (
     <div className="d-flex flex-wrap documentPending">
       <div className="col-xl-8">
-        {rejectDocument.length !== 0 &&
-        rejectDocument.length !== uploadApprove.length ? (
+        {!(rejectDocument.length !== 0 &&
+        rejectDocument.length !== uploadApprove.length) ? (
           <>
             <div className="statusMessage">
               <div className="statusWrapper">

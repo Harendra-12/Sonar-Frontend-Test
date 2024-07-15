@@ -26,18 +26,18 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
   const [selectedCardId, setSelectedCardId] = useState();
   const [selectedBillId, setSelectedBillId] = useState();
   useEffect(() => {
-    cardList.map((item) => {
+    cardList?.map((item) => {
       if (item.default) {
         setSelectedCardId(item.id);
       }
     });
 
-    billingList.map((item) => {
+    billingList?.map((item) => {
       if (item.default) {
         setSelectedBillId(item.id);
       }
     });
-    if (cardList.length === 0 || billingList.length === 0) {
+    if (cardList?.length === 0 || billingList?.length === 0) {
       setNewCardPopUp(true);
     }
   }, [billingList, cardList]);
@@ -96,8 +96,8 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
         } else {
           setLoading(false);
           // navigate("/card-details");
-          const errorMessage = Object.keys(apiData.error);
-          toast.error(apiData.error[errorMessage[0]][0]);
+          // const errorMessage = Object.keys(apiData.error);
+          toast.error(apiData.error);
         }
       }else{
         const parsedData ={
@@ -122,8 +122,8 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
       } else {
         setLoading(false);
         navigate("/card-details");
-        const errorMessage = Object.keys(apiData.error);
-        toast.error(apiData.error[errorMessage[0]][0]);
+        // const errorMessage = Object.keys(apiData.error);
+        toast.error(apiData.error);
       }
       }
       
@@ -167,6 +167,7 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
           closePopUp2={closeNewPopUp}
           mainPopUpClose={mainClose}
           rechargeType={rechargeType}
+          selectedDid={selectedDid}
         />
       ) : (
         <div className="row">

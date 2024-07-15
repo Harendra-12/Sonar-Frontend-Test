@@ -10,11 +10,18 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../Misc/CircularLoader";
 
-function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
-  const dispatch = useDispatch()
-  const accountDetailsRefresh = useSelector((state) => state.accountDetailsRefresh)
-  const billingListRefresh = useSelector((state) => state.billingListRefresh)
-  const cardListRefresh = useSelector((state) => state.cardListRefresh)
+function NewCardPaymentMethod({
+  closePopUp2,
+  mainPopUpClose,
+  rechargeType,
+  selectedDid,
+}) {
+  const dispatch = useDispatch();
+  const accountDetailsRefresh = useSelector(
+    (state) => state.accountDetailsRefresh
+  );
+  const billingListRefresh = useSelector((state) => state.billingListRefresh);
+  const cardListRefresh = useSelector((state) => state.cardListRefresh);
   const account = useSelector((state) => state.account);
   const billingList = useSelector((state) => state.billingList);
   const cardList = useSelector((state) => state.cardList);
@@ -86,8 +93,8 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
         setSelectedBillId(item.id);
       }
     });
-    if(billingList.length===0){
-      setNewBilling(true)
+    if (billingList.length === 0) {
+      setNewBilling(true);
     }
   }, [billingList]);
   //   Handle change for getting values from form
@@ -188,7 +195,7 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
       });
       if (
         !(cardDetails.cardName === "") &&
-        !(cardDetails.amount === "") &&
+        !(rechargeType !== "buyDid" && cardDetails.amount === "") &&
         !(cardDetails.expiryDate === "") &&
         !(cardDetails.cvv.length < 3 || cardDetails.cvv.length > 6) &&
         cardValidator.number(cardDetails.cardNumber).isValid &&
@@ -212,111 +219,205 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
       ) {
         setLoading(true);
         const year = new Date().getFullYear();
-        const parsedData = {
-          type: "card",
-          account_id: account.account_id,
-          address_id: selectedBillId,
-          amount: cardDetails.amount,
-          card_number: cardDetails.cardNumber.split(" ").join(""),
-          name: cardDetails.cardName,
-          save_card: saveCard,
-          exp_month: cardDetails.expiryDate.split("/")[0],
-          exp_year: Number(
-            String(year).slice(0, 2) +
-            String(cardDetails.expiryDate.split("/")[1])
-          ),
-          cvc: cardDetails.cvv,
-          fullname: billing.name,
-          contact_no: billing.phone,
-          email: billing.email,
-          address: billing.address,
-          zip: billing.zip,
-          city: billing.city,
-          state: billing.state,
-          country: billing.country,
+        if (rechargeType === "buyDid") {
+          const year = new Date().getFullYear();
+          const parsedData = {
+            type: "card",
+            account_id: account.account_id,
+            address_id: selectedBillId,
+            // amount: cardDetails.amount,
+            card_number: cardDetails.cardNumber.split(" ").join(""),
+            name: cardDetails.cardName,
+            save_card: saveCard,
+            exp_month: cardDetails.expiryDate.split("/")[0],
+            exp_year: Number(
+              String(year).slice(0, 2) +
+                String(cardDetails.expiryDate.split("/")[1])
+            ),
+            cvc: cardDetails.cvv,
+            fullname: billing.name,
+            contact_no: billing.phone,
+            email: billing.email,
+            address: billing.address,
+            zip: billing.zip,
+            city: billing.city,
+            state: billing.state,
+            country: billing.country,
+            accountId: selectedDid[0].vendorAccountId,
+            dids: selectedDid.map((item) => {
+              return {
+                dids: item.id,
+              };
+            }),
+            vendorId: selectedDid[0].vendorId,
+            didQty: selectedDid.length,
+            companyId: account.account_id,
+            didType: "random",
+            rate: Number(selectedDid[0].price) * selectedDid.length,
+          };
 
-        };
-        const apiData = await generalPostFunction(
-          "/wallet-recharge-fresh",
-          parsedData
-        );
-        if (apiData.status) {
-          toast.success(apiData.message);
-          setLoading(false);
-          dispatch({
-            type: "SET_ACCOUNTDETAILSREFRESH",
-            accountDetailsRefresh: accountDetailsRefresh + 1,
-          });
-          dispatch({
-            type: "SET_BILLINGLISTREFRESH",
-            billingListRefresh: billingListRefresh + 1,
-          });
-          dispatch({
-            type: "SET_CARDLISTREFRESH",
-            cardListRefresh: cardListRefresh + 1,
-          });
-          setTimeout(() => {
-            mainPopUpClose(false)
-          }, 2000)
-        } else {
-          setLoading(false);
-          const errorMessage = Object.keys(apiData.error);
-          toast.error(apiData.error[errorMessage[0]][0]);
-          console.log("Old address error", apiData);
+          const apiData = await generalPostFunction("/purchaseTfn", parsedData);
+          if (apiData.status) {
+            setLoading(false);
+            toast.success(apiData.message);
+            setLoading(false);
+            setTimeout(() => {
+              mainPopUpClose(false);
+            }, 2000);
+          } else {
+            setLoading(false);
+            toast.error(apiData.error);
+          }
+        }else{
+          const parsedData = {
+            type: "card",
+            account_id: account.account_id,
+            address_id: selectedBillId,
+            // amount: cardDetails.amount,
+            card_number: cardDetails.cardNumber.split(" ").join(""),
+            name: cardDetails.cardName,
+            save_card: saveCard,
+            exp_month: cardDetails.expiryDate.split("/")[0],
+            exp_year: Number(
+              String(year).slice(0, 2) +
+                String(cardDetails.expiryDate.split("/")[1])
+            ),
+            cvc: cardDetails.cvv,
+            fullname: billing.name,
+            contact_no: billing.phone,
+            email: billing.email,
+            address: billing.address,
+            zip: billing.zip,
+            city: billing.city,
+            state: billing.state,
+            country: billing.country,
+          };
+          const apiData = await generalPostFunction(
+            "/wallet-recharge",
+            parsedData
+          );
+          if (apiData.status) {
+            toast.success(apiData.message);
+            setLoading(false);
+            dispatch({
+              type: "SET_ACCOUNTDETAILSREFRESH",
+              accountDetailsRefresh: accountDetailsRefresh + 1,
+            });
+            dispatch({
+              type: "SET_BILLINGLISTREFRESH",
+              billingListRefresh: billingListRefresh + 1,
+            });
+            dispatch({
+              type: "SET_CARDLISTREFRESH",
+              cardListRefresh: cardListRefresh + 1,
+            });
+            setTimeout(() => {
+              mainPopUpClose(false);
+            }, 2000);
+          } else {
+            setLoading(false);
+            const errorMessage = Object.keys(apiData.error);
+            toast.error(apiData.error[errorMessage[0]][0]);
+            console.log("Old address error", apiData);
+          }
         }
+       
       }
     } else {
-      if(selectedBillId===undefined && newBilling===false){
-        toast.error("Please select a billing address")
+      if (selectedBillId === undefined && newBilling === false) {
+        toast.error("Please select a billing address");
       }
       if (
-        !(selectedBillId===undefined && newBilling===false) &&
+        !(selectedBillId === undefined && newBilling === false) &&
         !(cardDetails.cardName === "") &&
-        !(cardDetails.amount === "") &&
+        !(rechargeType !== "buyDid" && cardDetails.amount === "") &&
         !(cardDetails.expiryDate === "") &&
         !(cardDetails.cvv.length < 3 || cardDetails.cvv.length > 6) &&
         cardValidator.number(cardDetails.cardNumber).isValid
       ) {
         console.log("This is card number", cardDetails.cardNumber);
         setLoading(true);
-        const year = new Date().getFullYear();
-        const parsedData = {
-          type: "card",
-          account_id: account.account_id,
-          address_id: selectedBillId,
-          amount: cardDetails.amount,
-          card_number: cardDetails.cardNumber.split(" ").join(""),
-          name: cardDetails.cardName,
-          save_card: saveCard,
-          exp_month: cardDetails.expiryDate.split("/")[0],
-          exp_year: Number(
-            String(year).slice(0, 2) +
-            String(cardDetails.expiryDate.split("/")[1])
-          ),
-          cvc: cardDetails.cvv,
-        };
-        const apiData = await generalPostFunction(
-          "/wallet-recharge",
-          parsedData
-        );
-        if (apiData.status) {
-          toast.success(apiData.message);
-          setLoading(false);
-          dispatch({
-            type: "SET_ACCOUNTDETAILSREFRESH",
-            accountDetailsRefresh: accountDetailsRefresh + 1,
-          });
-          dispatch({
-            type: "SET_CARDLISTREFRESH",
-            cardListRefresh: cardListRefresh + 1,
-          });
-          setTimeout(() => {
-            mainPopUpClose(false)
-          }, 2000);
+        if (rechargeType === "buyDid") {
+          const year = new Date().getFullYear();
+          const parsedData = {
+            type: "card",
+            account_id: account.account_id,
+            address_id: selectedBillId,
+            amount: cardDetails.amount,
+            card_number: cardDetails.cardNumber.split(" ").join(""),
+            name: cardDetails.cardName,
+            save_card: saveCard,
+            exp_month: cardDetails.expiryDate.split("/")[0],
+            exp_year: Number(
+              String(year).slice(0, 2) +
+                String(cardDetails.expiryDate.split("/")[1])
+            ),
+            cvc: cardDetails.cvv,
+            rate: Number(selectedDid[0].price) * selectedDid.length,
+          accountId: selectedDid[0].vendorAccountId,
+          dids: selectedDid.map((item) => {
+            return {
+              dids: item.id,
+            };
+          }),
+          vendorId: selectedDid[0].vendorId,
+          didQty: selectedDid.length,
+          companyId: account.account_id,
+          didType: "random",
+          };
+
+          const apiData = await generalPostFunction("/purchaseTfn", parsedData);
+          if (apiData.status) {
+            setLoading(false);
+            toast.success(apiData.message);
+            setLoading(false);
+            setTimeout(() => {
+              mainPopUpClose(false);
+            }, 2000);
+          } else {
+            setLoading(false);
+            toast.error(apiData.error);
+          }
         } else {
-          setLoading(false);
-          const errorMessage = Object.keys(apiData.error);
-          toast.error(apiData.error[errorMessage[0]][0]);
+          const year = new Date().getFullYear();
+          const parsedData = {
+            type: "card",
+            account_id: account.account_id,
+            address_id: selectedBillId,
+            amount: cardDetails.amount,
+            card_number: cardDetails.cardNumber.split(" ").join(""),
+            name: cardDetails.cardName,
+            save_card: saveCard,
+            exp_month: cardDetails.expiryDate.split("/")[0],
+            exp_year: Number(
+              String(year).slice(0, 2) +
+                String(cardDetails.expiryDate.split("/")[1])
+            ),
+            cvc: cardDetails.cvv,
+          };
+          const apiData = await generalPostFunction(
+            "/wallet-recharge",
+            parsedData
+          );
+          if (apiData.status) {
+            toast.success(apiData.message);
+            setLoading(false);
+            dispatch({
+              type: "SET_ACCOUNTDETAILSREFRESH",
+              accountDetailsRefresh: accountDetailsRefresh + 1,
+            });
+            dispatch({
+              type: "SET_CARDLISTREFRESH",
+              cardListRefresh: cardListRefresh + 1,
+            });
+            setTimeout(() => {
+              mainPopUpClose(false);
+            }, 2000);
+          } else {
+            setLoading(false);
+            const errorMessage = Object.keys(apiData.error);
+            toast.error(apiData.error[errorMessage[0]][0]);
+          }
         }
       }
     }
@@ -360,7 +461,10 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
       <div className="col-xl-8">
         <div className="cardDetailsWrapper">
           <div className="row">
-            <div className="col-6" style={{ maxHeight: 538, overflowY: 'auto' }}>
+            <div
+              className="col-6"
+              style={{ maxHeight: 538, overflowY: "auto" }}
+            >
               <div className="col-12 border-start border-4 border-success mb-3 px-3">
                 <h5>Billing Information</h5>
               </div>
@@ -374,8 +478,9 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
                     <input
                       placeholder="Name"
                       name="name"
-                      className={`form-control travellerdetails ${errorBilling.name ? "error-border" : ""
-                        }`}
+                      className={`form-control travellerdetails ${
+                        errorBilling.name ? "error-border" : ""
+                      }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
@@ -388,8 +493,9 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
                     <input
                       placeholder="Phone number"
                       name="phone"
-                      className={`form-control travellerdetails ${errorBilling.phone ? "error-border" : ""
-                        }`}
+                      className={`form-control travellerdetails ${
+                        errorBilling.phone ? "error-border" : ""
+                      }`}
                       onChange={(e) => billingChnage(e)}
                       type="number"
                     />
@@ -402,8 +508,9 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
                     <input
                       placeholder="Email Address"
                       name="email"
-                      className={`form-control travellerdetails ${errorBilling.email ? "error-border" : ""
-                        }`}
+                      className={`form-control travellerdetails ${
+                        errorBilling.email ? "error-border" : ""
+                      }`}
                       onChange={(e) => billingChnage(e)}
                       type="email"
                     />
@@ -416,8 +523,9 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
                     <input
                       placeholder="Full address"
                       name="address"
-                      className={`form-control travellerdetails ${errorBilling.address ? "error-border" : ""
-                        }`}
+                      className={`form-control travellerdetails ${
+                        errorBilling.address ? "error-border" : ""
+                      }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
@@ -430,8 +538,9 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
                     <input
                       placeholder="City"
                       name="city"
-                      className={`form-control travellerdetails ${errorBilling.city ? "error-border" : ""
-                        }`}
+                      className={`form-control travellerdetails ${
+                        errorBilling.city ? "error-border" : ""
+                      }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
@@ -444,8 +553,9 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
                     <input
                       placeholder="State"
                       name="state"
-                      className={`form-control travellerdetails ${errorBilling.state ? "error-border" : ""
-                        }`}
+                      className={`form-control travellerdetails ${
+                        errorBilling.state ? "error-border" : ""
+                      }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
@@ -458,8 +568,9 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
                     <input
                       placeholder="Zip Code"
                       name="zip"
-                      className={`form-control travellerdetails ${errorBilling.zip ? "error-border" : ""
-                        }`}
+                      className={`form-control travellerdetails ${
+                        errorBilling.zip ? "error-border" : ""
+                      }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
@@ -472,8 +583,9 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
                     <input
                       placeholder="Country"
                       name="country"
-                      className={`form-control travellerdetails ${errorBilling.country ? "error-border" : ""
-                        }`}
+                      className={`form-control travellerdetails ${
+                        errorBilling.country ? "error-border" : ""
+                      }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
@@ -491,8 +603,9 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
                         >
                           <div className="accordion-item">
                             <h2
-                              className={`accordion-header addressDrawer ${selectedBillId === item.id ? "active" : ""
-                                }`}
+                              className={`accordion-header addressDrawer ${
+                                selectedBillId === item.id ? "active" : ""
+                              }`}
                             >
                               <div
                                 className="d-flex flex-wrap align-items-center"
@@ -506,10 +619,19 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
                                     data-bs-target={`#flush-collapse${key}newBill`}
                                     aria-expanded="false"
                                     aria-controls={`flush-collapse${key}newBill`}
-                                    style={{ boxShadow: 'none' }}
+                                    style={{ boxShadow: "none" }}
                                   >
                                     <div>
-                                      <h5 className="mb-0" style={{ maxWidth: 200, textOverflow: 'ellipsis', overflow: 'hidden' }}>{item.fullname}</h5>
+                                      <h5
+                                        className="mb-0"
+                                        style={{
+                                          maxWidth: 200,
+                                          textOverflow: "ellipsis",
+                                          overflow: "hidden",
+                                        }}
+                                      >
+                                        {item.fullname}
+                                      </h5>
                                     </div>
                                   </button>
                                 </div>
@@ -570,7 +692,7 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
                                       <span>Country:</span>{" "}
                                     </li>
                                   </div>
-                                  <div style={{ width: '65%' }}>
+                                  <div style={{ width: "65%" }}>
                                     <li>
                                       <input
                                         type="text"
@@ -673,13 +795,13 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
                 <h5>
                   Credit Card Information
                   <span
-                    onClick={() =>{
-                      if(billingList.length===0 && cardList.length===0){
-                        mainPopUpClose(false)
-                      }else{
-                        closePopUp2(false)}}
+                    onClick={() => {
+                      if (billingList.length === 0 && cardList.length === 0) {
+                        mainPopUpClose(false);
+                      } else {
+                        closePopUp2(false);
                       }
-                      
+                    }}
                     className="float-end clearButton text-danger fs-4"
                     style={{ cursor: "pointer" }}
                   >
@@ -707,8 +829,9 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
                         </label>
                         <input
                           placeholder="Card Holder's Name"
-                          className={`form-control travellerdetails ${errorCard.cardName ? "error-border" : ""
-                            }`}
+                          className={`form-control travellerdetails ${
+                            errorCard.cardName ? "error-border" : ""
+                          }`}
                           name="cardName"
                           id="traveller_name_on_card"
                           type="text"
@@ -746,8 +869,9 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
                           <input
                             placeholder="Card Number"
                             maxLength={16}
-                            className={`form-control travellerdetails ${errorCard.cardNumber ? "error-border" : ""
-                              }`}
+                            className={`form-control travellerdetails ${
+                              errorCard.cardNumber ? "error-border" : ""
+                            }`}
                             name="cardNumber"
                             id="traveller_card_number"
                             type="text"
@@ -783,8 +907,9 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
                             </label>
                             <input
                               placeholder="YEAR"
-                              className={`form-control travellerdetails payment_exp_date ${errorCard.expiryDate ? "error-border" : ""
-                                }`}
+                              className={`form-control travellerdetails payment_exp_date ${
+                                errorCard.expiryDate ? "error-border" : ""
+                              }`}
                               name="traveller_card_cvv"
                               type="number"
                               {...getExpiryDateProps({
@@ -817,8 +942,9 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
                         <div className="position-relative">
                           <input
                             placeholder="cvv"
-                            className={`form-control travellerdetails payment_exp_date ${errorCard.cvv ? "error-border" : ""
-                              }`}
+                            className={`form-control travellerdetails payment_exp_date ${
+                              errorCard.cvv ? "error-border" : ""
+                            }`}
                             name="cvv"
                             type="number"
                             onChange={(e) => {
@@ -845,37 +971,42 @@ function NewCardPaymentMethod({ closePopUp2, mainPopUpClose,rechargeType }) {
                         </div>
                       </div>
                     </div>
-                    <div className="col-xl-6 mt-1 mb-3">
-                      <div className="form-group">
-                        <label className="review-label">
-                          Amount
-                          <span style={{ color: "red" }}>*</span>
-                        </label>
-                        <div className="position-relative">
-                          <input
-                            placeholder="amount"
-                            className={`form-control travellerdetails payment_exp_date ${errorCard.amount ? "error-border" : ""
+                    {rechargeType === "buyDid" ? (
+                      ""
+                    ) : (
+                      <div className="col-xl-6 mt-1 mb-3">
+                        <div className="form-group">
+                          <label className="review-label">
+                            Amount
+                            <span style={{ color: "red" }}>*</span>
+                          </label>
+                          <div className="position-relative">
+                            <input
+                              placeholder="amount"
+                              className={`form-control travellerdetails payment_exp_date ${
+                                errorCard.amount ? "error-border" : ""
                               }`}
-                            name="amount"
-                            type="number"
-                            onChange={(e) => {
-                              handleChange(e);
-                            }}
-                          />
-                          {/* <small className="error">
+                              name="amount"
+                              type="number"
+                              onChange={(e) => {
+                                handleChange(e);
+                              }}
+                            />
+                            {/* <small className="error">
                               {errorCard.cvv ? "Enter correct CVV" : ""}
                             </small> */}
-                          <small
-                            className="text-muted p-1"
-                            style={{
-                              position: "absolute",
-                              right: 2,
-                              top: 2,
-                            }}
-                          ></small>
+                            <small
+                              className="text-muted p-1"
+                              style={{
+                                position: "absolute",
+                                right: 2,
+                                top: 2,
+                              }}
+                            ></small>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
                     <div className="col-12 mb-2">
                       <input
                         type="checkbox"
