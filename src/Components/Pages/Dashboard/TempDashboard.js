@@ -22,6 +22,7 @@ function TempDashboard() {
   function handleRefresh(value) {
     setRefreshDetails(value)
   }
+  console.log("This is refresh data",refreshDetails);
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/account/${account.id}`);
@@ -46,6 +47,12 @@ function TempDashboard() {
     }
     getData();
   }, [account?.id, dispatch, navigate, refreshDetails]);
+
+  useEffect(()=>{
+    if(refreshDetails>1){
+      setStatusClick("payment")
+    }
+  },[refreshDetails])
 
   return (
     <>

@@ -36,13 +36,15 @@ function Document({ account, refreshCallback, refresh }) {
     setUploadDocument(newUploadDocument);
 
     const newApprovedDocument = account.details
-      .filter((item) => item.status === "2")
-      .map((item) => {
-        return account.details.some(
-          (item2) =>
-            item2.document_id === item.document_id && item2.status === "1"
-        );
-      });
+    .filter((item) => item.status === "2")
+    .map((item) => {
+      const hasMatch = account.details.some(
+        (item2) => item2.document_id === item.document_id && item2.status === "1"
+      );
+      return hasMatch ? true : undefined;
+    })
+    .filter((item) => item !== undefined); 
+  
     setUploadApprove(newApprovedDocument);
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -130,9 +132,11 @@ function Document({ account, refreshCallback, refresh }) {
       if (apiData.status) {
         refreshCallback(refresh + 1);
         toast.success(apiData.message);
+        setReUploadPopUp(false)
         setLoading(false);
       } else {
         setLoading(false);
+        setReUploadPopUp(false)
         toast.error(apiData.message);
       }
     }
@@ -142,7 +146,7 @@ function Document({ account, refreshCallback, refresh }) {
   return (
     <div className="d-flex flex-wrap documentPending">
       <div className="col-xl-8">
-        {!(rejectDocument.length !== 0 &&
+        {(rejectDocument.length !== 0 &&
         rejectDocument.length !== uploadApprove.length) ? (
           <>
             <div className="statusMessage">
@@ -191,7 +195,7 @@ function Document({ account, refreshCallback, refresh }) {
                                 className="pe-5 clearButton fw-bold float-end col-auto"
                               >
                                 Approved{" "}
-                                <i className="fa-duotone fa-upload"></i>
+                                {/* <i className="fa-duotone fa-upload"></i> */}
                               </div>
                             ) : (
                               <div

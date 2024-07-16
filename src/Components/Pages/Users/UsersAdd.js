@@ -942,7 +942,7 @@ const UsersAdd = () => {
         )}
         <ToastContainer
           position="bottom-right"
-          autoClose={3000}
+          autoClose={false}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick
