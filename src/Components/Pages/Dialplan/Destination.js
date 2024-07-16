@@ -17,7 +17,7 @@ function Destination() {
   useEffect(() => {
     if (account && account.id) {
       async function getData() {
-        const apiData = await generalGetFunction(`/dialplans?account=${account.account_id}`)
+        const apiData = await generalGetFunction(`/dialplan/all?account_id=${account.account_id}`)
         const domainData = await generalGetFunction(`/domain/search?account=${account.account_id}`)
         if (apiData.status) {
           setDestination(apiData.data);
