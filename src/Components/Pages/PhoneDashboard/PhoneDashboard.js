@@ -126,19 +126,9 @@ function PhoneDashboard() {
                                     </div>
                                 </div>
                                 <div className="col-xl-3">
-                                    <div className="itemWrapper a">
-                                        <div className="heading"><i class="fa-duotone fa-users"></i> Users</div>
-                                        <div className="data-number">2</div>
-                                        <div className="label">21 Inbound (Answered)</div>
-                                        <div className="label">0 Connected Callbacks</div>
-                                        <div className="label">17 Outbound (Connected)</div>
-                                        {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/user'" effect="ripple"><i className="fa-duotone fa-users"></i> View All Users</button> */}
-                                    </div>
-                                </div>
-                                <div className="col-xl-3">
                                     <div className="itemWrapper b">
                                         <div className="heading"><i class="fa-duotone fa-clock"></i> Call Center Queue</div>
-                                        <div className="data-number">1075</div>
+                                        <div className="data-number">10</div>
                                         <div className="label">21 Inbound (Answered)</div>
                                         <div className="label">17 Outbound (Connected)</div>
                                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/extensions'" effect="ripple"><i className="fa-duotone fa-phone-office"></i> View All Extensions</button> */}
@@ -146,11 +136,22 @@ function PhoneDashboard() {
                                 </div>
                                 <div className="col-xl-3">
                                     <div className="itemWrapper d">
-                                        <div className="heading"><i class="fa-duotone fa-phone-missed"></i> Devices</div>
+                                        <div className="heading"><i class="fa-duotone fa-solid fa-bell-ring"></i> Ring Group</div>
                                         <div className="data-number">5</div>
+                                        <div className="label">2 Active Calls</div>
                                         <div className="label">1 Voicecall Missed</div>
                                         <div className="label">4 Calls Missed</div>
                                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/devices'" effect="ripple"><i className="fa-duotone fa-mobile-retro"></i> View All Devices</button> */}
+                                    </div>
+                                </div>
+                                <div className="col-xl-3">
+                                    <div className="itemWrapper a">
+                                        <div className="heading"><i class="fa-duotone fa-users"></i> Users</div>
+                                        <div className="data-number">2</div>
+                                        <div className="label">21 Active Users</div>
+                                        <div className="label">2 Idle Users</div>
+                                        <div className="label">18 Users On Call</div>
+                                        {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/user'" effect="ripple"><i className="fa-duotone fa-users"></i> View All Users</button> */}
                                     </div>
                                 </div>
                             </div>

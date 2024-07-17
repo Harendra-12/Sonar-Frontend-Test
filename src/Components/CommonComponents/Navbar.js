@@ -251,6 +251,14 @@ function Navbar() {
                         </a>
                       </li> */}
                           <li className="tabItem " effect="ripple">
+                            <NavLink to="/phone-dashboard">
+                              <div className="iconHolder">
+                                <i class="fa-duotone fa-solid fa-list-dropdown"></i>
+                              </div>
+                              <div className="itemTitle">Phone Dashboard</div>
+                            </NavLink>
+                          </li>
+                          <li className="tabItem " effect="ripple">
                             <NavLink to="/extensions">
                               <div className="iconHolder">
                                 <i className="fa-duotone fa-phone-office" />
