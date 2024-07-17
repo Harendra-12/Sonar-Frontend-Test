@@ -54,6 +54,11 @@ function TempDashboard() {
     }
   },[refreshDetails])
 
+  // Callback handle for differnt tab
+  function handleCallBack(value){
+    setStatusClick(value)
+  }
+
   return (
     <>
       <style>
@@ -264,7 +269,7 @@ function TempDashboard() {
               </div>
             </div>
             <div className="col-xl-12">
-              {statusClick === "account" ? <Account account={account} /> : statusClick === "payment" ? <Payment account={account} /> : statusClick === "document" ? <Document account={account} refreshCallback={handleRefresh} refresh={refreshDetails} /> : <ConfigureStepDashboard account2={account} />}
+              {statusClick === "account" ? <Account account={account} companyStatus={account.company_status} nextPage={handleCallBack} /> : statusClick === "payment" ? <Payment account={account} companyStatus={account.company_status} nextPage={handleCallBack} /> : statusClick === "document" ? <Document account={account} refreshCallback={handleRefresh} refresh={refreshDetails} companyStatus={account.company_status} nextPage={handleCallBack} /> : <ConfigureStepDashboard account2={account} companyStatus={account.company_status} nextPage={handleCallBack} />}
             </div>
           </div>
         </div>

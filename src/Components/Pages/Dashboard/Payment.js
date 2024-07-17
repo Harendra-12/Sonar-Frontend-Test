@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-function Payment({ account }) {
+function Payment({ account,nextPage,companyStatus}) {
   return (
     <div>
       <div className="col-xl-12">
@@ -47,9 +47,7 @@ function Payment({ account }) {
                       <li>
                         <label>Time of Payment</label>{" "}
                         <label className="details">
-                          {
-                            account?.payments[0].transaction_date
-                          }
+                          {account?.payments[0].transaction_date}
                         </label>
                       </li>
                       <li>
@@ -73,23 +71,44 @@ function Payment({ account }) {
           <div className="col-xl-6">
             <div className="profileView">
               <div className="profileDetailsHolder position-relative">
-                <div className="header d-flex align-items-center">
-                  <div className="col-12">Billing Details</div>
+                <div className="header d-flex align-items-center pe-0">
+                  <div className="col-5">Billing Details</div>
+                  <div className="col-7">
+                    <div class="approvalButton float-end">
+                      <div
+                        onClick={()=>{
+                          if(Number(companyStatus)>=2){
+                            nextPage("document")
+                          }
+                        }}
+                        style={{opacity:Number(companyStatus)>=2?"":0.5}}
+                        class="float-start btn btn-success btn-sm"
+                      >
+                        Next<i class="fa-solid fa-caret-right ms-2"></i>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div className="row" style={{ padding: "5px" }}>
                   <div className="wrapper">
                     <ul>
                       <li>
                         <label>Full Name</label>{" "}
-                        <label className="details">{account?.billing_address?.[0]?.fullname}</label>
+                        <label className="details">
+                          {account?.billing_address?.[0]?.fullname}
+                        </label>
                       </li>
                       <li>
                         <label>Email</label>{" "}
-                        <label className="details">{account?.billing_address?.[0]?.email}</label>
+                        <label className="details">
+                          {account?.billing_address?.[0]?.email}
+                        </label>
                       </li>
                       <li>
                         <label>Phone Number</label>{" "}
-                        <label className="details">{account?.billing_address?.[0]?.contact_no}</label>
+                        <label className="details">
+                          {account?.billing_address?.[0]?.contact_no}
+                        </label>
                       </li>
                       <li>
                         <label>Address</label>{" "}
@@ -99,19 +118,27 @@ function Payment({ account }) {
                       </li>
                       <li>
                         <label>Zip Code</label>{" "}
-                        <label className="details">{account?.billing_address?.[0]?.zip}</label>
+                        <label className="details">
+                          {account?.billing_address?.[0]?.zip}
+                        </label>
                       </li>
                       <li>
                         <label>City</label>{" "}
-                        <label className="details">{account?.billing_address?.[0]?.city}</label>
+                        <label className="details">
+                          {account?.billing_address?.[0]?.city}
+                        </label>
                       </li>
                       <li>
                         <label>State</label>{" "}
-                        <label className="details">{account?.billing_address?.[0]?.state}</label>
+                        <label className="details">
+                          {account?.billing_address?.[0]?.state}
+                        </label>
                       </li>
                       <li>
                         <label>Country</label>{" "}
-                        <label className="details">{account?.billing_address?.[0]?.country}</label>
+                        <label className="details">
+                          {account?.billing_address?.[0]?.country}
+                        </label>
                       </li>
                     </ul>
                   </div>
@@ -122,7 +149,7 @@ function Payment({ account }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Payment
+export default Payment;

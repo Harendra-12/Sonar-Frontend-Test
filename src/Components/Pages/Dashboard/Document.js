@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { imageUploadFunction } from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../Misc/CircularLoader";
 
-function Document({ account, refreshCallback, refresh }) {
+function Document({ account, refreshCallback, refresh, nextPage,companyStatus }) {
   const [rejectDocument, setRejectDocument] = useState([]);
   const [reUploadId, setReUploadId] = useState();
   const wrapperRef = useRef(null);
@@ -227,7 +227,7 @@ function Document({ account, refreshCallback, refresh }) {
             <div className="header d-flex align-items-center">
               <div className="col-5">Account Details</div>
             </div>
-            <div className="row px-2 border-bottom">
+            <div className="row px-2">
               <div className="formRow col-xl-2 col-md-4 col-6">
                 <div className="formLabel">
                   <label htmlFor="data">Company Name</label>
@@ -391,8 +391,23 @@ function Document({ account, refreshCallback, refresh }) {
       <div className="col-xl-4">
         <div className="profileView">
           <div className="profileDetailsHolder">
-            <div className="header d-flex align-items-center">
-              <div className="col-12">Documents Uploaded</div>
+            <div className="header d-flex align-items-center pe-0">
+              <div className="col-5">Documents Uploaded</div>
+              <div className="col-7">
+                    <div class="approvalButton float-end">
+                      <div
+                       onClick={()=>{
+                        if(Number(companyStatus)>=4){
+                          nextPage("configure")
+                        }
+                      }}
+                      style={{opacity:Number(companyStatus)>=4?"":0.5}}
+                        class="float-start btn btn-success btn-sm"
+                      >
+                        Next<i class="fa-solid fa-caret-right ms-2"></i>
+                      </div>
+                    </div>
+                  </div>
             </div>
             {account.details.length > 0 ? (
               <div className="qLinkContent" ref={wrapperRef}>
