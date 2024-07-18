@@ -408,18 +408,6 @@ function Navbar() {
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
-                          {/* <li className="tabItem" effect="ripple">
-                        <NavLink
-                          to="/call"
-                          onClick={backToTop}
-                          className="nav-link"
-                        >
-                          <div className="iconHolder">
-                            <i className="fa-duotone fa-swap-arrows" />
-                          </div>
-                          <div className="itemTitle">Call</div>
-                        </NavLink>
-                      </li> */}
                           <li className="tabItem" effect="ripple">
                             <NavLink
                               to="/get-did"
@@ -430,6 +418,30 @@ function Navbar() {
                                 <i className="fa-duotone fa-swap-arrows" />
                               </div>
                               <div className="itemTitle">Get DID</div>
+                            </NavLink>
+                          </li>
+                          <li className="tabItem" effect="ripple">
+                            <NavLink
+                              to="/did-listing"
+                              onClick={backToTop}
+                              className="nav-link"
+                            >
+                              <div className="iconHolder">
+                                <i className="fa-duotone fa-swap-arrows" />
+                              </div>
+                              <div className="itemTitle">DID Listing</div>
+                            </NavLink>
+                          </li>
+                          <li className="tabItem" effect="ripple">
+                            <NavLink
+                              to="/dashboard"
+                              onClick={backToTop}
+                              className="nav-link"
+                            >
+                              <div className="iconHolder">
+                                <i className="fa-duotone fa-swap-arrows" />
+                              </div>
+                              <div className="itemTitle">Port number</div>
                             </NavLink>
                           </li>
                         </ul>

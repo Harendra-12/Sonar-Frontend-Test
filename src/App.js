@@ -75,6 +75,7 @@ import CardTransactionsList from "./Components/Pages/Billing/CardTransactionsLis
 import WalletTransactionsList from "./Components/Pages/Billing/WalletTransactionsList";
 import Voice from "./Components/Pages/Voice/Voice";
 import PhoneDashboard from "./Components/Pages/PhoneDashboard/PhoneDashboard";
+import DidListing from "./Components/Pages/NumberManagement/DidListing";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -197,6 +198,7 @@ function App() {
             <Route path="/rate-card" element={<RateCharge />} />
             <Route path="/edit-rate-charge" element={<RateChargeEdit />} />
             <Route path="/get-did" element={<GetDid />} />
+            <Route path="/did-listing" element={<DidListing/>} />
             {/* Number Management Path End */}
 
             {/* Payment path start */}
