@@ -74,6 +74,7 @@ import ExpenseList from "./Components/Pages/Billing/ExpenseList";
 import CardTransactionsList from "./Components/Pages/Billing/CardTransactionsList";
 import WalletTransactionsList from "./Components/Pages/Billing/WalletTransactionsList";
 import Voice from "./Components/Pages/Voice/Voice";
+import PhoneDashboard from "./Components/Pages/PhoneDashboard/PhoneDashboard";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -117,6 +118,7 @@ function App() {
             <Route path="/my-profile" element={<Profile />} />
             <Route path="/master" element={<Master />} />
             <Route path="/change-password" element={<ChangePassword />} />
+            <Route path="/phone-dashboard" element={<PhoneDashboard />} />
 
             {/* Ring Groups Path Start */}
             <Route path="/ring-groups" element={<RingGroups />} />
