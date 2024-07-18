@@ -12,7 +12,7 @@ import CircularLoader from "../Misc/CircularLoader";
 import { useSelector } from "react-redux";
 
 function Roles() {
-  const account = useSelector((state)=>state.account)
+  const account = useSelector((state) => state.account);
   const [role, setRole] = useState();
   const [popup, setPopup] = useState(false);
   const [editClick, setEditClick] = useState(false);
@@ -29,13 +29,10 @@ function Roles() {
   const [selectedPermission, setSelectedPermission] = useState([]);
   const [defaultPermission, setDefaultPermission] = useState();
 
-
   // Getting the role and permission information at the very initial state
   useEffect(() => {
     async function getData() {
-      const apiData = await generalGetFunction(
-        `/role/all`
-      );
+      const apiData = await generalGetFunction(`/role/all`);
       const permissionData = await generalGetFunction("/permission");
       if (apiData.status) {
         setRole(apiData.data);
@@ -117,13 +114,13 @@ function Roles() {
   }
 
   // Handel permission check box click
-  const handleCheckboxChange = (id) => {
-    if (selectedPermission.includes(id)) {
-      setSelectedPermission(selectedPermission.filter((item) => item !== id));
-    } else {
-      setSelectedPermission([...selectedPermission, id]);
-    }
-  };
+  // const handleCheckboxChange = (id) => {
+  //   if (selectedPermission.includes(id)) {
+  //     setSelectedPermission(selectedPermission.filter((item) => item !== id));
+  //   } else {
+  //     setSelectedPermission([...selectedPermission, id]);
+  //   }
+  // };
 
   // Handle permission save click
   async function handlePermissionSave() {
@@ -151,7 +148,9 @@ function Roles() {
     const result = {};
     for (const key in data) {
       if (data.hasOwnProperty(key)) {
-        const filteredItems = data[key].filter(item => idArray?.includes(item.id));
+        const filteredItems = data[key].filter((item) =>
+          idArray?.includes(item.id)
+        );
         if (filteredItems.length > 0) {
           result[key] = filteredItems;
         }
@@ -159,8 +158,61 @@ function Roles() {
     }
     return result;
   };
-  
-  const filteredPermission = filterPermissionById(defaultPermission, account.permissions);
+
+  const filteredPermission = filterPermissionById(
+    defaultPermission,
+    account.permissions
+  );
+
+  // const [selectedPermission, setSelectedPermission] = useState([]);
+  const [parentChecked, setParentChecked] = useState({});
+
+  // Initialize parentChecked state
+  useEffect(() => {
+    const initialParentChecked = {};
+    Object.keys(filteredPermission).forEach((item) => {
+      initialParentChecked[item] = filteredPermission[item].every((innerItem) =>
+        selectedPermission.includes(innerItem.id)
+      );
+    });
+    setParentChecked(initialParentChecked);
+  }, [selectedPermission]);
+
+  // Handle permission check box click
+  const handleCheckboxChange = (id) => {
+    const newSelectedPermission = selectedPermission.includes(id)
+      ? selectedPermission.filter((item) => item !== id)
+      : [...selectedPermission, id];
+
+    setSelectedPermission(newSelectedPermission);
+
+    // Update parent checkbox state
+    const updatedParentChecked = {};
+    Object.keys(filteredPermission).forEach((item) => {
+      updatedParentChecked[item] = filteredPermission[item].every((innerItem) =>
+        newSelectedPermission.includes(innerItem.id)
+      );
+    });
+    setParentChecked(updatedParentChecked);
+  };
+
+  // Handle parent checkbox change
+  const handleParentCheckboxChange = (item) => {
+    const newParentChecked = !parentChecked[item];
+    const newSelectedPermission = [...selectedPermission];
+
+    filteredPermission[item].forEach((innerItem) => {
+      const index = newSelectedPermission.indexOf(innerItem.id);
+      if (newParentChecked) {
+        if (index === -1) newSelectedPermission.push(innerItem.id);
+      } else {
+        if (index > -1) newSelectedPermission.splice(index, 1);
+      }
+    });
+
+    setSelectedPermission(newSelectedPermission);
+    setParentChecked({ ...parentChecked, [item]: newParentChecked });
+  };
   return (
     <>
       <style>
@@ -228,31 +280,31 @@ function Roles() {
                       {addRole ? (
                         <li>
                           <div className="col-8">
-                          <input
-                            type="text"
-                            value={newRole}
-                            onChange={(e) => setNewRole(e.target.value)}
-                            placeholder="Add new Role"
-                          ></input>
+                            <input
+                              type="text"
+                              value={newRole}
+                              onChange={(e) => setNewRole(e.target.value)}
+                              placeholder="Add new Role"
+                            ></input>
                           </div>
                           <div className="col-auto">
-                          <button className="clearButton text-success">
-                            <i
-                              className="fa-duotone fa-circle-check"
-                              onClick={() => {
-                                setPopup(true);
-                                setSaveClick(true);
-                              }}
-                            ></i>
-                          </button>
-                          <button className="clearButton text-danger">
-                            <i
-                              className="fa-duotone fa-trash"
-                              onClick={() => {
-                                setAddRole(false);
-                              }}
-                            ></i>
-                          </button>
+                            <button className="clearButton text-success">
+                              <i
+                                className="fa-duotone fa-circle-check"
+                                onClick={() => {
+                                  setPopup(true);
+                                  setSaveClick(true);
+                                }}
+                              ></i>
+                            </button>
+                            <button className="clearButton text-danger">
+                              <i
+                                className="fa-duotone fa-trash"
+                                onClick={() => {
+                                  setAddRole(false);
+                                }}
+                              ></i>
+                            </button>
                           </div>
                         </li>
                       ) : (
@@ -261,7 +313,12 @@ function Roles() {
                       {role &&
                         role.map((item, index) => {
                           return (
-                            <li key={index} className={selectedRoleId===item.id?"active":""}>
+                            <li
+                              key={index}
+                              className={
+                                selectedRoleId === item.id ? "active" : ""
+                              }
+                            >
                               <div className="col-8">
                                 <input
                                   type="text"
@@ -310,8 +367,8 @@ function Roles() {
                                       setSelectedRoleId(item.id);
                                       setSelectedRole(item.name);
                                       setSelectedPermission(
-                                        item.permissions?.map((item)=>{
-                                          return(item.permission_id)
+                                        item.permissions?.map((item) => {
+                                          return item.permission_id;
                                         })
                                       );
                                     }}
@@ -350,49 +407,52 @@ function Roles() {
                                   fontWeight: 600,
                                 }}
                               >
-                                <i class="fa-duotone fa-check-double"></i>{" "}
-                                Save
+                                <i class="fa-duotone fa-check-double"></i> Save
                               </button>{" "}
                             </div>
-                          
                           </div>
                         </div>
                         {filteredPermission &&
-                          Object.keys(filteredPermission).map((item, key) => {
-                            return (
-                              <div className="permissionListWrapper" key={key}>
-                                <div class="header d-flex align-items-center">
-                                  <div class="col-5">{item}</div>
-                                </div>
-                                <div className="row px-2 pt-1 border-bottom">
-                                  {filteredPermission[item].map(
-                                    (innerItem, key) => {
-                                      return (
-                                        <div
-                                          className="formRow col-xl-2 col-md-4 col-6"
-                                          key={key}
-                                        >
-                                          <input
-                                            type="checkbox"
-                                            id={`permission-${innerItem.id}`}
-                                            checked={selectedPermission.includes(
-                                              innerItem.id
-                                            )}
-                                            onChange={() =>
-                                              handleCheckboxChange(innerItem.id)
-                                            }
-                                          />
-                                          <label className="formLabel">
-                                            {innerItem.action}
-                                          </label>
-                                        </div>
-                                      );
+                          Object.keys(filteredPermission).map((item, key) => (
+                            <div className="permissionListWrapper" key={key}>
+                              <div className="header d-flex align-items-center">
+                                <div className="col-5">
+                                  <input
+                                    type="checkbox"
+                                    checked={parentChecked[item]}
+                                    onChange={() =>
+                                      handleParentCheckboxChange(item)
                                     }
-                                  )}
+                                  />
+                                  <label>{item}</label>
                                 </div>
                               </div>
-                            );
-                          })}
+                              <div className="row px-2 pt-1 border-bottom">
+                                {filteredPermission[item].map(
+                                  (innerItem, key) => (
+                                    <div
+                                      className="formRow col-xl-2 col-md-4 col-6"
+                                      key={key}
+                                    >
+                                      <input
+                                        type="checkbox"
+                                        id={`permission-${innerItem.id}`}
+                                        checked={selectedPermission.includes(
+                                          innerItem.id
+                                        )}
+                                        onChange={() =>
+                                          handleCheckboxChange(innerItem.id)
+                                        }
+                                      />
+                                      <label className="formLabel">
+                                        {innerItem.action}
+                                      </label>
+                                    </div>
+                                  )
+                                )}
+                              </div>
+                            </div>
+                          ))}
                       </div>
                     </div>
                   </div>

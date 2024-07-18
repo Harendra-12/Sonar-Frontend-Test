@@ -364,17 +364,67 @@ const UsersAdd = () => {
   };
 
   // Handel permission check box click
-  const handleCheckboxChange = (id) => {
-    if (selectedPermission.includes(id)) {
-      setSelectedPermission(selectedPermission.filter((item) => item !== id));
-    } else {
-      setSelectedPermission([...selectedPermission, id]);
-    }
-  };
+  // const handleCheckboxChange = (id) => {
+  //   if (selectedPermission.includes(id)) {
+  //     setSelectedPermission(selectedPermission.filter((item) => item !== id));
+  //   } else {
+  //     setSelectedPermission([...selectedPermission, id]);
+  //   }
+  // };
   const filteredPermission = filterPermissionById(
     defaultPermission,
     account.permissions
   );
+
+  // const [selectedPermission, setSelectedPermission] = useState([]);
+  const [parentChecked, setParentChecked] = useState({});
+
+  // Initialize parentChecked state
+  useEffect(() => {
+    const initialParentChecked = {};
+    Object.keys(filteredPermission).forEach((item) => {
+      initialParentChecked[item] = filteredPermission[item].every((innerItem) =>
+        selectedPermission.includes(innerItem.id)
+      );
+    });
+    setParentChecked(initialParentChecked);
+  }, [selectedPermission]);
+
+  // Handle permission check box click
+  const handleCheckboxChange = (id) => {
+    const newSelectedPermission = selectedPermission.includes(id)
+      ? selectedPermission.filter((item) => item !== id)
+      : [...selectedPermission, id];
+
+    setSelectedPermission(newSelectedPermission);
+
+    // Update parent checkbox state
+    const updatedParentChecked = {};
+    Object.keys(filteredPermission).forEach((item) => {
+      updatedParentChecked[item] = filteredPermission[item].every((innerItem) =>
+        newSelectedPermission.includes(innerItem.id)
+      );
+    });
+    setParentChecked(updatedParentChecked);
+  };
+
+  // Handle parent checkbox change
+  const handleParentCheckboxChange = (item) => {
+    const newParentChecked = !parentChecked[item];
+    const newSelectedPermission = [...selectedPermission];
+
+    filteredPermission[item].forEach((innerItem) => {
+      const index = newSelectedPermission.indexOf(innerItem.id);
+      if (newParentChecked) {
+        if (index === -1) newSelectedPermission.push(innerItem.id);
+      } else {
+        if (index > -1) newSelectedPermission.splice(index, 1);
+      }
+    });
+
+    setSelectedPermission(newSelectedPermission);
+    setParentChecked({ ...parentChecked, [item]: newParentChecked });
+  };
   return (
     <>
       <style>
@@ -797,7 +847,7 @@ const UsersAdd = () => {
                     >
                       <option value="">Choose Type</option>
                       {role.map((item, key) => {
-                        return <option value={key}>{item.name}</option>;
+                        return <option value={key} key={key}>{item.name}</option>;
                       })}
                     </select>
                     <br />
@@ -892,16 +942,23 @@ const UsersAdd = () => {
                       </div>
                     </div>
                     {filteredPermission &&
-                      Object.keys(filteredPermission).map((item, key) => {
-                        return (
-                          <div className="permissionListWrapper" key={key}>
-                            <div className="header d-flex align-items-center">
-                              <div className="col-5">{item}</div>
-                            </div>
-                            <div className="row px-2 pt-1 border-bottom">
-                              {filteredPermission[item].map(
-                                (innerItem, key) => {
-                                  return (
+                          Object.keys(filteredPermission).map((item, key) => (
+                            <div className="permissionListWrapper" key={key}>
+                              <div className="header d-flex align-items-center">
+                                <div className="col-5">
+                                  <input
+                                    type="checkbox"
+                                    checked={parentChecked[item]}
+                                    onChange={() =>
+                                      handleParentCheckboxChange(item)
+                                    }
+                                  />
+                                  <label>{item}</label>
+                                </div>
+                              </div>
+                              <div className="row px-2 pt-1 border-bottom">
+                                {filteredPermission[item].map(
+                                  (innerItem, key) => (
                                     <div
                                       className="formRow col-xl-2 col-md-4 col-6"
                                       key={key}
@@ -920,13 +977,11 @@ const UsersAdd = () => {
                                         {innerItem.action}
                                       </label>
                                     </div>
-                                  );
-                                }
-                              )}
+                                  )
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        );
-                      })}
+                          ))}
                   </div>
                 </div>
               </div>

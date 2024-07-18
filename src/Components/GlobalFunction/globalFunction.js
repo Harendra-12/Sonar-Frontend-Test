@@ -104,8 +104,8 @@ export async function generalDeleteFunction(endpoint) {
   })
 }
 
-// ImageUpload function
-export async function imageUploadFunction(endpoint, data) {
+// DileUpload function
+export async function fileUploadFunction(endpoint, data) {
   return axiosInstance.post(endpoint, data, {
     headers: {
       "Content-Type": "multipart/form-data",

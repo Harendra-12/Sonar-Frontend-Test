@@ -41,6 +41,10 @@ function TempDashboard() {
         }
         localStorage.setItem("tempAccount", JSON.stringify(apiData.data));
         if (Number(apiData.data.company_status) > 5) {
+          dispatch({
+            type: "SET_ACCOUNT",
+            account: apiData.data,
+          })
           navigate("/dashboard");
         }
       }

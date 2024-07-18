@@ -73,6 +73,7 @@ import InvoiceList from "./Components/Pages/Billing/InvoiceList";
 import ExpenseList from "./Components/Pages/Billing/ExpenseList";
 import CardTransactionsList from "./Components/Pages/Billing/CardTransactionsList";
 import WalletTransactionsList from "./Components/Pages/Billing/WalletTransactionsList";
+import Voice from "./Components/Pages/Voice/Voice";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -148,6 +149,10 @@ function App() {
             <Route path="/call-settings" element={<CallSettings />} />
             {/* Extensions Path End */}
 
+            {/* Voice path start */}
+            <Route path="/voice-music" element={<Voice />} />
+            {/* Voice path End */}
+
             {/* Dialplan path start */}
             <Route path="/destination" element={<Destination />} />
             <Route path="/inbound-route" element={<InboundRoute />} />
@@ -176,7 +181,10 @@ function App() {
             <Route path="/document-verification" element={<PendingRequest />} />
             <Route path="/document-details" element={<UserDocumentDetails />} />
             <Route path="/approved-customer" element={<ApprovedCustomer />} />
-            <Route path="/new-user-verify" element={<UserRegistrationProcessOverview />} />
+            <Route
+              path="/new-user-verify"
+              element={<UserRegistrationProcessOverview />}
+            />
             {/* Admin Packages path end */}
 
             {/* Number Management Path Start */}
@@ -226,10 +234,15 @@ function App() {
             <Route path="/card-details" element={<CardAndBilling />} />
             <Route path="/invoice-list" element={<InvoiceList />} />
             <Route path="/expense-list" element={<ExpenseList />} />
-            <Route path="/card-transaction-list" element={<CardTransactionsList />} />
-            <Route path="/wallet-transaction-list" element={<WalletTransactionsList />} />
+            <Route
+              path="/card-transaction-list"
+              element={<CardTransactionsList />}
+            />
+            <Route
+              path="/wallet-transaction-list"
+              element={<WalletTransactionsList />}
+            />
             {/* Billing Pages End */}
-
           </Route>
           {/* 404 Redirection */}
           <Route path="*" element={<Navigate to="/dashboard" />} />

@@ -62,6 +62,12 @@ function CallCenterQueueAdd() {
     action: "",
     abandoned: "",
     prefix: "",
+    time_base_score:"queue",
+    tier_rules_apply:0,
+    tier_rule_wait_second:null,
+    tier_rule_wait_multiply_level:0,
+    tier_rule_no_agent_no_wait:1,
+    abandoned_resume_allowed:0,
   });
 
   const [error, setError] = useState({
@@ -155,18 +161,6 @@ function CallCenterQueueAdd() {
         extension: true,
       }));
     }
-    // if (callCenter.abandoned === "") {
-    //   setError((prevState) => ({
-    //     ...prevState,
-    //     abandoned: true,
-    //   }));
-    // }
-    // if (callCenter.prefix === "") {
-    //   setError((prevState) => ({
-    //     ...prevState,
-    //     prefix: true,
-    //   }));
-    // }
     if (
       !(callCenter.name === "") &&
       !(callCenter.extension === "") &&
@@ -201,6 +195,12 @@ function CallCenterQueueAdd() {
         discard_abandoned_after: callCenter.abandoned,
         queue_cid_prefix: callCenter.prefix,
         account_id: account.account_id,
+        time_base_score:account.time_base_score,
+        tier_rules_apply:account.tier_rules_apply,
+        tier_rule_wait_second:account.tier_rule_wait_second,
+        tier_rule_wait_multiply_level:account.tier_rule_wait_multiply_level,
+        tier_rule_no_agent_no_wait:account.tier_rule_no_agent_no_wait,
+        abandoned_resume_allowed:account.abandoned_resume_allowed,
         created_by: account.id,
         xml: `<extension name="${callCenter.name.trim()}">
         <condition field="destination_number" expression="^(callcenter\+)?${
@@ -700,22 +700,6 @@ function CallCenterQueueAdd() {
                   )}
                 </div>
                 <div className="col-12">
-                  {/* <input
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                        value={callCenter.action}
-                        onChange={(e)=>{
-                            setCallCenter(prevState=>({
-                                ...prevState,
-                                action:e.target.value
-                            }));
-                            setError(prevState=>({
-                                ...prevState,
-                                action:false
-                            }))
-                        }}
-                      /> */}
                   <select
                     className="formItem"
                     name=""
@@ -821,6 +805,156 @@ function CallCenterQueueAdd() {
                   <label htmlFor="data" className="formItemDesc">
                     Set a prefix on the caller ID name.
                   </label>
+                </div>
+              </div>
+
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Time Base Score</label>
+                </div>
+                <div className="col-12">
+                  <select
+                    value={callCenter.time_base_score}
+                    onChange={(e) => {
+                      setCallCenter((prevState) => ({
+                        ...prevState,
+                        time_base_score: e.target.value,
+                      }));
+                    }}
+                    className="formItem w-100"
+                  >
+                    <option value="queue">Queue</option>
+                    <option value="system">System</option>
+                  </select>
+                  <br />
+                  {/* <label htmlFor="data" className="formItemDesc">
+                    Save the recording.
+                  </label> */}
+                </div>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Tier Rules Apply</label>
+                </div>
+                <div className="col-12">
+                  <select
+                    value={callCenter.time_base_score}
+                    onChange={(e) => {
+                      setCallCenter((prevState) => ({
+                        ...prevState,
+                        time_base_score: e.target.value,
+                      }));
+                    }}
+                    className="formItem w-100"
+                  >
+                    <option value={1}>True</option>
+                    <option value={0}>False</option>
+                  </select>
+                  <br />
+                  {/* <label htmlFor="data" className="formItemDesc">
+                    Save the recording.
+                  </label> */}
+                </div>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Tier Rule Wait Second</label>
+                </div>
+                <div className="col-12">
+                <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={callCenter.tier_rule_wait_second}
+                    onChange={(e) => {
+                      setCallCenter((prevState) => ({
+                        ...prevState,
+                        tier_rule_wait_second: e.target.value,
+                      }));
+                    }}
+                  />
+                  <br />
+                  {/* <label htmlFor="data" className="formItemDesc">
+                    Save the recording.
+                  </label> */}
+                </div>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Tier Rule Wait Multiply Level</label>
+                </div>
+                <div className="col-12">
+                  <select
+                    value={callCenter.tier_rule_wait_multiply_level}
+                    onChange={(e) => {
+                      setCallCenter((prevState) => ({
+                        ...prevState,
+                        tier_rule_wait_multiply_level: e.target.value,
+                      }));
+                    }}
+                    className="formItem w-100"
+                  >
+                    <option value={1}>True</option>
+                    <option value={0}>False</option>
+                  </select>
+                  <br />
+                  {/* <label htmlFor="data" className="formItemDesc">
+                    Save the recording.
+                  </label> */}
+                </div>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Tier Rule No Agent No Wait</label>
+                </div>
+                <div className="col-12">
+                  <select
+                    value={callCenter.tier_rule_no_agent_no_wait}
+                    onChange={(e) => {
+                      setCallCenter((prevState) => ({
+                        ...prevState,
+                        tier_rule_no_agent_no_wait: e.target.value,
+                      }));
+                    }}
+                    className="formItem w-100"
+                  >
+                    <option value={1}>True</option>
+                    <option value={0}>False</option>
+                  </select>
+                  <br />
+                  {/* <label htmlFor="data" className="formItemDesc">
+                    Save the recording.
+                  </label> */}
+                </div>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Abandoned Resume Allowed</label>
+                </div>
+                <div className="col-12">
+                  <select
+                    value={callCenter.abandoned_resume_allowed}
+                    onChange={(e) => {
+                      setCallCenter((prevState) => ({
+                        ...prevState,
+                        abandoned_resume_allowed: e.target.value,
+                      }));
+                    }}
+                    className="formItem w-100"
+                  >
+                    <option value={1}>True</option>
+                    <option value={0}>False</option>
+                  </select>
+                  <br />
+                  {/* <label htmlFor="data" className="formItemDesc">
+                    Save the recording.
+                  </label> */}
                 </div>
               </div>
             </form>

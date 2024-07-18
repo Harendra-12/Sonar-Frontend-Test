@@ -242,14 +242,7 @@ function Navbar() {
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
-                          {/* <li className="tabItem" effect="ripple">
-                        <a >
-                          <div className="iconHolder">
-                            <i className="fa-duotone fa-laptop-mobile" />
-                          </div>
-                          <div className="itemTitle">Devices</div>
-                        </a>
-                      </li> */}
+                         
                           <li className="tabItem " effect="ripple">
                             <NavLink to="/extensions">
                               <div className="iconHolder">
@@ -258,42 +251,17 @@ function Navbar() {
                               <div className="itemTitle">Extensions</div>
                             </NavLink>
                           </li>
-                          {userType === "SupreAdmin" ? (
-                            <li className="tabItem" effect="ripple">
-                              <NavLink to="/gateway">
-                                <div className="iconHolder">
-                                  <i className="fa-duotone fa-arrow-progress" />
-                                </div>
-                                <div className="itemTitle">Gateways</div>
-                              </NavLink>
-                            </li>
-                          ) : (
-                            ""
-                          )}
-                          {/* <li className="tabItem" effect="ripple">
-                        <NavLink to="/users">
-                          <div className="iconHolder">
-                            <i className="fa-duotone fa-users" />
-                          </div>
-                          <div className="itemTitle">Users</div>
-                        </NavLink>
-                      </li> */}
-                          {/* <li className="tabItem" effect="ripple">
-                        <NavLink to="/ring-groups">
-                          <div className="iconHolder">
-                            <i className="fa-duotone fa-user-group-simple"></i>
-                          </div>
-                          <div className="itemTitle">Ring Group</div>
-                        </NavLink>
-                      </li>
-                      <li className="tabItem" effect="ripple">
-                        <NavLink to="/cal-center-queue">
-                          <div className="iconHolder">
-                            <i className="fa-duotone fa-user-group-simple"></i>
-                          </div>
-                          <div className="itemTitle">Call Center</div>
-                        </NavLink>
-                      </li> */}
+
+                          <li className="tabItem " effect="ripple">
+                            <NavLink to="/voice-music">
+                              <div className="iconHolder">
+                                <i className="fa-duotone fa-phone-office" />
+                              </div>
+                              <div className="itemTitle">Voice Music</div>
+                            </NavLink>
+                          </li>
+                          
+                         
                         </ul>
                       </div>
                     </div>
@@ -423,7 +391,7 @@ function Navbar() {
                       aria-controls="collapse10"
                       effect="ripple"
                     >
-                      <div className="itemTitle">DID</div>
+                      <div className="itemTitle">Number Management</div>
                     </button>
                     <div
                       id="collapse10"
@@ -490,7 +458,7 @@ function Navbar() {
                               <div className="itemTitle">Payment Details</div>
                             </NavLink>
                           </li>
-                          <li className="tabItem" effect="ripple">
+                          {/* <li className="tabItem" effect="ripple">
                             <NavLink
                               to="/invoice-list"
                               onClick={backToTop}
@@ -501,8 +469,8 @@ function Navbar() {
                               </div>
                               <div className="itemTitle">Invoice Details</div>
                             </NavLink>
-                          </li>
-                          <li className="tabItem" effect="ripple">
+                          </li> */}
+                          {/* <li className="tabItem" effect="ripple">
                             <NavLink
                               to="/expense-list"
                               onClick={backToTop}
@@ -513,7 +481,7 @@ function Navbar() {
                               </div>
                               <div className="itemTitle">Expenses</div>
                             </NavLink>
-                          </li>
+                          </li> */}
                           <li className="tabItem" effect="ripple">
                             <NavLink
                               to="/card-transaction-list"

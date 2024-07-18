@@ -32,7 +32,6 @@ const Users = () => {
       );
     }
   }, [logonUser]);
-  console.log("This is online user", onlineUser);
 
   useEffect(() => {
     setLoading(true);
@@ -85,7 +84,6 @@ const Users = () => {
     const apiData = await generalPutFunction(`/user/${id}`, parsedData);
     if (apiData.status) {
       setChangeState(changeState + 1);
-      console.log("Thi si api data", apiData);
     }
   }
   return (

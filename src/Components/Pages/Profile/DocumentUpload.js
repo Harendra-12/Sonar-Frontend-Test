@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { imageUploadFunction } from "../../GlobalFunction/globalFunction";
+import { fileUploadFunction } from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../Misc/CircularLoader";
 import { useNavigate } from "react-router-dom";
 
@@ -69,7 +69,7 @@ function DocumentUpload() {
           }
         ]
       }
-      const apiData = await imageUploadFunction(
+      const apiData = await fileUploadFunction(
         "/account-detail/store",
         parsedData
       );
