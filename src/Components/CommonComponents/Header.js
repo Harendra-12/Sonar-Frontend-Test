@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { generalGetFunction } from "../GlobalFunction/globalFunction";
 
 function Header(props) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
-  const accountDetails = useSelector((state)=>state.accountDetails)
+  const accountDetails = useSelector((state) => state.accountDetails);
   const [accounName, setAccountName] = useState();
   const [dropDown, setDropDown] = useState(false);
   const navigate = useNavigate();
@@ -22,15 +22,15 @@ function Header(props) {
 
   // Handle log out function
   async function logOut() {
-    const apiData = await generalGetFunction("/logout")
-    localStorage.clear()
+    const apiData = await generalGetFunction("/logout");
+    localStorage.clear();
     if (apiData.data) {
       localStorage.clear();
       dispatch({
         type: "SET_ACCOUNT",
-        account: null
-      })
-      navigate("/")
+        account: null,
+      });
+      navigate("/");
     }
   }
 
@@ -60,48 +60,55 @@ function Header(props) {
         <h4 className="my-auto">{props.title}</h4>
       </div>
       <div className="col-8 d-flex justify-content-evenly justify-content-xl-end align-items-center">
-        <div className="d-flex justify-content-end align-items-center">
-          <div className="d-xl-none d-block me-3">
-            <button className="clearButton d-flex align-items-center">
-              <i className="fa-light fa-bars fs-5" />
-            </button>
-          </div>
-          {/* <div className="my-auto mx-3">
+        <div className="col-auto me-3">
+          <div className="d-flex justify-content-end align-items-center">
+            <div className="d-xl-none d-block me-3">
+              <button className="clearButton d-flex align-items-center">
+                <i className="fa-light fa-bars fs-5" />
+              </button>
+            </div>
+            {/* <div className="my-auto mx-3">
             <button className="getApp" effect="ripple">
               Get Our App
             </button>
-          </div> */}
+            </div> */}
 
-          <div>
-            <Tippy content="Your available balance, click to know more!">
-              <div
-                onClick={()=>navigate("/card-details")}
-                style={{cursor:"pointer"}}
-                className="clearColorButton"
-              >
-                <i className="fa-regular fa-wallet" />{" "}
-                <span className="d-none d-xl-inline-block">${accountDetails?.balance?.amount?accountDetails?.balance?.amount:"0"}</span>
-              </div>
-            </Tippy>
+            <div>
+              <Tippy content="Your available balance, click to know more!">
+                <div
+                  onClick={() => navigate("/card-details")}
+                  style={{ cursor: "pointer" }}
+                  className="clearColorButton"
+                >
+                  <i className="fa-regular fa-wallet" />{" "}
+                  <span className="d-none d-xl-inline-block">
+                    $
+                    {accountDetails?.balance?.amount
+                      ? accountDetails?.balance?.amount
+                      : "0"}
+                  </span>
+                </div>
+              </Tippy>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="col-auto col-xl-auto d-flex justify-content-end align-items-center">
-        <Tippy content={accounName}>
-          <div className="profileName">{accounName}</div>
-        </Tippy>
-        &nbsp; &nbsp;
-        {/* <div className="statusProfile" /> */}
-        <div
-          ref={wrapperRef}
-          className="profileHolder"
-          onClick={() => setDropDown(!dropDown)}
-        >
-          <img
-            src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
-            alt="profile"
-          />
-          {/* <span onclick="togglePhoneSidenav()"><i className="fa-light fa-xmark fs-4" style="display: none"></i></span> */}
+        <div className="col-auto col-xl-auto d-flex justify-content-end align-items-center">
+          <Tippy content={accounName}>
+            <div className="profileName">{accounName}</div>
+          </Tippy>
+          &nbsp; &nbsp;
+          {/* <div className="statusProfile" /> */}
+          <div
+            ref={wrapperRef}
+            className="profileHolder"
+            onClick={() => setDropDown(!dropDown)}
+          >
+            <img
+              src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
+              alt="profile"
+            />
+            {/* <span onclick="togglePhoneSidenav()"><i className="fa-light fa-xmark fs-4" style="display: none"></i></span> */}
+          </div>
         </div>
         {dropDown ? (
           <div ref={wrapperRef} className="profileDropdown">

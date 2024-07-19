@@ -16,6 +16,7 @@ function CallCenterQueueAdd() {
   const [ringGroup, setRingGroup] = useState();
   const [extension, setExtension] = useState();
   const [user, setUser] = useState();
+  const [music,setMusic]=useState();
   const account = useSelector((state) => state.account);
   console.log("This is account", account);
 
@@ -28,6 +29,7 @@ function CallCenterQueueAdd() {
         `/extension/search?account=${account.account_id}`
       );
       const userData = await generalGetFunction("/user/all");
+      const musicData = await generalGetFunction("/music/all")
       if (userData.status) {
         if (userData.data.data.length === 0) {
           toast.error("Please create user first");
