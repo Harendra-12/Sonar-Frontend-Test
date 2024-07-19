@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
@@ -21,12 +20,11 @@ function Music() {
   const [newMusicPopup, setNewMusicPopup] = useState(false);
   const [newMusic, setNewMusic] = useState();
   const [newMusicType, setNewMusicType] = useState();
-  const [pageNumber, setPageNumber] = useState(1);
   const [refresh, setRefresh] = useState(1);
   const navigate = useNavigate();
   useEffect(() => {
     async function getData() {
-      const apiData = await generalGetFunction(`/sound/all?page=${pageNumber}`);
+      const apiData = await generalGetFunction(`/sound/all`);
       if (apiData.status) {
         setLoading(false);
         setMusic(apiData.data);
@@ -36,7 +34,7 @@ function Music() {
       }
     }
     getData();
-  }, [pageNumber, refresh]);
+  }, [ refresh]);
 
   //   Handle delete function
   const handleDelete = async (id) => {
@@ -129,7 +127,7 @@ function Music() {
                   </thead>
                   <tbody>
                     {music &&
-                      music.data.map((item) => {
+                      music.map((item) => {
                         return (
                           <tr>
                             <td>{item.name}</td>
@@ -218,7 +216,7 @@ function Music() {
             ""
           )}
           {loading ? <ContentLoader /> : ""}
-          {music && music.data.length > 0 ? (
+          {/* {music && music.data.length > 0 ? (
             <PaginationComponent
               pageNumber={(e) => setPageNumber(e)}
               totalPage={music.last_page}
@@ -228,7 +226,7 @@ function Music() {
             />
           ) : (
             ""
-          )}
+          )} */}
         </div>
       </section>
       <ToastContainer

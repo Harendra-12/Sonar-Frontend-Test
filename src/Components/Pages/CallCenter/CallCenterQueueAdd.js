@@ -29,7 +29,7 @@ function CallCenterQueueAdd() {
         `/extension/search?account=${account.account_id}`
       );
       const userData = await generalGetFunction("/user/all");
-      const musicData = await generalGetFunction("/music/all")
+      const musicData = await generalGetFunction("/sound/all?type=hold");
       if (userData.status) {
         if (userData.data.data.length === 0) {
           toast.error("Please create user first");
@@ -49,6 +49,9 @@ function CallCenterQueueAdd() {
       }
       if (extensionData.status) {
         setExtension(extensionData.data);
+      }
+      if(musicData.status){
+        setMusic(musicData.data);
       }
     }
     getData();
@@ -651,7 +654,7 @@ function CallCenterQueueAdd() {
                 </div>
                 <div className="col-12">
                   <select
-                    value={callCenter.musicHold}
+                    // value={callCenter.musicHold}
                     onChange={(e) => {
                       setCallCenter((prevState) => ({
                         ...prevState,
@@ -659,8 +662,12 @@ function CallCenterQueueAdd() {
                       }));
                     }}
                     className="formItem w-100"
-                  >
-                    <option>test</option>
+                  > 
+                  <option></option>
+                    {music && music.map((item, index) => {
+                      return <option key={index} value={item.id}>{item.name}</option>;
+                    })}
+                    {/* <option>test</option> */}
                   </select>
                   <br />
                   <label htmlFor="data" className="formItemDesc">
