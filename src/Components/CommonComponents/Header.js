@@ -66,11 +66,11 @@ function Header(props) {
               <i className="fa-light fa-bars fs-5" />
             </button>
           </div>
-          <div className="my-auto mx-3">
+          {/* <div className="my-auto mx-3">
             <button className="getApp" effect="ripple">
               Get Our App
             </button>
-          </div>
+          </div> */}
 
           <div>
             <Tippy content="Your available balance, click to know more!">

@@ -1,0 +1,244 @@
+import React, { useEffect, useState } from "react";
+import Header from "../../CommonComponents/Header";
+import PaginationComponent from "../../CommonComponents/PaginationComponent";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+import {
+  backToTop,
+  fileUploadFunction,
+  generalDeleteFunction,
+  generalGetFunction,
+} from "../../GlobalFunction/globalFunction";
+import ContentLoader from "../Misc/ContentLoader";
+import { useSelector } from "react-redux";
+import MusicPlayer from "../../CommonComponents/MusicPlayer";
+
+function Music() {
+  const [music, setMusic] = useState();
+  const account = useSelector((state) => state.account);
+  const [loading, setLoading] = useState(true);
+  const [newMusicPopup, setNewMusicPopup] = useState(false);
+  const [newMusic, setNewMusic] = useState();
+  const [newMusicType, setNewMusicType] = useState();
+  const [pageNumber, setPageNumber] = useState(1);
+  const [refresh, setRefresh] = useState(1);
+  const navigate = useNavigate();
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction(`/sound/all?page=${pageNumber}`);
+      if (apiData.status) {
+        setLoading(false);
+        setMusic(apiData.data);
+      } else {
+        setLoading(false);
+        navigate(-1);
+      }
+    }
+    getData();
+  }, [pageNumber, refresh]);
+
+  //   Handle delete function
+  const handleDelete = async (id) => {
+    setLoading(true);
+    const apiData = await generalDeleteFunction(`/sound/${id}`);
+    if (apiData.status) {
+      const newArray = music.data.filter((item) => item.id !== id);
+      setMusic({ ...music, data: newArray });
+      toast.success(apiData.message);
+      setLoading(false);
+    } else {
+      setLoading(false);
+      toast.error(apiData.message);
+    }
+  };
+
+  //   Handle new music function
+  async function handleNewMusic() {
+    if (newMusic) {
+      const maxSizeInKB = 2048;
+      const fileSizeInKB = newMusic.size / 1024;
+      console.log("This is file size", fileSizeInKB);
+      if (fileSizeInKB > maxSizeInKB) {
+        toast.error("Please choose a file less than 2048 kilobytes.");
+      } else {
+        setLoading(true);
+        const parsedData = new FormData();
+        parsedData.append("path", newMusic);
+        parsedData.append("account_id", account.account_id);
+        parsedData.append("type", newMusicType);
+        const apiData = await fileUploadFunction("/sound/store", parsedData);
+        if (apiData.status) {
+          setLoading(false);
+          setNewMusic();
+          setNewMusicType();
+          setNewMusicPopup(!newMusicPopup);
+          setRefresh(refresh + 1);
+          toast.success(apiData.message);
+        } else {
+          setNewMusicPopup(!newMusicPopup);
+          setLoading(false);
+          toast.error(apiData.message);
+        }
+      }
+    } else {
+      toast.error("Please choose a file");
+    }
+  }
+
+  
+  console.log("This is transition details", music);
+  return (
+    <main className="mainContent">
+      <section id="phonePage">
+        <div className="container-fluid">
+          <div className="row">
+            <Header title="Music Listing" />
+            <div className="col-12" id="subPageHeader">
+              <div className="row px-xl-3 col-12">
+                <div className="col-xl-6 ps-2">
+                  <div className="d-flex justify-content-end">
+                    <button
+                      effect="ripple"
+                      className="panelButton"
+                      onClick={() => {
+                        navigate(-1);
+                        backToTop();
+                      }}
+                    >
+                      Back
+                    </button>
+                    <button
+                      effect="ripple"
+                      className="panelButton"
+                      onClick={() => setNewMusicPopup(!newMusicPopup)}
+                    >
+                      Add New Music
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-12" style={{ overflow: "auto" }}>
+              <div className="tableContainer">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Music</th>
+                      <th>Type</th>
+                      <th>Added Date</th>
+                      <th>Play</th>
+                      <th>Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {music &&
+                      music.data.map((item) => {
+                        return (
+                          <tr>
+                            <td>{item.name}</td>
+                            <td>{item.type}</td>
+                            <td>{item.created_at.split("T")[0]}</td>
+                            <td>
+                              <MusicPlayer audioSrc={"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"} />
+                            </td>
+
+                            <td onClick={() => handleDelete(item.id)}>
+                              <i className="fa-duotone fa-trash"></i>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          {newMusicPopup ? (
+            <div className="popup">
+              <div className="container h-100">
+                <div className="row h-100 justify-content-center align-items-center">
+                  <div className="row content col-xl-4">
+                    <div className="col-2 px-0">
+                      <div className="iconWrapper">
+                        <i className="fa-duotone fa-triangle-exclamation"></i>
+                      </div>
+                    </div>
+                    <div className="col-10 ps-0">
+                      <h4>Warning!</h4>
+                      Please select the file you want to upload
+                      <input
+                        name="reg"
+                        className="formItem"
+                        type="file"
+                        accept="audio/*"
+                        onChange={(e) => setNewMusic(e.target.files[0])}
+                      />
+                      {/* <input
+                        name="reg"
+                        className="formItem"
+                        type="text"
+                        placeholder="Type here"
+                        onChange={(e) => setNewMusicType(e.target.value)}
+                      /> */}
+                        <select
+                          name="reg"
+                          className="formItem"
+                          onChange={(e) => setNewMusicType(e.target.value)}
+                        >
+                          <option value="hold">Hold</option>
+                          <option value="busy">Busy</option>
+                        </select>
+                      <div className="mt-2">
+                        <button
+                          className="panelButton m-0"
+                          onClick={handleNewMusic}
+                        >
+                          Confirm
+                        </button>
+                        <button
+                          className="panelButtonWhite m-0 float-end"
+                          onClick={() => setNewMusicPopup(false)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
+          {loading ? <ContentLoader /> : ""}
+          {music && music.data.length > 0 ? (
+            <PaginationComponent
+              pageNumber={(e) => setPageNumber(e)}
+              totalPage={music.last_page}
+              from={(pageNumber - 1) * music.per_page + 1}
+              to={music.to}
+              total={music.total}
+            />
+          ) : (
+            ""
+          )}
+        </div>
+      </section>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+    </main>
+  );
+}
+
+export default Music;

@@ -73,9 +73,9 @@ import InvoiceList from "./Components/Pages/Billing/InvoiceList";
 import ExpenseList from "./Components/Pages/Billing/ExpenseList";
 import CardTransactionsList from "./Components/Pages/Billing/CardTransactionsList";
 import WalletTransactionsList from "./Components/Pages/Billing/WalletTransactionsList";
-import Voice from "./Components/Pages/Voice/Voice";
 import PhoneDashboard from "./Components/Pages/PhoneDashboard/PhoneDashboard";
 import DidListing from "./Components/Pages/NumberManagement/DidListing";
+import Music from "./Components/Pages/Voice/Music";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -153,7 +153,7 @@ function App() {
             {/* Extensions Path End */}
 
             {/* Voice path start */}
-            <Route path="/voice-music" element={<Voice />} />
+            <Route path="/voice-music" element={<Music />} />
             {/* Voice path End */}
 
             {/* Dialplan path start */}
