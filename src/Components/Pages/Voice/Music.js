@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
@@ -21,12 +20,11 @@ function Music() {
   const [newMusicPopup, setNewMusicPopup] = useState(false);
   const [newMusic, setNewMusic] = useState();
   const [newMusicType, setNewMusicType] = useState();
-  const [pageNumber, setPageNumber] = useState(1);
   const [refresh, setRefresh] = useState(1);
   const navigate = useNavigate();
   useEffect(() => {
     async function getData() {
-      const apiData = await generalGetFunction(`/sound/all?page=${pageNumber}`);
+      const apiData = await generalGetFunction(`/sound/all`);
       if (apiData.status) {
         setLoading(false);
         setMusic(apiData.data);
@@ -36,7 +34,7 @@ function Music() {
       }
     }
     getData();
-  }, [pageNumber, refresh]);
+  }, [ refresh]);
 
   //   Handle delete function
   const handleDelete = async (id) => {
@@ -86,7 +84,6 @@ function Music() {
     }
   }
 
-  
   console.log("This is transition details", music);
   return (
     <main className="mainContent">
@@ -94,30 +91,27 @@ function Music() {
         <div className="container-fluid">
           <div className="row">
             <Header title="Music Listing" />
-            <div className="col-12" id="subPageHeader">
-              <div className="row px-xl-3 col-12">
-                <div className="col-xl-6 ps-2">
-                  <div className="d-flex justify-content-end">
-                    <button
-                      effect="ripple"
-                      className="panelButton"
-                      onClick={() => {
-                        navigate(-1);
-                        backToTop();
-                      }}
-                    >
-                      Back
-                    </button>
-                    <button
-                      effect="ripple"
-                      className="panelButton"
-                      onClick={() => setNewMusicPopup(!newMusicPopup)}
-                    >
-                      Add New Music
-                    </button>
-                  </div>
-                </div>
-              </div>
+            <div
+              className="d-flex flex-wrap px-xl-3 py-2 justify-content-end"
+              id="detailsHeader"
+            >
+              <button
+                effect="ripple"
+                className="panelButton"
+                onClick={() => {
+                  navigate(-1);
+                  backToTop();
+                }}
+              >
+                Back
+              </button>
+              <button
+                effect="ripple"
+                className="panelButton"
+                onClick={() => setNewMusicPopup(!newMusicPopup)}
+              >
+                Add New Music
+              </button>
             </div>
             <div className="col-12" style={{ overflow: "auto" }}>
               <div className="tableContainer">
@@ -133,18 +127,22 @@ function Music() {
                   </thead>
                   <tbody>
                     {music &&
-                      music.data.map((item) => {
+                      music.map((item) => {
                         return (
                           <tr>
                             <td>{item.name}</td>
                             <td>{item.type}</td>
                             <td>{item.created_at.split("T")[0]}</td>
                             <td>
-                              <MusicPlayer audioSrc={"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"} />
+                              <MusicPlayer
+                                audioSrc={
+                                  "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+                                }
+                              />
                             </td>
 
                             <td onClick={() => handleDelete(item.id)}>
-                              <i className="fa-duotone fa-trash"></i>
+                              <i className="fa-duotone fa-trash text-danger fs-6"></i>
                             </td>
                           </tr>
                         );
@@ -166,29 +164,35 @@ function Music() {
                     </div>
                     <div className="col-10 ps-0">
                       <h4>Warning!</h4>
-                      Please select the file you want to upload
-                      <input
-                        name="reg"
-                        className="formItem"
-                        type="file"
-                        accept="audio/*"
-                        onChange={(e) => setNewMusic(e.target.files[0])}
-                      />
-                      {/* <input
+                      <p>Please select the file you want to upload</p>
+                      <div className="row justify-content-between align-items-center">
+                        <div className="col-4">
+                          <select
+                            name="music"
+                            className="formItem"
+                            onChange={(e) => setNewMusicType(e.target.value)}
+                          >
+                            <option value="hold">Hold</option>
+                            <option value="busy">Busy</option>
+                          </select>
+                        </div>
+                        <div className="col-8">
+                          <input
+                            name="reg"
+                            className="formItem"
+                            type="file"
+                            accept="audio/*"
+                            onChange={(e) => setNewMusic(e.target.files[0])}
+                          />
+                        </div>
+                        {/* <input
                         name="reg"
                         className="formItem"
                         type="text"
                         placeholder="Type here"
                         onChange={(e) => setNewMusicType(e.target.value)}
                       /> */}
-                        <select
-                          name="reg"
-                          className="formItem"
-                          onChange={(e) => setNewMusicType(e.target.value)}
-                        >
-                          <option value="hold">Hold</option>
-                          <option value="busy">Busy</option>
-                        </select>
+                      </div>
                       <div className="mt-2">
                         <button
                           className="panelButton m-0"
@@ -212,7 +216,7 @@ function Music() {
             ""
           )}
           {loading ? <ContentLoader /> : ""}
-          {music && music.data.length > 0 ? (
+          {/* {music && music.data.length > 0 ? (
             <PaginationComponent
               pageNumber={(e) => setPageNumber(e)}
               totalPage={music.last_page}
@@ -222,7 +226,7 @@ function Music() {
             />
           ) : (
             ""
-          )}
+          )} */}
         </div>
       </section>
       <ToastContainer

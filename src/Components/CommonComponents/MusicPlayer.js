@@ -16,7 +16,7 @@ const MusicPlayer = ({ audioSrc }) => {
   return (
     <div>
       <audio ref={audioRef} src={audioSrc}></audio>
-      <button onClick={togglePlayPause}>
+      <button onClick={togglePlayPause} className='appPanelButton2 px-2 mx-0'>
         {isPlaying ?  <i className="fa-duotone fa-pause"></i> : <i className="fa-duotone fa-play"></i>}
       </button>
     </div>
