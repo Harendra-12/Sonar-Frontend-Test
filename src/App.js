@@ -76,6 +76,7 @@ import WalletTransactionsList from "./Components/Pages/Billing/WalletTransaction
 import PhoneDashboard from "./Components/Pages/PhoneDashboard/PhoneDashboard";
 import DidListing from "./Components/Pages/NumberManagement/DidListing";
 import Music from "./Components/Pages/Voice/Music";
+import EFax from "./Components/Pages/Fax/EFax";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -198,7 +199,7 @@ function App() {
             <Route path="/rate-card" element={<RateCharge />} />
             <Route path="/edit-rate-charge" element={<RateChargeEdit />} />
             <Route path="/get-did" element={<GetDid />} />
-            <Route path="/did-listing" element={<DidListing/>} />
+            <Route path="/did-listing" element={<DidListing />} />
             {/* Number Management Path End */}
 
             {/* Payment path start */}
@@ -247,6 +248,10 @@ function App() {
               element={<WalletTransactionsList />}
             />
             {/* Billing Pages End */}
+
+            {/* eFax Pages Start */}
+            <Route path="/efax" element={<EFax />} />
+            {/* eFax Pages End */}
           </Route>
           {/* 404 Redirection */}
           <Route path="*" element={<Navigate to="/dashboard" />} />
