@@ -4,7 +4,7 @@ import CallQueueDetails from "./CallQueueDetails"
 import RingGroup from "./RingGroupDetails"
 import { useNavigate } from 'react-router-dom'
 import { generalGetFunction } from '../../GlobalFunction/globalFunction'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Header from '../../CommonComponents/Header'
 import GlobalCalls from '../../GlobalFunction/GlobalCalls'
 import DoughnutChart from '../../CommonComponents/DoughnutChart'
@@ -21,6 +21,8 @@ function PhoneDashboard() {
     const [userList, setUserList] = useState(0)
     const registerUser = useSelector((state) => state.registerUser);
     const loginUser = useSelector((state) => state.loginUser);
+    const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh)
+    const dispatch = useDispatch()
     useEffect(() => {
         async function getData() {
             const apiData = await generalGetFunction(`/extension/search?account=1`, navigate)
@@ -32,6 +34,7 @@ function PhoneDashboard() {
                 setUserList(userApi.data.length)
             }
         }
+        dispatch({ type: "SET_CALLDETAILSREFRESH", callDetailsRefresh: callDetailsRefresh + 1 })
         getData()
     }, [navigate])
     return (

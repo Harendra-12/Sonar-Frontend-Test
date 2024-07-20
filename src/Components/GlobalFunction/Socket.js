@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const Socket = () => {
   const dispatch = useDispatch();
-  const ip = "192.168.1.88";
+  const ip = "192.168.1.87";
   const port = "8093";
   const account = useSelector((state) => state.account);
   const token = localStorage.getItem("token");

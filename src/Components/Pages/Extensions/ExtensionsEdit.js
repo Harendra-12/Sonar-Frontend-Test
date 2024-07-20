@@ -20,6 +20,8 @@ const ExtensionsEdit = () => {
   const [users, setUsers] = useState();
   const [popUp, setPopUp] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [music, setMusic] = useState();
+  const [musicHold, setMusicHold] = useState();
   const [extensionState, setExtensionState] = useState({
     extension: "",
     extensionMissing: false,
@@ -93,6 +95,10 @@ const ExtensionsEdit = () => {
         const apidataUser = await generalGetFunction(
           `/user/search?account=${account.account_id}`
         );
+        const musicData = await generalGetFunction("/sound/all?type=hold");
+        if (musicData.status) {
+          setMusic(musicData.data);
+        }
         if (domain.status) {
           setDomains(
             domain.data.map((item) => {
@@ -148,6 +154,7 @@ const ExtensionsEdit = () => {
             password: apiData.data.password,
             user: apiData.data.user,
           }));
+          setMusicHold(apiData.data.moh);
         } else {
           setLoading(false);
           navigate("/");
@@ -246,6 +253,7 @@ const ExtensionsEdit = () => {
           record: extensionState.record,
           domain: extensionState.domain,
           description: extensionState.desc,
+          moh:musicHold,
           password: extensionState.password,
           ...(extensionState.user === "" || extensionState.user === null
             ? {}
@@ -541,6 +549,36 @@ const ExtensionsEdit = () => {
                 <label htmlFor="data" className="formItemDesc">
                   Define users assigned to this Extension.
                 </label>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Music on Hold</label>
+                </div>
+                <div className="col-12">
+                  <select
+                    value={musicHold}
+                    onChange={(e) => {
+                      setMusicHold(e.target.value);
+                    }}
+                    className="formItem w-100"
+                  >
+                    <option></option>
+                    {music &&
+                      music.map((item, index) => {
+                        return (
+                          <option key={index} value={item.id}>
+                            {item.name}
+                          </option>
+                        );
+                      })}
+                    {/* <option>test</option> */}
+                  </select>
+                  <br />
+                  <label htmlFor="data" className="formItemDesc">
+                    Select the desired hold music.
+                  </label>
+                </div>
               </div>
 
               <div className="formRow col-xl-3">

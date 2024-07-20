@@ -19,7 +19,7 @@ function Music() {
   const [loading, setLoading] = useState(true);
   const [newMusicPopup, setNewMusicPopup] = useState(false);
   const [newMusic, setNewMusic] = useState();
-  const [newMusicType, setNewMusicType] = useState();
+  const [newMusicType, setNewMusicType] = useState("hold");
   const [refresh, setRefresh] = useState(1);
   const navigate = useNavigate();
   useEffect(() => {
@@ -41,8 +41,8 @@ function Music() {
     setLoading(true);
     const apiData = await generalDeleteFunction(`/sound/${id}`);
     if (apiData.status) {
-      const newArray = music.data.filter((item) => item.id !== id);
-      setMusic({ ...music, data: newArray });
+      const newArray = music.filter((item) => item.id !== id);
+      setMusic( newArray );
       toast.success(apiData.message);
       setLoading(false);
     } else {
@@ -63,13 +63,13 @@ function Music() {
         setLoading(true);
         const parsedData = new FormData();
         parsedData.append("path", newMusic);
+        setNewMusicPopup(!newMusicPopup);
         parsedData.append("account_id", account.account_id);
         parsedData.append("type", newMusicType);
         const apiData = await fileUploadFunction("/sound/store", parsedData);
         if (apiData.status) {
           setLoading(false);
           setNewMusic();
-          setNewMusicType();
           setNewMusicPopup(!newMusicPopup);
           setRefresh(refresh + 1);
           toast.success(apiData.message);

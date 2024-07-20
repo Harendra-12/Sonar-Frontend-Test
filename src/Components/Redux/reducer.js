@@ -13,6 +13,7 @@ var cardListRefresh = 0;
 var billingListRefresh = 0;
 var cardList = JSON.parse(localStorage.getItem("cardList"));
 var billingList = JSON.parse(localStorage.getItem("billingList"));
+var callDetailsRefresh = 0;
 
 const initialState = {
   account,
@@ -29,6 +30,7 @@ const initialState = {
   cardList,
   billingList,
   accountDetailsRefresh,
+  callDetailsRefresh,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -59,6 +61,8 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, billingListRefresh: action.billingListRefresh };
     case "SET_BILLINGLIST":
       return { ...state, billingList: action.billingList };
+    case "SET_CALLDETAILSREFRESH":
+      return { ...state, callDetailsRefresh: action.callDetailsRefresh };
     default:
       return state;
   }

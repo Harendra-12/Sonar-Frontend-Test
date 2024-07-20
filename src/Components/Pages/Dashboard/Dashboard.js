@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 // import RingGroup from "./RingGroupDetails"
 import { useNavigate } from 'react-router-dom'
 import { generalGetFunction } from '../../GlobalFunction/globalFunction'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Header from '../../CommonComponents/Header'
 import DoughnutChart from '../../CommonComponents/DoughnutChart'
 import GraphChart from '../../CommonComponents/GraphChart'
@@ -13,6 +13,8 @@ const Dashboard = () => {
     // const [calls, setCalls] = useState(false)
     // const [group, setGroup] = useState(false)
     // const [queue, setQueue] = useState(false)
+    const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh)
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const account = useSelector((state) => state.account)
     const [extensionList, setExtensionList] = useState(0)
@@ -31,6 +33,10 @@ const Dashboard = () => {
                 }
             }
             getData()
+            dispatch({
+                type:"SET_CALLDETAILSREFRESH",
+                callDetailsRefresh:callDetailsRefresh+1
+            })
     }, [account, navigate])
     return (
         <main className="mainContent">

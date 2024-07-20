@@ -10,6 +10,7 @@ function GlobalCalls() {
   const cardListRefresh = useSelector((state) => state.cardListRefresh);
   const billingListRefresh = useSelector((state) => state.billingListRefresh);
   const accountDetailsRefresh = useSelector((state)=>state.accountDetailsRefresh)
+  const callDetailsRefresh = useSelector((state)=>state.callDetailsRefresh)
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -25,11 +26,14 @@ function GlobalCalls() {
           });
         }
       }
-      getData();
+
+      if(callDetailsRefresh>0){
+        getData();
+      }
     } else {
       navigate("/");
     }
-  }, [account]);
+  }, [account,callDetailsRefresh]);
 
   useEffect(() => {
     async function getData() {
