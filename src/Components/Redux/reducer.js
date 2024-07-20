@@ -5,6 +5,7 @@ var loginUser = [];
 var callState = [];
 var channelHangupComplete = [];
 var allCall = [];
+var activeCall = [];
 var tempAccount = JSON.parse(localStorage.getItem("tempAccount"));
 var accountDetails = JSON.parse(localStorage.getItem("accountDetails"));
 var accountDetailsRefresh = 0;
@@ -14,6 +15,7 @@ var billingListRefresh = 0;
 var cardList = JSON.parse(localStorage.getItem("cardList"));
 var billingList = JSON.parse(localStorage.getItem("billingList"));
 var callDetailsRefresh = 0;
+
 
 const initialState = {
   account,
@@ -31,6 +33,7 @@ const initialState = {
   billingList,
   accountDetailsRefresh,
   callDetailsRefresh,
+  activeCall,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -63,6 +66,8 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, billingList: action.billingList };
     case "SET_CALLDETAILSREFRESH":
       return { ...state, callDetailsRefresh: action.callDetailsRefresh };
+    case "SET_ACTIVECALL":
+      return { ...state, activeCall: action.activeCall }; 
     default:
       return state;
   }

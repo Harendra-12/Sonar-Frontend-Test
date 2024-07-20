@@ -77,6 +77,7 @@ import PhoneDashboard from "./Components/Pages/PhoneDashboard/PhoneDashboard";
 import DidListing from "./Components/Pages/NumberManagement/DidListing";
 import Music from "./Components/Pages/Voice/Music";
 import EFax from "./Components/Pages/Fax/EFax";
+import ActiveCalls from "./Components/Pages/PhoneDashboard/ActiveCalls";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -121,6 +122,7 @@ function App() {
             <Route path="/master" element={<Master />} />
             <Route path="/change-password" element={<ChangePassword />} />
             <Route path="/phone-dashboard" element={<PhoneDashboard />} />
+            <Route path="/active-calls" element={<ActiveCalls />} />
 
             {/* Ring Groups Path Start */}
             <Route path="/ring-groups" element={<RingGroups />} />

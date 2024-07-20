@@ -1,9 +1,12 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
 import ContentLoader from '../Misc/ContentLoader';
+import { useNavigate } from 'react-router-dom';
 
 function AllCallsDetails() {
     const callDetails = useSelector((state) => state.allCall)
+    const activeCall = useSelector((state) => state.activeCall)
+    const navigate = useNavigate();
     console.log("This is call details", callDetails);
     return (
         <>
@@ -44,9 +47,9 @@ function AllCallsDetails() {
                                     </div>
                                 </div>
                                 <div className="col-xl-2">
-                                    <div className="itemWrapperb a">
+                                    <div className="itemWrapperb a" onClick={() => navigate('/active-calls')} style={{ cursor: 'pointer' }}>
                                         <div className="heading">Extensions On Calls</div>
-                                        <div className="data-number">0</div>
+                                        <div className="data-number">{activeCall.length}</div>
                                         <div className="label2">Percentage 0%</div>
                                     </div>
                                 </div>
@@ -95,9 +98,9 @@ function AllCallsDetails() {
                                     </div>
                                 </div>
                                 <div className="col-xl-2">
-                                    <div className="itemWrapperb a">
+                                    <div className="itemWrapperb a" onClick={() => navigate('/active-calls')} style={{ cursor: "pointer" }}>
                                         <div className="heading">Extensions On Calls</div>
-                                        <div className="data-number">0</div>
+                                        <div className="data-number">{activeCall.length}</div>
                                         <div className="label2">Percentage 0%</div>
                                     </div>
                                 </div>

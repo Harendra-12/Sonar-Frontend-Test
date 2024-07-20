@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const Socket = () => {
   const dispatch = useDispatch();
-  const ip = "192.168.1.87";
+  const ip = "192.168.1.88";
   const port = "8093";
   const account = useSelector((state) => state.account);
   const token = localStorage.getItem("token");
@@ -18,7 +18,7 @@ const Socket = () => {
         console.log('WebSocket connection successful.');
       };
       socket.onmessage = (event) => {
-        console.log(JSON.parse(event.data));
+        // console.log(JSON.parse(event.data));
         if(typeof(JSON.parse(event.data)) === "string"){
           if(JSON.parse(JSON.parse(event.data))["key"] === "UserRegister"){
             dispatch({
@@ -40,9 +40,16 @@ const Socket = () => {
               type:"SET_CHANNELHANGUP",
               channelHangupComplete:JSON.parse(JSON.parse(event.data))["result"]
             })
+          }else if(JSON.parse(JSON.parse(event.data))["key"]==="activeCalls"){
+            console.log("inside activeCalls",JSON.parse(JSON.parse(event.data))["result"]);
+            dispatch({
+              type:"SET_ACTIVECALL",
+              activeCall:JSON.parse(JSON.parse(event.data))["result"]
+            })
           }
+
         } else {
-          console.log("This is else condition", JSON.parse(event.data));
+          // console.log("This is else condition", JSON.parse(event.data));
         }
       };
 

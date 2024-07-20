@@ -22,6 +22,8 @@ function PhoneDashboard() {
     const registerUser = useSelector((state) => state.registerUser);
     const loginUser = useSelector((state) => state.loginUser);
     const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh)
+    const activeCall = useSelector((state) => state.activeCall)
+    console.log("this is active call", activeCall);
     const dispatch = useDispatch()
     useEffect(() => {
         async function getData() {
@@ -122,9 +124,9 @@ function PhoneDashboard() {
                                     <div className="itemWrapper c">
                                         <div className="heading"><i class="fa-duotone fa-phone-office"></i> Extensions</div>
                                         <div className="data-number">10</div>
-                                        <div className="label">10 Extension on Call</div>
-                                        <div className="label">5 Extension Offline</div>
-                                        <div className="label">12 Extension Online</div>
+                                        <div className="label">{activeCall.length} Extension on Call</div>
+                                        <div className="label">{60-registerUser.length} Extension Offline</div>
+                                        <div className="label">{registerUser.length} Extension Online</div>
                                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/extensions'" effect="ripple"><i className="fa-duotone fa-phone-office"></i> View All Extensions</button> */}
                                     </div>
                                 </div>
@@ -151,8 +153,8 @@ function PhoneDashboard() {
                                     <div className="itemWrapper a">
                                         <div className="heading"><i class="fa-duotone fa-users"></i> Users</div>
                                         <div className="data-number">2</div>
-                                        <div className="label">21 Active Users</div>
-                                        <div className="label">2 Idle Users</div>
+                                        <div className="label">{loginUser.length} Active Users</div>
+                                        <div className="label">{40-loginUser.length} Idle Users</div>
                                         <div className="label">18 Users On Call</div>
                                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/user'" effect="ripple"><i className="fa-duotone fa-users"></i> View All Users</button> */}
                                     </div>
@@ -164,12 +166,12 @@ function PhoneDashboard() {
                             <div className="row">
                                 <div className="col-xl-3">
                                     <div className='wrapper'>
-                                        <DoughnutChart fields={["Online Extension", "Register Extension", "Available Extension"]} percentage={[registerUser.length, extensionList, 69 - extensionList]} centerTitle={`${extensionList}/69`} centerDesc="Extensions Details" colors={['#9999', '#FF6384', '#36A2EB']} />
+                                        <DoughnutChart fields={["Online Extension", "Register Extension", "Available Extension"]} percentage={[registerUser.length, extensionList, 69 - extensionList]} centerTitle={`${extensionList}/60`} centerDesc="Extensions Details" colors={['#9999', '#FF6384', '#36A2EB']} />
                                     </div>
                                 </div>
                                 <div className="col-xl-3">
                                     <div className='wrapper'>
-                                        <DoughnutChart fields={["Online Users", "Registered Users ", "Available Users "]} percentage={[loginUser.length, userList, 10 - userList]} centerTitle={`${userList}/10`} centerDesc="Total Users Available" colors={['#9999', '#FF6384', '#36A2EB']} />
+                                        <DoughnutChart fields={["Online Users", "Registered Users ", "Available Users "]} percentage={[loginUser.length, userList, 10 - userList]} centerTitle={`${userList}/40`} centerDesc="Total Users Available" colors={['#9999', '#FF6384', '#36A2EB']} />
                                     </div>
                                     {/* <div className='circularProgressWrapper'>
                                         <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `50` }}>
