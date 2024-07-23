@@ -242,11 +242,11 @@ function Navbar() {
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
-                         
+
                           <li className="tabItem " effect="ripple">
                             <NavLink to="/phone-dashboard">
                               <div className="iconHolder">
-                                <i class="fa-duotone fa-solid fa-list-dropdown"></i>
+                                <i className="fa-duotone fa-solid fa-list-dropdown"></i>
                               </div>
                               <div className="itemTitle">Phone Dashboard</div>
                             </NavLink>
@@ -268,8 +268,8 @@ function Navbar() {
                               <div className="itemTitle">Voice Music</div>
                             </NavLink>
                           </li>
-                          
-                         
+
+
                         </ul>
                       </div>
                     </div>

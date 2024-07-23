@@ -22,12 +22,12 @@ function EFax() {
                                         effect="ripple"
                                     // onClick={() => setDialpadShow(!dialpadShow)}
                                     >
-                                        <i class="fa-solid fa-message-plus"></i>
+                                        <i className="fa-solid fa-message-plus"></i>
                                     </button>
                                 </div>
                                 <div className="col-auto">
                                     <button className="appPanelButton" effect="ripple">
-                                        <i class="fa-solid fa-gear"></i>
+                                        <i className="fa-solid fa-gear"></i>
                                     </button>
                                 </div>
                             </div>
@@ -74,15 +74,15 @@ function EFax() {
                                             id="headerSearch"
                                             placeholder="Search"
                                         />
-                                        <button className="appPanelButton" effect="ripple">
+                                        {/* <button className="appPanelButton" effect="ripple">
                                             <i className="fa-light fa-calendar-plus" />
-                                        </button>
+                                        </button> */}
                                     </div>
                                     <div className='callList'>
-                                        <div className="text-center callListItem active-item">
+                                        <div className="text-center callListItem">
                                             <h5 className="fw-semibold">Today</h5>
                                         </div>
-                                        <div className="contactListItem filterItem active-item">
+                                        <div className="contactListItem">
                                             <div className="row justify-content-between">
                                                 <div className="col-xl-6 d-flex">
                                                     <div className="profileHolder" id="profileOnline"><i className="fa-light fa-user fs-5"></i></div>
@@ -183,12 +183,12 @@ function EFax() {
                                                 <textarea rows={4} />
                                             </div>
                                             <div className='messageBody'>
-                                                <label><i class="fa-regular fa-link"></i> Attach File(s) (maximum file size is 50 MB)</label>
+                                                <label><i className="fa-regular fa-link"></i> Attach File(s) (maximum file size is 50 MB)</label>
                                                 <div className='inputFileWrapper'>
                                                     <input type="file" />
                                                 </div>
                                             </div>
-                                            <div class="buttonControl">
+                                            <div className="buttonControl">
                                                 <button className='panelButtonWhite'>Cancel</button>
                                                 <button className='panelButton'>Send Later</button>
                                                 <button className='panelButton'>Send Now</button>
@@ -202,7 +202,30 @@ function EFax() {
                                         aria-labelledby="nav-history-tab"
                                         tabIndex={1}
                                     >
-                                        asd2
+                                        <div className="callDetailsList">
+                                            <table className="mt-3">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style={{ color: "#444444" }}>Jan 16, 2022</td>
+                                                        <td>12:46 PM</td>
+                                                        <td className="incoming">
+                                                            <span>Received</span>
+                                                        </td>
+                                                        <td>1 (999) 999-9999</td>
+                                                        <td style={{ color: "#444444" }}>1 Attachment</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style={{ color: "#444444" }}>Jan 16, 2022</td>
+                                                        <td>12:46 PM</td>
+                                                        <td className="outgoing">
+                                                            <span>Sent</span>
+                                                        </td>
+                                                        <td>1 (999) 999-9999</td>
+                                                        <td style={{ color: "#444444" }}>1 Attachment</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

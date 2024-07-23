@@ -203,6 +203,7 @@
     background: linear-gradient(0deg, rgba(67, 159, 221, 1) 0%, rgba(22, 27, 46, 1) 100%);
     border-radius: 5px;
     margin-top: 10px;
+    /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
 }
 
 .mainContentApp .profileInfoHolder .profileHolder {
