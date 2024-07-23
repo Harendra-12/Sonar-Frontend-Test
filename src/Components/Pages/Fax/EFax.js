@@ -31,7 +31,6 @@ function EFax() {
                                     </button>
                                 </div>
                             </div>
-
                             <div className="col-12">
                                 <nav>
                                     <div className="nav nav-tabs">

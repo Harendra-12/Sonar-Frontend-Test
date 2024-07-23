@@ -99,7 +99,25 @@
 .eFaxCompose .newMessageWrapper input[type="file"] {
     border: none;
     margin-bottom: 0;
-    width: 100px;
+    width: 140px;
+    position: relative;
+    padding-left: 30px;
+    padding-bottom: 3px;
+    cursor: pointer;
+}
+
+.eFaxCompose .newMessageWrapper input[type="file"]::after {
+    content: '\f055';
+    font-family: 'FontAwesome';
+    width: 40px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 20px;
+    color: var(--ui-accent)
 }
 
 .eFaxCompose .newMessageWrapper input[type="file"]::file-selector-button {
@@ -107,15 +125,26 @@
 }
 
 .eFaxCompose .newMessageWrapper .inputFileWrapper {
-    width: 150px;
+    width: max-content;
     padding: 5px 10px;
     margin-top: 20px;
     border: 1px solid #ababab;
     border-radius: 50px;
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     background-color: #fff;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.eFaxCompose .newMessageWrapper .inputFileWrapper:hover {
+    background-color: var(--ui-accent);
+    color: #fff;
+}
+
+.eFaxCompose .newMessageWrapper .inputFileWrapper:hover input[type="file"]::after {
+    color: #fff;
 }
 
 .callDetailsList table td {
