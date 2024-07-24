@@ -1,67 +1,83 @@
-.mainContentApp .tab-content .callList{overflow: hidden auto; height: calc(100vh - 150px);}
-.mainContentApp .tab-content .callDetailsList {overflow: auto; height: calc(100vh - 320px)}
-.mainContentApp .tab-content .callListItem{
+.mainContentApp .tab-content .callList {
+    overflow: hidden auto;
+    height: calc(100vh - 167px);
+}
+
+.mainContentApp .tab-content .callDetailsList {
+    overflow: auto;
+    height: calc(100vh - 320px)
+}
+
+.mainContentApp .tab-content .callListItem {
     padding: 10px 10px;
     position: relative;
 }
 
-.mainContentApp .tab-content .callListItem h4{
+.mainContentApp .tab-content .callListItem h4 {
     font-size: 16px !important;
     margin: 0;
 }
-.mainContentApp .tab-content .callListItem h5{
+
+.mainContentApp .tab-content .callListItem h5 {
     font-size: 14px !important;
     margin: 5px 0;
     font-family: Outfit;
     font-weight: 500;
     color: #505050;
 }
-.mainContentApp .tab-content .callListItem h6{
+
+.mainContentApp .tab-content .callListItem h6 {
     font-size: 12px;
     margin: 0;
     font-family: Outfit;
     font-weight: 500;
     color: #505050;
 }
-.mainContentApp .tab-content .callListItem span{
+
+.mainContentApp .tab-content .callListItem span {
     font-size: 16px;
     margin: 0;
     font-family: Outfit;
     font-weight: 500;
     color: #525252;
 }
+
 /* Contact List Item Start*/
-.mainContentApp .tab-content .contactListItem{
+.mainContentApp .tab-content .contactListItem {
     padding: 10px 10px;
     position: relative;
 }
 
-.mainContentApp .tab-content .contactListItem h4{
+.mainContentApp .tab-content .contactListItem h4 {
     font-size: 17px !important;
     margin: 0;
 }
-.mainContentApp .tab-content .contactListItem h5{
+
+.mainContentApp .tab-content .contactListItem h5 {
     font-size: 14px !important;
     margin: 5px 0;
     font-family: Outfit;
     font-weight: 500;
     color: #505050;
 }
-.mainContentApp .tab-content .contactListItem h6{
+
+.mainContentApp .tab-content .contactListItem h6 {
     font-size: 12px;
     margin: 0;
     font-family: Outfit;
     font-weight: 500;
     color: #505050;
 }
-.mainContentApp .tab-content .contactListItem span{
+
+.mainContentApp .tab-content .contactListItem span {
     font-size: 17px;
     margin: 0;
     /* font-family: Outfit !important; */
     font-weight: 500;
     color: var(--ui-accent);
 }
-.mainContentApp .contactListItem .profileHolder{
+
+.mainContentApp .contactListItem .profileHolder {
     width: 50px;
     height: 50px;
     margin: auto 15px auto 0;
@@ -77,7 +93,8 @@
     position: relative;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
-#profileOnline::after{
+
+#profileOnline::after {
     content: '';
     width: 115%;
     height: 115%;
@@ -85,7 +102,8 @@
     border-radius: 50px;
     position: absolute;
 }
-#profileOffline::after{
+
+#profileOffline::after {
     content: '';
     width: 115%;
     height: 115%;
@@ -93,7 +111,8 @@
     border-radius: 50px;
     position: absolute;
 }
-#profileBusy::after{
+
+#profileBusy::after {
     content: '';
     width: 115%;
     height: 117%;
@@ -102,11 +121,13 @@
     position: absolute;
     top: -4px;
 }
+
 /* Contact List Item End */
-.missed h4{
+.missed h4 {
     color: #ff0000;
 }
-.missed::after{
+
+.missed::after {
     content: '\f061';
     font-family: 'Font Awesome 6 Pro';
     position: absolute;
@@ -119,7 +140,8 @@
     transform: rotate(130deg);
     /* background: url(''); */
 }
-.incoming::after{
+
+.incoming::after {
     content: '\f061';
     font-family: 'Font Awesome 6 Pro';
     position: absolute;
@@ -132,7 +154,8 @@
     transform: rotate(130deg);
     /* background: url(''); */
 }
-.outgoing::after{
+
+.outgoing::after {
     content: '\f061';
     font-family: 'Font Awesome 6 Pro';
     position: absolute;
@@ -145,11 +168,12 @@
     transform: rotate(-45deg);
     /* background: url(''); */
 }
+
 .active-item {
     display: block !important;
 }
 
-.mainContentApp .callListItem .profileHolder{
+.mainContentApp .callListItem .profileHolder {
     width: 50px;
     height: 50px;
     margin: auto 15px auto 0;
@@ -164,18 +188,25 @@
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
-.profileHolder img{width: 100%; height: 100%; object-fit: cover; border-radius: 50px;}
 
-
-.mainContentApp .profileInfoHolder{
-    text-align: center;
-    padding: 20px 2px;
-    background: linear-gradient(0deg, rgba(67,159,221,1) 0%, rgba(22,27,46,1) 100%);
-    border-radius: 5px;
-    margin-top: 10px;
+.profileHolder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50px;
 }
 
-.mainContentApp .profileInfoHolder .profileHolder{
+
+.mainContentApp .profileInfoHolder {
+    text-align: center;
+    padding: 20px 2px;
+    background: linear-gradient(0deg, rgba(67, 159, 221, 1) 0%, rgba(22, 27, 46, 1) 100%);
+    border-radius: 5px;
+    margin-top: 10px;
+    /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+}
+
+.mainContentApp .profileInfoHolder .profileHolder {
     width: 70px;
     height: 70px;
     margin: 15px auto;
@@ -191,14 +222,14 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-.mainContentApp .profileInfoHolder h4{
+.mainContentApp .profileInfoHolder h4 {
     color: #fff;
     font-family: Outfit;
     font-size: 20px !important;
     font-weight: 400;
 }
 
-.mainContentApp .profileInfoHolder h5{
+.mainContentApp .profileInfoHolder h5 {
     color: #fff;
     font-family: Outfit;
     font-size: 15px !important;
@@ -206,4 +237,6 @@
 }
 
 /* Filter Item */
-.filterItem{display: none;}
+.filterItem {
+    display: none;
+}

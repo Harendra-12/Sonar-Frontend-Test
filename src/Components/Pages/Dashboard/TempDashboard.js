@@ -22,7 +22,7 @@ function TempDashboard() {
   function handleRefresh(value) {
     setRefreshDetails(value)
   }
-  console.log("This is refresh data",refreshDetails);
+  console.log("This is refresh data", refreshDetails);
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/account/${account.id}`);
@@ -52,14 +52,14 @@ function TempDashboard() {
     getData();
   }, [account?.id, dispatch, navigate, refreshDetails]);
 
-  useEffect(()=>{
-    if(refreshDetails>1){
+  useEffect(() => {
+    if (refreshDetails > 1) {
       setStatusClick("payment")
     }
-  },[refreshDetails])
+  }, [refreshDetails])
 
   // Callback handle for differnt tab
-  function handleCallBack(value){
+  function handleCallBack(value) {
     setStatusClick(value)
   }
 
@@ -167,8 +167,8 @@ function TempDashboard() {
                               : Number(account.company_status) === 2
                                 ? "55"
                                 : Number(account.company_status) === 3
-                                  ?  "65" : Number(account.company_status) === 4 ?
-                                   "85" : "100"
+                                  ? "65" : Number(account.company_status) === 4 ?
+                                    "85" : "100"
                               }%`,
                           }}
                         ></div>

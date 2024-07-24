@@ -161,7 +161,8 @@ table td.incoming::after {
 }
 
 .mainContentApp .callDetails table tbody tr:nth-child(even) {
-    background-color: var(--bg-color);
+    /* background-color: var(--bg-color); */
+    background-color: #fff;
 }
 
 .mainContentApp .callDetails table tbody tr {
@@ -268,8 +269,8 @@ table td.incoming::after {
     font-weight: 300;
 }
 
-.tableDropdownSelect{
-    border:none;
+.tableDropdownSelect {
+    border: none;
     background-color: transparent;
     /* padding: 5px 10px; */
     font-size: 13px;
