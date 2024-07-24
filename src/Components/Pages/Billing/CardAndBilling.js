@@ -91,8 +91,8 @@ function CardAndBilling() {
         } else {
           setCardConfirmationPopUp(false);
           setLoading(false);
-          const errorMessage = Object.keys(apiData.error);
-          toast.error(apiData.error[errorMessage[0]][0]);
+          const errorMessage = Object.keys(apiData.errors);
+          toast.error(apiData.errors[errorMessage[0]][0]);
         }
       } else {
         const parsedData = {
@@ -117,8 +117,8 @@ function CardAndBilling() {
         } else {
           setCardConfirmationPopUp(false);
           setLoading(false);
-          const errorMessage = Object.keys(apiData.error);
-          toast.error(apiData.error[errorMessage[0]][0]);
+          const errorMessage = Object.keys(apiData.errors);
+          toast.error(apiData.errors[errorMessage[0]][0]);
         }
       }
     } else {
@@ -146,8 +146,8 @@ function CardAndBilling() {
         } else {
           setBillingConfirmationPopUp(false);
           setLoading(false);
-          const errorMessage = Object.keys(apiData.error);
-          toast.error(apiData.error[errorMessage[0]][0]);
+          const errorMessage = Object.keys(apiData.errors);
+          toast.error(apiData.errors[errorMessage[0]][0]);
         }
       } else {
         const parsedData = {
@@ -173,8 +173,8 @@ function CardAndBilling() {
         } else {
           setBillingConfirmationPopUp(false);
           setLoading(false);
-          const errorMessage = Object.keys(apiData.error);
-          toast.error(apiData.error[errorMessage[0]][0]);
+          const errorMessage = Object.keys(apiData.errors);
+          toast.error(apiData.errors[errorMessage[0]][0]);
         }
       }
     }
@@ -289,8 +289,8 @@ function CardAndBilling() {
         });
       } else {
         setLoading(false)
-        const errorMessage = Object.keys(apiData.error);
-        toast.error(apiData.error[errorMessage[0]][0]);
+        const errorMessage = Object.keys(apiData.errors);
+        toast.error(apiData.errors[errorMessage[0]][0]);
       }
     }
   }
@@ -309,8 +309,8 @@ function CardAndBilling() {
       toast.success(apiData.message)
     } else {
       setLoading(false);
-      const errorMessage = Object.keys(apiData.error);
-      toast.error(apiData.error[errorMessage[0]][0]);
+      const errorMessage = Object.keys(apiData.errors);
+      toast.error(apiData.errors[errorMessage[0]][0]);
     }
   }
 
@@ -331,8 +331,8 @@ function CardAndBilling() {
     } else {
       setCardDelPopUp(false)
       setLoading(false);
-      const errorMessage = Object.keys(apiData.error);
-      toast.error(apiData.error[errorMessage[0]][0]);
+      const errorMessage = Object.keys(apiData.errors);
+      toast.error(apiData.errors[errorMessage[0]][0]);
     }
   }
   return (

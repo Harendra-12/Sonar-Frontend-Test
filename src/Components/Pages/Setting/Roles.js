@@ -67,8 +67,8 @@ function Roles() {
           setAddRole(false);
         } else {
           setLoading(false);
-          const errorMessage = Object.keys(apiData.error);
-          toast.error(apiData.error[errorMessage[0]][0]);
+          const errorMessage = Object.keys(apiData.errors);
+          toast.error(apiData.errors[errorMessage[0]][0]);
         }
       }
     } else if (editClick) {
@@ -91,8 +91,8 @@ function Roles() {
           setEditIndex();
         } else {
           setLoading(false);
-          const errorMessage = Object.keys(apiData.error);
-          toast.error(apiData.error[errorMessage[0]][0]);
+          const errorMessage = Object.keys(apiData.errors);
+          toast.error(apiData.errors[errorMessage[0]][0]);
         }
       }
     } else {
@@ -107,8 +107,8 @@ function Roles() {
         setLoading(false);
       } else {
         setLoading(false);
-        const errorMessage = Object.keys(apiData.error);
-        toast.error(apiData.error[errorMessage[0]][0]);
+        const errorMessage = Object.keys(apiData.errors);
+        toast.error(apiData.errors[errorMessage[0]][0]);
       }
     }
   }
@@ -138,8 +138,8 @@ function Roles() {
       toast.success(apiData.message);
     } else {
       setLoading(false);
-      const errorMessage = Object.keys(apiData.error);
-      toast.error(apiData.error[errorMessage[0]][0]);
+      const errorMessage = Object.keys(apiData.errors);
+      toast.error(apiData.errors[errorMessage[0]][0]);
     }
   }
 

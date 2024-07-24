@@ -128,8 +128,8 @@ function BillingCardSave({ closePopup }) {
         }, 2000);
       } else {
         setLoading(false);
-        const errorMessage = Object.keys(apiData.error);
-        toast.error(apiData.error[errorMessage[0]][0]);
+        const errorMessage = Object.keys(apiData.errors);
+        toast.error(apiData.errors[errorMessage[0]][0]);
       }
     }
   }
