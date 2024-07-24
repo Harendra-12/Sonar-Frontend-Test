@@ -445,8 +445,8 @@ const RingGroupAdd = () => {
         });
         toast.success(apiData.message);
       } else {
-        const errorMessage = Object.keys(apiData.error);
-        toast.error(apiData.error[errorMessage[0]][0]);
+        const errorMessage = Object.keys(apiData.errors);
+        toast.error(apiData.errors[errorMessage[0]][0]);
       }
     }
   }

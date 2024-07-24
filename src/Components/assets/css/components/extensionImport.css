@@ -71,14 +71,19 @@
 }
 
 .formLabel .status.missing {
-    color: #ffa500;
+    color: #fd4800;
 }
-
+.formItem.missing{
+    border: 1px solid #fd4800;
+}
+.formItem.error{
+    border: 1px solid red;
+}
 .formLabel .status.missing::before {
     content: '\f06a';
     font-size: 14px;
     font-weight: 600;
-    color: #ffa500;
+    color: #fd4800;
     font-family: 'Font Awesome 6 Pro';
     margin-right: 3px;
 }

@@ -319,7 +319,7 @@ function CardAndBilling() {
   const [cardDelId, setCardDelId] = useState()
   async function handleCardDelete() {
     setLoading(true)
-    const apiData = await generalDeleteFunction(`/remove-card/destroy/${cardDelId}`)
+    const apiData = await generalDeleteFunction(`/card/destroy/${cardDelId}`)
     if (apiData.status) {
       setLoading(false);
       toast.success(apiData.message)

@@ -14,6 +14,8 @@ const Dashboard = () => {
     // const [group, setGroup] = useState(false)
     // const [queue, setQueue] = useState(false)
     const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh)
+    const accountDetails = useSelector((state) => state.accountDetails)
+    console.log("This is account details",accountDetails);
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const account = useSelector((state) => state.account)
@@ -61,37 +63,37 @@ const Dashboard = () => {
                                         <div className="col-xl-3">
                                             <div className="itemWrapper a">
                                                 <div className="heading"><i className="fa-duotone fa-phone-office"></i> Handled Calls</div>
-                                                <div className="data-number">2</div>
-                                                <div className="label">21 Inbound (Answered)</div>
+                                                <div className="data-number">0</div>
+                                                <div className="label">0 Inbound (Answered)</div>
                                                 <div className="label">0 Connected Callbacks</div>
-                                                <div className="label">17 Outbound (Connected)</div>
+                                                <div className="label">0 Outbound (Connected)</div>
                                                 {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/user'" effect="ripple"><i className="fa-duotone fa-users"></i> View All Users</button> */}
                                             </div>
                                         </div>
                                         <div className="col-xl-3">
                                             <div className="itemWrapper b">
                                                 <div className="heading"><i className="fa-duotone fa-clock"></i> Total Minutes</div>
-                                                <div className="data-number">1075</div>
-                                                <div className="label">21 Inbound (Answered)</div>
-                                                <div className="label">17 Outbound (Connected)</div>
+                                                <div className="data-number">0</div>
+                                                <div className="label">0 Inbound (Answered)</div>
+                                                <div className="label">0 Outbound (Connected)</div>
                                                 {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/extensions'" effect="ripple"><i className="fa-duotone fa-phone-office"></i> View All Extensions</button> */}
                                             </div>
                                         </div>
                                         <div className="col-xl-3">
                                             <div className="itemWrapper c">
                                                 <div className="heading"><i className="fa-duotone fa-phone-missed"></i> Missed Calls</div>
-                                                <div className="data-number">5</div>
-                                                <div className="label">1 Voicecall Missed</div>
-                                                <div className="label">4 Calls Missed</div>
+                                                <div className="data-number">0</div>
+                                                <div className="label">0 Voicecall Missed</div>
+                                                <div className="label">0 Calls Missed</div>
                                                 {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/devices'" effect="ripple"><i className="fa-duotone fa-mobile-retro"></i> View All Devices</button> */}
                                             </div>
                                         </div>
                                         <div className="col-xl-3">
                                             <div className="itemWrapper d">
                                                 <div className="heading"><i className="fa-duotone fa-phone-xmark"></i> Abandoned Calls</div>
-                                                <div className="data-number">5</div>
-                                                <div className="label">1 Internal Call</div>
-                                                <div className="label">4 External Calls</div>
+                                                <div className="data-number">0</div>
+                                                <div className="label">0 Internal Call</div>
+                                                <div className="label">0 External Calls</div>
                                                 {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/devices'" effect="ripple"><i className="fa-duotone fa-mobile-retro"></i> View All Devices</button> */}
                                             </div>
                                         </div>
@@ -260,12 +262,12 @@ const Dashboard = () => {
                             <div className="row">
                                 <div className="col-xl-3">
                                     <div className='wrapper'>
-                                        <DoughnutChart fields={["Online Extension", "Register Extension","Available Extension"]} percentage={[registerUser.length,extensionList, 69-extensionList]} centerTitle={`${extensionList}/69`} centerDesc="Extensions Details" colors={['#9999','#FF6384', '#36A2EB']} />
+                                        <DoughnutChart fields={["Online Extension", "Register Extension","Available Extension"]} percentage={[registerUser.length,extensionList, Number(accountDetails.package.number_of_user)-extensionList]} centerTitle={`${extensionList}/${Number(accountDetails.package.number_of_user)}`} centerDesc="Extensions Details" colors={['#9999','#FF6384', '#36A2EB']} />
                                     </div>
                                 </div>
                                 <div className="col-xl-3">
                                     <div className='wrapper'>
-                                        <DoughnutChart fields={["Online Users", "Registered Users ","Available Users "]} percentage={[loginUser.length,userList, 10-userList]} centerTitle={`${userList}/10`} centerDesc="Total Users Available" colors={['#9999','#FF6384', '#36A2EB']} />
+                                        <DoughnutChart fields={["Online Users", "Registered Users ","Available Users "]} percentage={[loginUser.length,userList, Number(accountDetails.package.number_of_user)-userList]} centerTitle={`${userList}/${Number(accountDetails.package.number_of_user)}`} centerDesc="Total Users Available" colors={['#9999','#FF6384', '#36A2EB']} />
                                     </div>
                                     {/* <div className='circularProgressWrapper'>
                                         <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `50` }}>
@@ -287,7 +289,7 @@ const Dashboard = () => {
                                 </div>
                                 <div className="col-xl-6">
                                     <div className='wrapper'>
-                                        <GraphChart fields={["Available Extension", "Registered Extension"]} percentage={[(69 - extensionList) * 100 / 69, extensionList * 100 / 69]} centerTitle={`${extensionList}/69`} centerDesc="Total Extensions" colors={['#f18f01', '#36A2EB']} />
+                                        <GraphChart fields={["Available Extension", "Registered Extension"]} percentage={[(Number(accountDetails.package.number_of_user) - extensionList) * 100 / Number(accountDetails.package.number_of_user), extensionList * 100 / Number(accountDetails.package.number_of_user)]} centerTitle={`${extensionList}/${Number(accountDetails.package.number_of_user)}`} centerDesc="Total Extensions" colors={['#f18f01', '#36A2EB']} />
                                     </div>
                                 </div>
                             </div>

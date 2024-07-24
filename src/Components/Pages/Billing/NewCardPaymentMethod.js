@@ -273,7 +273,7 @@ function NewCardPaymentMethod({
             type: "card",
             account_id: account.account_id,
             address_id: selectedBillId,
-            // amount: cardDetails.amount,
+            amount: cardDetails.amount,
             card_number: cardDetails.cardNumber.split(" ").join(""),
             name: cardDetails.cardName,
             save_card: saveCard,
