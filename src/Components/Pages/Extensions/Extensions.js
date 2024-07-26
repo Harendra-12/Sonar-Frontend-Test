@@ -120,10 +120,12 @@ const Extensions = () => {
                       extension.data.map((item, index) => {
                         return (
                           <tr key={index}>
-                            <td>
-                              <Link to="/extensions-edit" onClick={backToTop}>
+                            <td onClick={() =>
+                                navigate(`/extensions-edit?id=${item.id}`)
+                              }>
+                             
                                 {item.extension}
-                              </Link>
+                             
                             </td>
                             <td
                               onClick={() =>

@@ -96,7 +96,7 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
         } else {
           setLoading(false);
           // navigate("/card-details");
-          // const errorMessage = Object.keys(apiData.error);
+          // const errorMessage = Object.keys(apiData.errors);
           toast.error(apiData.error);
         }
       }else{
@@ -122,7 +122,7 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
       } else {
         setLoading(false);
         navigate("/card-details");
-        // const errorMessage = Object.keys(apiData.error);
+        // const errorMessage = Object.keys(apiData.errors);
         toast.error(apiData.error);
       }
       }
