@@ -171,7 +171,16 @@ function EFax() {
                                             </div>
                                             <div className='messageTo'>
                                                 <label>To</label>
-                                                <input type='text' placeholder='Recipents' />
+                                                <div className='d-flex'>
+                                                    <div className='col-auto'>
+                                                        <div style={{ width: 'max-content' }}>
+                                                            <button class="receipentButton">johndoe@email.com</button>
+                                                        </div>
+                                                    </div>
+                                                    <div className='col-auto my-auto'>
+                                                        <input type='text' placeholder='Recipents' className='border-0 mb-0' />
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div className='messageSubject'>
                                                 <label>Cover Page</label>

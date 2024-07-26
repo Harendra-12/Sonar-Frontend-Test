@@ -68,6 +68,43 @@
     /* display: flex;
     justify-content: space-between;
     align-items: center; */
+    border-bottom: 1px solid var(--color4);
+    position: relative;
+}
+
+.eFaxCompose .newMessageWrapper .messageTo .receipentButton {
+    background-color: #fff;
+    color: #757575;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    border-radius: 50px;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    transition: 0.3s;
+    position: relative;
+    max-width: 170px;
+    overflow: hidden;
+    text-wrap: nowrap;
+    word-break: break-word;
+    text-overflow: ellipsis;
+}
+
+.eFaxCompose .newMessageWrapper .messageTo .receipentButton:hover {
+    background-color: rgb(255, 98, 98);
+    color: #fff;
+    padding-left: 30px;
+}
+
+.eFaxCompose .newMessageWrapper .messageTo .receipentButton:hover::after {
+    content: '\f055';
+    font-family: 'FontAwesome';
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translate(0, -50%) rotateZ(45deg);
+    width: 20px;
+    color: #fff;
 }
 
 .eFaxCompose .newMessageWrapper .messageSubject {
