@@ -11,7 +11,7 @@ const CallQueueDetails = () => {
           <div className="col-xl-1b">
             <div className="itemWrapperb a">
               <div className="heading">Queue Name</div>
-              <div className="data-number" style={{ fontSize: "22px" }}>
+              <div className="data-number" style={{ fontSize: "19px" }}>
                 XYZ.ABC.123
               </div>
               <div className="label2">N/A</div>
@@ -78,7 +78,7 @@ const CallQueueDetails = () => {
           <div className="col-xl-1b">
             <div className="itemWrapperb a">
               <div className="heading">Queue Name</div>
-              <div className="data-number" style={{ fontSize: "22px" }}>
+              <div className="data-number" style={{ fontSize: "19px" }}>
                 XYZ.ABC.123
               </div>
               <div className="label2">N/A</div>
@@ -145,7 +145,7 @@ const CallQueueDetails = () => {
           <div className="col-xl-1b">
             <div className="itemWrapperb a">
               <div className="heading">Queue Name</div>
-              <div className="data-number" style={{ fontSize: "22px" }}>
+              <div className="data-number" style={{ fontSize: "19px" }}>
                 XYZ.ABC.123
               </div>
               <div className="label2">N/A</div>

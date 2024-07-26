@@ -286,107 +286,105 @@ function DestinationEdit() {
         <section id="phonePage">
           <div className="container-fluid px-0">
             <div className="row justify-content-center" id="subPageHeader">
-              
-                  <div className="col-xl-9 my-auto">
-                    <h4 className="my-auto">Destination Add</h4>
-                    <p className="pt-2 mt-1 mb-0">
-                      Inbound destinations are the DID/DDI, DNIS or Alias for
-                      inbound calls.
-                    </p>
-                  </div>
-                  <div className="col-xl-3 ps-2">
-                    <div className="d-flex justify-content-end">
-                      <button
-                        effect="ripple"
-                        className="panelButton"
-                        onClick={() => {
-                          navigate(-1);
-                          backToTop();
-                        }}
-                      >
-                        Back
-                      </button>
-                      <button
-                        effect="ripple"
-                        className="panelButton"
-                        onClick={handleSubmit}
-                      >
-                        Save
-                      </button>
-                    </div>
-                  </div>
+
+              <div className="col-xl-9 my-auto">
+                <h4 className="my-auto">Destination Add</h4>
+                <p className="pt-2 mt-1 mb-0">
+                  Inbound destinations are the DID/DDI, DNIS or Alias for
+                  inbound calls.
+                </p>
+              </div>
+              <div className="col-xl-3 ps-2">
+                <div className="d-flex justify-content-end">
+                  <button
+                    effect="ripple"
+                    className="panelButton"
+                    onClick={() => {
+                      navigate(-1);
+                      backToTop();
+                    }}
+                  >
+                    Back
+                  </button>
+                  <button
+                    effect="ripple"
+                    className="panelButton"
+                    onClick={handleSubmit}
+                  >
+                    Save
+                  </button>
                 </div>
               </div>
-              <div className="col-xl-12" style={{ overflow: "auto" }}>
-                {loading ? (
-                  <div colSpan={99}>
-                    <CircularLoader />
+            </div>
+          </div>
+          <div className="col-xl-12" style={{ overflow: "auto" }}>
+            {loading ? (
+              <div colSpan={99}>
+                <CircularLoader />
+              </div>
+            ) : (
+              ""
+            )}
+            <div className="mx-2" id="detailsContent">
+              <form className="row">
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="">Type</label>
                   </div>
-                ) : (
-                  ""
-                )}
-                <div className="mx-2" id="detailsContent">
-                  <form className="row">
-                    <div className="formRow col-xl-3">
-                      <div className="formLabel">
-                        <label htmlFor="">Type</label>
-                      </div>
-                      <div className="col-12">
-                        <select
-                          className="formItem"
-                          name=""
-                          id="selectFormRow"
-                          value={destination.type}
-                          onChange={(e) => {
-                            setDestination((prevState) => ({
-                              ...prevState,
-                              type: e.target.value,
-                            }));
-                          }}
-                          disabled
-                        >
-                          <option value="Inbound">Inbound</option>
-                          <option value="Outbound">Outbound</option>
-                          <option value="Local">Local</option>
-                        </select>
-                        <br />
-                        <label htmlFor="data" className="formItemDesc">
-                          Select the type.
-                        </label>
-                      </div>
-                    </div>
-                    <div className="formRow col-xl-3">
-                      <div className="formLabel">
-                        <label htmlFor="">Country Code</label>
-                        {destination.countryCodeMissing ? (
-                          <label className="status missing">
-                            Field missing
-                          </label>
-                        ) : (
-                          ""
-                        )}
-                      </div>
-                      <div className="col-12">
-                        <input
-                          type="text"
-                          name="extension"
-                          className="formItem"
-                          value={destination.countryCode}
-                          onChange={(e) => {
-                            setDestination((prevState) => ({
-                              ...prevState,
-                              countryCode: e.target.value,
-                            }));
-                          }}
-                          required="required"
-                        />
-                      </div>
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        Enter the country code.
+                  <div className="col-12">
+                    <select
+                      className="formItem"
+                      name=""
+                      id="selectFormRow"
+                      value={destination.type}
+                      onChange={(e) => {
+                        setDestination((prevState) => ({
+                          ...prevState,
+                          type: e.target.value,
+                        }));
+                      }}
+                      disabled
+                    >
+                      <option value="Inbound">Inbound</option>
+                      <option value="Outbound">Outbound</option>
+                      <option value="Local">Local</option>
+                    </select>
+                  </div>
+                  <label htmlFor="data" className="formItemDesc">
+                    Select the type.
+                  </label>
+                </div>
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="">Country Code</label>
+                    {destination.countryCodeMissing ? (
+                      <label className="status missing">
+                        Field missing
                       </label>
-                    </div>
-                    {/* <div className="formRow col-xl-3">
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="col-12">
+                    <input
+                      type="text"
+                      name="extension"
+                      className="formItem"
+                      value={destination.countryCode}
+                      onChange={(e) => {
+                        setDestination((prevState) => ({
+                          ...prevState,
+                          countryCode: e.target.value,
+                        }));
+                      }}
+                      required="required"
+                    />
+                  </div>
+                  <label htmlFor="data" className="formItemDesc">
+                    Enter the country code.
+                  </label>
+                </div>
+                {/* <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Trunk Prefix</label>
                       </div>
@@ -400,12 +398,12 @@ function DestinationEdit() {
                           required="required"
                         />
                       </div>
-                      <br />
+                      
                       <label htmlFor="data" className="formItemDesc">
                         Enter the trunk prefix.
                       </label>
                     </div> */}
-                    {/* <div className="formRow col-xl-3">
+                {/* <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Area Code</label>
                       </div>
@@ -419,43 +417,43 @@ function DestinationEdit() {
                           required="required"
                         />
                       </div>
-                      <br />
+                      
                       <label htmlFor="data" className="formItemDesc">
                         Enter the area code.
                       </label>
                     </div> */}
-                    <div className="formRow col-xl-3">
-                      <div className="formLabel">
-                        <label htmlFor="">Destination</label>
-                        {destination.destinationMissing ? (
-                          <label className="status missing">
-                            Field missing
-                          </label>
-                        ) : (
-                          ""
-                        )}
-                      </div>
-                      <div className="col-12">
-                        <input
-                          type="text"
-                          name="extension"
-                          value={destination.destination}
-                          className="formItem"
-                          onChange={(e) => {
-                            setDestination((prevState) => ({
-                              ...prevState,
-                              destination: e.target.value,
-                            }));
-                          }}
-                          required="required"
-                        />
-                      </div>
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        Enter the destination.
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="">Destination</label>
+                    {destination.destinationMissing ? (
+                      <label className="status missing">
+                        Field missing
                       </label>
-                    </div>
-                    {/* <div className="formRow col-xl-3">
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="col-12">
+                    <input
+                      type="text"
+                      name="extension"
+                      value={destination.destination}
+                      className="formItem"
+                      onChange={(e) => {
+                        setDestination((prevState) => ({
+                          ...prevState,
+                          destination: e.target.value,
+                        }));
+                      }}
+                      required="required"
+                    />
+                  </div>
+
+                  <label htmlFor="data" className="formItemDesc">
+                    Enter the destination.
+                  </label>
+                </div>
+                {/* <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Condition</label>
                       </div>
@@ -474,98 +472,98 @@ function DestinationEdit() {
                           required="required"
                         />
                       </div>
-                      <br />
+                      
                       <label htmlFor="data" className="formItemDesc">
                         Enter the destination condition.
                       </label>
                     </div> */}
-                    {destination.type === "Inbound" ? (
-                      <>
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label htmlFor="">Caller ID Name</label>
-                          </div>
-                          <div className="col-12">
-                            <input
-                              type="text"
-                              name="extension"
-                              value={destination.callerIdName}
-                              className="formItem"
-                              onChange={(e) => {
-                                setDestination((prevState) => ({
-                                  ...prevState,
-                                  callerIdName: e.target.value,
-                                }));
-                              }}
-                              required="required"
-                            />
-                          </div>
-                          <br />
-                          <label htmlFor="data" className="formItemDesc">
-                            Enter the caller ID name.
-                          </label>
-                        </div>
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label htmlFor="">Caller ID Number</label>
-                          </div>
-                          <div className="col-12">
-                            <input
-                              type="text"
-                              name="extension"
-                              value={destination.callerIdNumber}
-                              className="formItem"
-                              onChange={(e) => {
-                                setDestination((prevState) => ({
-                                  ...prevState,
-                                  callerIdNumber: e.target.value,
-                                }));
-                              }}
-                              required="required"
-                            />
-                          </div>
-                          <br />
-                          <label htmlFor="data" className="formItemDesc">
-                            Enter the caller ID number.
-                          </label>
-                        </div>
-                      </>
-                    ) : (
-                      ""
-                    )}
-
+                {destination.type === "Inbound" ? (
+                  <>
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="">Context</label>
-                        {destination.contextMissing ? (
-                          <label className="status missing">
-                            Field missing
-                          </label>
-                        ) : (
-                          ""
-                        )}
+                        <label htmlFor="">Caller ID Name</label>
                       </div>
                       <div className="col-12">
                         <input
                           type="text"
                           name="extension"
-                          value={destination.context}
+                          value={destination.callerIdName}
                           className="formItem"
                           onChange={(e) => {
                             setDestination((prevState) => ({
                               ...prevState,
-                              context: e.target.value,
+                              callerIdName: e.target.value,
                             }));
                           }}
                           required="required"
                         />
                       </div>
-                      <br />
+
                       <label htmlFor="data" className="formItemDesc">
-                        Enter the context.
+                        Enter the caller ID name.
                       </label>
                     </div>
-                    {/* <div className="formRow">
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="">Caller ID Number</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          name="extension"
+                          value={destination.callerIdNumber}
+                          className="formItem"
+                          onChange={(e) => {
+                            setDestination((prevState) => ({
+                              ...prevState,
+                              callerIdNumber: e.target.value,
+                            }));
+                          }}
+                          required="required"
+                        />
+                      </div>
+
+                      <label htmlFor="data" className="formItemDesc">
+                        Enter the caller ID number.
+                      </label>
+                    </div>
+                  </>
+                ) : (
+                  ""
+                )}
+
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="">Context</label>
+                    {destination.contextMissing ? (
+                      <label className="status missing">
+                        Field missing
+                      </label>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="col-12">
+                    <input
+                      type="text"
+                      name="extension"
+                      value={destination.context}
+                      className="formItem"
+                      onChange={(e) => {
+                        setDestination((prevState) => ({
+                          ...prevState,
+                          context: e.target.value,
+                        }));
+                      }}
+                      required="required"
+                    />
+                  </div>
+
+                  <label htmlFor="data" className="formItemDesc">
+                    Enter the context.
+                  </label>
+                </div>
+                {/* <div className="formRow">
                 <div className="formLabel">
                   <label htmlFor="">Conditions</label>
                 </div>
@@ -611,56 +609,56 @@ function DestinationEdit() {
                   >
                     <i className="fa-regular fa-caret-left" />
                   </button>
-                  <br />
+                  
                   <label htmlFor="data" className="formItemDesc">
                     If the condition matches perform the action.
                   </label>
                 </div>
               </div> */}
-                    <div className="formRow col-xl-3">
-                      <div className="formLabel">
-                        <label htmlFor="">Actions</label>
-                        {destination.actionMissing ? (
-                          <label className="status missing">
-                            Field missing
-                          </label>
-                        ) : (
-                          ""
-                        )}
-                      </div>
-                      <div className="col-12">
-                        <select
-                          className="formItem"
-                          name=""
-                          id="selectFormRow"
-                          value={destination.action}
-                          onChange={(e) => {
-                            setDestination((prevState) => ({
-                              ...prevState,
-                              action: e.target.value,
-                            }));
-                          }}
-                        >
-                          <option selected="" />
-                          <optgroup label="Extension" disabled />
-                          {extension &&
-                            extension.map((item, key) => {
-                              return (
-                                <option key={key} value={item.extension}>
-                                  {item.extension}
-                                </option>
-                              );
-                            })}
-                          <optgroup label="Ring Group" disabled />
-                          {ringGroup &&
-                            ringGroup.map((item, key) => {
-                              return (
-                                <option key={key} value={item.extension}>
-                                  {item.extension}
-                                </option>
-                              );
-                            })}
-                          {/* <option value={210}>210</option>
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="">Actions</label>
+                    {destination.actionMissing ? (
+                      <label className="status missing">
+                        Field missing
+                      </label>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="col-12">
+                    <select
+                      className="formItem"
+                      name=""
+                      id="selectFormRow"
+                      value={destination.action}
+                      onChange={(e) => {
+                        setDestination((prevState) => ({
+                          ...prevState,
+                          action: e.target.value,
+                        }));
+                      }}
+                    >
+                      <option selected="" />
+                      <optgroup label="Extension" disabled />
+                      {extension &&
+                        extension.map((item, key) => {
+                          return (
+                            <option key={key} value={item.extension}>
+                              {item.extension}
+                            </option>
+                          );
+                        })}
+                      <optgroup label="Ring Group" disabled />
+                      {ringGroup &&
+                        ringGroup.map((item, key) => {
+                          return (
+                            <option key={key} value={item.extension}>
+                              {item.extension}
+                            </option>
+                          );
+                        })}
+                      {/* <option value={210}>210</option>
                           <option value={220}>220</option>
                           <option value={230}>230</option>
                           <option value={240}>240</option>
@@ -670,415 +668,408 @@ function DestinationEdit() {
                           <option value={280}>280</option>
                           <option value={290}>290</option>
                           <option value={300}>300</option> */}
-                        </select>
-
-                        <br />
-                        <label htmlFor="data" className="formItemDesc">
-                          Add additional actions.
-                        </label>
-                      </div>
-                    </div>
-                    {destination.type === "Inbound" ? (
-                      <>
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label htmlFor="">User</label>
-                          </div>
-                          <div className="col-12">
-                            <select
-                              className="formItem"
-                              name=""
-                              id="selectFormRow"
-                              value={destination.user}
-                              onChange={(e) => {
-                                setDestination((prevState) => ({
-                                  ...prevState,
-                                  user: e.target.value,
-                                }));
-                              }}
-                            >
-                              <option value=""></option>
-                              {users &&
-                                users.map((item, key) => {
-                                  return (
-                                    <option key={key} value={item.id}>
-                                      {item.username}
-                                    </option>
-                                  );
-                                })}
-                            </select>
-                            <br />
-                            <label htmlFor="data" className="formItemDesc">
-                              Assign this destination to a user.
-                            </label>
-                          </div>
-                        </div>
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label htmlFor="">Group</label>
-                          </div>
-                          <div className="col-12">
-                            <select
-                              className="formItem"
-                              name=""
-                              id="selectFormRow"
-                              value={destination.group}
-                              onChange={(e) => {
-                                setDestination((prevState) => ({
-                                  ...prevState,
-                                  group: e.target.value,
-                                }));
-                              }}
-                            >
-                              <option selected="" />
-                              {ringGroup &&
-                                ringGroup.map((item, key) => {
-                                  return (
-                                    <option key={key} value={item.name}>
-                                      {item.name}
-                                    </option>
-                                  );
-                                })}
-
-                              {/* <option value="agent">agent</option>
-                              <option value="fax">fax</option>
-                              <option value="public">public</option> */}
-                            </select>
-                            <br />
-                            <label htmlFor="data" className="formItemDesc">
-                              Assign this destination to a group.
-                            </label>
-                          </div>
-                        </div>
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label htmlFor="">Caller ID Name Prefix</label>
-                          </div>
-                          <div className="col-12">
-                            <input
-                              type="text"
-                              name="extension"
-                              value={destination.callerIdNamePrefix}
-                              className="formItem"
-                              onChange={(e) => {
-                                setDestination((prevState) => ({
-                                  ...prevState,
-                                  callerIdNamePrefix: e.target.value,
-                                }));
-                              }}
-                              required="required"
-                            />
-                            <br />
-                            <label htmlFor="data" className="formItemDesc">
-                              Set a prefix on the caller ID name.
-                            </label>
-                          </div>
-                        </div>
-                      </>
-                    ) : (
-                      ""
-                    )}
-
-                    {destination.type === "Outbound" ? (
-                      ""
-                    ) : (
-                      <>
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label htmlFor="selectFormRow">Record</label>
-                          </div>
-                          <div className="col-12">
-                            <select
-                              className="formItem"
-                              name=""
-                              id="selectFormRow"
-                              value={destination.record}
-                              onChange={(e) => {
-                                setDestination((prevState) => ({
-                                  ...prevState,
-                                  record: e.target.value,
-                                }));
-                              }}
-                            >
-                              <option selected="" value="true">
-                                True
-                              </option>
-                              <option value="false">False</option>
-                              <option value="" />
-                            </select>
-                            <br />
-                            <label htmlFor="data" className="formItemDesc">
-                              Save the recording.
-                            </label>
-                          </div>
-                        </div>
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label htmlFor="selectFormRow">Hold Music</label>
-                          </div>
-                          <div className="col-12">
-                            <select
-                              className="formItem"
-                              name=""
-                              id="selectFormRow"
-                              value={destination.holdMusic}
-                              onChange={(e) => {
-                                setDestination((prevState) => ({
-                                  ...prevState,
-                                  holdMusic: e.target.value,
-                                }));
-                              }}
-                            >
-                              <option selected="" value="default">
-                                default
-                              </option>
-                              <option value="none">none</option>
-                              <option value="" />
-                            </select>
-                            <br />
-                            <label htmlFor="data" className="formItemDesc">
-                              Save the recording.
-                            </label>
-                          </div>
-                        </div>
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label htmlFor="">Distinctive Ring</label>
-                          </div>
-                          <div className="col-12">
-                            <input
-                              type="text"
-                              name="extension"
-                              value={destination.distinctiveRing}
-                              className="formItem"
-                              onChange={(e) => {
-                                setDestination((prevState) => ({
-                                  ...prevState,
-                                  distinctiveRing: e.target.value,
-                                }));
-                              }}
-                              required="required"
-                            />
-                            <br />
-                            <label htmlFor="data" className="formItemDesc">
-                              Select a sound for a distinctive ring.
-                            </label>
-                          </div>
-                        </div>
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label htmlFor="">Account Code</label>
-                          </div>
-                          <div className="col-12">
-                            <input
-                              type="text"
-                              name="extension"
-                              value={destination.accountCode}
-                              className="formItem"
-                              onChange={(e) => {
-                                setDestination((prevState) => ({
-                                  ...prevState,
-                                  accountCode: e.target.value,
-                                }));
-                              }}
-                              required="required"
-                            />
-                            <br />
-                            <label htmlFor="data" className="formItemDesc">
-                              Enter account code.
-                            </label>
-                          </div>
-                        </div>
-                      </>
-                    )}
+                    </select>
+                  </div>
+                  <label htmlFor="data" className="formItemDesc">
+                    Add additional actions.
+                  </label>
+                </div>
+                {destination.type === "Inbound" ? (
+                  <>
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="">Usage</label>
-                        {destination.usageMissing ? (
-                          <label className="status missing">
-                            Field missing
-                          </label>
-                        ) : (
-                          ""
-                        )}
+                        <label htmlFor="">User</label>
                       </div>
                       <div className="col-12">
                         <select
                           className="formItem"
                           name=""
                           id="selectFormRow"
-                          value={destination.usage}
+                          value={destination.user}
                           onChange={(e) => {
                             setDestination((prevState) => ({
                               ...prevState,
-                              usage: e.target.value,
+                              user: e.target.value,
                             }));
                           }}
                         >
                           <option value=""></option>
-                          <option value="voice">Voice</option>
-                          <option value="text">Text</option>
-                          <option value="fax">Fax</option>
-                          <option value="emergency">Emergency</option>
-                        </select>
-
-                        <br />
-                        <label htmlFor="data" className="formItemDesc">
-                          Set how the Destination will be used.
-                        </label>
-                      </div>
-                    </div>
-                    <div className="formRow col-xl-3">
-                      <div className="formLabel">
-                        <label htmlFor="selectFormRow">Domain</label>
-                        {destination.domainMissing ? (
-                          <label className="status missing">
-                            Field missing
-                          </label>
-                        ) : (
-                          ""
-                        )}
-                      </div>
-                      <div className="col-12">
-                        <select
-                          className="formItem"
-                          name=""
-                          id="selectFormRow"
-                          value={destination.domain}
-                          onChange={(e) => {
-                            setDestination((prevState) => ({
-                              ...prevState,
-                              domain: e.target.value,
-                            }));
-                          }}
-                        >
-                          <option value=""></option>
-                          {domains &&
-                            domains.map((item, key) => {
+                          {users &&
+                            users.map((item, key) => {
                               return (
-                                <option key={key} value={item[0]}>
-                                  {item[1]}
+                                <option key={key} value={item.id}>
+                                  {item.username}
                                 </option>
                               );
                             })}
-                          {/* <option selected="" value="192.168.1.36">
-                            192.168.1.36
-                          </option>
-                          <option value="global">Global</option>
-                          <option value="testpbx.webvio.in">testpbx.webvio.in</option> */}
                         </select>
-                        <br />
+
                         <label htmlFor="data" className="formItemDesc">
-                          Select the Domain.
+                          Assign this destination to a user.
                         </label>
                       </div>
                     </div>
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="selectFormRow">Order</label>
-                        {destination.orderMissing ? (
-                          <label className="status missing">
-                            Field missing
-                          </label>
-                        ) : (
-                          ""
-                        )}
+                        <label htmlFor="">Group</label>
                       </div>
                       <div className="col-12">
                         <select
                           className="formItem"
                           name=""
                           id="selectFormRow"
-                          value={destination.order}
+                          value={destination.group}
                           onChange={(e) => {
                             setDestination((prevState) => ({
                               ...prevState,
-                              order: e.target.value,
+                              group: e.target.value,
                             }));
                           }}
                         >
-                          <option selected="" value=""></option>
-                          <option value={210}>210</option>
-                          <option value={220}>220</option>
-                          <option value={230}>230</option>
-                          <option value={240}>240</option>
-                          <option value={250}>250</option>
-                          <option value={260}>260</option>
-                          <option value={270}>270</option>
-                          <option value={280}>280</option>
-                          <option value={290}>290</option>
-                          <option value={300}>300</option>
+                          <option selected="" />
+                          {ringGroup &&
+                            ringGroup.map((item, key) => {
+                              return (
+                                <option key={key} value={item.name}>
+                                  {item.name}
+                                </option>
+                              );
+                            })}
+
+                          {/* <option value="agent">agent</option>
+                              <option value="fax">fax</option>
+                              <option value="public">public</option> */}
                         </select>
+
+                        <label htmlFor="data" className="formItemDesc">
+                          Assign this destination to a group.
+                        </label>
                       </div>
                     </div>
-
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="">Description</label>
-                        {destination.descriptionMissing ? (
-                          <label className="status missing">
-                            Field missing
-                          </label>
-                        ) : (
-                          ""
-                        )}
+                        <label htmlFor="">Caller ID Name Prefix</label>
                       </div>
                       <div className="col-12">
                         <input
                           type="text"
                           name="extension"
+                          value={destination.callerIdNamePrefix}
                           className="formItem"
-                          value={destination.description}
                           onChange={(e) => {
                             setDestination((prevState) => ({
                               ...prevState,
-                              description: e.target.value,
+                              callerIdNamePrefix: e.target.value,
                             }));
                           }}
                           required="required"
                         />
+
+                        <label htmlFor="data" className="formItemDesc">
+                          Set a prefix on the caller ID name.
+                        </label>
                       </div>
                     </div>
+                  </>
+                ) : (
+                  ""
+                )}
+
+                {destination.type === "Outbound" ? (
+                  ""
+                ) : (
+                  <>
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="selectFormRow">Status</label>
+                        <label htmlFor="selectFormRow">Record</label>
                       </div>
                       <div className="col-12">
                         <select
                           className="formItem"
                           name=""
                           id="selectFormRow"
-                          value={destination.enabled}
+                          value={destination.record}
                           onChange={(e) => {
                             setDestination((prevState) => ({
                               ...prevState,
-                              enabled: e.target.value,
+                              record: e.target.value,
                             }));
                           }}
                         >
-                          <option selected="" value={true}>
+                          <option selected="" value="true">
                             True
                           </option>
-                          <option value={false}>False</option>
+                          <option value="false">False</option>
+                          <option value="" />
                         </select>
                       </div>
+                      <label htmlFor="data" className="formItemDesc">
+                        Save the recording.
+                      </label>
                     </div>
-
-                    <div className="formRow ">
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="selectFormRow">DialPlan xml</label>
+                        <label htmlFor="selectFormRow">Hold Music</label>
                       </div>
-                      <textarea rows={12} value={destination.xml} onChange={(e)=>{
-                        setDestination(prevData=>({
-                          ...prevData,
-                          xml:e.target.value
-                        }))
-                      }}/>
-                      {/* </textarea> */}
+                      <div className="col-12">
+                        <select
+                          className="formItem"
+                          name=""
+                          id="selectFormRow"
+                          value={destination.holdMusic}
+                          onChange={(e) => {
+                            setDestination((prevState) => ({
+                              ...prevState,
+                              holdMusic: e.target.value,
+                            }));
+                          }}
+                        >
+                          <option selected="" value="default">
+                            default
+                          </option>
+                          <option value="none">none</option>
+                          <option value="" />
+                        </select>
+                      </div>
+                      <label htmlFor="data" className="formItemDesc">
+                        Save the recording.
+                      </label>
                     </div>
-                  </form>
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="">Distinctive Ring</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          name="extension"
+                          value={destination.distinctiveRing}
+                          className="formItem"
+                          onChange={(e) => {
+                            setDestination((prevState) => ({
+                              ...prevState,
+                              distinctiveRing: e.target.value,
+                            }));
+                          }}
+                          required="required"
+                        />
+
+                        <label htmlFor="data" className="formItemDesc">
+                          Select a sound for a distinctive ring.
+                        </label>
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="">Account Code</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          name="extension"
+                          value={destination.accountCode}
+                          className="formItem"
+                          onChange={(e) => {
+                            setDestination((prevState) => ({
+                              ...prevState,
+                              accountCode: e.target.value,
+                            }));
+                          }}
+                          required="required"
+                        />
+
+                        <label htmlFor="data" className="formItemDesc">
+                          Enter account code.
+                        </label>
+                      </div>
+                    </div>
+                  </>
+                )}
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="">Usage</label>
+                    {destination.usageMissing ? (
+                      <label className="status missing">
+                        Field missing
+                      </label>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="col-12">
+                    <select
+                      className="formItem"
+                      name=""
+                      id="selectFormRow"
+                      value={destination.usage}
+                      onChange={(e) => {
+                        setDestination((prevState) => ({
+                          ...prevState,
+                          usage: e.target.value,
+                        }));
+                      }}
+                    >
+                      <option value=""></option>
+                      <option value="voice">Voice</option>
+                      <option value="text">Text</option>
+                      <option value="fax">Fax</option>
+                      <option value="emergency">Emergency</option>
+                    </select>
+                  </div>
+                  <label htmlFor="data" className="formItemDesc">
+                    Set how the Destination will be used.
+                  </label>
                 </div>
-              
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="selectFormRow">Domain</label>
+                    {destination.domainMissing ? (
+                      <label className="status missing">
+                        Field missing
+                      </label>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="col-12">
+                    <select
+                      className="formItem"
+                      name=""
+                      id="selectFormRow"
+                      value={destination.domain}
+                      onChange={(e) => {
+                        setDestination((prevState) => ({
+                          ...prevState,
+                          domain: e.target.value,
+                        }));
+                      }}
+                    >
+                      <option value=""></option>
+                      {domains &&
+                        domains.map((item, key) => {
+                          return (
+                            <option key={key} value={item[0]}>
+                              {item[1]}
+                            </option>
+                          );
+                        })}
+                      {/* <option selected="" value="192.168.1.36">
+                            192.168.1.36
+                          </option>
+                          <option value="global">Global</option>
+                          <option value="testpbx.webvio.in">testpbx.webvio.in</option> */}
+                    </select>
+                  </div>
+                  <label htmlFor="data" className="formItemDesc">
+                    Select the Domain.
+                  </label>
+                </div>
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="selectFormRow">Order</label>
+                    {destination.orderMissing ? (
+                      <label className="status missing">
+                        Field missing
+                      </label>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="col-12">
+                    <select
+                      className="formItem"
+                      name=""
+                      id="selectFormRow"
+                      value={destination.order}
+                      onChange={(e) => {
+                        setDestination((prevState) => ({
+                          ...prevState,
+                          order: e.target.value,
+                        }));
+                      }}
+                    >
+                      <option selected="" value=""></option>
+                      <option value={210}>210</option>
+                      <option value={220}>220</option>
+                      <option value={230}>230</option>
+                      <option value={240}>240</option>
+                      <option value={250}>250</option>
+                      <option value={260}>260</option>
+                      <option value={270}>270</option>
+                      <option value={280}>280</option>
+                      <option value={290}>290</option>
+                      <option value={300}>300</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="">Description</label>
+                    {destination.descriptionMissing ? (
+                      <label className="status missing">
+                        Field missing
+                      </label>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="col-12">
+                    <input
+                      type="text"
+                      name="extension"
+                      className="formItem"
+                      value={destination.description}
+                      onChange={(e) => {
+                        setDestination((prevState) => ({
+                          ...prevState,
+                          description: e.target.value,
+                        }));
+                      }}
+                      required="required"
+                    />
+                  </div>
+                </div>
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="selectFormRow">Status</label>
+                  </div>
+                  <div className="col-12">
+                    <select
+                      className="formItem"
+                      name=""
+                      id="selectFormRow"
+                      value={destination.enabled}
+                      onChange={(e) => {
+                        setDestination((prevState) => ({
+                          ...prevState,
+                          enabled: e.target.value,
+                        }));
+                      }}
+                    >
+                      <option selected="" value={true}>
+                        True
+                      </option>
+                      <option value={false}>False</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="formRow ">
+                  <div className="formLabel">
+                    <label htmlFor="selectFormRow">DialPlan xml</label>
+                  </div>
+                  <textarea rows={12} value={destination.xml} onChange={(e) => {
+                    setDestination(prevData => ({
+                      ...prevData,
+                      xml: e.target.value
+                    }))
+                  }} />
+                  {/* </textarea> */}
+                </div>
+              </form>
+            </div>
+
           </div>
         </section>
       </main>

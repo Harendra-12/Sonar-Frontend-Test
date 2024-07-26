@@ -43,8 +43,14 @@
         padding-right: 0;
     }
 
-    .circularLoader{
+    .circularLoader {
         width: 100vw;
     }
 
+}
+
+@media (min-width: 1500px) {
+    .formRow.col-xl-3 {
+        width: 16.5%;
+    }
 }

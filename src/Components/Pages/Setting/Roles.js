@@ -393,6 +393,7 @@ function Roles() {
                                 style={{
                                   color: "var(--ui-accent)",
                                   fontWeight: 600,
+                                  textTransform: 'capitalize'
                                 }}
                               >
                                 {selectedRole}
@@ -424,7 +425,7 @@ function Roles() {
                                       handleParentCheckboxChange(item)
                                     }
                                   />
-                                  <label>{item}</label>
+                                  <label className="formLabel py-0">{item}</label>
                                 </div>
                               </div>
                               <div className="row px-2 pt-1 border-bottom">
@@ -444,7 +445,7 @@ function Roles() {
                                           handleCheckboxChange(innerItem.id)
                                         }
                                       />
-                                      <label className="formLabel">
+                                      <label className="formLabel text-capitalize">
                                         {innerItem.action}
                                       </label>
                                     </div>

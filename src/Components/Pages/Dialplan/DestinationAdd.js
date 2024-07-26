@@ -329,11 +329,10 @@ function DestinationAdd() {
                       <option value="Outbound">Outbound</option>
                       <option value="Local">Local</option>
                     </select>
-                    <br />
-                    <label htmlFor="data" className="formItemDesc">
-                      Select the type.
-                    </label>
                   </div>
+                  <label htmlFor="data" className="formItemDesc">
+                    Select the type.
+                  </label>
                 </div>
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
@@ -377,7 +376,7 @@ function DestinationAdd() {
                           required="required"
                         />
                       </div>
-                      <br />
+                      
                       <label htmlFor="data" className="formItemDesc">
                         Enter the trunk prefix.
                       </label>
@@ -396,7 +395,7 @@ function DestinationAdd() {
                           required="required"
                         />
                       </div>
-                      <br />
+                      
                       <label htmlFor="data" className="formItemDesc">
                         Enter the area code.
                       </label>
@@ -448,7 +447,7 @@ function DestinationAdd() {
                           required="required"
                         />
                       </div>
-                      <br />
+                      
                       <label htmlFor="data" className="formItemDesc">
                         Enter the destination condition.
                       </label>
@@ -474,7 +473,7 @@ function DestinationAdd() {
                           required="required"
                         />
                       </div>
-                      <br />
+
                       <label htmlFor="data" className="formItemDesc">
                         Enter the caller ID name.
                       </label>
@@ -498,7 +497,7 @@ function DestinationAdd() {
                           required="required"
                         />
                       </div>
-                      <br />
+
                       <label htmlFor="data" className="formItemDesc">
                         Enter the caller ID number.
                       </label>
@@ -582,7 +581,7 @@ function DestinationAdd() {
                         >
                           <i className="fa-regular fa-caret-left" />
                         </button>
-                        <br />
+                        
                         <label htmlFor="data" className="formItemDesc">
                           If the condition matches perform the action.
                         </label>
@@ -631,7 +630,7 @@ function DestinationAdd() {
                         })}
                     </select>
 
-                    <br />
+
                     <label htmlFor="data" className="formItemDesc">
                       Add additional actions.
                     </label>
@@ -666,7 +665,7 @@ function DestinationAdd() {
                               );
                             })}
                         </select>
-                        <br />
+
                         <label htmlFor="data" className="formItemDesc">
                           Assign this destination to a user.
                         </label>
@@ -703,7 +702,7 @@ function DestinationAdd() {
                               <option value="fax">fax</option>
                               <option value="public">public</option> */}
                         </select>
-                        <br />
+
                         <label htmlFor="data" className="formItemDesc">
                           Assign this destination to a group.
                         </label>
@@ -727,7 +726,7 @@ function DestinationAdd() {
                           }}
                           required="required"
                         />
-                        <br />
+
                         <label htmlFor="data" className="formItemDesc">
                           Set a prefix on the caller ID name.
                         </label>
@@ -765,11 +764,10 @@ function DestinationAdd() {
                           <option value="false">False</option>
                           <option value="" />
                         </select>
-                        <br />
-                        <label htmlFor="data" className="formItemDesc">
-                          Save the recording.
-                        </label>
                       </div>
+                      <label htmlFor="data" className="formItemDesc">
+                        Save the recording.
+                      </label>
                     </div>
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
@@ -794,11 +792,10 @@ function DestinationAdd() {
                           <option value="none">none</option>
                           <option value="" />
                         </select>
-                        <br />
-                        <label htmlFor="data" className="formItemDesc">
-                          Save the recording.
-                        </label>
                       </div>
+                      <label htmlFor="data" className="formItemDesc">
+                        Save the recording.
+                      </label>
                     </div>
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
@@ -818,7 +815,7 @@ function DestinationAdd() {
                           }}
                           required="required"
                         />
-                        <br />
+
                         <label htmlFor="data" className="formItemDesc">
                           Select a sound for a distinctive ring.
                         </label>
@@ -842,7 +839,7 @@ function DestinationAdd() {
                           }}
                           required="required"
                         />
-                        <br />
+
                         <label htmlFor="data" className="formItemDesc">
                           Enter account code.
                         </label>
@@ -879,7 +876,7 @@ function DestinationAdd() {
                       <option value="emergency">Emergency</option>
                     </select>
 
-                    <br />
+
                     <label htmlFor="data" className="formItemDesc">
                       Set how the Destination will be used.
                     </label>
@@ -917,11 +914,10 @@ function DestinationAdd() {
                           );
                         })}
                     </select>
-                    <br />
-                    <label htmlFor="data" className="formItemDesc">
-                      Select the Domain.
-                    </label>
                   </div>
+                  <label htmlFor="data" className="formItemDesc">
+                    Select the Domain.
+                  </label>
                 </div>
                 <div className="formRow col-xl-3">
                   <div className="formLabel">

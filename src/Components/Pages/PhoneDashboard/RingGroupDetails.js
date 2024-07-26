@@ -17,7 +17,7 @@ const RingGroup = () => {
                             <div className="heading">Ring Group</div>
                             <div
                                 className="data-number"
-                                style={{ fontSize: "22px" }}
+                                style={{ fontSize: "19px" }}
                             >
                                 XYZ.ABC.123
                             </div>
@@ -73,7 +73,7 @@ const RingGroup = () => {
                             <div className="heading">Ring Group</div>
                             <div
                                 className="data-number"
-                                style={{ fontSize: "22px" }}
+                                style={{ fontSize: "19px" }}
                             >
                                 XYZ.ABC.123
                             </div>
@@ -129,7 +129,7 @@ const RingGroup = () => {
                             <div className="heading">Ring Group</div>
                             <div
                                 className="data-number"
-                                style={{ fontSize: "22px" }}
+                                style={{ fontSize: "19px" }}
                             >
                                 XYZ.ABC.123
                             </div>

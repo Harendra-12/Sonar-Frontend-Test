@@ -85,7 +85,7 @@ function AllCallsDetails() {
                                 </div>
                                 <div className="col-xl-2">
                                     <div className="itemWrapperb d">
-                                        <div className="heading">Total Inbound Calls Completed</div>
+                                        <div className="heading">Inbound Calls Completed</div>
                                         <div className="data-number">{callDetails.inboundData.success}</div>
                                         <div className="label2">Percentage {((callDetails.inboundData.success / (callDetails.inboundData.count)) * 100).toFixed(2)}%</div>
                                     </div>
@@ -136,7 +136,7 @@ function AllCallsDetails() {
                                 </div>
                                 <div className="col-xl-2">
                                     <div className="itemWrapperb d">
-                                        <div className="heading">Total Outbound Calls Completed</div>
+                                        <div className="heading">Outbound Calls Completed</div>
                                         <div className="data-number">{callDetails.outboundData.success}</div>
                                         <div className="label2">Percentage {((callDetails.outboundData.success / (callDetails.outboundData.count)) * 100).toFixed(2)}%</div>
                                     </div>
