@@ -1,14 +1,50 @@
-import React, { useState } from "react";
+import React, {  useEffect, useState } from "react";
 import Dialpad from "./Dialpad";
+import { SIPProvider } from "react-sipjs";
+import { SipRegister } from "./SipRegister";
 
 function Call() {
   const [dialpadShow, setDialpadShow] = useState(false);
   const [clickStatus,setClickStatus]=useState("all")
+  
   function handleHideDialpad(value) {
     setDialpadShow(value);
   }
+
+  const useWebSocketErrorHandling = (options) => {
+    useEffect(() => {
+      const webSocket = new WebSocket(options.webSocketServer);
+  
+      webSocket.onerror = (event) => {
+        console.error('WebSocket error:', event);
+        // Prevent default error handling
+        event.preventDefault();
+      };
+  
+      webSocket.onclose = (event) => {
+        if (event.code === 1006) {
+          console.error(`WebSocket closed ${options.webSocketServer} (code: ${event.code})`);
+          // Handle the WebSocket close event
+        }
+      };
+  
+      return () => {
+        webSocket.close();
+      };
+    }, [options.webSocketServer]);
+  };
+  const options = {
+    domain: "192.168.1.253",
+    webSocketServer: "wss://192.168.1.253:7443",
+  };
+
+  useWebSocketErrorHandling(options);
   return (
     <>
+    <SIPProvider
+        options={options}
+      >
+       
       <main className="mainContentApp">
         <section>
           <div className="container-fluid">
@@ -17,11 +53,8 @@ function Call() {
                 className="col-12 col-xl-6 d-flex flex-wrap justify-content-between py-3 border-end"
                 style={{ height: "100%" }}
               >
-                <div className="col-auto">
-                  <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
-                    Calls
-                  </h3>
-                </div>
+                <SipRegister />
+                
                 <div className="col-auto d-flex">
                   <div className="col-auto">
                     <button
@@ -162,6 +195,7 @@ function Call() {
         </section>
       </main>
       {dialpadShow ? <Dialpad hideDialpad={handleHideDialpad} /> : ""}
+      </SIPProvider>
     </>
   );
 }

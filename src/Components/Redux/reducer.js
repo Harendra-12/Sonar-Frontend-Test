@@ -15,7 +15,7 @@ var billingListRefresh = 0;
 var cardList = JSON.parse(localStorage.getItem("cardList"));
 var billingList = JSON.parse(localStorage.getItem("billingList"));
 var callDetailsRefresh = 0;
-
+var microPhonePermission = false;
 
 const initialState = {
   account,
@@ -34,6 +34,7 @@ const initialState = {
   accountDetailsRefresh,
   callDetailsRefresh,
   activeCall,
+  microPhonePermission,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -67,7 +68,9 @@ const counterReducer = (state = initialState, action) => {
     case "SET_CALLDETAILSREFRESH":
       return { ...state, callDetailsRefresh: action.callDetailsRefresh };
     case "SET_ACTIVECALL":
-      return { ...state, activeCall: action.activeCall }; 
+      return { ...state, activeCall: action.activeCall };
+    case "SET_MICROPHONEPERMISSION":
+      return { ...state, microPhonePermission: action.microPhonePermission };
     default:
       return state;
   }

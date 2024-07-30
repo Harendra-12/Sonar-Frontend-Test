@@ -2,22 +2,31 @@ import React, { useState } from "react";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useSIPProvider } from "react-sipjs";
 
 function Dialpad({ hideDialpad }) {
+  const {
+    sessionManager,
+    sessions,
+  } = useSIPProvider();
   const [destNumber, setDestNumber] = useState("");
   const navigate = useNavigate();
   const account = useSelector((state)=>state.account)
-  console.log("This is account",account);
-  async function call() {
-    const parsedData = {
-      src: "1002",
-      destination: "1001",
-      account_id:account.account_id
-    };
-    generalPostFunction("/freeswitch/call", parsedData);
 
-    navigate("/ongoing-call");
+  async function  onSubmit(e) {
+    hideDialpad(true)
+    e.preventDefault();
+    await sessionManager?.call(
+      `sip:${destNumber}@192.168.1.253`,
+      {}
+    );
+    // Object.keys(sessions).map((sessionId) => (
+    //   navigate("/ongoing-call",{state:{sessionId:sessionId,destNumber:destNumber}})
+    //   // <CallSessionItem key={sessionId} sessionId={sessionId} />
+    // ))
   }
+
+  console.log("This is sessions",sessions);
   return (
     <>
       <div id="dialPad">
@@ -132,7 +141,7 @@ function Dialpad({ hideDialpad }) {
                   </h4>
                 </div>
               </div>
-              <div onClick={call}>
+              <div onClick={onSubmit}>
                 <button className="callButton">
                   <i className="fa-thin fa-phone" />
                 </button>

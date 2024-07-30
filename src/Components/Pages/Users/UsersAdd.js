@@ -341,8 +341,8 @@ const UsersAdd = () => {
         setLoading(false);
       } else {
         setLoading(false);
-        const errorMessage = Object.keys(addUser.error);
-        toast.error(addUser.error[errorMessage[0]][0]);
+        const errorMessage = Object.keys(addUser.errors);
+        toast.error(addUser.errors[errorMessage[0]][0]);
       }
     }
   }

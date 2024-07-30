@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function OngoingCall() {
+  const locationState = useLocation()
+  const destNumber = locationState.destNumber
+  const sessionId = locationState.sessionId
     const [isFullScreen, setIsFullScreen] = useState(false);
     const callState = useSelector((state)=>state.callState)
     console.log("This is callState",callState);
@@ -53,6 +56,8 @@ function OngoingCall() {
         window.removeEventListener('beforeunload', handleBeforeUnload);
       };
     }, []);
+
+    console.log("This is session id",sessionId);
   return (
     <>
        <style>
@@ -88,7 +93,7 @@ function OngoingCall() {
                     <i className="fa-solid fa-user" />
                   </div>
                   <div className="col-12 text-center">
-                    <h3>1 (999) 999-9999</h3>
+                    <h3>{destNumber}</h3>
                   </div>
                 </div>
               </div>
