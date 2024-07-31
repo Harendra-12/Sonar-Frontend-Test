@@ -6,18 +6,20 @@ import {
   generalGetFunction,
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const RingGroupAdd = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const account = useSelector((state) => state.account);
   const [extensions, setExtensions] = useState();
   const [users, setUsers] = useState();
   const [destinationList, setDestinationList] = useState(false);
   const [destinationId, setDestinationId] = useState();
   const [filterExtension, setFilterExtension] = useState();
+  const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
 
   useEffect(() => {
     if (account && account.id) {
@@ -227,17 +229,6 @@ const RingGroupAdd = () => {
         callTimeOutMissing: false,
       }));
     }
-    // if (group.distinctiveRing === "") {
-    //   setGroup((prevState) => ({
-    //     ...prevState,
-    //     distinctiveRingMissing: true,
-    //   }));
-    // } else {
-    //   setGroup((prevState) => ({
-    //     ...prevState,
-    //     distinctiveRingMissing: false,
-    //   }));
-    // }
     if (group.ringBack === "") {
       setGroup((prevState) => ({
         ...prevState,
@@ -260,39 +251,6 @@ const RingGroupAdd = () => {
         userMissing: false,
       }));
     }
-    // if (group.tollAllow === "") {
-    //   setGroup((prevState) => ({
-    //     ...prevState,
-    //     tollAllowMissing: true,
-    //   }));
-    // } else {
-    //   setGroup((prevState) => ({
-    //     ...prevState,
-    //     tollAllowMissing: false,
-    //   }));
-    // }
-    // if (group.context === "") {
-    //   setGroup((prevState) => ({
-    //     ...prevState,
-    //     contextMissing: true,
-    //   }));
-    // } else {
-    //   setGroup((prevState) => ({
-    //     ...prevState,
-    //     contextMissing: false,
-    //   }));
-    // }
-    // if (group.description === "") {
-    //   setGroup((prevState) => ({
-    //     ...prevState,
-    //     descriptionMissing: true,
-    //   }));
-    // } else {
-    //   setGroup((prevState) => ({
-    //     ...prevState,
-    //     descriptionMissing: false,
-    //   }));
-    // }
 
     if (group.missedCall === "email") {
       if (group.email !== "" && group.email.includes("@")) {
@@ -351,12 +309,7 @@ const RingGroupAdd = () => {
         group.extension === "" ||
         group.followMe === "" ||
         group.callTimeOut === "" ||
-        // group.distinctiveRing === "" ||
-        // group.ringBack === "" ||
         group.user === "" ||
-        // group.tollAllow === "" ||
-        // group.context === "" ||
-        // group.description === "" ||
         (group.missedCall === "email"
           ? !(group.email !== "" && group.email.includes("@"))
           : false) ||
@@ -444,6 +397,10 @@ const RingGroupAdd = () => {
           greeting: "",
         });
         toast.success(apiData.message);
+        dispatch({
+          type:"SET_RINGGROUPREFRESH",
+          ringGroupRefresh: ringGroupRefresh + 1,
+        })
       } else {
         const errorMessage = Object.keys(apiData.errors);
         toast.error(apiData.errors[errorMessage[0]][0]);

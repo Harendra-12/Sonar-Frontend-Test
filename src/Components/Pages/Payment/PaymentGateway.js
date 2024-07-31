@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { backToTop, generalGetFunction, generalPutFunction } from "../../GlobalFunction/globalFunction";
-import ContentLoader from "../Misc/ContentLoader";
+import ContentLoader from "../../Loader/ContentLoader";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

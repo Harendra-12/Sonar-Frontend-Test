@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -5,10 +6,10 @@ import {
   generalGetFunction,
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CircularLoader from "../Misc/CircularLoader";
+import CircularLoader from "../../Loader/CircularLoader";
 
 const ExtensionsAdd = () => {
   const navigate = useNavigate();
@@ -17,6 +18,8 @@ const ExtensionsAdd = () => {
   const [loading, setLoading] = useState(false);
   const [music, setMusic] = useState();
   const [musicHold, setMusicHold] = useState();
+  const extensionRefresh = useSelector((state) => state.extensionRefresh);
+  const dispatch = useDispatch()
   const [extensionState, setExtensionState] = useState({
     extension: "",
     extensionMissing: false,
@@ -255,6 +258,11 @@ const ExtensionsAdd = () => {
         });
         setLoading(false);
         toast.success(apiData.message);
+        dispatch({
+          type: "SET_EXTENSIONREFRESH",
+          extensionRefresh: extensionRefresh + 1,
+        });
+        navigate("/extensions");
       } else {
         setLoading(false);
         const errorMessage = Object.keys(apiData.errors);

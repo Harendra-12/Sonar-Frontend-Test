@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { fileUploadFunction } from "../../GlobalFunction/globalFunction";
-import CircularLoader from "../Misc/CircularLoader";
+import CircularLoader from "../../Loader/CircularLoader";
 import { useNavigate } from "react-router-dom";
 
 function DocumentUpload() {

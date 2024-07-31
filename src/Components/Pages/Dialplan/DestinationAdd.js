@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   backToTop,
   generalGetFunction,
@@ -10,6 +11,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function DestinationAdd() {
+  const location = useLocation();
+  const locationData = location.state;
   const navigate = useNavigate();
   const [domains, setDomains] = useState();
   const [users, setUsers] = useState();
@@ -269,6 +272,8 @@ function DestinationAdd() {
       console.log("All validated", parsedData);
     }
   }
+
+  console.log("This is location data", locationData);
   return (
     <>
       <main className="mainContent">
@@ -308,32 +313,52 @@ function DestinationAdd() {
           <div className="col-xl-12" style={{ overflow: "auto" }}>
             <div className="mx-2" id="detailsContent">
               <form className="row">
-                <div className="formRow col-xl-3">
-                  <div className="formLabel">
-                    <label htmlFor="">Type</label>
+                {locationData ? (
+                  <div className="formRow col-xl-3">
+                    <div className="formLabel">
+                      <label htmlFor="">Selected DID</label>
+                    </div>
+                    <div className="col-12">
+                      <input
+                        type="text"
+                        name="extension"
+                        className="formItem"
+                        value={locationData.did}
+                        disabled
+                      />
+                    </div>
+                    <label htmlFor="data" className="formItemDesc">
+                      Selected DID.
+                    </label>
                   </div>
-                  <div className="col-12">
-                    <select
-                      className="formItem"
-                      name=""
-                      id="selectFormRow"
-                      value={destination.type}
-                      onChange={(e) => {
-                        setDestination((prevState) => ({
-                          ...prevState,
-                          type: e.target.value,
-                        }));
-                      }}
-                    >
-                      <option value="Inbound">Inbound</option>
-                      <option value="Outbound">Outbound</option>
-                      <option value="Local">Local</option>
-                    </select>
+                ) : (
+                  <div className="formRow col-xl-3">
+                    <div className="formLabel">
+                      <label htmlFor="">Type</label>
+                    </div>
+                    <div className="col-12">
+                      <select
+                        className="formItem"
+                        name=""
+                        id="selectFormRow"
+                        value={destination.type}
+                        onChange={(e) => {
+                          setDestination((prevState) => ({
+                            ...prevState,
+                            type: e.target.value,
+                          }));
+                        }}
+                      >
+                        <option value="Inbound">Inbound</option>
+                        <option value="Outbound">Outbound</option>
+                        <option value="Local">Local</option>
+                      </select>
+                    </div>
+                    <label htmlFor="data" className="formItemDesc">
+                      Select the type.
+                    </label>
                   </div>
-                  <label htmlFor="data" className="formItemDesc">
-                    Select the type.
-                  </label>
-                </div>
+                )}
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Country Code</label>
@@ -362,44 +387,6 @@ function DestinationAdd() {
                     Enter the country code.
                   </label>
                 </div>
-                {/* <div className="formRow col-xl-3">
-                      <div className="formLabel">
-                        <label htmlFor="">Trunk Prefix</label>
-                      </div>
-                      <div className="col-12">
-                        <input
-                          type="text"
-                          name="extension"
-                          
-                          className="formItem"
-                          
-                          required="required"
-                        />
-                      </div>
-                      
-                      <label htmlFor="data" className="formItemDesc">
-                        Enter the trunk prefix.
-                      </label>
-                    </div> */}
-                {/* <div className="formRow col-xl-3">
-                      <div className="formLabel">
-                        <label htmlFor="">Area Code</label>
-                      </div>
-                      <div className="col-12">
-                        <input
-                          type="text"
-                          name="extension"
-                         
-                          className="formItem"
-                          
-                          required="required"
-                        />
-                      </div>
-                      
-                      <label htmlFor="data" className="formItemDesc">
-                        Enter the area code.
-                      </label>
-                    </div> */}
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Destination</label>
@@ -428,30 +415,6 @@ function DestinationAdd() {
                     Enter the destination.
                   </label>
                 </div>
-                {/* <div className="formRow col-xl-3">
-                      <div className="formLabel">
-                        <label htmlFor="">Condition</label>
-                      </div>
-                      <div className="col-12">
-                        <input
-                          type="text"
-                          name="extension"
-                          value={destination.condition}
-                          className="formItem"
-                          onChange={(e)=>{
-                            setDestination(prevState=>({
-                              ...prevState,
-                              condition:e.target.value
-                            }))
-                          }}
-                          required="required"
-                        />
-                      </div>
-                      
-                      <label htmlFor="data" className="formItemDesc">
-                        Enter the destination condition.
-                      </label>
-                    </div> */}
                 {destination.type === "Inbound" ? (
                   <>
                     <div className="formRow col-xl-3">
@@ -535,58 +498,6 @@ function DestinationAdd() {
                     Enter the context.
                   </label>
                 </div>
-                {/* <div className="formRow">
-                      <div className="formLabel">
-                        <label htmlFor="">Conditions</label>
-                      </div>
-                      <div className="col-12">
-                        <select className="formItem" name="" id="selectFormRow">
-                          <option selected="" />
-                          <option value={210}>210</option>
-                          <option value={220}>220</option>
-                          <option value={230}>230</option>
-                          <option value={240}>240</option>
-                          <option value={250}>250</option>
-                          <option value={260}>260</option>
-                          <option value={270}>270</option>
-                          <option value={280}>280</option>
-                          <option value={290}>290</option>
-                          <option value={300}>300</option>
-                        </select>
-                        <input
-                          type="text"
-                          name="extension"
-                          
-                          className="formItem ms-2"
-                          
-                          required="required"
-                        />
-                        <select className="formItem mt-2" name="" id="selectFormRow">
-                          <option selected="" />
-                          <option value={210}>210</option>
-                          <option value={220}>220</option>
-                          <option value={230}>230</option>
-                          <option value={240}>240</option>
-                          <option value={250}>250</option>
-                          <option value={260}>260</option>
-                          <option value={270}>270</option>
-                          <option value={280}>280</option>
-                          <option value={290}>290</option>
-                          <option value={300}>300</option>
-                        </select>
-                        <button
-                          className="formButton ms-2"
-                          type="button"
-                          effect="ripple"
-                        >
-                          <i className="fa-regular fa-caret-left" />
-                        </button>
-                        
-                        <label htmlFor="data" className="formItemDesc">
-                          If the condition matches perform the action.
-                        </label>
-                      </div>
-                    </div> */}
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Actions</label>
@@ -629,7 +540,6 @@ function DestinationAdd() {
                           );
                         })}
                     </select>
-
 
                     <label htmlFor="data" className="formItemDesc">
                       Add additional actions.
@@ -697,10 +607,6 @@ function DestinationAdd() {
                                 </option>
                               );
                             })}
-
-                          {/* <option value="agent">agent</option>
-                              <option value="fax">fax</option>
-                              <option value="public">public</option> */}
                         </select>
 
                         <label htmlFor="data" className="formItemDesc">
@@ -875,7 +781,6 @@ function DestinationAdd() {
                       <option value="fax">Fax</option>
                       <option value="emergency">Emergency</option>
                     </select>
-
 
                     <label htmlFor="data" className="formItemDesc">
                       Set how the Destination will be used.

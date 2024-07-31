@@ -15,7 +15,7 @@ const Dashboard = () => {
     // const [queue, setQueue] = useState(false)
     const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh)
     const accountDetails = useSelector((state) => state.accountDetails)
-    console.log("This is account details",accountDetails);
+    console.log("This is account details",accountDetails.package.number_of_user);
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const account = useSelector((state) => state.account)
@@ -257,18 +257,18 @@ const Dashboard = () => {
                         {calls ? <AllCalls /> : ""}
                         {group ? <RingGroup /> : ""}
                         {queue ? <CallQueueDetails /> : ""} */}
-                           {account.id!==account.account_id?"":
+                          
 
                         <div className="col-12 mt-4 mb-2 chartWrapper">
                             <div className="row">
                                 <div className="col-xl-3">
                                     <div className='wrapper'>
-                                        <DoughnutChart fields={["Online Extension", "Register Extension","Available Extension"]} percentage={[registerUser.length,extensionList, Number(accountDetails.Package?.number_of_user)-extensionList]} centerTitle={`${extensionList}/${Number(accountDetails.Package?.number_of_user)}`} centerDesc="Extensions Details" colors={['#9999','#FF6384', '#36A2EB']} />
+                                        <DoughnutChart fields={["Online Extension", "Register Extension","Available Extension"]} percentage={[registerUser.length,extensionList, Number(accountDetails.package?.number_of_user)-extensionList]} centerTitle={`${extensionList}/${Number(accountDetails.package?.number_of_user)}`} centerDesc="Extensions Details" colors={['#9999','#FF6384', '#36A2EB']} />
                                     </div>
                                 </div>
                                 <div className="col-xl-3">
                                     <div className='wrapper'>
-                                        <DoughnutChart fields={["Online Users", "Registered Users ","Available Users "]} percentage={[loginUser.length,userList, Number(accountDetails.Package?.number_of_user)-userList]} centerTitle={`${userList}/${Number(accountDetails.Package?.number_of_user)}`} centerDesc="Total Users Available" colors={['#9999','#FF6384', '#36A2EB']} />
+                                        <DoughnutChart fields={["Online Users", "Registered Users ","Available Users "]} percentage={[loginUser.length,userList, Number(accountDetails.package?.number_of_user)-userList]} centerTitle={`${userList}/${Number(accountDetails.package?.number_of_user)}`} centerDesc="Total Users Available" colors={['#9999','#FF6384', '#36A2EB']} />
                                     </div>
                                     {/* <div className='circularProgressWrapper'>
                                         <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `50` }}>
@@ -290,12 +290,12 @@ const Dashboard = () => {
                                 </div>
                                 <div className="col-xl-6">
                                     <div className='wrapper'>
-                                        <GraphChart fields={["Available Extension", "Registered Extension"]} percentage={[(Number(accountDetails.Package?.number_of_user) - extensionList) * 100 / Number(accountDetails.Package?.number_of_user), extensionList * 100 / Number(accountDetails.Package?.number_of_user)]} centerTitle={`${extensionList}/${Number(accountDetails.Package?.number_of_user)}`} centerDesc="Total Extensions" colors={['#f18f01', '#36A2EB']} />
+                                        <GraphChart fields={["Available Extension", "Registered Extension"]} percentage={[(Number(accountDetails.package?.number_of_user) - extensionList) * 100 / Number(accountDetails.package?.number_of_user), extensionList * 100 / Number(accountDetails.package?.number_of_user)]} centerTitle={`${extensionList}/${(accountDetails.package?.number_of_user)}`} centerDesc="Total Extensions" colors={['#f18f01', '#36A2EB']} />
                                     </div>
                                 </div>
                             </div>
                         </div>
-}
+
                     </div>
                 </div>
             </section>

@@ -1,4 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+
+// This file is used to store the global calls, and It will refresh the data in global state
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +13,9 @@ function GlobalCalls() {
   const billingListRefresh = useSelector((state) => state.billingListRefresh);
   const accountDetailsRefresh = useSelector((state)=>state.accountDetailsRefresh)
   const callDetailsRefresh = useSelector((state)=>state.callDetailsRefresh)
+  const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
+  const extensionRefresh = useSelector((state) => state.extensionRefresh);
+  const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -35,6 +40,7 @@ function GlobalCalls() {
     }
   }, [account,callDetailsRefresh]);
 
+  // Getting all card details
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(
@@ -54,6 +60,7 @@ function GlobalCalls() {
    
   }, [account?.account_id, cardListRefresh]);
 
+  // Getting all billing address details
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/billing-address/all?account_id=${account.account_id}`);
@@ -72,6 +79,8 @@ function GlobalCalls() {
     
   }, [billingListRefresh]);
 
+
+  // Getting account details
   useEffect(()=>{
     async function getData(){
       const accountData = await generalGetFunction(
@@ -93,6 +102,62 @@ function GlobalCalls() {
     }
   
   },[account?.account_id, accountDetailsRefresh])
+
+  // Getting call center details
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction(
+        `/call-center-queues`
+      );
+      if (apiData.status) {
+        dispatch({
+          type: "SET_CALLCENTER",
+          callCenter: apiData.data,
+        });
+      }
+    }
+    if(callCenterRefresh>0){
+      getData();
+    }
+  }, [callCenterRefresh]);
+
+  // Getting extension details
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction(
+        `/extension/search?account=${account.account_id}`
+      );
+      if (apiData.status) {
+        dispatch({
+          type: "SET_EXTENSION",
+          extension: apiData.data,
+        });
+      }
+    }
+    if(extensionRefresh>0){
+      getData();
+    }
+
+  }, [extensionRefresh]);
+
+  // Getting ring group details
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction(
+        `/ringgroup?account=${account.account_id}`
+      );
+      if (apiData.status) {
+        dispatch({
+          type: "SET_RINGGROUP",
+          ringGroup: apiData.data,
+        });
+      }
+    }
+    if(ringGroupRefresh>0){
+      getData();
+    }
+  }, [ringGroupRefresh]);
+
   return <div></div>;
 }
 

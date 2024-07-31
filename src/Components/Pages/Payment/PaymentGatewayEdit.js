@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {  generalPutFunction } from "../../GlobalFunction/globalFunction";
-import CircularLoader from "../Misc/CircularLoader";
+import CircularLoader from "../../Loader/CircularLoader";
 
 function PaymentGatewayEdit() {
   const navigate = useNavigate();

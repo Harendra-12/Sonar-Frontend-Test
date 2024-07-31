@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import { generalPostFunction } from "../../GlobalFunction/globalFunction";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";
 
 function Dialpad({ hideDialpad }) {
@@ -10,8 +7,6 @@ function Dialpad({ hideDialpad }) {
     sessions,
   } = useSIPProvider();
   const [destNumber, setDestNumber] = useState("");
-  const navigate = useNavigate();
-  const account = useSelector((state)=>state.account)
 
   async function  onSubmit(e) {
     hideDialpad(true)

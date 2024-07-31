@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import PaginationComponent from "../../CommonComponents/PaginationComponent";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import {
-  backToTop,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
-import ContentLoader from "../Misc/ContentLoader";
+import ContentLoader from "../../Loader/ContentLoader";
 
 function DidListing() {
   const [did, setDid] = useState();
   const [loading, setLoading] = useState(true);
-  const [pageNumber, setPageNumber] = useState(1);
+  // const [pageNumber, setPageNumber] = useState(1);
   const navigate = useNavigate();
   useEffect(() => {
     async function getData() {
@@ -25,7 +23,8 @@ function DidListing() {
       }
     }
     getData();
-  }, [pageNumber]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   console.log("This is transition details", did);
   return (
@@ -45,6 +44,7 @@ function DidListing() {
                       <th>E911</th>
                       <th>Cname</th>
                       <th>SMS</th>
+                      <th>Configure</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -59,6 +59,7 @@ function DidListing() {
                                 <td>{item?.e911}</td>
                                 <td>{item?.cnam}</td>
                                 <td>{item?.sms}</td>
+                                <td onClick={() => navigate("/destination-add",{state:item})}>Configure</td>
                               </tr>
                             )
                         })}

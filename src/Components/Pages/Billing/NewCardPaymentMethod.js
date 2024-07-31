@@ -8,7 +8,7 @@ import * as cardValidator from "card-validator";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CircularLoader from "../Misc/CircularLoader";
+import CircularLoader from "../../Loader/CircularLoader";
 
 function NewCardPaymentMethod({
   closePopUp2,

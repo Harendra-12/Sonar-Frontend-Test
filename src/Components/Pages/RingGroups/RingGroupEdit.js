@@ -10,7 +10,7 @@ import {
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CircularLoader from "../Misc/CircularLoader";
+import CircularLoader from "../../Loader/CircularLoader";
 
 const RingGroupEdit = () => {
   const navigate = useNavigate();

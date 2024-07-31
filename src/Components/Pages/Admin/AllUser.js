@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Header from '../../CommonComponents/Header';
 import { Link } from 'react-router-dom';
 import { backToTop } from '../../GlobalFunction/globalFunction';
-import ContentLoader from '../Misc/ContentLoader';
+import ContentLoader from '../../Loader/ContentLoader';
 import EmptyPrompt from '../Misc/EmptyPrompt';
 
 function AllUser() {

@@ -5,7 +5,7 @@ import {
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import Header from "../../CommonComponents/Header";
-import ContentLoader from "../Misc/ContentLoader";
+import ContentLoader from "../../Loader/ContentLoader";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 
 function CardTransactionsList() {

@@ -5,7 +5,7 @@ import {
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
-import ContentLoader from "../Misc/ContentLoader";
+import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../Misc/EmptyPrompt";
 import Header from "../../CommonComponents/Header";
 

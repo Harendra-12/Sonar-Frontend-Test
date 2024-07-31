@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { generalPostFunction } from "../GlobalFunction/globalFunction";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CircularLoader from "../Pages/Misc/CircularLoader";
 import { useNavigate } from "react-router-dom";
+import CircularLoader from "../Loader/CircularLoader";
 
 function ChangePassword() {
   const navigate = useNavigate();

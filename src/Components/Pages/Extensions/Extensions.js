@@ -7,7 +7,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
 import EmptyPrompt from "../Misc/EmptyPrompt";
-import ContentLoader from "../Misc/ContentLoader";
+import ContentLoader from "../../Loader/ContentLoader";
 import Header from "../../CommonComponents/Header";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 

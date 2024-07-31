@@ -1,3 +1,6 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable no-useless-escape */
+/* eslint-disable array-callback-return */
 import React, { useEffect, useState } from "react";
 import {
   backToTop,
@@ -5,20 +8,21 @@ import {
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CircularLoader from "../Misc/CircularLoader";
+import CircularLoader from "../../Loader/CircularLoader";
 
 function CallCenterQueueAdd() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [ringGroup, setRingGroup] = useState();
   const [extension, setExtension] = useState();
   const [user, setUser] = useState();
   const [music, setMusic] = useState();
   const account = useSelector((state) => state.account);
-  console.log("This is account", account);
+  const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
 
   useEffect(() => {
     async function getData() {
@@ -183,10 +187,6 @@ function CallCenterQueueAdd() {
           }
         })
         .includes(true)
-      // &&
-      // !(callCenter.action === "") &&
-      // !(callCenter.abandoned === "") &&
-      // !(callCenter.prefix === "")
     ) {
       setLoading(true);
       const parsedData = {
@@ -252,6 +252,10 @@ function CallCenterQueueAdd() {
           abandoned: "",
           prefix: "",
         });
+        dispatch({
+          type:"SET_CALLCENTERREFRESH",
+          callCenterRefresh:callCenterRefresh+1
+        })
       } else {
         setLoading(false);
         const errorMessage = Object.keys(apiData.errors);

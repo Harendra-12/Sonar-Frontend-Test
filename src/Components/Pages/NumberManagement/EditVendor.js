@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
-import CircularLoader from "../Misc/CircularLoader";
+import CircularLoader from "../../Loader/CircularLoader";
 
 function EditVendor() {
   const location = useLocation();

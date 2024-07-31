@@ -9,7 +9,7 @@ import AddNewAddress from "./AddNewAddress";
 import { generalDeleteFunction, generalPostFunction, generalPutFunction } from "../../GlobalFunction/globalFunction";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CircularLoader from "../Misc/CircularLoader";
+import CircularLoader from "../../Loader/CircularLoader";
 
 function CardAndBilling() {
   const dispatch = useDispatch();

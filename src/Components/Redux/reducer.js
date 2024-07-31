@@ -15,6 +15,12 @@ var billingListRefresh = 0;
 var cardList = JSON.parse(localStorage.getItem("cardList"));
 var billingList = JSON.parse(localStorage.getItem("billingList"));
 var callDetailsRefresh = 0;
+var extension = [];
+var extensionRefresh = 0;
+var ringGroup = [];
+var ringGroupRefresh = 0;
+var callCenter = [];
+var callCenterRefresh = 0;
 var microPhonePermission = false;
 
 const initialState = {
@@ -35,6 +41,12 @@ const initialState = {
   callDetailsRefresh,
   activeCall,
   microPhonePermission,
+  extension,
+  extensionRefresh,
+  ringGroup,
+  ringGroupRefresh,
+  callCenter,
+  callCenterRefresh,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -71,6 +83,18 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, activeCall: action.activeCall };
     case "SET_MICROPHONEPERMISSION":
       return { ...state, microPhonePermission: action.microPhonePermission };
+    case "SET_EXTENSION":
+      return { ...state, extension: action.extension };
+    case "SET_EXTENSIONREFRESH":
+      return { ...state, extensionRefresh: action.extensionRefresh };
+    case "SET_RINGGROUP":
+      return { ...state, ringGroup: action.ringGroup };
+    case "SET_RINGGROUPREFRESH":
+      return { ...state, ringGroupRefresh: action.ringGroupRefresh };
+    case "SET_CALLCENTER":
+      return { ...state, callCenter: action.callCenter };
+    case "SET_CALLCENTERREFRESH":
+      return { ...state, callCenterRefresh: action.callCenterRefresh };
     default:
       return state;
   }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
-import ContentLoader from '../Misc/ContentLoader';
+import ContentLoader from '../../Loader/ContentLoader';
 import { useNavigate } from 'react-router-dom';
 
 function AllCallsDetails() {

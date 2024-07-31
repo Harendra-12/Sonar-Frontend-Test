@@ -6,10 +6,10 @@ import {
   generalGetFunction,
   generalPostFunction,
 } from "../GlobalFunction/globalFunction";
-import CircularLoader from "../Pages/Misc/CircularLoader";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
+import CircularLoader from "../Loader/CircularLoader";
 
 const CallSettings = (props) => {
   const navigate = useNavigate();

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { useDispatch, useSelector } from "react-redux";
-// import CircularLoader from "../Misc/CircularLoader";
+// import CircularLoader from "../../Loader/CircularLoader";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";

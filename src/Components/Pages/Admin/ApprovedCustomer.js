@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
-import ContentLoader from "../Misc/ContentLoader";
 import { useNavigate } from "react-router-dom";
+import ContentLoader from "../../Loader/ContentLoader";
 
 function ApprovedCustomer() {
   const [loading, setLoading] = useState(true);

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { fileUploadFunction } from "../../GlobalFunction/globalFunction";
-import CircularLoader from "../Misc/CircularLoader";
+import CircularLoader from "../../Loader/CircularLoader";
 
 function Document({ account, refreshCallback, refresh, nextPage,companyStatus }) {
   const [rejectDocument, setRejectDocument] = useState([]);

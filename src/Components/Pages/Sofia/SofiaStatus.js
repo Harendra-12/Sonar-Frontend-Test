@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
-import ContentLoader from "../Misc/ContentLoader";
+import ContentLoader from "../../Loader/ContentLoader";
 
 function SofiaStatus() {
   const [status, setStatus] = useState();

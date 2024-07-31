@@ -5,9 +5,9 @@ import {
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useLocation } from "react-router-dom";
-import CircularLoader from "../Misc/CircularLoader";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CircularLoader from "../../Loader/CircularLoader";
 
 function UserDocumentDetails() {
   const [loading, setLoading] = useState(true);
