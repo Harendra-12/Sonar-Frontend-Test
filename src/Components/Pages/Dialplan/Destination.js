@@ -1,11 +1,12 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable eqeqeq */
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { backToTop, generalGetFunction } from '../../GlobalFunction/globalFunction'
 import ContentLoader from '../../Loader/ContentLoader'
-import EmptyPrompt from '../Misc/EmptyPrompt'
 import { useSelector } from 'react-redux'
 import Header from '../../CommonComponents/Header'
+import EmptyPrompt from "../../Loader/EmptyPrompt"
 function Destination() {
 
   const navigate = useNavigate()

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { backToTop } from '../../GlobalFunction/globalFunction';
+import { backToTop } from '../GlobalFunction/globalFunction';
 
 function EmptyPrompt(props) {
     const navigate = useNavigate()
@@ -28,7 +28,7 @@ function EmptyPrompt(props) {
             </style>
             <div className='mt-5'>
                 <div className='imgWrapper loader'>
-                    <img src={require('../../assets/images/empty-box.png')} />
+                    <img src={require('../assets/images/empty-box.png')} alt="Empty" />
                 </div>
                 <div className='text-center mt-3'>
                     <h5>Please add a <b>{props.name}</b> to continue <span style={{ color: 'var(--ui-accent)', cursor: "pointer" }} onClick={() => { navigate(`/${props.link}`); backToTop() }}>setting up the environment</span>.</h5>

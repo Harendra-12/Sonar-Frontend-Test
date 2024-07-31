@@ -3,7 +3,7 @@ import Header from '../../CommonComponents/Header';
 import { Link } from 'react-router-dom';
 import { backToTop } from '../../GlobalFunction/globalFunction';
 import ContentLoader from '../../Loader/ContentLoader';
-import EmptyPrompt from '../Misc/EmptyPrompt';
+import EmptyPrompt from '../../Loader/EmptyPrompt';
 
 function AllUser() {
   const [loading,setLoading]=useState(true)

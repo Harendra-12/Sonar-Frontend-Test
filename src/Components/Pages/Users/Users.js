@@ -8,7 +8,7 @@ import {
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
-import EmptyPrompt from "../Misc/EmptyPrompt";
+import EmptyPrompt from "../../Loader/EmptyPrompt";
 import Header from "../../CommonComponents/Header";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 const Users = () => {

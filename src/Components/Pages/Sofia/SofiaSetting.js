@@ -5,7 +5,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { Link, useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
-import EmptyPrompt from "../Misc/EmptyPrompt";
+import EmptyPrompt from "../../Loader/EmptyPrompt";
 import Header from "../../CommonComponents/Header";
 
 function SofiaSetting() {
