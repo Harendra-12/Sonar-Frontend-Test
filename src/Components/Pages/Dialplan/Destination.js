@@ -80,6 +80,7 @@ function Destination() {
                       <tr>
 
                         <th>Type</th>
+                        <th>DID</th>
                         <th>Country Code</th>
                         <th>Destination</th>
                         <th>Context</th>
@@ -97,6 +98,7 @@ function Destination() {
                         return (
                           <tr key={index} onClick={() => { navigate(`/destination-edit?id=${item.id}`); window.scrollTo(0, 0) }}>
                             <td>{item.type}</td>
+                            <td>{item?.did?.did}</td>
                             <td>{item.country_code}</td>
                             <td>{item.destination}</td>
                             <td>{item.context}</td>

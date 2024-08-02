@@ -52,6 +52,7 @@ function DestinationEdit() {
     accountCode: "",
     actionMissing: false,
     xml: "",
+    did:"",
   });
 
   useEffect(() => {
@@ -100,6 +101,7 @@ function DestinationEdit() {
         }
         if (destData.status) {
           setLoading(false);
+          console.log("This is dest",destData);
           setDestination((prevState) => ({
             ...prevState,
             type: destData.data.type,
@@ -121,6 +123,7 @@ function DestinationEdit() {
             record: destData.data.record,
             holdMusic: destData.data.holdMusic,
             action: destData.data.dial_action,
+            did:destData.data.did?.did,
           }));
         } else {
           setLoading(false);
@@ -352,6 +355,23 @@ function DestinationEdit() {
                   </div>
                   <label htmlFor="data" className="formItemDesc">
                     Select the type.
+                  </label>
+                </div>
+                <div className="formRow col-xl-3">
+                <div className="formLabel">
+                    <label htmlFor="">DID</label>
+                  </div>
+                  <div className="col-12">
+                    <input
+                      type="text"
+                      name="extension"
+                      className="formItem"
+                      value={destination?.did}
+                      disabled
+                    />
+                  </div>
+                  <label htmlFor="data" className="formItemDesc">
+                    This is selected DID.
                   </label>
                 </div>
                 <div className="formRow col-xl-3">

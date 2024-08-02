@@ -57,8 +57,6 @@ export async function generalGetFunction(endpoint) {
       return err.response.data
     }
     // console.log("This is error log",err.response.status);
-
-
   })
 }
 
