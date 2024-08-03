@@ -9,17 +9,17 @@ import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
+import ActionList from "../../CommonComponents/ActionList";
 
 function DestinationEdit() {
   const navigate = useNavigate();
   const [domains, setDomains] = useState();
   const [users, setUsers] = useState();
-  const [ringGroup, setRingGroup] = useState();
-  const [extension, setExtension] = useState();
   const account = useSelector((state) => state.account);
   const [loading, setLoading] = useState(true);
   const queryParams = new URLSearchParams(useLocation().search);
   const value = queryParams.get("id");
+  const ringGroup = useSelector((state) => state.ringGroup);
 
   const [destination, setDestination] = useState({
     type: "Inbound",
@@ -66,12 +66,6 @@ function DestinationEdit() {
         const apidataUser = await generalGetFunction(
           `/user/search?account=${account.account_id}`
         );
-        const apidata = await generalGetFunction(
-          `/ringgroup?account=${account.account_id}`
-        );
-        const extensionData = await generalGetFunction(
-          `/extension/search?account=${account.account_id}`
-        );
 
         if (domain.status) {
           setDomains(
@@ -88,16 +82,6 @@ function DestinationEdit() {
           navigate("/");
         }
 
-        if (apidata.status) {
-          setRingGroup(apidata.data);
-        } else {
-          navigate("/");
-        }
-        if (extensionData.status) {
-          setExtension(extensionData.data);
-        } else {
-          navigate("/");
-        }
         if (destData.status) {
           setLoading(false);
           setDestination((prevState) => ({
@@ -130,6 +114,14 @@ function DestinationEdit() {
       getDomain();
     }
   }, [account, navigate, value]);
+
+  const actionListValue = (value) => {
+    setDestination((prevData) => ({
+      ...prevData,
+      action: value[0],
+    }));
+  };
+
   async function handleSubmit() {
     if (destination.countryCode === "") {
       setDestination((prevState) => ({
@@ -286,7 +278,6 @@ function DestinationEdit() {
         <section id="phonePage">
           <div className="container-fluid px-0">
             <div className="row justify-content-center" id="subPageHeader">
-
               <div className="col-xl-9 my-auto">
                 <h4 className="my-auto">Destination Add</h4>
                 <p className="pt-2 mt-1 mb-0">
@@ -358,9 +349,7 @@ function DestinationEdit() {
                   <div className="formLabel">
                     <label htmlFor="">Country Code</label>
                     {destination.countryCodeMissing ? (
-                      <label className="status missing">
-                        Field missing
-                      </label>
+                      <label className="status missing">Field missing</label>
                     ) : (
                       ""
                     )}
@@ -426,9 +415,7 @@ function DestinationEdit() {
                   <div className="formLabel">
                     <label htmlFor="">Destination</label>
                     {destination.destinationMissing ? (
-                      <label className="status missing">
-                        Field missing
-                      </label>
+                      <label className="status missing">Field missing</label>
                     ) : (
                       ""
                     )}
@@ -536,9 +523,7 @@ function DestinationEdit() {
                   <div className="formLabel">
                     <label htmlFor="">Context</label>
                     {destination.contextMissing ? (
-                      <label className="status missing">
-                        Field missing
-                      </label>
+                      <label className="status missing">Field missing</label>
                     ) : (
                       ""
                     )}
@@ -563,116 +548,12 @@ function DestinationEdit() {
                     Enter the context.
                   </label>
                 </div>
-                {/* <div className="formRow">
-                <div className="formLabel">
-                  <label htmlFor="">Conditions</label>
-                </div>
-                <div className="col-12">
-                  <select className="formItem" name="" id="selectFormRow">
-                    <option selected="" />
-                    <option value={210}>210</option>
-                    <option value={220}>220</option>
-                    <option value={230}>230</option>
-                    <option value={240}>240</option>
-                    <option value={250}>250</option>
-                    <option value={260}>260</option>
-                    <option value={270}>270</option>
-                    <option value={280}>280</option>
-                    <option value={290}>290</option>
-                    <option value={300}>300</option>
-                  </select>
-                  <input
-                    type="text"
-                    name="extension"
-                    
-                    className="formItem ms-2"
-                    
-                    required="required"
-                  />
-                  <select className="formItem mt-2" name="" id="selectFormRow">
-                    <option selected="" />
-                    <option value={210}>210</option>
-                    <option value={220}>220</option>
-                    <option value={230}>230</option>
-                    <option value={240}>240</option>
-                    <option value={250}>250</option>
-                    <option value={260}>260</option>
-                    <option value={270}>270</option>
-                    <option value={280}>280</option>
-                    <option value={290}>290</option>
-                    <option value={300}>300</option>
-                  </select>
-                  <button
-                    className="formButton ms-2"
-                    type="button"
-                    effect="ripple"
-                  >
-                    <i className="fa-regular fa-caret-left" />
-                  </button>
-                  
-                  <label htmlFor="data" className="formItemDesc">
-                    If the condition matches perform the action.
-                  </label>
-                </div>
-              </div> */}
+
                 <div className="formRow col-xl-3">
-                  <div className="formLabel">
-                    <label htmlFor="">Actions</label>
-                    {destination.actionMissing ? (
-                      <label className="status missing">
-                        Field missing
-                      </label>
-                    ) : (
-                      ""
-                    )}
-                  </div>
-                  <div className="col-12">
-                    <select
-                      className="formItem"
-                      name=""
-                      id="selectFormRow"
-                      value={destination.action}
-                      onChange={(e) => {
-                        setDestination((prevState) => ({
-                          ...prevState,
-                          action: e.target.value,
-                        }));
-                      }}
-                    >
-                      <option selected="" />
-                      <optgroup label="Extension" disabled />
-                      {extension &&
-                        extension.map((item, key) => {
-                          return (
-                            <option key={key} value={item.extension}>
-                              {item.extension}
-                            </option>
-                          );
-                        })}
-                      <optgroup label="Ring Group" disabled />
-                      {ringGroup &&
-                        ringGroup.map((item, key) => {
-                          return (
-                            <option key={key} value={item.extension}>
-                              {item.extension}
-                            </option>
-                          );
-                        })}
-                      {/* <option value={210}>210</option>
-                          <option value={220}>220</option>
-                          <option value={230}>230</option>
-                          <option value={240}>240</option>
-                          <option value={250}>250</option>
-                          <option value={260}>260</option>
-                          <option value={270}>270</option>
-                          <option value={280}>280</option>
-                          <option value={290}>290</option>
-                          <option value={300}>300</option> */}
-                    </select>
-                  </div>
-                  <label htmlFor="data" className="formItemDesc">
-                    Add additional actions.
-                  </label>
+                  <ActionList
+                    getDropdownValue={actionListValue}
+                    value={destination.action}
+                  />
                 </div>
                 {destination.type === "Inbound" ? (
                   <>
@@ -889,9 +770,7 @@ function DestinationEdit() {
                   <div className="formLabel">
                     <label htmlFor="">Usage</label>
                     {destination.usageMissing ? (
-                      <label className="status missing">
-                        Field missing
-                      </label>
+                      <label className="status missing">Field missing</label>
                     ) : (
                       ""
                     )}
@@ -924,9 +803,7 @@ function DestinationEdit() {
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Domain</label>
                     {destination.domainMissing ? (
-                      <label className="status missing">
-                        Field missing
-                      </label>
+                      <label className="status missing">Field missing</label>
                     ) : (
                       ""
                     )}
@@ -968,9 +845,7 @@ function DestinationEdit() {
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Order</label>
                     {destination.orderMissing ? (
-                      <label className="status missing">
-                        Field missing
-                      </label>
+                      <label className="status missing">Field missing</label>
                     ) : (
                       ""
                     )}
@@ -1007,9 +882,7 @@ function DestinationEdit() {
                   <div className="formLabel">
                     <label htmlFor="">Description</label>
                     {destination.descriptionMissing ? (
-                      <label className="status missing">
-                        Field missing
-                      </label>
+                      <label className="status missing">Field missing</label>
                     ) : (
                       ""
                     )}
@@ -1059,17 +932,20 @@ function DestinationEdit() {
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">DialPlan xml</label>
                   </div>
-                  <textarea rows={12} value={destination.xml} onChange={(e) => {
-                    setDestination(prevData => ({
-                      ...prevData,
-                      xml: e.target.value
-                    }))
-                  }} />
+                  <textarea
+                    rows={12}
+                    value={destination.xml}
+                    onChange={(e) => {
+                      setDestination((prevData) => ({
+                        ...prevData,
+                        xml: e.target.value,
+                      }));
+                    }}
+                  />
                   {/* </textarea> */}
                 </div>
               </form>
             </div>
-
           </div>
         </section>
       </main>
