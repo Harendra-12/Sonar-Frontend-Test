@@ -9,6 +9,7 @@ import {
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ActionList from "../../CommonComponents/ActionList";
 
 function DestinationAdd() {
   const location = useLocation();
@@ -17,9 +18,8 @@ function DestinationAdd() {
   const navigate = useNavigate();
   const [domains, setDomains] = useState();
   const [users, setUsers] = useState();
-  const [ringGroup, setRingGroup] = useState();
-  const [extension, setExtension] = useState();
   const account = useSelector((state) => state.account);
+  const ringGroup = useSelector((state) => state.ringGroup);
   useEffect(() => {
     if (account === null) {
       navigate("/");
@@ -30,12 +30,6 @@ function DestinationAdd() {
         );
         const apidataUser = await generalGetFunction(
           `/user/search?account=${account.account_id}`
-        );
-        const apidata = await generalGetFunction(
-          `/ringgroup?account=${account.account_id}`
-        );
-        const extensionData = await generalGetFunction(
-          `/extension/search?account=${account.account_id}`
         );
         if (domain.status) {
           setDomains(
@@ -48,17 +42,6 @@ function DestinationAdd() {
         }
         if (apidataUser.status) {
           setUsers(apidataUser.data);
-        } else {
-          navigate("/");
-        }
-
-        if (apidata.status) {
-          setRingGroup(apidata.data);
-        } else {
-          navigate("/");
-        }
-        if (extensionData.status) {
-          setExtension(extensionData.data);
         } else {
           navigate("/");
         }
@@ -97,6 +80,13 @@ function DestinationAdd() {
     accountCode: "",
     actionMissing: false,
   });
+
+  const actionListValue = (value) => {
+    setDestination((prevData) => ({
+      ...prevData,
+      action: value[0],
+    }));
+  };
 
   async function handleSubmit() {
     if (destination.countryCode === "") {
@@ -501,52 +491,10 @@ function DestinationAdd() {
                   </label>
                 </div>
                 <div className="formRow col-xl-3">
-                  <div className="formLabel">
-                    <label htmlFor="">Actions</label>
-                    {destination.actionMissing ? (
-                      <label className="status missing">Field missing</label>
-                    ) : (
-                      ""
-                    )}
-                  </div>
-                  <div className="col-12">
-                    <select
-                      className="formItem"
-                      name=""
-                      id="selectFormRow"
-                      value={destination.action}
-                      onChange={(e) => {
-                        setDestination((prevState) => ({
-                          ...prevState,
-                          action: e.target.value,
-                        }));
-                      }}
-                    >
-                      <option selected="" value="" />
-                      <optgroup label="Extension" disabled />
-                      {extension &&
-                        extension.map((item, key) => {
-                          return (
-                            <option key={key} value={item.extension}>
-                              {item.extension}
-                            </option>
-                          );
-                        })}
-                      <optgroup label="Ring Group" disabled />
-                      {ringGroup &&
-                        ringGroup.map((item, key) => {
-                          return (
-                            <option key={key} value={item.extension}>
-                              {item.extension}
-                            </option>
-                          );
-                        })}
-                    </select>
-
-                    <label htmlFor="data" className="formItemDesc">
-                      Add additional actions.
-                    </label>
-                  </div>
+                  <ActionList
+                    getDropdownValue={actionListValue}
+                    value={destination.action}
+                  />
                 </div>
                 {destination.type === "Inbound" ? (
                   <>

@@ -12,13 +12,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
+import ActionList from "../../CommonComponents/ActionList";
 
 function CallCenterQueueAdd() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [ringGroup, setRingGroup] = useState();
-  const [extension, setExtension] = useState();
   const [user, setUser] = useState();
   const [music, setMusic] = useState();
   const account = useSelector((state) => state.account);
@@ -26,12 +25,6 @@ function CallCenterQueueAdd() {
 
   useEffect(() => {
     async function getData() {
-      const apidata = await generalGetFunction(
-        `/ringgroup?account=${account.account_id}`
-      );
-      const extensionData = await generalGetFunction(
-        `/extension/search?account=${account.account_id}`
-      );
       const userData = await generalGetFunction("/user/all");
       const musicData = await generalGetFunction("/sound/all?type=hold");
       if (userData.status) {
@@ -47,12 +40,6 @@ function CallCenterQueueAdd() {
             toast.error("No user found with assign extension");
           }
         }
-      }
-      if (apidata.status) {
-        setRingGroup(apidata.data);
-      }
-      if (extensionData.status) {
-        setExtension(extensionData.data);
       }
       if (musicData.status) {
         setMusic(musicData.data);
@@ -101,6 +88,13 @@ function CallCenterQueueAdd() {
       contact: "",
     },
   ]);
+
+  const actionListValue = (value) => {
+    setCallCenter((prevData) => ({
+      ...prevData,
+      action: value[0],
+    }));
+  };
 
   function addNewAgent() {
     setAgent([
@@ -208,15 +202,18 @@ function CallCenterQueueAdd() {
         abandoned_resume_allowed: account.abandoned_resume_allowed,
         created_by: account.id,
         xml: `<extension name="${callCenter.name.trim()}">
-        <condition field="destination_number" expression="^(callcenter\+)?${callCenter.extension
-          }$" >
+        <condition field="destination_number" expression="^(callcenter\+)?${
+          callCenter.extension
+        }$" >
           <action application="answer" data=""/>
           <action application="set" data="hangup_after_bridge=true"/>
           <action application="sleep" data="1000"/>
-          <action application="callcenter" data="${callCenter.extension}@${account.domain.domain_name
-          }"/>
-           <action application="transfer" data="${callCenter.action} XML ${account.domain.domain_name
-          }"/>
+          <action application="callcenter" data="${callCenter.extension}@${
+          account.domain.domain_name
+        }"/>
+           <action application="transfer" data="${callCenter.action} XML ${
+          account.domain.domain_name
+        }"/>
         </condition>
 </extension>`,
         agents: agent.map((item) => {
@@ -253,9 +250,9 @@ function CallCenterQueueAdd() {
           prefix: "",
         });
         dispatch({
-          type:"SET_CALLCENTERREFRESH",
-          callCenterRefresh:callCenterRefresh+1
-        })
+          type: "SET_CALLCENTERREFRESH",
+          callCenterRefresh: callCenterRefresh + 1,
+        });
       } else {
         setLoading(false);
         const errorMessage = Object.keys(apiData.errors);
@@ -449,9 +446,14 @@ function CallCenterQueueAdd() {
                     className="formItem w-100"
                   >
                     <option></option>
-                    {music && music.map((item, index) => {
-                      return <option key={index} value={item.id}>{item.name}</option>;
-                    })}
+                    {music &&
+                      music.map((item, index) => {
+                        return (
+                          <option key={index} value={item.id}>
+                            {item.name}
+                          </option>
+                        );
+                      })}
                     {/* <option>test</option> */}
                   </select>
                   <br />
@@ -485,56 +487,10 @@ function CallCenterQueueAdd() {
                 </div>
               </div>
               <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Timeout Action</label>
-                  {error.action ? (
-                    <label className="status missing">Field missing</label>
-                  ) : (
-                    ""
-                  )}
-                </div>
-                <div className="col-12">
-                  <select
-                    className="formItem"
-                    name=""
-                    id="selectFormRow"
-                    value={callCenter.action}
-                    onChange={(e) => {
-                      setCallCenter((prevState) => ({
-                        ...prevState,
-                        action: e.target.value,
-                      }));
-                      setError((prevState) => ({
-                        ...prevState,
-                        action: false,
-                      }));
-                    }}
-                  >
-                    <option selected="" value="" />
-                    <optgroup label="Extension" disabled />
-                    {extension &&
-                      extension.map((item, key) => {
-                        return (
-                          <option key={key} value={item.extension}>
-                            {item.extension}
-                          </option>
-                        );
-                      })}
-                    <optgroup label="Ring Group" disabled />
-                    {ringGroup &&
-                      ringGroup.map((item, key) => {
-                        return (
-                          <option key={key} value={item.extension}>
-                            {item.extension}
-                          </option>
-                        );
-                      })}
-                  </select>
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
-                    Set the action to perform when the max wait time is reached.
-                  </label>
-                </div>
+                <ActionList
+                  getDropdownValue={actionListValue}
+                  value={callCenter.action}
+                />
               </div>
               <div className="formRow col-xl-3">
                 <div className="formLabel">
@@ -601,7 +557,6 @@ function CallCenterQueueAdd() {
                   </label>
                 </div>
               </div>
-
 
               <div className="formRow col-xl-3">
                 <div className="formLabel">
