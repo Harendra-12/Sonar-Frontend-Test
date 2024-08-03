@@ -96,7 +96,7 @@ function Destination() {
                       {loading ? <tr><td colSpan={99}><ContentLoader /></td></tr> : ""}
                       {destination && destination.map((item, index) => {
                         return (
-                          <tr key={index} onClick={() => { navigate(`/destination-edit?id=${item.id}`); window.scrollTo(0, 0) }}>
+                          <tr key={index} onClick={() => { navigate(`/destination-edit?id=${item.id}`,{state:{state:item}}); window.scrollTo(0, 0) }}>
                             <td>{item.type}</td>
                             <td>{item?.did?.did}</td>
                             <td>{item.country_code}</td>

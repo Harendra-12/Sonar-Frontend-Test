@@ -54,9 +54,10 @@ function GlobalCalls() {
         localStorage.setItem("cardList",JSON.stringify(apiData.data))
       }
     }
-    if(cardListRefresh>0){
-        getData();
-    }
+    getData();
+    // if(cardListRefresh>0){
+    //     getData();
+    // }
    
   }, [account?.account_id, cardListRefresh]);
 
@@ -72,10 +73,11 @@ function GlobalCalls() {
         localStorage.setItem("billingList",JSON.stringify(apiData.data))
       }
     }
-    if(billingListRefresh>0){
-      console.log("This is billing refresh",billingListRefresh);
-        getData();
-    }
+    getData();
+    // if(billingListRefresh>0){
+    //   console.log("This is billing refresh",billingListRefresh);
+    //     getData();
+    // }
     
   }, [billingListRefresh]);
 
@@ -97,9 +99,10 @@ function GlobalCalls() {
         );
       }
     }
-    if(accountDetailsRefresh>0){
-      getData()
-    }
+    getData();
+    // if(accountDetailsRefresh>0){
+    //   getData()
+    // }
   
   },[account?.account_id, accountDetailsRefresh])
 
@@ -116,9 +119,10 @@ function GlobalCalls() {
         });
       }
     }
-    if(callCenterRefresh>0){
-      getData();
-    }
+    getData();
+    // if(callCenterRefresh>0){
+    //   getData();
+    // }
   }, [callCenterRefresh]);
 
   // Getting extension details
@@ -134,9 +138,10 @@ function GlobalCalls() {
         });
       }
     }
-    if(extensionRefresh>0){
-      getData();
-    }
+    getData();
+    // if(extensionRefresh>0){
+    //   getData();
+    // }
 
   }, [extensionRefresh]);
 
@@ -153,9 +158,10 @@ function GlobalCalls() {
         });
       }
     }
-    if(ringGroupRefresh>0){
-      getData();
-    }
+    getData();
+    // if(ringGroupRefresh>0){
+    //   getData();
+    // }
   }, [ringGroupRefresh]);
 
   return <div></div>;

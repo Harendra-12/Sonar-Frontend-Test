@@ -13,7 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 function DestinationAdd() {
   const location = useLocation();
   const locationData = location.state;
-  console.log("This is location data",locationData);
+  console.log("This is location data", locationData);
   const navigate = useNavigate();
   const [domains, setDomains] = useState();
   const [users, setUsers] = useState();
@@ -231,7 +231,7 @@ function DestinationAdd() {
         record: destination.record,
         holdMusic: destination.holdMusic,
         dial_action: destination.action,
-        did_id:locationData?.id,
+        did_id: locationData?.id,
       };
       const apiData = await generalPostFunction(`/dialplan/store`, parsedData);
       if (apiData.status) {

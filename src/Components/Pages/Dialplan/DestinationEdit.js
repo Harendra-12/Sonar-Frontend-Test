@@ -11,13 +11,18 @@ import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
 
 function DestinationEdit() {
+  const location = useLocation();
+  console.log("location", location);
+  
+  const locationData = location.state.state;
+  const locationDid = location.state.did
   const navigate = useNavigate();
   const [domains, setDomains] = useState();
   const [users, setUsers] = useState();
   const [ringGroup, setRingGroup] = useState();
   const [extension, setExtension] = useState();
   const account = useSelector((state) => state.account);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const queryParams = new URLSearchParams(useLocation().search);
   const value = queryParams.get("id");
 
@@ -60,7 +65,8 @@ function DestinationEdit() {
       navigate("/");
     } else {
       async function getDomain() {
-        const destData = await generalGetFunction(`/dialplan/${value}`);
+
+        // const destData = await generalGetFunction(`/dialplan/${value}`);
         const domain = await generalGetFunction(
           `/domain/search?account=${account.account_id}`
         );
@@ -99,38 +105,39 @@ function DestinationEdit() {
         } else {
           navigate("/");
         }
-        if (destData.status) {
-          setLoading(false);
-          console.log("This is dest",destData);
-          setDestination((prevState) => ({
-            ...prevState,
-            type: destData.data.type,
-            countryCode: destData.data.country_code,
-            destination: destData.data.destination,
-            context: destData.data.context,
-            callerIdName: destData.data.caller_Id_name,
-            callerIdNumber: destData.data.caller_Id_number,
-            callerIdNamePrefix: destData.data.caller_Id_name_prefix,
-            usage: destData.data.usage,
-            domain: destData.data.domain,
-            order: destData.data.order,
-            xml: destData.data.dialplan_xml,
-            // eslint-disable-next-line eqeqeq
-            enabled: destData.data.destination_status == 0 ? "false" : "true",
-            description: destData.data.description,
-            user: destData.data.user,
-            group: destData.data.group,
-            record: destData.data.record,
-            holdMusic: destData.data.holdMusic,
-            action: destData.data.dial_action,
-            did:destData.data.did?.did,
-          }));
-        } else {
-          setLoading(false);
-          navigate("/");
-        }
+       
       }
       getDomain();
+      if (locationData) {
+        setLoading(false);
+        console.log("This is dest",locationData);
+        setDestination((prevState) => ({
+          ...prevState,
+          type: locationData.type,
+          countryCode: locationData.country_code,
+          destination: locationData.destination,
+          context: locationData.context,
+          callerIdName: locationData.caller_Id_name,
+          callerIdNumber: locationData.caller_Id_number,
+          callerIdNamePrefix: locationData.caller_Id_name_prefix,
+          usage: locationData.usage,
+          domain: locationData.domain,
+          order: locationData.order,
+          xml: locationData.dialplan_xml,
+          // eslint-disable-next-line eqeqeq
+          enabled: locationData.destination_status == 0 ? "false" : "true",
+          description: locationData.description,
+          user: locationData.user,
+          group: locationData.group,
+          record: locationData.record,
+          holdMusic: locationData.holdMusic,
+          action:locationData.dial_action,
+          did:locationDid?locationDid:locationData.did?.did,
+        }));
+      } else {
+        setLoading(false);
+        navigate("/");
+      }
     }
   }, [account, navigate, value]);
   async function handleSubmit() {
