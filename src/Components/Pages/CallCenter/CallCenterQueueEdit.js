@@ -7,19 +7,24 @@ import {
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
 import ActionList from "../../CommonComponents/ActionList";
+import Select from "react-select";
 
 function CallCenterQueueEdit() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const location = useLocation();
   const locationState = location.state;
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState();
   const account = useSelector((state) => state.account);
+  const [extension, setExtension] = useState([]);
+  const extensionRefresh = useSelector((state) => state.extensionRefresh);
+  const extensionArr = useSelector((state) => state.extension);
 
   const [agent, setAgent] = useState([
     {
@@ -108,6 +113,99 @@ function CallCenterQueueEdit() {
       navigate(-1);
     }
   }, []);
+
+  useEffect(() => {
+    if (extensionRefresh > 1) {
+      setExtension(extensionArr);
+    } else {
+      dispatch({
+        type: "SET_EXTENSIONREFRESH",
+        extensionRefresh: extensionRefresh + 1,
+      });
+    }
+  }, [extensionArr]);
+
+  const extensionOptions = extension.map((item) => ({
+    value: item.extension,
+    label: item.extension,
+  }));
+
+  const handleExtensionChange = (selectedOption) => {
+    setCallCenter((prevState) => ({
+      ...prevState,
+      extension: selectedOption ? selectedOption.value : "",
+    }));
+    setError((prevState) => ({
+      ...prevState,
+      extension: false,
+    }));
+  };
+
+  // Custom styles for react-select
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      // border: '1px solid var(--color4)',
+      border: "1px solid #ababab",
+      borderRadius: "2px",
+      outline: "none",
+      fontSize: "14px",
+      width: "100%",
+      minHeight: "32px",
+      height: "32px",
+      boxShadow: state.isFocused ? "none" : provided.boxShadow,
+      "&:hover": {
+        borderColor: "none",
+      },
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      height: "32px",
+      padding: "0 6px",
+    }),
+    input: (provided) => ({
+      ...provided,
+      margin: "0",
+    }),
+    indicatorSeparator: (provided) => ({
+      display: "none",
+    }),
+    indicatorsContainer: (provided) => ({
+      ...provided,
+      height: "32px",
+    }),
+    dropdownIndicator: (provided) => ({
+      ...provided,
+      color: "#202020",
+      "&:hover": {
+        color: "#202020",
+      },
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      paddingLeft: "15px",
+      paddingTop: 0,
+      paddingBottom: 0,
+      // backgroundColor: state.isSelected ? "transparent" : "transparent",
+      "&:hover": {
+        backgroundColor: "#0055cc",
+        color: "#fff",
+      },
+      fontSize: "14px",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      margin: 0,
+      padding: 0,
+    }),
+    menuList: (provided) => ({
+      ...provided,
+      padding: 0,
+      margin: 0,
+      maxHeight: "150px",
+      overflowY: "auto",
+    }),
+  };
 
   const [error, setError] = useState({
     name: false,
@@ -373,24 +471,17 @@ function CallCenterQueueEdit() {
                   )}
                 </div>
                 <div className="col-12">
-                  <input
-                    type="text"
-                    name="extension"
-                    className="formItem"
-                    value={callCenter.extension}
-                    onChange={(e) => {
-                      setCallCenter((prevState) => ({
-                        ...prevState,
-                        extension: e.target.value,
-                      }));
-                      setError((prevState) => ({
-                        ...prevState,
-                        extension: false,
-                      }));
-                    }}
+                  <Select
+                    value={extensionOptions.find(
+                      (option) => option.value === callCenter.extension
+                    )}
+                    onChange={handleExtensionChange}
+                    options={extensionOptions}
+                    // className="formItem"
+                    styles={customStyles}
                   />
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
+                  {/* <br /> */}
+                  <label htmlFor="data" className="formItemDesc" >
                     Enter the extension number.
                   </label>
                 </div>

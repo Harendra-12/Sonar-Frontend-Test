@@ -9,10 +9,11 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Select from "react-select";
 
 const RingGroupAdd = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const [extensions, setExtensions] = useState();
   const [users, setUsers] = useState();
@@ -20,6 +21,9 @@ const RingGroupAdd = () => {
   const [destinationId, setDestinationId] = useState();
   const [filterExtension, setFilterExtension] = useState();
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
+  const [extension, setExtension] = useState([]);
+  const extensionRefresh = useSelector((state) => state.extensionRefresh);
+  const extensionArr = useSelector((state) => state.extension);
 
   useEffect(() => {
     if (account && account.id) {
@@ -88,6 +92,95 @@ const RingGroupAdd = () => {
     destinationMissing: false,
     greeting: "",
   });
+
+  useEffect(() => {
+    if (extensionRefresh > 1) {
+      setExtension(extensionArr);
+    } else {
+      dispatch({
+        type: "SET_EXTENSIONREFRESH",
+        extensionRefresh: extensionRefresh + 1,
+      });
+    }
+  }, [extensionArr]);
+
+  const extensionOptions = extension.map((item) => ({
+    value: item.extension,
+    label: item.extension,
+  }));
+
+  const handleExtensionChange = (selectedOption) => {
+    setGroup((prevState) => ({
+      ...prevState,
+      extension: selectedOption ? selectedOption.value : "",
+    }));
+  };
+
+  // Custom styles for react-select
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      // border: '1px solid var(--color4)',
+      border: "1px solid #ababab",
+      borderRadius: "2px",
+      outline: "none",
+      fontSize: "14px",
+      width: "100%",
+      minHeight: "32px",
+      height: "32px",
+      boxShadow: state.isFocused ? "none" : provided.boxShadow,
+      "&:hover": {
+        borderColor: "none",
+      },
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      height: "32px",
+      padding: "0 6px",
+    }),
+    input: (provided) => ({
+      ...provided,
+      margin: "0",
+    }),
+    indicatorSeparator: (provided) => ({
+      display: "none",
+    }),
+    indicatorsContainer: (provided) => ({
+      ...provided,
+      height: "32px",
+    }),
+    dropdownIndicator: (provided) => ({
+      ...provided,
+      color: "#202020",
+      "&:hover": {
+        color: "#202020",
+      },
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      paddingLeft: "15px",
+      paddingTop: 0,
+      paddingBottom: 0,
+      // backgroundColor: state.isSelected ? "transparent" : "transparent",
+      "&:hover": {
+        backgroundColor: "#0055cc",
+        color: "#fff",
+      },
+      fontSize: "14px",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      margin: 0,
+      padding: 0,
+    }),
+    menuList: (provided) => ({
+      ...provided,
+      padding: 0,
+      margin: 0,
+      maxHeight: "150px",
+      overflowY: "auto",
+    }),
+  };
 
   // Handle destination
   const [destination, setDestination] = useState([
@@ -398,9 +491,9 @@ const RingGroupAdd = () => {
         });
         toast.success(apiData.message);
         dispatch({
-          type:"SET_RINGGROUPREFRESH",
+          type: "SET_RINGGROUPREFRESH",
           ringGroupRefresh: ringGroupRefresh + 1,
-        })
+        });
       } else {
         const errorMessage = Object.keys(apiData.errors);
         toast.error(apiData.errors[errorMessage[0]][0]);
@@ -504,20 +597,16 @@ const RingGroupAdd = () => {
                   )}
                 </div>
                 <div className="col-12">
-                  <input
-                    type="number"
-                    name="extension"
-                    className="formItem"
-                    value={group.extension}
-                    onChange={(e) => {
-                      setGroup((prevState) => ({
-                        ...prevState,
-                        extension: e.target.value,
-                      }));
-                    }}
-                    required="required"
+                  <Select
+                    value={extensionOptions.find(
+                      (option) => option.value === group.extension
+                    )}
+                    onChange={handleExtensionChange}
+                    options={extensionOptions}
+                    // className="formItem"
+                    styles={customStyles}
                   />
-                  <br />
+                  {/* <br /> */}
                   <label htmlFor="data" className="formItemDesc">
                     Enter the extension number.
                   </label>

@@ -7,13 +7,15 @@ import {
   generalGetFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
+import Select from "react-select";
 
 const RingGroupEdit = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const [extensions, setExtensions] = useState();
   const [users, setUsers] = useState();
@@ -23,6 +25,9 @@ const RingGroupEdit = () => {
   const [destinationList, setDestinationList] = useState(false);
   const [destinationId, setDestinationId] = useState();
   const [filterExtension, setFilterExtension] = useState();
+  const [extension, setExtension] = useState([]);
+  const extensionRefresh = useSelector((state) => state.extensionRefresh);
+  const extensionArr = useSelector((state) => state.extension);
   const [group, setGroup] = useState({
     name: "",
     nameMissing: false,
@@ -176,6 +181,95 @@ const RingGroupEdit = () => {
       navigate("/");
     }
   }, [account, navigate, value]);
+
+  useEffect(() => {
+    if (extensionRefresh > 1) {
+      setExtension(extensionArr);
+    } else {
+      dispatch({
+        type: "SET_EXTENSIONREFRESH",
+        extensionRefresh: extensionRefresh + 1,
+      });
+    }
+  }, [extensionArr]);
+
+  const extensionOptions = extension.map((item) => ({
+    value: item.extension,
+    label: item.extension,
+  }));
+
+  const handleExtensionChange = (selectedOption) => {
+    setGroup((prevState) => ({
+      ...prevState,
+      extension: selectedOption ? selectedOption.value : "",
+    }));
+  };
+
+  // Custom styles for react-select
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      // border: '1px solid var(--color4)',
+      border: "1px solid #ababab",
+      borderRadius: "2px",
+      outline: "none",
+      fontSize: "14px",
+      width: "100%",
+      minHeight: "32px",
+      height: "32px",
+      boxShadow: state.isFocused ? "none" : provided.boxShadow,
+      "&:hover": {
+        borderColor: "none",
+      },
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      height: "32px",
+      padding: "0 6px",
+    }),
+    input: (provided) => ({
+      ...provided,
+      margin: "0",
+    }),
+    indicatorSeparator: (provided) => ({
+      display: "none",
+    }),
+    indicatorsContainer: (provided) => ({
+      ...provided,
+      height: "32px",
+    }),
+    dropdownIndicator: (provided) => ({
+      ...provided,
+      color: "#202020",
+      "&:hover": {
+        color: "#202020",
+      },
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      paddingLeft: "15px",
+      paddingTop: 0,
+      paddingBottom: 0,
+      // backgroundColor: state.isSelected ? "transparent" : "transparent",
+      "&:hover": {
+        backgroundColor: "#0055cc",
+        color: "#fff",
+      },
+      fontSize: "14px",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      margin: 0,
+      padding: 0,
+    }),
+    menuList: (provided) => ({
+      ...provided,
+      padding: 0,
+      margin: 0,
+      maxHeight: "150px",
+      overflowY: "auto",
+    }),
+  };
 
   // Function to handle changes in destination fields
   const handleDestinationChange = (index, event) => {
@@ -583,21 +677,17 @@ const RingGroupEdit = () => {
                   )}
                 </div>
                 <div className="col-12">
-                  <input
-                    type="number"
-                    name="extension"
-                    className="formItem"
-                    value={group.extension}
-                    onChange={(e) => {
-                      setGroup((prevState) => ({
-                        ...prevState,
-                        extension: e.target.value,
-                      }));
-                    }}
-                    required="required"
+                  <Select
+                    value={extensionOptions.find(
+                      (option) => option.value === group.extension
+                    )}
+                    onChange={handleExtensionChange}
+                    options={extensionOptions}
+                    // className="formItem"
+                    styles={customStyles}
                   />
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
+                  {/* <br /> */}
+                  <label htmlFor="data" className="formItemDesc" >
                     Enter the extension number.
                   </label>
                 </div>
