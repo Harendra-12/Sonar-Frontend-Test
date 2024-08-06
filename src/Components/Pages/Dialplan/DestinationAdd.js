@@ -9,6 +9,9 @@ import {
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useForm } from "react-hook-form";
+import { lengthValidator, requiredValidator } from "../../validations/validation";
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
 
 function DestinationAdd() {
   const location = useLocation();
@@ -19,6 +22,9 @@ function DestinationAdd() {
   const [ringGroup, setRingGroup] = useState();
   const [extension, setExtension] = useState();
   const account = useSelector((state) => state.account);
+  const {
+    register, watch, setValue,formState: { errors }, handleSubmit, reset
+  } = useForm()
   useEffect(() => {
     if (account === null) {
       navigate("/");
@@ -65,215 +71,198 @@ function DestinationAdd() {
       getDomain();
     }
   }, []);
-  const [destination, setDestination] = useState({
-    type: "Inbound",
-    countryCode: "",
-    countryCodeMissing: false,
-    destination: "",
-    destinationMissing: false,
-    context: "",
-    contextMissing: false,
-    usage: "",
-    usageMissing: false,
-    domain: "",
-    domainMissing: false,
-    order: "",
-    orderMissing: false,
-    enabled: false,
-    enabledMissing: false,
-    description: "",
-    descriptionMissing: false,
-    callerIdName: "",
-    callerIdNumber: "",
-    condition: "",
-    action: "",
-    user: "",
-    group: "",
-    callerIdNamePrefix: "",
-    record: "",
-    holdMusic: "",
-    distinctiveRing: "",
-    accountCode: "",
-    actionMissing: false,
-  });
+ 
 
-  async function handleSubmit() {
-    if (destination.countryCode === "") {
-      setDestination((prevState) => ({
-        ...prevState,
-        countryCodeMissing: true,
-      }));
-    } else {
-      setDestination((prevState) => ({
-        ...prevState,
-        countryCodeMissing: false,
-      }));
-    }
-    if (destination.destination === "") {
-      setDestination((prevState) => ({
-        ...prevState,
-        destinationMissing: true,
-      }));
-    } else {
-      setDestination((prevState) => ({
-        ...prevState,
-        destinationMissing: false,
-      }));
-    }
-    if (destination.context === "") {
-      setDestination((prevState) => ({
-        ...prevState,
-        contextMissing: true,
-      }));
-    } else {
-      setDestination((prevState) => ({
-        ...prevState,
-        contextMissing: false,
-      }));
-    }
-    if (destination.usage === "") {
-      setDestination((prevState) => ({
-        ...prevState,
-        usageMissing: true,
-      }));
-    } else {
-      setDestination((prevState) => ({
-        ...prevState,
-        usageMissing: false,
-      }));
-    }
-    if (destination.domain === "") {
-      setDestination((prevState) => ({
-        ...prevState,
-        domainMissing: true,
-      }));
-    } else {
-      setDestination((prevState) => ({
-        ...prevState,
-        domainMissing: false,
-      }));
-    }
-    if (destination.order === "") {
-      setDestination((prevState) => ({
-        ...prevState,
-        orderMissing: true,
-      }));
-    } else {
-      setDestination((prevState) => ({
-        ...prevState,
-        orderMissing: false,
-      }));
-    }
-    if (destination.enabled === "") {
-      setDestination((prevState) => ({
-        ...prevState,
-        enabledMissing: true,
-      }));
-    } else {
-      setDestination((prevState) => ({
-        ...prevState,
-        enabledMissing: false,
-      }));
-    }
-    if (destination.description === "") {
-      setDestination((prevState) => ({
-        ...prevState,
-        descriptionMissing: true,
-      }));
-    } else {
-      setDestination((prevState) => ({
-        ...prevState,
-        descriptionMissing: false,
-      }));
-    }
+  const hadleFormSubmit = handleSubmit(async (data) => {
 
-    if (destination.action === "") {
-      setDestination((prevState) => ({
-        ...prevState,
-        actionMissing: true,
-      }));
-    } else {
-      setDestination((prevState) => ({
-        ...prevState,
-        actionMissing: false,
-      }));
-    }
+    const payload = {...data, ...{account_id:account.account_id, 
+      destination_status: data.destination_status == "true"? true : false}}
+    const apiData = await generalPostFunction(`/dialplan/store`, payload);
+        if (apiData.status) {
+          reset()
+          toast.success(apiData.message);
+        } else {
+          const errorMessage = Object.keys(apiData.errors);
+          toast.error(apiData.errors[errorMessage[0]][0]);
+        }
+  })
 
-    if (
-      !(
-        destination.action === "" ||
-        destination.countryCode === "" ||
-        destination.destination === "" ||
-        destination.context === "" ||
-        destination.usage === "" ||
-        destination.domain === "" ||
-        destination.order === "" ||
-        destination.description === ""
-      )
-    ) {
-      const parsedData = {
-        type: destination.type,
-        country_code: destination.countryCode,
-        destination: destination.destination,
-        context: destination.context,
-        caller_Id_name: destination.callerIdName,
-        caller_Id_number: destination.callerIdNumber,
-        caller_Id_name_prefix: destination.callerIdNamePrefix,
-        usage: destination.usage,
-        domain: destination.domain,
-        order: destination.order,
-        destination_status: destination.enabled === "true" ? true : false,
-        description: destination.description,
-        account_id: account.account_id,
-        user: destination.user,
-        group: destination.group,
-        record: destination.record,
-        holdMusic: destination.holdMusic,
-        dial_action: destination.action,
-      };
-      const apiData = await generalPostFunction(`/dialplan/store`, parsedData);
-      if (apiData.status) {
-        setDestination({
-          type: "Inbound",
-          countryCode: "",
-          countryCodeMissing: false,
-          destination: "",
-          destinationMissing: false,
-          context: "",
-          contextMissing: false,
-          usage: "",
-          usageMissing: false,
-          domain: "",
-          domainMissing: false,
-          order: "",
-          orderMissing: false,
-          enabled: false,
-          enabledMissing: false,
-          description: "",
-          descriptionMissing: false,
-          callerIdName: "",
-          callerIdNumber: "",
-          condition: "",
-          action: "",
-          user: "",
-          group: "",
-          callerIdNamePrefix: "",
-          record: "",
-          holdMusic: "",
-          distinctiveRing: "",
-          accountCode: "",
-          actionMissing: false,
-        });
-        toast.success(apiData.message);
-      } else {
-        const errorMessage = Object.keys(apiData.errors);
-        toast.error(apiData.errors[errorMessage[0]][0]);
-      }
-      console.log("All validated", parsedData);
-    }
-  }
+  // async function handleSubmit() {
+  //   if (destination.countryCode === "") {
+  //     setDestination((prevState) => ({
+  //       ...prevState,
+  //       countryCodeMissing: true,
+  //     }));
+  //   } else {
+  //     setDestination((prevState) => ({
+  //       ...prevState,
+  //       countryCodeMissing: false,
+  //     }));
+  //   }
+  //   if (destination.destination === "") {
+  //     setDestination((prevState) => ({
+  //       ...prevState,
+  //       destinationMissing: true,
+  //     }));
+  //   } else {
+  //     setDestination((prevState) => ({
+  //       ...prevState,
+  //       destinationMissing: false,
+  //     }));
+  //   }
+  //   if (destination.context === "") {
+  //     setDestination((prevState) => ({
+  //       ...prevState,
+  //       contextMissing: true,
+  //     }));
+  //   } else {
+  //     setDestination((prevState) => ({
+  //       ...prevState,
+  //       contextMissing: false,
+  //     }));
+  //   }
+  //   if (destination.usage === "") {
+  //     setDestination((prevState) => ({
+  //       ...prevState,
+  //       usageMissing: true,
+  //     }));
+  //   } else {
+  //     setDestination((prevState) => ({
+  //       ...prevState,
+  //       usageMissing: false,
+  //     }));
+  //   }
+  //   if (destination.domain === "") {
+  //     setDestination((prevState) => ({
+  //       ...prevState,
+  //       domainMissing: true,
+  //     }));
+  //   } else {
+  //     setDestination((prevState) => ({
+  //       ...prevState,
+  //       domainMissing: false,
+  //     }));
+  //   }
+  //   if (destination.order === "") {
+  //     setDestination((prevState) => ({
+  //       ...prevState,
+  //       orderMissing: true,
+  //     }));
+  //   } else {
+  //     setDestination((prevState) => ({
+  //       ...prevState,
+  //       orderMissing: false,
+  //     }));
+  //   }
+  //   if (destination.enabled === "") {
+  //     setDestination((prevState) => ({
+  //       ...prevState,
+  //       enabledMissing: true,
+  //     }));
+  //   } else {
+  //     setDestination((prevState) => ({
+  //       ...prevState,
+  //       enabledMissing: false,
+  //     }));
+  //   }
+  //   if (destination.description === "") {
+  //     setDestination((prevState) => ({
+  //       ...prevState,
+  //       descriptionMissing: true,
+  //     }));
+  //   } else {
+  //     setDestination((prevState) => ({
+  //       ...prevState,
+  //       descriptionMissing: false,
+  //     }));
+  //   }
 
-  console.log("This is location data", locationData);
+  //   if (destination.action === "") {
+  //     setDestination((prevState) => ({
+  //       ...prevState,
+  //       actionMissing: true,
+  //     }));
+  //   } else {
+  //     setDestination((prevState) => ({
+  //       ...prevState,
+  //       actionMissing: false,
+  //     }));
+  //   }
+
+  //   if (
+  //     !(
+  //       destination.action === "" ||
+  //       destination.countryCode === "" ||
+  //       destination.destination === "" ||
+  //       destination.context === "" ||
+  //       destination.usage === "" ||
+  //       destination.domain === "" ||
+  //       destination.order === "" ||
+  //       destination.description === ""
+  //     )
+  //   ) {
+  //     const parsedData = {
+  //       type: destination.type,
+  //       country_code: destination.countryCode,
+  //       destination: destination.destination,
+  //       context: destination.context,
+  //       caller_Id_name: destination.callerIdName,
+  //       caller_Id_number: destination.callerIdNumber,
+  //       caller_Id_name_prefix: destination.callerIdNamePrefix,
+  //       usage: destination.usage,
+  //       domain: destination.domain,
+  //       order: destination.order,
+  //       destination_status: destination.enabled === "true" ? true : false,
+  //       description: destination.description,
+  //       account_id: account.account_id,
+  //       user: destination.user,
+  //       group: destination.group,
+  //       record: destination.record,
+  //       holdMusic: destination.holdMusic,
+  //       dial_action: destination.action,
+  //     };
+  //     const apiData = await generalPostFunction(`/dialplan/store`, parsedData);
+  //     if (apiData.status) {
+  //       setDestination({
+  //         type: "Inbound",
+  //         countryCode: "",
+  //         countryCodeMissing: false,
+  //         destination: "",
+  //         destinationMissing: false,
+  //         context: "",
+  //         contextMissing: false,
+  //         usage: "",
+  //         usageMissing: false,
+  //         domain: "",
+  //         domainMissing: false,
+  //         order: "",
+  //         orderMissing: false,
+  //         enabled: false,
+  //         enabledMissing: false,
+  //         description: "",
+  //         descriptionMissing: false,
+  //         callerIdName: "",
+  //         callerIdNumber: "",
+  //         condition: "",
+  //         action: "",
+  //         user: "",
+  //         group: "",
+  //         callerIdNamePrefix: "",
+  //         record: "",
+  //         holdMusic: "",
+  //         distinctiveRing: "",
+  //         accountCode: "",
+  //         actionMissing: false,
+  //       });
+  //       toast.success(apiData.message);
+  //     } else {
+  //       const errorMessage = Object.keys(apiData.errors);
+  //       toast.error(apiData.errors[errorMessage[0]][0]);
+  //     }
+  //     console.log("All validated", parsedData);
+  //   }
+  // }
+
   return (
     <>
       <main className="mainContent">
@@ -302,7 +291,8 @@ function DestinationAdd() {
                   <button
                     effect="ripple"
                     className="panelButton"
-                    onClick={handleSubmit}
+            
+                    onClick={hadleFormSubmit}
                   >
                     Save
                   </button>
@@ -339,21 +329,17 @@ function DestinationAdd() {
                     <div className="col-12">
                       <select
                         className="formItem"
-                        name=""
                         id="selectFormRow"
-                        value={destination.type}
-                        onChange={(e) => {
-                          setDestination((prevState) => ({
-                            ...prevState,
-                            type: e.target.value,
-                          }));
-                        }}
+                        defaultValue={"Inbound"}
+                        {...  ("type", {...requiredValidator})}
+                    
                       >
                         <option value="Inbound">Inbound</option>
                         <option value="Outbound">Outbound</option>
                         <option value="Local">Local</option>
                       </select>
                     </div>
+                    {errors.type && <ErrorMessage text={errors.type.message} />}
                     <label htmlFor="data" className="formItemDesc">
                       Select the type.
                     </label>
@@ -362,60 +348,43 @@ function DestinationAdd() {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Country Code</label>
-                    {destination.countryCodeMissing ? (
-                      <label className="status missing">Field missing</label>
-                    ) : (
-                      ""
-                    )}
+                    
                   </div>
                   <div className="col-12">
                     <input
                       type="text"
                       name="extension"
                       className="formItem"
-                      value={destination.countryCode}
-                      onChange={(e) => {
-                        setDestination((prevState) => ({
-                          ...prevState,
-                          countryCode: e.target.value,
-                        }));
-                      }}
-                      required="required"
+                      {...register("country_code", {...requiredValidator, ...lengthValidator(1,4)})}
+                  
                     />
+                  {errors.country_code && <ErrorMessage text={errors.country_code.message} />}
                   </div>
                   <label htmlFor="data" className="formItemDesc">
                     Enter the country code.
                   </label>
                 </div>
-                <div className="formRow col-xl-3">
+                <div className="formRow col-xl-3 ">
                   <div className="formLabel">
                     <label htmlFor="">Destination</label>
-                    {destination.destinationMissing ? (
-                      <label className="status missing">Field missing</label>
-                    ) : (
-                      ""
-                    )}
+                  
                   </div>
                   <div className="col-12">
                     <input
                       type="text"
                       name="extension"
-                      value={destination.destination}
+                
                       className="formItem"
-                      onChange={(e) => {
-                        setDestination((prevState) => ({
-                          ...prevState,
-                          destination: e.target.value,
-                        }));
-                      }}
-                      required="required"
+                      {...register("destination", {...requiredValidator})}
+              
                     />
+                  {errors.destination && <ErrorMessage text={errors.destination.message} />}
                   </div>
                   <label htmlFor="data" className="formItemDesc">
                     Enter the destination.
                   </label>
                 </div>
-                {destination.type === "Inbound" ? (
+                {watch().type === "Inbound" && (
                   <>
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
@@ -425,15 +394,10 @@ function DestinationAdd() {
                         <input
                           type="text"
                           name="extension"
-                          value={destination.callerIdName}
+                 
                           className="formItem"
-                          onChange={(e) => {
-                            setDestination((prevState) => ({
-                              ...prevState,
-                              callerIdName: e.target.value,
-                            }));
-                          }}
-                          required="required"
+                          {...register("caller_Id_name")}
+                        
                         />
                       </div>
 
@@ -449,15 +413,9 @@ function DestinationAdd() {
                         <input
                           type="text"
                           name="extension"
-                          value={destination.callerIdNumber}
                           className="formItem"
-                          onChange={(e) => {
-                            setDestination((prevState) => ({
-                              ...prevState,
-                              callerIdNumber: e.target.value,
-                            }));
-                          }}
-                          required="required"
+                          {...register("caller_Id_number")}
+                          
                         />
                       </div>
 
@@ -466,33 +424,24 @@ function DestinationAdd() {
                       </label>
                     </div>
                   </>
-                ) : (
-                  ""
+               
                 )}
 
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Context</label>
-                    {destination.contextMissing ? (
-                      <label className="status missing">Field missing</label>
-                    ) : (
-                      ""
-                    )}
+                 
                   </div>
-                  <div className="col-12">
+                  <div className="col-12  d-flex flex-column">
                     <input
                       type="text"
                       name="extension"
-                      value={destination.context}
+          
                       className="formItem"
-                      onChange={(e) => {
-                        setDestination((prevState) => ({
-                          ...prevState,
-                          context: e.target.value,
-                        }));
-                      }}
-                      required="required"
+                      {...register("context", {...requiredValidator})}
+                     
                     />
+                  {errors.context && <ErrorMessage text={errors.context.message} />}
                   </div>
                   <label htmlFor="data" className="formItemDesc">
                     Enter the context.
@@ -501,26 +450,17 @@ function DestinationAdd() {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Actions</label>
-                    {destination.actionMissing ? (
-                      <label className="status missing">Field missing</label>
-                    ) : (
-                      ""
-                    )}
+                  
                   </div>
-                  <div className="col-12">
+                  <div className="col-12 d-flex flex-column">
                     <select
                       className="formItem"
-                      name=""
+                      defaultValue={""}
                       id="selectFormRow"
-                      value={destination.action}
-                      onChange={(e) => {
-                        setDestination((prevState) => ({
-                          ...prevState,
-                          action: e.target.value,
-                        }));
-                      }}
+                      {...register("dial_action", {...requiredValidator})}
+                      
                     >
-                      <option selected="" value="" />
+                      <option disabled value=""  />
                       <optgroup label="Extension" disabled />
                       {extension &&
                         extension.map((item, key) => {
@@ -540,13 +480,14 @@ function DestinationAdd() {
                           );
                         })}
                     </select>
+                    {errors.dial_action && <ErrorMessage text={errors.dial_action.message} />}
 
                     <label htmlFor="data" className="formItemDesc">
                       Add additional actions.
                     </label>
                   </div>
                 </div>
-                {destination.type === "Inbound" ? (
+                {watch().type === "Inbound" && (
                   <>
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
@@ -557,13 +498,8 @@ function DestinationAdd() {
                           className="formItem"
                           name=""
                           id="selectFormRow"
-                          value={destination.user}
-                          onChange={(e) => {
-                            setDestination((prevState) => ({
-                              ...prevState,
-                              user: e.target.value,
-                            }));
-                          }}
+                          {...register("user")}
+                       
                         >
                           <option value=""></option>
                           {users &&
@@ -590,13 +526,8 @@ function DestinationAdd() {
                           className="formItem"
                           name=""
                           id="selectFormRow"
-                          value={destination.group}
-                          onChange={(e) => {
-                            setDestination((prevState) => ({
-                              ...prevState,
-                              group: e.target.value,
-                            }));
-                          }}
+                          {...register("group")}
+                         
                         >
                           <option selected="" value="" />
                           {ringGroup &&
@@ -622,15 +553,10 @@ function DestinationAdd() {
                         <input
                           type="text"
                           name="extension"
-                          value={destination.callerIdNamePrefix}
+                     
                           className="formItem"
-                          onChange={(e) => {
-                            setDestination((prevState) => ({
-                              ...prevState,
-                              callerIdNamePrefix: e.target.value,
-                            }));
-                          }}
-                          required="required"
+                          {...register("caller_Id_name_prefix")}
+                         
                         />
 
                         <label htmlFor="data" className="formItemDesc">
@@ -639,13 +565,9 @@ function DestinationAdd() {
                       </div>
                     </div>
                   </>
-                ) : (
-                  ""
-                )}
+                ) }
 
-                {destination.type === "Outbound" ? (
-                  ""
-                ) : (
+                {watch().type !== "Outbound" &&
                   <>
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
@@ -656,13 +578,8 @@ function DestinationAdd() {
                           className="formItem"
                           name=""
                           id="selectFormRow"
-                          value={destination.record}
-                          onChange={(e) => {
-                            setDestination((prevState) => ({
-                              ...prevState,
-                              record: e.target.value,
-                            }));
-                          }}
+                          {...register("caller_Id_name_prefix")}
+                  
                         >
                           <option selected="" value="true">
                             True
@@ -684,13 +601,8 @@ function DestinationAdd() {
                           className="formItem"
                           name=""
                           id="selectFormRow"
-                          value={destination.holdMusic}
-                          onChange={(e) => {
-                            setDestination((prevState) => ({
-                              ...prevState,
-                              holdMusic: e.target.value,
-                            }));
-                          }}
+                          {...register("holdMusic")}
+                         
                         >
                           <option selected="" value="default">
                             default
@@ -711,15 +623,8 @@ function DestinationAdd() {
                         <input
                           type="text"
                           name="extension"
-                          value={destination.distinctiveRing}
-                          className="formItem"
-                          onChange={(e) => {
-                            setDestination((prevState) => ({
-                              ...prevState,
-                              distinctiveRing: e.target.value,
-                            }));
-                          }}
-                          required="required"
+                          {...register("distinctiveRing")}
+                        
                         />
 
                         <label htmlFor="data" className="formItemDesc">
@@ -735,15 +640,10 @@ function DestinationAdd() {
                         <input
                           type="text"
                           name="extension"
-                          value={destination.accountCode}
+                        
                           className="formItem"
-                          onChange={(e) => {
-                            setDestination((prevState) => ({
-                              ...prevState,
-                              accountCode: e.target.value,
-                            }));
-                          }}
-                          required="required"
+                          {...register("accountCode")}
+                       
                         />
 
                         <label htmlFor="data" className="formItemDesc">
@@ -752,36 +652,27 @@ function DestinationAdd() {
                       </div>
                     </div>
                   </>
-                )}
+                }
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Usage</label>
-                    {destination.usageMissing ? (
-                      <label className="status missing">Field missing</label>
-                    ) : (
-                      ""
-                    )}
+                  
                   </div>
-                  <div className="col-12">
+                  <div className="col-12 d-flex flex-column">
                     <select
                       className="formItem"
                       name=""
                       id="selectFormRow"
-                      value={destination.usage}
-                      onChange={(e) => {
-                        setDestination((prevState) => ({
-                          ...prevState,
-                          usage: e.target.value,
-                        }));
-                      }}
+                      {...register("usage",  {...requiredValidator})}
+                    
                     >
-                      <option value=""></option>
+                      <option disabled value=""></option>
                       <option value="voice">Voice</option>
                       <option value="text">Text</option>
                       <option value="fax">Fax</option>
                       <option value="emergency">Emergency</option>
                     </select>
-
+                    {errors.usage && <ErrorMessage text={errors.usage.message} />}
                     <label htmlFor="data" className="formItemDesc">
                       Set how the Destination will be used.
                     </label>
@@ -790,24 +681,15 @@ function DestinationAdd() {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Domain</label>
-                    {destination.domainMissing ? (
-                      <label className="status missing">Field missing</label>
-                    ) : (
-                      ""
-                    )}
+                   
                   </div>
-                  <div className="col-12">
+                  <div className="col-12 d-flex flex-column">
                     <select
                       className="formItem"
                       name=""
                       id="selectFormRow"
-                      value={destination.domain}
-                      onChange={(e) => {
-                        setDestination((prevState) => ({
-                          ...prevState,
-                          domain: e.target.value,
-                        }));
-                      }}
+                      {...register("domain",  {...requiredValidator})}
+                    
                     >
                       <option value=""></option>
                       {domains &&
@@ -819,6 +701,7 @@ function DestinationAdd() {
                           );
                         })}
                     </select>
+                  {errors.domain && <ErrorMessage text={errors.domain.message} />}
                   </div>
                   <label htmlFor="data" className="formItemDesc">
                     Select the Domain.
@@ -827,24 +710,15 @@ function DestinationAdd() {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Order</label>
-                    {destination.orderMissing ? (
-                      <label className="status missing">Field missing</label>
-                    ) : (
-                      ""
-                    )}
+                  
                   </div>
                   <div className="col-12">
                     <select
                       className="formItem"
                       name=""
                       id="selectFormRow"
-                      value={destination.order}
-                      onChange={(e) => {
-                        setDestination((prevState) => ({
-                          ...prevState,
-                          order: e.target.value,
-                        }));
-                      }}
+                      {...register("order",  {...requiredValidator})}
+                      
                     >
                       <option selected="" value=""></option>
                       <option value={210}>210</option>
@@ -859,56 +733,55 @@ function DestinationAdd() {
                       <option value={300}>300</option>
                     </select>
                   </div>
+                  {errors.order && <ErrorMessage text={errors.order.message} />}
                 </div>
 
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Description</label>
-                    {destination.descriptionMissing ? (
-                      <label className="status missing">Field missing</label>
-                    ) : (
-                      ""
-                    )}
+                   
                   </div>
                   <div className="col-12">
                     <input
                       type="text"
                       name="extension"
                       className="formItem"
-                      value={destination.description}
-                      onChange={(e) => {
-                        setDestination((prevState) => ({
-                          ...prevState,
-                          description: e.target.value,
-                        }));
-                      }}
-                      required="required"
+                      {...register("description",  {...requiredValidator})}
+                     
                     />
+                    {errors.description && <ErrorMessage text={errors.description.message} />}
                   </div>
                 </div>
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Status</label>
                   </div>
-                  <div className="col-12">
+                  <div className="col-12 d-flex flex-column">
                     <select
                       className="formItem"
                       name=""
+                      defaultValue={""}
                       id="selectFormRow"
-                      value={destination.enabled}
-                      onChange={(e) => {
-                        setDestination((prevState) => ({
-                          ...prevState,
-                          enabled: e.target.value,
-                        }));
-                      }}
+                  
+                      {...register("destination_status", {...requiredValidator,
+                     
+
+                      })} 
+                     
+                     
                     >
+                      <option disabled value="">
+                        Select
+                      </option>
                       <option selected="" value={true}>
                         True
                       </option>
                       <option value={false}>False</option>
                     </select>
+                    {errors.destination_status && <ErrorMessage text={errors.destination_status.message} />}
                   </div>
+
+                 
                 </div>
               </form>
             </div>
