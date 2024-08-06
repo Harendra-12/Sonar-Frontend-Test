@@ -1,7 +1,9 @@
 .caller {
-    width: 100vw;
-    height: 100vh;
-    background-color: #0a0d16;
+    /* width: 100vw;
+    height: 100vh; */
+    width: 100%;
+    height: 100%;
+    background-color: var(--caller-color);
     padding: 50px;
 }
 
@@ -49,4 +51,62 @@
 
 .caller .footer {
     justify-content: center;
+}
+
+/* ------------------------------ Incoming Call Popup  */
+
+.incomingCallPopup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--caller-color);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    /* width: 200px !important; */
+    min-height: 280px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.incomingCallPopup .user {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.incomingCallPopup .userHolder {
+    background-color: #fff;
+    overflow: hidden;
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.incomingCallPopup .userInfo {
+    color: #fff;
+    margin-top: 20px;
+}
+
+.incomingCallPopup .userInfo h5 {
+    font-weight: 300;
+    color: #ffffffa1;
+}
+
+.incomingCallPopup .controls {
+    display: flex;
+    justify-content: space-between;
+    width: 125px;
+    margin: 10px auto 0 auto;
+}
+
+.incomingCallPopup .minimizeBtn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
 }

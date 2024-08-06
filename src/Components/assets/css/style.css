@@ -35,6 +35,7 @@
 @import url('./components/billingOverview.css');
 @import url('./components/temporaryDashboard.css');
 @import url('./components/documentPending.css');
+@import url('./components/activeCallsSidePanel.css');
 
 
 /* Responsive CSS */
@@ -50,6 +51,7 @@
     --button-dark: #2d3864;
     /* --nav-color: #0676a9; */
     --div-color: #161c31;
+    --caller-color: #0a0d16;
     --color1: #360568;
     /* Primary Color */
     --color2: #5b2a86;
@@ -69,6 +71,7 @@
     --color-subtext: #7c7c7c;
     /* Contrast Subtext Color */
     --sideNav-width: 250px;
+    --active-calls-sidePanel-width: 250px;
 }
 
 html {

@@ -220,6 +220,10 @@
     margin-left: auto;
 }
 
+.callButton.hangup {
+    background-color: #c41a1a;
+}
+
 .appPanelButton {
     background-color: #0e111e;
     border: none;
@@ -342,4 +346,19 @@
 .payNow:active {
     transform: translate(5px, 5px);
     transition-duration: .3s;
+}
+
+.whiteCircleBtn {
+    background-color: #ffffff;
+    border: none;
+    color: #0a0d16;
+    font-size: 15px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: auto;
+    margin-left: auto;
 }
