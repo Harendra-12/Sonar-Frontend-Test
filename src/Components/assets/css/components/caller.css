@@ -128,8 +128,9 @@
 }
 
 .incomingCallPopup.minimized .userHolder {
-    height: 50px;
-    width: 50px;
+    height: 45px;
+    width: 45px;
+    font-size: 22px;
 }
 
 .incomingCallPopup.minimized .userInfo h4 {

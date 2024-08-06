@@ -34,8 +34,8 @@ function IncomingCallPopup() {
                             <h5>Mr Charles McGill</h5>
                         </div>
                         <div className='controls m-0'>
-                            <button class="callButton"><i class="fa-duotone fa-phone"></i></button>
-                            <button class="callButton hangup"><i class="fa-duotone fa-phone-hangup"></i></button>
+                            <button class="callButton me-0"><i class="fa-duotone fa-phone"></i></button>
+                            <button class="callButton hangup me-0"><i class="fa-duotone fa-phone-hangup"></i></button>
                         </div>
                     </div>
 
