@@ -67,6 +67,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 999;
 }
 
 .incomingCallPopup .user {
@@ -109,4 +110,33 @@
     position: absolute;
     top: -10px;
     right: -10px;
+}
+
+.incomingCallPopup.minimized {
+    top: inherit;
+    left: inherit;
+    right: 10px;
+    bottom: 10px;
+    transform: none;
+    min-height: auto;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.incomingCallPopup.minimized .user {
+    flex-wrap: nowrap;
+}
+
+.incomingCallPopup.minimized .userHolder {
+    height: 50px;
+    width: 50px;
+}
+
+.incomingCallPopup.minimized .userInfo h4 {
+    font-size: 18px !important;
+    margin-bottom: 5px;
+}
+
+.incomingCallPopup.minimized .userInfo h5 {
+    font-size: 14px !important;
 }
