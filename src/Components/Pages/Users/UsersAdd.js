@@ -9,13 +9,6 @@ import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
-import { useForm } from "react-hook-form";
-import {
-  emailValidator,
-  lengthValidator,
-  requiredValidator,
-} from "../../validations/validation";
-import ErrorMessage from "../../CommonComponents/ErrorMessage";
 const UsersAdd = () => {
   const navigate = useNavigate();
   const [domains, setDomains] = useState("");
@@ -25,19 +18,37 @@ const UsersAdd = () => {
   const [selectedRole, setSelectedRole] = useState();
   const [defaultPermission, setDefaultPermission] = useState();
   const [selectedPermission, setSelectedPermission] = useState([]);
-  const [isUserNameAvailable, setIsUserNameAvailable] = useState();
-  const [userNameValidationLoader, setuserNameValidationLoader] =
-    useState(false);
-
-  const {
-    register,
-    watch,
-    setError,
-
-    formState: { errors },
-    handleSubmit,
-    reset,
-  } = useForm();
+  const [userState, setUserState] = useState({
+    userName: "",
+    password: "",
+    cPassword: "",
+    email: "",
+    language: "",
+    timeZone: "",
+    status: "",
+    firstName: "",
+    lastName: "",
+    organization: "",
+    groups: "",
+    type: "",
+    domain: "",
+    useNameValidation: false,
+    isUserNameAvailable: false,
+    userNameMissing: false,
+    passwordMissing: false,
+    cPasswordMissing: false,
+    emailMissing: false,
+    languageMissing: false,
+    timeZoneMissing: false,
+    statusMissing: false,
+    firstNameMissing: false,
+    lastNameMissing: false,
+    organizationMissing: false,
+    groupMissing: false,
+    typeMissing: false,
+    domainMissing: false,
+    roleId:""
+  });
 
   const account = useSelector((state) => state.account);
   useEffect(() => {
@@ -68,11 +79,12 @@ const UsersAdd = () => {
           );
         }
         if (apiRole.status) {
-          if (apiRole.data.length > 0) {
+          if(apiRole.data.length>0){
             setRole(apiRole.data);
-          } else {
-            toast.error("Please add Role first");
+          }else{
+            toast.error("Please add Role first")
           }
+          
         }
         if (permissionData.status) {
           setDefaultPermission(permissionData.data);
@@ -84,22 +96,34 @@ const UsersAdd = () => {
 
   //Calling useName api for availability check after user stop typing
   async function checkUserName() {
-    if (watch().username.length > 2) {
-      setuserNameValidationLoader(true);
-
+    if (userState.userName.length > 2) {
+      setUserState((prevState) => ({
+        ...prevState,
+        useNameValidation: true,
+      }));
       const parsedData = {
-        username: watch().username,
+        username: userState.userName,
       };
       const userName = await generalPostFunction("/check/username", parsedData);
       if (userName.status) {
-        setIsUserNameAvailable(true);
-        setuserNameValidationLoader(false);
+        setUserState((prevState) => ({
+          ...prevState,
+          isUserNameAvailable: true,
+        }));
+        setUserState((prevState) => ({
+          ...prevState,
+          useNameValidation: false,
+        }));
       } else {
-        setIsUserNameAvailable(false);
-        setuserNameValidationLoader(false);
+        setUserState((prevState) => ({
+          ...prevState,
+          isUserNameAvailable: false,
+        }));
+        setUserState((prevState) => ({
+          ...prevState,
+          useNameValidation: false,
+        }));
       }
-    } else {
-      setIsUserNameAvailable();
     }
   }
 
@@ -111,48 +135,217 @@ const UsersAdd = () => {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [watch().username]);
+  }, [userState.userName]);
 
-  const handleFormSubmit = handleSubmit(async (data) => {
-    if (data.cPassword !== data.password) {
-      setError("cPassword", {
-        type: "manual",
-        message: "Passwords are not matching",
-      });
-
-      return;
+  //   Validating form and creating new user
+  async function handleSubmit() {
+    if (userState.userName.length > 3 && userState.userName.length < 20) {
+      setUserState((prevState) => ({
+        ...prevState,
+        userNameMissing: false,
+      }));
+    } else {
+      setUserState((prevState) => ({
+        ...prevState,
+        userNameMissing: true,
+      }));
+    }
+    if (userState.password.length > 3) {
+      setUserState((prevState) => ({
+        ...prevState,
+        passwordMissing: false,
+      }));
+    } else {
+      setUserState((prevState) => ({
+        ...prevState,
+        passwordMissing: true,
+      }));
+    }
+    if (userState.password === userState.cPassword) {
+      setUserState((prevState) => ({
+        ...prevState,
+        cPasswordMissing: false,
+      }));
+    } else {
+      setUserState((prevState) => ({
+        ...prevState,
+        cPasswordMissing: true,
+      }));
+    }
+    if (userState.email.length > 3 && userState.email.includes("@")) {
+      setUserState((prevState) => ({
+        ...prevState,
+        emailMissing: false,
+      }));
+    } else {
+      setUserState((prevState) => ({
+        ...prevState,
+        emailMissing: true,
+      }));
+    }
+    if (userState.language === "" || userState.language === "Select Language") {
+      setUserState((prevState) => ({
+        ...prevState,
+        languageMissing: true,
+      }));
+    } else {
+      setUserState((prevState) => ({
+        ...prevState,
+        languageMissing: false,
+      }));
+    }
+    if (
+      userState.timeZone === "" ||
+      userState.timeZone === "Select Time Zone"
+    ) {
+      setUserState((prevState) => ({
+        ...prevState,
+        timeZoneMissing: true,
+      }));
+    } else {
+      setUserState((prevState) => ({
+        ...prevState,
+        timeZoneMissing: false,
+      }));
+    }
+    if (userState.status === "" || userState.status === "Choose Status") {
+      setUserState((prevState) => ({
+        ...prevState,
+        statusMissing: true,
+      }));
+    } else {
+      setUserState((prevState) => ({
+        ...prevState,
+        statusMissing: false,
+      }));
+    }
+    if (userState.type === "" || userState.type === "Choose Type") {
+      setUserState((prevState) => ({
+        ...prevState,
+        typeMissing: true,
+      }));
+    } else {
+      setUserState((prevState) => ({
+        ...prevState,
+        typeMissing: false,
+      }));
+    }
+    if (userState.domain === "" || userState.domain === "Choose Domain") {
+      setUserState((prevState) => ({
+        ...prevState,
+        domainMissing: true,
+      }));
+    } else {
+      setUserState((prevState) => ({
+        ...prevState,
+        domainMissing: false,
+      }));
+    }
+    if (
+      userState.organization.length > 3 &&
+      userState.organization.length < 50
+    ) {
+      setUserState((prevState) => ({
+        ...prevState,
+        organizationMissing: false,
+      }));
+    } else {
+      setUserState((prevState) => ({
+        ...prevState,
+        organizationMissing: true,
+      }));
+    }
+    if (userState.firstName.length > 3 && userState.firstName.length < 20) {
+      setUserState((prevState) => ({
+        ...prevState,
+        firstNameMissing: false,
+      }));
+    } else {
+      setUserState((prevState) => ({
+        ...prevState,
+        firstNameMissing: true,
+      }));
     }
 
-    const { firstName, lastName } = data;
+    if (selectedPermission.length === 0) {
+      toast.error("Permission cannot be empty");
+    }
 
-    let updatedData = {
-      ...data,
-      ...{
-        name: `${firstName} ${lastName}`,
-      },
-    };
-
-    delete updatedData.firstName;
-    delete updatedData.lastName;
-    delete updatedData.cPassword;
-    const payload = {
-      ...updatedData,
-      ...{
+    if (
+      selectedPermission.length > 0 &&
+      userState.userName.length > 3 &&
+      userState.userName.length < 20 &&
+      userState.password.length > 3 &&
+      userState.password === userState.cPassword &&
+      userState.email.length > 3 &&
+      userState.email.includes("@") &&
+      !(
+        userState.timeZone === "" || userState.timeZone === "Select Time Zone"
+      ) &&
+      !(userState.status === "" || userState.status === "Choose Status") &&
+      !(userState.type === "" || userState.type === "Choose Type") &&
+      !(userState.domain === "" || userState.domain === "Choose Domain") &&
+      userState.firstName.length > 3 &&
+      userState.firstName.length < 20 &&
+      userState.isUserNameAvailable
+    ) {
+      setLoading(true);
+      const parsedData = {
+        name: userState.firstName + " " + userState.lastName,
+        email: userState.email,
+        password: userState.password,
+        username: userState.userName,
+        // group_id: userState.groups,
+        domain_id: userState.domain,
+        timezone_id: userState.timeZone,
+        status: userState.status,
+        // usertype: userState.type,
         account_id: account.account_id,
         permissions: selectedPermission,
-      },
-    };
-    const addUser = await generalPostFunction("/user/create", payload);
-    if (addUser.status) {
-      reset();
-      toast.success(addUser.message);
-      setLoading(false);
-    } else {
-      setLoading(false);
-      const errorMessage = Object.keys(addUser.errors);
-      toast.error(addUser.errors[errorMessage[0]][0]);
+        role_id: userState.type,
+      };
+      const addUser = await generalPostFunction("/user/create", parsedData);
+      if (addUser.status) {
+        setUserState({
+          userName: "",
+          password: "",
+          cPassword: "",
+          email: "",
+          language: "",
+          timeZone: "",
+          status: "",
+          firstName: "",
+          lastName: "",
+          organization: "",
+          groups: "",
+          type: "",
+          domain: "",
+          roleId:"",
+          useNameValidation: false,
+          isUserNameAvailable: false,
+          userNameMissing: false,
+          passwordMissing: false,
+          cPasswordMissing: false,
+          emailMissing: false,
+          languageMissing: false,
+          timeZoneMissing: false,
+          statusMissing: false,
+          firstNameMissing: false,
+          lastNameMissing: false,
+          organizationMissing: false,
+          groupMissing: false,
+          typeMissing: false,
+          domainMissing: false,
+        });
+        toast.success(addUser.message);
+        setLoading(false);
+      } else {
+        setLoading(false);
+        const errorMessage = Object.keys(addUser.errors);
+        toast.error(addUser.errors[errorMessage[0]][0]);
+      }
     }
-  });
+  }
 
   // Filter out permissions base on the availabe id's inside user section
   const filterPermissionById = (data, idArray) => {
@@ -183,6 +376,7 @@ const UsersAdd = () => {
     account.permissions
   );
 
+  // const [selectedPermission, setSelectedPermission] = useState([]);
   const [parentChecked, setParentChecked] = useState({});
 
   // Initialize parentChecked state
@@ -231,7 +425,6 @@ const UsersAdd = () => {
     setSelectedPermission(newSelectedPermission);
     setParentChecked({ ...parentChecked, [item]: newParentChecked });
   };
-
   return (
     <>
       <style>
@@ -267,7 +460,7 @@ const UsersAdd = () => {
                   <button
                     effect="ripple"
                     className="panelButton"
-                    onClick={handleFormSubmit}
+                    onClick={handleSubmit}
                   >
                     Save
                   </button>
@@ -286,17 +479,16 @@ const UsersAdd = () => {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Username</label>
-
-                    {isUserNameAvailable == true ? (
+                    {userState.userName === "" ? (
+                      <label className="status missing">Field Missing</label>
+                    ) : userState.isUserNameAvailable ? (
                       <label className="status success">
                         Username Available
                       </label>
-                    ) : isUserNameAvailable == false ? (
-                      <label className="status fail">Not Available</label>
                     ) : (
-                      ""
+                      <label className="status fail">Not Available</label>
                     )}
-                    {userNameValidationLoader ? (
+                    {userState.useNameValidation ? (
                       <img
                         className="loaderSpinner"
                         src={require("../../assets/images/loader-gif.webp")}
@@ -311,30 +503,41 @@ const UsersAdd = () => {
                       type="text"
                       name="extension"
                       className="formItem"
-                      {...register("username", { ...requiredValidator })}
+                      value={userState.userName}
+                      onChange={(e) => {
+                        setUserState((prevState) => ({
+                          ...prevState,
+                          userName: e.target.value,
+                        }));
+                      }}
+                      required="required"
                     />
-                    {errors.username && (
-                      <ErrorMessage text={errors.username.message} />
-                    )}
                   </div>
                 </div>
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Password</label>
+                    {userState.passwordMissing ? (
+                      <label className="status missing">Invalid Password</label>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <div className="col-12">
                     <input
                       type="password"
                       name="extension"
+                      value={userState.password}
                       className="formItem"
-                      {...register("password", {
-                        ...requiredValidator,
-                        ...lengthValidator(3, 20),
-                      })}
+                      onChange={(e) => {
+                        setUserState((prevState) => ({
+                          ...prevState,
+                          password: e.target.value,
+                        }));
+                      }}
+                      required="required"
                     />
-                    {errors.password && (
-                      <ErrorMessage text={errors.password.message} />
-                    )}
+                    <br />
                     <label htmlFor="data" className="formItemDesc">
                       Required: At least 4 character
                     </label>
@@ -343,17 +546,29 @@ const UsersAdd = () => {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Confirm Password</label>
+                    {userState.cPasswordMissing ? (
+                      <label className="status missing">
+                        Password not matched
+                      </label>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <div className="col-12">
                     <input
                       type="password"
                       name="extension"
+                      value={userState.cPassword}
                       className="formItem"
-                      {...register("cPassword", { ...requiredValidator })}
+                      onChange={(e) => {
+                        setUserState((prevState) => ({
+                          ...prevState,
+                          cPassword: e.target.value,
+                        }));
+                      }}
+                      required="required"
                     />
-                    {errors.cPassword && (
-                      <ErrorMessage text={errors.cPassword.message} />
-                    )}
+                    <br />
                     <label htmlFor="data" className="formItemDesc">
                       Green field borders indicate typed passwords match.
                     </label>
@@ -362,39 +577,51 @@ const UsersAdd = () => {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Email</label>
+                    {userState.emailMissing ? (
+                      <label className="status missing">Invalid Email</label>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <div className="col-12">
                     <input
                       type="email"
                       name="extension"
+                      value={userState.email}
                       className="formItem"
-                      {...register("email", {
-                        ...requiredValidator,
-                        ...emailValidator,
-                      })}
+                      onChange={(e) => {
+                        setUserState((prevState) => ({
+                          ...prevState,
+                          email: e.target.value,
+                        }));
+                      }}
+                      required="required"
                     />
-                    {errors.email && (
-                      <ErrorMessage text={errors.email.message} />
-                    )}
                   </div>
                 </div>
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">First Name</label>
+                    {userState.firstNameMissing ? (
+                      <label className="status missing">Invalid Name</label>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <div className="col-12">
                     <input
                       type="text"
                       name="extension"
+                      value={userState.firstName}
                       className="formItem"
-                      {...register("firstName", {
-                        ...requiredValidator,
-                        ...lengthValidator(3, 20),
-                      })}
+                      onChange={(e) => {
+                        setUserState((prevState) => ({
+                          ...prevState,
+                          firstName: e.target.value,
+                        }));
+                      }}
+                      required="required"
                     />
-                    {errors.firstName && (
-                      <ErrorMessage text={errors.firstName.message} />
-                    )}
                   </div>
                 </div>
                 <div className="formRow col-xl-3">
@@ -405,8 +632,15 @@ const UsersAdd = () => {
                     <input
                       type="text"
                       name="extension"
+                      value={userState.lastName}
                       className="formItem"
-                      {...register("lastName")}
+                      onChange={(e) => {
+                        setUserState((prevState) => ({
+                          ...prevState,
+                          lastName: e.target.value,
+                        }));
+                      }}
+                      required="required"
                     />
                   </div>
                 </div>
@@ -454,16 +688,25 @@ const UsersAdd = () => {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Time Zone</label>
+                    {userState.timeZoneMissing ? (
+                      <label className="status missing">Select Timezone</label>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <div className="col-12">
                     <select
                       className="formItem"
                       name=""
-                      {...register("timezone_id", { ...requiredValidator })}
+                      value={userState.timeZone}
+                      onChange={(e) => {
+                        setUserState((prevState) => ({
+                          ...prevState,
+                          timeZone: e.target.value,
+                        }));
+                      }}
                     >
-                      <option disabled value="">
-                        Select Time Zone
-                      </option>
+                      <option>Select Time Zone</option>
                       {timeZone &&
                         timeZone.map((item, key) => {
                           return (
@@ -473,9 +716,7 @@ const UsersAdd = () => {
                           );
                         })}
                     </select>
-                    {errors.timezone_id && (
-                      <ErrorMessage text={errors.timezone_id.message} />
-                    )}
+                    <br />
                     <label htmlFor="data" className="formItemDesc">
                       Select the default time zone.
                     </label>
@@ -484,23 +725,34 @@ const UsersAdd = () => {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Status</label>
+                    {userState.statusMissing ? (
+                      <label className="status missing">Select Status</label>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <div className="col-12">
                     <select
                       className="formItem"
                       name=""
-                      {...register("status", { ...requiredValidator })}
+                      value={userState.status}
+                      onChange={(e) => {
+                        setUserState((prevState) => ({
+                          ...prevState,
+                          status: e.target.value,
+                        }));
+                      }}
                     >
-                      <option disabled value="">
-                        Choose Status
-                      </option>
-
+                      <option>Choose Status</option>
+                      {/* <option value="avail">Available</option>
+                                                <option value="aod">Available(On Demand)</option>
+                                                <option value="logout">Logged Out</option>
+                                                <option value="break">On Break</option>
+                                                <option value="dnd">Do Not Disturn</option> */}
                       <option value="E">Enable</option>
                       <option value="D">Disable</option>
                     </select>
-                    {errors.status && (
-                      <ErrorMessage text={errors.status.message} />
-                    )}
+                    <br />
                     <label htmlFor="data" className="formItemDesc">
                       Set the user's presence.
                     </label>
@@ -564,41 +816,41 @@ const UsersAdd = () => {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Role Type</label>
+                    {userState.typeMissing ? (
+                      <label className="status missing">Select role Type</label>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <div className="col-12">
+                   
                     <select
                       className="formItem"
                       name=""
-                      defaultValue=""
-                      {...register("role_id", { ...requiredValidator })}
+                      value={userState.roleId}
                       onChange={(e) => {
-                        setSelectedRole(
-                          e.target.value === "" ? "" : role[e.target.value].name
-                        );
+                      
+                        setUserState((prevState) => ({
+                          ...prevState,
+                          type:e.target.value===""?"":role[e.target.value].id,
+                          roleId:e.target.value
+                        }));
+                        setSelectedRole(e.target.value===""?"":role[e.target.value].name);
                         setSelectedPermission(
-                          e.target.value === ""
-                            ? ""
-                            : role[e.target.value].permissions.map((item) => {
-                                return item.permission_id;
-                              })
+                          e.target.value===""?"":
+                          role[e.target.value].permissions.map((item) => {
+                            return item.permission_id;
+                          })
                         );
+                        console.log("This is value",e.target.value);
                       }}
                     >
-                      <option value="" disabled>
-                        Choose Type
-                      </option>
-
+                      <option value="">Choose Type</option>
                       {role.map((item, key) => {
-                        return (
-                          <option value={item.id} key={key}>
-                            {item.name}
-                          </option>
-                        );
+                        return <option value={key} key={key}>{item.name}</option>;
                       })}
                     </select>
-                    {errors.role_id && (
-                      <ErrorMessage text={errors.role_id.message} />
-                    )}
+                    <br />
                     <label htmlFor="data" className="formItemDesc">
                       Select Default to enable login or to disable login select
                       Virtual.
@@ -608,17 +860,25 @@ const UsersAdd = () => {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Domain</label>
+                    {userState.domainMissing ? (
+                      <label className="status missing">Select Domain</label>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <div className="col-12">
                     <select
                       className="formItem"
                       name=""
-                      defaultValue=""
-                      {...register("domain_id", { ...requiredValidator })}
+                      value={userState.domain}
+                      onChange={(e) => {
+                        setUserState((prevState) => ({
+                          ...prevState,
+                          domain: e.target.value,
+                        }));
+                      }}
                     >
-                      <option disabled value="">
-                        Choose Domain
-                      </option>
+                      <option>Choose Domain</option>
                       {domains &&
                         domains.map((item, key) => {
                           return (
@@ -628,14 +888,25 @@ const UsersAdd = () => {
                           );
                         })}
                     </select>
-                    {errors.domain_id && (
-                      <ErrorMessage text={errors.domain_id.message} />
-                    )}
+                    <br />
                     <label htmlFor="data" className="formItemDesc">
                       Select the Domain.
                     </label>
                   </div>
                 </div>
+                {/* <div className="formRow col-xl-3 d-flex align-items-center">
+                <div className="col-12">
+                  <button
+                    className="panelButton"
+                    effect="ripple"
+                    type="button"
+                    onClick={handleSubmit}
+                  >
+                    Add User
+                  </button>
+                  <br />
+                </div>
+              </div> */}
               </form>
             </div>
 
@@ -671,44 +942,46 @@ const UsersAdd = () => {
                       </div>
                     </div>
                     {filteredPermission &&
-                      Object.keys(filteredPermission).map((item, key) => (
-                        <div className="permissionListWrapper" key={key}>
-                          <div className="header d-flex align-items-center">
-                            <div className="col-5">
-                              <input
-                                type="checkbox"
-                                checked={parentChecked[item]}
-                                onChange={() =>
-                                  handleParentCheckboxChange(item)
-                                }
-                              />
-                              <label>{item}</label>
-                            </div>
-                          </div>
-                          <div className="row px-2 pt-1 border-bottom">
-                            {filteredPermission[item].map((innerItem, key) => (
-                              <div
-                                className="formRow col-xl-2 col-md-4 col-6"
-                                key={key}
-                              >
-                                <input
-                                  type="checkbox"
-                                  id={`permission-${innerItem.id}`}
-                                  checked={selectedPermission.includes(
-                                    innerItem.id
-                                  )}
-                                  onChange={() =>
-                                    handleCheckboxChange(innerItem.id)
-                                  }
-                                />
-                                <label className="formLabel">
-                                  {innerItem.action}
-                                </label>
+                          Object.keys(filteredPermission).map((item, key) => (
+                            <div className="permissionListWrapper" key={key}>
+                              <div className="header d-flex align-items-center">
+                                <div className="col-5">
+                                  <input
+                                    type="checkbox"
+                                    checked={parentChecked[item]}
+                                    onChange={() =>
+                                      handleParentCheckboxChange(item)
+                                    }
+                                  />
+                                  <label>{item}</label>
+                                </div>
                               </div>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
+                              <div className="row px-2 pt-1 border-bottom">
+                                {filteredPermission[item].map(
+                                  (innerItem, key) => (
+                                    <div
+                                      className="formRow col-xl-2 col-md-4 col-6"
+                                      key={key}
+                                    >
+                                      <input
+                                        type="checkbox"
+                                        id={`permission-${innerItem.id}`}
+                                        checked={selectedPermission.includes(
+                                          innerItem.id
+                                        )}
+                                        onChange={() =>
+                                          handleCheckboxChange(innerItem.id)
+                                        }
+                                      />
+                                      <label className="formLabel">
+                                        {innerItem.action}
+                                      </label>
+                                    </div>
+                                  )
+                                )}
+                              </div>
+                            </div>
+                          ))}
                   </div>
                 </div>
               </div>

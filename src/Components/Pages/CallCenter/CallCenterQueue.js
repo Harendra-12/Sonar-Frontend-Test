@@ -8,7 +8,7 @@ import {
 import ContentLoader from "../../Loader/ContentLoader";
 
 function CallCenterQueue() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(true);
   const [callCenter, setCallCenter] = useState();
   useEffect(() => {
@@ -93,13 +93,7 @@ function CallCenterQueue() {
                     {callCenter &&
                       callCenter.map((item) => {
                         return (
-                          <tr
-                            onClick={() =>
-                              navigate("/cal-center-queue-edit", {
-                                state: item,
-                              })
-                            }
-                          >
+                          <tr onClick={()=>navigate("/cal-center-queue-edit",{state:item})}>
                             <td>{item.queue_name}</td>
                             <td>{item.extension}</td>
                             <td>{item.strategy}</td>
