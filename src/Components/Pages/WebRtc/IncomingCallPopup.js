@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 function IncomingCallPopup() {
-    const [isMinmized, setIsMinimized] = useState(true);
+    const [isMinmized, setIsMinimized] = useState(false);
     return (
         <>
             {!isMinmized ? (<div className='incomingCallPopup minimized'>
