@@ -5,6 +5,7 @@
 
 .mainContentApp {
     margin-left: var(--sideNav-width);
+    margin-right: var(--active-calls-sidePanel-width);
     padding-left: 0px;
     background-color: #fff;
 }

@@ -1,0 +1,149 @@
+.activeCallsSidePanel {
+    width: var(--active-calls-sidePanel-width);
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 2;
+    background-color: #fff;
+    /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+    transition: all 0.2s ease-in-out;
+    border-left: 1px solid #dee2e6;
+}
+
+.callItem {
+    display: flex;
+    width: 100%;
+    background-color: #dee2e68a;
+    /* border-radius: 10px; */
+    padding: 10px 10px;
+    border: 1px solid #dddddd;
+    position: relative;
+    overflow: hidden;
+    border: none;
+    border-left: 5px solid rgb(138, 138, 138);
+    margin-bottom: 5px;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.callItem.active {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-color: #00d300;
+    opacity: 1;
+    background-color: #00d0ff14;
+}
+
+.callItem.ringing {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-color: red;
+    opacity: 1;
+    background-color: #ff000014;
+}
+
+.callItem.hold {
+    border-color: #d39000;
+}
+
+.callItem.active .profilepicHolder::after {
+    content: '\f095';
+    font-family: 'FontAwesome';
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #00d300;
+    font-size: 10px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.callItem.hold .profilepicHolder::after {
+    content: '\f04c';
+    font-family: 'FontAwesome';
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #d39000;
+    font-size: 10px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.callItem.ringing .profilepicHolder::after {
+    content: '\f2a0';
+    font-family: 'FontAwesome';
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: red;
+    font-size: 10px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.callItem .profilepicHolder {
+    width: 44px;
+    height: 44px;
+    text-align: center;
+    cursor: pointer;
+    background-color: var(--ui-accent);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    font-size: 24px;
+}
+
+.callItem .callContent {
+    margin-left: 20px;
+    width: 70%;
+}
+
+.callItem .callContent h4 {
+    font-size: 17px !important;
+    margin: 0;
+}
+
+.callItem .callContent h5 {
+    font-size: 14px !important;
+    margin: 5px 0 0;
+    font-family: Outfit;
+    font-weight: 500;
+    color: #505050;
+}
+
+.callItem.ringing .callContent::after {
+    content: 'Incoming';
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 12px;
+    background-color: red;
+    border-radius: 50px;
+    color: #fff;
+    font-weight: 600;
+    padding: 0 5px;
+    animation: blinker 1.5s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
