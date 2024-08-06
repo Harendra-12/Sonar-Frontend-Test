@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
 function IncomingCallPopup() {
-    const [isMinmized, setIsMinimized] = useState(false);
+    const [isMinimized, setIsMinimized] = useState(false);
     return (
         <>
-            {!isMinmized ? (<div className='incomingCallPopup minimized'>
+            {!isMinimized ? (<div className='incomingCallPopup'>
                 <div>
                     <div className="user">
                         <div className="userHolder col-12">
@@ -21,7 +21,7 @@ function IncomingCallPopup() {
                     </div>
                 </div>
                 <div className='minimizeBtn'>
-                    <button class="whiteCircleBtn" onClick={setIsMinimized(true)}><i class="fa-solid fa-dash"></i></button>
+                    <button class="whiteCircleBtn" onClick={() => setIsMinimized(true)}><i class="fa-solid fa-dash"></i></button>
                 </div>
             </div>)
                 : (<div className='incomingCallPopup minimized'>
