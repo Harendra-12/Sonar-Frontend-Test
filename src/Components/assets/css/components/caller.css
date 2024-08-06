@@ -139,4 +139,5 @@
 
 .incomingCallPopup.minimized .userInfo h5 {
     font-size: 14px !important;
+    margin-bottom: 0px;
 }
