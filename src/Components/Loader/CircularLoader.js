@@ -1,11 +1,11 @@
-import React from 'react'
+import React from "react";
 
-function CircularLoader({widthAdjust}) {
+function CircularLoader({ widthAdjust }) {
   return (
     <div className={`circularLoader ${widthAdjust}`}>
-      <img  src={require("../assets/images/loader-gif.webp")} alt="loader" />
+      <img src={require("../assets/images/loader-gif.webp")} alt="loader" />
     </div>
-  )
+  );
 }
 
-export default CircularLoader
+export default CircularLoader;
