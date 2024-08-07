@@ -11,7 +11,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ActionList from "../../CommonComponents/ActionList";
 import { useForm } from "react-hook-form";
-import { lengthValidator, requiredValidator } from "../../validations/validation";
+import {
+  lengthValidator,
+  requiredValidator,
+} from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 
 function DestinationAdd() {
@@ -23,8 +26,13 @@ function DestinationAdd() {
   const [users, setUsers] = useState();
   const account = useSelector((state) => state.account);
   const {
-    register, watch, setValue,formState: { errors }, handleSubmit, reset
-  } = useForm()
+    register,
+    watch,
+    setValue,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm();
   useEffect(() => {
     if (account === null) {
       navigate("/");
@@ -54,197 +62,29 @@ function DestinationAdd() {
       getDomain();
     }
   }, []);
- 
+
+  const actionListValue = (value) => {
+    setValue("dial_action", value[0]);
+  };
 
   const hadleFormSubmit = handleSubmit(async (data) => {
-
-    const payload = {...data, ...{account_id:account.account_id, 
-      destination_status: data.destination_status == "true"? true : false}}
+    const payload = {
+      ...data,
+      ...{
+        account_id: account.account_id,
+        destination_status: data.destination_status == "true" ? true : false,
+      },
+    };
     const apiData = await generalPostFunction(`/dialplan/store`, payload);
-        if (apiData.status) {
-          reset()
-          toast.success(apiData.message);
-        } else {
-          const errorMessage = Object.keys(apiData.errors);
-          toast.error(apiData.errors[errorMessage[0]][0]);
-        }
-  })
+    if (apiData.status) {
+      reset();
+      toast.success(apiData.message);
+    } else {
+      const errorMessage = Object.keys(apiData.errors);
+      toast.error(apiData.errors[errorMessage[0]][0]);
+    }
+  });
 
-  // async function handleSubmit() {
-  //   if (destination.countryCode === "") {
-  //     setDestination((prevState) => ({
-  //       ...prevState,
-  //       countryCodeMissing: true,
-  //     }));
-  //   } else {
-  //     setDestination((prevState) => ({
-  //       ...prevState,
-  //       countryCodeMissing: false,
-  //     }));
-  //   }
-  //   if (destination.destination === "") {
-  //     setDestination((prevState) => ({
-  //       ...prevState,
-  //       destinationMissing: true,
-  //     }));
-  //   } else {
-  //     setDestination((prevState) => ({
-  //       ...prevState,
-  //       destinationMissing: false,
-  //     }));
-  //   }
-  //   if (destination.context === "") {
-  //     setDestination((prevState) => ({
-  //       ...prevState,
-  //       contextMissing: true,
-  //     }));
-  //   } else {
-  //     setDestination((prevState) => ({
-  //       ...prevState,
-  //       contextMissing: false,
-  //     }));
-  //   }
-  //   if (destination.usage === "") {
-  //     setDestination((prevState) => ({
-  //       ...prevState,
-  //       usageMissing: true,
-  //     }));
-  //   } else {
-  //     setDestination((prevState) => ({
-  //       ...prevState,
-  //       usageMissing: false,
-  //     }));
-  //   }
-  //   if (destination.domain === "") {
-  //     setDestination((prevState) => ({
-  //       ...prevState,
-  //       domainMissing: true,
-  //     }));
-  //   } else {
-  //     setDestination((prevState) => ({
-  //       ...prevState,
-  //       domainMissing: false,
-  //     }));
-  //   }
-  //   if (destination.order === "") {
-  //     setDestination((prevState) => ({
-  //       ...prevState,
-  //       orderMissing: true,
-  //     }));
-  //   } else {
-  //     setDestination((prevState) => ({
-  //       ...prevState,
-  //       orderMissing: false,
-  //     }));
-  //   }
-  //   if (destination.enabled === "") {
-  //     setDestination((prevState) => ({
-  //       ...prevState,
-  //       enabledMissing: true,
-  //     }));
-  //   } else {
-  //     setDestination((prevState) => ({
-  //       ...prevState,
-  //       enabledMissing: false,
-  //     }));
-  //   }
-  //   if (destination.description === "") {
-  //     setDestination((prevState) => ({
-  //       ...prevState,
-  //       descriptionMissing: true,
-  //     }));
-  //   } else {
-  //     setDestination((prevState) => ({
-  //       ...prevState,
-  //       descriptionMissing: false,
-  //     }));
-  //   }
-
-  //   if (destination.action === "") {
-  //     setDestination((prevState) => ({
-  //       ...prevState,
-  //       actionMissing: true,
-  //     }));
-  //   } else {
-  //     setDestination((prevState) => ({
-  //       ...prevState,
-  //       actionMissing: false,
-  //     }));
-  //   }
-
-  //   if (
-  //     !(
-  //       destination.action === "" ||
-  //       destination.countryCode === "" ||
-  //       destination.destination === "" ||
-  //       destination.context === "" ||
-  //       destination.usage === "" ||
-  //       destination.domain === "" ||
-  //       destination.order === "" ||
-  //       destination.description === ""
-  //     )
-  //   ) {
-  //     const parsedData = {
-  //       type: destination.type,
-  //       country_code: destination.countryCode,
-  //       destination: destination.destination,
-  //       context: destination.context,
-  //       caller_Id_name: destination.callerIdName,
-  //       caller_Id_number: destination.callerIdNumber,
-  //       caller_Id_name_prefix: destination.callerIdNamePrefix,
-  //       usage: destination.usage,
-  //       domain: destination.domain,
-  //       order: destination.order,
-  //       destination_status: destination.enabled === "true" ? true : false,
-  //       description: destination.description,
-  //       account_id: account.account_id,
-  //       user: destination.user,
-  //       group: destination.group,
-  //       record: destination.record,
-  //       holdMusic: destination.holdMusic,
-  //       dial_action: destination.action,
-  //     };
-  //     const apiData = await generalPostFunction(`/dialplan/store`, parsedData);
-  //     if (apiData.status) {
-  //       setDestination({
-  //         type: "Inbound",
-  //         countryCode: "",
-  //         countryCodeMissing: false,
-  //         destination: "",
-  //         destinationMissing: false,
-  //         context: "",
-  //         contextMissing: false,
-  //         usage: "",
-  //         usageMissing: false,
-  //         domain: "",
-  //         domainMissing: false,
-  //         order: "",
-  //         orderMissing: false,
-  //         enabled: false,
-  //         enabledMissing: false,
-  //         description: "",
-  //         descriptionMissing: false,
-  //         callerIdName: "",
-  //         callerIdNumber: "",
-  //         condition: "",
-  //         action: "",
-  //         user: "",
-  //         group: "",
-  //         callerIdNamePrefix: "",
-  //         record: "",
-  //         holdMusic: "",
-  //         distinctiveRing: "",
-  //         accountCode: "",
-  //         actionMissing: false,
-  //       });
-  //       toast.success(apiData.message);
-  //     } else {
-  //       const errorMessage = Object.keys(apiData.errors);
-  //       toast.error(apiData.errors[errorMessage[0]][0]);
-  //     }
-  //     console.log("All validated", parsedData);
-  //   }
-  // }
 
   return (
     <>
@@ -274,7 +114,6 @@ function DestinationAdd() {
                   <button
                     effect="ripple"
                     className="panelButton"
-            
                     onClick={hadleFormSubmit}
                   >
                     Save
@@ -314,8 +153,7 @@ function DestinationAdd() {
                         className="formItem"
                         id="selectFormRow"
                         defaultValue={"Inbound"}
-                        {...  ("type", {...requiredValidator})}
-                    
+                        {...("type", { ...requiredValidator })}
                       >
                         <option value="Inbound">Inbound</option>
                         <option value="Outbound">Outbound</option>
@@ -331,17 +169,20 @@ function DestinationAdd() {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Country Code</label>
-                    
                   </div>
                   <div className="col-12">
                     <input
                       type="text"
                       name="extension"
                       className="formItem"
-                      {...register("country_code", {...requiredValidator, ...lengthValidator(1,4)})}
-                  
+                      {...register("country_code", {
+                        ...requiredValidator,
+                        ...lengthValidator(1, 4),
+                      })}
                     />
-                  {errors.country_code && <ErrorMessage text={errors.country_code.message} />}
+                    {errors.country_code && (
+                      <ErrorMessage text={errors.country_code.message} />
+                    )}
                   </div>
                   <label htmlFor="data" className="formItemDesc">
                     Enter the country code.
@@ -350,18 +191,17 @@ function DestinationAdd() {
                 <div className="formRow col-xl-3 ">
                   <div className="formLabel">
                     <label htmlFor="">Destination</label>
-                  
                   </div>
                   <div className="col-12">
                     <input
                       type="text"
                       name="extension"
-                
                       className="formItem"
-                      {...register("destination", {...requiredValidator})}
-              
+                      {...register("destination", { ...requiredValidator })}
                     />
-                  {errors.destination && <ErrorMessage text={errors.destination.message} />}
+                    {errors.destination && (
+                      <ErrorMessage text={errors.destination.message} />
+                    )}
                   </div>
                   <label htmlFor="data" className="formItemDesc">
                     Enter the destination.
@@ -377,10 +217,8 @@ function DestinationAdd() {
                         <input
                           type="text"
                           name="extension"
-                 
                           className="formItem"
                           {...register("caller_Id_name")}
-                        
                         />
                       </div>
 
@@ -398,7 +236,6 @@ function DestinationAdd() {
                           name="extension"
                           className="formItem"
                           {...register("caller_Id_number")}
-                          
                         />
                       </div>
 
@@ -407,24 +244,22 @@ function DestinationAdd() {
                       </label>
                     </div>
                   </>
-               
                 )}
 
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Context</label>
-                 
                   </div>
                   <div className="col-12  d-flex flex-column">
                     <input
                       type="text"
                       name="extension"
-          
                       className="formItem"
-                      {...register("context", {...requiredValidator})}
-                     
+                      {...register("context", { ...requiredValidator })}
                     />
-                  {errors.context && <ErrorMessage text={errors.context.message} />}
+                    {errors.context && (
+                      <ErrorMessage text={errors.context.message} />
+                    )}
                   </div>
                   <label htmlFor="data" className="formItemDesc">
                     Enter the context.
@@ -432,8 +267,8 @@ function DestinationAdd() {
                 </div>
                 <div className="formRow col-xl-3">
                   <ActionList
-                    // getDropdownValue={actionListValue}
-                    // value={destination.action}
+                  getDropdownValue={actionListValue}
+                  value={watch().dial_action}
                   />
                 </div>
                 {watch().type === "Inbound" && (
@@ -448,7 +283,6 @@ function DestinationAdd() {
                           name=""
                           id="selectFormRow"
                           {...register("user")}
-                       
                         >
                           <option value=""></option>
                           {users &&
@@ -476,7 +310,6 @@ function DestinationAdd() {
                           name=""
                           id="selectFormRow"
                           {...register("group")}
-                         
                         >
                           <option selected="" value="" />
                           {/* {ringGroup &&
@@ -502,10 +335,8 @@ function DestinationAdd() {
                         <input
                           type="text"
                           name="extension"
-                     
                           className="formItem"
                           {...register("caller_Id_name_prefix")}
-                         
                         />
 
                         <label htmlFor="data" className="formItemDesc">
@@ -514,9 +345,9 @@ function DestinationAdd() {
                       </div>
                     </div>
                   </>
-                ) }
+                )}
 
-                {watch().type !== "Outbound" &&
+                {watch().type !== "Outbound" && (
                   <>
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
@@ -528,7 +359,6 @@ function DestinationAdd() {
                           name=""
                           id="selectFormRow"
                           {...register("caller_Id_name_prefix")}
-                  
                         >
                           <option selected="" value="true">
                             True
@@ -551,7 +381,6 @@ function DestinationAdd() {
                           name=""
                           id="selectFormRow"
                           {...register("holdMusic")}
-                         
                         >
                           <option selected="" value="default">
                             default
@@ -573,7 +402,6 @@ function DestinationAdd() {
                           type="text"
                           name="extension"
                           {...register("distinctiveRing")}
-                        
                         />
 
                         <label htmlFor="data" className="formItemDesc">
@@ -589,10 +417,8 @@ function DestinationAdd() {
                         <input
                           type="text"
                           name="extension"
-                        
                           className="formItem"
                           {...register("accountCode")}
-                       
                         />
 
                         <label htmlFor="data" className="formItemDesc">
@@ -601,19 +427,17 @@ function DestinationAdd() {
                       </div>
                     </div>
                   </>
-                }
+                )}
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Usage</label>
-                  
                   </div>
                   <div className="col-12 d-flex flex-column">
                     <select
                       className="formItem"
                       name=""
                       id="selectFormRow"
-                      {...register("usage",  {...requiredValidator})}
-                    
+                      {...register("usage", { ...requiredValidator })}
                     >
                       <option disabled value=""></option>
                       <option value="voice">Voice</option>
@@ -621,7 +445,9 @@ function DestinationAdd() {
                       <option value="fax">Fax</option>
                       <option value="emergency">Emergency</option>
                     </select>
-                    {errors.usage && <ErrorMessage text={errors.usage.message} />}
+                    {errors.usage && (
+                      <ErrorMessage text={errors.usage.message} />
+                    )}
                     <label htmlFor="data" className="formItemDesc">
                       Set how the Destination will be used.
                     </label>
@@ -630,15 +456,13 @@ function DestinationAdd() {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Domain</label>
-                   
                   </div>
                   <div className="col-12 d-flex flex-column">
                     <select
                       className="formItem"
                       name=""
                       id="selectFormRow"
-                      {...register("domain",  {...requiredValidator})}
-                    
+                      {...register("domain", { ...requiredValidator })}
                     >
                       <option value=""></option>
                       {domains &&
@@ -650,7 +474,9 @@ function DestinationAdd() {
                           );
                         })}
                     </select>
-                  {errors.domain && <ErrorMessage text={errors.domain.message} />}
+                    {errors.domain && (
+                      <ErrorMessage text={errors.domain.message} />
+                    )}
                   </div>
                   <label htmlFor="data" className="formItemDesc">
                     Select the Domain.
@@ -659,15 +485,13 @@ function DestinationAdd() {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Order</label>
-                  
                   </div>
                   <div className="col-12">
                     <select
                       className="formItem"
                       name=""
                       id="selectFormRow"
-                      {...register("order",  {...requiredValidator})}
-                      
+                      {...register("order", { ...requiredValidator })}
                     >
                       <option selected="" value=""></option>
                       <option value={210}>210</option>
@@ -688,17 +512,17 @@ function DestinationAdd() {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Description</label>
-                   
                   </div>
                   <div className="col-12">
                     <input
                       type="text"
                       name="extension"
                       className="formItem"
-                      {...register("description",  {...requiredValidator})}
-                     
+                      {...register("description", { ...requiredValidator })}
                     />
-                    {errors.description && <ErrorMessage text={errors.description.message} />}
+                    {errors.description && (
+                      <ErrorMessage text={errors.description.message} />
+                    )}
                   </div>
                 </div>
                 <div className="formRow col-xl-3">
@@ -711,13 +535,9 @@ function DestinationAdd() {
                       name=""
                       defaultValue={""}
                       id="selectFormRow"
-                  
-                      {...register("destination_status", {...requiredValidator,
-                     
-
-                      })} 
-                     
-                     
+                      {...register("destination_status", {
+                        ...requiredValidator,
+                      })}
                     >
                       <option disabled value="">
                         Select
@@ -727,10 +547,10 @@ function DestinationAdd() {
                       </option>
                       <option value={false}>False</option>
                     </select>
-                    {errors.destination_status && <ErrorMessage text={errors.destination_status.message} />}
+                    {errors.destination_status && (
+                      <ErrorMessage text={errors.destination_status.message} />
+                    )}
                   </div>
-
-                 
                 </div>
               </form>
             </div>

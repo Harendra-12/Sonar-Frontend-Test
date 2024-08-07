@@ -12,8 +12,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
-import ActionList from "../../CommonComponents/ActionList";
-import Select from "react-select";
 import { useForm } from "react-hook-form";
 import {
   nameValidator,
@@ -21,6 +19,7 @@ import {
   requiredValidator,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import ActionList from "../../CommonComponents/ActionList";
 
 function CallCenterQueueAdd() {
   const navigate = useNavigate();
@@ -39,6 +38,8 @@ function CallCenterQueueAdd() {
     formState: { errors },
     handleSubmit,
     reset,
+    setValue,
+    watch,
   } = useForm();
   useEffect(() => {
     async function getData() {
@@ -78,12 +79,9 @@ function CallCenterQueueAdd() {
     },
   ]);
 
-  // const actionListValue = (value) => {
-  //   setCallCenter((prevData) => ({
-  //     ...prevData,
-  //     action: value[0],
-  //   }));
-  // };
+  const actionListValue = (value) => {
+    setValue("queue_timeout_action", value[0]);
+  };
 
   function addNewAgent() {
     setAgent([
@@ -180,6 +178,7 @@ function CallCenterQueueAdd() {
         }),
       },
     };
+
     const apiData = await generalPostFunction(
       "/call-center-queue/store",
       payload
@@ -372,8 +371,8 @@ function CallCenterQueueAdd() {
               </div>
               <div className="formRow col-xl-3">
                 <ActionList
-                  // getDropdownValue={actionListValue}
-                  // value={callCenter.action}
+                  getDropdownValue={actionListValue}
+                  value={watch().queue_timeout_action}
                 />
               </div>
               <div className="formRow col-xl-3">
