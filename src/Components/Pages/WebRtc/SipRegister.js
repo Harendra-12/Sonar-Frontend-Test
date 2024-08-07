@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useSIPProvider } from "react-sipjs";
+import { SessionState } from "sip.js";
 import MediaPermissions from "./MediaPermissions ";
 // import { CallSessionItem } from "./CallSessionItem";
 
@@ -18,6 +19,9 @@ export const SipRegister = () => {
       password: password,
     });
   }, [connectAndRegister,username,password]);
+
+  console.log("This is session state",SessionState);
+  
   return (
     <div className="col-auto">
       <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
