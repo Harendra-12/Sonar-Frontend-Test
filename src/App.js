@@ -111,11 +111,11 @@ function App() {
     <>
       <Router>
         <NavigationSetter />
-        <GlobalCalls />
-        <Navbar />
+        {/* <GlobalCalls /> */}
+        {/* <Navbar /> */}
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route element={<ProtectedRoute />}>
+          {/* <Route element={<ProtectedRoute />}> */}
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/temporary-dashboard" element={<TempDashboard />} />
             <Route path="/my-profile" element={<Profile />} />
@@ -254,7 +254,7 @@ function App() {
             {/* eFax Pages Start */}
             <Route path="/efax" element={<EFax />} />
             {/* eFax Pages End */}
-          </Route>
+          {/* </Route> */}
          
           {/* 404 Redirection */}
           <Route path="*" element={<Navigate to="/dashboard" />} />

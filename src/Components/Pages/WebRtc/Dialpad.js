@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSIPProvider } from "react-sipjs";
 
 function Dialpad({ hideDialpad }) {
@@ -21,7 +21,12 @@ function Dialpad({ hideDialpad }) {
     // ))
   }
 
-  console.log("This is sessions",sessions);
+  // console.log("This is sessions",sessions);
+  
+     Object.keys(sessions).map((sessionId) => (
+     console.log("this is session id abc",sessionId)
+    ))
+
   return (
     <>
       <div id="dialPad">

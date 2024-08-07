@@ -7,9 +7,10 @@ export const SipRegister = () => {
   const {
     connectAndRegister,
     registerStatus,
+    sessions,
     connectStatus,
   } = useSIPProvider();
-  const username = "1002";
+  const username = "1003";
   const password = "1234";
   useEffect(() => {
     connectAndRegister({
@@ -26,6 +27,9 @@ export const SipRegister = () => {
         SIP Status: {registerStatus}
       </h3>
       <MediaPermissions />
+      {Object.keys(sessions).map((sessionId) => (
+             console.log("sessions from register",sessionId)             
+            ))}
     </div>
   );
 };

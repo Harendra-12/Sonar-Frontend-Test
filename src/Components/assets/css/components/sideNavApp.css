@@ -1,6 +1,6 @@
 /* -------- SideNav MainMenu Styles ------- */
 #sidenNavApp{
-    width: 190px;
+    width: var(--sideNavApp-width);
     height: 100vh;
     position: fixed;
     left: 0;

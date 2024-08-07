@@ -562,6 +562,17 @@ function Navbar() {
                     </NavLink>
                   </li>
                   <li className="dashboard ">
+                    <a
+                      href="/call"
+                      target="_blank"
+                      // onClick={backToTop}
+                      type="button"
+                      effect="ripple"
+                    >
+                      <div className="itemTitle">WebRtc</div>
+                    </a>
+                  </li>
+                  <li className="dashboard ">
                     <NavLink
                       to="/"
                       onClick={logOut}
