@@ -1,8 +1,7 @@
-import axios from 'axios';
-import { handleNavigation } from './Navigation';
-const baseName = "http://127.0.0.1:8000/api"
-// const baseName = "http://192.168.1.88/UcaasS-Backend/api"
-
+import axios from "axios";
+import { handleNavigation } from "./Navigation";
+// const baseName = "http://127.0.0.1:8000/api"
+const baseName = "http://192.168.1.88/UcaasS-Backend/api";
 
 // Creating instance of axios
 const axiosInstance = axios.create({
@@ -47,17 +46,20 @@ export async function login(userName, password) {
 
 // General Get Function
 export async function generalGetFunction(endpoint) {
-  return axiosInstance.get(endpoint).then(res => {
-    return res.data
-  }).catch(err => {
-    if (err.response.status === 401) {
-      handleNavigation("/")
-      return err.response.data
-    } else {
-      return err.response.data
-    }
-    // console.log("This is error log",err.response.status);
-  })
+  return axiosInstance
+    .get(endpoint)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      if (err.response.status === 401) {
+        handleNavigation("/");
+        return err.response.data;
+      } else {
+        return err.response.data;
+      }
+      // console.log("This is error log",err.response.status);
+    });
 }
 
 // General Post function
