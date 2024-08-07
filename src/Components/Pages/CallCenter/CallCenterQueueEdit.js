@@ -27,7 +27,7 @@ function CallCenterQueueEdit() {
   const location = useLocation();
 
   const { state: locationState } = location;
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [ringGroup, setRingGroup] = useState();
   const [user, setUser] = useState();
   const account = useSelector((state) => state.account);
@@ -62,6 +62,8 @@ function CallCenterQueueEdit() {
     formState: { errors },
     handleSubmit,
     reset,
+    setValue,
+    watch,
   } = useForm();
 
   useEffect(() => {
@@ -119,6 +121,10 @@ function CallCenterQueueEdit() {
       navigate(-1);
     }
   }, []);
+
+  const actionListValue = (value) => {
+    setValue("queue_timeout_action", value[0]);
+  };
 
   function addNewAgent() {
     setAgent([
@@ -396,7 +402,8 @@ function CallCenterQueueEdit() {
               </div>
               <div className="formRow col-xl-3">
                 <ActionList
-                  // getDropdownValue={actionListValue}
+                  getDropdownValue={actionListValue}
+                  value={watch().queue_timeout_action}
                   // value={callCenter.action}
                 />
               </div>

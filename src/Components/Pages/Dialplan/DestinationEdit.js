@@ -14,9 +14,9 @@ import ActionList from "../../CommonComponents/ActionList";
 function DestinationEdit() {
   const location = useLocation();
   console.log("location", location);
-  
+
   const locationData = location.state.state;
-  const locationDid = location.state.did
+  const locationDid = location.state.did;
   const navigate = useNavigate();
   const [domains, setDomains] = useState();
   const [users, setUsers] = useState();
@@ -57,7 +57,7 @@ function DestinationEdit() {
     accountCode: "",
     actionMissing: false,
     xml: "",
-    did:"",
+    did: "",
   });
 
   useEffect(() => {
@@ -65,7 +65,6 @@ function DestinationEdit() {
       navigate("/");
     } else {
       async function getDomain() {
-
         // const destData = await generalGetFunction(`/dialplan/${value}`);
         const domain = await generalGetFunction(
           `/domain/search?account=${account.account_id}`
@@ -88,14 +87,11 @@ function DestinationEdit() {
         } else {
           navigate("/");
         }
-
-        
-       
       }
       getDomain();
       if (locationData) {
         setLoading(false);
-        console.log("This is dest",locationData);
+        console.log("This is dest", locationData);
         setDestination((prevState) => ({
           ...prevState,
           type: locationData.type,
@@ -116,8 +112,8 @@ function DestinationEdit() {
           group: locationData.group,
           record: locationData.record,
           holdMusic: locationData.holdMusic,
-          action:locationData.dial_action,
-          did:locationDid?locationDid:locationData.did?.did,
+          action: locationData.dial_action,
+          did: locationDid ? locationDid : locationData.did?.did,
         }));
       } else {
         setLoading(false);
@@ -357,7 +353,7 @@ function DestinationEdit() {
                   </label>
                 </div>
                 <div className="formRow col-xl-3">
-                <div className="formLabel">
+                  <div className="formLabel">
                     <label htmlFor="">DID</label>
                   </div>
                   <div className="col-12">
