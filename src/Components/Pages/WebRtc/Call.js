@@ -210,7 +210,8 @@ function Call() {
           // console.log("This is session id",sessionId)
         ))}
         {/* <ActiveCallSidePanel /> */}
-        <IncomingCallPopup />
+        {/* <IncomingCallPopup /> */}
+        <IncomingCalls />
         {dialpadShow ? <Dialpad hideDialpad={handleHideDialpad} /> : ""}
       </SIPProvider>
     </>

@@ -3,13 +3,7 @@ import { useSessionCall } from "react-sipjs";
 
 function IncomingCallPopup({ sessionId }) {
   const [isMinimized, setIsMinimized] = useState(false);
-  //   const {
-  //     connectAndRegister, // Function for connect and Register
-  //     sessionManager, // null
-  //     sessions, // {}
-  //     registerStatus, //UNREGISTERED
-  //     connectStatus, //WAIT REQUEST CONNECT
-  //   } = useSIPProvider();
+
   const {
     isHeld,
     isMuted,
@@ -24,6 +18,7 @@ function IncomingCallPopup({ sessionId }) {
     direction,
     timer,
   } = useSessionCall(sessionId);
+
   console.log(answer, direction);
   console.log(session);
 
