@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import IncomingCalls from "./IncomingCalls";
 
 function Call() {
+  const sess = useSelector((state) => state.sess) || {};
   const sessions = useSelector((state) => state.sessions);
   const [dialpadShow, setDialpadShow] = useState(false);
   const [clickStatus, setClickStatus] = useState("all");
@@ -19,7 +20,7 @@ function Call() {
   function handleHideDialpad(value) {
     setDialpadShow(value);
   }
-
+  console.log(sess);
   const useWebSocketErrorHandling = (options) => {
     useEffect(() => {
       const webSocket = new WebSocket(options.webSocketServer);
@@ -217,9 +218,18 @@ function Call() {
             <section className="activeCallsSidePanel">
               <div className="container">
                 <div className="row">
-                  {Object.keys(sessions).map((sessionId) => (
-                    <ActiveCallSidePanel sessionId={sessionId} />
-                  ))}
+                  {/* {Object.keys(sessions).map((sessionId) => (
+                    <ActiveCallSidePanel sessionId={sessionId}  />
+                  ))} */}
+                  {sess.map((item, index) => {
+                    return (
+                      <ActiveCallSidePanel
+                        data={item}
+                        key={index}
+                        index={index}
+                      />
+                    );
+                  })}
                 </div>
               </div>
             </section>
@@ -227,7 +237,8 @@ function Call() {
         ) : (
           ""
         )}
-        <IncomingCallPopup />
+        {/* <IncomingCallPopup /> */}
+        <IncomingCalls sessions={sessions} />
         {dialpadShow ? <Dialpad hideDialpad={handleHideDialpad} /> : ""}
       </SIPProvider>
     </>

@@ -1,32 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useSessionCall } from "react-sipjs";
 
-function IncomingCallPopup({ sessionId }) {
+function IncomingCallPopup({ sessionId, lastIncomingCall, index }) {
   const [isMinimized, setIsMinimized] = useState(false);
 
-  const {
-    isHeld,
-    isMuted,
-    decline,
-    hangup,
-    hold,
-    mute,
-    answer,
-    session,
-    unhold,
-    unmute,
-    direction,
-    timer,
-  } = useSessionCall(sessionId);
+  const { decline, answer, session } = useSessionCall(sessionId);
+  const dispatch = useDispatch();
+  const sess = useSelector((state) => state.sess) || {};
 
-  console.log(answer, direction);
-  console.log(session);
+  useEffect(() => {
+    if (!lastIncomingCall) {
+      setIsMinimized(true);
+    }
+  }, [sessionId, lastIncomingCall]);
+
+  useEffect(() => {
+    dispatch({
+      type: "SET_SESS",
+      sess: [
+        ...sess,
+        {
+          sessionId: sessionId,
+          destination: callerExtension,
+        },
+      ],
+    });
+  }, [sessionId]);
 
   const callerExtension =
     session?.incomingInviteRequest?.message?.from?._displayName;
+
+  const topPosition = 10 + index * 75;
+
   return (
     <>
-      {!isMinimized ? (
+      {lastIncomingCall && !isMinimized ? (
         <div className="incomingCallPopup">
           <div>
             <div className="user">
@@ -35,14 +44,14 @@ function IncomingCallPopup({ sessionId }) {
               </div>
               <div className="userInfo col-12 text-center">
                 <h4>{callerExtension}</h4>
-                <h5>Hard coded Name</h5>
+                <h5>{callerExtension}</h5>
               </div>
             </div>
             <div className="controls">
               <button class="callButton" onClick={answer}>
                 <i class="fa-duotone fa-phone"></i>
               </button>
-              <button class="callButton hangup">
+              <button class="callButton hangup" onClick={decline}>
                 <i class="fa-duotone fa-phone-hangup"></i>
               </button>
             </div>
@@ -54,7 +63,12 @@ function IncomingCallPopup({ sessionId }) {
           </div>
         </div>
       ) : (
-        <div className="incomingCallPopup minimized">
+        <div
+          className="incomingCallPopup minimized"
+          style={{
+            marginBottom: topPosition,
+          }}
+        >
           <div className="user">
             <div className="userHolder">
               <i className="fa-solid fa-user" />
@@ -64,10 +78,10 @@ function IncomingCallPopup({ sessionId }) {
               <h5>{callerExtension}</h5>
             </div>
             <div className="controls m-0">
-              <button class="callButton me-0">
+              <button class="callButton me-0" onClick={answer}>
                 <i class="fa-duotone fa-phone"></i>
               </button>
-              <button class="callButton hangup me-0">
+              <button class="callButton hangup me-0" onClick={decline}>
                 <i class="fa-duotone fa-phone-hangup"></i>
               </button>
             </div>
