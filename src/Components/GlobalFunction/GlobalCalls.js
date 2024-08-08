@@ -11,18 +11,21 @@ function GlobalCalls() {
   const navigate = useNavigate();
   const cardListRefresh = useSelector((state) => state.cardListRefresh);
   const billingListRefresh = useSelector((state) => state.billingListRefresh);
-  const accountDetailsRefresh = useSelector((state)=>state.accountDetailsRefresh)
-  const callDetailsRefresh = useSelector((state)=>state.callDetailsRefresh)
+  const accountDetailsRefresh = useSelector(
+    (state) => state.accountDetailsRefresh
+  );
+  const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
+  const allUserRefresh = useSelector((state) => state.allUserRefresh);
 
   const dispatch = useDispatch();
   useEffect(() => {
     if (account && account?.account_id) {
       async function getData() {
         const apiData = await generalGetFunction(
-          `/call-details?account=${account.account_id}`
+          `/call-details?account_id=${account.account_id}`
         );
         if (apiData.status) {
           dispatch({
@@ -32,13 +35,13 @@ function GlobalCalls() {
         }
       }
 
-      if(callDetailsRefresh>0){
+      if (callDetailsRefresh > 0) {
         getData();
       }
     } else {
       navigate("/");
     }
-  }, [account,callDetailsRefresh]);
+  }, [account, callDetailsRefresh]);
 
   // Getting all card details
   useEffect(() => {
@@ -51,40 +54,39 @@ function GlobalCalls() {
           type: "SET_CARDLIST",
           cardList: apiData.data,
         });
-        localStorage.setItem("cardList",JSON.stringify(apiData.data))
+        localStorage.setItem("cardList", JSON.stringify(apiData.data));
       }
     }
     // getData();
-    if(cardListRefresh>0){
-        getData();
+    if (cardListRefresh > 0) {
+      getData();
     }
-   
   }, [account?.account_id, cardListRefresh]);
 
   // Getting all billing address details
   useEffect(() => {
     async function getData() {
-      const apiData = await generalGetFunction(`/billing-address/all?account_id=${account.account_id}`);
+      const apiData = await generalGetFunction(
+        `/billing-address/all?account_id=${account.account_id}`
+      );
       if (apiData.status) {
         dispatch({
           type: "SET_BILLINGLIST",
           billingList: apiData.data,
         });
-        localStorage.setItem("billingList",JSON.stringify(apiData.data))
+        localStorage.setItem("billingList", JSON.stringify(apiData.data));
       }
     }
     // getData();
-    if(billingListRefresh>0){
-      console.log("This is billing refresh",billingListRefresh);
-        getData();
+    if (billingListRefresh > 0) {
+      console.log("This is billing refresh", billingListRefresh);
+      getData();
     }
-    
   }, [billingListRefresh]);
 
-
   // Getting account details
-  useEffect(()=>{
-    async function getData(){
+  useEffect(() => {
+    async function getData() {
       const accountData = await generalGetFunction(
         `/account/${account.account_id}`
       );
@@ -100,18 +102,15 @@ function GlobalCalls() {
       }
     }
     // getData();
-    if(accountDetailsRefresh>0){
-      getData()
+    if (accountDetailsRefresh > 0) {
+      getData();
     }
-  
-  },[account?.account_id, accountDetailsRefresh])
+  }, [account?.account_id, accountDetailsRefresh]);
 
   // Getting call center details
   useEffect(() => {
     async function getData() {
-      const apiData = await generalGetFunction(
-        `/call-center-queues`
-      );
+      const apiData = await generalGetFunction(`/call-center-queues`);
       if (apiData.status) {
         dispatch({
           type: "SET_CALLCENTER",
@@ -120,7 +119,7 @@ function GlobalCalls() {
       }
     }
     // getData();
-    if(callCenterRefresh>0){
+    if (callCenterRefresh > 0) {
       getData();
     }
   }, [callCenterRefresh]);
@@ -139,10 +138,9 @@ function GlobalCalls() {
       }
     }
     // getData();
-    if(extensionRefresh>0){
+    if (extensionRefresh > 0) {
       getData();
     }
-
   }, [extensionRefresh]);
 
   // Getting ring group details
@@ -159,10 +157,27 @@ function GlobalCalls() {
       }
     }
     // getData();
-    if(ringGroupRefresh>0){
+    if (ringGroupRefresh > 0) {
       getData();
     }
   }, [ringGroupRefresh]);
+
+  // Getting all user details
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction(`/user/all`);
+      if (apiData.status) {
+        dispatch({
+          type: "SET_ALLUSER",
+          allUser: apiData.data,
+        });
+      }
+    }
+    // getData();
+    if (allUserRefresh > 0) {
+      getData();
+    }
+  }, [allUserRefresh]);
 
   return <div></div>;
 }
