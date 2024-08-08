@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSIPProvider } from "react-sipjs";
-import { SessionState } from "sip.js";
+// import { SessionState } from "sip.js";
 import MediaPermissions from "./MediaPermissions ";
 import { useDispatch } from "react-redux";
 // import { CallSessionItem } from "./CallSessionItem";
@@ -22,7 +22,6 @@ export const SipRegister = () => {
     });
   }, [connectAndRegister,username,password]);
 
-  console.log("This is session state",SessionState);
   useEffect(()=>{
     dispatch({
       type: "SET_SESSIONS",
@@ -39,9 +38,6 @@ export const SipRegister = () => {
         SIP Status: {registerStatus}
       </h3>
       <MediaPermissions />
-      {Object.keys(sessions).map((sessionId) => (
-             console.log("sessions from register",sessionId)             
-            ))}
     </div>
   );
 };

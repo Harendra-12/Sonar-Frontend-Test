@@ -10,7 +10,7 @@ function ActiveCallSidePanel({sessionId}) {
         timer,
       } = useSessionCall(sessionId);
 
-      console.log("Active call",isHeld,isMuted,session,direction,timer);
+    //   console.log("Active call",isHeld,isMuted,session,direction,timer);
       
    
     

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Dialpad from "./Dialpad";
-import { SIPProvider, useSIPProvider } from "react-sipjs";
+import { SIPProvider } from "react-sipjs";
 import { SipRegister } from "./SipRegister";
 import ActiveCallSidePanel from "./ActiveCallSidePanel";
 import IncomingCallPopup from "./IncomingCallPopup";
@@ -47,6 +47,7 @@ function Call() {
   };
 
   useWebSocketErrorHandling(options);
+  
   return (
     <>
     <style>
