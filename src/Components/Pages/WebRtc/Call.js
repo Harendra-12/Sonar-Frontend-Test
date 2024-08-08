@@ -8,10 +8,11 @@ import SideNavbarApp from "./SideNavbarApp";
 import CallDetails from "./CallDetails";
 import OngoingCall from "./OngoingCall";
 import { useSelector } from "react-redux";
+import IncomingCalls from "./IncomingCalls";
 
 function Call() {
   const [dialpadShow, setDialpadShow] = useState(false);
-  const [clickStatus, setClickStatus] = useState("all")
+  const [clickStatus, setClickStatus] = useState("all");
   const callProgress = useSelector((state) => state.callProgress);
 
   function handleHideDialpad(value) {
@@ -23,14 +24,16 @@ function Call() {
       const webSocket = new WebSocket(options.webSocketServer);
 
       webSocket.onerror = (event) => {
-        console.error('WebSocket error:', event);
+        console.error("WebSocket error:", event);
         // Prevent default error handling
         event.preventDefault();
       };
 
       webSocket.onclose = (event) => {
         if (event.code === 1006) {
-          console.error(`WebSocket closed ${options.webSocketServer} (code: ${event.code})`);
+          console.error(
+            `WebSocket closed ${options.webSocketServer} (code: ${event.code})`
+          );
           // Handle the WebSocket close event
         }
       };
@@ -41,21 +44,21 @@ function Call() {
     }, [options.webSocketServer]);
   };
   const options = {
-    domain: "192.168.1.253",
-    webSocketServer: "wss://192.168.1.253:7443",
+    // domain: "192.168.1.253",
+    // webSocketServer: "wss://192.168.1.253:7443",
+    domain: "192.168.0.91",
+    webSocketServer: "ws://192.168.0.91:5066",
   };
 
   useWebSocketErrorHandling(options);
   return (
     <>
-    <style>
+      <style>
         {`#sidenNav{
         display:none;
       }`}
       </style>
-      <SIPProvider
-        options={options}
-      >
+      <SIPProvider options={options}>
         <SideNavbarApp />
         <main className="mainContentApp">
           <section className="callPage">
@@ -63,7 +66,7 @@ function Call() {
               <div className="row">
                 <div
                   className="col-12 col-xl-6 allCallHistory"
-                // style={{ height: "100%" }}
+                  // style={{ height: "100%" }}
                 >
                   <SipRegister />
 
@@ -87,12 +90,22 @@ function Call() {
                   <div className="col-12">
                     <nav>
                       <div className="nav nav-tabs">
-                        <button onClick={() => setClickStatus("all")} className={clickStatus === "all" ? "tabLink active" : "tabLink"} data-category="all">
+                        <button
+                          onClick={() => setClickStatus("all")}
+                          className={
+                            clickStatus === "all" ? "tabLink active" : "tabLink"
+                          }
+                          data-category="all"
+                        >
                           <i className="fa-light fa-phone" />
                         </button>
                         <button
                           onClick={() => setClickStatus("incoming")}
-                          className={clickStatus === "incoming" ? "tabLink active" : "tabLink"}
+                          className={
+                            clickStatus === "incoming"
+                              ? "tabLink active"
+                              : "tabLink"
+                          }
                           effect="ripple"
                           data-category="incoming"
                         >
@@ -100,7 +113,11 @@ function Call() {
                         </button>
                         <button
                           onClick={() => setClickStatus("outgoing")}
-                          className={clickStatus === "outgoing" ? "tabLink active" : "tabLink"}
+                          className={
+                            clickStatus === "outgoing"
+                              ? "tabLink active"
+                              : "tabLink"
+                          }
                           effect="ripple"
                           data-category="outgoing"
                         >
@@ -108,7 +125,11 @@ function Call() {
                         </button>
                         <button
                           onClick={() => setClickStatus("missed")}
-                          className={clickStatus === "missed" ? "tabLink active" : "tabLink"}
+                          className={
+                            clickStatus === "missed"
+                              ? "tabLink active"
+                              : "tabLink"
+                          }
                           effect="ripple"
                           data-category="missed"
                         >
@@ -116,7 +137,11 @@ function Call() {
                         </button>
                         <button
                           onClick={() => setClickStatus("voicemail")}
-                          className={clickStatus === "voicemail" ? "tabLink active" : "tabLink"}
+                          className={
+                            clickStatus === "voicemail"
+                              ? "tabLink active"
+                              : "tabLink"
+                          }
                           effect="ripple"
                           data-category="voicemail"
                         >
@@ -173,14 +198,15 @@ function Call() {
                   style={{ height: "100%" }}
                   id="callDetails"
                 >
-                  {callProgress? <OngoingCall />:  <CallDetails />}
+                  {callProgress ? <OngoingCall /> : <CallDetails />}
                 </div>
               </div>
             </div>
           </section>
         </main>
         <ActiveCallSidePanel />
-        <IncomingCallPopup />
+        <IncomingCalls />
+        {/* <IncomingCallPopup /> */}
         {dialpadShow ? <Dialpad hideDialpad={handleHideDialpad} /> : ""}
       </SIPProvider>
     </>
