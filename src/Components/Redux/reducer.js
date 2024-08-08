@@ -23,6 +23,7 @@ var callCenter = [];
 var callCenterRefresh = 0;
 var microPhonePermission = false;
 var callProgress = false;
+var sessions = null;
 
 const initialState = {
   account,
@@ -49,6 +50,7 @@ const initialState = {
   callCenter,
   callCenterRefresh,
   callProgress,
+  sessions,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -99,6 +101,8 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, callCenterRefresh: action.callCenterRefresh };
     case "SET_CALLPROGRESS":
       return { ...state, callProgress: action.callProgress };
+    case "SET_SESSIONS":
+      return { ...state, sessions: action.sessions };
     default:
       return state;
   }

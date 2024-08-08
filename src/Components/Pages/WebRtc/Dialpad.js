@@ -22,11 +22,7 @@ function Dialpad({ hideDialpad }) {
   }
 
   // console.log("This is sessions",sessions);
-  useEffect(() => {
-     Object.keys(sessions).map((sessionId) => (
-     console.log("this is session id abc",sessionId)
-    ))
-  },[sessions])
+  
   return (
     <>
       <div id="dialPad">
