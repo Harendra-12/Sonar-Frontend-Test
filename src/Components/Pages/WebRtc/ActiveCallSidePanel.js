@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSessionCall} from 'react-sipjs';
 
-function ActiveCallSidePanel(sessionId) {
+function ActiveCallSidePanel({sessionId}) {
     const {
         isHeld,
         isMuted,
@@ -15,9 +15,7 @@ function ActiveCallSidePanel(sessionId) {
    
     
     return (
-        <section className="activeCallsSidePanel">
-            <div className='container'>
-                <div className='row'>
+       <>
                     <div className='col-12 callItem'>
                         <div className='profilepicHolder'>
                             1
@@ -27,7 +25,7 @@ function ActiveCallSidePanel(sessionId) {
                             <h5>1003 <span className='float-end'>02:23</span></h5>
                         </div>
                     </div>
-                    <div className='col-12 callItem active'>
+                    {/* <div className='col-12 callItem active'>
                         <div className='profilepicHolder'>
                             2
                         </div>
@@ -53,10 +51,8 @@ function ActiveCallSidePanel(sessionId) {
                             <h4>Line 4</h4>
                             <h5>1003 <span className='float-end'>02:23</span></h5>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+                    </div> */}
+              </>
     )
 }
 

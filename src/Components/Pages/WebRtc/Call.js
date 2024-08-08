@@ -10,9 +10,7 @@ import OngoingCall from "./OngoingCall";
 import { useSelector } from "react-redux";
 
 function Call() {
-  const {
-    sessions,
-  } = useSIPProvider();
+ const sessions = useSelector((state) => state.sessions);
   const [dialpadShow, setDialpadShow] = useState(false);
   const [clickStatus, setClickStatus] = useState("all")
   const callProgress = useSelector((state) => state.callProgress);
@@ -60,7 +58,7 @@ function Call() {
         options={options}
       >
         <SideNavbarApp />
-        <main className="mainContentApp">
+        <main className="mainContentApp" style={{marginRight:sessions && Object.keys(sessions).length>0?"250px":"0"}}>
           <section className="callPage">
             <div className="container-fluid">
               <div className="row">
@@ -182,12 +180,21 @@ function Call() {
             </div>
           </section>
         </main>
-        {Object.keys(sessions).map((sessionId) => (
-              <ActiveCallSidePanel key={sessionId} sessionId={sessionId} />
-              // console.log("This is session id",sessionId)
-              
-            ))}
-        {/* <ActiveCallSidePanel /> */}
+       {sessions && Object.keys(sessions).length >0  ?<>
+       
+           <section className="activeCallsSidePanel">
+           <div className='container'>
+               <div className='row'>
+               {Object.keys(sessions).map((sessionId) => (
+               <ActiveCallSidePanel sessionId={sessionId}/>
+              ))}
+               </div>
+               </div>
+       </section>
+        
+    
+       
+       </>  : ""}
         <IncomingCallPopup />
         {dialpadShow ? <Dialpad hideDialpad={handleHideDialpad} /> : ""}
       </SIPProvider>
