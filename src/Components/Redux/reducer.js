@@ -23,8 +23,9 @@ var callCenter = [];
 var callCenterRefresh = 0;
 var microPhonePermission = false;
 var callProgress = false;
-var sessions = null;
-var sess = [];
+var sessions = [];
+var callProgressId = "";
+var callProgressDestination = "";
 
 const initialState = {
   account,
@@ -52,7 +53,8 @@ const initialState = {
   callCenterRefresh,
   callProgress,
   sessions,
-  sess,
+  callProgressId,
+  callProgressDestination,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -105,10 +107,12 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, callProgress: action.callProgress };
     case "SET_SESSIONS":
       return { ...state, sessions: action.sessions };
-    case "SET_SESS":
+    case "SET_CALLPROGRESSID":
+      return { ...state, callProgressId: action.callProgressId };
+    case "SET_CALLPROGRESSDESTINATION":
       return {
         ...state,
-        sess: action.sess,
+        callProgressDestination: action.callProgressDestination,
       };
     default:
       return state;

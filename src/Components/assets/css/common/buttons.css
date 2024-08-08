@@ -275,6 +275,14 @@
     justify-content: center;
 }
 
+.appPanelButtonCaller.active{
+    background-color: #5c5c5c;
+}
+
+.appPanelButtonCaller.active i{
+    font-weight: 900;
+}
+
 .appPanelButtonColor2 {
     background-color: transparent;
     border: none;

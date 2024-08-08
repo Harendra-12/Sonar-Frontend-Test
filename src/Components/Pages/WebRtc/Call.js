@@ -16,6 +16,8 @@ function Call() {
   const [dialpadShow, setDialpadShow] = useState(false);
   const [clickStatus, setClickStatus] = useState("all");
   const callProgress = useSelector((state) => state.callProgress);
+  const callProgressId = useSelector((state) => state.callProgressId);
+  const callProgressDestination = useSelector((state) => state.callProgressDestination)
 
   function handleHideDialpad(value) {
     setDialpadShow(value);
@@ -53,7 +55,12 @@ function Call() {
   };
 
   useWebSocketErrorHandling(options);
+<<<<<<< HEAD
 
+=======
+  console.log("This is sessions",sessions);
+  
+>>>>>>> 278059c2357f1de476b06dbc6ec104f36a3ed8d1
   return (
     <>
       <style>
@@ -63,6 +70,7 @@ function Call() {
       </style>
       <SIPProvider options={options}>
         <SideNavbarApp />
+<<<<<<< HEAD
         <main
           className="mainContentApp"
           style={{
@@ -70,6 +78,9 @@ function Call() {
               sessions && Object.keys(sessions).length > 0 ? "250px" : "0",
           }}
         >
+=======
+        <main className="mainContentApp" style={{marginRight:sessions.length>0 && Object.keys(sessions).length>0?"250px":"0"}}>
+>>>>>>> 278059c2357f1de476b06dbc6ec104f36a3ed8d1
           <section className="callPage">
             <div className="container-fluid">
               <div className="row">
@@ -204,15 +215,20 @@ function Call() {
                 </div>
                 <div
                   className="col-12 callDetails col-xl-6"
-                  style={{ height: "100%" }}
+                  style={{ height: "100vh" }}
                   id="callDetails"
                 >
+<<<<<<< HEAD
                   {callProgress ? <OngoingCall /> : <CallDetails />}
+=======
+                  {callProgress? <OngoingCall id={callProgressId} destination={callProgressDestination} />:  <CallDetails />}
+>>>>>>> 278059c2357f1de476b06dbc6ec104f36a3ed8d1
                 </div>
               </div>
             </div>
           </section>
         </main>
+<<<<<<< HEAD
         {sessions && Object.keys(sessions).length > 0 ? (
           <>
             <section className="activeCallsSidePanel">
@@ -239,6 +255,24 @@ function Call() {
         )}
         {/* <IncomingCallPopup /> */}
         <IncomingCalls sessions={sessions} />
+=======
+       {sessions.length>0 && Object.keys(sessions).length >0  ?<>
+       
+           <section className="activeCallsSidePanel">
+           <div className='container'>
+               <div className='row'>
+               {sessions.length>0 && sessions.map((session, chennel) => (
+               <ActiveCallSidePanel sessionId={session.id} destination={session.destination} chennel={chennel}/>
+              ))}
+               </div>
+               </div>
+       </section>
+        
+    
+       
+       </>  : ""}
+        <IncomingCallPopup />
+>>>>>>> 278059c2357f1de476b06dbc6ec104f36a3ed8d1
         {dialpadShow ? <Dialpad hideDialpad={handleHideDialpad} /> : ""}
       </SIPProvider>
     </>
