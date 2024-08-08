@@ -1,28 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";
 
 function Dialpad({ hideDialpad }) {
-  const {
-    sessionManager,
-    sessions,
-  } = useSIPProvider();
+  const globalSession = useSelector((state) => state.sessions);
+  const dispatch = useDispatch();
+  const { sessionManager } = useSIPProvider();
   const [destNumber, setDestNumber] = useState("");
 
-  async function  onSubmit(e) {
-    hideDialpad(true)
-    e.preventDefault();
-    await sessionManager?.call(
-      `sip:${destNumber}@192.168.1.253`,
-      {}
-    );
-    // Object.keys(sessions).map((sessionId) => (
-    //   navigate("/ongoing-call",{state:{sessionId:sessionId,destNumber:destNumber}})
-    //   // <CallSessionItem key={sessionId} sessionId={sessionId} />
-    // ))
+  async function onSubmit(e) {
+    if (destNumber.length > 3) {
+      hideDialpad(false);
+      e.preventDefault();
+      const apiData = await sessionManager?.call(
+        `sip:${destNumber}@192.168.1.253`,
+        {}
+      );
+    
+        dispatch({
+          type: "SET_SESSIONS",
+          sessions: [
+            ...globalSession,
+            { id: apiData._id, destination: destNumber },
+          ],
+        });
+        dispatch({
+          type:"SET_CALLPROGRESSID",
+          callProgressId:apiData._id,
+        })
+        dispatch({
+          type:"SET_CALLPROGRESSDESTINATION",
+          callProgressDestination:destNumber,
+        })
+        dispatch({
+          type:"SET_CALLPROGRESS",
+          callProgress:true,
+        })
+      
+    }
   }
 
-  // console.log("This is sessions",sessions);
-  
   return (
     <>
       <div id="dialPad">

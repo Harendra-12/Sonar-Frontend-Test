@@ -14,6 +14,8 @@ function Call() {
   const [dialpadShow, setDialpadShow] = useState(false);
   const [clickStatus, setClickStatus] = useState("all")
   const callProgress = useSelector((state) => state.callProgress);
+  const callProgressId = useSelector((state) => state.callProgressId);
+  const callProgressDestination = useSelector((state) => state.callProgressDestination)
 
   function handleHideDialpad(value) {
     setDialpadShow(value);
@@ -47,6 +49,7 @@ function Call() {
   };
 
   useWebSocketErrorHandling(options);
+  console.log("This is sessions",sessions);
   
   return (
     <>
@@ -59,7 +62,7 @@ function Call() {
         options={options}
       >
         <SideNavbarApp />
-        <main className="mainContentApp" style={{marginRight:sessions && Object.keys(sessions).length>0?"250px":"0"}}>
+        <main className="mainContentApp" style={{marginRight:sessions.length>0 && Object.keys(sessions).length>0?"250px":"0"}}>
           <section className="callPage">
             <div className="container-fluid">
               <div className="row">
@@ -172,22 +175,22 @@ function Call() {
                 </div>
                 <div
                   className="col-12 callDetails col-xl-6"
-                  style={{ height: "100%" }}
+                  style={{ height: "100vh" }}
                   id="callDetails"
                 >
-                  {callProgress? <OngoingCall />:  <CallDetails />}
+                  {callProgress? <OngoingCall id={callProgressId} destination={callProgressDestination} />:  <CallDetails />}
                 </div>
               </div>
             </div>
           </section>
         </main>
-       {sessions && Object.keys(sessions).length >0  ?<>
+       {sessions.length>0 && Object.keys(sessions).length >0  ?<>
        
            <section className="activeCallsSidePanel">
            <div className='container'>
                <div className='row'>
-               {Object.keys(sessions).map((sessionId) => (
-               <ActiveCallSidePanel sessionId={sessionId}/>
+               {sessions.length>0 && sessions.map((session, chennel) => (
+               <ActiveCallSidePanel sessionId={session.id} destination={session.destination} chennel={chennel}/>
               ))}
                </div>
                </div>
