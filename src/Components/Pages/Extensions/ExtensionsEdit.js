@@ -302,6 +302,7 @@ const ExtensionsEdit = () => {
         setLoading(false);
 
         toast.success(apiData.message);
+        await generalGetFunction(`/user/all`);
       } else {
         setLoading(false);
         if (apiData.message === "Already assigned to a different user") {

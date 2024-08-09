@@ -12,7 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
 import Select from "react-select";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import {
   emailValidator,
   lengthValidator,
@@ -34,6 +34,9 @@ const RingGroupEdit = () => {
   const [destinationList, setDestinationList] = useState(false);
   const [destinationId, setDestinationId] = useState();
   const [filterExtension, setFilterExtension] = useState();
+  const [allUser, setAllUser] = useState();
+  const allUserRefresh = useSelector((state) => state.allUserRefresh);
+  const allUserArr = useSelector((state) => state.allUser);
   const {
     register,
     watch,
@@ -41,6 +44,8 @@ const RingGroupEdit = () => {
     formState: { errors },
     handleSubmit,
     reset,
+    setValue,
+    control,
   } = useForm();
 
   // Handle destination
@@ -143,6 +148,25 @@ const RingGroupEdit = () => {
     }
   }, [account, navigate, value]);
 
+  // Get all users with valid extension
+  useEffect(() => {
+    if (allUserRefresh > 1) {
+      const filterUser = allUserArr.data.filter(
+        (item) => item.extension_id !== null
+      );
+      if (filterUser.length > 0) {
+        setAllUser(filterUser);
+      } else {
+        toast.error("No user found with assign extension");
+      }
+    } else {
+      dispatch({
+        type: "SET_ALLUSERREFRESH",
+        allUserRefresh: allUserRefresh + 1,
+      });
+    }
+  }, [allUserArr]);
+
   // useEffect(() => {
   //   if (extensionRefresh > 1) {
   //     setExtension(extensionArr);
@@ -165,6 +189,10 @@ const RingGroupEdit = () => {
   //     extension: selectedOption ? selectedOption.value : "",
   //   }));
   // };
+
+  const handleExtensionChange = (selectedOption) => {
+    setValue("extension", selectedOption.value);
+  };
 
   // Custom styles for react-select
   const customStyles = {
@@ -411,15 +439,34 @@ const RingGroupEdit = () => {
                   <label htmlFor="selectFormRow">Extension</label>
                 </div>
                 <div className="col-12">
-                  <input
-                    type="number"
+                  <Controller
                     name="extension"
-                    className="formItem"
-                    {...register("extension", {
-                      ...requiredValidator,
-                      ...numberValidator,
-                      ...lengthValidator(2, 15),
-                    })}
+                    control={control}
+                    defaultValue=""
+                    rules={{ ...requiredValidator, ...numberValidator }}
+                    render={({ field: { onChange, value, ...field } }) => {
+                      const options = allUser
+                        ? allUser.map((item) => ({
+                            value: item.extension.extension,
+                            label: `${item.name} (${item.extension.extension})`,
+                          }))
+                        : [];
+                      const selectedOption =
+                        options.find((option) => option.value === value) ||
+                        null;
+                      return (
+                        <Select
+                          {...field}
+                          value={selectedOption}
+                          onChange={(selectedOption) => {
+                            onChange(selectedOption.value);
+                            handleExtensionChange(selectedOption);
+                          }}
+                          options={options}
+                          styles={customStyles}
+                        />
+                      );
+                    }}
                   />
                   {errors.extension && (
                     <ErrorMessage text={errors.extension.message} />
