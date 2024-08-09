@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import {
   emailValidator,
   lengthValidator,
@@ -30,6 +30,9 @@ const RingGroupAdd = () => {
   const [destinationId, setDestinationId] = useState();
   const [filterExtension, setFilterExtension] = useState();
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
+  const [allUser, setAllUser] = useState();
+  const allUserRefresh = useSelector((state) => state.allUserRefresh);
+  const allUserArr = useSelector((state) => state.allUser);
   const {
     register,
     watch,
@@ -38,6 +41,8 @@ const RingGroupAdd = () => {
     formState: { errors },
     handleSubmit,
     reset,
+    setValue,
+    control,
   } = useForm();
   useEffect(() => {
     if (account && account.id) {
@@ -64,6 +69,25 @@ const RingGroupAdd = () => {
       navigate("/");
     }
   }, [account, navigate]);
+
+  // Get all users with valid extension
+  useEffect(() => {
+    if (allUserRefresh > 1) {
+      const filterUser = allUserArr.data.filter(
+        (item) => item.extension_id !== null
+      );
+      if (filterUser.length > 0) {
+        setAllUser(filterUser);
+      } else {
+        toast.error("No user found with assign extension");
+      }
+    } else {
+      dispatch({
+        type: "SET_ALLUSERREFRESH",
+        allUserRefresh: allUserRefresh + 1,
+      });
+    }
+  }, [allUserArr]);
 
   // Handle destination
   const [destination, setDestination] = useState([
@@ -104,7 +128,7 @@ const RingGroupAdd = () => {
   // Function to handle changes in destination fields
   const handleDestinationChange = (index, event) => {
     const { name, value } = event.target;
-    if (name === "destination") {
+    if (extensions && name === "destination") {
       setDestinationList(true);
       setFilterExtension(
         extensions.filter((item) => item.extension.includes(value))
@@ -157,6 +181,76 @@ const RingGroupAdd = () => {
       (item) => item.destination.trim() !== ""
     );
     return allFilled;
+  };
+
+  const handleExtensionChange = (selectedOption) => {
+    setValue("extension", selectedOption.value);
+  };
+
+  // Custom styles for react-select
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      // border: '1px solid var(--color4)',
+      border: "1px solid #ababab",
+      borderRadius: "2px",
+      outline: "none",
+      fontSize: "14px",
+      width: "100%",
+      minHeight: "32px",
+      height: "32px",
+      boxShadow: state.isFocused ? "none" : provided.boxShadow,
+      "&:hover": {
+        borderColor: "none",
+      },
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      height: "32px",
+      padding: "0 6px",
+    }),
+    input: (provided) => ({
+      ...provided,
+      margin: "0",
+    }),
+    indicatorSeparator: (provided) => ({
+      display: "none",
+    }),
+    indicatorsContainer: (provided) => ({
+      ...provided,
+      height: "32px",
+    }),
+    dropdownIndicator: (provided) => ({
+      ...provided,
+      color: "#202020",
+      "&:hover": {
+        color: "#202020",
+      },
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      paddingLeft: "15px",
+      paddingTop: 0,
+      paddingBottom: 0,
+      // backgroundColor: state.isSelected ? "transparent" : "transparent",
+      "&:hover": {
+        backgroundColor: "#0055cc",
+        color: "#fff",
+      },
+      fontSize: "14px",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      margin: 0,
+      padding: 0,
+    }),
+    menuList: (provided) => ({
+      ...provided,
+      padding: 0,
+      margin: 0,
+      maxHeight: "150px",
+      overflowY: "auto",
+    }),
   };
 
   const handleFormSubmit = handleSubmit(async (data) => {
@@ -306,15 +400,34 @@ const RingGroupAdd = () => {
                   <label htmlFor="selectFormRow">Extension</label>
                 </div>
                 <div className="col-12">
-                  <input
-                    type="number"
+                  <Controller
                     name="extension"
-                    className="formItem"
-                    {...register("extension", {
-                      ...requiredValidator,
-                      ...numberValidator,
-                      ...lengthValidator(2, 15),
-                    })}
+                    control={control}
+                    defaultValue=""
+                    rules={{ ...requiredValidator, ...numberValidator }}
+                    render={({ field: { onChange, value, ...field } }) => {
+                      const options = allUser
+                        ? allUser.map((item) => ({
+                            value: item.extension.extension,
+                            label: `${item.name} (${item.extension.extension})`,
+                          }))
+                        : [];
+                      const selectedOption =
+                        options.find((option) => option.value === value) ||
+                        null;
+                      return (
+                        <Select
+                          {...field}
+                          value={selectedOption}
+                          onChange={(selectedOption) => {
+                            onChange(selectedOption.value);
+                            handleExtensionChange(selectedOption);
+                          }}
+                          options={options}
+                          styles={customStyles}
+                        />
+                      );
+                    }}
                   />
                   {errors.extension && (
                     <ErrorMessage text={errors.extension.message} />

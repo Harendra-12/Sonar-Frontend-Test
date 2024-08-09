@@ -21,6 +21,8 @@ var ringGroup = [];
 var ringGroupRefresh = 0;
 var callCenter = [];
 var callCenterRefresh = 0;
+var allUser = [];
+var allUserRefresh = 0;
 var microPhonePermission = false;
 var callProgress = false;
 var sessions = [];
@@ -51,6 +53,8 @@ const initialState = {
   ringGroupRefresh,
   callCenter,
   callCenterRefresh,
+  allUser,
+  allUserRefresh,
   callProgress,
   sessions,
   callProgressId,
@@ -103,6 +107,10 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, callCenter: action.callCenter };
     case "SET_CALLCENTERREFRESH":
       return { ...state, callCenterRefresh: action.callCenterRefresh };
+    case "SET_ALLUSER":
+      return { ...state, allUser: action.allUser };
+    case "SET_ALLUSERREFRESH":
+      return { ...state, allUserRefresh: action.allUserRefresh };
     case "SET_CALLPROGRESS":
       return { ...state, callProgress: action.callProgress };
     case "SET_SESSIONS":

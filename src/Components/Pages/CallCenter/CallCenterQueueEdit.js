@@ -13,7 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
 import ActionList from "../../CommonComponents/ActionList";
 import Select from "react-select";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import {
   nameValidator,
   numberValidator,
@@ -64,6 +64,7 @@ function CallCenterQueueEdit() {
     reset,
     setValue,
     watch,
+    control,
   } = useForm();
 
   useEffect(() => {
@@ -168,6 +169,76 @@ function CallCenterQueueEdit() {
       (item) => item.name.trim() !== "" && item.password.trim() !== ""
     );
     return allFieldsFilled;
+  };
+
+  const handleExtensionChange = (selectedOption) => {
+    setValue("extension", selectedOption.value);
+  };
+
+  // Custom styles for react-select
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      // border: '1px solid var(--color4)',
+      border: "1px solid #ababab",
+      borderRadius: "2px",
+      outline: "none",
+      fontSize: "14px",
+      width: "100%",
+      minHeight: "32px",
+      height: "32px",
+      boxShadow: state.isFocused ? "none" : provided.boxShadow,
+      "&:hover": {
+        borderColor: "none",
+      },
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      height: "32px",
+      padding: "0 6px",
+    }),
+    input: (provided) => ({
+      ...provided,
+      margin: "0",
+    }),
+    indicatorSeparator: (provided) => ({
+      display: "none",
+    }),
+    indicatorsContainer: (provided) => ({
+      ...provided,
+      height: "32px",
+    }),
+    dropdownIndicator: (provided) => ({
+      ...provided,
+      color: "#202020",
+      "&:hover": {
+        color: "#202020",
+      },
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      paddingLeft: "15px",
+      paddingTop: 0,
+      paddingBottom: 0,
+      // backgroundColor: state.isSelected ? "transparent" : "transparent",
+      "&:hover": {
+        backgroundColor: "#0055cc",
+        color: "#fff",
+      },
+      fontSize: "14px",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      margin: 0,
+      padding: 0,
+    }),
+    menuList: (provided) => ({
+      ...provided,
+      padding: 0,
+      margin: 0,
+      maxHeight: "150px",
+      overflowY: "auto",
+    }),
   };
 
   const handleFormSubmit = handleSubmit(async (data) => {
@@ -304,14 +375,35 @@ function CallCenterQueueEdit() {
                   <label htmlFor="">Extension</label>
                 </div>
                 <div className="col-12">
-                  <input
-                    type="text"
+                  <Controller
                     name="extension"
-                    className="formItem"
-                    {...register("extension", {
-                      ...requiredValidator,
-                      ...numberValidator,
-                    })}
+                    control={control}
+                    defaultValue=""
+                    rules={{ ...requiredValidator, ...numberValidator }}
+                    render={({ field: { onChange, value, ...field } }) => {
+                      const options = user
+                        ? user.map((item) => ({
+                            value: item.extension.extension,
+                            label: `${item.name} (${item.extension.extension})`,
+                          }))
+                        : [];
+
+                      const selectedOption =
+                        options.find((option) => option.value === value) ||
+                        null;
+                      return (
+                        <Select
+                          {...field}
+                          value={selectedOption}
+                          onChange={(selectedOption) => {
+                            onChange(selectedOption.value);
+                            handleExtensionChange(selectedOption);
+                          }}
+                          options={options}
+                          styles={customStyles}
+                        />
+                      );
+                    }}
                   />
                   {errors.extension && (
                     <ErrorMessage text={errors.extension.message} />
