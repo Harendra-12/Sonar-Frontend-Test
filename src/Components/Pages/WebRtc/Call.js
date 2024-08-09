@@ -49,8 +49,8 @@ function Call() {
     }, [options.webSocketServer]);
   };
   const options = {
-    domain: "192.168.1.253",
-    webSocketServer: "ws://192.168.1.253:5066",
+    domain: "192.168.2.225",
+    webSocketServer: "ws://192.168.2.225:5066",
     // domain: "192.168.0.91",
     // webSocketServer: "ws://192.168.0.91:5066",
   };

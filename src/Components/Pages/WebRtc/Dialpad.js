@@ -13,7 +13,7 @@ function Dialpad({ hideDialpad }) {
       hideDialpad(false);
       e.preventDefault();
       const apiData = await sessionManager?.call(
-        `sip:${destNumber}@192.168.1.253`,
+        `sip:${destNumber}@192.168.2.225`,
         {}
       );
 

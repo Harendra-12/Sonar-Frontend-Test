@@ -11,8 +11,8 @@ export const SipRegister = () => {
     registerStatus,
     connectStatus,
   } = useSIPProvider();
-  const username = "1003";
-  const password = "1234";
+  const username = "111";
+  const password = "1111";
   useEffect(() => {
     connectAndRegister({
       username: username,
