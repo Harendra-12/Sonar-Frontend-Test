@@ -116,140 +116,146 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           {/* <Route element={<ProtectedRoute />}> */}
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/temporary-dashboard" element={<TempDashboard />} />
-          <Route path="/my-profile" element={<Profile />} />
-          <Route path="/master" element={<Master />} />
-          <Route path="/change-password" element={<ChangePassword />} />
-          <Route path="/phone-dashboard" element={<PhoneDashboard />} />
-          <Route path="/active-calls" element={<ActiveCalls />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/temporary-dashboard" element={<TempDashboard />} />
+            <Route path="/my-profile" element={<Profile />} />
+            <Route path="/master" element={<Master />} />
+            <Route path="/change-password" element={<ChangePassword />} />
+            <Route path="/phone-dashboard" element={<PhoneDashboard />} />
+            <Route path="/active-calls" element={<ActiveCalls />} />
 
-          {/* Ring Groups Path Start */}
-          <Route path="/ring-groups" element={<RingGroups />} />
-          <Route path="/ring-groups-add" element={<RingGroupAdd />} />
-          <Route path="/ring-groups-edit" element={<RingGroupEdit />} />
-          {/* Ring Groups Path End */}
+            {/* Ring Groups Path Start */}
+            <Route path="/ring-groups" element={<RingGroups />} />
+            <Route path="/ring-groups-add" element={<RingGroupAdd />} />
+            <Route path="/ring-groups-edit" element={<RingGroupEdit />} />
+            {/* Ring Groups Path End */}
 
-          {/* Users Path Start */}
-          <Route path="/users" element={<Users />} />
-          <Route path="/users-add" element={<UsersAdd />} />
-          <Route path="/users-edit" element={<UsersEdit />} />
-          <Route path="/users-import" element={<UsersImport />} />
-          {/* Users Path End */}
+            {/* Users Path Start */}
+            <Route path="/users" element={<Users />} />
+            <Route path="/users-add" element={<UsersAdd />} />
+            <Route path="/users-edit" element={<UsersEdit />} />
+            <Route path="/users-import" element={<UsersImport />} />
+            {/* Users Path End */}
 
-          {/* Extensions Path Start */}
-          <Route path="/extensions" element={<Extensions />} />
-          <Route path="/extensions-add" element={<ExtensionsAdd />} />
-          <Route path="/extensions-edit" element={<ExtensionsEdit />} />
-          <Route path="/extensions-export" element={<ExtensionsExport />} />
-          <Route path="/extensions-import" element={<ExtensionsImport />} />
-          <Route path="/extension-summary" element={<ExtensionSummary />} />
-          <Route path="/extension-settings" element={<ExtensionsSettings />} />
-          <Route
-            path="/extension-settings-edit"
-            element={<ExtensionSettingsEdit />}
-          />
-          <Route path="/call-settings" element={<CallSettings />} />
-          {/* Extensions Path End */}
+            {/* Extensions Path Start */}
+            <Route path="/extensions" element={<Extensions />} />
+            <Route path="/extensions-add" element={<ExtensionsAdd />} />
+            <Route path="/extensions-edit" element={<ExtensionsEdit />} />
+            <Route path="/extensions-export" element={<ExtensionsExport />} />
+            <Route path="/extensions-import" element={<ExtensionsImport />} />
+            <Route path="/extension-summary" element={<ExtensionSummary />} />
+            <Route
+              path="/extension-settings"
+              element={<ExtensionsSettings />}
+            />
+            <Route
+              path="/extension-settings-edit"
+              element={<ExtensionSettingsEdit />}
+            />
+            <Route path="/call-settings" element={<CallSettings />} />
+            {/* Extensions Path End */}
 
-          {/* Voice path start */}
-          <Route path="/voice-music" element={<Music />} />
-          {/* Voice path End */}
+            {/* Voice path start */}
+            <Route path="/voice-music" element={<Music />} />
+            {/* Voice path End */}
 
-          {/* Dialplan path start */}
-          <Route path="/destination" element={<Destination />} />
-          <Route path="/inbound-route" element={<InboundRoute />} />
-          <Route path="/destination-add" element={<DestinationAdd />} />
-          <Route path="/destination-edit" element={<DestinationEdit />} />
-          {/* Dialplan path end */}
+            {/* Dialplan path start */}
+            <Route path="/destination" element={<Destination />} />
+            <Route path="/inbound-route" element={<InboundRoute />} />
+            <Route path="/destination-add" element={<DestinationAdd />} />
+            <Route path="/destination-edit" element={<DestinationEdit />} />
+            {/* Dialplan path end */}
 
-          {/* Sip path start */}
-          <Route path="/sip-add" element={<SipAdd />} />
-          {/* Sip path End */}
+            {/* Sip path start */}
+            <Route path="/sip-add" element={<SipAdd />} />
+            {/* Sip path End */}
 
-          {/* Sofia path start */}
-          <Route path="/sofia-setting" element={<SofiaSetting />} />
-          <Route path="/sofia-status" element={<SofiaStatus />} />
-          <Route path="/sofia-add-setting" element={<SofiaAddSetting />} />
-          <Route path="/sofia-edit-setting" element={<SofiaEditSetting />} />
-          {/* Sofia path end */}
+            {/* Sofia path start */}
+            <Route path="/sofia-setting" element={<SofiaSetting />} />
+            <Route path="/sofia-status" element={<SofiaStatus />} />
+            <Route path="/sofia-add-setting" element={<SofiaAddSetting />} />
+            <Route path="/sofia-edit-setting" element={<SofiaEditSetting />} />
+            {/* Sofia path end */}
 
-          {/* WebRtc path start */}
-          <Route path="/call" element={<Call />} />
-          <Route path="/ongoing-call" element={<OngoingCall />} />
-          <Route path="/cdr-report" element={<CdrReport />} />
-          {/* WebRtc path end */}
+            {/* WebRtc path start */}
+            <Route path="/call" element={<Call />} />
+            <Route path="/ongoing-call" element={<OngoingCall />} />
+            <Route path="/cdr-report" element={<CdrReport />} />
+            {/* WebRtc path end */}
 
-          {/* Admin Packages path start */}
-          <Route path="/document-verification" element={<PendingRequest />} />
-          <Route path="/document-details" element={<UserDocumentDetails />} />
-          <Route path="/approved-customer" element={<ApprovedCustomer />} />
-          <Route
-            path="/new-user-verify"
-            element={<UserRegistrationProcessOverview />}
-          />
-          {/* Admin Packages path end */}
+            {/* Admin Packages path start */}
+            <Route path="/document-verification" element={<PendingRequest />} />
+            <Route path="/document-details" element={<UserDocumentDetails />} />
+            <Route path="/approved-customer" element={<ApprovedCustomer />} />
+            <Route
+              path="/new-user-verify"
+              element={<UserRegistrationProcessOverview />}
+            />
+            {/* Admin Packages path end */}
 
-          {/* Number Management Path Start */}
-          <Route path="/did-add-rate" element={<RateChargeAdd />} />
-          <Route path="/add-vendor" element={<AddVendors />} />
-          <Route path="/vendors" element={<Vendors />} />
-          <Route path="/edit-vendor" element={<EditVendor />} />
-          <Route path="/rate-card" element={<RateCharge />} />
-          <Route path="/edit-rate-charge" element={<RateChargeEdit />} />
-          <Route path="/get-did" element={<GetDid />} />
-          <Route path="/did-listing" element={<DidListing />} />
-          {/* Number Management Path End */}
+            {/* Number Management Path Start */}
+            <Route path="/did-add-rate" element={<RateChargeAdd />} />
+            <Route path="/add-vendor" element={<AddVendors />} />
+            <Route path="/vendors" element={<Vendors />} />
+            <Route path="/edit-vendor" element={<EditVendor />} />
+            <Route path="/rate-card" element={<RateCharge />} />
+            <Route path="/edit-rate-charge" element={<RateChargeEdit />} />
+            <Route path="/get-did" element={<GetDid />} />
+            <Route path="/did-listing" element={<DidListing />} />
+            {/* Number Management Path End */}
 
-          {/* Payment path start */}
-          <Route path="/add-payment-gateway" element={<PaymentGatewayAdd />} />
-          <Route path="/payment-gateway" element={<PaymentGateway />} />
-          <Route
-            path="/payment-gateway-edit"
-            element={<PaymentGatewayEdit />}
-          />
-          {/* Payment path end */}
+            {/* Payment path start */}
+            <Route
+              path="/add-payment-gateway"
+              element={<PaymentGatewayAdd />}
+            />
+            <Route path="/payment-gateway" element={<PaymentGateway />} />
+            <Route
+              path="/payment-gateway-edit"
+              element={<PaymentGatewayEdit />}
+            />
+            {/* Payment path end */}
 
-          {/* Call Center queue path start */}
-          <Route path="/cal-center-queue" element={<CallCenterQueue />} />
-          <Route
-            path="/cal-center-queue-edit"
-            element={<CallCenterQueueEdit />}
-          />
-          <Route
-            path="/cal-center-queue-add"
-            element={<CallCenterQueueAdd />}
-          />
-          {/* Call Center queue path End */}
+            {/* Call Center queue path start */}
+            <Route path="/cal-center-queue" element={<CallCenterQueue />} />
+            <Route
+              path="/cal-center-queue-edit"
+              element={<CallCenterQueueEdit />}
+            />
+            <Route
+              path="/cal-center-queue-add"
+              element={<CallCenterQueueAdd />}
+            />
+            {/* Call Center queue path End */}
 
-          {/* Settings path start */}
-          <Route path="/admin/package" element={<Package />} />
-          <Route path="/admin/package-add" element={<PackageAdd />} />
-          <Route path="/admin/package-edit" element={<PackageEdit />} />
-          <Route path="/admin/feature" element={<Feature />} />
-          <Route path="/roles" element={<Roles />} />
-          <Route path="/upload-document" element={<DocumentUpload />} />
-          {/* Settings path end */}
+            {/* Settings path start */}
+            <Route path="/admin/package" element={<Package />} />
+            <Route path="/admin/package-add" element={<PackageAdd />} />
+            <Route path="/admin/package-edit" element={<PackageEdit />} />
+            <Route path="/admin/feature" element={<Feature />} />
+            <Route path="/roles" element={<Roles />} />
+            <Route path="/upload-document" element={<DocumentUpload />} />
+            {/* Settings path end */}
 
-          {/* Billing Pages Start */}
-          <Route path="/card-details" element={<CardAndBilling />} />
-          <Route path="/invoice-list" element={<InvoiceList />} />
-          <Route path="/expense-list" element={<ExpenseList />} />
-          <Route
-            path="/card-transaction-list"
-            element={<CardTransactionsList />}
-          />
-          <Route
-            path="/wallet-transaction-list"
-            element={<WalletTransactionsList />}
-          />
-          {/* Billing Pages End */}
+            {/* Billing Pages Start */}
+            <Route path="/card-details" element={<CardAndBilling />} />
+            <Route path="/invoice-list" element={<InvoiceList />} />
+            <Route path="/expense-list" element={<ExpenseList />} />
+            <Route
+              path="/card-transaction-list"
+              element={<CardTransactionsList />}
+            />
+            <Route
+              path="/wallet-transaction-list"
+              element={<WalletTransactionsList />}
+            />
+            {/* Billing Pages End */}
 
-          {/* eFax Pages Start */}
-          <Route path="/efax" element={<EFax />} />
-          {/* eFax Pages End */}
+            {/* eFax Pages Start */}
+            <Route path="/efax" element={<EFax />} />
+            {/* eFax Pages End */}
           {/* </Route> */}
-
+         
           {/* 404 Redirection */}
           <Route path="*" element={<Navigate to="/dashboard" />} />
           {/* 404 Redirection */}

@@ -22,7 +22,7 @@ function GlobalCalls() {
     if (account && account?.account_id) {
       async function getData() {
         const apiData = await generalGetFunction(
-          `/call-details?user_id=5`
+          `/call-details?account_id=${account.account_id}`
         );
         if (apiData.status) {
           dispatch({

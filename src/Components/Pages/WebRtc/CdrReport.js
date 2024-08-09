@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
+import MusicPlayer from "../../CommonComponents/MusicPlayer";
 
 function CdrReport() {
   const [loading, setLoading] = useState(true);
@@ -53,13 +54,11 @@ function CdrReport() {
                     <tr>
                       <th>Sr. no</th>
                       <th>Origin</th>
-                      {/* <th>Caller Name</th> */}
                       <th>Destination</th>
-                      {/* <th>Caller Destination</th> */}
                       <th>Date</th>
                       <th>Time</th>
+                      <th>Recording</th>
                       <th>Duration</th>
-                      {/* <th>Status</th> */}
                       <th>Hangup Cause</th>
                       <th>Orig. IP</th>
                       <th>Dest. IP</th>
@@ -85,6 +84,11 @@ function CdrReport() {
                                 <td>{item["variable_sip_to_user"]}</td>
                                 <td>
                                   {item["variable_start_stamp"].split(" ")[0]}
+                                </td>
+                                <td>
+                                  <MusicPlayer
+                                    audioSrc={item["recording_path"]}
+                                  />
                                 </td>
                                 <td>
                                   {item["variable_start_stamp"].split(" ")[1]}

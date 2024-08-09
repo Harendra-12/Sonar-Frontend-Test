@@ -64,7 +64,7 @@
     transform: translate(-50%, -50%);
     background-color: var(--caller-color);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    /* width: 200px !important; */
+    min-width: 200px;
     min-height: 280px;
     display: flex;
     justify-content: center;

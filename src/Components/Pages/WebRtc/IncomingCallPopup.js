@@ -35,24 +35,18 @@ function IncomingCallPopup({ sessionId, lastIncomingCall, index }) {
   const handleAnswerCall = async (e) => {
     e.preventDefault();
     answer();
-    const apiData = await sessionManager?.call(
-      `sip:${callerExtension}@192.168.1.253`,
-      {}
-    );
-    console.log(apiData);
-    console.log(callerExtension);
-    // dispatch({
-    //   type: "SET_CALLPROGRESSID",
-    //   callProgressId: apiData._id,
-    // });
-    // dispatch({
-    //   type: "SET_CALLPROGRESSDESTINATION",
-    //   callProgressDestination: callerExtension,
-    // });
-    // dispatch({
-    //   type: "SET_CALLPROGRESS",
-    //   callProgress: true,
-    // });
+    dispatch({
+      type: "SET_CALLPROGRESSID",
+      callProgressId: sessionId,
+    });
+    dispatch({
+      type: "SET_CALLPROGRESSDESTINATION",
+      callProgressDestination: callerExtension,
+    });
+    dispatch({
+      type: "SET_CALLPROGRESS",
+      callProgress: true,
+    });
   };
   return (
     <>
@@ -69,7 +63,7 @@ function IncomingCallPopup({ sessionId, lastIncomingCall, index }) {
               </div>
             </div>
             <div className="controls">
-              <button class="callButton" onClick={answer}>
+              <button class="callButton" onClick={handleAnswerCall}>
                 <i class="fa-duotone fa-phone"></i>
               </button>
               <button class="callButton hangup" onClick={decline}>
