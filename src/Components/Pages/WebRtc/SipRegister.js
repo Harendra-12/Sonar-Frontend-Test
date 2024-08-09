@@ -6,21 +6,10 @@ import MediaPermissions from "./MediaPermissions ";
 // import { CallSessionItem } from "./CallSessionItem";
 
 export const SipRegister = () => {
-<<<<<<< HEAD
-  const dispatch = useDispatch();
-  const { connectAndRegister, registerStatus, sessions, connectStatus } =
+  const { connectAndRegister, registerStatus, connectStatus } =
     useSIPProvider();
   const username = "1003";
   const password = "886029";
-=======
-  const {
-    connectAndRegister,
-    registerStatus,
-    connectStatus,
-  } = useSIPProvider();
-  const username = "1002";
-  const password = "1234";
->>>>>>> 278059c2357f1de476b06dbc6ec104f36a3ed8d1
   useEffect(() => {
     connectAndRegister({
       username: username,
@@ -28,18 +17,6 @@ export const SipRegister = () => {
     });
   }, [connectAndRegister, username, password]);
 
-<<<<<<< HEAD
-  useEffect(() => {
-    dispatch({
-      type: "SET_SESSIONS",
-      sessions: sessions,
-    });
-  }, [sessions]);
-
-=======
-  
-  
->>>>>>> 278059c2357f1de476b06dbc6ec104f36a3ed8d1
   return (
     <div className="col-auto">
       <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>

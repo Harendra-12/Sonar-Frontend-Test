@@ -16,27 +16,26 @@ function Dialpad({ hideDialpad }) {
         `sip:${destNumber}@192.168.1.253`,
         {}
       );
-    
-        dispatch({
-          type: "SET_SESSIONS",
-          sessions: [
-            ...globalSession,
-            { id: apiData._id, destination: destNumber },
-          ],
-        });
-        dispatch({
-          type:"SET_CALLPROGRESSID",
-          callProgressId:apiData._id,
-        })
-        dispatch({
-          type:"SET_CALLPROGRESSDESTINATION",
-          callProgressDestination:destNumber,
-        })
-        dispatch({
-          type:"SET_CALLPROGRESS",
-          callProgress:true,
-        })
-      
+
+      dispatch({
+        type: "SET_SESSIONS",
+        sessions: [
+          ...globalSession,
+          { id: apiData._id, destination: destNumber },
+        ],
+      });
+      dispatch({
+        type: "SET_CALLPROGRESSID",
+        callProgressId: apiData._id,
+      });
+      dispatch({
+        type: "SET_CALLPROGRESSDESTINATION",
+        callProgressDestination: destNumber,
+      });
+      dispatch({
+        type: "SET_CALLPROGRESS",
+        callProgress: true,
+      });
     }
   }
 

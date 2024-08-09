@@ -8,8 +8,7 @@ const getSecond = (time) => {
   );
 };
 
-export const CallTimer = ({startAt ,isEnd }) => {
-//   const { startAt, isEnd } = props;
+export const CallTimer = ({ startAt, isEnd }) => {
   const [second, setSecond] = useState(getSecond(startAt));
   useEffect(() => {
     if (!isEnd) {

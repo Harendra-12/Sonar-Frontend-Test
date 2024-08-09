@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSessionCall } from "react-sipjs";
+import { useSessionCall, useSIPProvider } from "react-sipjs";
 
 function IncomingCallPopup({ sessionId, lastIncomingCall, index }) {
   const [isMinimized, setIsMinimized] = useState(false);
 
   const { decline, answer, session } = useSessionCall(sessionId);
   const dispatch = useDispatch();
-  const sess = useSelector((state) => state.sess) || {};
+  const globalSession = useSelector((state) => state.sessions) || {};
+  const { sessionManager } = useSIPProvider();
 
   useEffect(() => {
     if (!lastIncomingCall) {
@@ -17,22 +18,42 @@ function IncomingCallPopup({ sessionId, lastIncomingCall, index }) {
 
   useEffect(() => {
     dispatch({
-      type: "SET_SESS",
-      sess: [
-        ...sess,
-        {
-          sessionId: sessionId,
-          destination: callerExtension,
-        },
+      type: "SET_SESSIONS",
+      sessions: [
+        ...globalSession,
+        { id: sessionId, destination: callerExtension },
       ],
     });
   }, [sessionId]);
 
-  const callerExtension =
-    session?.incomingInviteRequest?.message?.from?._displayName;
+  const callerExtension = session.incomingInviteRequest
+    ? session?.incomingInviteRequest?.message?.from?._displayName
+    : session?.outgoingInviteRequest?.message?.to?.uri?.normal?.user;
 
   const topPosition = 10 + index * 75;
 
+  const handleAnswerCall = async (e) => {
+    e.preventDefault();
+    answer();
+    const apiData = await sessionManager?.call(
+      `sip:${callerExtension}@192.168.1.253`,
+      {}
+    );
+    console.log(apiData);
+    console.log(callerExtension);
+    // dispatch({
+    //   type: "SET_CALLPROGRESSID",
+    //   callProgressId: apiData._id,
+    // });
+    // dispatch({
+    //   type: "SET_CALLPROGRESSDESTINATION",
+    //   callProgressDestination: callerExtension,
+    // });
+    // dispatch({
+    //   type: "SET_CALLPROGRESS",
+    //   callProgress: true,
+    // });
+  };
   return (
     <>
       {lastIncomingCall && !isMinimized ? (
@@ -78,7 +99,7 @@ function IncomingCallPopup({ sessionId, lastIncomingCall, index }) {
               <h5>{callerExtension}</h5>
             </div>
             <div className="controls m-0">
-              <button class="callButton me-0" onClick={answer}>
+              <button class="callButton me-0" onClick={handleAnswerCall}>
                 <i class="fa-duotone fa-phone"></i>
               </button>
               <button class="callButton hangup me-0" onClick={decline}>
