@@ -60,7 +60,7 @@ function Call() {
   console.log("This is sessions", sessions);
 
   return (
-    <>
+    <div className="browserPhoneWrapper">
       <style>
         {`#sidenNav{
         display:none;
@@ -252,7 +252,7 @@ function Call() {
         {dialpadShow ? <Dialpad hideDialpad={handleHideDialpad} /> : ""}
         <AddNewContactPopup />
       </SIPProvider>
-    </>
+    </div>
   );
 }
 
