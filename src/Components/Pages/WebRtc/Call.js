@@ -173,8 +173,8 @@ function Call() {
                           id="headerSearch"
                           placeholder="Search"
                         />
-                        <button className="appPanelButton" effect="ripple">
-                          <i className="fa-light fa-calendar-plus" />
+                        <button className="ms-3 me-0 appPanelButton" effect="ripple">
+                          <i className="fa-light fa-user-plus" />
                         </button>
                       </div>
                       <div className="callList">
