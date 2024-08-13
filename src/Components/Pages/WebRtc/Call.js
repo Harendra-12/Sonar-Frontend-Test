@@ -9,6 +9,7 @@ import CallDetails from "./CallDetails";
 import OngoingCall from "./OngoingCall";
 import { useSelector } from "react-redux";
 import IncomingCalls from "./IncomingCalls";
+import AddNewContactPopup from "./AddNewContactPopup";
 
 function Call() {
   const sessions = useSelector((state) => state.sessions);
@@ -81,7 +82,7 @@ function Call() {
               <div className="row">
                 <div
                   className="col-12 col-xl-6 allCallHistory"
-                  // style={{ height: "100%" }}
+                // style={{ height: "100%" }}
                 >
                   <SipRegister />
 
@@ -249,6 +250,7 @@ function Call() {
         {/* <IncomingCallPopup /> */}
         <IncomingCalls />
         {dialpadShow ? <Dialpad hideDialpad={handleHideDialpad} /> : ""}
+        <AddNewContactPopup />
       </SIPProvider>
     </>
   );

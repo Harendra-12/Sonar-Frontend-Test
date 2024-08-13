@@ -249,3 +249,41 @@
 .filterItem {
     display: none;
 }
+
+/* New Contact Popup */
+.addNewContactPopup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    min-height: 400px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 20px;
+}
+
+.addNewContactPopup .heading {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.addNewContactPopup .heading i {
+    color: #fff;
+    font-size: 18px;
+    background-color: var(--ui-accent);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.addNewContactPopup .heading h3 {
+    margin-left: 15px;
+    margin-bottom: 0;
+}

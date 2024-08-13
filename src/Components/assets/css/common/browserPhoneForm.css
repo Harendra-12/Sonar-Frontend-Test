@@ -1,0 +1,10 @@
+.browserPhoneWrapper .formItem {
+    padding: 10px;
+    height: auto;
+    border-radius: 5px;
+    margin: 0 0 5px;
+}
+
+.browserPhoneWrapper .formItem:focus {
+    background-color: #429cd91f;
+}
