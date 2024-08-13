@@ -171,12 +171,14 @@ function EFax() {
                                             </div>
                                             <div className='messageTo'>
                                                 <label>To</label>
-                                                <div className='d-flex'>
+                                                <div className='d-flex flex-wrap'>
+                                                    {/* Map This in Loop */}
                                                     <div className='col-auto'>
                                                         <div style={{ width: 'max-content' }}>
                                                             <button class="receipentButton">johndoe@email.com</button>
                                                         </div>
                                                     </div>
+                                                    {/* Map This in Loop */}
                                                     <div className='col-auto my-auto'>
                                                         <input type='text' placeholder='Recipents' className='border-0 mb-0' />
                                                     </div>
