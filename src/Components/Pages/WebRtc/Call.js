@@ -173,7 +173,7 @@ function Call() {
                           id="headerSearch"
                           placeholder="Search"
                         />
-                        <button className="ms-3 me-0 appPanelButton" effect="ripple">
+                        <button className="ms-2 me-0 appPanelButton" effect="ripple">
                           <i className="fa-light fa-user-plus" />
                         </button>
                       </div>
