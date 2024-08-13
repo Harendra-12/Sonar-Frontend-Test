@@ -37,6 +37,7 @@
 @import url('./components/documentPending.css');
 @import url('./components/activeCallsSidePanel.css');
 @import url('./common/browserPhoneForm.css');
+@import url('./components/contactView.css');
 
 
 /* Responsive CSS */

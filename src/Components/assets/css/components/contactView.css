@@ -1,0 +1,95 @@
+.mainContentApp .contactViewProfileHolder {
+    width: 100px;
+    height: 100px;
+    margin: 15px auto;
+    text-align: center;
+    cursor: pointer;
+    background-color: var(--ui-accent);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    /* overflow: hidden; */
+    position: relative;
+}
+
+.mainContentApp .contactViewProfileHolder img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: none;
+}
+
+#contactView .contactViewProfileHolder button {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    box-shadow: 0px 0px 0px 3px white;
+}
+
+#contactView .b h3,
+#contactView .b p {
+    font-family: Outfit;
+    color: #444444;
+}
+
+#contactView .contactItem {
+    background-color: #55baff2e;
+    border-radius: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border: 1px solid #55baff5e;
+    margin: 7px 0px;
+    padding: 0 5px;
+}
+
+.contactItem .content {
+    grid-template-columns: 75px auto;
+    width: 100%;
+    display: grid;
+    grid-gap: 0;
+}
+
+.contactItem .content h5,
+.contactItem .content .contact-email-box {
+    font-size: 13px !important;
+    font-family: Outfit;
+    font-weight: 500;
+    color: #505050;
+    margin: 0;
+}
+
+.contactItem .content .contact-email-box {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.contactItem .content h6 {
+    font-size: 12px;
+    margin: 0;
+    font-family: Outfit;
+    font-weight: 500;
+    color: #505050;
+}
+
+.contactItem i {
+    font-size: 18px;
+    color: var(--ui-accent);
+    padding: 10px 0px 14px 10px;
+}
+
+.contactItem .content .box {
+    padding-bottom: 10px;
+}
+
+.contactItem .content .box:first-child,
+.contactItem .content .box:nth-child(2) {
+    padding-top: 10px;
+}
+
+#contactView .contact-detail-list {
+    overflow: hidden auto;
+    /* height: calc(100vh - 210px); */
+}
