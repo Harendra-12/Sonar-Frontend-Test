@@ -10,6 +10,9 @@ import OngoingCall from "./OngoingCall";
 import { useSelector } from "react-redux";
 import IncomingCalls from "./IncomingCalls";
 import AddNewContactPopup from "./AddNewContactPopup";
+import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { useNavigate } from "react-router-dom";
+import ContentLoader from "../../Loader/ContentLoader";
 
 function Call() {
   const sessions = useSelector((state) => state.sessions);
@@ -17,6 +20,15 @@ function Call() {
   const [clickStatus, setClickStatus] = useState("all");
   const callProgress = useSelector((state) => state.callProgress);
   const callProgressId = useSelector((state) => state.callProgressId);
+  const navigate = useNavigate();
+  const account = useSelector((state) => state.account);
+  const [allCalls, setAllCalls] = useState([]);
+  const [previewCalls, setPreviewCalls] = useState([]);
+  const [clickedCall, setClickedCall] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [allApiData, setAllApiData] = useState([]);
+  const [callHistory, setCallHistory] = useState([]);
   const callProgressDestination = useSelector(
     (state) => state.callProgressDestination
   );
@@ -49,6 +61,230 @@ function Call() {
       };
     }, [options.webSocketServer]);
   };
+
+  useEffect(() => {
+    setLoading(true);
+    if (account && account.account_id) {
+      async function getData() {
+        const apiData = await generalGetFunction(
+          `/call-details?account_id=${account.account_id}`
+        );
+        if (apiData.status) {
+          // setAllCalls(apiData.data.calls.reverse());
+          // console.log("apiData", apiData.data.calls);
+          setAllApiData(apiData.data.calls);
+          const uniqueArray = [
+            ...new Map(
+              apiData.data.calls.map((item) => [
+                item["Caller-Callee-ID-Number"],
+                item,
+              ])
+            ).values(),
+          ];
+          // console.log("uniqueArray", uniqueArray);
+          setAllCalls(uniqueArray.reverse());
+          setLoading(false);
+        }
+      }
+      getData();
+    } else {
+      navigate("/");
+    }
+  }, [account, navigate]);
+
+  // user data filter based on name and number(currently id)
+  useEffect(() => {
+    let filteredCalls = [];
+    switch (clickStatus) {
+      case "incoming":
+        filteredCalls = allCalls.filter(
+          (e) => e["Call-Direction"] === "inbound"
+        );
+        break;
+      case "outgoing":
+        filteredCalls = allCalls.filter(
+          (e) => e["Call-Direction"] === "outbound"
+        );
+        break;
+      case "missed":
+        filteredCalls = allCalls.filter(
+          (e) => e["Call-Direction"] === "missed"
+        );
+        break;
+      case "voicemail":
+        filteredCalls = allCalls.filter(
+          (e) => e["Call-Direction"] === "voicemail"
+        );
+        break;
+      case "all":
+      default:
+        filteredCalls = allCalls;
+        break;
+    }
+    if (searchQuery) {
+      const lowerCaseSearchQuery = searchQuery.toLowerCase();
+      filteredCalls = filteredCalls.filter((call) => {
+        return (
+          call.caller_user?.username
+            ?.toLowerCase()
+            .includes(lowerCaseSearchQuery) ||
+          call.id.toString().toLowerCase().includes(lowerCaseSearchQuery)
+        );
+      });
+    }
+    setPreviewCalls(filteredCalls);
+    setClickedCall(filteredCalls[0]);
+    setCallHistory(
+      filteredCalls[0] &&
+        allApiData.filter(
+          (e) =>
+            e["Caller-Callee-ID-Number"] ===
+            filteredCalls[0]["Caller-Callee-ID-Number"]
+        )
+    );
+  }, [allCalls, clickStatus, searchQuery]);
+
+  // useEffect(() => {
+  //   let filteredCalls = [];
+  //   switch (clickStatus) {
+  //     case "incoming":
+  //       filteredCalls = allCalls.filter(
+  //         (e) => e["Call-Direction"] === "inbound"
+  //       );
+  //       setClickedCall(filteredCalls[0]);
+  //       break;
+  //     case "outgoing":
+  //       filteredCalls = allCalls.filter(
+  //         (e) => e["Call-Direction"] === "outbound"
+  //       );
+  //       setClickedCall(filteredCalls[0]);
+  //       break;
+  //     case "missed":
+  //       filteredCalls = allCalls.filter(
+  //         (e) => e["Call-Direction"] === "missed"
+  //       );
+  //       setClickedCall(filteredCalls[0]);
+  //       break;
+  //     case "voicemail":
+  //       filteredCalls = allCalls.filter(
+  //         (e) => e["Call-Direction"] === "voicemail"
+  //       );
+  //       setClickedCall(filteredCalls[0]);
+  //       break;
+  //     case "all":
+  //     default:
+  //       filteredCalls = allCalls;
+  //       setClickedCall(filteredCalls[0]);
+  //       break;
+  //   }
+  //   setPreviewCalls(filteredCalls);
+  // }, [allCalls, clickStatus]);
+
+  const formatTime = (duration) => {
+    const sec = Math.floor(duration % 60);
+    const min = Math.floor((duration / 60) % 60);
+    const hour = Math.floor(duration / 3600);
+    return (
+      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""}${
+        sec ? sec + " sec" : ""
+      }` || "0 sec"
+    );
+  };
+
+  const renderCallItem = (item) => (
+    // <div key={item.id} className={`callListItem ${clickStatus}`}>
+    <div
+      key={item.id}
+      onClick={() => {
+        setClickedCall(item);
+        setCallHistory(
+          allApiData.filter(
+            (e) =>
+              e["Caller-Callee-ID-Number"] === item["Caller-Callee-ID-Number"]
+          )
+        );
+      }}
+      className={`callListItem ${
+        item["Call-Direction"] === "inbound"
+          ? "incoming"
+          : item["Call-Direction"] === "outbound"
+          ? "outgoing"
+          : item["Call-Direction"] === "missed"
+          ? "missed"
+          : item["Call-Direction"] === "voicemail"
+          ? "voicemail"
+          : ""
+      }`}
+      style={{
+        backgroundColor:
+          clickedCall && clickedCall.id === item.id ? "#d7eeefcf" : "",
+      }}
+    >
+      <div className="row justify-content-between">
+        <div className="col-8 ms-4 text-start" style={{ cursor: "pointer" }}>
+          <h4>{item["Caller-Callee-ID-Number"]}</h4>
+          <h5>{item.caller_user ? item.caller_user.username : "USER XYZ"}</h5>
+          <h6>Call, {formatTime(item.variable_duration)}</h6>
+        </div>
+        <div className="col-3 text-end">
+          <h5>
+            {new Date(item.variable_start_stamp)
+              .toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+              })
+              .replace(" AM", "am")
+              .replace(" PM", "pm")}
+          </h5>
+        </div>
+      </div>
+    </div>
+  );
+
+  const groupCallsByDate = (calls) => {
+    return calls.reduce((acc, call) => {
+      const callDate = new Date(call.created_at);
+      const today = new Date();
+      const yesterday = new Date(today);
+      yesterday.setDate(today.getDate() - 1);
+      let dateLabel = callDate.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+      if (callDate.toDateString() === today.toDateString()) {
+        dateLabel = "Today";
+      } else if (callDate.toDateString() === yesterday.toDateString()) {
+        dateLabel = "Yesterday";
+      }
+      if (!acc[dateLabel]) {
+        acc[dateLabel] = [];
+      }
+      acc[dateLabel].push(call);
+      return acc;
+    }, {});
+  };
+
+  // const groupCallsByDate = (calls) => {
+  //   return calls.reduce((acc, call) => {
+  //     const date = new Date(call.created_at).toLocaleDateString("en-US", {
+  //       month: "short",
+  //       day: "numeric",
+  //       year: "numeric",
+  //     });
+
+  //     if (!acc[date]) {
+  //       acc[date] = [];
+  //     }
+
+  //     acc[date].push(call);
+  //     return acc;
+  //   }, {});
+  // };
+
+  const groupedCalls = groupCallsByDate(previewCalls);
+
   const options = {
     domain: "192.168.2.225",
     webSocketServer: "ws://192.168.2.225:5066",
@@ -172,39 +408,42 @@ function Call() {
                           name="Search"
                           id="headerSearch"
                           placeholder="Search"
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
                         />
                         <button className="ms-2 me-0 appPanelButton" effect="ripple">
                           <i className="fa-light fa-user-plus" />
                         </button>
                       </div>
-                      <div className="callList">
+                      {/* <div className="callList">
                         <div className="text-center callListItem">
                           <h5 className="fw-semibold">Today</h5>
-                          <div className="callListItem missed">
-                            <div className="row justify-content-between">
-                              <div className="col-8 ms-4 text-start">
-                                <h4>1 (999) 999-9999</h4>
-                                <h5>USER XYZ</h5>
-                                <h6>Missed Call</h6>
-                              </div>
-                              <div className="col-3 text-end">
-                                <h5>12:46pm</h5>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="callListItem incoming">
-                            <div className="row justify-content-between">
-                              <div className="col-8 ms-4 text-start">
-                                <h4>1 (999) 999-9999</h4>
-                                <h5>USER XYZ</h5>
-                                <h6>Call, 1 min 10 sec</h6>
-                              </div>
-                              <div className="col-3 text-end">
-                                <h5>12:46pm</h5>
-                              </div>
-                            </div>
-                          </div>
+                          {previewCalls.length > 0 ? (
+                            previewCalls.map(renderCallItem)
+                          ) : (
+                            <h3>No {clickStatus} calls</h3>
+                          )}
                         </div>
+                      </div> */}
+
+                      <div className="callList">
+                        {loading ? (
+                          <ContentLoader />
+                        ) : Object.keys(groupedCalls).length > 0 ? (
+                          Object.keys(groupedCalls).map((date) => (
+                            <div
+                              key={date}
+                              className="text-center callListItem"
+                            >
+                              <h5 className="fw-semibold">{date}</h5>
+                              {groupedCalls[date].map(renderCallItem)}
+                            </div>
+                          ))
+                        ) : (
+                          <h3 className="text-center pt-10">
+                            No {clickStatus} calls
+                          </h3>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -220,7 +459,12 @@ function Call() {
                       destination={callProgressDestination}
                     />
                   ) : (
-                    <CallDetails />
+                    clickedCall && (
+                      <CallDetails
+                        clickedCall={clickedCall}
+                        callHistory={callHistory}
+                      />
+                    )
                   )}
                 </div>
               </div>

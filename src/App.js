@@ -111,8 +111,8 @@ function App() {
     <>
       <Router>
         <NavigationSetter />
-        {/* <GlobalCalls />
-        <Navbar /> */}
+        <GlobalCalls />
+        <Navbar />
         <Routes>
           <Route path="/" element={<Login />} />
           {/* <Route element={<ProtectedRoute />}> */}
