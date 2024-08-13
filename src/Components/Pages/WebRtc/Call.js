@@ -250,7 +250,7 @@ function Call() {
         {/* <IncomingCallPopup /> */}
         <IncomingCalls />
         {dialpadShow ? <Dialpad hideDialpad={handleHideDialpad} /> : ""}
-        <AddNewContactPopup />
+        {false ? <AddNewContactPopup /> : ""}
       </SIPProvider>
     </div>
   );
