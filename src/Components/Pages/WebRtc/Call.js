@@ -81,8 +81,8 @@ function Call() {
               ])
             ).values(),
           ];
-          // console.log("uniqueArray", uniqueArray);
           setAllCalls(uniqueArray.reverse());
+          console.log("uniqueArray", uniqueArray);
           setLoading(false);
         }
       }
@@ -128,7 +128,7 @@ function Call() {
           call.caller_user?.username
             ?.toLowerCase()
             .includes(lowerCaseSearchQuery) ||
-          call.id.toString().toLowerCase().includes(lowerCaseSearchQuery)
+          call["Caller-Callee-ID-Number"].toString().toLowerCase().includes(lowerCaseSearchQuery)
         );
       });
     }
@@ -244,23 +244,33 @@ function Call() {
 
   const groupCallsByDate = (calls) => {
     return calls.reduce((acc, call) => {
-      const callDate = new Date(call.created_at);
+      // Parse the date as UTC and handle different formats
+      // const callDate = new Date(call.created_at);
+      const callDate = new Date(call.variable_start_stamp);
       const today = new Date();
-      const yesterday = new Date(today);
-      yesterday.setDate(today.getDate() - 1);
+      
+      // Ensure `today` is at midnight UTC
+      const todayDate = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
+      const yesterday = new Date(todayDate);
+      yesterday.setUTCDate(todayDate.getUTCDate() - 1);
+  
       let dateLabel = callDate.toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",
         year: "numeric",
       });
-      if (callDate.toDateString() === today.toDateString()) {
+  
+      // Compare only the date parts
+      if (callDate.toDateString() === todayDate.toDateString()) {
         dateLabel = "Today";
       } else if (callDate.toDateString() === yesterday.toDateString()) {
         dateLabel = "Yesterday";
       }
+  
       if (!acc[dateLabel]) {
         acc[dateLabel] = [];
       }
+  
       acc[dateLabel].push(call);
       return acc;
     }, {});
