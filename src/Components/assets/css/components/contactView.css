@@ -93,3 +93,37 @@
     overflow: hidden auto;
     /* height: calc(100vh - 210px); */
 }
+
+.mainContentApp .tab-content .contactListItem.favourite i.fa-star {
+    color: #ffa200;
+    font-weight: 900;
+}
+
+.mainContentApp .tab-content .contactListItem:hover .contactPopup {
+    display: block;
+}
+
+.mainContentApp .tab-content .contactListItem .contactPopup {
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    border-radius: 50px;
+    overflow: hidden;
+    background-color: #f0f0f0;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    display: none;
+}
+
+.mainContentApp .tab-content .contactListItem .contactPopup button {
+    border: 0;
+    background-color: transparent;
+    padding: 5px 10px;
+}
+
+.mainContentApp .tab-content .contactListItem .contactPopup button:last-child i {
+    color: red;
+}
+
+.mainContentApp .tab-content .contactListItem .contactPopup button:hover {
+    background-color: #44444440;
+}

@@ -9,7 +9,8 @@
 
 .mainContentApp .tab-content .callList {
     overflow: hidden auto;
-    height: calc(100vh - 205px);
+    /* height: calc(100vh - 205px); */
+    height: calc(100vh - 150px);
 }
 
 .mainContentApp .tab-content .callDetailsList {

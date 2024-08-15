@@ -18,10 +18,10 @@ function AllContact() {
                 <section>
                     <div className="container-fluid">
                         <div
-                            className="row justify-content-between py-3"
+                            className="row justify-content-between"
                             style={{ height: "100%" }}
                         >
-                            <div className='col-xl-6'>
+                            <div className='col-xl-6 pt-2' style={{ borderRight: '1px solid #dee2e6' }}>
                                 <div className='d-flex justify-content-between align-items-center'>
                                     <div className="col-2">
                                         <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
@@ -57,7 +57,7 @@ function AllContact() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-12 px-1 px-xl-3">
+                                <div className="col-12 px-1 px-xl-0">
                                     <nav>
                                         <div className="nav nav-tabs">
                                             <button
@@ -101,7 +101,7 @@ function AllContact() {
                                             </div>
                                             {/* Call List Item */}
                                             <div
-                                                className="contactListItem "
+                                                className="contactListItem favourite"
                                             >
                                                 <div className="row justify-content-between">
                                                     <div className="col-xl-6 d-flex">
@@ -124,10 +124,24 @@ function AllContact() {
                                                     </div>
                                                     <div className="col-auto text-end d-flex justify-content-center align-items-center">
                                                         <i
-                                                            className="fa-sharp fa-solid fa-star"
-                                                            style={{ color: "#ffa200", fontSize: 18 }}
+                                                            className="fa-sharp fa-thin fa-star"
+                                                            style={{ fontSize: 18 }}
                                                         />
                                                     </div>
+                                                </div>
+                                                <div className='contactPopup'>
+                                                    <button>
+                                                        <i className="fa-light fa-phone" />
+                                                    </button>
+                                                    <button>
+                                                        <i className="fa-light fa-message" />
+                                                    </button>
+                                                    <button>
+                                                        <i className="fa-light fa-star" />
+                                                    </button>
+                                                    <button>
+                                                        <i className="fa-light fa-trash" />
+                                                    </button>
                                                 </div>
                                             </div>
                                             {/* Call List Item */}
@@ -156,10 +170,24 @@ function AllContact() {
                                                     </div>
                                                     <div className="col-auto text-end d-flex justify-content-center align-items-center">
                                                         <i
-                                                            className="fa-sharp fa-solid fa-star"
-                                                            style={{ color: "#ffa200", fontSize: 18 }}
+                                                            className="fa-sharp fa-thin fa-star"
+                                                            style={{ fontSize: 18 }}
                                                         />
                                                     </div>
+                                                </div>
+                                                <div className='contactPopup'>
+                                                    <button>
+                                                        <i className="fa-light fa-phone" />
+                                                    </button>
+                                                    <button>
+                                                        <i className="fa-light fa-message" />
+                                                    </button>
+                                                    <button>
+                                                        <i className="fa-light fa-star" />
+                                                    </button>
+                                                    <button>
+                                                        <i className="fa-light fa-trash" />
+                                                    </button>
                                                 </div>
                                             </div>
                                             {/* Call List Item */}
@@ -191,10 +219,24 @@ function AllContact() {
                                                     </div>
                                                     <div className="col-auto text-end d-flex justify-content-center align-items-center">
                                                         <i
-                                                            className="fa-sharp fa-solid fa-star"
-                                                            style={{ color: "#ffa200", fontSize: 18 }}
+                                                            className="fa-sharp fa-thin fa-star"
+                                                            style={{ fontSize: 18 }}
                                                         />
                                                     </div>
+                                                </div>
+                                                <div className='contactPopup'>
+                                                    <button>
+                                                        <i className="fa-light fa-phone" />
+                                                    </button>
+                                                    <button>
+                                                        <i className="fa-light fa-message" />
+                                                    </button>
+                                                    <button>
+                                                        <i className="fa-light fa-star" />
+                                                    </button>
+                                                    <button>
+                                                        <i className="fa-light fa-trash" />
+                                                    </button>
                                                 </div>
                                             </div>
                                             {/* Call List Item */}
@@ -223,10 +265,24 @@ function AllContact() {
                                                     </div>
                                                     <div className="col-auto text-end d-flex justify-content-center align-items-center">
                                                         <i
-                                                            className="fa-sharp fa-solid fa-star"
-                                                            style={{ color: "#ffa200", fontSize: 18 }}
+                                                            className="fa-sharp fa-thin fa-star"
+                                                            style={{ fontSize: 18 }}
                                                         />
                                                     </div>
+                                                </div>
+                                                <div className='contactPopup'>
+                                                    <button>
+                                                        <i className="fa-light fa-phone" />
+                                                    </button>
+                                                    <button>
+                                                        <i className="fa-light fa-message" />
+                                                    </button>
+                                                    <button>
+                                                        <i className="fa-light fa-star" />
+                                                    </button>
+                                                    <button>
+                                                        <i className="fa-light fa-trash" />
+                                                    </button>
                                                 </div>
                                             </div>
                                             {/* Call List Item */}
@@ -258,10 +314,24 @@ function AllContact() {
                                                     </div>
                                                     <div className="col-auto text-end d-flex justify-content-center align-items-center">
                                                         <i
-                                                            className="fa-sharp fa-solid fa-star"
-                                                            style={{ color: "#ffa200", fontSize: 18 }}
+                                                            className="fa-sharp fa-thin fa-star"
+                                                            style={{ fontSize: 18 }}
                                                         />
                                                     </div>
+                                                </div>
+                                                <div className='contactPopup'>
+                                                    <button>
+                                                        <i className="fa-light fa-phone" />
+                                                    </button>
+                                                    <button>
+                                                        <i className="fa-light fa-message" />
+                                                    </button>
+                                                    <button>
+                                                        <i className="fa-light fa-star" />
+                                                    </button>
+                                                    <button>
+                                                        <i className="fa-light fa-trash" />
+                                                    </button>
                                                 </div>
                                             </div>
                                             {/* Call List Item */}
@@ -290,10 +360,24 @@ function AllContact() {
                                                     </div>
                                                     <div className="col-auto text-end d-flex justify-content-center align-items-center">
                                                         <i
-                                                            className="fa-sharp fa-solid fa-star"
-                                                            style={{ color: "#ffa200", fontSize: 18 }}
+                                                            className="fa-sharp fa-thin fa-star"
+                                                            style={{ fontSize: 18 }}
                                                         />
                                                     </div>
+                                                </div>
+                                                <div className='contactPopup'>
+                                                    <button>
+                                                        <i className="fa-light fa-phone" />
+                                                    </button>
+                                                    <button>
+                                                        <i className="fa-light fa-message" />
+                                                    </button>
+                                                    <button>
+                                                        <i className="fa-light fa-star" />
+                                                    </button>
+                                                    <button>
+                                                        <i className="fa-light fa-trash" />
+                                                    </button>
                                                 </div>
                                             </div>
                                             {/* Call List Item */}
