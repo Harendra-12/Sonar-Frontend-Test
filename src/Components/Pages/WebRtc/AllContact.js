@@ -23,7 +23,7 @@ function AllContact() {
                         >
                             <div className='col-xl-6 pt-2' style={{ borderRight: '1px solid #dee2e6' }}>
                                 <div className='d-flex justify-content-between align-items-center'>
-                                    <div className="col-2">
+                                    <div className="col-auto">
                                         <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
                                             Contacts{" "}
                                             <button className="clearButton" effect="ripple">
@@ -34,7 +34,7 @@ function AllContact() {
                                             </button>
                                         </h3>
                                     </div>
-                                    <div className="col-5 d-flex justify-content-end my-2 my-xl-0">
+                                    <div className="col-auto d-flex justify-content-end my-2 my-xl-0">
                                         <div className="col-auto">
                                             <button className="appPanelButton" effect="ripple">
                                                 <i className="fa-light fa-copy" />

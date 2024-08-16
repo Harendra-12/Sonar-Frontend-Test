@@ -76,14 +76,14 @@ function SideNavbarApp() {
                 <div className="itemTitle">Contacts</div>
               </NavLink>
             </li>
-            <li effect="ripple">
+            {/* <li effect="ripple">
               <NavLink to="/" className='navItem'>
                 <div className="iconHolder">
                   <i className="fa-regular fa-circle-question" />
                 </div>
                 <div className="itemTitle">Help &amp; Feedback</div>
               </NavLink>
-            </li>
+            </li> */}
             <li effect="ripple">
               <NavLink to="/" className='navItem'>
                 <div className="iconHolder">
