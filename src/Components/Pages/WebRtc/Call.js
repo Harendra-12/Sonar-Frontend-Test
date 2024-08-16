@@ -178,8 +178,8 @@ function Call() {
                         </button>
                       </div>
                       <div className="callList">
-                        <div className="text-center callListItem">
-                          <h5 className="fw-semibold">Today</h5>
+                        <div className="text-center">
+                          <h5 className="fw-semibold callListDiff">Today</h5>
                           <div className="callListItem missed selected">
                             <div className="row justify-content-between">
                               <div className="col-8 ms-4 text-start">

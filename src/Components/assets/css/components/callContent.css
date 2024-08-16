@@ -33,12 +33,17 @@
     font-family: 'Roboto' !important;
 }
 
-.mainContentApp .tab-content .callListItem h5 {
+.mainContentApp .tab-content .callListItem h5,
+.mainContentApp .tab-content .callList .callListDiff {
     font-size: 14px !important;
     margin: 5px 0;
     font-family: Outfit;
     font-weight: 500;
     color: #505050;
+}
+
+.mainContentApp .tab-content .callList .callListDiff {
+    padding: 10px 0;
 }
 
 .mainContentApp .tab-content .callListItem h6 {
