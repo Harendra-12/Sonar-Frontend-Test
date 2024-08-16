@@ -98,7 +98,8 @@
 .mainContentApp .contactListItem .profileHolder {
     width: 50px;
     height: 50px;
-    margin: auto 15px auto 0;
+    margin: auto 0px auto 0px;
+    /* margin: auto 15px auto 0px; */
     text-align: center;
     cursor: pointer;
     background-color: var(--ui-accent);

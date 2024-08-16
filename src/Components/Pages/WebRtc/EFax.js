@@ -180,6 +180,16 @@ function EFax() {
                                                                 <button class="receipentButton">johndoe@email.com</button>
                                                             </div>
                                                         </div>
+                                                        <div className='col-auto'>
+                                                            <div style={{ width: 'max-content' }}>
+                                                                <button class="receipentButton">johndoe@email.com</button>
+                                                            </div>
+                                                        </div>
+                                                        <div className='col-auto'>
+                                                            <div style={{ width: 'max-content' }}>
+                                                                <button class="receipentButton">johndoe@email.com</button>
+                                                            </div>
+                                                        </div>
                                                         {/* Map This in Loop */}
                                                         <div className='col-auto my-auto'>
                                                             <input type='text' placeholder='Recipents' className='border-0 mb-0' />

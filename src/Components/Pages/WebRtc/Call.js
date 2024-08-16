@@ -180,7 +180,7 @@ function Call() {
                       <div className="callList">
                         <div className="text-center callListItem">
                           <h5 className="fw-semibold">Today</h5>
-                          <div className="callListItem missed">
+                          <div className="callListItem missed selected">
                             <div className="row justify-content-between">
                               <div className="col-8 ms-4 text-start">
                                 <h4>1 (999) 999-9999</h4>

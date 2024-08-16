@@ -104,7 +104,7 @@ function AllContact() {
                                                 className="contactListItem favourite selected"
                                             >
                                                 <div className="row justify-content-between">
-                                                    <div className="col-xl-6 d-flex">
+                                                    <div className="col-xl-7 col-xxl-6 d-flex">
                                                         <div className="profileHolder" id="profileOnline">
                                                             <i className="fa-light fa-user fs-5" />
                                                         </div>
@@ -113,7 +113,7 @@ function AllContact() {
                                                             <h5>69/A, XYZ Street, Saint Petersburg, Russia</h5>
                                                         </div>
                                                     </div>
-                                                    <div className="col-10 col-xl-5">
+                                                    <div className="col-10 col-xl-4 col-xxl-5">
                                                         <h4>
                                                             <span>Office</span>
                                                         </h4>
@@ -150,7 +150,7 @@ function AllContact() {
                                                 className="contactListItem"
                                             >
                                                 <div className="row justify-content-between">
-                                                    <div className="col-xl-6 d-flex">
+                                                    <div className="col-xl-7 col-xxl-6 d-flex">
                                                         <div className="profileHolder" id="profileOnline">
                                                             <i className="fa-light fa-user fs-5" />
                                                         </div>
@@ -159,7 +159,7 @@ function AllContact() {
                                                             <h5>69/A, XYZ Street, Saint Petersburg, Russia</h5>
                                                         </div>
                                                     </div>
-                                                    <div className="col-10 col-xl-5">
+                                                    <div className="col-10 col-xl-4 col-xxl-5">
                                                         <h4>
                                                             <span>Office</span>
                                                         </h4>
@@ -199,7 +199,7 @@ function AllContact() {
                                                 className="contactListItem"
                                             >
                                                 <div className="row justify-content-between">
-                                                    <div className="col-xl-6 d-flex">
+                                                    <div className="col-xl-7 col-xxl-6 d-flex">
                                                         <div className="profileHolder" id="profileOnline">
                                                             <i className="fa-light fa-user fs-5" />
                                                         </div>
@@ -208,7 +208,7 @@ function AllContact() {
                                                             <h5>69/A, XYZ Street, Saint Petersburg, Russia</h5>
                                                         </div>
                                                     </div>
-                                                    <div className="col-10 col-xl-5">
+                                                    <div className="col-10 col-xl-4 col-xxl-5">
                                                         <h4>
                                                             <span>Office</span>
                                                         </h4>
@@ -245,7 +245,7 @@ function AllContact() {
                                                 className="contactListItem"
                                             >
                                                 <div className="row justify-content-between">
-                                                    <div className="col-xl-6 d-flex">
+                                                    <div className="col-xl-7 col-xxl-6 d-flex">
                                                         <div className="profileHolder" id="profileBusy">
                                                             <img src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg" />
                                                         </div>
@@ -254,7 +254,7 @@ function AllContact() {
                                                             <h5>69/A, XYZ Street, Saint Petersburg, Russia</h5>
                                                         </div>
                                                     </div>
-                                                    <div className="col-10 col-xl-5">
+                                                    <div className="col-10 col-xl-4 col-xxl-5">
                                                         <h4>
                                                             <span>Office</span>
                                                         </h4>
@@ -294,7 +294,7 @@ function AllContact() {
                                                 className="contactListItem"
                                             >
                                                 <div className="row justify-content-between">
-                                                    <div className="col-xl-6 d-flex">
+                                                    <div className="col-xl-7 col-xxl-6 d-flex">
                                                         <div className="profileHolder" id="profileOffline">
                                                             <i className="fa-light fa-user fs-5" />
                                                         </div>
@@ -303,7 +303,7 @@ function AllContact() {
                                                             <h5>69/A, XYZ Street, Saint Petersburg, Russia</h5>
                                                         </div>
                                                     </div>
-                                                    <div className="col-10 col-xl-5">
+                                                    <div className="col-10 col-xl-4 col-xxl-5">
                                                         <h4>
                                                             <span>Office</span>
                                                         </h4>
@@ -340,7 +340,7 @@ function AllContact() {
                                                 className="contactListItem  myContacts"
                                             >
                                                 <div className="row justify-content-between">
-                                                    <div className="col-xl-6 d-flex">
+                                                    <div className="col-xl-7 col-xxl-6 d-flex">
                                                         <div className="profileHolder" id="profileBusy">
                                                             <i className="fa-light fa-user fs-5" />
                                                         </div>
@@ -349,7 +349,7 @@ function AllContact() {
                                                             <h5>69/A, XYZ Street, Saint Petersburg, Russia</h5>
                                                         </div>
                                                     </div>
-                                                    <div className="col-10 col-xl-5">
+                                                    <div className="col-10 col-xl-4 col-xxl-5">
                                                         <h4>
                                                             <span>Office</span>
                                                         </h4>
@@ -421,9 +421,9 @@ function AllContact() {
                                                         <div className="d-flex justify-content-between">
                                                             <i className="fa-regular fa-user" />
                                                         </div>
-                                                        <div className="content ms-3">
+                                                        <div className="content ms-xxl-3 col-xl-12 col-xxl-10">
                                                             <div className="box">
-                                                                <h6>Nickname:</h6>
+                                                                <h6>Title:</h6>
                                                             </div>
                                                             <div className="box">
                                                                 <h5>"Test1"</h5>
@@ -448,7 +448,7 @@ function AllContact() {
                                                         <div className="d-flex justify-content-between">
                                                             <i className="fa-regular fa-hashtag" />
                                                         </div>
-                                                        <div className="content ms-3">
+                                                        <div className="content ms-xxl-3 col-xl-12 col-xxl-10">
                                                             <div className="box">
                                                                 <h6>Label:</h6>
                                                             </div>
@@ -475,7 +475,7 @@ function AllContact() {
                                                         <div className="d-flex justify-content-between">
                                                             <i className="fa-regular fa-envelope" />
                                                         </div>
-                                                        <div className="content ms-3">
+                                                        <div className="content ms-xxl-3 col-xl-12 col-xxl-10">
                                                             <div className="box">
                                                                 <h6>Label:</h6>
                                                             </div>
@@ -483,7 +483,7 @@ function AllContact() {
                                                                 riddhee.gupta@gmail.com
                                                             </div>
                                                             <div className="box">
-                                                                <h6>Description:</h6>
+                                                                <h6>Desc:</h6>
                                                             </div>
                                                             <div className="box">
                                                                 <h5>
@@ -499,7 +499,7 @@ function AllContact() {
                                                         <div className="d-flex justify-content-between">
                                                             <i className="fa-regular fa-location-dot" />
                                                         </div>
-                                                        <div className="content ms-3">
+                                                        <div className="content ms-xxl-3 col-xl-12 col-xxl-10">
                                                             <div className="box">
                                                                 <h6>Work:</h6>
                                                             </div>
@@ -514,7 +514,7 @@ function AllContact() {
                                                         <div className="d-flex justify-content-between">
                                                             <i className="fa-regular fa-link" />
                                                         </div>
-                                                        <div className="content ms-3">
+                                                        <div className="content ms-xxl-3 col-xl-12 col-xxl-10">
                                                             <div className="box">
                                                                 <h6>Work:</h6>
                                                             </div>
@@ -529,7 +529,7 @@ function AllContact() {
                                                         <div className="d-flex justify-content-between">
                                                             <i className="fa-regular fa-notes" />
                                                         </div>
-                                                        <div className="content ms-3">
+                                                        <div className="content ms-xxl-3 col-xl-12 col-xxl-10">
                                                             <div className="box">
                                                                 <h6 />
                                                             </div>

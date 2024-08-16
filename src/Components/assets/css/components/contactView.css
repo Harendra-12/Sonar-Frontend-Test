@@ -41,11 +41,12 @@
     border: 1px solid #55baff5e;
     margin: 7px 0px;
     padding: 0 5px;
+    flex-wrap: wrap;
 }
 
 .contactItem .content {
-    grid-template-columns: 75px auto;
-    width: 100%;
+    grid-template-columns: 45px auto;
+    /* width: 100%; */
     display: grid;
     grid-gap: 0;
 }
@@ -77,7 +78,7 @@
 .contactItem i {
     font-size: 18px;
     color: var(--ui-accent);
-    padding: 10px 0px 14px 10px;
+    padding: 10px 0px 10px 0px;
 }
 
 .contactItem .content .box {
