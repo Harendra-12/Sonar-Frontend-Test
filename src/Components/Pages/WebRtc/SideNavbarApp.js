@@ -39,6 +39,16 @@ function SideNavbarApp() {
             <li
               effect="ripple"
             >
+              <button onClick={() => navigate("/efax")}>
+                <div className="iconHolder">
+                  <i className="fa-solid fa-fax" />
+                </div>
+                <div className="itemTitle">eFax</div>
+              </button>
+            </li>
+            <li
+              effect="ripple"
+            >
               <button onClick={() => navigate("/all-voicemails")}>
                 <div className="iconHolder">
                   <i className="fa-solid fa-voicemail" />

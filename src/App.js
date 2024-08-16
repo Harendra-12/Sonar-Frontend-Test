@@ -76,7 +76,7 @@ import WalletTransactionsList from "./Components/Pages/Billing/WalletTransaction
 import PhoneDashboard from "./Components/Pages/PhoneDashboard/PhoneDashboard";
 import DidListing from "./Components/Pages/NumberManagement/DidListing";
 import Music from "./Components/Pages/Voice/Music";
-import EFax from "./Components/Pages/Fax/EFax";
+import EFax from "./Components/Pages/WebRtc/EFax";
 import ActiveCalls from "./Components/Pages/PhoneDashboard/ActiveCalls";
 import AllContact from "./Components/Pages/WebRtc/AllContact";
 import AllVoicemails from "./Components/Pages/WebRtc/AllVoicemails";
@@ -185,6 +185,7 @@ function App() {
           <Route path="/all-voicemails" element={<AllVoicemails />} />
           <Route path="/ongoing-call" element={<OngoingCall />} />
           <Route path="/cdr-report" element={<CdrReport />} />
+          <Route path="/efax" element={<EFax />} />
           {/* WebRtc path end */}
 
           {/* Admin Packages path start */}
@@ -255,9 +256,6 @@ function App() {
           />
           {/* Billing Pages End */}
 
-          {/* eFax Pages Start */}
-          <Route path="/efax" element={<EFax />} />
-          {/* eFax Pages End */}
           {/* </Route> */}
 
           {/* 404 Redirection */}
