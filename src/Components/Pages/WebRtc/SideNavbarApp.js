@@ -1,5 +1,5 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 function SideNavbarApp() {
   const navigate = useNavigate();
@@ -9,7 +9,7 @@ function SideNavbarApp() {
         <div className="sidenavItems">
           <ul>
             <li>
-              <button>
+              <button className='navItem'>
                 <div className="profileHolder" id="profileOnlineNav">
                   NH
                 </div>
@@ -19,106 +19,106 @@ function SideNavbarApp() {
             <li
               effect="ripple"
             >
-              <button>
+              <NavLink to="/" className='navItem'>
                 <div className="iconHolder">
                   <i className="fa-solid fa-message" />
                 </div>
                 <div className="itemTitle">Messages</div>
-              </button>
+              </NavLink>
             </li>
             <li
               effect="ripple"
             >
-              <button onClick={() => navigate("/call")}>
+              <NavLink to="/call" className='navItem'>
                 <div className="iconHolder">
                   <i className="fa-solid fa-phone" />
                 </div>
                 <div className="itemTitle">Calls</div>
-              </button>
+              </NavLink>
             </li>
             <li
               effect="ripple"
             >
-              <button onClick={() => navigate("/efax")}>
+              <NavLink to="/efax" className='navItem'>
                 <div className="iconHolder">
                   <i className="fa-solid fa-fax" />
                 </div>
                 <div className="itemTitle">eFax</div>
-              </button>
+              </NavLink>
             </li>
             <li
               effect="ripple"
             >
-              <button onClick={() => navigate("/all-voicemails")}>
+              <NavLink to="/all-voicemails" className='navItem'>
                 <div className="iconHolder">
                   <i className="fa-solid fa-voicemail" />
                 </div>
                 <div className="itemTitle">Voicemails</div>
-              </button>
+              </NavLink>
             </li>
             <li
               effect="ripple"
             >
-              <button>
+              <NavLink to="/" className='navItem'>
                 <div className="iconHolder">
                   <i className="fa-solid fa-star" />
                 </div>
                 <div className="itemTitle">Favorites</div>
-              </button>
+              </NavLink>
             </li>
             <li
               effect="ripple"
             >
-              <button onClick={() => navigate("/all-contacts")}>
+              <NavLink to="/all-contacts" className='navItem'>
                 <div className="iconHolder">
                   <i className="fa-solid fa-address-book" />
                 </div>
                 <div className="itemTitle">Contacts</div>
-              </button>
+              </NavLink>
             </li>
             <li effect="ripple">
-              <button>
+              <NavLink to="/" className='navItem'>
                 <div className="iconHolder">
                   <i className="fa-regular fa-circle-question" />
                 </div>
                 <div className="itemTitle">Help &amp; Feedback</div>
-              </button>
+              </NavLink>
             </li>
             <li effect="ripple">
-              <button>
+              <NavLink to="/" className='navItem'>
                 <div className="iconHolder">
                   <i className="fa-solid fa-sliders" />
                 </div>
                 <div className="itemTitle">Settings</div>
-              </button>
+              </NavLink>
             </li>
             <li
               effect="ripple"
             >
-              <button>
+              <NavLink to="/" className='navItem'>
                 <div className="iconHolder">
                   <i className="fa-brands fa-black-tie" />
                 </div>
                 <div className="itemTitle">Admin</div>
-              </button>
+              </NavLink>
             </li>
             <li effect="ripple">
-              <button>
+              <NavLink to="/" className='navItem'>
                 <div className="iconHolder">
                   <i className="fa-solid fa-chart-column" />
                 </div>
                 <div className="itemTitle">Reports</div>
-              </button>
+              </NavLink>
             </li>
             <li
               effect="ripple"
             >
-              <button>
+              <NavLink to="/" className='navItem'>
                 <div className="iconHolder">
                   <i className="fa-sharp fa-solid fa-people-group" />
                 </div>
                 <div className="itemTitle">Conference</div>
-              </button>
+              </NavLink>
             </li>
           </ul>
         </div>

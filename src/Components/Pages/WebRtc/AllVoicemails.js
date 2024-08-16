@@ -69,7 +69,7 @@ function AllVoicemails() {
                                                 id="headerSearch"
                                                 placeholder="Search"
                                             />
-                                            <button className="appPanelButton" effect="ripple">
+                                            <button className="ms-2 appPanelButton" effect="ripple">
                                                 <i className="fa-light fa-calendar-plus" />
                                             </button>
                                         </div>
