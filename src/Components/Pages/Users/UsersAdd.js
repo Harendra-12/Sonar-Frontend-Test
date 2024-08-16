@@ -145,6 +145,7 @@ const UsersAdd = () => {
     const addUser = await generalPostFunction("/user/create", payload);
     if (addUser.status) {
       reset();
+      setSelectedPermission([]);
       toast.success(addUser.message);
       setLoading(false);
     } else {
@@ -572,16 +573,24 @@ const UsersAdd = () => {
                       defaultValue=""
                       {...register("role_id", { ...requiredValidator })}
                       onChange={(e) => {
-                        setSelectedRole(
-                          e.target.value === "" ? "" : role[e.target.value].name
+                        const selectedValue = e.target.value;
+
+                        const selectedRole = role.find(
+                          (item) => item.id == selectedValue
                         );
-                        setSelectedPermission(
-                          e.target.value === ""
-                            ? ""
-                            : role[e.target.value].permissions.map((item) => {
-                                return item.permission_id;
-                              })
-                        );
+
+                        if (selectedRole) {
+                          setSelectedRole(selectedRole.name);
+                          setSelectedPermission(
+                            selectedRole.permissions.map(
+                              (item) => item.permission_id
+                            )
+                          );
+                        } else {
+                          // Handle the case where no matching role is found
+                          setSelectedRole("");
+                          setSelectedPermission([]);
+                        }
                       }}
                     >
                       <option value="" disabled>
