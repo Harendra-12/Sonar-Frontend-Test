@@ -79,6 +79,7 @@ import Music from "./Components/Pages/Voice/Music";
 import EFax from "./Components/Pages/Fax/EFax";
 import ActiveCalls from "./Components/Pages/PhoneDashboard/ActiveCalls";
 import AllContact from "./Components/Pages/WebRtc/AllContact";
+import AllVoicemails from "./Components/Pages/WebRtc/AllVoicemails";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -181,6 +182,7 @@ function App() {
           {/* WebRtc path start */}
           <Route path="/call" element={<Call />} />
           <Route path="/all-contacts" element={<AllContact />} />
+          <Route path="/all-voicemails" element={<AllVoicemails />} />
           <Route path="/ongoing-call" element={<OngoingCall />} />
           <Route path="/cdr-report" element={<CdrReport />} />
           {/* WebRtc path end */}

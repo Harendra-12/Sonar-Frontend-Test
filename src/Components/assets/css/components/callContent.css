@@ -26,6 +26,7 @@
 .mainContentApp .tab-content .callListItem h4 {
     font-size: 16px !important;
     margin: 0;
+    font-family: 'Roboto' !important;
 }
 
 .mainContentApp .tab-content .callListItem h5 {
@@ -287,4 +288,11 @@
 .addNewContactPopup .heading h3 {
     margin-left: 15px;
     margin-bottom: 0;
+}
+
+.mainContentApp .tab-content .callListItem.selected,
+.mainContentApp .tab-content .contactListItem.selected {
+    background-color: #439fdd25;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.20) 0px 1px 5px;
 }

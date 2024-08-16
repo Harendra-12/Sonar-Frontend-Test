@@ -101,7 +101,7 @@ function AllContact() {
                                             </div>
                                             {/* Call List Item */}
                                             <div
-                                                className="contactListItem favourite"
+                                                className="contactListItem favourite selected"
                                             >
                                                 <div className="row justify-content-between">
                                                     <div className="col-xl-6 d-flex">

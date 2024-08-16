@@ -39,7 +39,7 @@ function SideNavbarApp() {
             <li
               effect="ripple"
             >
-              <button>
+              <button onClick={() => navigate("/all-voicemails")}>
                 <div className="iconHolder">
                   <i className="fa-solid fa-voicemail" />
                 </div>
