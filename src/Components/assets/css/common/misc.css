@@ -27,6 +27,14 @@
     color: rgb(255, 102, 0);
 }
 
+.extensionStatusWithName {
+    margin: auto 0;
+}
+
+.extensionStatusWithName .extensionStatus {
+    margin-right: 5px;
+}
+
 .extensionStatus {
     display: block;
     width: 12px;
@@ -37,6 +45,10 @@
 
 .extensionStatus.online {
     background-color: green;
+}
+
+.extensionStatus.onCall {
+    background-color: rgb(0, 153, 255);
 }
 
 .pagination_slider {

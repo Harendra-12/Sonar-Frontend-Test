@@ -5,6 +5,11 @@ function SideNavbarApp() {
   const navigate = useNavigate();
   return (
     <section>
+      <style>
+        {`#sidenNav{
+        display:none;
+      }`}
+      </style>
       <div id="sidenNavApp">
         <div className="sidenavItems">
           <ul>
@@ -90,6 +95,14 @@ function SideNavbarApp() {
                   <i className="fa-solid fa-sliders" />
                 </div>
                 <div className="itemTitle">Settings</div>
+              </NavLink>
+            </li>
+            <li effect="ripple">
+              <NavLink to="/call-dashboard" className='navItem'>
+                <div className="iconHolder">
+                  <i className="fa-solid fa-sliders" />
+                </div>
+                <div className="itemTitle">Call Dashboard</div>
               </NavLink>
             </li>
             <li

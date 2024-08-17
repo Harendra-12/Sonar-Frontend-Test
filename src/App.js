@@ -80,6 +80,7 @@ import EFax from "./Components/Pages/WebRtc/EFax";
 import ActiveCalls from "./Components/Pages/PhoneDashboard/ActiveCalls";
 import AllContact from "./Components/Pages/WebRtc/AllContact";
 import AllVoicemails from "./Components/Pages/WebRtc/AllVoicemails";
+import CallDashboard from "./Components/Pages/WebRtc/CallDashboard";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -183,6 +184,7 @@ function App() {
           <Route path="/ongoing-call" element={<OngoingCall />} />
           <Route path="/cdr-report" element={<CdrReport />} />
           <Route path="/efax" element={<EFax />} />
+          <Route path="/call-dashboard" element={<CallDashboard />} />
           {/* WebRtc path end */}
 
           {/* Admin Packages path start */}

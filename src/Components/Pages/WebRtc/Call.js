@@ -61,11 +61,6 @@ function Call() {
 
   return (
     <div className="browserPhoneWrapper">
-      <style>
-        {`#sidenNav{
-        display:none;
-      }`}
-      </style>
       <SIPProvider options={options}>
         <SideNavbarApp />
         <main

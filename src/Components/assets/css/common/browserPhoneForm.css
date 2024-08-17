@@ -8,3 +8,31 @@
 .browserPhoneWrapper .formItem:focus {
     background-color: #429cd91f;
 }
+
+.callDashboard .tableContainer.allItems tr th:first-child {
+    width: 90px;
+}
+
+.callDashboard .tableContainer .clearButton {
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    font-size: 14px;
+
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+}
+
+.callDashboard .tableContainer .clearButton:hover {
+    background-color: #89898930;
+}
+
+.callDashboardPrimTable {
+    /* height: calc(100vh - 360px); */
+    height: calc(100vh - 150px);
+}
+
+.callDashboardSecTable {
+    height: 305px;
+}
