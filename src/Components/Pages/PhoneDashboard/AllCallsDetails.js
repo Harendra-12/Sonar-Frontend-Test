@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import ContentLoader from '../../Loader/ContentLoader';
 import { useNavigate } from 'react-router-dom';
@@ -7,10 +7,20 @@ function AllCallsDetails() {
     const callDetails = useSelector((state) => state.allCall)
     const activeCall = useSelector((state) => state.activeCall)
     const navigate = useNavigate();
-    console.log("This is call details", callDetails);
+    const [inboundCall, setInboundCall] = useState([]);
+    const [outboundCall, setOutboundCall] = useState([]);
+    const [allCalls, setAllCalls] = useState([]);
+
+    useEffect(()=>{
+        if(callDetails.calls){
+            setInboundCall(callDetails.calls.filter((call) => call["Call-Direction"] === "inbound"));
+            setOutboundCall(callDetails.calls.filter((call) => call["Call-Direction"] === "outbound"));
+            setAllCalls(callDetails.calls);
+        }
+    }, [callDetails])
     return (
         <>
-            {(callDetails && callDetails.all) ?
+            {(callDetails) ?
                 <div
                     className="tabGroupDetails"
                     data-id={1}
@@ -28,22 +38,23 @@ function AllCallsDetails() {
                                 <div className="col-xl-2">
                                     <div className="itemWrapperb a">
                                         <div className="heading">Total Calls</div>
-                                        <div className="data-number">{callDetails.all.count}</div>
+                                        <div className="data-number">{callDetails.count}</div>
                                         <div className="label2">100% of total calls</div>
                                     </div>
                                 </div>
                                 <div className="col-xl-2">
                                     <div className="itemWrapperb d">
                                         <div className="heading">Total Calls Completed</div>
-                                        <div className="data-number">{callDetails.all.success}</div>
-                                        <div className="label2">Percentage {((callDetails.all.success / (callDetails.all.count)) * 100).toFixed(2)}%</div>
+                                        <div className="data-number">{callDetails.success}</div>
+                                        <div className="label2">Percentage {((callDetails.success / (callDetails.count)) * 100).toFixed(2)}%</div>
                                     </div>
                                 </div>
                                 <div className="col-xl-2">
                                     <div className="itemWrapperb c">
                                         <div className="heading">Missed Calls</div>
-                                        <div className="data-number">{callDetails.all.missed}</div>
-                                        <div className="label2">Percentage {((callDetails.all.missed / (callDetails.all.count)) * 100).toFixed(2)}%</div>
+                                        {/* <div className="data-number">{callDetails.missed}</div> */}
+                                        <div className="data-number">{ allCalls.filter((call => call["variable_DIALSTATUS"] === "NO_USER_RESPONSE")).length}</div>
+                                        <div className="label2">Percentage {((callDetails.missed / (callDetails.count)) * 100).toFixed(2)}%</div>
                                     </div>
                                 </div>
                                 <div className="col-xl-2">
@@ -79,22 +90,28 @@ function AllCallsDetails() {
                                 <div className="col-xl-2">
                                     <div className="itemWrapperb a">
                                         <div className="heading">Total Inbound Calls</div>
-                                        <div className="data-number">{callDetails.inboundData.count}</div>
-                                        <div className="label2">{((callDetails.inboundData.count / (callDetails.all.count)) * 100).toFixed(2)}% of total calls</div>
+                                        {/* <div className="data-number">{callDetails.inboundData.count}</div> */}
+                                        <div className="data-number">{inboundCall.length}</div>
+                                        {/* <div className="label2">{((callDetails.inboundData.count / (callDetails.all.count)) * 100).toFixed(2)}% of total calls</div> */}
+                                        <div className="label2">{((inboundCall.length / (callDetails.count)) * 100).toFixed(2)}% of total calls</div>
                                     </div>
                                 </div>
                                 <div className="col-xl-2">
                                     <div className="itemWrapperb d">
                                         <div className="heading">Inbound Calls Completed</div>
-                                        <div className="data-number">{callDetails.inboundData.success}</div>
-                                        <div className="label2">Percentage {((callDetails.inboundData.success / (callDetails.inboundData.count)) * 100).toFixed(2)}%</div>
+                                        {/* <div className="data-number">{callDetails.inboundData.success}</div> */}
+                                        <div className="data-number">{inboundCall.filter((call) => call["variable_DIALSTATUS"] === "SUCCESS").length}</div>
+                                        {/* <div className="label2">Percentage {((callDetails.inboundData.success / (callDetails.inboundData.count)) * 100).toFixed(2)}%</div> */}
+                                        <div className="label2">Percentage {((inboundCall.filter((call) => call["variable_DIALSTATUS"] === "SUCCESS").length / (inboundCall.length)) * 100).toFixed(2)}%</div>
                                     </div>
                                 </div>
                                 <div className="col-xl-2">
                                     <div className="itemWrapperb c">
                                         <div className="heading">Missed Inbound Calls</div>
-                                        <div className="data-number">{callDetails.inboundData.missed}</div>
-                                        <div className="label2">Percentage {((callDetails.inboundData.missed / (callDetails.inboundData.count)) * 100).toFixed(2)}%</div>
+                                        {/* <div className="data-number">{callDetails.inboundData.missed}</div> */}
+                                        <div className="data-number">{inboundCall.filter((call) => call["variable_DIALSTATUS"] === "NO_USER_RESPONSE").length}</div>
+                                        {/* <div className="label2">Percentage {((callDetails.inboundData.missed / (callDetails.inboundData.count)) * 100).toFixed(2)}%</div> */}
+                                        <div className="label2">Percentage {((inboundCall.filter((call) => call["variable_DIALSTATUS"] === "NO_USER_RESPONSE").length / (inboundCall.length)) * 100).toFixed(2)}%</div>
                                     </div>
                                 </div>
                                 <div className="col-xl-2">
@@ -130,22 +147,28 @@ function AllCallsDetails() {
                                 <div className="col-xl-2">
                                     <div className="itemWrapperb a">
                                         <div className="heading">Total Outbound Calls</div>
-                                        <div className="data-number">{callDetails.outboundData.count}</div>
-                                        <div className="label2">{((callDetails.outboundData.count / (callDetails.all.count)) * 100).toFixed(2)}% of total calls</div>
+                                        {/* <div className="data-number">{callDetails.outboundData.count}</div> */}
+                                        <div className="data-number">{outboundCall.length}</div>
+                                        {/* <div className="label2">{((callDetails.outboundData.count / (callDetails.all.count)) * 100).toFixed(2)}% of total calls</div> */}
+                                        <div className="label2">{((outboundCall.length / (callDetails.count)) * 100).toFixed(2)}% of total calls</div>
                                     </div>
                                 </div>
                                 <div className="col-xl-2">
                                     <div className="itemWrapperb d">
                                         <div className="heading">Outbound Calls Completed</div>
-                                        <div className="data-number">{callDetails.outboundData.success}</div>
-                                        <div className="label2">Percentage {((callDetails.outboundData.success / (callDetails.outboundData.count)) * 100).toFixed(2)}%</div>
+                                        {/* <div className="data-number">{callDetails.outboundData.success}</div> */}
+                                        <div className="data-number">{outboundCall.filter((call) => call["variable_DIALSTATUS"] === "SUCCESS").length}</div>
+                                        {/* <div className="label2">Percentage {((callDetails.outboundData.success / (callDetails.outboundData.count)) * 100).toFixed(2)}%</div> */}
+                                        <div className="label2">Percentage {((outboundCall.filter((call) => call["variable_DIALSTATUS"] === "SUCCESS").length / (outboundCall.length)) * 100).toFixed(2)}%</div>
                                     </div>
                                 </div>
                                 <div className="col-xl-2">
                                     <div className="itemWrapperb c">
                                         <div className="heading">Missed Outbound Calls</div>
-                                        <div className="data-number">{callDetails.outboundData.missed}</div>
-                                        <div className="label2">Percentage {((callDetails.outboundData.missed / (callDetails.outboundData.count)) * 100).toFixed(2)}%</div>
+                                        {/* <div className="data-number">{callDetails.outboundData.missed}</div> */}
+                                        <div className="data-number">{outboundCall.filter((call) => call["variable_DIALSTATUS"] === "NO_USER_RESPONSE").length}</div>
+                                        {/* <div className="label2">Percentage {((callDetails.outboundData.missed / (callDetails.outboundData.count)) * 100).toFixed(2)}%</div> */}
+                                        <div className="label2">Percentage {((outboundCall.filter((call) => call["variable_DIALSTATUS"] === "NO_USER_RESPONSE").length / (outboundCall.length)) * 100).toFixed(2)}%</div>
                                     </div>
                                 </div>
                                 <div className="col-xl-2">

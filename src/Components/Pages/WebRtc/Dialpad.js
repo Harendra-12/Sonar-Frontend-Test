@@ -8,12 +8,20 @@ function Dialpad({ hideDialpad }) {
   const { sessionManager } = useSIPProvider();
   const [destNumber, setDestNumber] = useState("");
 
+  const handleInputChange = (e) => {
+    const { value } = e.target;
+    const regex = /^[0-9*#]*$/;
+    if (regex.test(value)) {
+      setDestNumber(value);
+    }
+  };
+
   async function onSubmit(e) {
     if (destNumber.length > 3) {
       hideDialpad(false);
       e.preventDefault();
       const apiData = await sessionManager?.call(
-        `sip:${destNumber}@192.168.2.225`,
+        `sip:${Number(destNumber)}@192.168.2.225`,
         {}
       );
 
@@ -64,11 +72,12 @@ function Dialpad({ hideDialpad }) {
               </div>
               <div>
                 <input
-                  type="number"
+                  type="text"
                   placeholder="Dial"
                   className="dialerInput"
                   value={destNumber}
-                  onChange={(e) => setDestNumber(e.target.value)}
+                  // onChange={(e) => setDestNumber(e.target.value)}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="dialerWrap mt-2">
@@ -135,7 +144,9 @@ function Dialpad({ hideDialpad }) {
                   <h4>9</h4>
                   <h6>WXYZ</h6>
                 </div>
-                <div className="col-4">
+                <div className="col-4"
+                onClick={() => setDestNumber(destNumber + "*")}
+                >
                   <h4>
                     <i className="fa-light fa-asterisk" />
                   </h4>
@@ -147,7 +158,9 @@ function Dialpad({ hideDialpad }) {
                   <h4>0</h4>
                   <h6>+</h6>
                 </div>
-                <div className="col-4">
+                <div className="col-4"
+                onClick={() => setDestNumber(destNumber + "#")}
+                >
                   <h4>
                     <i className="fa-light fa-hashtag" />
                   </h4>

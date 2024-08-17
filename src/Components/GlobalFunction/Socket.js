@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const Socket = () => {
   const dispatch = useDispatch();
-  const ip = "192.168.1.87";
+  const ip = "192.168.1.88";
   const port = "8093";
   const account = useSelector((state) => state.account);
   const token = localStorage.getItem("token");
@@ -12,7 +12,7 @@ const Socket = () => {
   useEffect(() => {
     var reconnectValue = 0
     const connectWebSocket = () => {
-      const socket = new WebSocket(`wss://${ip}:${port}?token=${token}`);
+      const socket = new WebSocket(`ws://${ip}:${port}?token=${token}`);
 
       socket.onopen = () => {
         console.log('WebSocket connection successful.');
