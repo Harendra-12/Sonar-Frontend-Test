@@ -242,7 +242,6 @@ function Navbar() {
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
-
                           <li className="tabItem " effect="ripple">
                             <NavLink to="/phone-dashboard">
                               <div className="iconHolder">
@@ -268,8 +267,14 @@ function Navbar() {
                               <div className="itemTitle">Voice Music</div>
                             </NavLink>
                           </li>
-
-
+                          <li className="tabItem " effect="ripple">
+                            <NavLink to="/active-calls">
+                              <div className="iconHolder">
+                                <i className="fa-duotone fa-phone-office" />
+                              </div>
+                              <div className="itemTitle">Active Calls</div>
+                            </NavLink>
+                          </li>
                         </ul>
                       </div>
                     </div>
@@ -523,7 +528,9 @@ function Navbar() {
                               <div className="iconHolder">
                                 <i className="fa-duotone fa-swap-arrows" />
                               </div>
-                              <div className="itemTitle">Wallet Transactions</div>
+                              <div className="itemTitle">
+                                Wallet Transactions
+                              </div>
                             </NavLink>
                           </li>
                         </ul>

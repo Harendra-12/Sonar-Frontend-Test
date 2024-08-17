@@ -113,8 +113,8 @@ function App() {
     <>
       <Router>
         <NavigationSetter />
-        {/* <GlobalCalls />
-        <Navbar /> */}
+        {/* <GlobalCalls /> */}
+        <Navbar />
         <Routes>
           <Route path="/" element={<Login />} />
           {/* <Route element={<ProtectedRoute />}> */}
@@ -146,10 +146,7 @@ function App() {
           <Route path="/extensions-export" element={<ExtensionsExport />} />
           <Route path="/extensions-import" element={<ExtensionsImport />} />
           <Route path="/extension-summary" element={<ExtensionSummary />} />
-          <Route
-            path="/extension-settings"
-            element={<ExtensionsSettings />}
-          />
+          <Route path="/extension-settings" element={<ExtensionsSettings />} />
           <Route
             path="/extension-settings-edit"
             element={<ExtensionSettingsEdit />}
@@ -210,10 +207,7 @@ function App() {
           {/* Number Management Path End */}
 
           {/* Payment path start */}
-          <Route
-            path="/add-payment-gateway"
-            element={<PaymentGatewayAdd />}
-          />
+          <Route path="/add-payment-gateway" element={<PaymentGatewayAdd />} />
           <Route path="/payment-gateway" element={<PaymentGateway />} />
           <Route
             path="/payment-gateway-edit"
