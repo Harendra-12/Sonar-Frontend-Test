@@ -84,7 +84,7 @@ function CallDetails({ clickedCall, callHistory }) {
         {/* <h4>1 (999) 999-9999</h4> */}
         <h4>{callDetails && callDetails["Caller-Callee-ID-Number"]}</h4>
         {/* <h5>USER XYZ</h5> */}
-        <h5>{callDetails && callDetails.caller_user.username}</h5>
+        <h5>{callDetails && callDetails.caller_user?.username || "USER XYZ"}</h5>
         <div className="d-flex justify-content-center align-items-center mt-3">
           <button className="appPanelButton" effect="ripple">
             <i className="fa-light fa-message-dots" />

@@ -1,6 +1,10 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 const RingGroup = () => {
+    const ringGroup = useSelector((state) => state.ringGroup)
+    console.log("ring group", ringGroup);
+    
     return (
         <div
             className="tabGroupDetails"
