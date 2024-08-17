@@ -113,7 +113,7 @@ function App() {
     <>
       <Router>
         <NavigationSetter />
-        {/* <GlobalCalls /> */}
+        <GlobalCalls />
         <Navbar />
         <Routes>
           <Route path="/" element={<Login />} />

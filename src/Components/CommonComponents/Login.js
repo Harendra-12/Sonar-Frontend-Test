@@ -55,49 +55,87 @@ function Login() {
               cardListRefresh: 1,
             });
             localStorage.setItem("account", JSON.stringify(profile.data));
-            if (profile.data.usertype === "Company") {
-              const accountData = await generalGetFunction(
-                `/account/${profile.data.account_id}`
+            // if (profile.data.usertype === "Company") {
+            //   const accountData = await generalGetFunction(
+            //     `/account/${profile.data.account_id}`
+            //   );
+            //   if (accountData.status) {
+            //     dispatch({
+            //       type: "SET_ACCOUNTDETAILS",
+            //       accountDetails: accountData.data,
+            //     });
+            //     localStorage.setItem(
+            //       "accountDetails",
+            //       JSON.stringify(accountData.data)
+            //     );
+            //     if (Number(accountData.data.company_status) < 6) {
+            //       dispatch({
+            //         type: "SET_TEMPACCOUNT",
+            //         tempAccount: accountData.data,
+            //       });
+            //       localStorage.setItem(
+            //         "tempAccount",
+            //         JSON.stringify(accountData.data)
+            //       );
+            //       setLoading(false);
+            //       window.scrollTo(0, 0);
+            //       navigate("/temporary-dashboard");
+            //     } else {
+            //       // localStorage.clear("tempAccount")
+            //       dispatch({
+            //         type: "SET_TEMPACCOUNT",
+            //         tempAccount: null,
+            //       });
+            //       setLoading(false);
+            //       window.scrollTo(0, 0);
+            //       navigate("/dashboard");
+            //     }
+            //   } else {
+            //     setLoading(false);
+            //     toast.error("Server error !");
+            //   }
+            // } else {
+            //   setLoading(false);
+            //   window.scrollTo(0, 0);
+            //   navigate("/dashboard");
+            // }
+            const accountData = await generalGetFunction(
+              `/account/${profile.data.account_id}`
+            );
+            if (accountData.status) {
+              dispatch({
+                type: "SET_ACCOUNTDETAILS",
+                accountDetails: accountData.data,
+              });
+              localStorage.setItem(
+                "accountDetails",
+                JSON.stringify(accountData.data)
               );
-              if (accountData.status) {
+              if (Number(accountData.data.company_status) < 6) {
                 dispatch({
-                  type: "SET_ACCOUNTDETAILS",
-                  accountDetails: accountData.data,
+                  type: "SET_TEMPACCOUNT",
+                  tempAccount: accountData.data,
                 });
                 localStorage.setItem(
-                  "accountDetails",
+                  "tempAccount",
                   JSON.stringify(accountData.data)
                 );
-                if (Number(accountData.data.company_status) < 6) {
-                  dispatch({
-                    type: "SET_TEMPACCOUNT",
-                    tempAccount: accountData.data,
-                  });
-                  localStorage.setItem(
-                    "tempAccount",
-                    JSON.stringify(accountData.data)
-                  );
-                  setLoading(false);
-                  window.scrollTo(0, 0);
-                  navigate("/temporary-dashboard");
-                } else {
-                  // localStorage.clear("tempAccount")
-                  dispatch({
-                    type: "SET_TEMPACCOUNT",
-                    tempAccount: null,
-                  });
-                  setLoading(false);
-                  window.scrollTo(0, 0);
-                  navigate("/dashboard");
-                }
-              } else {
                 setLoading(false);
-                toast.error("Server error !");
+                window.scrollTo(0, 0);
+                navigate("/temporary-dashboard");
+              } else {
+                // localStorage.clear("tempAccount")
+                dispatch({
+                  type: "SET_TEMPACCOUNT",
+                  tempAccount: null,
+                });
+                setLoading(false);
+                window.scrollTo(0, 0);
+                navigate("/dashboard");
               }
             } else {
               setLoading(false);
-              window.scrollTo(0, 0);
-              navigate("/dashboard");
+              toast.error("Server error !");
             }
           } else {
             setLoading(false);
