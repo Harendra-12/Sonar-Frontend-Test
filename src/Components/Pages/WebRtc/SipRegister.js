@@ -2,26 +2,26 @@ import { useEffect } from "react";
 import { useSIPProvider } from "react-sipjs";
 // import { SessionState } from "sip.js";
 import MediaPermissions from "./MediaPermissions ";
+import { useSelector } from "react-redux";
 // import { useDispatch } from "react-redux";
 // import { CallSessionItem } from "./CallSessionItem";
 
 export const SipRegister = () => {
+  const { connectAndRegister, registerStatus, connectStatus } =
+    useSIPProvider();
+  const account = useSelector((state) => state.account);
   const {
-    connectAndRegister,
-    registerStatus,
-    connectStatus,
-  } = useSIPProvider();
-  const username = "111";
-  const password = "1111";
+    extension: { extension, password },
+  } = account;
+  // const username = extension;
+  // const password = pswrd;
   useEffect(() => {
     connectAndRegister({
-      username: username,
+      username: extension,
       password: password,
     });
-  }, [connectAndRegister,username,password]);
+  }, [connectAndRegister, extension, password]);
 
-  
-  
   return (
     <div className="col-auto">
       <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
