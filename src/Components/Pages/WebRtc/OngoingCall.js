@@ -4,7 +4,7 @@ import { useSessionCall } from "react-sipjs";
 import { CallTimer } from "./CallTimer";
 import { SessionState } from "sip.js";
 
-function OngoingCall() {
+function OngoingCall({ setHangupRefresh, hangupRefresh }) {
   const callProgressId = useSelector((state) => state.callProgressId);
   const callProgressDestination = useSelector(
     (state) => state.callProgressDestination
@@ -31,12 +31,14 @@ function OngoingCall() {
           <div class="row header">
             <div class="col-4"></div>
             <div class="col-4 text-center">
-              <h5>{timer?.answeredAt && (
-            <CallTimer
-              isEnd={session.state === SessionState.Terminated}
-              startAt={timer.answeredAt}
-            />
-          )}</h5>
+              <h5>
+                {timer?.answeredAt && (
+                  <CallTimer
+                    isEnd={session.state === SessionState.Terminated}
+                    startAt={timer.answeredAt}
+                  />
+                )}
+              </h5>
             </div>
             <div class="col-4 d-none d-xl-flex justify-content-end">
               <button class="appPanelButtonColor" effect="ripple">
@@ -95,7 +97,10 @@ function OngoingCall() {
               <i className="fa-thin fa-pause" />
             </button>
             <button
-              onClick={hangup}
+              onClick={() => {
+                hangup();
+                setHangupRefresh(hangupRefresh + 1);
+              }}
               className="appPanelButtonCaller bg-danger"
               effect="ripple"
             >

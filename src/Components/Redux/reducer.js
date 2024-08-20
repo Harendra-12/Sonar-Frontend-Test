@@ -28,6 +28,7 @@ var callProgress = false;
 var sessions = [];
 var callProgressId = "";
 var callProgressDestination = "";
+var addContactRefresh = 0;
 
 const initialState = {
   account,
@@ -59,6 +60,7 @@ const initialState = {
   sessions,
   callProgressId,
   callProgressDestination,
+  addContactRefresh,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -122,6 +124,8 @@ const counterReducer = (state = initialState, action) => {
         ...state,
         callProgressDestination: action.callProgressDestination,
       };
+    case "SET_ADDCONTACTREFRESH":
+      return { ...state, addContactRefresh: action.addContactRefresh };
     default:
       return state;
   }

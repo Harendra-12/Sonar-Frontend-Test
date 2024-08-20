@@ -1,50 +1,3 @@
-// import React from 'react'
-
-// function AddNewContactPopup() {
-//     return (
-//         <div className='addNewContactPopup'>
-//             <div className='row'>
-//                 <div className='col-12 heading'>
-//                     <i class="fa-light fa-user-plus"></i>
-//                     <h3>Add Contact</h3>
-//                 </div>
-//                 <div class="col-xl-12">
-//                     <div class="formLabel">
-//                         <label for="">Full Name Of User</label>
-//                     </div>
-//                     <div class="col-12">
-//                         <input type="text" class="formItem" placeholder='Full Name' />
-//                     </div>
-//                 </div>
-//                 <div class="col-xl-12">
-//                     <div class="formLabel">
-//                         <label for="">Title of User</label>
-//                     </div>
-//                     <div class="col-12">
-//                         <input type="text" class="formItem" placeholder='Title' />
-//                     </div>
-//                 </div>
-//                 <div class="col-xl-12">
-//                     <div class="formLabel">
-//                         <label for="">Extension Of User</label>
-//                     </div>
-//                     <div class="col-12">
-//                         <input type="text" class="formItem" placeholder='Extension' />
-//                     </div>
-//                 </div>
-//                 <div className='col-xl-12 mt-3'>
-//                     <div className='d-flex justify-content-between'>
-//                         <button className='formButton ms-0'>Cancel</button>
-//                         <button className='formButton me-0'>Create</button>
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//     )
-// }
-
-// export default AddNewContactPopup
-
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -55,7 +8,7 @@ import {
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function AddNewContactPopup({ setAddContactToggle }) {
   const {
@@ -63,8 +16,10 @@ function AddNewContactPopup({ setAddContactToggle }) {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const account = useSelector((state) => state.account);
 
+  const account = useSelector((state) => state.account);
+  const addContactRefresh = useSelector((state) => state.addContactRefresh);
+  const dispatch = useDispatch();
   const handleFormSubmit = handleSubmit(async (data) => {
     const payload = {
       ...data,
@@ -77,6 +32,11 @@ function AddNewContactPopup({ setAddContactToggle }) {
     if (apiData.status) {
       setAddContactToggle(false);
       toast.success(apiData.message);
+
+      dispatch({
+        type: "SET_ADDCONTACTREFRESH",
+        addContactRefresh: addContactRefresh + 1,
+      });
     } else {
       console.log(apiData);
       const errorMessage = Object.keys(apiData.errors);
