@@ -23,6 +23,8 @@ function Call() {
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
   const [allCalls, setAllCalls] = useState([]);
+  const [hangupRefresh, setHangupRefresh] = useState(0);
+
   const [previewCalls, setPreviewCalls] = useState([]);
   const [addContactToggle, setAddContactToggle] = useState(false);
   const [clickedCall, setClickedCall] = useState(null);
@@ -91,7 +93,7 @@ function Call() {
     } else {
       navigate("/");
     }
-  }, [account, navigate]);
+  }, [account, navigate, hangupRefresh]);
 
   // user data filter based on name and number(currently id)
   useEffect(() => {
@@ -472,6 +474,8 @@ function Call() {
                     <OngoingCall
                       id={callProgressId}
                       destination={callProgressDestination}
+                      setHangupRefresh={setHangupRefresh}
+                      hangupRefresh={hangupRefresh}
                     />
                   ) : (
                     clickedCall && (
