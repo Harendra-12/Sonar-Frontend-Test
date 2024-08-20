@@ -81,6 +81,7 @@ import ActiveCalls from "./Components/Pages/PhoneDashboard/ActiveCalls";
 import AllContact from "./Components/Pages/WebRtc/AllContact";
 import AllVoicemails from "./Components/Pages/WebRtc/AllVoicemails";
 import CallDashboard from "./Components/Pages/WebRtc/CallDashboard";
+import { ToastContainer } from "react-toastify";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -258,6 +259,7 @@ function App() {
           <Route path="*" element={<Navigate to="/dashboard" />} />
           {/* 404 Redirection */}
         </Routes>
+        <ToastContainer />
       </Router>
     </>
   );

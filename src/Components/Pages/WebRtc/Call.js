@@ -24,6 +24,7 @@ function Call() {
   const account = useSelector((state) => state.account);
   const [allCalls, setAllCalls] = useState([]);
   const [previewCalls, setPreviewCalls] = useState([]);
+  const [addContactToggle, setAddContactToggle] = useState(false);
   const [clickedCall, setClickedCall] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
@@ -128,7 +129,10 @@ function Call() {
           call.caller_user?.username
             ?.toLowerCase()
             .includes(lowerCaseSearchQuery) ||
-          call["Caller-Callee-ID-Number"].toString().toLowerCase().includes(lowerCaseSearchQuery)
+          call["Caller-Callee-ID-Number"]
+            .toString()
+            .toLowerCase()
+            .includes(lowerCaseSearchQuery)
         );
       });
     }
@@ -248,29 +252,31 @@ function Call() {
       // const callDate = new Date(call.created_at);
       const callDate = new Date(call.variable_start_stamp);
       const today = new Date();
-      
+
       // Ensure `today` is at midnight UTC
-      const todayDate = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
+      const todayDate = new Date(
+        Date.UTC(today.getFullYear(), today.getMonth(), today.getDate())
+      );
       const yesterday = new Date(todayDate);
       yesterday.setUTCDate(todayDate.getUTCDate() - 1);
-  
+
       let dateLabel = callDate.toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",
         year: "numeric",
       });
-  
+
       // Compare only the date parts
       if (callDate.toDateString() === todayDate.toDateString()) {
         dateLabel = "Today";
       } else if (callDate.toDateString() === yesterday.toDateString()) {
         dateLabel = "Yesterday";
       }
-  
+
       if (!acc[dateLabel]) {
         acc[dateLabel] = [];
       }
-  
+
       acc[dateLabel].push(call);
       return acc;
     }, {});
@@ -323,7 +329,7 @@ function Call() {
               <div className="row">
                 <div
                   className="col-12 col-xl-6 allCallHistory"
-                // style={{ height: "100%" }}
+                  // style={{ height: "100%" }}
                 >
                   <SipRegister />
 
@@ -416,7 +422,11 @@ function Call() {
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
                         />
-                        <button className="ms-2 me-0 appPanelButton" effect="ripple">
+                        <button
+                          className="ms-2 me-0 appPanelButton"
+                          effect="ripple"
+                          onClick={() => setAddContactToggle(true)}
+                        >
                           <i className="fa-light fa-user-plus" />
                         </button>
                       </div>
@@ -499,7 +509,9 @@ function Call() {
         {/* <IncomingCallPopup /> */}
         <IncomingCalls />
         {dialpadShow ? <Dialpad hideDialpad={handleHideDialpad} /> : ""}
-        {false ? <AddNewContactPopup /> : ""}
+        {addContactToggle && (
+          <AddNewContactPopup setAddContactToggle={setAddContactToggle} />
+        )}
       </SIPProvider>
     </div>
   );

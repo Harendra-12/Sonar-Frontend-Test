@@ -1,8 +1,13 @@
 import { duration } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useSIPProvider } from "react-sipjs";
 
 function CallDetails({ clickedCall, callHistory }) {
   const [callDetails, setCallDetails] = useState();
+  const dispatch = useDispatch();
+  const globalSession = useSelector((state) => state.sessions);
+  const { sessionManager } = useSIPProvider();
 
   useEffect(() => {
     setCallDetails(clickedCall);
@@ -75,6 +80,37 @@ function CallDetails({ clickedCall, callHistory }) {
     </tr>;
   };
 
+  async function onCall(e) {
+    e.preventDefault();
+    const apiData = await sessionManager?.call(
+      `sip:${Number(callDetails.variable_sip_from_user)}@192.168.2.225`,
+      {}
+    );
+
+    dispatch({
+      type: "SET_SESSIONS",
+      sessions: [
+        ...globalSession,
+        {
+          id: apiData._id,
+          destination: Number(callDetails.variable_sip_from_user),
+        },
+      ],
+    });
+    dispatch({
+      type: "SET_CALLPROGRESSID",
+      callProgressId: apiData._id,
+    });
+    dispatch({
+      type: "SET_CALLPROGRESSDESTINATION",
+      callProgressDestination: Number(callDetails.variable_sip_from_user),
+    });
+    dispatch({
+      type: "SET_CALLPROGRESS",
+      callProgress: true,
+    });
+  }
+
   return (
     <>
       <div className="profileInfoHolder">
@@ -84,12 +120,14 @@ function CallDetails({ clickedCall, callHistory }) {
         {/* <h4>1 (999) 999-9999</h4> */}
         <h4>{callDetails && callDetails["Caller-Callee-ID-Number"]}</h4>
         {/* <h5>USER XYZ</h5> */}
-        <h5>{callDetails && callDetails.caller_user?.username || "USER XYZ"}</h5>
+        <h5>
+          {(callDetails && callDetails.caller_user?.username) || "USER XYZ"}
+        </h5>
         <div className="d-flex justify-content-center align-items-center mt-3">
           <button className="appPanelButton" effect="ripple">
             <i className="fa-light fa-message-dots" />
           </button>
-          <button className="appPanelButton" effect="ripple">
+          <button className="appPanelButton" effect="ripple" onClick={onCall}>
             <i className="fa-light fa-phone" />
           </button>
           <button className="appPanelButton" effect="ripple">
@@ -196,38 +234,36 @@ function CallDetails({ clickedCall, callHistory }) {
             <div className="callDetailsList">
               <table className="mt-3">
                 <tbody>
-                  {
-                   callHistory.map((item) => (
+                  {callHistory.map((item) => (
                     <tr key={item.id}>
-                    <td style={{ color: "#444444" }}>
-                      {formatDate(item.variable_start_stamp)}
-                    </td>
-                    <td>{formatTime(item.variable_start_stamp)}</td>
-                    <td
-                      className={`${
-                        item["Call-Direction"] === "inbound"
-                          ? "incoming"
-                          : item["Call-Direction"] === "outbound"
-                          ? "outgoing"
-                          : item["Call-Direction"] === "missed"
-                          ? "missed"
-                          : item["Call-Direction"] === "voicemail"
-                          ? "voicemail"
-                          : ""
-                      }`}
-                    >
-                      <span>
-                        {item["Call-Direction"].charAt(0).toUpperCase() +
-                          item["Call-Direction"].slice(1).toLowerCase()}
-                      </span>
-                    </td>
-                    <td>{item["Caller-Caller-ID-Number"]}</td>
-                    <td style={{ color: "#444444" }}>
-                      {formatDuration(item.variable_duration)}
-                    </td>
-                  </tr>
-                   ))
-                  }
+                      <td style={{ color: "#444444" }}>
+                        {formatDate(item.variable_start_stamp)}
+                      </td>
+                      <td>{formatTime(item.variable_start_stamp)}</td>
+                      <td
+                        className={`${
+                          item["Call-Direction"] === "inbound"
+                            ? "incoming"
+                            : item["Call-Direction"] === "outbound"
+                            ? "outgoing"
+                            : item["Call-Direction"] === "missed"
+                            ? "missed"
+                            : item["Call-Direction"] === "voicemail"
+                            ? "voicemail"
+                            : ""
+                        }`}
+                      >
+                        <span>
+                          {item["Call-Direction"].charAt(0).toUpperCase() +
+                            item["Call-Direction"].slice(1).toLowerCase()}
+                        </span>
+                      </td>
+                      <td>{item["Caller-Caller-ID-Number"]}</td>
+                      <td style={{ color: "#444444" }}>
+                        {formatDuration(item.variable_duration)}
+                      </td>
+                    </tr>
+                  ))}
                   {/* <tr>
                     <td style={{ color: "#444444" }}>Jan 16, 2022</td>
                     <td>12:46 PM</td>
