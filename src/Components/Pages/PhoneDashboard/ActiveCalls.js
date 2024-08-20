@@ -103,9 +103,9 @@ function ActiveCalls() {
                               <td>{item.dest}</td>
                               <td>
                               <select>
-                                <option value="Burge"></option>
-                                <option value="Intercept"></option>
-                                <option value="Eavesdrop"></option>
+                                <option value="Burge" onClick={() => bargeCall(item.uuid)}>Burge</option>
+                                <option value="Intercept" onClick={() => interceptCall(item.uuid)}>Intercept</option>
+                                <option value="Eavesdrop" onClick={() => eavesdropCall(item.uuid)}>Eavesdrop</option>
                               </select>
                               </td>
                               {/* <td onClick={() => bargeCall(item.uuid)}>
@@ -121,7 +121,7 @@ function ActiveCalls() {
                                   Barge
                                 </label>
                               </td> */}
-                              <td onClick={() => interceptCall(item.uuid)}>
+                              {/* <td onClick={() => interceptCall(item.uuid)}>
                                 <label
                                   className="tableLabel success"
                                   style={{
@@ -146,7 +146,7 @@ function ActiveCalls() {
                                   <i class="fa-sharp-duotone fa-solid fa-headset me-1"></i>{" "}
                                   Eavesdrop
                                 </label>
-                              </td>
+                              </td> */}
                               <td onClick={() => killCall(item.uuid)}>
                                 <label
                                   className="tableLabel fail"
