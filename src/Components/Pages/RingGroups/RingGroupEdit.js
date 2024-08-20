@@ -355,24 +355,24 @@ const RingGroupEdit = () => {
     //   }));
     // }
 
-    if (group.missedCall === "email") {
-      if (group.email !== "" && group.email.includes("@")) {
-        setGroup((prevState) => ({
-          ...prevState,
-          missedCallMissing: false,
-        }));
-      } else {
-        setGroup((prevState) => ({
-          ...prevState,
-          missedCallMissing: true,
-        }));
-      }
-    } else {
-      setGroup((prevState) => ({
-        ...prevState,
-        missedCallMissing: false,
-      }));
-    }
+    // if (group.missedCall === "email") {
+    //   if (group.email !== "" && group.email.includes("@")) {
+    //     setGroup((prevState) => ({
+    //       ...prevState,
+    //       missedCallMissing: false,
+    //     }));
+    //   } else {
+    //     setGroup((prevState) => ({
+    //       ...prevState,
+    //       missedCallMissing: true,
+    //     }));
+    //   }
+    // } else {
+    //   setGroup((prevState) => ({
+    //     ...prevState,
+    //     missedCallMissing: false,
+    //   }));
+    // }
 
     if (destination[0].destination === "") {
       setGroup((prevState) => ({
@@ -418,9 +418,9 @@ const RingGroupEdit = () => {
         // group.tollAllow === "" ||
         // group.context === "" ||
         // group.description === "" ||
-        (group.missedCall === "email"
-          ? !(group.email !== "" && group.email.includes("@"))
-          : false) ||
+        // (group.missedCall === "email"
+        //   ? !(group.email !== "" && group.email.includes("@"))
+        //   : false) ||
         (group.groupForward === "true" ? group.number === "" : false) ||
         destination[0].destination === ""
       )
