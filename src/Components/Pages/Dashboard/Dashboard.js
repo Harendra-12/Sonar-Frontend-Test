@@ -1,45 +1,32 @@
-import React, { useEffect, useState } from 'react'
-// import AllCalls from "./AllCallsDetails"
-// import CallQueueDetails from "./CallQueueDetails"
-// import RingGroup from "./RingGroupDetails"
-import { useNavigate } from 'react-router-dom'
-import { generalGetFunction } from '../../GlobalFunction/globalFunction'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Header from '../../CommonComponents/Header'
 import DoughnutChart from '../../CommonComponents/DoughnutChart'
 import GraphChart from '../../CommonComponents/GraphChart'
 const Dashboard = () => {
-
-    // const [calls, setCalls] = useState(false)
-    // const [group, setGroup] = useState(false)
-    // const [queue, setQueue] = useState(false)
     const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh)
     const accountDetails = useSelector((state) => state.accountDetails)
-    console.log("This is account details",accountDetails.package.number_of_user);
     const dispatch = useDispatch()
-    const navigate = useNavigate()
-    const account = useSelector((state) => state.account)
-    const [extensionList, setExtensionList] = useState(0)
-    const [userList, setUserList] = useState(0)
+    const extensionRefresh = useSelector((state)=>state.extensionRefresh)
+    const allUserRefresh = useSelector((state)=>state.allUserRefresh)
+    const extensionList = useSelector((state)=>state.extension).length
+    const userList = useSelector((state)=>state.allUser?.data?.length) || 0
     const registerUser = useSelector((state) => state.registerUser);
     const loginUser = useSelector((state) => state.loginUser);
     useEffect(() => {
-            async function getData() {
-                const apiData = await generalGetFunction(`/extension/search?account=${account.account_id}`, navigate)
-                const userApi = await generalGetFunction(`/user/search?account=${account.account_id}`, navigate)
-                if (apiData.status) {
-                    setExtensionList(apiData.data.length)
-                }
-                if (userApi.status) {
-                    setUserList(userApi.data.length)
-                }
-            }
-            getData()
+            dispatch({
+                type:"SET_EXTENSIONREFRESH",
+                extensionRefresh:extensionRefresh+1
+            })
+            dispatch({
+                type:"SET_ALLUSERREFRESH",
+                allUserRefresh:allUserRefresh+1
+            })
             dispatch({
                 type:"SET_CALLDETAILSREFRESH",
                 callDetailsRefresh:callDetailsRefresh+1
             })
-    }, [account, navigate])
+    }, [])
     return (
         <main className="mainContent">
             <section id="phonePage">

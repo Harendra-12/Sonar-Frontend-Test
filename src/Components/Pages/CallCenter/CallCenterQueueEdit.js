@@ -31,6 +31,7 @@ function CallCenterQueueEdit() {
   const [ringGroup, setRingGroup] = useState();
   const [user, setUser] = useState();
   const account = useSelector((state) => state.account);
+  const [prevAgents, setPrevAgents] = useState([]);
   const [extension, setExtension] = useState([]);
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
   const extensionArr = useSelector((state) => state.extension);
@@ -97,6 +98,7 @@ function CallCenterQueueEdit() {
     getData();
     if (locationState) {
       const { agents, record_template } = locationState;
+      setPrevAgents(agents);
       setAgent(
         agents.map((item, index) => {
           return {
@@ -127,6 +129,13 @@ function CallCenterQueueEdit() {
     setValue("queue_timeout_action", value[0]);
   };
 
+  const checkPrevAgents = (id) => {
+    const result = prevAgents.filter((item, idx) => {
+      return item.id == id;
+    });
+    if (result.length > 0) return true;
+    return false;
+  };
   function addNewAgent() {
     setAgent([
       ...agent,
@@ -278,17 +287,39 @@ function CallCenterQueueEdit() {
       ...xmlObj,
 
       ...{
-        agents: agent.map((item) => {
-          return {
-            agent_name: item.name,
-            tier_level: item.level,
-            tier_position: item.position,
-            type: item.type,
-            status: "Logged Out",
-            password: item.password,
-            contact: item.contact,
-          };
-        }),
+        agents: agent
+          .map((item) => {
+            // Call checkPrevDestination with the current item
+            const hasId = checkPrevAgents(item.id);
+
+            if (item.name.length > 0) {
+              // Return the object with or without 'id' based on hasId
+              return {
+                agent_name: item.name,
+                tier_level: item.level,
+                tier_position: item.position,
+                type: item.type,
+                status: "Logged Out",
+                password: item.password,
+                contact: item.contact,
+                ...(hasId ? { id: item.id } : {}), // Conditionally add 'id' field
+              };
+            } else {
+              return null;
+            }
+          })
+          .filter((item) => item !== null),
+        // agents: agent.map((item) => {
+        //   return {
+        //     agent_name: item.name,
+        //     tier_level: item.level,
+        //     tier_position: item.position,
+        //     type: item.type,
+        //     status: "Logged Out",
+        //     password: item.password,
+        //     contact: item.contact,
+        //   };
+        // }),
       },
     };
     setLoading(true);
