@@ -23,6 +23,8 @@ function CallCenterQueue() {
     }
     getData();
   }, []);
+  console.log("callCenter", callCenter);
+  
   return (
     <main className="mainContent">
       <section id="phonePage">

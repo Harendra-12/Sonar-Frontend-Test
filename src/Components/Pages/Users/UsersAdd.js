@@ -691,7 +691,7 @@ const UsersAdd = () => {
                                   handleParentCheckboxChange(item)
                                 }
                               />
-                              <label>{item}</label>
+                              <label className="ms-2">{item}</label>
                             </div>
                           </div>
                           <div className="row px-2 pt-1 border-bottom">
