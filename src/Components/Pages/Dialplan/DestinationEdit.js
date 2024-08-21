@@ -266,7 +266,7 @@ function DestinationEdit() {
         dialplan_xml: destination.xml,
       };
       const apiData = await generalPutFunction(
-        `/dialplan/${value}`,
+        `/dialplan/${locationData.id}`,
         parsedData
       );
       if (apiData.status) {

@@ -9,50 +9,48 @@ import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useDispatch, useSelector } from "react-redux";
 import RechargeWalletPopup from "../Billing/RechargeWalletPopup";
+import { useForm } from "react-hook-form";
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
 
 function GetDid() {
   const navigate = useNavigate();
-  const account = useSelector((state)=>state.account)
-  const accountDetails = useSelector((state)=>state.accountDetails)
-  const accountDetailsRefresh = useSelector((state)=>state.accountDetailsRefresh)
-  const dispatch = useDispatch()
+  const account = useSelector((state) => state.account);
+  const accountDetails = useSelector((state) => state.accountDetails);
+  const accountDetailsRefresh = useSelector(
+    (state) => state.accountDetailsRefresh
+  );
+  const dispatch = useDispatch();
   const [did, setDid] = useState();
   const [selectedDid, setSelectedDid] = useState([]);
   const [searchType, setSearchType] = useState("tollfree");
   const [quantity, setQuantity] = useState("");
   const [npa, setNpa] = useState("");
   const [loading, setLoading] = useState(false);
-  const [paymentMethod,setPaymentMethod]=useState("wallet")
-  const [didBuyPopUP,setDidBuyPopUp]=useState(false)
+  const [paymentMethod, setPaymentMethod] = useState("wallet");
+  const [didBuyPopUP, setDidBuyPopUp] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  // Handle TFN search 
-  async function handleSubmit() {
-    if (quantity === "") {
-      toast.error("Please enter quantity");
-    } else if (quantity > 10) {
-      toast.error("Please enetr quantity less than 10");
-    } else if (npa === "") {
-      toast.error("please enter a npa");
-    } else if (String(npa).length !== 3) {
-      toast.error("NPA must be 3 digit");
+  // Handle TFN search
+  const onSubmit = async (data) => {
+    setLoading(true);
+    const parsedData = {
+      searchType: data.searchType,
+      quantity: data.quantity,
+      npa: data.npa,
+      companyId: account.account_id,
+    };
+    const apiData = await generalPostFunction("/searchTfn", parsedData);
+    setLoading(false);
+    if (apiData.status) {
+      setDid(apiData.data);
     } else {
-      setLoading(true);
-      const parsedData = {
-        searchType: searchType,
-        quantity: quantity,
-        npa: npa,
-        companyId:account.account_id,
-      };
-      const apiData = await generalPostFunction("/searchTfn", parsedData);
-      if (apiData.status) {
-        setLoading(false);
-        setDid(apiData.data);
-      } else {
-        setLoading(false);
-        setDid([]);
-      }
+      setDid([]);
     }
-  }
+  };
 
   //   Add did to selected did when a user click on add button
   function addSelect(item) {
@@ -67,57 +65,53 @@ function GetDid() {
     setSelectedDid(selectedDid.filter((item1) => item1 !== item));
   }
 
-
   // Handle payment
-  async function handlePayment(){
-    if(paymentMethod==="wallet"){
-      
+  async function handlePayment() {
+    if (paymentMethod === "wallet") {
       const parsedData = {
-        companyId:account.account_id,
-        vendorId:selectedDid[0].vendorId,
-        didQty:selectedDid.length,
+        companyId: account.account_id,
+        vendorId: selectedDid[0].vendorId,
+        didQty: selectedDid.length,
         type: "wallet",
         didType: "random",
-        rate:Number(selectedDid[0].price)*selectedDid.length,
-        accountId:selectedDid[0].vendorAccountId,
-        dids:selectedDid.map((item)=>{
-          return(
-            {
-              dids:item.id
-            }
-          )
-        })
-      }
-      if(Number(accountDetails?.balance?.amount)<Number(selectedDid[0].price)*selectedDid.length){
-        toast.error("Wallet balance is low")
-      }else{
-        setLoading(true)
-        const apiData = await generalPostFunction("/purchaseTfn",parsedData)
-        if(apiData.status){
-          setLoading(false)
-          toast.success(apiData.message)
+        rate: Number(selectedDid[0].price) * selectedDid.length,
+        accountId: selectedDid[0].vendorAccountId,
+        dids: selectedDid.map((item) => {
+          return {
+            dids: item.id,
+          };
+        }),
+      };
+      if (
+        Number(accountDetails?.balance?.amount) <
+        Number(selectedDid[0].price) * selectedDid.length
+      ) {
+        toast.error("Wallet balance is low");
+      } else {
+        setLoading(true);
+        const apiData = await generalPostFunction("/purchaseTfn", parsedData);
+        if (apiData.status) {
+          setLoading(false);
+          toast.success(apiData.message);
           dispatch({
             type: "SET_ACCOUNTDETAILSREFRESH",
             accountDetailsRefresh: accountDetailsRefresh + 1,
           });
-        }else{
-          setLoading(false)
+        } else {
+          setLoading(false);
           // const errorMessage = Object.keys(apiData.errors);
           // toast.error(apiData.errors[errorMessage[0]][0]);
           toast.error(apiData.errors);
-  
         }
       }
-     
-
-    }else{
-      setDidBuyPopUp(true)
+    } else {
+      setDidBuyPopUp(true);
     }
   }
 
   // Handle callBack for buying pop up
-  function handleBuyPopUp(value){
-    setDidBuyPopUp(value)
+  function handleBuyPopUp(value) {
+    setDidBuyPopUp(value);
   }
   return (
     <main className="mainContent">
@@ -152,80 +146,96 @@ function GetDid() {
               {/* {loading ?
                   <div colSpan={99}><CircularLoader /></div> : ""} */}
               <div className="mx-2" id="detailsContent">
-                <div className="row col-xl-9">
-                  <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="selectFormRow">Search Type</label>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <div className="row col-xl-9">
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="searchType">Search Type</label>
+                      </div>
+                      <div className="col-12">
+                        <select
+                          name="searchType"
+                          className={`formItem ${
+                            errors.searchType ? "error" : ""
+                          }`}
+                          {...register("searchType", {
+                            required: "Search Type is required",
+                          })}
+                        >
+                          <option value="tollfree">Toll free</option>
+                        </select>
+                        {errors.searchType && (
+                          <ErrorMessage text={errors.searchType.message} />
+                        )}
+                      </div>
                     </div>
-                    <div className="col-12">
-                      <select
-                        className="formItem w-100"
-                        name=""
-                        id="selectFormRow"
-                      >
-                        <option value="tollfree">Toll free</option>
-                      </select>
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        Select the search type.
-                      </label>
+                    <div className="formRow col-xl-4">
+                      <div className="formLabel">
+                        <label htmlFor="quantity">Quantity</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="number"
+                          name="quantity"
+                          className={`formItem ${
+                            errors.quantity ? "error" : ""
+                          }`}
+                          {...register("quantity", {
+                            required: "Quantity is required",
+                            max: {
+                              value: 10,
+                              message:
+                                "Quantity must be less than or equal to 10",
+                            },
+                          })}
+                        />
+                        {errors.quantity && (
+                          <ErrorMessage text={errors.quantity.message} />
+                        )}
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-4">
+                      <div className="formLabel">
+                        <label htmlFor="npa">NPA</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="number"
+                          name="npa"
+                          className={`formItem ${errors.npa ? "error" : ""}`}
+                          {...register("npa", {
+                            required: "NPA is required",
+                            minLength: {
+                              value: 3,
+                              message: "NPA must be 3 digits",
+                            },
+                            maxLength: {
+                              value: 3,
+                              message: "NPA must be 3 digits",
+                            },
+                          })}
+                        />
+                        {errors.npa && (
+                          <ErrorMessage text={errors.npa.message} />
+                        )}
+                      </div>
+                    </div>
+                    <div className="formRow col-1">
+                      <div className="col-12">
+                        <div className="formLabel">
+                          <label htmlFor=""></label>
+                        </div>
+                        <button
+                          effect="ripple"
+                          className="panelButton m-0"
+                          type="submit"
+                        >
+                          Search
+                        </button>
+                      </div>
                     </div>
                   </div>
-                  <div className="formRow col-xl-4">
-                    <div className="formLabel">
-                      <label htmlFor="">Quantity</label>
-                      {/* <label className="status missing">Field missing</label> */}
-                    </div>
-                    <div className="col-12">
-                      <input
-                        type="number"
-                        name="extension"
-                        className="formItem"
-                        value={quantity}
-                        onChange={(e) => setQuantity(e.target.value)}
-                        required="required"
-                      />
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        Enter the quantity of TFN you want
-                      </label>
-                    </div>
-                  </div>
-                  <div className="formRow col-xl-4">
-                    <div className="formLabel">
-                      <label htmlFor="">NPA</label>
-                      {/* <label className="status missing">Field missing</label> */}
-                    </div>
-                    <div className="col-12">
-                      <input
-                        type="number"
-                        name="extension"
-                        className="formItem"
-                        value={npa}
-                        onChange={(e) => setNpa(e.target.value)}
-                        required="required"
-                      />
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        Enter the starting digit
-                      </label>
-                    </div>
-                  </div>
-                  <div className="formRow col-1">
-                    <div className="formLabel">
-                      <label htmlFor=""></label>
-                    </div>
-                    <div className="col-12">
-                      <button
-                        effect="ripple"
-                        className="panelButton m-0"
-                        onClick={handleSubmit}
-                      >
-                        Search
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                </form>
                 <div className="row mt-3 col-xl-12">
                   {did && (
                     <div className="col-xl-5">
@@ -251,8 +261,11 @@ function GetDid() {
                                         onClick={() => addSelect(item)}
                                         className="float-end clearButton text-success fw-medium"
                                       >
-                                        {selectedDid.includes(item)?<i class="fa-duotone fa-square-check text-info"></i>:
-                                        <i class="fa-duotone fa-square-plus"></i>}{" "}
+                                        {selectedDid.includes(item) ? (
+                                          <i class="fa-duotone fa-square-check text-info"></i>
+                                        ) : (
+                                          <i class="fa-duotone fa-square-plus"></i>
+                                        )}{" "}
                                       </span>
                                     </li>
                                   );
@@ -296,7 +309,7 @@ function GetDid() {
                   {selectedDid.length === 0 ? (
                     ""
                   ) : (
-                    <div className="col-xl-3" style={{ marginTop: '-120px' }}>
+                    <div className="col-xl-3" style={{ marginTop: "-120px" }}>
                       <div className="searchList cart">
                         <div className="heading">
                           <h5>Order Summary</h5>
@@ -341,11 +354,18 @@ function GetDid() {
                                 style={{ color: "var(--ui-accent)" }}
                               ></i>{" "}
                               Wallet{" "}
-                              <input type="radio" checked={paymentMethod==="wallet"?true:false} name="fav_language" onChange={(e)=>{
-                                if(e.target.checked){
-                                  setPaymentMethod("wallet")
+                              <input
+                                type="radio"
+                                checked={
+                                  paymentMethod === "wallet" ? true : false
                                 }
-                              }}></input>{" "}
+                                name="fav_language"
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setPaymentMethod("wallet");
+                                  }
+                                }}
+                              ></input>{" "}
                               <span className="checkmark"></span>
                             </li>
                             <li>
@@ -354,11 +374,18 @@ function GetDid() {
                                 style={{ color: "var(--ui-accent)" }}
                               ></i>{" "}
                               Credit Card{" "}
-                              <input type="radio" checked={paymentMethod==="card"?true:false} name="fav_language" onChange={(e)=>{
-                                if(e.target.checked){
-                                  setPaymentMethod("card")
+                              <input
+                                type="radio"
+                                checked={
+                                  paymentMethod === "card" ? true : false
                                 }
-                              }}></input>{" "}
+                                name="fav_language"
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setPaymentMethod("card");
+                                  }
+                                }}
+                              ></input>{" "}
                               <span className="checkmark"></span>
                             </li>
                           </ul>
@@ -377,16 +404,20 @@ function GetDid() {
         </div>
       </section>
       {didBuyPopUP ? (
-          <div className="popup">
-            <div className="container h-100">
-              <div className="row h-100 justify-content-center align-items-center">
-                <RechargeWalletPopup closePopup={handleBuyPopUp} rechargeType={"buyDid"} selectedDid={selectedDid} />
-              </div>
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <RechargeWalletPopup
+                closePopup={handleBuyPopUp}
+                rechargeType={"buyDid"}
+                selectedDid={selectedDid}
+              />
             </div>
           </div>
-        ) : (
-          ""
-        )}
+        </div>
+      ) : (
+        ""
+      )}
       {loading ? <CircularLoader /> : ""}
       <ToastContainer
         position="bottom-right"
