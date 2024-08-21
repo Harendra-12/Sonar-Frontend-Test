@@ -65,35 +65,35 @@ function Call() {
     }, [options.webSocketServer]);
   };
 
-  // useEffect(() => {
-  //   setLoading(true);
-  //   if (account && account.account_id) {
-  //     async function getData() {
-  //       const apiData = await generalGetFunction(
-  //         `/call-details?account_id=${account.account_id}`
-  //       );
-  //       if (apiData.status) {
-  //         // setAllCalls(apiData.data.calls.reverse());
-  //         // console.log("apiData", apiData.data.calls);
-  //         setAllApiData(apiData.data.calls);
-  //         const uniqueArray = [
-  //           ...new Map(
-  //             apiData.data.calls.map((item) => [
-  //               item["Caller-Callee-ID-Number"],
-  //               item,
-  //             ])
-  //           ).values(),
-  //         ];
-  //         setAllCalls(uniqueArray.reverse());
-  //         console.log("uniqueArray", uniqueArray);
-  //         setLoading(false);
-  //       }
-  //     }
-  //     getData();
-  //   } else {
-  //     navigate("/");
-  //   }
-  // }, [account, navigate, hangupRefresh]);
+  useEffect(() => {
+    setLoading(true);
+    if (account && account.account_id) {
+      async function getData() {
+        const apiData = await generalGetFunction(
+          `/call-details?account_id=${account.account_id}`
+        );
+        if (apiData.status) {
+          // setAllCalls(apiData.data.calls.reverse());
+          // console.log("apiData", apiData.data.calls);
+          setAllApiData(apiData.data.calls);
+          const uniqueArray = [
+            ...new Map(
+              apiData.data.calls.map((item) => [
+                item["Caller-Callee-ID-Number"],
+                item,
+              ])
+            ).values(),
+          ];
+          setAllCalls(uniqueArray.reverse());
+          console.log("uniqueArray", uniqueArray);
+          setLoading(false);
+        }
+      }
+      getData();
+    } else {
+      navigate("/");
+    }
+  }, [account, navigate, hangupRefresh]);
 
   // user data filter based on name and number(currently id)
   useEffect(() => {
