@@ -643,7 +643,7 @@ function CallCenterQueueAdd() {
                               {user &&
                                 user.map((item) => {
                                   return (
-                                    <option value={item.id}>
+                                    <option value={item.id} key={item.id}>
                                       {item.name}({item.extension?.extension})
                                     </option>
                                   );
