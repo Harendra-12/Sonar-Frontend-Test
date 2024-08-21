@@ -85,8 +85,8 @@ function ActiveCalls() {
                         <th>CID Number</th>
                         <th>Destination</th>
                         <th>Burge</th>
-                        <th>Intercept</th>
-                        <th>Eavesdrop</th>
+                        {/* <th>Intercept</th>
+                        <th>Eavesdrop</th> */}
                         <th>Hang Up</th>
                       </tr>
                     </thead>
@@ -101,7 +101,14 @@ function ActiveCalls() {
                               <td>{item.b_cid_name}</td>
                               <td>{item.b_cid_num}</td>
                               <td>{item.dest}</td>
-                              <td onClick={() => bargeCall(item.uuid)}>
+                              <td>
+                              <select>
+                                <option value="Burge" onClick={() => bargeCall(item.uuid)}>Burge</option>
+                                <option value="Intercept" onClick={() => interceptCall(item.uuid)}>Intercept</option>
+                                <option value="Eavesdrop" onClick={() => eavesdropCall(item.uuid)}>Eavesdrop</option>
+                              </select>
+                              </td>
+                              {/* <td onClick={() => bargeCall(item.uuid)}>
                                 <label
                                   className="tableLabel success"
                                   style={{
@@ -113,8 +120,8 @@ function ActiveCalls() {
                                   <i class="fa-sharp-duotone fa-solid fa-headset me-1"></i>{" "}
                                   Barge
                                 </label>
-                              </td>
-                              <td onClick={() => interceptCall(item.uuid)}>
+                              </td> */}
+                              {/* <td onClick={() => interceptCall(item.uuid)}>
                                 <label
                                   className="tableLabel success"
                                   style={{
@@ -139,7 +146,7 @@ function ActiveCalls() {
                                   <i class="fa-sharp-duotone fa-solid fa-headset me-1"></i>{" "}
                                   Eavesdrop
                                 </label>
-                              </td>
+                              </td> */}
                               <td onClick={() => killCall(item.uuid)}>
                                 <label
                                   className="tableLabel fail"
