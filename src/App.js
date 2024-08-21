@@ -259,7 +259,7 @@ function App() {
           <Route path="*" element={<Navigate to="/dashboard" />} />
           {/* 404 Redirection */}
         </Routes>
-        <ToastContainer />
+        {/* <ToastContainer /> */}
       </Router>
     </>
   );
