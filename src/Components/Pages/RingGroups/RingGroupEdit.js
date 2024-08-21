@@ -31,10 +31,14 @@ const RingGroupEdit = () => {
   const [loading, setLoading] = useState(true);
   const queryParams = new URLSearchParams(useLocation().search);
   const value = queryParams.get("id");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [toastAfterSaveCounter, settoastAfterSaveCounter] = useState(0);
+  const [prevDestinations, setprevDestinations] = useState([]);
   const [destinationList, setDestinationList] = useState(false);
   const [destinationId, setDestinationId] = useState();
   const [filterExtension, setFilterExtension] = useState();
   const [allUser, setAllUser] = useState();
+  const [getAllDataRefresh, setGetAllDataRefresh] = useState(0);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const allUserArr = useSelector((state) => state.allUser);
   const {
@@ -43,6 +47,7 @@ const RingGroupEdit = () => {
     setError,
     formState: { errors },
     handleSubmit,
+    clearErrors,
     reset,
     setValue,
     control,
@@ -58,33 +63,17 @@ const RingGroupEdit = () => {
       prompt: "",
       status: "inactive",
     },
-    {
-      id: 2,
-      destination: "",
-      delay: 0,
-      timeOut: "30",
-      prompt: "",
-      status: "inactive",
-    },
-    {
-      id: 3,
-      destination: "",
-      delay: 0,
-      timeOut: "30",
-      prompt: "",
-      status: "inactive",
-    },
-    {
-      id: 4,
-      destination: "",
-      delay: 0,
-      timeOut: "30",
-      prompt: "",
-      status: "inactive",
-    },
   ]);
+
+  useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage);
+      setSuccessMessage(""); // Clear success message after showing it
+    }
+  }, [toastAfterSaveCounter]);
   useEffect(() => {
     if (account && account.id) {
+      setLoading(true);
       async function getData() {
         const ringData = await generalGetFunction(`/ringgroup/${value}`);
         const apiData = await generalGetFunction(
@@ -111,18 +100,21 @@ const RingGroupEdit = () => {
           let editData = ringData.data[0];
 
           const { ring_group_destination, followme, status } = editData;
-          setDestination(
-            ring_group_destination.map((item) => {
-              return {
-                destination: item.destination,
-                delay: item.delay_order,
-                prompt: item.prompt,
-                timeOut: item.destination_timeout,
-                status: item.status,
-                id: item.id,
-              };
-            })
-          );
+          setprevDestinations(ring_group_destination);
+          if (ring_group_destination.length > 0) {
+            setDestination(
+              ring_group_destination.map((item) => {
+                return {
+                  destination: item.destination,
+                  delay: item.delay_order,
+                  prompt: item.prompt,
+                  timeOut: item.destination_timeout,
+                  status: item.status,
+                  id: item.id,
+                };
+              })
+            );
+          }
 
           delete editData.ring_group_destination;
           delete editData.ring_group_timeout_app;
@@ -137,6 +129,10 @@ const RingGroupEdit = () => {
           };
 
           reset(updatedEditData);
+
+          if (successMessage) {
+            settoastAfterSaveCounter(toastAfterSaveCounter + 1);
+          }
         } else {
           setLoading(false);
           navigate("/");
@@ -146,7 +142,7 @@ const RingGroupEdit = () => {
     } else {
       navigate("/");
     }
-  }, [account, navigate, value]);
+  }, [account, navigate, value, getAllDataRefresh]);
 
   // Get all users with valid extension
   useEffect(() => {
@@ -273,6 +269,14 @@ const RingGroupEdit = () => {
     const newDestination = [...destination];
     newDestination[index][name] = value;
     setDestination(newDestination);
+    if (destinationValidation()) {
+      clearErrors("destinations");
+    } else {
+      setError("destinations", {
+        type: "manual",
+        message: "All fields are required",
+      });
+    }
   };
 
   // Handle list click
@@ -298,19 +302,32 @@ const RingGroupEdit = () => {
   };
 
   // Function to delete a destination
-  async function deleteStudent(id) {
-    setLoading(true);
-    const deleteGroup = await generalDeleteFunction(
-      `/ringgroupdestination/${id}`
-    );
-    if (deleteGroup.status) {
-      const updatedDestination = destination.filter((item) => item.id !== id);
-      setDestination(updatedDestination);
-      setLoading(false);
-      toast.success(deleteGroup.message);
+
+  //check that to remove student from ui or to call api
+  const checkPrevDestination = (id) => {
+    const result = prevDestinations.filter((item, idx) => {
+      return item.id == id;
+    });
+    if (result.length > 0) return true;
+    return false;
+  };
+  async function deleteDestination(id) {
+    if (checkPrevDestination(id)) {
+      setLoading(true);
+      const deleteGroup = await generalDeleteFunction(
+        `/ringgroupdestination/${id}`
+      );
+      if (deleteGroup.status) {
+        const updatedDestination = destination.filter((item) => item.id !== id);
+        setDestination(updatedDestination);
+        setLoading(false);
+        toast.success(deleteGroup.message);
+      } else {
+        setLoading(false);
+        toast.error(deleteGroup.message);
+      }
     } else {
-      setLoading(false);
-      toast.error(deleteGroup.message);
+      setDestination(destination.filter((item) => item.id !== id));
     }
   }
 
@@ -318,6 +335,7 @@ const RingGroupEdit = () => {
     const allFilled = destination.every(
       (item) => item.destination.trim() !== ""
     );
+
     return allFilled;
   };
 
@@ -335,14 +353,36 @@ const RingGroupEdit = () => {
         account_id: account.account_id,
         followme: data.followme == "true" ? true : false,
         status: data.status == true ? "active" : "inactive",
-        ring_group_destination: destination,
+        destination: destination
+          .map((item) => {
+            // Call checkPrevDestination with the current item
+            const hasId = checkPrevDestination(item.id);
+
+            if (item.destination.length > 0) {
+              // Return the object with or without 'id' based on hasId
+              return {
+                destination: item.destination,
+                delay_order: item.delay,
+                prompt: item.prompt,
+                destination_timeout: item.timeOut,
+                status: item.status,
+                created_by: account.account_id,
+                ...(hasId ? { id: item.id } : {}), // Conditionally add 'id' field
+              };
+            } else {
+              return null;
+            }
+          })
+          .filter((item) => item !== null),
       },
     };
     setLoading(true);
     const apiData = await generalPutFunction(`/ringgroup/${value}`, payLoad);
     if (apiData.status) {
       setLoading(false);
-      toast.success(apiData.message);
+      // toast.success(apiData.message);
+      setGetAllDataRefresh(getAllDataRefresh + 1);
+      setSuccessMessage(apiData.message);
     } else {
       setLoading(false);
       const errorMessage = Object.keys(apiData.errors);
@@ -425,7 +465,7 @@ const RingGroupEdit = () => {
                     className="formItem"
                     {...register("name", {
                       ...requiredValidator,
-                      ...nameValidator,
+                      ...lengthValidator(3, 25),
                     })}
                   />
                   {errors.name && <ErrorMessage text={errors.name.message} />}
@@ -685,7 +725,7 @@ const RingGroupEdit = () => {
                         <div className="col-auto h-100 my-auto">
                           <button
                             type="button"
-                            onClick={() => deleteStudent(item.id)}
+                            onClick={() => deleteDestination(item.id)}
                             className="clearButton text-danger"
                           >
                             <i className="fa-duotone fa-trash"></i>
@@ -807,7 +847,7 @@ const RingGroupEdit = () => {
                 <div className="col-12">
                   <select
                     className="formItem"
-                    {...register("user", { ...requiredValidator })}
+                    {...register("user")}
                     id="selectFormRow"
                   >
                     <option>Select User</option>
@@ -836,14 +876,11 @@ const RingGroupEdit = () => {
                       style={{ width: "100%" }}
                       name=""
                       id="selectFormRow"
-                      {...register("missed_call", { ...requiredValidator })}
+                      {...register("missed_call")}
                     >
-                      <option value=""></option>
+                      <option value="">Disabled</option>
                       <option value="email">Email</option>
                     </select>
-                    {errors.missed_call && (
-                      <ErrorMessage text={errors.missed_call.message} />
-                    )}
                   </div>
                   <div className="col-8 ps-1">
                     {watch().missed_call === "email" && (
@@ -1004,7 +1041,7 @@ const RingGroupEdit = () => {
           </div>
         </div>
       </section>
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -1015,7 +1052,7 @@ const RingGroupEdit = () => {
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </main>
   );
 };

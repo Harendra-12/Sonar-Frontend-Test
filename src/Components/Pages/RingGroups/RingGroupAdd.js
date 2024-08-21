@@ -19,6 +19,7 @@ import {
   requiredValidator,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import CircularLoader from "../../Loader/CircularLoader";
 
 const RingGroupAdd = () => {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ const RingGroupAdd = () => {
   const [extensions, setExtensions] = useState();
   const [users, setUsers] = useState();
   const [destinationList, setDestinationList] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [destinationId, setDestinationId] = useState();
   const [filterExtension, setFilterExtension] = useState();
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
@@ -53,6 +55,7 @@ const RingGroupAdd = () => {
         const apidataUser = await generalGetFunction(
           `/user/search?account=${account.account_id}`
         );
+        setLoading(false);
         if (apiData.status) {
           setExtensions(apiData.data);
         } else {
@@ -66,6 +69,7 @@ const RingGroupAdd = () => {
       }
       getData();
     } else {
+      setLoading(false);
       navigate("/");
     }
   }, [account, navigate]);
@@ -99,30 +103,30 @@ const RingGroupAdd = () => {
       prompt: "",
       status: "inactive",
     },
-    {
-      id: 2,
-      destination: "",
-      delay: 0,
-      timeOut: "30",
-      prompt: "",
-      status: "inactive",
-    },
-    {
-      id: 3,
-      destination: "",
-      delay: 0,
-      timeOut: "30",
-      prompt: "",
-      status: "inactive",
-    },
-    {
-      id: 4,
-      destination: "",
-      delay: 0,
-      timeOut: "30",
-      prompt: "",
-      status: "inactive",
-    },
+    // {
+    //   id: 2,
+    //   destination: "",
+    //   delay: 0,
+    //   timeOut: "30",
+    //   prompt: "",
+    //   status: "inactive",
+    // },
+    // {
+    //   id: 3,
+    //   destination: "",
+    //   delay: 0,
+    //   timeOut: "30",
+    //   prompt: "",
+    //   status: "inactive",
+    // },
+    // {
+    //   id: 4,
+    //   destination: "",
+    //   delay: 0,
+    //   timeOut: "30",
+    //   prompt: "",
+    //   status: "inactive",
+    // },
   ]);
 
   // Function to handle changes in destination fields
@@ -171,7 +175,7 @@ const RingGroupAdd = () => {
   };
 
   // Function to delete a destination
-  const deleteStudent = (id) => {
+  const deleteDestination = (id) => {
     const updatedDestination = destination.filter((item) => item.id !== id);
     setDestination(updatedDestination);
   };
@@ -261,18 +265,35 @@ const RingGroupAdd = () => {
       });
       return;
     }
+    setLoading(true);
     const payLoad = {
       ...data,
       ...{
         account_id: account.account_id,
         followme: data.followme == "true" ? true : false,
         status: data.status == true ? "active" : "inactive",
-        ring_group_destination: destination,
+        destination: destination
+          .map((item) => {
+            if (item.destination.length > 0) {
+              return {
+                destination: item.destination,
+                delay_order: item.delay,
+                prompt: item.prompt,
+                destination_timeout: item.timeOut,
+                status: item.status,
+                created_by: account.account_id,
+              };
+            } else {
+              return null;
+            }
+          })
+          .filter((item) => item !== null),
       },
     };
 
     const apiData = await generalPostFunction("/ringgroup/store", payLoad);
     if (apiData.status) {
+      setLoading(false);
       reset();
       setDestination([
         {
@@ -283,30 +304,30 @@ const RingGroupAdd = () => {
           prompt: "",
           status: "inactive",
         },
-        {
-          id: 2,
-          destination: "",
-          delay: 0,
-          timeOut: "30",
-          prompt: "",
-          status: "inactive",
-        },
-        {
-          id: 3,
-          destination: "",
-          delay: 0,
-          timeOut: "30",
-          prompt: "",
-          status: "inactive",
-        },
-        {
-          id: 4,
-          destination: "",
-          delay: 0,
-          timeOut: "30",
-          prompt: "",
-          status: "inactive",
-        },
+        // {
+        //   id: 2,
+        //   destination: "",
+        //   delay: 0,
+        //   timeOut: "30",
+        //   prompt: "",
+        //   status: "inactive",
+        // },
+        // {
+        //   id: 3,
+        //   destination: "",
+        //   delay: 0,
+        //   timeOut: "30",
+        //   prompt: "",
+        //   status: "inactive",
+        // },
+        // {
+        //   id: 4,
+        //   destination: "",
+        //   delay: 0,
+        //   timeOut: "30",
+        //   prompt: "",
+        //   status: "inactive",
+        // },
       ]);
       toast.success(apiData.message);
       dispatch({
@@ -314,6 +335,7 @@ const RingGroupAdd = () => {
         ringGroupRefresh: ringGroupRefresh + 1,
       });
     } else {
+      setLoading(false);
       const errorMessage = Object.keys(apiData.errors);
       toast.error(apiData.errors[errorMessage[0]][0]);
     }
@@ -373,6 +395,13 @@ const RingGroupAdd = () => {
           </div>
         </div>
         <div className="col-xl-12" style={{ overflow: "auto" }}>
+          {loading ? (
+            <div colSpan={99}>
+              <CircularLoader />
+            </div>
+          ) : (
+            ""
+          )}
           <div className="mx-2" id="detailsContent">
             <form className="row">
               <div className="formRow col-xl-3">
@@ -386,7 +415,7 @@ const RingGroupAdd = () => {
                     className="formItem"
                     {...register("name", {
                       ...requiredValidator,
-                      ...nameValidator,
+                      ...lengthValidator(3, 25),
                     })}
                   />
                   {errors.name && <ErrorMessage text={errors.name.message} />}
@@ -647,7 +676,7 @@ const RingGroupAdd = () => {
                         <div className="col-auto h-100 my-auto">
                           <button
                             type="button"
-                            onClick={() => deleteStudent(item.id)}
+                            onClick={() => deleteDestination(item.id)}
                             className="clearButton text-danger"
                           >
                             <i className="fa-duotone fa-trash"></i>
@@ -773,7 +802,7 @@ const RingGroupAdd = () => {
                 <div className="col-12">
                   <select
                     className="formItem"
-                    {...register("user", { ...requiredValidator })}
+                    {...register("user")}
                     defaultValue={""}
                     id="selectFormRow"
                   >
@@ -824,16 +853,11 @@ const RingGroupAdd = () => {
                       style={{ width: "100%" }}
                       name=""
                       id="selectFormRow"
-                      {...register("missed_call", { ...requiredValidator })}
+                      {...register("missed_call")}
                     >
-                      <option value="" disabled>
-                        Select
-                      </option>
+                      <option value="">Disabled</option>
                       <option value="email">Email</option>
                     </select>
-                    {errors.missed_call && (
-                      <ErrorMessage text={errors.missed_call.message} />
-                    )}
                   </div>
                   <div className="col-8 ps-1">
                     {watch().missed_call === "email" && (
@@ -870,8 +894,8 @@ const RingGroupAdd = () => {
                     id="selectFormRow"
                     style={{ width: "85px" }}
                   >
-                    <option value="true">Enabled</option>
                     <option value="false">Disabled</option>
+                    <option value="true">Enabled</option>
                   </select>
                   {watch().ring_group_forward == "true" && (
                     <div className="d-flex flex-column">
@@ -996,7 +1020,7 @@ const RingGroupAdd = () => {
           </div>
         </div>
       </section>
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -1007,7 +1031,7 @@ const RingGroupAdd = () => {
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </main>
   );
 };
