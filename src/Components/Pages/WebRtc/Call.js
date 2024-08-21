@@ -304,10 +304,10 @@ function Call() {
   const groupedCalls = groupCallsByDate(previewCalls);
 
   const options = {
-    domain: "192.168.2.225",
-    webSocketServer: "ws://192.168.2.225:5066",
-    // domain: "192.168.0.91",
-    // webSocketServer: "ws://192.168.0.91:5066",
+    // domain: "192.168.2.225",
+    // webSocketServer: "wss://192.168.2.225:5066",
+    domain: "192.168.0.91",
+    webSocketServer: "ws://192.168.0.91:5066",
   };
 
   useWebSocketErrorHandling(options);
