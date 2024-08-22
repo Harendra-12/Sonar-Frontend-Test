@@ -56,23 +56,22 @@ function Header(props) {
       className="d-flex flex-wrap px-xl-3 py-2 justify-content-between"
       id="detailsHeader"
     >
-      <div className="col-auto d-none d-xl-flex align-items-center">
+      <div className="col-auto d-flex align-items-center">
+        <div className="d-xl-none d-block me-3">
+          <button className="clearButton d-flex align-items-center">
+            <i className="fa-light fa-bars fs-5" />
+          </button>
+        </div>
         <h4 className="my-auto">{props.title}</h4>
       </div>
-      <div className="col-8 d-flex justify-content-evenly justify-content-xl-end align-items-center">
+      <div className="col-8 d-flex justify-content-end align-items-center">
         <div className="col-auto me-3">
           <div className="d-flex justify-content-end align-items-center">
-            <div className="d-xl-none d-block me-3">
-              <button className="clearButton d-flex align-items-center">
-                <i className="fa-light fa-bars fs-5" />
-              </button>
-            </div>
             {/* <div className="my-auto mx-3">
             <button className="getApp" effect="ripple">
               Get Our App
             </button>
             </div> */}
-
             <div>
               <Tippy content="Your available balance, click to know more!">
                 <div

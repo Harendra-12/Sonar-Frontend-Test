@@ -34,7 +34,7 @@ function Music() {
       }
     }
     getData();
-  }, [ refresh]);
+  }, [refresh]);
 
   //   Handle delete function
   const handleDelete = async (id) => {
@@ -42,7 +42,7 @@ function Music() {
     const apiData = await generalDeleteFunction(`/sound/${id}`);
     if (apiData.status) {
       const newArray = music.filter((item) => item.id !== id);
-      setMusic( newArray );
+      setMusic(newArray);
       toast.success(apiData.message);
       setLoading(false);
     } else {
@@ -92,26 +92,38 @@ function Music() {
           <div className="row">
             <Header title="Music Listing" />
             <div
-              className="d-flex flex-wrap px-xl-3 py-2 justify-content-end"
+              className="d-flex flex-wrap px-xl-3 py-2 justify-content-between"
               id="detailsHeader"
             >
-              <button
-                effect="ripple"
-                className="panelButton"
-                onClick={() => {
-                  navigate(-1);
-                  backToTop();
-                }}
-              >
-                Back
-              </button>
-              <button
-                effect="ripple"
-                className="panelButton"
-                onClick={() => setNewMusicPopup(!newMusicPopup)}
-              >
-                Add New Music
-              </button>
+              <div className="col-xl-4 my-auto">
+                <div className="position-relative searchBox">
+                  <input
+                    type="search"
+                    name="Search"
+                    id="headerSearch"
+                    placeholder="Search"
+                  />
+                </div>
+              </div>
+              <div>
+                <button
+                  effect="ripple"
+                  className="panelButton"
+                  onClick={() => {
+                    navigate(-1);
+                    backToTop();
+                  }}
+                >
+                  Back
+                </button>
+                <button
+                  effect="ripple"
+                  className="panelButton"
+                  onClick={() => setNewMusicPopup(!newMusicPopup)}
+                >
+                  Add New Music
+                </button>
+              </div>
             </div>
             <div className="col-12" style={{ overflow: "auto" }}>
               <div className="tableContainer">
