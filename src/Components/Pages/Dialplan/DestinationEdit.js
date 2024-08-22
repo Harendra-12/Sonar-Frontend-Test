@@ -10,6 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
 import ActionList from "../../CommonComponents/ActionList";
+import Header from "../../CommonComponents/Header";
 
 function DestinationEdit() {
   const location = useLocation();
@@ -285,8 +286,9 @@ function DestinationEdit() {
         <section id="phonePage">
           <div className="container-fluid px-0">
             <div className="row justify-content-center" id="subPageHeader">
+            <Header title="Destination Add" />
               <div className="col-xl-9 my-auto">
-                <h4 className="my-auto">Destination Add</h4>
+                {/* <h4 className="my-auto">Destination Add</h4> */}
                 <p className="pt-2 mt-1 mb-0">
                   Inbound destinations are the DID/DDI, DNIS or Alias for
                   inbound calls.

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { backToTop } from '../../GlobalFunction/globalFunction'
+import Header from '../../CommonComponents/Header'
 
 const ExtensionSettingsEdit = () => {
     const navigate = useNavigate()
@@ -9,10 +10,11 @@ const ExtensionSettingsEdit = () => {
             <section id="phonePage">
                 <div className="container-fluid">
                     <div className="row justify-content-center">
+                    <Header title="Extension Setting Add" />
                         <div className="col-12" id="subPageHeader">
                             <div className="row px-xl-3">
                                 <div className="col-xl-6 my-auto">
-                                    <h4 className="my-auto">Extension Setting Add</h4>
+                                    {/* <h4 className="my-auto">Extension Setting Add</h4> */}
                                 </div>
                                 <div className="col-xl-6 my-2 ps-2">
                                     <div className="d-flex justify-content-end">

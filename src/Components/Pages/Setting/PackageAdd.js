@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
+import Header from "../../CommonComponents/Header";
 
 function PackageAdd() {
   const navigate = useNavigate();
@@ -114,10 +115,11 @@ function PackageAdd() {
         <section id="phonePage">
           <div className="container-fluid">
             <div className="row justify-content-center">
+              <Header title="Add Package" />
               <div className="col-12" id="subPageHeader">
                 <div className="row px-xl-3">
                   <div className="col-xl-9 my-auto">
-                    <h4 className="my-auto">Add Package</h4>
+                    {/* <h4 className="my-auto">Add Package</h4> */}
                     <p className="pt-2 mt-1 mb-0">Add Custom Package.</p>
                   </div>
                   <div className="col-xl-3 ps-2">

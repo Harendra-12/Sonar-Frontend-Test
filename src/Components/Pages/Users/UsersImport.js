@@ -1,4 +1,5 @@
 import React from 'react'
+import Header from '../../CommonComponents/Header'
 
 const UsersImport = () => {
     return (
@@ -6,10 +7,11 @@ const UsersImport = () => {
             <section id="phonePage">
                 <div className="container-fluid">
                     <div className="row justify-content-center">
+                    <Header title="User Import" />
                         <div className="col-12" id="subPageHeader">
                             <div className="row px-xl-3">
                                 <div className="col-6 my-auto">
-                                    <h4 className="my-auto">User Import</h4>
+                                    {/* <h4 className="my-auto">User Import</h4> */}
                                 </div>
                                 <div className="col-6 my-2 ps-2">
                                     <div className="d-flex justify-content-end">
