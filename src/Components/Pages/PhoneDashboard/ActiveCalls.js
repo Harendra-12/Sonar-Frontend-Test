@@ -92,23 +92,44 @@ function ActiveCalls() {
                     </thead>
                     <tbody>
                       {activeCall &&
-                        activeCall.map((item, key) => {
-                          return (
-                            <tr>
-                              <td>{key + 1}</td>
-                              <td>{item.name.split("/")[1]}</td>
-                              <td>{item.created}</td>
-                              <td>{item.b_cid_name}</td>
-                              <td>{item.b_cid_num}</td>
-                              <td>{item.dest}</td>
-                              <td>
-                              <select>
-                                <option value="Burge" onClick={() => bargeCall(item.uuid)}>Burge</option>
-                                <option value="Intercept" onClick={() => interceptCall(item.uuid)}>Intercept</option>
-                                <option value="Eavesdrop" onClick={() => eavesdropCall(item.uuid)}>Eavesdrop</option>
-                              </select>
-                              </td>
-                              {/* <td onClick={() => bargeCall(item.uuid)}>
+                        activeCall
+                          // .filter(
+                          //   (call) =>
+                          //     call.direction === "inbound" &&
+                          //     call.callstate === "ACTIVE"
+                          // )
+                          .map((item, key) => {
+                            return (
+                              <tr>
+                                <td>{key + 1}</td>
+                                <td>{item.name.split("/")[1]}</td>
+                                <td>{item.created}</td>
+                                <td>{item.b_cid_name}</td>
+                                <td>{item.b_cid_num}</td>
+                                <td>{item.dest}</td>
+                                <td>
+                                  <select>
+                                    <option
+                                      value="Burge"
+                                      onClick={() => bargeCall(item.uuid)}
+                                    >
+                                      Burge
+                                    </option>
+                                    <option
+                                      value="Intercept"
+                                      onClick={() => interceptCall(item.uuid)}
+                                    >
+                                      Intercept
+                                    </option>
+                                    <option
+                                      value="Eavesdrop"
+                                      onClick={() => eavesdropCall(item.uuid)}
+                                    >
+                                      Eavesdrop
+                                    </option>
+                                  </select>
+                                </td>
+                                {/* <td onClick={() => bargeCall(item.uuid)}>
                                 <label
                                   className="tableLabel success"
                                   style={{
@@ -121,7 +142,7 @@ function ActiveCalls() {
                                   Barge
                                 </label>
                               </td> */}
-                              {/* <td onClick={() => interceptCall(item.uuid)}>
+                                {/* <td onClick={() => interceptCall(item.uuid)}>
                                 <label
                                   className="tableLabel success"
                                   style={{
@@ -147,22 +168,22 @@ function ActiveCalls() {
                                   Eavesdrop
                                 </label>
                               </td> */}
-                              <td onClick={() => killCall(item.uuid)}>
-                                <label
-                                  className="tableLabel fail"
-                                  style={{
-                                    width: "85px",
-                                    padding: "3px 7px",
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <i class="fa-duotone fa-solid fa-phone-slash me-1"></i>{" "}
-                                  Hang Up
-                                </label>
-                              </td>
-                            </tr>
-                          );
-                        })}
+                                <td onClick={() => killCall(item.uuid)}>
+                                  <label
+                                    className="tableLabel fail"
+                                    style={{
+                                      width: "85px",
+                                      padding: "3px 7px",
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    <i class="fa-duotone fa-solid fa-phone-slash me-1"></i>{" "}
+                                    Hang Up
+                                  </label>
+                                </td>
+                              </tr>
+                            );
+                          })}
                       {/* {activeCall &&
                       Object.values(activeCall).map((item, index) => {
                         return (

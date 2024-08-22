@@ -31,6 +31,8 @@ const Extensions = () => {
     }
     generalGetFunction("/freeswitch/checkActiveExtensionOnServer")
   }, [registerUser]);
+  console.log("onlineExtension", onlineExtension);
+  
 
   useEffect(() => {
     setLoading(true);

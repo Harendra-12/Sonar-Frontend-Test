@@ -8,6 +8,8 @@ const RingGroup = () => {
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
   const allCall = useSelector((state) => state.allCall);
   const [ringGroupData, setRingGroupData] = useState([]);
+  const activeCall = useSelector((state) => state.activeCall);
+  const [activeCallData, setActiveCallData] = useState([]);
 
   useEffect(() => {
     if (ringGroupRefresh > 0) {
@@ -39,6 +41,24 @@ const RingGroup = () => {
     }
   }, [ringGroup, allCall]);
 
+  useEffect(() => {
+    if (ringGroupRefresh > 0) {
+      const activeCallFilterData = [];
+      if (activeCall && ringGroup && ringGroup.length > 0) {
+        ringGroup.forEach((obj) => {
+          if (activeCall.length > 0) {
+            activeCall.forEach((call) => {
+              if (call.dest === obj.extension && call.direction === "inbound") {
+                activeCallFilterData.push(call);
+              }
+            });
+          }
+        });
+      }
+      return setActiveCallData(activeCallFilterData);
+    }
+  }, [ringGroup, activeCall]);
+  
   return (
     <div
       className="tabGroupDetails"
@@ -139,7 +159,12 @@ const RingGroup = () => {
               <div className="col-xl-1b">
                 <div className="itemWrapperb a">
                   <div className="heading">Active Calls</div>
-                  <div className="data-number">0</div>
+                  <div className="data-number">
+                    {
+                      activeCallData.filter((e) => e.dest === call.extension)
+                        .length
+                    }
+                  </div>
                   <div className="label2">Percentage 0%</div>
                 </div>
               </div>

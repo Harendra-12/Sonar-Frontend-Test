@@ -7,6 +7,8 @@ const CallQueueDetails = () => {
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const allCall = useSelector((state) => state.allCall);
   const [callQueue, setCallQueue] = useState([]);
+  const activeCall = useSelector((state) => state.activeCall);
+  const [activeCallData, setActiveCallData] = useState([]);
 
   useEffect(() => {
     if (callCenterRefresh > 0) {
@@ -37,8 +39,24 @@ const CallQueueDetails = () => {
       });
     }
   }, [callCenter, allCall]);
-  console.log("callcenter", callCenter);
-  console.log("callCenter", callQueue);
+
+  useEffect(() => {
+    if (callCenterRefresh > 0) {
+      const activeCallFilterData = [];
+      if (activeCall && callCenter && callCenter.length > 0) {
+        callCenter.forEach((obj) => {
+          if (activeCall.length > 0) {
+            activeCall.forEach((call) => {
+              if (call.dest === obj.extension && call.direction === "inbound") {
+                activeCallFilterData.push(call);
+              }
+            });
+          }
+        });
+      }
+      return setActiveCallData(activeCallFilterData);
+    }
+  }, [callCenter, activeCall]);
 
   return (
     <div className="tabGroupDetails" data-id={3}>
@@ -169,7 +187,12 @@ const CallQueueDetails = () => {
               <div className="col-xl-1b">
                 <div className="itemWrapperb a">
                   <div className="heading">Active Calls</div>
-                  <div className="data-number">0</div>
+                  <div className="data-number">
+                  {
+                      activeCallData.filter((e) => e.dest === call.extension)
+                        .length
+                    }
+                  </div>
                   <div className="label2">Percentage 0%</div>
                 </div>
               </div>
