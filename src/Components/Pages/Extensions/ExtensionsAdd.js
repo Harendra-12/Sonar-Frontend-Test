@@ -110,7 +110,7 @@ const ExtensionsAdd = () => {
                   effect="ripple"
                   className="panelButton"
                   onClick={handleFormSubmit}
-                  // onClick={handleSubmit}
+                // onClick={handleSubmit}
                 >
                   Save
                 </button>
@@ -304,7 +304,7 @@ const ExtensionsAdd = () => {
                 </div>
                 <div className="col-12">
                   <input
-                    type="text"
+                    type="number"
                     name="extension"
                     className="formItem"
                     {...register("effectiveCallerIdNumber")}
@@ -338,7 +338,7 @@ const ExtensionsAdd = () => {
                 </div>
                 <div className="col-12">
                   <input
-                    type="text"
+                    type="number"
                     name="extension"
                     className="formItem"
                     {...register("outbundCallerIdNumber")}
@@ -372,7 +372,7 @@ const ExtensionsAdd = () => {
                 </div>
                 <div className="col-12">
                   <input
-                    type="text"
+                    type="number"
                     name="extension"
                     className="formItem"
                     {...register("emergencyCallerIdNumber")}
