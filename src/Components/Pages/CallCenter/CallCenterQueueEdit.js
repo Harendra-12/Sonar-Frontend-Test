@@ -872,7 +872,7 @@ function CallCenterQueueEdit() {
           </div>
         </div>
       </section>
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -883,7 +883,7 @@ function CallCenterQueueEdit() {
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </main>
   );
 }

@@ -132,11 +132,11 @@ function Document({ account, refreshCallback, refresh, nextPage, companyStatus }
       if (apiData.status) {
         refreshCallback(refresh + 1);
         toast.success(apiData.message);
-        setReUploadPopUp(false)
+        setReUploadPopUp(false);
         setLoading(false);
       } else {
         setLoading(false);
-        setReUploadPopUp(false)
+        setReUploadPopUp(false);
         toast.error(apiData.message);
       }
     }
@@ -590,7 +590,7 @@ function Document({ account, refreshCallback, refresh, nextPage, companyStatus }
         ""
       )}
       {loading ? <CircularLoader /> : ""}
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -601,7 +601,7 @@ function Document({ account, refreshCallback, refresh, nextPage, companyStatus }
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </div>
   );
 }

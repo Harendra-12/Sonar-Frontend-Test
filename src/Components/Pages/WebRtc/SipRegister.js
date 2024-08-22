@@ -22,7 +22,10 @@ export const SipRegister = () => {
       username: "1003",
       password: "1003",
     });
-  }, [connectAndRegister, extension, password]);
+  }, [
+    connectAndRegister,
+    // extension, password
+  ]);
 
   return (
     <div className="col-auto">

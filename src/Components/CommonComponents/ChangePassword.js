@@ -205,7 +205,7 @@ function ChangePassword() {
         </div>
         {loading ? <CircularLoader /> : ""}
       </section>
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -216,7 +216,7 @@ function ChangePassword() {
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </main>
   );
 }

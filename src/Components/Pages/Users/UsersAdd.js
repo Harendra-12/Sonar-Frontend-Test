@@ -772,7 +772,7 @@ const UsersAdd = () => {
         ) : (
           ""
         )}
-        <ToastContainer
+        {/* <ToastContainer
           position="bottom-right"
           autoClose={false}
           hideProgressBar={false}
@@ -783,7 +783,7 @@ const UsersAdd = () => {
           draggable
           pauseOnHover
           theme="dark"
-        />
+        /> */}
       </main>
     </>
   );

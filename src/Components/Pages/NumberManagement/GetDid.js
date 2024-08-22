@@ -419,7 +419,7 @@ function GetDid() {
         ""
       )}
       {loading ? <CircularLoader /> : ""}
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -430,7 +430,7 @@ function GetDid() {
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </main>
   );
 }

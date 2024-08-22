@@ -199,11 +199,16 @@ function PackageEdit() {
                       <div className="col-3 pe-2">
                         <div className="formLabel"></div>
                         <div className="col-12">
-                        <select  className="formItem" value={packages.name}
-                            onChange={(e) => setPackages(prevState=>({
+                          <select
+                            className="formItem"
+                            value={packages.name}
+                            onChange={(e) =>
+                              setPackages((prevState) => ({
                                 ...prevState,
-                                name:e.target.value
-                            }))} >
+                                name: e.target.value,
+                              }))
+                            }
+                          >
                             <option>Basic</option>
                             <option>Standard</option>
                             <option>Advanced</option>
@@ -467,7 +472,7 @@ function PackageEdit() {
             </div>
           </div>
         </section>
-        <ToastContainer
+        {/* <ToastContainer
           position="bottom-right"
           autoClose={3000}
           hideProgressBar={false}
@@ -478,7 +483,7 @@ function PackageEdit() {
           draggable
           pauseOnHover
           theme="dark"
-        />
+        /> */}
       </main>
     </>
   );

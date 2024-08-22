@@ -175,7 +175,8 @@ function UserDocumentDetails() {
                       <div className="approvalButton">
                         {" "}
                         <button className="float-end btn btn-danger btn-sm">
-                          <i class="fa-light fa-triangle-exclamation"></i> Document Not Uploaded
+                          <i class="fa-light fa-triangle-exclamation"></i>{" "}
+                          Document Not Uploaded
                         </button>{" "}
                       </div>
                     ) : accountDetails?.company_status === "applied" ? (
@@ -605,8 +606,8 @@ function UserDocumentDetails() {
         ) : (
           ""
         )}
-      </div >
-      <ToastContainer
+      </div>
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -617,7 +618,7 @@ function UserDocumentDetails() {
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </>
   );
 }

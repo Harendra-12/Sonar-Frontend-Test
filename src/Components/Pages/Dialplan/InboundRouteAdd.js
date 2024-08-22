@@ -47,60 +47,61 @@ function InboundRouteAdd() {
     getData();
   }, []);
 
-  async function handleSubmit(){
-    if(inboundRoute.name===""){
-        setInboundRoute(prevState=>({
-            ...prevState,
-            nameMissing:true
-        }))
-    }else{
-        setInboundRoute(prevState=>({
-            ...prevState,
-            nameMissing:false
-        }))
+  async function handleSubmit() {
+    if (inboundRoute.name === "") {
+      setInboundRoute((prevState) => ({
+        ...prevState,
+        nameMissing: true,
+      }));
+    } else {
+      setInboundRoute((prevState) => ({
+        ...prevState,
+        nameMissing: false,
+      }));
     }
 
-    if(inboundRoute.destination===""){
-        setInboundRoute(prevState=>({
-            ...prevState,
-            destinationMissing:true
-        }))
-    }else{
-        setInboundRoute(prevState=>({
-            ...prevState,
-            destinationMissing:false
-        }))
+    if (inboundRoute.destination === "") {
+      setInboundRoute((prevState) => ({
+        ...prevState,
+        destinationMissing: true,
+      }));
+    } else {
+      setInboundRoute((prevState) => ({
+        ...prevState,
+        destinationMissing: false,
+      }));
     }
 
-    if(inboundRoute.name !=="" && inboundRoute.destination!==""){
-        const parsedData = {
-            name:inboundRoute.name,
-            destination_number:inboundRoute.destination,
-            action:inboundRoute.action,
-            type:inboundRoute.status,
-            other:inboundRoute.other,
-            caller_id_number_prefix:inboundRoute.prefix,
-        }
-        const apiData = await generalPostFunction(`/inbound/routing/store`,parsedData)
-        if(apiData.status){
-          setInboundRoute({
-            name: "",
-            nameMissing: false,
-            destination: "",
-            destinationMissing: false,
-            action: "",
-            other: "",
-            prefix: "",
-            status: "E",
-          })
-          toast.success(apiData.message)
-        }else{
-          const errorMessage = Object.keys(apiData.errors);
-          toast.error(apiData.errors[errorMessage[0]][0]);
-        }
-        
+    if (inboundRoute.name !== "" && inboundRoute.destination !== "") {
+      const parsedData = {
+        name: inboundRoute.name,
+        destination_number: inboundRoute.destination,
+        action: inboundRoute.action,
+        type: inboundRoute.status,
+        other: inboundRoute.other,
+        caller_id_number_prefix: inboundRoute.prefix,
+      };
+      const apiData = await generalPostFunction(
+        `/inbound/routing/store`,
+        parsedData
+      );
+      if (apiData.status) {
+        setInboundRoute({
+          name: "",
+          nameMissing: false,
+          destination: "",
+          destinationMissing: false,
+          action: "",
+          other: "",
+          prefix: "",
+          status: "E",
+        });
+        toast.success(apiData.message);
+      } else {
+        const errorMessage = Object.keys(apiData.errors);
+        toast.error(apiData.errors[errorMessage[0]][0]);
+      }
     }
-
   }
   return (
     <>
@@ -125,7 +126,11 @@ function InboundRouteAdd() {
                       >
                         Back
                       </button>
-                      <button effect="ripple" className="panelButton" onClick={handleSubmit}>
+                      <button
+                        effect="ripple"
+                        className="panelButton"
+                        onClick={handleSubmit}
+                      >
                         Save
                       </button>
                     </div>
@@ -158,11 +163,11 @@ function InboundRouteAdd() {
                           className="formItem"
                           required="required"
                           value={inboundRoute.name}
-                          onChange={(e)=>{
-                            setInboundRoute(prevState=>({
-                                ...prevState,
-                                name:e.target.value
-                            }))
+                          onChange={(e) => {
+                            setInboundRoute((prevState) => ({
+                              ...prevState,
+                              name: e.target.value,
+                            }));
                           }}
                         />
                       </div>
@@ -185,11 +190,11 @@ function InboundRouteAdd() {
                           className="formItem"
                           required="required"
                           value={inboundRoute.destination}
-                          onChange={(e)=>{
-                            setInboundRoute(prevState=>({
-                                ...prevState,
-                                destination:e.target.value
-                            }))
+                          onChange={(e) => {
+                            setInboundRoute((prevState) => ({
+                              ...prevState,
+                              destination: e.target.value,
+                            }));
                           }}
                         />
                         <br />
@@ -247,11 +252,11 @@ function InboundRouteAdd() {
                           className="formItem"
                           required="required"
                           value={inboundRoute.other}
-                          onChange={(e)=>{
-                            setInboundRoute(prevState=>({
-                                ...prevState,
-                                other:e.target.name
-                            }))
+                          onChange={(e) => {
+                            setInboundRoute((prevState) => ({
+                              ...prevState,
+                              other: e.target.name,
+                            }));
                           }}
                         />
                       </div>
@@ -267,11 +272,11 @@ function InboundRouteAdd() {
                           className="formItem"
                           required="required"
                           value={inboundRoute.prefix}
-                          onChange={(e)=>{
-                            setInboundRoute(prevState=>({
-                                ...prevState,
-                                prefix:e.target.name
-                            }))
+                          onChange={(e) => {
+                            setInboundRoute((prevState) => ({
+                              ...prevState,
+                              prefix: e.target.name,
+                            }));
                           }}
                         />
                       </div>
@@ -306,7 +311,7 @@ function InboundRouteAdd() {
             </div>
           </div>
         </section>
-        <ToastContainer
+        {/* <ToastContainer
           position="bottom-right"
           autoClose={3000}
           hideProgressBar={false}
@@ -317,7 +322,7 @@ function InboundRouteAdd() {
           draggable
           pauseOnHover
           theme="dark"
-        />
+        /> */}
       </main>
     </>
   );
