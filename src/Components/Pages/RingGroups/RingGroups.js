@@ -68,13 +68,13 @@ const RingGroups = () => {
                   >
                     Add
                   </Link>
-                  <div className="my-auto position-relative mx-3">
+                  {/* <div className="my-auto position-relative mx-3">
                     <label className="switch">
                       <input type="checkbox" id="showAllCheck" />
                       <span className="slider round" />
                     </label>
                     <span className="position-relative mx-1">Show All</span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction';
 import CircularLoader from '../../Loader/CircularLoader';
+import Header from '../../CommonComponents/Header';
 
 function RateChargeAdd() {
     const navigate = useNavigate()
@@ -54,10 +55,11 @@ function RateChargeAdd() {
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row justify-content-center">
+          <Header title="Add Rate Card" />
             <div className="col-12" id="subPageHeader">
               <div className="row px-xl-3">
                 <div className="col-xl-9 my-auto">
-                  <h4 className="my-auto">Add Rate Card</h4>
+                  {/* <h4 className="my-auto">Add Rate Card</h4> */}
                   <p className="pt-2 mt-1 mb-0">Add Custom rate Card.</p>
                 </div>
                 <div className="col-xl-3 ps-2">

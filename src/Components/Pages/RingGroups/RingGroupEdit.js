@@ -21,6 +21,7 @@ import {
   requiredValidator,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import Header from "../../CommonComponents/Header";
 
 const RingGroupEdit = () => {
   const navigate = useNavigate();
@@ -411,8 +412,9 @@ const RingGroupEdit = () => {
       <section id="phonePage">
         <div className="container-fluid px-0">
           <div className="row justify-content-center" id="subPageHeader">
+          <Header title="Ring Group Edit" />
             <div className="col-xl-9 my-auto">
-              <h4 className="my-auto">Ring Group Edit</h4>
+              {/* <h4 className="my-auto">Ring Group Edit</h4> */}
               <p className="pt-2 mt-1 mb-0">
                 A ring group is a set of destinations that can be called with a
                 ring strategy.

@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import RechargeWalletPopup from "../Billing/RechargeWalletPopup";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import Header from "../../CommonComponents/Header";
 
 function GetDid() {
   const navigate = useNavigate();
@@ -118,10 +119,11 @@ function GetDid() {
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row justify-content-center">
+            <Header title="Get DID" />
             <div className="col-12" id="subPageHeader">
               <div className="row px-xl-3 col-12">
                 <div className="col-xl-6 my-auto">
-                  <h4 className="my-auto">Get DID</h4>
+                  {/* <h4 className="my-auto">Get DID</h4> */}
                 </div>
                 <div className="col-xl-6 ps-2">
                   <div className="d-flex justify-content-end">

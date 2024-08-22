@@ -16,6 +16,7 @@ import {
   requiredValidator,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import Header from "../../CommonComponents/Header";
 const UsersAdd = () => {
   const navigate = useNavigate();
   const [domains, setDomains] = useState("");
@@ -252,8 +253,9 @@ const UsersAdd = () => {
         <section id="phonePage">
           <div className="container-fluid px-0">
             <div className="row justify-content-center" id="subPageHeader">
+            <Header title="User Add" />
               <div className="col-6 my-auto">
-                <h4 className="my-auto">User Add</h4>
+                {/* <h4 className="my-auto">User Add</h4> */}
               </div>
               <div className="col-6 ps-2">
                 <div className="d-flex justify-content-end">

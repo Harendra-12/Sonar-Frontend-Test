@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Header from "../../CommonComponents/Header";
 
 const Profile = () => {
   return (
@@ -7,8 +8,9 @@ const Profile = () => {
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row">
+            <Header title="My Profile" />
             <div className="col-12">
-              <div className="row px-xl-3 py-2" id="detailsHeader">
+              {/* <div className="row px-xl-3 py-2" id="detailsHeader">
                 <div className="col-xl-2 col-4 d-flex align-items-center">
                   <h4 className="my-auto">My Profile</h4>
                 </div>
@@ -29,7 +31,7 @@ const Profile = () => {
                     </button>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="col-xl-9">
               <div className="profileView mt-3">

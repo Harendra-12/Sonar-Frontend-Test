@@ -1,4 +1,5 @@
 import React from 'react'
+import Header from '../../CommonComponents/Header'
 
 const ExtensionSummary = () => {
     return (
@@ -6,12 +7,13 @@ const ExtensionSummary = () => {
             <section id="phonePage">
                 <div className="container-fluid">
                     <div className="row">
+                    <Header title="Extension Summary" />
                         <div className="col-12">
                             <div className="row px-xl-3 py-2" id="detailsHeader">
-                                <div className="col-xl-6 d-flex align-items-center">
+                                {/* <div className="col-xl-6 d-flex align-items-center">
                                     <h4 className="my-auto">Extension Summary</h4>
-                                </div>
-                                <div className="col-xl-6 d-flex justify-content-end">
+                                </div> */}
+                                {/* <div className="col-xl-6 d-flex justify-content-end">
                                     <div className="mx-3 my-auto">
                                         <button
                                             className="getApp"
@@ -26,7 +28,7 @@ const ExtensionSummary = () => {
                                             alt="img"
                                         />
                                     </div>
-                                </div>
+                                </div> */}
                                 {/* <div className="col-12 my-2">
                                     <p className="p-0 m-0">Use this to monitor and interact with the active calls. </p>
                                 </div> */}

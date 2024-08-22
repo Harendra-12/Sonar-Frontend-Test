@@ -13,6 +13,7 @@ import CircularLoader from "../../Loader/CircularLoader";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { domainValidator, lengthValidator, numberValidator, requiredValidator } from "../../validations/validation";
+import Header from "../../CommonComponents/Header";
 
 const ExtensionsAdd = () => {
   const navigate = useNavigate();
@@ -84,8 +85,9 @@ const ExtensionsAdd = () => {
       <section id="phonePage">
         <div className="container-fluid px-0">
           <div className="row justify-content-center" id="subPageHeader">
+          <Header title="Extension Add" />
             <div className="col-xl-6 my-auto">
-              <h4 className="my-auto">Extension Add</h4>
+              {/* <h4 className="my-auto">Extension Add</h4> */}
             </div>
             <div className="col-xl-6 ps-2">
               <div className="d-flex justify-content-end">
