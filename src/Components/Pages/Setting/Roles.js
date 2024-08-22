@@ -230,16 +230,6 @@ function Roles() {
       position: sticky;
       top: 10px;
       }
-      .approvalButton{
-        position:absolute;
-        top: 0;
-        right: 0;
-      }
-      .approvalButton button {
-        border-radius: 0;
-        border-bottom-left-radius: 7px;
-        border-top-right-radius: 7px;
-      }
       `}
       </style>
       <main className="mainContent">
@@ -379,6 +369,13 @@ function Roles() {
                           );
                         })}
                     </ul>
+                    <div className="col-xl-12 mt-3">
+                      <div className="col-xl-3 mx-auto">
+                        <button class="approvalButton" onClick={handlePermissionSave}>
+                          <i class="fa-duotone fa-check-double me-2"></i> Save
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 {selectedRoleId && (
@@ -398,18 +395,6 @@ function Roles() {
                               >
                                 {selectedRole}
                               </span>
-                            </div>
-                            <div class="approvalButton">
-                              {" "}
-                              <button
-                                class="float-end btn btn-success btn-sm"
-                                onClick={handlePermissionSave}
-                                style={{
-                                  fontWeight: 600,
-                                }}
-                              >
-                                <i class="fa-duotone fa-check-double"></i> Save
-                              </button>{" "}
                             </div>
                           </div>
                         </div>
