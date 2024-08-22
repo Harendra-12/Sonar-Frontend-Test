@@ -49,7 +49,7 @@ function Destination() {
           <div className="container-fluid">
             <div className="row">
               <Header title="Destination" />
-              <div className="d-flex flex-wrap px-xl-4 py-2" id="detailsHeader">
+              <div className="d-flex flex-wrap px-xl-3 py-2" id="detailsHeader">
                 <div className="col-xl-4 my-auto">
                   <div className="position-relative searchBox">
                     <input
@@ -96,7 +96,7 @@ function Destination() {
                       {loading ? <tr><td colSpan={99}><ContentLoader /></td></tr> : ""}
                       {destination && destination.map((item, index) => {
                         return (
-                          <tr key={index} onClick={() => { navigate(`/destination-edit?id=${item.id}`,{state:{state:item}}); window.scrollTo(0, 0) }}>
+                          <tr key={index} onClick={() => { navigate(`/destination-edit?id=${item.id}`, { state: { state: item } }); window.scrollTo(0, 0) }}>
                             <td>{item.type}</td>
                             <td>{item?.did?.did}</td>
                             <td>{item.country_code}</td>
