@@ -3,14 +3,18 @@ import { green } from "@mui/material/colors";
 import React, { useState } from "react";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
 
 function ConfigureStepDashboard({ account2 }) {
   console.log("This is account", account2);
   const account = useSelector((state) => state.account);
   const [configure, setConfigure] = useState(false);
+  const [npx,setNpx] = useState("")
   const [didSearch, setDidSearch] = useState(true);
+  const [didRawData, setDidRawData] = useState();
   const [purchingDid, setPurchingDid] = useState("");
   const [did, setDid] = useState("");
+  const [purchaseComplete,setPurchaseComplete] = useState(false)
   const [searchingDid, setSearchingDid] = useState(false);
 
   async function configureAccount() {
@@ -46,6 +50,54 @@ function ConfigureStepDashboard({ account2 }) {
       }
     }
   }
+
+  async function searchDid(){
+    if(npx.length < 3){
+      toast.error("NPX must be  3 characters");
+    }else{
+      setSearchingDid(true)
+      const parsedData = {
+        searchType: "tollfree",
+        quantity: "1",
+        npa: Number(npx),
+        companyId: account.account_id,
+      };
+      const apiData = await generalPostFunction("/searchTfn", parsedData);
+      if(apiData.status){
+        setSearchingDid(false)
+        setDidRawData(apiData)
+        setDid(apiData.data[0].id);
+    }else{
+      setSearchingDid(false)
+      setDidRawData(apiData)
+      setDid("No DID found with the given NPX")
+    }
+  }
+   
+  }
+
+  async function takeDid(){
+    setPurchingDid(true);
+    const parsedData = {
+      companyId: account.account_id,
+      vendorId: didRawData.data[0].vendorId,
+      didQty: 1,
+      type: "configure",
+      didType: "random",
+      rate: Number(didRawData.data[0].price),
+      accountId: didRawData.data[0].vendorAccountId,
+      dids: [
+        {
+          dids: didRawData.data[0].id,
+        },
+      ],
+    };
+    const apiData = await generalPostFunction("/purchaseTfn", parsedData);
+    if(apiData.status){
+      setPurchingDid(false);
+      setPurchaseComplete(true);
+    }
+  }
   return (
     <div>
       <div className="profileView">
@@ -78,16 +130,16 @@ function ConfigureStepDashboard({ account2 }) {
                 <li>
                   <div class="coolinput">
                     <div className="coolSearch">
-                      <label for="input" class="text">NPA:</label>
-                      <input type="text" placeholder="Write here..." name="input" class="input" />
+                      <label for="input" class="text">NPX:</label>
+                      <input type="text" placeholder="Write here..." name="input" class="input" onChange={(e) => setNpx(e.target.value)} value={npx} />
                     </div>
-                    <button onClick={() => setSearchingDid(true)}>
+                    <button onClick={() => {searchDid();setDid("")}}>
                       <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
                   </div>
                 </li>
               </ul>
-              {searchingDid ? <ul className="borderMan" style={{ height: 'fit-content' }}>
+              {searchingDid || did!=="" ? <ul className="borderMan" style={{ height: 'fit-content' }}>
                 {did === "" ? (
                   <li>
                     <div
@@ -116,11 +168,14 @@ function ConfigureStepDashboard({ account2 }) {
                   </li>
                 ) : (
                   <li>
+                    {did==="No DID found with the given NPX"?
                     <div className="configProgressText did">
+                      <p>{did}</p>
+                    </div>:<div className="configProgressText did">
                       <p>Your DID is: <span>{did}</span></p>
-                      <button >
+                      <button onClick={takeDid} >
                         <i class="fa-solid fa-check"></i>
-                        {false ? <div className="selectDidOpt">
+                        {/* {false ? <div className="selectDidOpt">
                           <div className="d-flex">
                             <input type="checkbox" defaultChecked={'checked'} /> <span>Voice</span>
                           </div>
@@ -133,12 +188,31 @@ function ConfigureStepDashboard({ account2 }) {
                           <div className="d-flex">
                             <input type="checkbox" /> <span>e911</span>
                           </div>
-                        </div> : ""}
+                        </div> : ""} */}
                       </button>
-                      <button className="shuffle"><i class="fa-solid fa-rotate-reverse"></i></button>
+                      <button className="shuffle" onClick={()=>{searchDid();setDid("")}}><i class="fa-solid fa-rotate-reverse"></i></button>
                     </div>
+                  }
+                    
                   </li>
                 )}
+                {(purchingDid && did!=="")? <li>
+                    <div
+                      className={
+                        "configProgress"
+                      }
+                    >
+                     
+                        <CircularProgress
+                          size="35px"
+                          sx={{ color: green[500] }}
+                        />
+                     
+                    </div>
+                    <div className="configProgressText">
+                      <p>Purching Did</p>
+                    </div>
+                  </li>:""}
                 {/* <li>
                         <div className={acquiringDid==="" ? 'configProgress pending ' : acquiringDid===true? "configProgress": "configProgress success"}>
                             {acquiringDid===""  ? <i className="fa-duotone fa-check"></i> : acquiringDid===true ?<CircularProgress size="35px" sx={{ color: green[500], }} />: <i className="fa-duotone fa-check"></i>}
@@ -177,7 +251,7 @@ function ConfigureStepDashboard({ account2 }) {
           ) : (
             ""
           )}
-          {did !== "" || account2.company_status === "5" ? (
+          {purchaseComplete ? (
             <div className="contentFinal">
               <p>Your did configured succesfully </p>
               <p>
@@ -194,6 +268,18 @@ function ConfigureStepDashboard({ account2 }) {
           )}
         </div>
       </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 }
