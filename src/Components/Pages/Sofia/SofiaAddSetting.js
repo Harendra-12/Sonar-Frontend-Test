@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import { backToTop, generalPostFunction } from '../../GlobalFunction/globalFunction'
+import React, { useEffect, useState } from "react";
+import {
+  backToTop,
+  generalPostFunction,
+} from "../../GlobalFunction/globalFunction";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function SofiaAddSetting() {
-  const navigate = useNavigate()
-  const account = useSelector((state) => state.account)
+  const navigate = useNavigate();
+  const account = useSelector((state) => state.account);
   if (account === null) {
-    navigate("/")
+    navigate("/");
   }
   const [sofia, setSofia] = useState({
     name: "",
@@ -18,29 +21,29 @@ function SofiaAddSetting() {
     desc: "",
     nameMissing: false,
     valueMissing: false,
-  })
+  });
   async function handleSubmit() {
     if (sofia.name === "") {
-      setSofia(prevState => ({
+      setSofia((prevState) => ({
         ...prevState,
-        nameMissing: true
-      }))
+        nameMissing: true,
+      }));
     } else {
-      setSofia(prevState => ({
+      setSofia((prevState) => ({
         ...prevState,
-        nameMissing: false
-      }))
+        nameMissing: false,
+      }));
     }
     if (sofia.value === "") {
-      setSofia(prevState => ({
+      setSofia((prevState) => ({
         ...prevState,
-        valueMissing: true
-      }))
+        valueMissing: true,
+      }));
     } else {
-      setSofia(prevState => ({
+      setSofia((prevState) => ({
         ...prevState,
-        valueMissing: false
-      }))
+        valueMissing: false,
+      }));
     }
     if (sofia.name.length > 0 && sofia.value.length > 0) {
       const parsedData = {
@@ -48,12 +51,15 @@ function SofiaAddSetting() {
         value: sofia.value,
         description: sofia.desc,
         enabled: sofia.status === "false" ? false : true,
-        created_by: account.id
-      }
+        created_by: account.id,
+      };
       console.log("This is parsed data", parsedData);
-      const apiData = await generalPostFunction("/sofia-global-settings/store", parsedData)
+      const apiData = await generalPostFunction(
+        "/sofia-global-settings/store",
+        parsedData
+      );
       if (apiData.status) {
-        toast.success(apiData.message)
+        toast.success(apiData.message);
       } else {
         const errorMessage = Object.keys(apiData.errors);
         toast.error(apiData.errors[errorMessage[0]][0]);
@@ -101,8 +107,11 @@ function SofiaAddSetting() {
                   <div className="formRow col-xl-3">
                     <div className="formLabel">
                       <label htmlFor="">Name</label>
-                      {sofia.nameMissing ? <label className="status missing">field missing</label> : ""}
-
+                      {sofia.nameMissing ? (
+                        <label className="status missing">field missing</label>
+                      ) : (
+                        ""
+                      )}
                     </div>
                     <div className="col-12">
                       <input
@@ -112,10 +121,10 @@ function SofiaAddSetting() {
                         required="required"
                         value={sofia.name}
                         onChange={(e) => {
-                          setSofia(prevState => ({
+                          setSofia((prevState) => ({
                             ...prevState,
-                            name: e.target.value
-                          }))
+                            name: e.target.value,
+                          }));
                         }}
                       />
                       <br />
@@ -128,8 +137,11 @@ function SofiaAddSetting() {
                   <div className="formRow col-xl-3">
                     <div className="formLabel">
                       <label htmlFor="selectFormRow">Value</label>
-                      {sofia.valueMissing ? <label className="status missing">field missing</label> : ""}
-
+                      {sofia.valueMissing ? (
+                        <label className="status missing">field missing</label>
+                      ) : (
+                        ""
+                      )}
                     </div>
                     <div className="col-12">
                       <input
@@ -139,10 +151,10 @@ function SofiaAddSetting() {
                         required="required"
                         value={sofia.value}
                         onChange={(e) => {
-                          setSofia(prevState => ({
+                          setSofia((prevState) => ({
                             ...prevState,
-                            value: e.target.value
-                          }))
+                            value: e.target.value,
+                          }));
                         }}
                       />
                       <br />
@@ -162,10 +174,10 @@ function SofiaAddSetting() {
                         id="selectFormRow"
                         value={sofia.status}
                         onChange={(e) => {
-                          setSofia(prevState => ({
+                          setSofia((prevState) => ({
                             ...prevState,
-                            status: e.target.value
-                          }))
+                            status: e.target.value,
+                          }));
                         }}
                       >
                         <option value={true}>True</option>
@@ -190,10 +202,10 @@ function SofiaAddSetting() {
                         required="required"
                         value={sofia.desc}
                         onChange={(e) => {
-                          setSofia(prevState => ({
+                          setSofia((prevState) => ({
                             ...prevState,
-                            desc: e.target.value
-                          }))
+                            desc: e.target.value,
+                          }));
                         }}
                       />
                       <br />
@@ -208,7 +220,7 @@ function SofiaAddSetting() {
           </div>
         </div>
       </section>
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -219,9 +231,9 @@ function SofiaAddSetting() {
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </main>
-  )
+  );
 }
 
-export default SofiaAddSetting
+export default SofiaAddSetting;

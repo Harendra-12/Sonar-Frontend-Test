@@ -6,7 +6,11 @@ import BillingCardSave from "./BillingCardSave";
 import RechargeWalletPopup from "./RechargeWalletPopup";
 import { useDispatch, useSelector } from "react-redux";
 import AddNewAddress from "./AddNewAddress";
-import { generalDeleteFunction, generalPostFunction, generalPutFunction } from "../../GlobalFunction/globalFunction";
+import {
+  generalDeleteFunction,
+  generalPostFunction,
+  generalPutFunction,
+} from "../../GlobalFunction/globalFunction";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
@@ -280,7 +284,7 @@ function CardAndBilling() {
         parsedData
       );
       if (apiData.status) {
-        setEditBillId()
+        setEditBillId();
         setLoading(false);
         toast.success(apiData.message);
         dispatch({
@@ -288,7 +292,7 @@ function CardAndBilling() {
           billingListRefresh: billingListRefresh + 1,
         });
       } else {
-        setLoading(false)
+        setLoading(false);
         const errorMessage = Object.keys(apiData.errors);
         toast.error(apiData.errors[errorMessage[0]][0]);
       }
@@ -297,16 +301,18 @@ function CardAndBilling() {
 
   // Handle billing address delete
   async function handleDeleteBilling() {
-    setLoading(true)
-    const apiData = await generalDeleteFunction(`/billing-address/destroy/${delBillId}`)
+    setLoading(true);
+    const apiData = await generalDeleteFunction(
+      `/billing-address/destroy/${delBillId}`
+    );
     if (apiData.status) {
       dispatch({
         type: "SET_BILLINGLISTREFRESH",
         billingListRefresh: billingListRefresh + 1,
       });
       setLoading(false);
-      setBillDelPopUp(false)
-      toast.success(apiData.message)
+      setBillDelPopUp(false);
+      toast.success(apiData.message);
     } else {
       setLoading(false);
       const errorMessage = Object.keys(apiData.errors);
@@ -315,21 +321,21 @@ function CardAndBilling() {
   }
 
   // Handle Card Delete
-  const [cardDelPopUp, setCardDelPopUp] = useState(false)
-  const [cardDelId, setCardDelId] = useState()
+  const [cardDelPopUp, setCardDelPopUp] = useState(false);
+  const [cardDelId, setCardDelId] = useState();
   async function handleCardDelete() {
-    setLoading(true)
-    const apiData = await generalDeleteFunction(`/card/destroy/${cardDelId}`)
+    setLoading(true);
+    const apiData = await generalDeleteFunction(`/card/destroy/${cardDelId}`);
     if (apiData.status) {
       setLoading(false);
-      toast.success(apiData.message)
+      toast.success(apiData.message);
       dispatch({
         type: "SET_CARDLISTREFRESH",
         cardListRefresh: cardListRefresh + 1,
       });
-      setCardDelPopUp(false)
+      setCardDelPopUp(false);
     } else {
-      setCardDelPopUp(false)
+      setCardDelPopUp(false);
       setLoading(false);
       const errorMessage = Object.keys(apiData.errors);
       toast.error(apiData.errors[errorMessage[0]][0]);
@@ -349,15 +355,17 @@ function CardAndBilling() {
                       <Cards
                         className="cardWrapper row align-items-center col-12 mx-auto"
                         number={selectedCard?.[0]?.card_number}
-                        expiry={`${selectedCard?.[0]?.exp_month
-                          ? selectedCard?.[0]?.exp_month < 10
-                            ? `0${selectedCard?.[0]?.exp_month}`
-                            : selectedCard?.[0]?.exp_month
-                          : ""
-                          }/${selectedCard?.[0]?.exp_year
+                        expiry={`${
+                          selectedCard?.[0]?.exp_month
+                            ? selectedCard?.[0]?.exp_month < 10
+                              ? `0${selectedCard?.[0]?.exp_month}`
+                              : selectedCard?.[0]?.exp_month
+                            : ""
+                        }/${
+                          selectedCard?.[0]?.exp_year
                             ? selectedCard?.[0]?.exp_year
                             : ""
-                          }`}
+                        }`}
                         cvc={selectedCard?.[0]?.cvc}
                         name={selectedCard?.[0]?.name}
                       />
@@ -411,7 +419,15 @@ function CardAndBilling() {
                         </div>
                         <div className="label">
                           Holder's Name:{" "}
-                          <span className="float-end" style={{ maxWidth: 120, textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>
+                          <span
+                            className="float-end"
+                            style={{
+                              maxWidth: 120,
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                            }}
+                          >
                             {selectedCard?.[0]?.name}
                           </span>
                         </div>
@@ -446,8 +462,9 @@ function CardAndBilling() {
                                 return (
                                   <div className="col-xl-6" key={key}>
                                     <div
-                                      className={`savedCardWrapper ${item.default ? "active" : ""
-                                        }`}
+                                      className={`savedCardWrapper ${
+                                        item.default ? "active" : ""
+                                      }`}
                                     >
                                       <div className="imgWrapper">
                                         <div className="card-logo-container">
@@ -488,10 +505,13 @@ function CardAndBilling() {
                                         </label>
                                       </div>
                                       <div className="ms-3">
-                                        <button className="clearButton" onClick={() => {
-                                          setCardDelId(item.id);
-                                          setCardDelPopUp(true)
-                                        }}>
+                                        <button
+                                          className="clearButton"
+                                          onClick={() => {
+                                            setCardDelId(item.id);
+                                            setCardDelPopUp(true);
+                                          }}
+                                        >
                                           <i className="fa-duotone text-danger fa-trash"></i>
                                         </button>
                                       </div>
@@ -529,8 +549,9 @@ function CardAndBilling() {
                                   >
                                     <div className="accordion-item">
                                       <h2
-                                        className={`accordion-header addressDrawer ${item.default ? "active" : ""
-                                          }`}
+                                        className={`accordion-header addressDrawer ${
+                                          item.default ? "active" : ""
+                                        }`}
                                       >
                                         <div
                                           className="d-flex flex-wrap align-items-center"
@@ -546,7 +567,14 @@ function CardAndBilling() {
                                               aria-controls={`flush-collapse${key}`}
                                             >
                                               <div>
-                                                <h5 className="mb-0" style={{ maxWidth: 250, textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                                                <h5
+                                                  className="mb-0"
+                                                  style={{
+                                                    maxWidth: 250,
+                                                    textOverflow: "ellipsis",
+                                                    overflow: "hidden",
+                                                  }}
+                                                >
                                                   {item.fullname}
                                                 </h5>
                                               </div>
@@ -624,154 +652,242 @@ function CardAndBilling() {
                                             <div style={{ width: "75%" }}>
                                               <li>
                                                 <input
-                                                  value={item.id === editBillId ? billing.name : item.fullname}
+                                                  value={
+                                                    item.id === editBillId
+                                                      ? billing.name
+                                                      : item.fullname
+                                                  }
                                                   name="name"
-                                                  className={`noinputfield ${errorBilling.name
-                                                    ? "error-border" : editBillId ? "edit"
+                                                  className={`noinputfield ${
+                                                    errorBilling.name
+                                                      ? "error-border"
+                                                      : editBillId
+                                                      ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
                                                   type="text"
-                                                  disabled={item.id === editBillId ? false : true}
+                                                  disabled={
+                                                    item.id === editBillId
+                                                      ? false
+                                                      : true
+                                                  }
                                                 />
                                               </li>
                                               <li>
                                                 <input
-                                                  value={item.id === editBillId ? billing.phone : item.contact_no}
+                                                  value={
+                                                    item.id === editBillId
+                                                      ? billing.phone
+                                                      : item.contact_no
+                                                  }
                                                   placeholder="Phone number"
                                                   name="phone"
-                                                  className={`noinputfield ${errorBilling.phone
-                                                    ? "error-border" : editBillId ? "edit" : ""
-                                                    }`}
+                                                  className={`noinputfield ${
+                                                    errorBilling.phone
+                                                      ? "error-border"
+                                                      : editBillId
+                                                      ? "edit"
+                                                      : ""
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
                                                   type="number"
-                                                  disabled={item.id === editBillId ? false : true}
+                                                  disabled={
+                                                    item.id === editBillId
+                                                      ? false
+                                                      : true
+                                                  }
                                                 />
                                               </li>
                                               <li>
                                                 <input
-                                                  value={item.id === editBillId ? billing.email : item.email}
+                                                  value={
+                                                    item.id === editBillId
+                                                      ? billing.email
+                                                      : item.email
+                                                  }
                                                   placeholder="Email Address"
                                                   name="email"
-                                                  className={`noinputfield ${errorBilling.email
-                                                    ? "error-border" : editBillId ? "edit"
+                                                  className={`noinputfield ${
+                                                    errorBilling.email
+                                                      ? "error-border"
+                                                      : editBillId
+                                                      ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
                                                   type="email"
-                                                  disabled={item.id === editBillId ? false : true}
+                                                  disabled={
+                                                    item.id === editBillId
+                                                      ? false
+                                                      : true
+                                                  }
                                                 />
                                               </li>
                                               <li>
                                                 <input
-                                                  value={item.id === editBillId ? billing.address : item.address}
+                                                  value={
+                                                    item.id === editBillId
+                                                      ? billing.address
+                                                      : item.address
+                                                  }
                                                   placeholder="Full address"
                                                   name="address"
-                                                  className={`noinputfield ${errorBilling.address
-                                                    ? "error-border" : editBillId ? "edit"
+                                                  className={`noinputfield ${
+                                                    errorBilling.address
+                                                      ? "error-border"
+                                                      : editBillId
+                                                      ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
                                                   type="text"
-                                                  disabled={item.id === editBillId ? false : true}
+                                                  disabled={
+                                                    item.id === editBillId
+                                                      ? false
+                                                      : true
+                                                  }
                                                 />
                                               </li>
                                               <li>
                                                 <input
-                                                  value={item.id === editBillId ? billing.city : item.city}
+                                                  value={
+                                                    item.id === editBillId
+                                                      ? billing.city
+                                                      : item.city
+                                                  }
                                                   placeholder="City"
                                                   name="city"
-                                                  className={`noinputfield ${errorBilling.city
-                                                    ? "error-border" : editBillId ? "edit"
+                                                  className={`noinputfield ${
+                                                    errorBilling.city
+                                                      ? "error-border"
+                                                      : editBillId
+                                                      ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
                                                   type="text"
-                                                  disabled={item.id === editBillId ? false : true}
+                                                  disabled={
+                                                    item.id === editBillId
+                                                      ? false
+                                                      : true
+                                                  }
                                                 />
                                               </li>
                                               <li>
                                                 <input
-                                                  value={item.id === editBillId ? billing.state : item.state}
+                                                  value={
+                                                    item.id === editBillId
+                                                      ? billing.state
+                                                      : item.state
+                                                  }
                                                   placeholder="State"
                                                   name="state"
-                                                  className={`noinputfield ${errorBilling.state
-                                                    ? "error-border" : editBillId ? "edit"
+                                                  className={`noinputfield ${
+                                                    errorBilling.state
+                                                      ? "error-border"
+                                                      : editBillId
+                                                      ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
                                                   type="text"
-                                                  disabled={item.id === editBillId ? false : true}
+                                                  disabled={
+                                                    item.id === editBillId
+                                                      ? false
+                                                      : true
+                                                  }
                                                 />
                                               </li>
                                               <li>
                                                 <input
-                                                  value={item.id === editBillId ? billing.zip : item.zip}
+                                                  value={
+                                                    item.id === editBillId
+                                                      ? billing.zip
+                                                      : item.zip
+                                                  }
                                                   placeholder="Zip Code"
                                                   name="zip"
-                                                  className={`noinputfield ${errorBilling.zip
-                                                    ? "error-border" : editBillId ? "edit"
+                                                  className={`noinputfield ${
+                                                    errorBilling.zip
+                                                      ? "error-border"
+                                                      : editBillId
+                                                      ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
                                                   type="number"
-                                                  disabled={item.id === editBillId ? false : true}
+                                                  disabled={
+                                                    item.id === editBillId
+                                                      ? false
+                                                      : true
+                                                  }
                                                 />
                                               </li>
                                               <li>
                                                 <input
-                                                  value={item.id === editBillId ? billing.country : item.country}
+                                                  value={
+                                                    item.id === editBillId
+                                                      ? billing.country
+                                                      : item.country
+                                                  }
                                                   placeholder="Country"
                                                   name="country"
-                                                  className={`noinputfield ${errorBilling.country
-                                                    ? "error-border" : editBillId ? "edit"
+                                                  className={`noinputfield ${
+                                                    errorBilling.country
+                                                      ? "error-border"
+                                                      : editBillId
+                                                      ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
                                                   type="text"
-                                                  disabled={item.id === editBillId ? false : true}
+                                                  disabled={
+                                                    item.id === editBillId
+                                                      ? false
+                                                      : true
+                                                  }
                                                 />
                                               </li>
                                             </div>
                                           </ul>
                                           <div className="d-flex mt-2">
-                                            {editBillId === item.id ? <div className="me-3">
-
-                                              <button
-                                                className="clearButton fw-medium ps-0"
-                                                onClick={() => {
-                                                  handleSubmit();
-                                                  // setEditBillId()
-                                                }}
-                                              >
-
-                                                <i className="fa-duotone fa-pen-to-square me-1"></i>{" "}
-                                                Save
-                                              </button>
-                                            </div>
-                                              : <div className="me-3">
-
+                                            {editBillId === item.id ? (
+                                              <div className="me-3">
+                                                <button
+                                                  className="clearButton fw-medium ps-0"
+                                                  onClick={() => {
+                                                    handleSubmit();
+                                                    // setEditBillId()
+                                                  }}
+                                                >
+                                                  <i className="fa-duotone fa-pen-to-square me-1"></i>{" "}
+                                                  Save
+                                                </button>
+                                              </div>
+                                            ) : (
+                                              <div className="me-3">
                                                 <button
                                                   className="clearButton fw-medium ps-0"
                                                   onClick={() => {
                                                     setEditBillId(item.id);
-                                                    setBilling(prevData => ({
+                                                    setBilling((prevData) => ({
                                                       ...prevData,
                                                       name: item.fullname,
                                                       email: item.email,
@@ -780,16 +896,15 @@ function CardAndBilling() {
                                                       address: item.address,
                                                       country: item.country,
                                                       state: item.state,
-                                                      zip: item.zip
-                                                    }))
-                                                  }
-                                                  }
+                                                      zip: item.zip,
+                                                    }));
+                                                  }}
                                                 >
-
                                                   <i className="fa-duotone fa-pen-to-square me-1"></i>{" "}
                                                   Edit
                                                 </button>
-                                              </div>}
+                                              </div>
+                                            )}
                                             <div>
                                               <button
                                                 className="clearButton fw-medium text-danger"
@@ -837,7 +952,8 @@ function CardAndBilling() {
                                 onClick={() =>
                                   downloadImage(
                                     item.invoice_url,
-                                    `invoice${item.transaction_date.split(" ")[0]
+                                    `invoice${
+                                      item.transaction_date.split(" ")[0]
                                     }`
                                   )
                                 }
@@ -885,9 +1001,7 @@ function CardAndBilling() {
                       <div className="label">
                         Transaction id:{" "}
                         <span className="float-end">
-                          {
-                            accountDetails?.payments[0].transaction_id
-                          }
+                          {accountDetails?.payments[0].transaction_id}
                         </span>
                       </div>
                     </div>
@@ -901,7 +1015,10 @@ function CardAndBilling() {
           <div className="popup">
             <div className="container h-100">
               <div className="row h-100 justify-content-center align-items-center">
-                <RechargeWalletPopup closePopup={handleRechargePopup} rechargeType={"rechargeWallet"} />
+                <RechargeWalletPopup
+                  closePopup={handleRechargePopup}
+                  rechargeType={"rechargeWallet"}
+                />
               </div>
             </div>
           </div>
@@ -1066,8 +1183,7 @@ function CardAndBilling() {
                 </div>
                 <div className="col-10 ps-0">
                   <h4>Warning!</h4>
-                  "Are you sure you want to delete the selected Card
-                  ?"
+                  "Are you sure you want to delete the selected Card ?"
                   <div className="mt-2">
                     <button
                       className="panelButton m-0"
@@ -1095,7 +1211,7 @@ function CardAndBilling() {
       )}
 
       {loading ? <CircularLoader /> : ""}
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -1106,7 +1222,7 @@ function CardAndBilling() {
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </main>
   );
 }

@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 function DocumentUpload() {
   const account = useSelector((state) => state.account);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     reg: null,
@@ -53,22 +53,22 @@ function DocumentUpload() {
     } else {
       setLoading(true);
       const parsedData = {
-        "account_id": account.account_id,
-        "documents": [
+        account_id: account.account_id,
+        documents: [
           {
-            "document_id": 1,
-            "path": formData.reg
+            document_id: 1,
+            path: formData.reg,
           },
           {
-            "document_id": 2,
-            "path": formData.tin
+            document_id: 2,
+            path: formData.tin,
           },
           {
-            "document_id": 3,
-            "path": formData.moa
-          }
-        ]
-      }
+            document_id: 3,
+            path: formData.moa,
+          },
+        ],
+      };
       const apiData = await fileUploadFunction(
         "/account-detail/store",
         parsedData
@@ -76,7 +76,7 @@ function DocumentUpload() {
       if (apiData.status) {
         toast.success(apiData.message);
         setLoading(false);
-        navigate(-1)
+        navigate(-1);
       } else {
         setLoading(false);
         toast.error(apiData.message);
@@ -292,7 +292,7 @@ function DocumentUpload() {
             {loading ? <CircularLoader /> : ""}
           </form>
         </section>
-        <ToastContainer
+        {/* <ToastContainer
           position="bottom-right"
           autoClose={3000}
           hideProgressBar={false}
@@ -303,7 +303,7 @@ function DocumentUpload() {
           draggable
           pauseOnHover
           theme="dark"
-        />
+        /> */}
       </div>
     </>
   );

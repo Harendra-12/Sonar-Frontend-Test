@@ -390,7 +390,7 @@ function Roles() {
                                 style={{
                                   color: "var(--ui-accent)",
                                   fontWeight: 600,
-                                  textTransform: 'capitalize'
+                                  textTransform: "capitalize",
                                 }}
                               >
                                 {selectedRole}
@@ -410,7 +410,9 @@ function Roles() {
                                       handleParentCheckboxChange(item)
                                     }
                                   />
-                                  <label className="formLabel py-0">{item}</label>
+                                  <label className="formLabel py-0">
+                                    {item}
+                                  </label>
                                 </div>
                               </div>
                               <div className="row px-2 pt-1 border-bottom">
@@ -501,7 +503,7 @@ function Roles() {
           ""
         )}
         {loading ? <CircularLoader /> : ""}
-        <ToastContainer
+        {/* <ToastContainer
           position="bottom-right"
           autoClose={3000}
           hideProgressBar={false}
@@ -512,7 +514,7 @@ function Roles() {
           draggable
           pauseOnHover
           theme="dark"
-        />
+        /> */}
       </main>
     </>
   );

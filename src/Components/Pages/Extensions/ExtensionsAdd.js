@@ -12,7 +12,12 @@ import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
-import { domainValidator, lengthValidator, numberValidator, requiredValidator } from "../../validations/validation";
+import {
+  domainValidator,
+  lengthValidator,
+  numberValidator,
+  requiredValidator,
+} from "../../validations/validation";
 
 const ExtensionsAdd = () => {
   const navigate = useNavigate();
@@ -22,11 +27,15 @@ const ExtensionsAdd = () => {
   const [music, setMusic] = useState([]);
   const [musicHold, setMusicHold] = useState();
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const {
-    register, watch, formState: { errors }, handleSubmit, reset
-  } = useForm()
-  
+    register,
+    watch,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm();
+
   const account = useSelector((state) => state.account);
   useEffect(() => {
     if (account === null) {
@@ -48,37 +57,35 @@ const ExtensionsAdd = () => {
         }
         if (musicData.status) {
           setMusic(musicData.data);
-         
         }
       }
       getDomain();
     }
   }, []);
 
-  const handleFormSubmit = handleSubmit( async (data) => {
-    setLoading(true)
-    const payLoad = {...data,...{account_id: acount.account_id}}
+  const handleFormSubmit = handleSubmit(async (data) => {
+    setLoading(true);
+    const payLoad = { ...data, ...{ account_id: acount.account_id } };
     const apiData = await generalPostFunction("/extension/store", payLoad);
-    if(apiData.status){
-      reset(); 
+    if (apiData.status) {
+      reset();
       setLoading(false);
-            toast.success(apiData.message);
-            dispatch({
-              type: "SET_EXTENSIONREFRESH",
-              extensionRefresh: extensionRefresh + 1,
-            });
-            navigate("/extensions");
-          } else {
-            setLoading(false);
-            const errorMessage = Object.keys(apiData.errors);
-            toast.error(apiData.errors[errorMessage[0]][0]);
-          }
-        
-  })
-  
-  console.log(watch())
-  console.log(errors)
- 
+      toast.success(apiData.message);
+      dispatch({
+        type: "SET_EXTENSIONREFRESH",
+        extensionRefresh: extensionRefresh + 1,
+      });
+      navigate("/extensions");
+    } else {
+      setLoading(false);
+      const errorMessage = Object.keys(apiData.errors);
+      toast.error(apiData.errors[errorMessage[0]][0]);
+    }
+  });
+
+  console.log(watch());
+  console.log(errors);
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -124,23 +131,22 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Extension</label>
-                  
-                  
                 </div>
                 <div className="col-12">
                   <input
                     type="number"
                     name="extension"
-                    className="formItem"        
+                    className="formItem"
                     {...register("extension", {
-                      ...requiredValidator, ...numberValidator,...lengthValidator(2,15),
+                      ...requiredValidator,
+                      ...numberValidator,
+                      ...lengthValidator(2, 15),
                     })}
-                   
                   />
-                  {
-                    errors.extension &&<ErrorMessage text={errors.extension.message} />
-                  }
-                  
+                  {errors.extension && (
+                    <ErrorMessage text={errors.extension.message} />
+                  )}
+
                   <label htmlFor="data" className="formItemDesc">
                     Enter the numeric extension. The default configuration
                     allows 2 - 15 digit extensions.
@@ -150,19 +156,20 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Password</label>
-             
                 </div>
                 <div className="col-12">
                   <input
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("password",{...requiredValidator,...lengthValidator(4,50)})}
-                    
+                    {...register("password", {
+                      ...requiredValidator,
+                      ...lengthValidator(4, 50),
+                    })}
                   />
-                  {
-                    errors.password && <ErrorMessage text={errors.password.message} />
-                  }
+                  {errors.password && (
+                    <ErrorMessage text={errors.password.message} />
+                  )}
                   <label htmlFor="data" className="formItemDesc">
                     Password length must be atleast 4 character
                   </label>
@@ -171,19 +178,21 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Domain</label>
-                 
                 </div>
                 <div className="col-12 d-flex flex-column">
                   <select
                     className="formItem"
-                   
                     id="selectFormRow"
-                    {...register("domain", {...requiredValidator,...domainValidator })}
+                    {...register("domain", {
+                      ...requiredValidator,
+                      ...domainValidator,
+                    })}
                     defaultValue={""}
-                    
                   >
-        <option value="" disabled>Select Domain</option>
-          {domains &&
+                    <option value="" disabled>
+                      Select Domain
+                    </option>
+                    {domains &&
                       domains.map((item, key) => {
                         return (
                           <option key={key} value={item[0]}>
@@ -192,9 +201,9 @@ const ExtensionsAdd = () => {
                         );
                       })}
                   </select>
-                {
-                  errors.domain && <ErrorMessage text={errors.domain.message} />
-                }
+                  {errors.domain && (
+                    <ErrorMessage text={errors.domain.message} />
+                  )}
                   <label htmlFor="data" className="formItemDesc">
                     Select the Domain.
                   </label>
@@ -203,59 +212,61 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Voicemail Password</label>
-               
                 </div>
                 <div className="col-12">
                   <input
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register('voicemail_password',{...requiredValidator, ...lengthValidator(4,50)})}
-                   
+                    {...register("voicemail_password", {
+                      ...requiredValidator,
+                      ...lengthValidator(4, 50),
+                    })}
                   />
-                  {errors.voicemail_password && <ErrorMessage text={errors.voicemail_password.message} />}
+                  {errors.voicemail_password && (
+                    <ErrorMessage text={errors.voicemail_password.message} />
+                  )}
                   <label htmlFor="data" className="formItemDesc">
                     Enter the numeric voicemail password here.
                   </label>
                 </div>
               </div>
-    {
-      music.length != 0 && <div className="formRow col-xl-3">
-      <div className="formLabel">
-        <label htmlFor="">Music on Hold</label>
-      </div>
-      <div className="col-12">
-        <select
-          // value={callCenter.musicHold}
-          // onChange={(e) => {
-          //   setMusicHold(e.target.value);
-          // }}
-          {...register("moh")}
-          className="formItem w-100"
-        >
-          <option></option>
-          {music &&
-            music.map((item, index) => {
-              return (
-                <option key={index} value={item.id}>
-                  {item.name}
-                </option>
-              );
-            })}
-          {/* <option>test</option> */}
-        </select>
-        <br />
-        <label htmlFor="data" className="formItemDesc">
-          Select the desired hold music.
-        </label>
-      </div>
-    </div>
-    }
-              
+              {music.length != 0 && (
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="">Music on Hold</label>
+                  </div>
+                  <div className="col-12">
+                    <select
+                      // value={callCenter.musicHold}
+                      // onChange={(e) => {
+                      //   setMusicHold(e.target.value);
+                      // }}
+                      {...register("moh")}
+                      className="formItem w-100"
+                    >
+                      <option></option>
+                      {music &&
+                        music.map((item, index) => {
+                          return (
+                            <option key={index} value={item.id}>
+                              {item.name}
+                            </option>
+                          );
+                        })}
+                      {/* <option>test</option> */}
+                    </select>
+                    <br />
+                    <label htmlFor="data" className="formItemDesc">
+                      Select the desired hold music.
+                    </label>
+                  </div>
+                </div>
+              )}
+
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Account Code</label>
-                 
                 </div>
                 <div className="col-12">
                   <input
@@ -263,7 +274,6 @@ const ExtensionsAdd = () => {
                     name="extension"
                     className="formItem"
                     {...register("account_code")}
-                    
                   />
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -274,7 +284,6 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Effective Caller ID Name</label>
-                 
                 </div>
                 <div className="col-12">
                   <input
@@ -282,7 +291,6 @@ const ExtensionsAdd = () => {
                     name="extension"
                     className="formItem"
                     {...register("effectiveCallerIdName")}
-                    
                   />
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -293,7 +301,6 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Effective Caller ID Number</label>
-                 
                 </div>
                 <div className="col-12">
                   <input
@@ -301,7 +308,6 @@ const ExtensionsAdd = () => {
                     name="extension"
                     className="formItem"
                     {...register("effectiveCallerIdNumber")}
-                   
                   />
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -312,7 +318,6 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Outbound Caller ID Name</label>
-                 
                 </div>
                 <div className="col-12">
                   <input
@@ -320,7 +325,6 @@ const ExtensionsAdd = () => {
                     name="extension"
                     className="formItem"
                     {...register("outbundCallerIdName")}
-                  
                   />
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -331,7 +335,6 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Outbound Caller ID Number</label>
-                  
                 </div>
                 <div className="col-12">
                   <input
@@ -339,7 +342,6 @@ const ExtensionsAdd = () => {
                     name="extension"
                     className="formItem"
                     {...register("outbundCallerIdNumber")}
-                    
                   />
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -350,7 +352,6 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Emergency Caller ID Name</label>
-                  
                 </div>
                 <div className="col-12">
                   <input
@@ -358,7 +359,6 @@ const ExtensionsAdd = () => {
                     name="extension"
                     className="formItem"
                     {...register("emergencyCallerIdName")}
-                    
                   />
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -369,7 +369,6 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Emergency Caller ID Number</label>
-                  
                 </div>
                 <div className="col-12">
                   <input
@@ -377,7 +376,6 @@ const ExtensionsAdd = () => {
                     name="extension"
                     className="formItem"
                     {...register("emergencyCallerIdNumber")}
-                   
                   />
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -388,7 +386,6 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Directory Full Name</label>
-                 
                 </div>
                 <div className="col-12">
                   <input
@@ -396,7 +393,6 @@ const ExtensionsAdd = () => {
                     name="extension"
                     className="formItem"
                     {...register("directoryFullname")}
-                  
                   />
 
                   <br />
@@ -410,7 +406,6 @@ const ExtensionsAdd = () => {
                   <label htmlFor="selectFormRow">
                     Directory Extension Visible
                   </label>
-                 
                 </div>
                 <div className="col-12">
                   <select
@@ -418,7 +413,6 @@ const ExtensionsAdd = () => {
                     name=""
                     id="selectFormRow"
                     {...register("directoryExtensionVisible")}
-                  
                   >
                     <option value="true">True</option>
                     <option value="false">False</option>
@@ -433,7 +427,6 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Max Registrations</label>
-                  
                 </div>
                 <div className="col-12">
                   <input
@@ -441,7 +434,6 @@ const ExtensionsAdd = () => {
                     name="extension"
                     className="formItem"
                     {...register("maxRegistration")}
-                  
                   />
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -452,7 +444,6 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Limit Max</label>
-                 
                 </div>
                 <div className="col-12">
                   <input
@@ -460,7 +451,6 @@ const ExtensionsAdd = () => {
                     name="extension"
                     className="formItem"
                     {...register("limitMax")}
-                  
                   />
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -472,7 +462,6 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Limit Destination</label>
-                
                 </div>
                 <div className="col-12">
                   <input
@@ -480,7 +469,6 @@ const ExtensionsAdd = () => {
                     name="extension"
                     className="formItem"
                     {...register("limitDestinations")}
-                    
                   />
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -492,7 +480,6 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Voicemail Enabled</label>
-                 
                 </div>
                 <div className="col-12">
                   <select
@@ -501,7 +488,6 @@ const ExtensionsAdd = () => {
                     defaultValue={"true"}
                     id="selectFormRow"
                     {...register("voiceMailEnable")}
-                 
                   >
                     {/* <option value="" disabled ></option> */}
                     <option value="true">True</option>
@@ -516,7 +502,6 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Voicemail Mail To</label>
-                
                 </div>
                 <div className="col-12">
                   <input
@@ -524,7 +509,6 @@ const ExtensionsAdd = () => {
                     name="extension"
                     className="formItem"
                     {...register("voiceEmailTo")}
-                   
                   />
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -535,7 +519,6 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Voicemail File</label>
-                 
                 </div>
                 <div className="col-12">
                   <select
@@ -544,9 +527,10 @@ const ExtensionsAdd = () => {
                     defaultValue={""}
                     id="selectFormRow"
                     {...register("voiceMailFile")}
-                  
                   >
-                    <option value={""} disabled>Select Voicemail File</option>
+                    <option value={""} disabled>
+                      Select Voicemail File
+                    </option>
                     <option value="audio">Audio File Attachment</option>
                     <option value="listen">Listen Link (Login Required)</option>
                     <option value="download">
@@ -563,7 +547,6 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Voicemail Keep Local</label>
-                  
                 </div>
 
                 <div className="col-12">
@@ -573,7 +556,6 @@ const ExtensionsAdd = () => {
                     id="selectFormRow"
                     {...register("voiceMailKeepFile")}
                     defaultValue={"true"}
-                  
                   >
                     <option value="true">True</option>
                     <option value="false">False</option>
@@ -588,7 +570,6 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Missed Call</label>
-                 
                 </div>
                 <div className="col-12">
                   <select
@@ -597,7 +578,6 @@ const ExtensionsAdd = () => {
                     id="selectFormRow"
                     {...register("missedCall")}
                     defaultValue={"none"}
-                   
                   >
                     <option value="email">Email</option>
                     <option value="none">None</option>
@@ -612,7 +592,6 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Toll Allow</label>
-                  
                 </div>
                 <div className="col-12">
                   <input
@@ -620,7 +599,6 @@ const ExtensionsAdd = () => {
                     name="extension"
                     className="formItem"
                     {...register("tollAllowValue")}
-                   
                   />
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -632,7 +610,6 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Call Timeout</label>
-                
                 </div>
                 <div className="col-12">
                   <input
@@ -640,7 +617,6 @@ const ExtensionsAdd = () => {
                     name="extension"
                     className="formItem"
                     {...register("callTimeOut")}
-                    
                   />
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -652,7 +628,6 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Call Group</label>
-                
                 </div>
                 <div className="col-12">
                   <input
@@ -660,7 +635,6 @@ const ExtensionsAdd = () => {
                     name="extension"
                     className="formItem"
                     {...register("callGroup")}
-                   
                   />
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -672,7 +646,6 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Call Screen</label>
-                  
                 </div>
                 <div className="col-12">
                   <select
@@ -681,7 +654,6 @@ const ExtensionsAdd = () => {
                     id="selectFormRow"
                     {...register("callScreen")}
                     defaultValue={"Disable"}
-                   
                   >
                     <option value="Enable">Enable</option>
                     <option value="Disable">Disable</option>
@@ -695,7 +667,6 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Record</label>
-                 
                 </div>
                 <div className="col-12">
                   <select
@@ -704,7 +675,6 @@ const ExtensionsAdd = () => {
                     id="selectFormRow"
                     {...register("record")}
                     defaultValue={"A"}
-                   
                   >
                     <option value="D">Disabled</option>
                     <option value="A">All</option>
@@ -721,7 +691,6 @@ const ExtensionsAdd = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Description</label>
-                  
                 </div>
                 <div className="col-12">
                   <input
@@ -729,7 +698,6 @@ const ExtensionsAdd = () => {
                     name="extension"
                     className="formItem"
                     {...register("description")}
-                   
                   />
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -742,7 +710,7 @@ const ExtensionsAdd = () => {
           </div>
         </div>
       </section>
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -753,7 +721,7 @@ const ExtensionsAdd = () => {
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </main>
   );
 };

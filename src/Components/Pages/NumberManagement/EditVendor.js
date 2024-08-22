@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  generalPutFunction,
-} from "../../GlobalFunction/globalFunction";
+import { generalPutFunction } from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../../Loader/CircularLoader";
 
 function EditVendor() {
@@ -247,7 +245,7 @@ function EditVendor() {
             </div>
           </div>
         </section>
-        <ToastContainer
+        {/* <ToastContainer
           position="bottom-right"
           autoClose={3000}
           hideProgressBar={false}
@@ -258,7 +256,7 @@ function EditVendor() {
           draggable
           pauseOnHover
           theme="dark"
-        />
+        /> */}
       </main>
     </>
   );

@@ -232,7 +232,7 @@ function ActiveCalls() {
         </section>
       </main>
       {loading && <CircularLoader />}
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -243,7 +243,7 @@ function ActiveCalls() {
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </>
   );
 }
