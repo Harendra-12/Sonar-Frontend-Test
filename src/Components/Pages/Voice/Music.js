@@ -95,7 +95,7 @@ function Music() {
               className="d-flex flex-wrap px-xl-3 py-2 justify-content-between"
               id="detailsHeader"
             >
-              <div className="col-xl-4 my-auto">
+              <div className="col-xl-4 col-6 my-auto">
                 <div className="position-relative searchBox">
                   <input
                     type="search"
