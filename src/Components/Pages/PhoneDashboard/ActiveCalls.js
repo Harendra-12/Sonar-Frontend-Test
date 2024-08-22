@@ -102,11 +102,26 @@ function ActiveCalls() {
                               <td>{item.b_cid_num}</td>
                               <td>{item.dest}</td>
                               <td>
-                              <select>
-                                <option value="Burge" onClick={() => bargeCall(item.uuid)}>Burge</option>
-                                <option value="Intercept" onClick={() => interceptCall(item.uuid)}>Intercept</option>
-                                <option value="Eavesdrop" onClick={() => eavesdropCall(item.uuid)}>Eavesdrop</option>
-                              </select>
+                                <select>
+                                  <option
+                                    value="Burge"
+                                    onClick={() => bargeCall(item.uuid)}
+                                  >
+                                    Burge
+                                  </option>
+                                  <option
+                                    value="Intercept"
+                                    onClick={() => interceptCall(item.uuid)}
+                                  >
+                                    Intercept
+                                  </option>
+                                  <option
+                                    value="Eavesdrop"
+                                    onClick={() => eavesdropCall(item.uuid)}
+                                  >
+                                    Eavesdrop
+                                  </option>
+                                </select>
                               </td>
                               {/* <td onClick={() => bargeCall(item.uuid)}>
                                 <label
@@ -211,7 +226,7 @@ function ActiveCalls() {
         </section>
       </main>
       {loading && <CircularLoader />}
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -222,7 +237,7 @@ function ActiveCalls() {
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </>
   );
 }

@@ -34,7 +34,7 @@ function Music() {
       }
     }
     getData();
-  }, [ refresh]);
+  }, [refresh]);
 
   //   Handle delete function
   const handleDelete = async (id) => {
@@ -42,7 +42,7 @@ function Music() {
     const apiData = await generalDeleteFunction(`/sound/${id}`);
     if (apiData.status) {
       const newArray = music.filter((item) => item.id !== id);
-      setMusic( newArray );
+      setMusic(newArray);
       toast.success(apiData.message);
       setLoading(false);
     } else {
@@ -229,7 +229,7 @@ function Music() {
           )} */}
         </div>
       </section>
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -240,7 +240,7 @@ function Music() {
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </main>
   );
 }

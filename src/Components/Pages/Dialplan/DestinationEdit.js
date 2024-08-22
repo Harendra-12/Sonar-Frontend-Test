@@ -973,7 +973,7 @@ function DestinationEdit() {
           </div>
         </section>
       </main>
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -984,7 +984,7 @@ function DestinationEdit() {
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </>
   );
 }

@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { backToTop, generalGetFunction, generalPutFunction } from "../../GlobalFunction/globalFunction";
+import {
+  backToTop,
+  generalGetFunction,
+  generalPutFunction,
+} from "../../GlobalFunction/globalFunction";
 import ContentLoader from "../../Loader/ContentLoader";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -9,17 +13,19 @@ import "react-toastify/dist/ReactToastify.css";
 function PaymentGateway() {
   const [loading, setLoading] = useState(true);
   const [gateway, setGateway] = useState();
-  const [changeState, setChnageState] = useState(0)
-  const [popup,setPopup] =useState(false)
-  const [activeGateway,setActiveGateway]=useState()
-  const [newGateway,setNewGateway]=useState()
+  const [changeState, setChnageState] = useState(0);
+  const [popup, setPopup] = useState(false);
+  const [activeGateway, setActiveGateway] = useState();
+  const [newGateway, setNewGateway] = useState();
   const navigate = useNavigate();
   // Getting packes value from inital state
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/payment-gateways`);
       if (apiData.status) {
-        setActiveGateway(apiData.data.filter((item)=>item.status==="active"))
+        setActiveGateway(
+          apiData.data.filter((item) => item.status === "active")
+        );
         setLoading(false);
         setGateway(apiData.data);
       }
@@ -30,17 +36,20 @@ function PaymentGateway() {
   // console.log("This is active vendor",activeVendor);
   //   Status change
   async function handleStatusChange(id, status) {
-    setLoading(true)
+    setLoading(true);
     const parsedData = {
-      status: "active"
-    }
-    const apiData = await generalPutFunction(`/payment-gateway/update/${id}`, parsedData)
+      status: "active",
+    };
+    const apiData = await generalPutFunction(
+      `/payment-gateway/update/${id}`,
+      parsedData
+    );
     if (apiData.status) {
-      setChnageState(changeState + 1)
-      setLoading(false)
-      toast.success(apiData.message)
+      setChnageState(changeState + 1);
+      setLoading(false);
+      toast.success(apiData.message);
     } else {
-      setLoading(false)
+      setLoading(false);
       const errorMessage = Object.keys(apiData.errors);
       toast.error(apiData.errors[errorMessage[0]][0]);
     }
@@ -66,8 +75,10 @@ function PaymentGateway() {
                 <div className="col-xl-8 pt-3 pt-xl-0">
                   <div className="d-flex justify-content-end">
                     <p
-
-                      onClick={() => { backToTop(); navigate(-1) }}
+                      onClick={() => {
+                        backToTop();
+                        navigate(-1);
+                      }}
                       effect="ripple"
                       className="panelButton"
                     >
@@ -112,26 +123,67 @@ function PaymentGateway() {
                           {gateway &&
                             gateway.map((item, index) => {
                               return (
-                                <tr
-                                  key={index}
-                                >
-                                  <td onClick={() =>
-                                    navigate(`/payment-gateway-edit`, { state: item })
-                                  } >{item.name }</td>
-                                  <td onClick={() =>
-                                    navigate(`/payment-gateway-edit`, { state: item })
-                                  } >{item.username}</td>
-                                  <td onClick={() =>
-                                    navigate(`/payment-gateway-edit`, { state: item })
-                                  } >{item.password}</td>
-                                   <td onClick={() =>
-                                    navigate(`/payment-gateway-edit`, { state: item })
-                                  } >{item.api_key}</td>
-                                   <td onClick={() =>
-                                    navigate(`/payment-gateway-edit`, { state: item })
-                                  } >{item.api_secret}</td>
-                                  <td onClick={() =>{setPopup(true);setNewGateway(item)}}>
-                                    <label className={item?.status === 'active' ? "tableLabel success" : "tableLabel fail"}>{item.status}</label>
+                                <tr key={index}>
+                                  <td
+                                    onClick={() =>
+                                      navigate(`/payment-gateway-edit`, {
+                                        state: item,
+                                      })
+                                    }
+                                  >
+                                    {item.name}
+                                  </td>
+                                  <td
+                                    onClick={() =>
+                                      navigate(`/payment-gateway-edit`, {
+                                        state: item,
+                                      })
+                                    }
+                                  >
+                                    {item.username}
+                                  </td>
+                                  <td
+                                    onClick={() =>
+                                      navigate(`/payment-gateway-edit`, {
+                                        state: item,
+                                      })
+                                    }
+                                  >
+                                    {item.password}
+                                  </td>
+                                  <td
+                                    onClick={() =>
+                                      navigate(`/payment-gateway-edit`, {
+                                        state: item,
+                                      })
+                                    }
+                                  >
+                                    {item.api_key}
+                                  </td>
+                                  <td
+                                    onClick={() =>
+                                      navigate(`/payment-gateway-edit`, {
+                                        state: item,
+                                      })
+                                    }
+                                  >
+                                    {item.api_secret}
+                                  </td>
+                                  <td
+                                    onClick={() => {
+                                      setPopup(true);
+                                      setNewGateway(item);
+                                    }}
+                                  >
+                                    <label
+                                      className={
+                                        item?.status === "active"
+                                          ? "tableLabel success"
+                                          : "tableLabel fail"
+                                      }
+                                    >
+                                      {item.status}
+                                    </label>
                                   </td>
                                 </tr>
                               );
@@ -146,26 +198,46 @@ function PaymentGateway() {
           </div>
         </section>
       </main>
-      {popup? <div className='popup'>
-            <div className='container h-100'>
-                <div className='row h-100 justify-content-center align-items-center'>
-                    <div className='row content col-xl-4'>
-                        <div className='col-2 px-0'>
-                            <div className='iconWrapper'>
-                                <i className="fa-duotone fa-triangle-exclamation"></i>
-                            </div>
-                        </div>
-                        <div className='col-10 ps-0'>
-                            <h4>Warning!</h4>
-                            <p>Are you sure you want to active {newGateway.name} gateway previously active gateway was {activeGateway?.[0]?.name}?</p>
-                            <button className='panelButton m-0' onClick={()=>{setPopup(false);handleStatusChange(newGateway.id,"active")}}>Confirm</button>
-                            <button className='panelButtonWhite m-0 float-end' onClick={()=>setPopup(false)}>Cancel</button>
-                        </div>
-                    </div>
+      {popup ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-4">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-triangle-exclamation"></i>
+                  </div>
                 </div>
+                <div className="col-10 ps-0">
+                  <h4>Warning!</h4>
+                  <p>
+                    Are you sure you want to active {newGateway.name} gateway
+                    previously active gateway was {activeGateway?.[0]?.name}?
+                  </p>
+                  <button
+                    className="panelButton m-0"
+                    onClick={() => {
+                      setPopup(false);
+                      handleStatusChange(newGateway.id, "active");
+                    }}
+                  >
+                    Confirm
+                  </button>
+                  <button
+                    className="panelButtonWhite m-0 float-end"
+                    onClick={() => setPopup(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
             </div>
-        </div>:""}
-      <ToastContainer
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -176,7 +248,7 @@ function PaymentGateway() {
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </>
   );
 }

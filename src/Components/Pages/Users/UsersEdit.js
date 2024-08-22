@@ -582,7 +582,7 @@ const UsersEdit = () => {
         ) : (
           ""
         )}
-        <ToastContainer
+        {/* <ToastContainer
           position="bottom-right"
           autoClose={3000}
           hideProgressBar={false}
@@ -593,7 +593,7 @@ const UsersEdit = () => {
           draggable
           pauseOnHover
           theme="dark"
-        />
+        /> */}
       </main>
     </>
   );

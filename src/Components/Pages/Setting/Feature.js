@@ -250,7 +250,7 @@ function Feature() {
             </div>
           </div>
         </section>
-        <ToastContainer
+        {/* <ToastContainer
           position="bottom-right"
           autoClose={3000}
           hideProgressBar={false}
@@ -261,7 +261,7 @@ function Feature() {
           draggable
           pauseOnHover
           theme="dark"
-        />
+        /> */}
       </main>
     </>
   );

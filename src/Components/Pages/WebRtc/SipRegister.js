@@ -17,12 +17,15 @@ export const SipRegister = () => {
   // const password = pswrd;
   useEffect(() => {
     connectAndRegister({
-      // username: extension,
-      // password: password,
-      username: "1003",
-      password: "886029",
+      username: extension,
+      password: password,
+      // username: "1003",
+      // password: "886029",
     });
-  }, [connectAndRegister, extension, password]);
+  }, [
+    connectAndRegister,
+    // extension, password
+  ]);
 
   return (
     <div className="col-auto">

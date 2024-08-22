@@ -143,8 +143,8 @@ function Login() {
           }
         } else {
           setLoading(false);
-          console.log(data,"This is error data");
-          
+          console.log(data, "This is error data");
+
           // const errorMessage = Object.keys(data.error);
           toast.error(data.response.data.message);
         }
@@ -374,7 +374,8 @@ function Login() {
           <div className="someText">
             <h1>Welcome.</h1>
             <p>
-              Experience seamless communication and collaboration with our UCaaS solution, designed for efficiency and innovation.
+              Experience seamless communication and collaboration with our UCaaS
+              solution, designed for efficiency and innovation.
             </p>
           </div>
           <div className="someLogo">
@@ -383,7 +384,7 @@ function Login() {
           </div>
         </main>
       </div>
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -394,7 +395,7 @@ function Login() {
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </>
   );
 }

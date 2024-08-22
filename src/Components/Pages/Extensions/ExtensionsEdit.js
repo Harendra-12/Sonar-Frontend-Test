@@ -253,7 +253,7 @@ const ExtensionsEdit = () => {
           record: extensionState.record,
           domain: extensionState.domain,
           description: extensionState.desc,
-          moh:musicHold,
+          moh: musicHold,
           password: extensionState.password,
           ...(extensionState.user === "" || extensionState.user === null
             ? {}
@@ -290,7 +290,7 @@ const ExtensionsEdit = () => {
           domain: extensionState.domain,
           description: extensionState.desc,
           password: extensionState.password,
-         user: extensionState.user,
+          user: extensionState.user,
         };
       }
 
@@ -309,7 +309,7 @@ const ExtensionsEdit = () => {
           setPopUp(true);
         } else {
           const errorMessage = Object.keys(apiData.errors);
-        toast.error(apiData.errors[errorMessage[0]][0]);
+          toast.error(apiData.errors[errorMessage[0]][0]);
         }
       }
     }
@@ -1665,7 +1665,7 @@ const ExtensionsEdit = () => {
           ""
         )}
       </section>
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -1676,7 +1676,7 @@ const ExtensionsEdit = () => {
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </main>
   );
 };

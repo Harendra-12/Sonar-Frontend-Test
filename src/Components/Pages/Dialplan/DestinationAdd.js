@@ -85,7 +85,6 @@ function DestinationAdd() {
     }
   });
 
-
   return (
     <>
       <main className="mainContent">
@@ -267,8 +266,8 @@ function DestinationAdd() {
                 </div>
                 <div className="formRow col-xl-3">
                   <ActionList
-                  getDropdownValue={actionListValue}
-                  value={watch().dial_action}
+                    getDropdownValue={actionListValue}
+                    value={watch().dial_action}
                   />
                 </div>
                 {watch().type === "Inbound" && (
@@ -557,7 +556,7 @@ function DestinationAdd() {
           </div>
         </section>
       </main>
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -568,7 +567,7 @@ function DestinationAdd() {
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </>
   );
 }

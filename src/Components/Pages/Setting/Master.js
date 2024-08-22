@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction } from "../../GlobalFunction/globalFunction";
+import {
+  generalDeleteFunction,
+  generalGetFunction,
+  generalPostFunction,
+  generalPutFunction,
+} from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -24,10 +29,10 @@ function Master() {
   const [updateGroup, setUpdateGroup] = useState("");
   const [newDomain, setNewDomain] = useState("");
   const [newGroup, setNewGroup] = useState("");
-  const [searchDomain, setSearchDomain] = useState("")
-  const [searchGroup, setSearchGroup] = useState("")
-  const [filterDomain, setFilterDomain] = useState()
-  const [filterGroup, setFilterGroup] = useState()
+  const [searchDomain, setSearchDomain] = useState("");
+  const [searchGroup, setSearchGroup] = useState("");
+  const [filterDomain, setFilterDomain] = useState();
+  const [filterGroup, setFilterGroup] = useState();
   const account = useSelector((state) => state.account);
 
   // Getting domain and group list
@@ -48,7 +53,7 @@ function Master() {
             domainList.data.map((item) => {
               return [item.id, item.domain_name];
             })
-          )
+          );
         } else {
           navigate("/");
         }
@@ -62,7 +67,7 @@ function Master() {
             groupList.data.map((item) => {
               return [item.id, item.group_name];
             })
-          )
+          );
         } else {
           navigate("/");
         }
@@ -80,88 +85,87 @@ function Master() {
         const parsedData = {
           domain_name: newDomain,
           created_by: account.id,
-          account_id: account.account_id
-        }
-        const apiData = await generalPostFunction("/domain/store", parsedData)
+          account_id: account.account_id,
+        };
+        const apiData = await generalPostFunction("/domain/store", parsedData);
         if (apiData.status) {
-          toast.success(apiData.message)
+          toast.success(apiData.message);
         } else {
           const errorMessage = Object.keys(apiData.errors);
           toast.error(apiData.errors[errorMessage[0]][0]);
-
         }
       } else {
-        toast.error("Invalid Domain name")
+        toast.error("Invalid Domain name");
       }
     } else if (groupSaveClick) {
       if (newGroup.length > 2) {
         const parsedData = {
           group_name: newGroup,
           created_by: account.id,
-          account_id: account.account_id
-        }
-        const apiData = await generalPostFunction("/group/store", parsedData)
+          account_id: account.account_id,
+        };
+        const apiData = await generalPostFunction("/group/store", parsedData);
         if (apiData.status) {
-          toast.success(apiData.message)
+          toast.success(apiData.message);
         } else {
           const errorMessage = Object.keys(apiData.errors);
           toast.error(apiData.errors[errorMessage[0]][0]);
-
         }
       } else {
-        toast.error("Invalid Group Name")
+        toast.error("Invalid Group Name");
       }
     } else if (editClick && editType === "Domain") {
       if (updatedDomain.length > 2) {
         const parsedData = {
-          domain_name: updatedDomain
-        }
-        const apiData = await generalPutFunction(`/domain/${editIndex}`, parsedData)
+          domain_name: updatedDomain,
+        };
+        const apiData = await generalPutFunction(
+          `/domain/${editIndex}`,
+          parsedData
+        );
         if (apiData.status) {
-          toast.success(apiData.message)
+          toast.success(apiData.message);
         } else {
           const errorMessage = Object.keys(apiData.errors);
           toast.error(apiData.errors[errorMessage[0]][0]);
-
         }
-
       } else {
-        toast.error("Invalid Updated Value")
+        toast.error("Invalid Updated Value");
       }
     } else if (editClick && editType === "Group") {
       if (updateGroup.length > 2) {
         const parsedData = {
-          group_name: updateGroup
-        }
-        const apiData = await generalPutFunction(`/group/${editIndex}`, parsedData)
+          group_name: updateGroup,
+        };
+        const apiData = await generalPutFunction(
+          `/group/${editIndex}`,
+          parsedData
+        );
         if (apiData.status) {
-          toast.success(apiData.message)
+          toast.success(apiData.message);
         } else {
-          toast.error(apiData.message)
-
+          toast.error(apiData.message);
         }
       } else {
-        toast.error("Invalid Updated Value")
+        toast.error("Invalid Updated Value");
       }
 
       // eslint-disable-next-line eqeqeq
     } else if (name == "Domain") {
-      const apiData = await generalDeleteFunction(`domain/${editIndex}`)
+      const apiData = await generalDeleteFunction(`domain/${editIndex}`);
       if (apiData.status) {
-        toast.success(apiData.message)
+        toast.success(apiData.message);
       } else {
         const errorMessage = Object.keys(apiData.errors);
         toast.error(apiData.errors[errorMessage[0]][0]);
-
       }
     } else {
-      const apiData = await generalDeleteFunction(`group/${editIndex}`)
+      const apiData = await generalDeleteFunction(`group/${editIndex}`);
       if (apiData.status) {
-        toast.success(apiData.message)
+        toast.success(apiData.message);
       } else {
         const errorMessage = Object.keys(apiData.errors);
         toast.error(apiData.errors[errorMessage[0]][0]);
-
       }
     }
 
@@ -177,20 +181,21 @@ function Master() {
   useEffect(() => {
     if (domain) {
       if (searchDomain.trim().length > 0) {
-        setFilterDomain(domain.filter((item) => item[1].includes(searchDomain)))
+        setFilterDomain(
+          domain.filter((item) => item[1].includes(searchDomain))
+        );
       } else {
-        setFilterDomain(domain)
+        setFilterDomain(domain);
       }
       if (searchGroup.trim().length > 0) {
-        setFilterGroup(group.filter((item) => item[1].includes(searchGroup)))
+        setFilterGroup(group.filter((item) => item[1].includes(searchGroup)));
       } else {
-        setFilterGroup(group)
+        setFilterGroup(group);
       }
     }
 
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchDomain, searchGroup])
+  }, [searchDomain, searchGroup]);
   console.log(filterDomain, "This is filter domain");
   return (
     <main className="mainContent">
@@ -203,14 +208,25 @@ function Master() {
                 <div className="masterSegment">
                   <h6>
                     <div className="row align-items-center">
-                      <div className="col-auto">
-                        List of Domain{" "}
-                      </div>
+                      <div className="col-auto">List of Domain </div>
                       <div className="col pe-0">
-                        <input type="search" name="Search" id="headerSearch" placeholder="Search a domain" onChange={(e) => setSearchDomain(e.target.value)} />
+                        <input
+                          type="search"
+                          name="Search"
+                          id="headerSearch"
+                          placeholder="Search a domain"
+                          onChange={(e) => setSearchDomain(e.target.value)}
+                        />
                       </div>
                       <div className="col-auto ps-0 mt-1">
-                        <button className="clearButton" style={{ width: '100%', height: '100%', fontSize: 22 }}>
+                        <button
+                          className="clearButton"
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            fontSize: 22,
+                          }}
+                        >
                           <i
                             className="fa-duotone fa-circle-plus"
                             onClick={() => {
@@ -267,7 +283,7 @@ function Master() {
                             ></input>
                             <button className="clearButton text-success">
                               {editIndex === item[0] &&
-                                editType === "Domain" ? (
+                              editType === "Domain" ? (
                                 <i
                                   className="fa-duotone fa-circle-check"
                                   onClick={() => {
@@ -306,14 +322,25 @@ function Master() {
                 <div className="masterSegment">
                   <h6>
                     <div className="row align-items-center">
-                      <div className="col-auto">
-                        List of Group{" "}
-                      </div>
+                      <div className="col-auto">List of Group </div>
                       <div className="col pe-0">
-                        <input type="search" name="Search" id="headerSearch" placeholder="Search a group" onChange={(e) => setSearchGroup(e.target.value)} />
+                        <input
+                          type="search"
+                          name="Search"
+                          id="headerSearch"
+                          placeholder="Search a group"
+                          onChange={(e) => setSearchGroup(e.target.value)}
+                        />
                       </div>
                       <div className="col-auto ps-0 mt-1">
-                        <button className="clearButton" style={{ width: '100%', height: '100%', fontSize: 22 }}>
+                        <button
+                          className="clearButton"
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            fontSize: 22,
+                          }}
+                        >
                           <i
                             className="fa-duotone fa-circle-plus"
                             onClick={() => {
@@ -467,7 +494,7 @@ function Master() {
         ""
       )}
 
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -478,7 +505,7 @@ function Master() {
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </main>
   );
 }

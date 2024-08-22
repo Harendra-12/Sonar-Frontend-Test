@@ -442,7 +442,8 @@ function SipAdd() {
                                   effect="ripple"
                                   type="button"
                                 >
-                                  <i className="fa-duotone fa-circle-plus me-2"></i>Add More
+                                  <i className="fa-duotone fa-circle-plus me-2"></i>
+                                  Add More
                                 </button>
                               </div>
                             ) : (
@@ -480,7 +481,7 @@ function SipAdd() {
           </div>
         </section>
       </main>
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -491,7 +492,7 @@ function SipAdd() {
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </>
   );
 }

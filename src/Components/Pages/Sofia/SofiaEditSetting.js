@@ -1,15 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import { backToTop, generalGetFunction, generalPostFunction, generalPutFunction } from '../../GlobalFunction/globalFunction'
+import React, { useEffect, useState } from "react";
+import {
+  backToTop,
+  generalGetFunction,
+  generalPostFunction,
+  generalPutFunction,
+} from "../../GlobalFunction/globalFunction";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function SofiaEditSetting() {
-  const navigate = useNavigate()
-  const account = useSelector((state) => state.account)
+  const navigate = useNavigate();
+  const account = useSelector((state) => state.account);
   if (account === null) {
-    navigate("/")
+    navigate("/");
   }
   const queryParams = new URLSearchParams(useLocation().search);
   const value = queryParams.get("id");
@@ -21,44 +26,46 @@ function SofiaEditSetting() {
     desc: "",
     nameMissing: false,
     valueMissing: false,
-  })
+  });
   useEffect(() => {
     async function getData() {
-      const apiData = await generalGetFunction(`sofia-global-settings/${value}`)
+      const apiData = await generalGetFunction(
+        `sofia-global-settings/${value}`
+      );
       if (apiData.status) {
-        setSofia(prevState => ({
+        setSofia((prevState) => ({
           ...prevState,
           name: apiData.data.name,
           value: apiData.data.value,
           status: apiData.data.enabled === 0 ? "false" : "true",
-          desc: apiData.data.description
-        }))
+          desc: apiData.data.description,
+        }));
       }
     }
-    getData()
-  }, [])
+    getData();
+  }, []);
   async function handleSubmit() {
     if (sofia.name === "") {
-      setSofia(prevState => ({
+      setSofia((prevState) => ({
         ...prevState,
-        nameMissing: true
-      }))
+        nameMissing: true,
+      }));
     } else {
-      setSofia(prevState => ({
+      setSofia((prevState) => ({
         ...prevState,
-        nameMissing: false
-      }))
+        nameMissing: false,
+      }));
     }
     if (sofia.value === "") {
-      setSofia(prevState => ({
+      setSofia((prevState) => ({
         ...prevState,
-        valueMissing: true
-      }))
+        valueMissing: true,
+      }));
     } else {
-      setSofia(prevState => ({
+      setSofia((prevState) => ({
         ...prevState,
-        valueMissing: false
-      }))
+        valueMissing: false,
+      }));
     }
     if (sofia.name.length > 0 && sofia.value.length > 0) {
       const parsedData = {
@@ -66,11 +73,14 @@ function SofiaEditSetting() {
         value: sofia.value,
         description: sofia.desc,
         enabled: sofia.status === "false" ? false : true,
-      }
+      };
       console.log("This is parsed data", parsedData);
-      const apiData = await generalPutFunction(`/sofia-global-settings/${value}`, parsedData)
+      const apiData = await generalPutFunction(
+        `/sofia-global-settings/${value}`,
+        parsedData
+      );
       if (apiData.status) {
-        toast.success(apiData.message)
+        toast.success(apiData.message);
       } else {
         const errorMessage = Object.keys(apiData.errors);
         toast.error(apiData.errors[errorMessage[0]][0]);
@@ -118,8 +128,11 @@ function SofiaEditSetting() {
                   <div className="formRow col-xl-3">
                     <div className="formLabel">
                       <label htmlFor="">Name</label>
-                      {sofia.nameMissing ? <label className="status missing">field missing</label> : ""}
-
+                      {sofia.nameMissing ? (
+                        <label className="status missing">field missing</label>
+                      ) : (
+                        ""
+                      )}
                     </div>
                     <div className="col-12">
                       <input
@@ -129,10 +142,10 @@ function SofiaEditSetting() {
                         required="required"
                         value={sofia.name}
                         onChange={(e) => {
-                          setSofia(prevState => ({
+                          setSofia((prevState) => ({
                             ...prevState,
-                            name: e.target.value
-                          }))
+                            name: e.target.value,
+                          }));
                         }}
                       />
                       <br />
@@ -145,8 +158,11 @@ function SofiaEditSetting() {
                   <div className="formRow col-xl-3">
                     <div className="formLabel">
                       <label htmlFor="selectFormRow">Value</label>
-                      {sofia.valueMissing ? <label className="status missing">field missing</label> : ""}
-
+                      {sofia.valueMissing ? (
+                        <label className="status missing">field missing</label>
+                      ) : (
+                        ""
+                      )}
                     </div>
                     <div className="col-12">
                       <input
@@ -156,10 +172,10 @@ function SofiaEditSetting() {
                         required="required"
                         value={sofia.value}
                         onChange={(e) => {
-                          setSofia(prevState => ({
+                          setSofia((prevState) => ({
                             ...prevState,
-                            value: e.target.value
-                          }))
+                            value: e.target.value,
+                          }));
                         }}
                       />
                       <br />
@@ -179,10 +195,10 @@ function SofiaEditSetting() {
                         id="selectFormRow"
                         value={sofia.status}
                         onChange={(e) => {
-                          setSofia(prevState => ({
+                          setSofia((prevState) => ({
                             ...prevState,
-                            status: e.target.value
-                          }))
+                            status: e.target.value,
+                          }));
                         }}
                       >
                         <option value={true}>True</option>
@@ -207,10 +223,10 @@ function SofiaEditSetting() {
                         required="required"
                         value={sofia.desc}
                         onChange={(e) => {
-                          setSofia(prevState => ({
+                          setSofia((prevState) => ({
                             ...prevState,
-                            desc: e.target.value
-                          }))
+                            desc: e.target.value,
+                          }));
                         }}
                       />
                       <br />
@@ -225,7 +241,7 @@ function SofiaEditSetting() {
           </div>
         </div>
       </section>
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -236,9 +252,9 @@ function SofiaEditSetting() {
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </main>
-  )
+  );
 }
 
-export default SofiaEditSetting
+export default SofiaEditSetting;

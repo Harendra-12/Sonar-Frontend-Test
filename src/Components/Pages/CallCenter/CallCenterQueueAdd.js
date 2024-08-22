@@ -806,7 +806,7 @@ function CallCenterQueueAdd() {
           </div>
         </div>
       </section>
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={false}
         hideProgressBar={false}
@@ -817,7 +817,7 @@ function CallCenterQueueAdd() {
         draggable
         pauseOnHover
         theme="dark"
-      />
+      /> */}
     </main>
   );
 }
