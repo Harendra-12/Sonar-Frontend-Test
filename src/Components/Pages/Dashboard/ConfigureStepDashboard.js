@@ -11,6 +11,7 @@ function ConfigureStepDashboard({ account2 }) {
   const [didSearch, setDidSearch] = useState(true);
   const [purchingDid, setPurchingDid] = useState("");
   const [did, setDid] = useState("");
+  const [searchingDid, setSearchingDid] = useState(false);
 
   async function configureAccount() {
     setConfigure(true);
@@ -61,7 +62,10 @@ function ConfigureStepDashboard({ account2 }) {
               ""
             ) : (
               <div className="col-xl-2 mx-auto">
-                <button className="payNow" onClick={configureAccount}>
+                <button className="payNow"
+                  // onClick={configureAccount}
+                  onClick={() => setConfigure(true)}
+                >
                   Configure Now{" "}
                   <i className="ms-1 fa-duotone fa-circle-arrow-right"></i>
                 </button>
@@ -72,46 +76,85 @@ function ConfigureStepDashboard({ account2 }) {
             <div className="configProgressWrapper">
               <ul>
                 <li>
-                  <div
-                    className={
-                      didSearch === ""
-                        ? "configProgress pending "
-                        : didSearch === true
-                        ? "configProgress"
-                        : "configProgress success"
-                    }
-                  >
-                    {didSearch === "" ? (
-                      <i className="fa-duotone fa-check"></i>
-                    ) : didSearch === true ? (
-                      <CircularProgress
-                        size="35px"
-                        sx={{ color: green[500] }}
-                      />
-                    ) : (
-                      <i className="fa-duotone fa-check"></i>
-                    )}
-                  </div>
-                  <div className="configProgressText">
-                    <p>Searching for available DID</p>
+                  <div class="coolinput">
+                    <div className="coolSearch">
+                      <label for="input" class="text">NPA:</label>
+                      <input type="text" placeholder="Write here..." name="input" class="input" />
+                    </div>
+                    <button onClick={() => setSearchingDid(true)}>
+                      <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
                   </div>
                 </li>
+              </ul>
+              {searchingDid ? <ul className="borderMan" style={{ height: 'fit-content' }}>
+                {did === "" ? (
+                  <li>
+                    <div
+                      className={
+                        didSearch === ""
+                          ? "configProgress pending "
+                          : didSearch === true
+                            ? "configProgress"
+                            : "configProgress success"
+                      }
+                    >
+                      {didSearch === "" ? (
+                        <i className="fa-duotone fa-check"></i>
+                      ) : didSearch === true ? (
+                        <CircularProgress
+                          size="35px"
+                          sx={{ color: green[500] }}
+                        />
+                      ) : (
+                        <i className="fa-duotone fa-check"></i>
+                      )}
+                    </div>
+                    <div className="configProgressText">
+                      <p>Searching for available DID</p>
+                    </div>
+                  </li>
+                ) : (
+                  <li>
+                    <div className="configProgressText did">
+                      <p>Your DID is: <span>{did}</span></p>
+                      <button >
+                        <i class="fa-solid fa-check"></i>
+                        {false ? <div className="selectDidOpt">
+                          <div className="d-flex">
+                            <input type="checkbox" defaultChecked={'checked'} /> <span>Voice</span>
+                          </div>
+                          <div className="d-flex">
+                            <input type="checkbox" /> <span>SMS</span>
+                          </div>
+                          <div className="d-flex">
+                            <input type="checkbox" /> <span>Fax</span>
+                          </div>
+                          <div className="d-flex">
+                            <input type="checkbox" /> <span>e911</span>
+                          </div>
+                        </div> : ""}
+                      </button>
+                      <button className="shuffle"><i class="fa-solid fa-rotate-reverse"></i></button>
+                    </div>
+                  </li>
+                )}
                 {/* <li>
-                                <div className={acquiringDid==="" ? 'configProgress pending ' : acquiringDid===true? "configProgress": "configProgress success"}>
-                                    {acquiringDid===""  ? <i className="fa-duotone fa-check"></i> : acquiringDid===true ?<CircularProgress size="35px" sx={{ color: green[500], }} />: <i className="fa-duotone fa-check"></i>}
-                                </div>
-                                <div className='configProgressText'>
-                                    <p>Acquiring your DID</p>
-                                </div>
-                            </li> */}
-                <li>
+                        <div className={acquiringDid==="" ? 'configProgress pending ' : acquiringDid===true? "configProgress": "configProgress success"}>
+                            {acquiringDid===""  ? <i className="fa-duotone fa-check"></i> : acquiringDid===true ?<CircularProgress size="35px" sx={{ color: green[500], }} />: <i className="fa-duotone fa-check"></i>}
+                        </div>
+                        <div className='configProgressText'>
+                            <p>Acquiring your DID</p>
+                        </div>
+                    </li> */}
+                {/* <li>
                   <div
                     className={
                       purchingDid === ""
                         ? "configProgress pending "
                         : purchingDid === true
-                        ? "configProgress"
-                        : "configProgress success"
+                          ? "configProgress"
+                          : "configProgress success"
                     }
                   >
                     {purchingDid === "" ? (
@@ -128,17 +171,8 @@ function ConfigureStepDashboard({ account2 }) {
                   <div className="configProgressText">
                     <p>Purching your DID</p>
                   </div>
-                </li>
-                {did === "" ? (
-                  ""
-                ) : (
-                  <li>
-                    <div className="configProgressText">
-                      <p>Your DID is:{did}</p>
-                    </div>
-                  </li>
-                )}
-              </ul>
+                </li> */}
+              </ul> : ""}
             </div>
           ) : (
             ""
