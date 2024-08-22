@@ -125,8 +125,28 @@
     color: #fff;
     margin-left: 10px;
     cursor: pointer;
+    position: relative;
 }
 
 .profileView .profileDetailsHolder .configProgressText.did button.shuffle {
     background-color: #818CF8;
+}
+
+.profileView .profileDetailsHolder .configProgressText.did button .selectDidOpt {
+    width: fit-content;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    position: absolute;
+    z-index: 999;
+    top: 0;
+    left: 90px;
+    padding: 5px 10px;
+}
+
+.profileView .profileDetailsHolder .configProgressText.did button .selectDidOpt span {
+    color: #000;
+    font-size: 16px;
+    display: block;
+    width: fit-content;
 }
