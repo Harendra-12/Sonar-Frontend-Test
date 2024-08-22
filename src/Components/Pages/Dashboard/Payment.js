@@ -1,6 +1,6 @@
 import React from "react";
 
-function Payment({ account,nextPage,companyStatus}) {
+function Payment({ account, nextPage, companyStatus }) {
   return (
     <div>
       <div className="col-xl-12">
@@ -72,22 +72,7 @@ function Payment({ account,nextPage,companyStatus}) {
             <div className="profileView">
               <div className="profileDetailsHolder position-relative">
                 <div className="header d-flex align-items-center pe-0">
-                  <div className="col-5">Billing Details</div>
-                  <div className="col-7">
-                    <div class="approvalButton float-end">
-                      <div
-                        onClick={()=>{
-                          if(Number(companyStatus)>=2){
-                            nextPage("document")
-                          }
-                        }}
-                        style={{opacity:Number(companyStatus)>=2?"":0.5}}
-                        class="float-start btn btn-success btn-sm"
-                      >
-                        Next<i class="fa-solid fa-caret-right ms-2"></i>
-                      </div>
-                    </div>
-                  </div>
+                  <div className="col-12">Billing Details</div>
                 </div>
                 <div className="row" style={{ padding: "5px" }}>
                   <div className="wrapper">
@@ -143,6 +128,18 @@ function Payment({ account,nextPage,companyStatus}) {
                     </ul>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-xl-12">
+            <div className="col-xl-3 mx-auto">
+              <div class={Number(companyStatus) >= 2 ? "approvalButton" : "approvalButton disabled"}
+                onClick={() => {
+                  if (Number(companyStatus) >= 2) {
+                    nextPage("document")
+                  }
+                }}>
+                Next<i class="fa-solid fa-caret-right ms-2"></i>
               </div>
             </div>
           </div>

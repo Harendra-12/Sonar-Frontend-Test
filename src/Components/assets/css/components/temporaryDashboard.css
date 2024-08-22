@@ -21,15 +21,21 @@
 }
 
 .profileView .profileDetailsHolder .configProgressWrapper {
-    margin-top: 30px;
+    /* margin-top: 30px; */
     padding-bottom: 30px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 1000px;
+    margin: 0 auto;
 }
 
 .profileView .profileDetailsHolder .configProgressWrapper ul {
     list-style: none;
     padding: 0;
-    margin: 0 auto;
-    width: max-content;
+    /* margin: 0 auto; */
+    width: 350px;
 }
 
 .profileView .profileDetailsHolder .configProgressWrapper ul li {
@@ -81,4 +87,46 @@
     transform: translate(-50%, -50%);
     color: #fff;
     z-index: 1;
+}
+
+.profileView .profileDetailsHolder .configProgressWrapper ul.didSearchList {
+    position: relative;
+}
+
+.profileView .profileDetailsHolder .configProgressWrapper ul.didSearchList li {}
+
+.profileView .profileDetailsHolder .configProgressWrapper ul.didSearchList::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: -50px;
+    border-left: 1px solid #ddd;
+    width: 100%;
+    height: 100%;
+}
+
+.profileView .profileDetailsHolder .configProgressText.did {
+    display: flex;
+    margin-left: 0;
+}
+
+.profileView .profileDetailsHolder .configProgressText.did span {
+    font-size: 24px;
+    font-weight: 500;
+    margin-left: 10px;
+}
+
+.profileView .profileDetailsHolder .configProgressText.did button {
+    width: 35px;
+    height: 35px;
+    background-color: #4caf50;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.profileView .profileDetailsHolder .configProgressText.did button.shuffle {
+    background-color: #818CF8;
 }

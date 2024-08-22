@@ -1,24 +1,12 @@
 import React from "react";
 
-function Account({ account,nextPage,companyStatus }) {
+function Account({ account, nextPage, companyStatus }) {
   return (
     <div>
       <div className="profileView">
         <div className="profileDetailsHolder position-relative">
           <div className="header d-flex align-items-center">
-            <div className="col-5">Account Details</div>
-            <div className="col-7">
-              <div class="approvalButton float-end">
-                <div
-                  onClick={()=>{
-                    nextPage("payment")
-                  }}
-                  class="float-start btn btn-success btn-sm"
-                >
-                  Next<i class="fa-solid fa-caret-right ms-2"></i>
-                </div>
-              </div>
-            </div>
+            <div className="col-12">Account Details</div>
           </div>
           <div className="row px-2 pb-2">
             <div className="formRow col-xl-2 col-md-4 col-6">
@@ -177,6 +165,16 @@ function Account({ account,nextPage,companyStatus }) {
                 />
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div className="col-xl-12">
+        <div className="col-xl-3 mx-auto">
+          <div class="approvalButton"
+            onClick={() => {
+              nextPage("payment")
+            }}>
+            Next<i class="fa-solid fa-caret-right ms-2"></i>
           </div>
         </div>
       </div>

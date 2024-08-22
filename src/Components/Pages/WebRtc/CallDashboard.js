@@ -85,7 +85,7 @@ function CallDashboard() {
                                                     </td>
                                                     <td>10:10</td>
                                                     <td className='ps-1'>
-                                                        <button className='clearButton'><i className="fa-duotone fa-ear-deaf text-success" /></button>
+                                                        <button className='clearButton'><i className="fa-duotone fa-ear-deaf" style={{ color: '#ff9921' }} /></button>
                                                         <button className='clearButton'><i class="fa-solid fa-headphones text-info"></i></button>
                                                         <button className='clearButton'><i className="fa-solid fa-phone-slash text-danger" /></button>
                                                     </td>
@@ -102,7 +102,7 @@ function CallDashboard() {
                                                     </td>
                                                     <td>10:10</td>
                                                     <td className='ps-1'>
-                                                        <button className='clearButton'><i className="fa-duotone fa-ear-deaf text-success" /></button>
+                                                        <button className='clearButton'><i className="fa-duotone fa-ear-deaf" style={{ color: '#ff9921' }} /></button>
                                                         <button className='clearButton'><i class="fa-solid fa-headphones text-info"></i></button>
                                                         <button className='clearButton'><i className="fa-solid fa-phone-slash text-danger" /></button>
                                                     </td>
@@ -119,7 +119,7 @@ function CallDashboard() {
                                                     </td>
                                                     <td>10:10</td>
                                                     <td className='ps-1'>
-                                                        <button className='clearButton'><i className="fa-duotone fa-ear-deaf text-success" /></button>
+                                                        <button className='clearButton'><i className="fa-duotone fa-ear-deaf" style={{ color: '#ff9921' }} /></button>
                                                         <button className='clearButton'><i class="fa-solid fa-headphones text-info"></i></button>
                                                         <button className='clearButton'><i className="fa-solid fa-phone-slash text-danger" /></button>
                                                     </td>

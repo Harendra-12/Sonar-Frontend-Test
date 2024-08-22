@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { fileUploadFunction } from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../../Loader/CircularLoader";
 
-function Document({ account, refreshCallback, refresh, nextPage,companyStatus }) {
+function Document({ account, refreshCallback, refresh, nextPage, companyStatus }) {
   const [rejectDocument, setRejectDocument] = useState([]);
   const [reUploadId, setReUploadId] = useState();
   const wrapperRef = useRef(null);
@@ -36,15 +36,15 @@ function Document({ account, refreshCallback, refresh, nextPage,companyStatus })
     setUploadDocument(newUploadDocument);
 
     const newApprovedDocument = account.details
-    .filter((item) => item.status === "2")
-    .map((item) => {
-      const hasMatch = account.details.some(
-        (item2) => item2.document_id === item.document_id && item2.status === "1"
-      );
-      return hasMatch ? true : undefined;
-    })
-    .filter((item) => item !== undefined); 
-  
+      .filter((item) => item.status === "2")
+      .map((item) => {
+        const hasMatch = account.details.some(
+          (item2) => item2.document_id === item.document_id && item2.status === "1"
+        );
+        return hasMatch ? true : undefined;
+      })
+      .filter((item) => item !== undefined);
+
     setUploadApprove(newApprovedDocument);
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -142,12 +142,12 @@ function Document({ account, refreshCallback, refresh, nextPage,companyStatus })
     }
   }
 
-  console.log(rejectDocument,"This is rejected doc.", uploadDocument);
+  console.log(rejectDocument, "This is rejected doc.", uploadDocument);
   return (
     <div className="d-flex flex-wrap documentPending">
       <div className="col-xl-8">
         {(rejectDocument.length !== 0 &&
-        rejectDocument.length !== uploadApprove.length) ? (
+          rejectDocument.length !== uploadApprove.length) ? (
           <>
             <div className="statusMessage">
               <div className="statusWrapper">
@@ -392,22 +392,7 @@ function Document({ account, refreshCallback, refresh, nextPage,companyStatus })
         <div className="profileView">
           <div className="profileDetailsHolder">
             <div className="header d-flex align-items-center pe-0">
-              <div className="col-5">Documents Uploaded</div>
-              <div className="col-7">
-                    <div class="approvalButton float-end">
-                      <div
-                       onClick={()=>{
-                        if(Number(companyStatus)>=4){
-                          nextPage("configure")
-                        }
-                      }}
-                      style={{opacity:Number(companyStatus)>=4?"":0.5}}
-                        class="float-start btn btn-success btn-sm"
-                      >
-                        Next<i class="fa-solid fa-caret-right ms-2"></i>
-                      </div>
-                    </div>
-                  </div>
+              <div className="col-12">Documents Uploaded</div>
             </div>
             {account.details.length > 0 ? (
               <div className="qLinkContent" ref={wrapperRef}>
@@ -542,6 +527,18 @@ function Document({ account, refreshCallback, refresh, nextPage,companyStatus })
                 </div>
               </Link>
             )}
+          </div>
+        </div>
+      </div>
+      <div className="col-xl-12">
+        <div className="col-xl-3 mx-auto">
+          <div class={Number(companyStatus) >= 4 ? "approvalButton" : "approvalButton disabled"}
+            onClick={() => {
+              if (Number(companyStatus) >= 4) {
+                nextPage("configure")
+              }
+            }}>
+            Next<i class="fa-solid fa-caret-right ms-2"></i>
           </div>
         </div>
       </div>

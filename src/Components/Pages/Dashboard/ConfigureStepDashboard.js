@@ -61,7 +61,10 @@ function ConfigureStepDashboard({ account2 }) {
               ""
             ) : (
               <div className="col-xl-2 mx-auto">
-                <button className="payNow" onClick={configureAccount}>
+                <button className="payNow"
+                  // onClick={configureAccount}
+                  onClick={() => setConfigure(true)}
+                >
                   Configure Now{" "}
                   <i className="ms-1 fa-duotone fa-circle-arrow-right"></i>
                 </button>
@@ -72,13 +75,26 @@ function ConfigureStepDashboard({ account2 }) {
             <div className="configProgressWrapper">
               <ul>
                 <li>
+                  <div class="coolinput">
+                    <div className="coolSearch">
+                      <label for="input" class="text">NPA:</label>
+                      <input type="text" placeholder="Write here..." name="input" class="input" />
+                    </div>
+                    <button>
+                      <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                  </div>
+                </li>
+              </ul>
+              {false ? <ul className="borderMan" style={{ height: 'fit-content' }}>
+                <li>
                   <div
                     className={
                       didSearch === ""
                         ? "configProgress pending "
                         : didSearch === true
-                        ? "configProgress"
-                        : "configProgress success"
+                          ? "configProgress"
+                          : "configProgress success"
                     }
                   >
                     {didSearch === "" ? (
@@ -104,14 +120,14 @@ function ConfigureStepDashboard({ account2 }) {
                                     <p>Acquiring your DID</p>
                                 </div>
                             </li> */}
-                <li>
+                {/* <li>
                   <div
                     className={
                       purchingDid === ""
                         ? "configProgress pending "
                         : purchingDid === true
-                        ? "configProgress"
-                        : "configProgress success"
+                          ? "configProgress"
+                          : "configProgress success"
                     }
                   >
                     {purchingDid === "" ? (
@@ -128,17 +144,20 @@ function ConfigureStepDashboard({ account2 }) {
                   <div className="configProgressText">
                     <p>Purching your DID</p>
                   </div>
-                </li>
+                </li> */}
+
                 {did === "" ? (
                   ""
                 ) : (
                   <li>
-                    <div className="configProgressText">
-                      <p>Your DID is:{did}</p>
+                    <div className="configProgressText did">
+                      <p>Your DID is: <span>{did}</span></p>
+                      <button><i class="fa-solid fa-check"></i></button>
+                      <button className="shuffle"><i class="fa-solid fa-rotate-reverse"></i></button>
                     </div>
                   </li>
                 )}
-              </ul>
+              </ul> : ""}
             </div>
           ) : (
             ""
