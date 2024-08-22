@@ -155,9 +155,8 @@ function GetDid() {
                       <div className="col-12">
                         <select
                           name="searchType"
-                          className={`formItem ${
-                            errors.searchType ? "error" : ""
-                          }`}
+                          className={`formItem ${errors.searchType ? "error" : ""
+                            }`}
                           {...register("searchType", {
                             required: "Search Type is required",
                           })}
@@ -177,9 +176,8 @@ function GetDid() {
                         <input
                           type="number"
                           name="quantity"
-                          className={`formItem ${
-                            errors.quantity ? "error" : ""
-                          }`}
+                          className={`formItem ${errors.quantity ? "error" : ""
+                            }`}
                           {...register("quantity", {
                             required: "Quantity is required",
                             max: {
@@ -309,7 +307,7 @@ function GetDid() {
                   {selectedDid.length === 0 ? (
                     ""
                   ) : (
-                    <div className="col-xl-3" style={{ marginTop: "-120px" }}>
+                    <div className="col-xl-3" style={{ marginTop: "-90px" }}>
                       <div className="searchList cart">
                         <div className="heading">
                           <h5>Order Summary</h5>
