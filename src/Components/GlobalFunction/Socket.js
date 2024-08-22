@@ -18,7 +18,7 @@ const Socket = () => {
         console.log('WebSocket connection successful.');
       };
       socket.onmessage = (event) => {
-        // console.log(JSON.parse(event.data));
+        console.log(JSON.parse(event.data));
         if(typeof(JSON.parse(event.data)) === "string"){
           if(JSON.parse(JSON.parse(event.data))["key"] === "UserRegister"){
             dispatch({

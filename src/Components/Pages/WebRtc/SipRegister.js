@@ -20,7 +20,7 @@ export const SipRegister = () => {
       // username: extension,
       // password: password,
       username: "1003",
-      password: "886029",
+      password: "1003",
     });
   }, [connectAndRegister, extension, password]);
 
