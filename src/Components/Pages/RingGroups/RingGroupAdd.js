@@ -35,6 +35,9 @@ const RingGroupAdd = () => {
   const [allUser, setAllUser] = useState();
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const allUserArr = useSelector((state) => state.allUser);
+
+  const [popUp, setPopUp] = useState(true);
+
   const {
     register,
     watch,
@@ -437,9 +440,9 @@ const RingGroupAdd = () => {
                     render={({ field: { onChange, value, ...field } }) => {
                       const options = allUser
                         ? allUser.map((item) => ({
-                            value: item.extension.extension,
-                            label: `${item.name} (${item.extension.extension})`,
-                          }))
+                          value: item.extension.extension,
+                          label: `${item.name} (${item.extension.extension})`,
+                        }))
                         : [];
                       const selectedOption =
                         options.find((option) => option.value === value) ||
@@ -1019,6 +1022,45 @@ const RingGroupAdd = () => {
             </form>
           </div>
         </div>
+        {popUp ? (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <div className="row content col-xl-4">
+                  <div className="col-2 px-0">
+                    <div className="iconWrapper">
+                      <i className="fa-duotone fa-triangle-exclamation"></i>
+                    </div>
+                  </div>
+                  <div className="col-10 ps-0">
+                    <h4>Warning!</h4>
+                    <p>
+                      No Extension is currently asigned! Please add an extension first!
+                    </p>
+                    <button
+                      className="panelButton m-0"
+                      onClick={() => {
+                        // setForce(true);
+                        setPopUp(false);
+                        navigate('/extensions-add')
+                      }}
+                    >
+                      Lets Go!
+                    </button>
+                    <button
+                      className="panelButtonWhite m-0 float-end"
+                      onClick={() => setPopUp(false)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
       </section>
       {/* <ToastContainer
         position="bottom-right"

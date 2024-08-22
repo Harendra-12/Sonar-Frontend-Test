@@ -30,6 +30,9 @@ function CallCenterQueueAdd() {
   const [music, setMusic] = useState();
   const account = useSelector((state) => state.account);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
+
+  const [popUp, setPopUp] = useState(true);
+
   const {
     register,
 
@@ -217,12 +220,10 @@ function CallCenterQueueAdd() {
           <action application="answer" data=""/>
           <action application="set" data="hangup_after_bridge=true"/>
           <action application="sleep" data="1000"/>
-          <action application="callcenter" data="${extension}@${
-        account.domain.domain_name
-      }"/>
-           <action application="transfer" data="${queue_timeout_action} XML ${
-        account.domain.domain_name
-      }"/>
+          <action application="callcenter" data="${extension}@${account.domain.domain_name
+        }"/>
+           <action application="transfer" data="${queue_timeout_action} XML ${account.domain.domain_name
+        }"/>
         </condition>
 </extension>`,
     };
@@ -344,9 +345,9 @@ function CallCenterQueueAdd() {
                     render={({ field: { onChange, value, ...field } }) => {
                       const options = user
                         ? user.map((item) => ({
-                            value: item.extension.extension,
-                            label: `${item.name} (${item.extension.extension})`,
-                          }))
+                          value: item.extension.extension,
+                          label: `${item.name} (${item.extension.extension})`,
+                        }))
                         : [];
 
                       const selectedOption =
@@ -805,6 +806,45 @@ function CallCenterQueueAdd() {
             </form>
           </div>
         </div>
+        {popUp ? (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <div className="row content col-xl-4">
+                  <div className="col-2 px-0">
+                    <div className="iconWrapper">
+                      <i className="fa-duotone fa-triangle-exclamation"></i>
+                    </div>
+                  </div>
+                  <div className="col-10 ps-0">
+                    <h4>Warning!</h4>
+                    <p>
+                      No Extension is currently asigned! Please add an extension first!
+                    </p>
+                    <button
+                      className="panelButton m-0"
+                      onClick={() => {
+                        // setForce(true);
+                        setPopUp(false);
+                        navigate('/extensions-add')
+                      }}
+                    >
+                      Lets Go!
+                    </button>
+                    <button
+                      className="panelButtonWhite m-0 float-end"
+                      onClick={() => setPopUp(false)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
       </section>
       <ToastContainer
         position="bottom-right"
