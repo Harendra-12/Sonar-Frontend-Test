@@ -56,11 +56,11 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
       toast.error("Please enter CVV");
     } else if (cvv.length < 3 || cvv.length > 4) {
       toast.error("Please enter correct cvv");
-    } else if (rechargeType!=="buyDid" && amount === "") {
+    } else if (rechargeType !== "buyDid" && amount === "") {
       toast.error("Please enter amout");
     } else {
       setLoading(true);
-      if( rechargeType === "buyDid"){
+      if (rechargeType === "buyDid") {
         const parsedData = {
           address_id: selectedBillId,
           account_id: account.account_id,
@@ -88,7 +88,7 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
           //   type: "SET_ACCOUNTDETAILSREFRESH",
           //   accountDetailsRefresh: accountDetailsRefresh + 1,
           // });
-  
+
           setTimeout(() => {
             closePopup(false);
           }, 2000);
@@ -99,34 +99,34 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
           // const errorMessage = Object.keys(apiData.errors);
           toast.error(apiData.error);
         }
-      }else{
-        const parsedData ={
-              address_id: selectedBillId,
-              account_id: account.account_id,
-              card_id: selectedCardId,
-              cvc: cvv,
-              amount: amount,
-            };
-      const apiData = await generalPostFunction("/wallet-recharge", parsedData);
-      if (apiData.status) {
-        setLoading(false);
-        dispatch({
-          type: "SET_ACCOUNTDETAILSREFRESH",
-          accountDetailsRefresh: accountDetailsRefresh + 1,
-        });
-
-        setTimeout(() => {
-          closePopup(false);
-        }, 2000);
-        toast.success(apiData.message);
       } else {
-        setLoading(false);
-        navigate("/card-details");
-        // const errorMessage = Object.keys(apiData.errors);
-        toast.error(apiData.error);
+        const parsedData = {
+          address_id: selectedBillId,
+          account_id: account.account_id,
+          card_id: selectedCardId,
+          cvc: cvv,
+          amount: amount,
+        };
+        const apiData = await generalPostFunction("/wallet-recharge", parsedData);
+        if (apiData.status) {
+          setLoading(false);
+          dispatch({
+            type: "SET_ACCOUNTDETAILSREFRESH",
+            accountDetailsRefresh: accountDetailsRefresh + 1,
+          });
+
+          setTimeout(() => {
+            closePopup(false);
+          }, 2000);
+          toast.success(apiData.message);
+        } else {
+          setLoading(false);
+          navigate("/card-details");
+          // const errorMessage = Object.keys(apiData.errors);
+          toast.error(apiData.error);
+        }
       }
-      }
-      
+
     }
   }
   return (
@@ -179,8 +179,8 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                     Choose Your Card
                     <span
                       onClick={() => closePopup(false)}
-                      className="float-end clearButton text-danger fs-4"
-                      style={{ cursor: "pointer" }}
+                      className="float-end clearButton text-danger fs-5"
+                      style={{ cursor: "pointer", height: "20px" }}
                     >
                       <i className="fa-sharp fa-solid fa-xmark"></i>
                     </span>
@@ -196,9 +196,8 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                         return (
                           <div className="col-xl-12 mb-2" key={key}>
                             <div
-                              className={`savedCardWrapper ${
-                                item.id === selectedCardId ? "active" : ""
-                              }`}
+                              className={`savedCardWrapper ${item.id === selectedCardId ? "active" : ""
+                                }`}
                             >
                               <div className="imgWrapper">
                                 <div className="card-logo-container">
@@ -282,9 +281,8 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                         >
                           <div className="accordion-item">
                             <h2
-                              className={`accordion-header addressDrawer ${
-                                item.id === selectedBillId ? "active" : ""
-                              }`}
+                              className={`accordion-header addressDrawer ${item.id === selectedBillId ? "active" : ""
+                                }`}
                             >
                               <div
                                 className="d-flex flex-wrap align-items-center"
