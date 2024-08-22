@@ -19,7 +19,7 @@ function Dialpad({ hideDialpad }) {
   async function onSubmit(e) {
     if (destNumber.length > 3) {
       hideDialpad(false);
-      e.preventDefault();
+      // e.preventDefault();
       const apiData = await sessionManager?.call(
         `sip:${Number(destNumber)}@192.168.2.225`,
         {}
