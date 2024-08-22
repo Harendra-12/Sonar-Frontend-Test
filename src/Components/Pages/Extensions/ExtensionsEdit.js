@@ -687,7 +687,7 @@ const ExtensionsEdit = () => {
                 </div>
                 <div className="col-12">
                   <input
-                    type="text"
+                    type="number"
                     name="extension"
                     className="formItem"
                     value={extensionState.effCallerIdNumber}
@@ -745,7 +745,7 @@ const ExtensionsEdit = () => {
                 </div>
                 <div className="col-12">
                   <input
-                    type="text"
+                    type="number"
                     name="extension"
                     className="formItem"
                     value={extensionState.outCallerIdNumber}
@@ -803,7 +803,7 @@ const ExtensionsEdit = () => {
                 </div>
                 <div className="col-12">
                   <input
-                    type="text"
+                    type="number"
                     name="extension"
                     className="formItem"
                     value={extensionState.emeCallerIdNumber}
