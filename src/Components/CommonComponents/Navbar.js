@@ -12,6 +12,7 @@ function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
+  const accountDetails = useSelector((state) => state.accountDetails);
   const tempAccount = useSelector((state) => state.tempAccount);
   const userType = account?.usertype; // "Company"
   async function logOut() {
@@ -32,7 +33,7 @@ function Navbar() {
         <div id="sidenNav">
           <div className="sidenavItems">
             <ul>
-              {Number(tempAccount?.company_status) < 6 ? (
+              {Number(accountDetails?.company_status) < 6 ? (
                 <>
                   {" "}
                   <li className="dashboard">
@@ -279,7 +280,7 @@ function Navbar() {
                       </div>
                     </div>
                   </li>
-                  <li className="">
+                  {/* <li className="">
                     <button
                       data-bs-toggle="collapse"
                       data-bs-target="#collapse2"
@@ -313,7 +314,12 @@ function Navbar() {
                               <div className="itemTitle">Routes</div>
                             </NavLink>
                           </li>
-                          {/* <li className="tabItem" effect="ripple">
+                          
+                        </ul>
+                      </div>
+                    </div>
+                  </li> */}
+                  {/* <li className="tabItem" effect="ripple">
                         <a
                           href=""
                           className="nav-link"
@@ -346,10 +352,6 @@ function Navbar() {
                           <div className="itemTitle">Outbound Routes</div>
                         </a>
                       </li> */}
-                        </ul>
-                      </div>
-                    </div>
-                  </li>
                   <li className="">
                     <button
                       data-bs-toggle="collapse"

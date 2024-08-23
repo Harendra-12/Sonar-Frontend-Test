@@ -1,9 +1,10 @@
-import { Avatar, CircularProgress } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import { green } from "@mui/material/colors";
 import React, { useState } from "react";
-import { generalPostFunction } from "../../GlobalFunction/globalFunction";
-import { useSelector } from "react-redux";
+import { generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
+import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function ConfigureStepDashboard({ account2 }) {
   console.log("This is account", account2);
@@ -16,40 +17,8 @@ function ConfigureStepDashboard({ account2 }) {
   const [did, setDid] = useState("");
   const [purchaseComplete,setPurchaseComplete] = useState(false)
   const [searchingDid, setSearchingDid] = useState(false);
-
-  async function configureAccount() {
-    setConfigure(true);
-    const parsedData = {
-      searchType: "tollfree",
-      quantity: "1",
-      npa: "855",
-      companyId: account.account_id,
-    };
-    const apiData = await generalPostFunction("/searchTfn", parsedData);
-    if (apiData.status) {
-      setDidSearch(false);
-      setPurchingDid(true);
-      const parsedData2 = {
-        companyId: account.account_id,
-        vendorId: apiData.data[0].vendorId,
-        didQty: 1,
-        type: "configure",
-        didType: "random",
-        rate: Number(apiData.data[0].price),
-        accountId: apiData.data[0].vendorAccountId,
-        dids: [
-          {
-            dids: apiData.data[0].id,
-          },
-        ],
-      };
-      const apiData2 = await generalPostFunction("/purchaseTfn", parsedData2);
-      if (apiData2.status) {
-        setPurchingDid(false);
-        setDid(apiData.data[0].id);
-      }
-    }
-  }
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   async function searchDid(){
     if(npx.length < 3){
@@ -96,6 +65,42 @@ function ConfigureStepDashboard({ account2 }) {
     if(apiData.status){
       setPurchingDid(false);
       setPurchaseComplete(true);
+      const profile = await generalGetFunction("/user");
+          if (profile.status) {
+            dispatch({
+              type: "SET_ACCOUNT",
+              account: profile.data,
+            });
+            dispatch({
+              type: "SET_BILLINGLISTREFRESH",
+              billingListRefresh: 1,
+            });
+            dispatch({
+              type: "SET_CARDLISTREFRESH",
+              cardListRefresh: 1,
+            });
+            localStorage.setItem("account", JSON.stringify(profile.data));
+            const accountData = await generalGetFunction(
+              `/account/${profile.data.account_id}`
+            );
+            if (accountData.status) {
+              dispatch({
+                type: "SET_ACCOUNTDETAILS",
+                accountDetails: accountData.data,
+              });
+              localStorage.setItem(
+                "accountDetails",
+                JSON.stringify(accountData.data)
+              );
+             navigate("/did-listing")
+            } else {
+              setPurchingDid(false);;
+              toast.error("Server error !");
+            }
+          } else {
+            setPurchingDid(false);
+            toast.error("unauthorized access!");
+          }
     }
   }
   return (
