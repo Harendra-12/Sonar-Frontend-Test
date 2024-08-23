@@ -727,7 +727,7 @@ const UsersAdd = () => {
               </div>
             )}
           </div>
-          {popUp ? (
+          {/* {popUp ? (
             <div className="popup">
               <div className="container h-100">
                 <div className="row h-100 justify-content-center align-items-center">
@@ -740,14 +740,15 @@ const UsersAdd = () => {
                     <div className="col-10 ps-0">
                       <h4>Warning!</h4>
                       <p>
-                        No Extension is currently asigned! Please add an extension first!
+                        No Extension is currently asigned! Please add an
+                        extension first!
                       </p>
                       <button
                         className="panelButton m-0"
                         onClick={() => {
                           // setForce(true);
                           setPopUp(false);
-                          navigate('/extensions-add')
+                          navigate("/extensions-add");
                         }}
                       >
                         Lets Go!
@@ -765,7 +766,7 @@ const UsersAdd = () => {
             </div>
           ) : (
             ""
-          )}
+          )} */}
         </section>
         {loading ? (
           <div colSpan={99}>

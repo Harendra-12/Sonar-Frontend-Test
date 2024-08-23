@@ -19,6 +19,11 @@ function GlobalCalls() {
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
+  const usersRefresh = useSelector((state) => state.usersRefresh);
+
+  const rolesAndPermissionRefresh = useSelector(
+    (state) => state.rolesAndPermissionRefresh
+  );
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -79,7 +84,7 @@ function GlobalCalls() {
     }
     // getData();
     if (billingListRefresh > 0) {
-      console.log("This is billing refresh", billingListRefresh);
+      // console.log("This is billing refresh", billingListRefresh);
       getData();
     }
   }, [billingListRefresh]);
@@ -167,6 +172,7 @@ function GlobalCalls() {
     async function getData() {
       const apiData = await generalGetFunction(`/user/all`);
       if (apiData.status) {
+        // console.log(apiData);
         dispatch({
           type: "SET_ALLUSER",
           allUser: apiData.data,
@@ -178,6 +184,26 @@ function GlobalCalls() {
       getData();
     }
   }, [allUserRefresh]);
+
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction(`/role/all`);
+      const permissionData = await generalGetFunction("/permission");
+      if (apiData.status) {
+        dispatch({
+          type: "SET_ROLES",
+          roles: apiData.data,
+        });
+      }
+      if (permissionData.status) {
+        dispatch({
+          type: "SET_PERMISSIONS",
+          permissions: permissionData.data,
+        });
+      }
+    }
+    getData();
+  }, [rolesAndPermissionRefresh]);
 
   return <div></div>;
 }

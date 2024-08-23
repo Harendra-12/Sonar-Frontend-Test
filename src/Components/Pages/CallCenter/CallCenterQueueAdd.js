@@ -32,7 +32,7 @@ function CallCenterQueueAdd() {
   const account = useSelector((state) => state.account);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
 
-  const [popUp, setPopUp] = useState(true);
+  // const [popUp, setPopUp] = useState(true);
 
   const {
     register,
@@ -221,10 +221,12 @@ function CallCenterQueueAdd() {
           <action application="answer" data=""/>
           <action application="set" data="hangup_after_bridge=true"/>
           <action application="sleep" data="1000"/>
-          <action application="callcenter" data="${extension}@${account.domain.domain_name
-        }"/>
-           <action application="transfer" data="${queue_timeout_action} XML ${account.domain.domain_name
-        }"/>
+          <action application="callcenter" data="${extension}@${
+        account.domain.domain_name
+      }"/>
+           <action application="transfer" data="${queue_timeout_action} XML ${
+        account.domain.domain_name
+      }"/>
         </condition>
 </extension>`,
     };
@@ -275,7 +277,7 @@ function CallCenterQueueAdd() {
     <main className="mainContent">
       <section id="phonePage">
         <div className="container-fluid px-0">
-            <Header title="Call Center Queue" />
+          <Header title="Call Center Queue" />
           <div className="row justify-content-center" id="subPageHeader">
             <div className="col-xl-6 my-auto">
               {/* <h4 className="my-auto">Add Call Center Queue</h4> */}
@@ -347,9 +349,9 @@ function CallCenterQueueAdd() {
                     render={({ field: { onChange, value, ...field } }) => {
                       const options = user
                         ? user.map((item) => ({
-                          value: item.extension.extension,
-                          label: `${item.name} (${item.extension.extension})`,
-                        }))
+                            value: item.extension.extension,
+                            label: `${item.name} (${item.extension.extension})`,
+                          }))
                         : [];
 
                       const selectedOption =
@@ -808,7 +810,7 @@ function CallCenterQueueAdd() {
             </form>
           </div>
         </div>
-        {popUp ? (
+        {/* {popUp ? (
           <div className="popup">
             <div className="container h-100">
               <div className="row h-100 justify-content-center align-items-center">
@@ -846,7 +848,7 @@ function CallCenterQueueAdd() {
           </div>
         ) : (
           ""
-        )}
+        )} */}
       </section>
       {/* <ToastContainer
         position="bottom-right"

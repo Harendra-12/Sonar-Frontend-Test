@@ -5,14 +5,19 @@ import {
   generalGetFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import Header from "../../CommonComponents/Header";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 const Users = () => {
+  const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
+  const roles = useSelector((state) => state.roles);
+  const rolesAndPermissionRefresh = useSelector(
+    (state) => state.rolesAndPermissionRefresh
+  );
   const navigate = useNavigate();
   const [user, setUser] = useState();
   const [userInput, setuserInput] = useState("");
@@ -23,6 +28,8 @@ const Users = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [onlineUser, setOnlineUSer] = useState([0]);
   const [changeState, setChangeState] = useState(1);
+  const [popUp, setPopUp] = useState(false);
+  const [error, setError] = useState("");
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
       setOnlineUSer(
@@ -32,6 +39,13 @@ const Users = () => {
       );
     }
   }, [logonUser]);
+
+  useEffect(() => {
+    dispatch({
+      type: "SET_ROLES_PERMISSIONREFRESH",
+      rolesAndPermissionRefresh: rolesAndPermissionRefresh + 1,
+    });
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -86,6 +100,27 @@ const Users = () => {
       setChangeState(changeState + 1);
     }
   }
+
+  const handleAddUserValidation = (e) => {
+    e.preventDefault();
+
+    if (roles.length === 0) {
+      setPopUp(true);
+      setError("Please add roles to create a user");
+      return;
+    }
+
+    const hasPermissions = roles.some((role) => role.permissions.length > 0);
+
+    if (!hasPermissions) {
+      setPopUp(true);
+      setError("Please add permissions to create a user");
+      return;
+    }
+
+    navigate(`/users-add`);
+    backToTop();
+  };
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -120,8 +155,9 @@ const Users = () => {
               <div className="col-xl-8 mt-3 mt-xl-0">
                 <div className="d-flex justify-content-end flex-wrap gap-2">
                   <Link
-                    to="/users-add"
-                    onClick={backToTop}
+                    // to="/users-add"
+                    // onClick={backToTop}
+                    onClick={handleAddUserValidation}
                     effect="ripple"
                     className="panelButton"
                   >
@@ -262,6 +298,43 @@ const Users = () => {
           )}
         </div>
       </section>
+      {popUp ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-4">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-triangle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-0">
+                  <h4>Warning!</h4>
+                  <p>{error}</p>
+                  <button
+                    className="panelButton m-0"
+                    onClick={() => {
+                      // setForce(true);
+                      setPopUp(false);
+                      navigate("/roles");
+                    }}
+                  >
+                    Lets Go!
+                  </button>
+                  <button
+                    className="panelButtonWhite m-0 float-end"
+                    onClick={() => setPopUp(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </main>
   );
 };

@@ -9,10 +9,16 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "../../CommonComponents/Header";
 import CircularLoader from "../../Loader/CircularLoader";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function Roles() {
+  const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
+  const rolesAndPermissionRefresh = useSelector(
+    (state) => state.rolesAndPermissionRefresh
+  );
+  const roles = useSelector((state) => state.roles);
+  const permissions = useSelector((state) => state.permissions);
   const [role, setRole] = useState();
   const [popup, setPopup] = useState(false);
   const [editClick, setEditClick] = useState(false);
@@ -30,19 +36,24 @@ function Roles() {
   const [defaultPermission, setDefaultPermission] = useState();
 
   // Getting the role and permission information at the very initial state
+  // useEffect(() => {
+  //   async function getData() {
+  //     const apiData = await generalGetFunction(`/role/all`);
+  //     const permissionData = await generalGetFunction("/permission");
+  //     if (apiData.status) {
+  //       setRole(apiData.data);
+  //     }
+  //     if (permissionData.status) {
+  //       setDefaultPermission(permissionData.data);
+  //     }
+  //   }
+  //   getData();
+  // }, [refresh]);
+
   useEffect(() => {
-    async function getData() {
-      const apiData = await generalGetFunction(`/role/all`);
-      const permissionData = await generalGetFunction("/permission");
-      if (apiData.status) {
-        setRole(apiData.data);
-      }
-      if (permissionData.status) {
-        setDefaultPermission(permissionData.data);
-      }
-    }
-    getData();
-  }, [refresh]);
+    setRole(roles);
+    setDefaultPermission(permissions);
+  }, [roles, permissions]);
 
   // Handle Role pop up confirm click
   async function handleSubmit() {
@@ -59,7 +70,11 @@ function Roles() {
         const apiData = await generalPostFunction("/role/store", parsedData);
         if (apiData.status) {
           setLoading(false);
-          setRefresh(refresh + 1);
+          // setRefresh(refresh + 1);
+          dispatch({
+            type: "SET_ROLES_PERMISSIONREFRESH",
+            rolesAndPermissionRefresh: rolesAndPermissionRefresh + 1,
+          });
           toast.success(apiData.message);
           setPopup(false);
           setSaveClick(false);
@@ -105,6 +120,10 @@ function Roles() {
         setDeleteIndex();
         toast.success(apiData.success);
         setLoading(false);
+        dispatch({
+          type: "SET_ROLES_PERMISSIONREFRESH",
+          payload: rolesAndPermissionRefresh + 1,
+        });
       } else {
         setLoading(false);
         const errorMessage = Object.keys(apiData.errors);
@@ -371,7 +390,10 @@ function Roles() {
                     </ul>
                     <div className="col-xl-12 mt-3">
                       <div className="col-xl-3 mx-auto">
-                        <button class="approvalButton" onClick={handlePermissionSave}>
+                        <button
+                          class="approvalButton"
+                          onClick={handlePermissionSave}
+                        >
                           <i class="fa-duotone fa-check-double me-2"></i> Save
                         </button>
                       </div>

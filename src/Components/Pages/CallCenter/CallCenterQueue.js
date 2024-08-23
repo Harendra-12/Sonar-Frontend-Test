@@ -6,12 +6,25 @@ import {
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import ContentLoader from "../../Loader/ContentLoader";
+import { useDispatch, useSelector } from "react-redux";
 
 function CallCenterQueue() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
+  const [popUp, setPopUp] = useState(false);
   const [callCenter, setCallCenter] = useState();
+  const [error, setError] = useState("");
+  const [redirectRoutes, setRedirectRoutes] = useState("");
+  const allUser = useSelector((state) => state.allUser);
+  const allUserRefresh = useSelector((state) => state.allUserRefresh);
+  const { data: usersData = [] } = allUser;
+
   useEffect(() => {
+    dispatch({
+      type: "SET_ALLUSERREFRESH",
+      allUserRefresh: allUserRefresh + 1,
+    });
     async function getData() {
       const apiData = await generalGetFunction("/call-center-queues");
       if (apiData.status) {
@@ -23,8 +36,29 @@ function CallCenterQueue() {
     }
     getData();
   }, []);
-  console.log("callCenter", callCenter);
-  
+
+  const handleAddCallCenterValidation = (e) => {
+    e.preventDefault();
+
+    if (usersData.length === 0) {
+      setPopUp(true);
+      setError("Please add users to create a queue");
+      setRedirectRoutes("/users");
+      return;
+    }
+
+    const hasExtension = usersData.some((item) => item.extension_id);
+
+    if (!hasExtension) {
+      setPopUp(true);
+      setError("Please add an extension to the users to create a queue");
+      setRedirectRoutes("/extensions");
+      return;
+    }
+
+    navigate("/cal-center-queue-add");
+    backToTop();
+  };
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -49,8 +83,9 @@ function CallCenterQueue() {
               <div className="col-xl-8 pt-3 pt-xl-0">
                 <div className="d-flex justify-content-end">
                   <Link
-                    to="/cal-center-queue-add"
-                    onClick={backToTop}
+                    // to="/cal-center-queue-add"
+                    // onClick={backToTop}
+                    onClick={handleAddCallCenterValidation}
                     effect="ripple"
                     className="panelButton"
                   >
@@ -135,6 +170,43 @@ function CallCenterQueue() {
           </div>
         </div>
       </section>
+      {popUp ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-4">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-triangle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-0">
+                  <h4>Warning!</h4>
+                  <p>{error}</p>
+                  <button
+                    className="panelButton m-0"
+                    onClick={() => {
+                      // setForce(true);
+                      setPopUp(false);
+                      navigate(`${redirectRoutes}`);
+                    }}
+                  >
+                    Lets Go!
+                  </button>
+                  <button
+                    className="panelButtonWhite m-0 float-end"
+                    onClick={() => setPopUp(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </main>
   );
 }
