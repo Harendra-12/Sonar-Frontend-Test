@@ -77,13 +77,15 @@ const Users = () => {
             String(item.account_id).includes(userInput)
           )
         );
-      } else if (selectedOption === "domain") {
-        setFilterUser(
-          user.data.filter((item) =>
-            item?.domain?.domain_name?.includes(userInput)
-          )
-        );
-      } else if (selectedOption === "online") {
+      }
+      //  else if (selectedOption === "domain") {
+      //   setFilterUser(
+      //     user.data.filter((item) =>
+      //       item?.domain?.domain_name?.includes(userInput)
+      //     )
+      //   );
+      // }
+      else if (selectedOption === "online") {
         setFilterUser(user.data.filter((item) => onlineUser.includes(item.id)));
       } else if (selectedOption === "onCall") {
       }
@@ -146,7 +148,7 @@ const Users = () => {
                   >
                     <option value="userName">Username</option>
                     <option value="accountId">Account ID</option>
-                    <option value="domain">Domain</option>
+                    {/* <option value="domain">Domain</option> */}
                     <option value="online">Online</option>
                     <option value="onCall">On Call</option>
                   </select>
@@ -180,7 +182,7 @@ const Users = () => {
                     <tr>
                       <th>Username (Extension)</th>
                       <th>Account ID</th>
-                      <th>Domain</th>
+                      {/* <th>Domain</th> */}
                       <th>Online</th>
                       <th>On Call</th>
                       <th>Status</th>
@@ -217,7 +219,7 @@ const Users = () => {
                                 >
                                   {item.account_id}
                                 </td>
-                                <td
+                                {/* <td
                                   onClick={() =>
                                     navigate(`/users-edit`, {
                                       state: item,
@@ -225,7 +227,7 @@ const Users = () => {
                                   }
                                 >
                                   {item?.domain?.domain_name}
-                                </td>
+                                </td> */}
                                 <td
                                   onClick={() =>
                                     navigate(`/users-edit`, {

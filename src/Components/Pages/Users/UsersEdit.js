@@ -21,7 +21,7 @@ const UsersEdit = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const locationState = location.state;
-  const [domains, setDomains] = useState("");
+  // const [domains, setDomains] = useState("");
   const [timeZone, setTimeZone] = useState("");
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState([]);
@@ -39,27 +39,29 @@ const UsersEdit = () => {
   } = useForm();
 
   const account = useSelector((state) => state.account);
+  const domain = useSelector((state) => state.domain);
+  const { id: domainId = "" } = domain;
   useEffect(() => {
     if (account === null) {
       navigate("/");
     } else {
       async function getDomain() {
-        const domain = await generalGetFunction(
-          `/domain/search?account=${account.account_id}`
-        );
+        // const domain = await generalGetFunction(
+        //   `/domain/search?account=${account.account_id}`
+        // );
         const permissionData = await generalGetFunction("/permission");
         const timeZ = await generalGetFunction(`/timezone/all`);
         const apiRole = await generalGetFunction(`/role/all`);
 
-        if (domain.status) {
-          setDomains(
-            domain.data.map((item) => {
-              return [item.id, item.domain_name];
-            })
-          );
-        } else {
-          navigate("/");
-        }
+        // if (domain.status) {
+        //   setDomains(
+        //     domain.data.map((item) => {
+        //       return [item.id, item.domain_name];
+        //     })
+        //   );
+        // } else {
+        //   navigate("/");
+        // }
         if (timeZ.status) {
           setTimeZone(
             timeZ.data.map((item) => {
@@ -134,7 +136,7 @@ const UsersEdit = () => {
       firstName,
       lastName,
       email,
-      domain_id,
+      // domain_id,
       timezone_id,
       status,
       role_id,
@@ -153,7 +155,7 @@ const UsersEdit = () => {
     const payload = {
       name: `${firstName} ${lastName}`,
       email,
-      domain_id,
+      domain_id: domainId,
       timezone_id,
       status,
       role_id,
@@ -272,7 +274,7 @@ const UsersEdit = () => {
         <section id="phonePage">
           <div className="container-fluid px-0">
             <div className="row justify-content-center" id="subPageHeader">
-            <Header title="User Edit" />
+              <Header title="User Edit" />
               <div className="col-6 my-auto">
                 {/* <h4 className="my-auto">User Edit</h4> */}
               </div>
@@ -480,7 +482,7 @@ const UsersEdit = () => {
                     </label>
                   </div>
                 </div>
-                <div className="formRow col-xl-3">
+                {/* <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Domain</label>
                   </div>
@@ -509,7 +511,7 @@ const UsersEdit = () => {
                       Select the Domain.
                     </label>
                   </div>
-                </div>
+                </div> */}
               </form>
             </div>
 

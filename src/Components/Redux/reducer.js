@@ -32,6 +32,7 @@ var addContactRefresh = 0;
 var roles = [];
 var permissions = [];
 var rolesAndPermissionRefresh = 0;
+var domain = {};
 
 const initialState = {
   account,
@@ -67,6 +68,7 @@ const initialState = {
   roles,
   permissions,
   rolesAndPermissionRefresh,
+  domain,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -141,6 +143,9 @@ const counterReducer = (state = initialState, action) => {
         ...state,
         rolesAndPermissionRefresh: action.rolesAndPermissionRefresh,
       };
+
+    case "SET_DOMAIN":
+      return { ...state, domain: action.domain };
 
     default:
       return state;

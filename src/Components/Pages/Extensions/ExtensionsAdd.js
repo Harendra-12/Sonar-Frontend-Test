@@ -12,18 +12,25 @@ import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
-import { domainValidator, lengthValidator, numberValidator, requiredValidator } from "../../validations/validation";
+import {
+  domainValidator,
+  lengthValidator,
+  numberValidator,
+  requiredValidator,
+} from "../../validations/validation";
 import Header from "../../CommonComponents/Header";
 
 const ExtensionsAdd = () => {
   const navigate = useNavigate();
   const acount = useSelector((state) => state.account);
-  const [domains, setDomains] = useState();
+  const domain = useSelector((state) => state.domain);
+  // const [domains, setDomains] = useState();
   const [loading, setLoading] = useState(false);
   const [music, setMusic] = useState([]);
   const [musicHold, setMusicHold] = useState();
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
   const dispatch = useDispatch();
+  const { id: domainId = "" } = domain;
   const {
     register,
     watch,
@@ -38,19 +45,19 @@ const ExtensionsAdd = () => {
       navigate("/");
     } else {
       async function getDomain() {
-        const domain = await generalGetFunction(
-          `/domain/search?account=${account.account_id}`
-        );
+        // const domain = await generalGetFunction(
+        //   `/domain/search?account=${account.account_id}`
+        // );
         const musicData = await generalGetFunction("/sound/all?type=hold");
-        if (domain.status) {
-          setDomains(
-            domain.data.map((item) => {
-              return [item.id, item.domain_name];
-            })
-          );
-        } else {
-          navigate("/");
-        }
+        // if (domain.status) {
+        //   setDomains(
+        //     domain.data.map((item) => {
+        //       return [item.id, item.domain_name];
+        //     })
+        //   );
+        // } else {
+        //   navigate("/");
+        // }
         if (musicData.status) {
           setMusic(musicData.data);
         }
@@ -61,7 +68,10 @@ const ExtensionsAdd = () => {
 
   const handleFormSubmit = handleSubmit(async (data) => {
     setLoading(true);
-    const payLoad = { ...data, ...{ account_id: acount.account_id } };
+    const payLoad = {
+      ...data,
+      ...{ account_id: acount.account_id, domain: `${domainId}` },
+    };
     const apiData = await generalPostFunction("/extension/store", payLoad);
     if (apiData.status) {
       reset();
@@ -78,9 +88,6 @@ const ExtensionsAdd = () => {
       toast.error(apiData.errors[errorMessage[0]][0]);
     }
   });
-
-  console.log(watch());
-  console.log(errors);
 
   return (
     <main className="mainContent">
@@ -107,7 +114,7 @@ const ExtensionsAdd = () => {
                   effect="ripple"
                   className="panelButton"
                   onClick={handleFormSubmit}
-                // onClick={handleSubmit}
+                  // onClick={handleSubmit}
                 >
                   Save
                 </button>
@@ -172,7 +179,7 @@ const ExtensionsAdd = () => {
                   </label>
                 </div>
               </div>
-              <div className="formRow col-xl-3">
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Domain</label>
                 </div>
@@ -205,7 +212,7 @@ const ExtensionsAdd = () => {
                     Select the Domain.
                   </label>
                 </div>
-              </div>
+              </div> */}
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Voicemail Password</label>

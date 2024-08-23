@@ -31,11 +31,12 @@ function CallCenterQueueEdit() {
   const [ringGroup, setRingGroup] = useState();
   const [user, setUser] = useState();
   const account = useSelector((state) => state.account);
+  const domain = useSelector((state) => state.domain);
   const [prevAgents, setPrevAgents] = useState([]);
   const [extension, setExtension] = useState([]);
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
   const extensionArr = useSelector((state) => state.extension);
-
+  const { domain_name = "" } = domain;
   const [agent, setAgent] = useState([
     {
       id: 1,
@@ -267,12 +268,8 @@ function CallCenterQueueEdit() {
           <action application="answer" data=""/>
           <action application="set" data="hangup_after_bridge=true"/>
           <action application="sleep" data="1000"/>
-          <action application="callcenter" data="${extension}@${
-        account.domain.domain_name
-      }"/>
-           <action application="transfer" data="${queue_timeout_action} XML ${
-        account.domain.domain_name
-      }"/>
+          <action application="callcenter" data="${extension}@${domain_name}"/>
+           <action application="transfer" data="${queue_timeout_action} XML ${domain_name}"/>
         </condition>
 </extension>`,
     };

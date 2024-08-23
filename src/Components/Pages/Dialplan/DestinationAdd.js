@@ -23,9 +23,11 @@ function DestinationAdd() {
   const locationData = location.state;
   console.log("This is location data", locationData);
   const navigate = useNavigate();
-  const [domains, setDomains] = useState();
+  // const [domains, setDomains] = useState();
   const [users, setUsers] = useState();
   const account = useSelector((state) => state.account);
+  const domain = useSelector((state) => state.domain);
+  const { id: domainId } = domain;
   const {
     register,
     watch,
@@ -39,21 +41,21 @@ function DestinationAdd() {
       navigate("/");
     } else {
       async function getDomain() {
-        const domain = await generalGetFunction(
-          `/domain/search?account=${account.account_id}`
-        );
+        // const domain = await generalGetFunction(
+        //   `/domain/search?account=${account.account_id}`
+        // );
         const apidataUser = await generalGetFunction(
           `/user/search?account=${account.account_id}`
         );
-        if (domain.status) {
-          setDomains(
-            domain.data.map((item) => {
-              return [item.id, item.domain_name];
-            })
-          );
-        } else {
-          navigate("/");
-        }
+        // if (domain.status) {
+        //   setDomains(
+        //     domain.data.map((item) => {
+        //       return [item.id, item.domain_name];
+        //     })
+        //   );
+        // } else {
+        //   navigate("/");
+        // }
         if (apidataUser.status) {
           setUsers(apidataUser.data);
         } else {
@@ -74,6 +76,7 @@ function DestinationAdd() {
       ...{
         account_id: account.account_id,
         destination_status: data.destination_status == "true" ? true : false,
+        domain: `${domainId}`,
       },
     };
     const apiData = await generalPostFunction(`/dialplan/store`, payload);
@@ -454,7 +457,7 @@ function DestinationAdd() {
                     </label>
                   </div>
                 </div>
-                <div className="formRow col-xl-3">
+                {/* <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Domain</label>
                   </div>
@@ -482,7 +485,7 @@ function DestinationAdd() {
                   <label htmlFor="data" className="formItemDesc">
                     Select the Domain.
                   </label>
-                </div>
+                </div> */}
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Order</label>

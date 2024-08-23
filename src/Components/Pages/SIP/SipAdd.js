@@ -12,7 +12,7 @@ function SipAdd() {
     description: "",
     hostName: "",
     status: "",
-    domain: "",
+    // domain: "",
     alias: "",
     parse: "",
     settingName: "",
@@ -66,7 +66,7 @@ function SipAdd() {
         <section id="phonePage">
           <div className="container-fluid">
             <div className="row justify-content-center">
-            <Header title="Sip Profile Add" />
+              <Header title="Sip Profile Add" />
               <div className="col-12" id="subPageHeader">
                 <div className="row px-xl-3">
                   <div className="col-xl-4 my-auto">
@@ -224,16 +224,10 @@ function SipAdd() {
                         </label>
                       </div>
                     </div>
-                    <div className="formRow col-xl-3">
+                    {/* <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Domain</label>
-                        {/* {gatewayState.fromdomainMissing ? (
-                        <label className="status missing">
-                          Field missing
-                        </label>
-                      ) : (
-                        ""
-                      )} */}
+                    
                       </div>
                       <div className="col-12">
                         <input
@@ -254,7 +248,7 @@ function SipAdd() {
                           Enter the Domain Name here.
                         </label>
                       </div>
-                    </div>
+                    </div> */}
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Alias</label>

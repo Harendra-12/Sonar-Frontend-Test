@@ -29,10 +29,9 @@ const Extensions = () => {
     } else {
       setOnlineExtension([0]);
     }
-    generalGetFunction("/freeswitch/checkActiveExtensionOnServer")
+    generalGetFunction("/freeswitch/checkActiveExtensionOnServer");
   }, [registerUser]);
   console.log("onlineExtension", onlineExtension);
-  
 
   useEffect(() => {
     setLoading(true);
@@ -98,7 +97,7 @@ const Extensions = () => {
                   <thead>
                     <tr>
                       <th>Extensions</th>
-                      <th>Domains</th>
+                      {/* <th>Domains</th> */}
                       <th>Effective CID Name</th>
                       <th>Outbound CID Name</th>
                       <th>Call Group</th>
@@ -122,20 +121,20 @@ const Extensions = () => {
                       extension.data.map((item, index) => {
                         return (
                           <tr key={index}>
-                            <td onClick={() =>
-                                navigate(`/extensions-edit?id=${item.id}`)
-                              }>
-                             
-                                {item.extension}
-                             
-                            </td>
                             <td
                               onClick={() =>
                                 navigate(`/extensions-edit?id=${item.id}`)
                               }
                             >
-                              {item?.domain?.domain_name}
+                              {item.extension}
                             </td>
+                            {/* <td
+                              onClick={() =>
+                                navigate(`/extensions-edit?id=${item.id}`)
+                              }
+                            >
+                              {item?.domain?.domain_name}
+                            </td> */}
                             <td
                               onClick={() =>
                                 navigate(`/extensions-edit?id=${item.id}`)
@@ -162,7 +161,15 @@ const Extensions = () => {
                                 navigate(`/extensions-edit?id=${item.id}`)
                               }
                             >
-                              <label className={item.callScreen === 'Enable' ? "tableLabel success" : "tableLabel fail"}>{item.callScreen}</label>
+                              <label
+                                className={
+                                  item.callScreen === "Enable"
+                                    ? "tableLabel success"
+                                    : "tableLabel fail"
+                                }
+                              >
+                                {item.callScreen}
+                              </label>
                             </td>
                             {/* <td>1001</td> */}
                             <td

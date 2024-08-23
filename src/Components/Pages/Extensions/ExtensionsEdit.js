@@ -15,7 +15,9 @@ import Header from "../../CommonComponents/Header";
 const ExtensionsEdit = () => {
   const navigate = useNavigate();
   const acount = useSelector((state) => state.account);
-  const [domains, setDomains] = useState();
+  const domain = useSelector((state) => state.domain);
+  const { id: domainId = "" } = domain;
+  // const [domains, setDomains] = useState();
   const queryParams = new URLSearchParams(useLocation().search);
   const value = queryParams.get("id");
   const [users, setUsers] = useState();
@@ -90,9 +92,9 @@ const ExtensionsEdit = () => {
       navigate("/");
     } else {
       async function getDomain() {
-        const domain = await generalGetFunction(
-          `/domain/search?account=${account.account_id}`
-        );
+        // const domain = await generalGetFunction(
+        //   `/domain/search?account=${account.account_id}`
+        // );
         const apidataUser = await generalGetFunction(
           `/user/search?account=${account.account_id}`
         );
@@ -100,15 +102,15 @@ const ExtensionsEdit = () => {
         if (musicData.status) {
           setMusic(musicData.data);
         }
-        if (domain.status) {
-          setDomains(
-            domain.data.map((item) => {
-              return [item.id, item.domain_name];
-            })
-          );
-        } else {
-          navigate("/");
-        }
+        // if (domain.status) {
+        //   setDomains(
+        //     domain.data.map((item) => {
+        //       return [item.id, item.domain_name];
+        //     })
+        //   );
+        // } else {
+        //   navigate("/");
+        // }
 
         if (apidataUser.status) {
           setUsers(apidataUser.data);
@@ -179,20 +181,20 @@ const ExtensionsEdit = () => {
         extensionMissing: true,
       }));
     }
-    if (
-      extensionState.domain === "" ||
-      extensionState.domain === "Select Domain"
-    ) {
-      setExtensionState((prevState) => ({
-        ...prevState,
-        domainMissing: true,
-      }));
-    } else {
-      setExtensionState((prevState) => ({
-        ...prevState,
-        domainMissing: false,
-      }));
-    }
+    // if (
+    //   extensionState.domain === "" ||
+    //   extensionState.domain === "Select Domain"
+    // ) {
+    //   setExtensionState((prevState) => ({
+    //     ...prevState,
+    //     domainMissing: true,
+    //   }));
+    // } else {
+    //   setExtensionState((prevState) => ({
+    //     ...prevState,
+    //     domainMissing: false,
+    //   }));
+    // }
     if (extensionState.password === "" || extensionState.password.length < 4) {
       setExtensionState((prevState) => ({
         ...prevState,
@@ -219,11 +221,12 @@ const ExtensionsEdit = () => {
     if (
       extensionState.extension.trim().length > 2 &&
       !(extensionState.password === "" || extensionState.password.length < 4) &&
-      extensionState.voicePass.trim().length > 3 &&
-      !(
-        extensionState.domain === "" ||
-        extensionState.domain === "Select Domain"
-      )
+      extensionState.voicePass.trim().length > 3
+      // &&
+      // !(
+      //   extensionState.domain === "" ||
+      //   extensionState.domain === "Select Domain"
+      // )
     ) {
       setLoading(true);
       if (title === "force") {
@@ -252,7 +255,7 @@ const ExtensionsEdit = () => {
           callgroup: extensionState.callGroup,
           callScreen: extensionState.callScreen,
           record: extensionState.record,
-          domain: extensionState.domain,
+          domain: `${domainId}`,
           description: extensionState.desc,
           moh: musicHold,
           password: extensionState.password,
@@ -288,7 +291,7 @@ const ExtensionsEdit = () => {
           callgroup: extensionState.callGroup,
           callScreen: extensionState.callScreen,
           record: extensionState.record,
-          domain: extensionState.domain,
+          domain: `${domainId}`,
           description: extensionState.desc,
           password: extensionState.password,
           user: extensionState.user,
@@ -320,7 +323,7 @@ const ExtensionsEdit = () => {
       <section id="phonePage">
         <div className="container-fluid px-0">
           <div className="row justify-content-center" id="subPageHeader">
-          <Header title="Update Extension" />
+            <Header title="Update Extension" />
             <div className="col-xl-6 my-auto">
               {/* <h4 className="my-auto">Update Extension</h4> */}
             </div>
@@ -451,7 +454,7 @@ const ExtensionsEdit = () => {
                   </label>
                 </div>
               </div>
-              <div className="formRow col-xl-3">
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Domain</label>
                   {!extensionState.domainMissing ? (
@@ -488,7 +491,7 @@ const ExtensionsEdit = () => {
                     Select the Domain.
                   </label>
                 </div>
-              </div>
+              </div> */}
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Voicemail Password</label>

@@ -19,14 +19,15 @@ function DestinationEdit() {
   const locationData = location.state.state;
   const locationDid = location.state.did;
   const navigate = useNavigate();
-  const [domains, setDomains] = useState();
+  // const [domains, setDomains] = useState();
   const [users, setUsers] = useState();
   const account = useSelector((state) => state.account);
+  const domain = useSelector((state) => state.domain);
   const [loading, setLoading] = useState(false);
   const queryParams = new URLSearchParams(useLocation().search);
   const value = queryParams.get("id");
   const ringGroup = useSelector((state) => state.ringGroup);
-
+  const { id: domainId = "" } = domain;
   const [destination, setDestination] = useState({
     type: "Inbound",
     countryCode: "",
@@ -60,29 +61,29 @@ function DestinationEdit() {
     xml: "",
     did: "",
   });
-
+  console.log(locationData);
   useEffect(() => {
     if (account === null) {
       navigate("/");
     } else {
       async function getDomain() {
         // const destData = await generalGetFunction(`/dialplan/${value}`);
-        const domain = await generalGetFunction(
-          `/domain/search?account=${account.account_id}`
-        );
+        // const domain = await generalGetFunction(
+        //   `/domain/search?account=${account.account_id}`
+        // );
         const apidataUser = await generalGetFunction(
           `/user/search?account=${account.account_id}`
         );
 
-        if (domain.status) {
-          setDomains(
-            domain.data.map((item) => {
-              return [item.id, item.domain_name];
-            })
-          );
-        } else {
-          navigate("/");
-        }
+        // if (domain.status) {
+        //   setDomains(
+        //     domain.data.map((item) => {
+        //       return [item.id, item.domain_name];
+        //     })
+        //   );
+        // } else {
+        //   navigate("/");
+        // }
         if (apidataUser.status) {
           setUsers(apidataUser.data);
         } else {
@@ -103,7 +104,7 @@ function DestinationEdit() {
           callerIdNumber: locationData.caller_Id_number,
           callerIdNamePrefix: locationData.caller_Id_name_prefix,
           usage: locationData.usage,
-          domain: locationData.domain,
+          // domain: locationData.domain,
           order: locationData.order,
           xml: locationData.dialplan_xml,
           // eslint-disable-next-line eqeqeq
@@ -175,17 +176,17 @@ function DestinationEdit() {
         usageMissing: false,
       }));
     }
-    if (destination.domain === "") {
-      setDestination((prevState) => ({
-        ...prevState,
-        domainMissing: true,
-      }));
-    } else {
-      setDestination((prevState) => ({
-        ...prevState,
-        domainMissing: false,
-      }));
-    }
+    // if (destination.domain === "") {
+    //   setDestination((prevState) => ({
+    //     ...prevState,
+    //     domainMissing: true,
+    //   }));
+    // } else {
+    //   setDestination((prevState) => ({
+    //     ...prevState,
+    //     domainMissing: false,
+    //   }));
+    // }
     if (destination.order === "") {
       setDestination((prevState) => ({
         ...prevState,
@@ -239,7 +240,7 @@ function DestinationEdit() {
         destination.destination === "" ||
         destination.context === "" ||
         destination.usage === "" ||
-        destination.domain === "" ||
+        // destination.domain === "" ||
         destination.order === "" ||
         destination.description === ""
       )
@@ -254,7 +255,7 @@ function DestinationEdit() {
         caller_Id_number: destination.callerIdNumber,
         caller_Id_name_prefix: destination.callerIdNamePrefix,
         usage: destination.usage,
-        domain: destination.domain,
+        domain: `${domainId}`,
         order: destination.order,
         destination_status: destination.enabled === "true" ? true : false,
         description: destination.description,
@@ -286,7 +287,7 @@ function DestinationEdit() {
         <section id="phonePage">
           <div className="container-fluid px-0">
             <div className="row justify-content-center" id="subPageHeader">
-            <Header title="Destination Add" />
+              <Header title="Destination Add" />
               <div className="col-xl-9 my-auto">
                 {/* <h4 className="my-auto">Destination Add</h4> */}
                 <p className="pt-2 mt-1 mb-0">
@@ -825,7 +826,7 @@ function DestinationEdit() {
                     Set how the Destination will be used.
                   </label>
                 </div>
-                <div className="formRow col-xl-3">
+                {/* <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Domain</label>
                     {destination.domainMissing ? (
@@ -856,17 +857,12 @@ function DestinationEdit() {
                             </option>
                           );
                         })}
-                      {/* <option selected="" value="192.168.1.36">
-                            192.168.1.36
-                          </option>
-                          <option value="global">Global</option>
-                          <option value="testpbx.webvio.in">testpbx.webvio.in</option> */}
                     </select>
                   </div>
                   <label htmlFor="data" className="formItemDesc">
                     Select the Domain.
                   </label>
-                </div>
+                </div> */}
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Order</label>

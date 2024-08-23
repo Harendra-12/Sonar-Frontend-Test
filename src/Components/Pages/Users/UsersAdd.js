@@ -19,7 +19,8 @@ import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
 const UsersAdd = () => {
   const navigate = useNavigate();
-  const [domains, setDomains] = useState("");
+  const domain = useSelector((state) => state.domain);
+  // const [domains, setDomains] = useState("");
   const [timeZone, setTimeZone] = useState("");
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState([]);
@@ -29,8 +30,8 @@ const UsersAdd = () => {
   const [isUserNameAvailable, setIsUserNameAvailable] = useState();
   const [userNameValidationLoader, setuserNameValidationLoader] =
     useState(false);
-
-  const [popUp, setPopUp] = useState(true);
+  const { id: domainId = "" } = domain;
+  // const [popUp, setPopUp] = useState(true);
 
   const {
     register,
@@ -48,21 +49,21 @@ const UsersAdd = () => {
       navigate("/");
     } else {
       async function getDomain() {
-        const domain = await generalGetFunction(
-          `/domain/search?account=${account.account_id}`
-        );
+        // const domain = await generalGetFunction(
+        //   `/domain/search?account=${account.account_id}`
+        // );
         const permissionData = await generalGetFunction("/permission");
         const timeZ = await generalGetFunction(`/timezone/all`);
         const apiRole = await generalGetFunction(`/role/all`);
-        if (domain.status) {
-          setDomains(
-            domain.data.map((item) => {
-              return [item.id, item.domain_name];
-            })
-          );
-        } else {
-          navigate("/");
-        }
+        // if (domain.status) {
+        //   setDomains(
+        //     domain.data.map((item) => {
+        //       return [item.id, item.domain_name];
+        //     })
+        //   );
+        // } else {
+        //   navigate("/");
+        // }
         if (timeZ.status) {
           setTimeZone(
             timeZ.data.map((item) => {
@@ -132,6 +133,7 @@ const UsersAdd = () => {
       ...data,
       ...{
         name: `${firstName} ${lastName}`,
+        domain_id: `${domainId}`,
       },
     };
 
@@ -618,7 +620,7 @@ const UsersAdd = () => {
                     </label>
                   </div>
                 </div>
-                <div className="formRow col-xl-3">
+                {/* <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Domain</label>
                   </div>
@@ -648,7 +650,7 @@ const UsersAdd = () => {
                       Select the Domain.
                     </label>
                   </div>
-                </div>
+                </div> */}
               </form>
             </div>
 

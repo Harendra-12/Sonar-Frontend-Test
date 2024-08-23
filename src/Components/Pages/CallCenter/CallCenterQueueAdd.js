@@ -30,8 +30,9 @@ function CallCenterQueueAdd() {
   const [user, setUser] = useState();
   const [music, setMusic] = useState();
   const account = useSelector((state) => state.account);
+  const domain = useSelector((state) => state.domain);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
-
+  const { domain_name = "" } = domain;
   // const [popUp, setPopUp] = useState(true);
 
   const {
@@ -221,12 +222,8 @@ function CallCenterQueueAdd() {
           <action application="answer" data=""/>
           <action application="set" data="hangup_after_bridge=true"/>
           <action application="sleep" data="1000"/>
-          <action application="callcenter" data="${extension}@${
-        account.domain.domain_name
-      }"/>
-           <action application="transfer" data="${queue_timeout_action} XML ${
-        account.domain.domain_name
-      }"/>
+          <action application="callcenter" data="${extension}@${domain_name}"/>
+           <action application="transfer" data="${queue_timeout_action} XML ${domain_name}"/>
         </condition>
 </extension>`,
     };
