@@ -60,8 +60,8 @@ function ChangePassword() {
     <main className="mainContent">
       <section id="phonePage">
         <div className="container-fluid px-0">
-          <div className="row justify-content-center" id="subPageHeader">
           <Header title="Change Password" />
+          <div className="row justify-content-center" id="subPageHeader">
             <div className="col-xl-9 my-auto">
               {/* <h4 className="my-auto">Change Password</h4> */}
               <p className="pt-2 mt-1 mb-0">Change your account password.</p>

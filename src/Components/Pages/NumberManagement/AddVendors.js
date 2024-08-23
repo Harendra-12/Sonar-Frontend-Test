@@ -53,10 +53,11 @@ function AddVendors() {
         <section id="phonePage">
           <div className="container-fluid">
             <div className="row justify-content-center">
+              <Header title="Add New Vendor" />
               <div className="col-12" id="subPageHeader">
                 <div className="row px-xl-3">
                   <div className="col-xl-9 my-auto">
-                    <h4 className="my-auto">Add New Vendor</h4>
+                    {/* <h4 className="my-auto">Add New Vendor</h4> */}
                     <p className="pt-2 mt-1 mb-0"></p>
                   </div>
                   <div className="col-xl-3 ps-2">

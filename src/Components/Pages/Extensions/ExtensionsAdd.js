@@ -86,8 +86,8 @@ const ExtensionsAdd = () => {
     <main className="mainContent">
       <section id="phonePage">
         <div className="container-fluid px-0">
-          <div className="row justify-content-center" id="subPageHeader">
           <Header title="Extension Add" />
+          <div className="row justify-content-center" id="subPageHeader">
             <div className="col-xl-6 my-auto">
               {/* <h4 className="my-auto">Extension Add</h4> */}
             </div>
