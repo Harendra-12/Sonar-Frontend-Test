@@ -29,6 +29,9 @@ var sessions = [];
 var callProgressId = "";
 var callProgressDestination = "";
 var addContactRefresh = 0;
+var roles = [];
+var permissions = [];
+var rolesAndPermissionRefresh = 0;
 
 const initialState = {
   account,
@@ -61,6 +64,9 @@ const initialState = {
   callProgressId,
   callProgressDestination,
   addContactRefresh,
+  roles,
+  permissions,
+  rolesAndPermissionRefresh,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -126,6 +132,16 @@ const counterReducer = (state = initialState, action) => {
       };
     case "SET_ADDCONTACTREFRESH":
       return { ...state, addContactRefresh: action.addContactRefresh };
+    case "SET_ROLES":
+      return { ...state, roles: action.roles };
+    case "SET_PERMISSIONS":
+      return { ...state, permissions: action.permissions };
+    case "SET_ROLES_PERMISSIONREFRESH":
+      return {
+        ...state,
+        rolesAndPermissionRefresh: action.rolesAndPermissionRefresh,
+      };
+
     default:
       return state;
   }
