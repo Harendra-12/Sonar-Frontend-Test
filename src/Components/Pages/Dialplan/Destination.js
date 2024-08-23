@@ -14,7 +14,7 @@ function Destination() {
   const navigate = useNavigate();
   const [destination, setDestination] = useState();
   const [loading, setLoading] = useState(true);
-  const [domain, setDomain] = useState();
+  // const [domain, setDomain] = useState();
   const account = useSelector((state) => state.account);
 
   useEffect(() => {
