@@ -82,6 +82,8 @@ import AllContact from "./Components/Pages/WebRtc/AllContact";
 import AllVoicemails from "./Components/Pages/WebRtc/AllVoicemails";
 import CallDashboard from "./Components/Pages/WebRtc/CallDashboard";
 import { ToastContainer } from "react-toastify";
+import RingGroupSettings from "./Components/CommonComponents/RingGroupSettings";
+import CallCenterSettings from "./Components/CommonComponents/CallCenterSettings";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -132,6 +134,7 @@ function App() {
           <Route path="/ring-groups" element={<RingGroups />} />
           <Route path="/ring-groups-add" element={<RingGroupAdd />} />
           <Route path="/ring-groups-edit" element={<RingGroupEdit />} />
+          <Route path="/ring-groups-settings" element={<RingGroupSettings />} />
           {/* Ring Groups Path End */}
 
           {/* Users Path Start */}
@@ -228,6 +231,7 @@ function App() {
             path="/cal-center-queue-add"
             element={<CallCenterQueueAdd />}
           />
+          <Route path="/call-center-settings" element={<CallCenterSettings />} />
           {/* Call Center queue path End */}
 
           {/* Settings path start */}

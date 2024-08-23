@@ -80,6 +80,7 @@ function CallCenterQueue() {
                       <th>Timeout Action</th>
                       <th>Prefix</th>
                       <th>Total Agents</th>
+                      <th>Settings</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -96,18 +97,43 @@ function CallCenterQueue() {
                       callCenter.map((item) => {
                         return (
                           <tr
-                            onClick={() =>
+                            
+                          >
+                            <td onClick={() =>
                               navigate("/cal-center-queue-edit", {
                                 state: item,
                               })
-                            }
-                          >
-                            <td>{item.queue_name}</td>
-                            <td>{item.extension}</td>
-                            <td>{item.strategy}</td>
-                            <td>{item.queue_timeout_action}</td>
-                            <td>{item.queue_cid_prefix}</td>
-                            <td>{item.agents.length}</td>
+                            }>{item.queue_name}</td>
+                            <td onClick={() =>
+                              navigate("/cal-center-queue-edit", {
+                                state: item,
+                              })
+                            }>{item.extension}</td>
+                            <td onClick={() =>
+                              navigate("/cal-center-queue-edit", {
+                                state: item,
+                              })
+                            }>{item.strategy}</td>
+                            <td onClick={() =>
+                              navigate("/cal-center-queue-edit", {
+                                state: item,
+                              })
+                            }>{item.queue_timeout_action}</td>
+                            <td onClick={() =>
+                              navigate("/cal-center-queue-edit", {
+                                state: item,
+                              })
+                            }>{item.queue_cid_prefix}</td>
+                            <td onClick={() =>
+                              navigate("/cal-center-queue-edit", {
+                                state: item,
+                              })
+                            }>{item.agents.length}</td>
+                            <td onClick={() =>
+                              navigate("/call-center-settings", {
+                                state: item,
+                              })
+                            }><i className="fa-duotone fa-gear text-success"></i></td>
                           </tr>
                         );
                       })}

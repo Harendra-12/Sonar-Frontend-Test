@@ -29,7 +29,7 @@ const RingGroups = () => {
       }
       getData();
     } else {
-      navigate("/")
+      navigate("/");
     }
   }, []);
 
@@ -89,6 +89,7 @@ const RingGroups = () => {
                       <th>Members</th>
                       <th>Status</th>
                       <th>Description</th>
+                      <th>Setting</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -104,16 +105,65 @@ const RingGroups = () => {
                     {ringGroup &&
                       ringGroup.map((item, index) => {
                         return (
-                          <tr key={index} onClick={() => navigate(`/ring-groups-edit?id=${item.id}`)}>
-                            <td>{item.name}</td>
-                            <td>{item.extension}</td>
-                            <td>{item.strategy}</td>
-                            <td>{item.ring_group_destination.length}</td>
-                            <td>
-                              <label className={item.status === 'active' ? "tableLabel success" : "tableLabel fail"}>{item.status}</label>
+                          <tr key={index}>
+                            <td
+                              onClick={() =>
+                                navigate(`/ring-groups-edit?id=${item.id}`)
+                              }
+                            >
+                              {item.name}
                             </td>
-                            <td className="ellipsis" id="detailBox">
+                            <td
+                              onClick={() =>
+                                navigate(`/ring-groups-edit?id=${item.id}`)
+                              }
+                            >
+                              {item.extension}
+                            </td>
+                            <td
+                              onClick={() =>
+                                navigate(`/ring-groups-edit?id=${item.id}`)
+                              }
+                            >
+                              {item.strategy}
+                            </td>
+                            <td
+                              onClick={() =>
+                                navigate(`/ring-groups-edit?id=${item.id}`)
+                              }
+                            >
+                              {item.ring_group_destination.length}
+                            </td>
+                            <td
+                              onClick={() =>
+                                navigate(`/ring-groups-edit?id=${item.id}`)
+                              }
+                            >
+                              <label
+                                className={
+                                  item.status === "active"
+                                    ? "tableLabel success"
+                                    : "tableLabel fail"
+                                }
+                              >
+                                {item.status}
+                              </label>
+                            </td>
+                            <td
+                              onClick={() =>
+                                navigate(`/ring-groups-edit?id=${item.id}`)
+                              }
+                              className="ellipsis"
+                              id="detailBox"
+                            >
                               {item.description}
+                            </td>
+                            <td
+                              onClick={() =>
+                                navigate(`/ring-groups-settings?id=${item.id}`)
+                              }
+                            >
+                              <i className="fa-duotone fa-gear text-success"></i>
                             </td>
                           </tr>
                         );
