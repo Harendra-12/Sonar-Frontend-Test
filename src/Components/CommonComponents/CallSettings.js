@@ -10,6 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 import CircularLoader from "../Loader/CircularLoader";
+import Header from "./Header";
 
 const CallSettings = (props) => {
   const navigate = useNavigate();
@@ -271,9 +272,10 @@ const CallSettings = (props) => {
       <main className="mainContent">
         <section id="phonePage">
           <div className="container-fluid px-0">
+            <Header title="Call Settings" />
             <div className="row justify-content-center" id="subPageHeader">
               <div className="col-xl-9 my-auto">
-                <h4 className="my-auto">Call Settings</h4>
+                {/* <h4 className="my-auto">Call Settings</h4> */}
                 <p className="pt-2 mt-1 mb-0">
                   Direct incoming calls to extension: {locationData?.extension}
                 </p>

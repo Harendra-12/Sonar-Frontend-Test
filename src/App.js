@@ -82,6 +82,10 @@ import AllContact from "./Components/Pages/WebRtc/AllContact";
 import AllVoicemails from "./Components/Pages/WebRtc/AllVoicemails";
 import CallDashboard from "./Components/Pages/WebRtc/CallDashboard";
 import { ToastContainer } from "react-toastify";
+// import RingGroupSettings from "./Components/CommonComponents/RingGroupSettings";
+import CallCenterSettings from "./Components/Pages/CallCenter/CallCenterSettings";
+import RingGroupSettings from "./Components/Pages/RingGroups/RingGroupSettings";
+import DidConfig from "./Components/Pages/NumberManagement/DidConfig";
 import { useDispatch, useSelector } from "react-redux";
 
 // Unlock this if want push notification
@@ -143,6 +147,7 @@ function App() {
           <Route path="/ring-groups" element={<RingGroups />} />
           <Route path="/ring-groups-add" element={<RingGroupAdd />} />
           <Route path="/ring-groups-edit" element={<RingGroupEdit />} />
+          <Route path="/ring-groups-settings" element={<RingGroupSettings />} />
           {/* Ring Groups Path End */}
 
           {/* Users Path Start */}
@@ -218,6 +223,7 @@ function App() {
           <Route path="/edit-rate-charge" element={<RateChargeEdit />} />
           <Route path="/get-did" element={<GetDid />} />
           <Route path="/did-listing" element={<DidListing />} />
+          <Route path="/did-config" element={<DidConfig />} />
           {/* Number Management Path End */}
 
           {/* Payment path start */}
@@ -239,6 +245,7 @@ function App() {
             path="/cal-center-queue-add"
             element={<CallCenterQueueAdd />}
           />
+          <Route path="/call-center-settings" element={<CallCenterSettings />} />
           {/* Call Center queue path End */}
 
           {/* Settings path start */}
