@@ -2,11 +2,20 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { fileUploadFunction, generalGetFunction } from "../../GlobalFunction/globalFunction";
+import {
+  fileUploadFunction,
+  generalGetFunction,
+} from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../../Loader/CircularLoader";
 
-function Document({ account, refreshCallback, refresh, nextPage, companyStatus }) {
-  const [documentList,setDocumentList]=useState()
+function Document({
+  account,
+  refreshCallback,
+  refresh,
+  nextPage,
+  companyStatus,
+}) {
+  const [documentList, setDocumentList] = useState([]);
   const [rejectDocument, setRejectDocument] = useState([]);
   const [reUploadId, setReUploadId] = useState();
   const wrapperRef = useRef(null);
@@ -15,15 +24,21 @@ function Document({ account, refreshCallback, refresh, nextPage, companyStatus }
   const [reUploadPopUp, setReUploadPopUp] = useState(false);
   const [uploadDocument, setUploadDocument] = useState([]);
   const [uploadApprove, setUploadApprove] = useState([]);
+  const [uploadPopup, setUploadPopup] = useState(false);
+  const [uploadId, setuploadId] = useState("");
+  const [file, setFile] = useState();
+  const [uploadError, setUploadError] = useState(false);
+  // const [getDataRefresh, setgetDataRefresh] = useState(0);
+
   const [docId, setDocId] = useState([]);
   useEffect(() => {
     async function getDocumentList() {
-      const apiData = await generalGetFunction("/documents")
-      if(apiData.status){
-        setDocumentList(apiData.data)
+      const apiData = await generalGetFunction("/documents");
+      if (apiData.status) {
+        setDocumentList(apiData.data);
       }
     }
-    getDocumentList()
+    getDocumentList();
     setRejectDocument(account.details.filter((item) => item.status == "2"));
     const newDocItems = [...docId];
     account.details.forEach((item) => {
@@ -47,7 +62,8 @@ function Document({ account, refreshCallback, refresh, nextPage, companyStatus }
       .filter((item) => item.status === "2")
       .map((item) => {
         const hasMatch = account.details.some(
-          (item2) => item2.document_id === item.document_id && item2.status === "1"
+          (item2) =>
+            item2.document_id === item.document_id && item2.status === "1"
         );
         return hasMatch ? true : undefined;
       })
@@ -63,10 +79,8 @@ function Document({ account, refreshCallback, refresh, nextPage, companyStatus }
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [refresh]);
 
-  console.log("documentList", documentList);
-  
   const downloadImage = async (imageUrl, fileName) => {
     try {
       const response = await fetch(imageUrl);
@@ -99,6 +113,46 @@ function Document({ account, refreshCallback, refresh, nextPage, companyStatus }
     reg: false,
   });
 
+  function getNonUploadedDocuments() {
+    const allDocuments = documentList;
+    const uploadedDocuments = docId;
+
+    const uploadedIds = new Set(
+      uploadedDocuments.map((doc) => doc?.document?.id)
+    );
+
+    const nonUploadedDocuments = allDocuments?.filter(
+      (doc) => !uploadedIds.has(doc.id)
+    );
+
+    return nonUploadedDocuments;
+  }
+  const nonUploadedDocuments = getNonUploadedDocuments();
+
+  const handleUploadDocument = async (documentId) => {
+    const payload = {
+      account_id: account.id,
+      documents: [
+        {
+          document_id: documentId,
+          path: file,
+        },
+      ],
+    };
+
+    const apiData = await fileUploadFunction("/account-detail/store", payload);
+    if (apiData.status) {
+      toast.success(apiData.message);
+      setLoading(false);
+      setUploadPopup(false);
+      refreshCallback(refresh + 1);
+      // navigate(-1);
+    } else {
+      setLoading(false);
+      toast.error(apiData.message);
+    }
+  };
+
   function handleChange(e) {
     const { name } = e.target;
     setFormData((prevData) => ({
@@ -119,6 +173,17 @@ function Document({ account, refreshCallback, refresh, nextPage, companyStatus }
       }));
     }
   }
+
+  const handleUploadDoc = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile && selectedFile.size <= 1024 * 1024) {
+      setUploadError(false);
+      setFile(e.target.files[0]);
+    } else {
+      setUploadError(true);
+    }
+  };
+
   async function handleSubmit() {
     if (formDataError.reg) {
       toast.error("Image size must be less then 1 MB");
@@ -156,14 +221,16 @@ function Document({ account, refreshCallback, refresh, nextPage, companyStatus }
   return (
     <div className="d-flex flex-wrap documentPending">
       <div className="col-xl-8">
-        {(rejectDocument.length !== 0 &&
-          rejectDocument.length !== uploadApprove.length) ? (
+        {rejectDocument.length !== 0 &&
+        rejectDocument.length !== uploadApprove.length ? (
           <>
             <div className="statusMessage">
               <div className="statusWrapper">
                 <h5>
                   <i className="fa-solid fa-triangle-exclamation text-danger me-1"></i>{" "}
-                  We have faced an issue while validating your document(s)!
+                  {uploadDocument.every((value) => value === true)
+                    ? "Documents are under review. We will get back to you soon!"
+                    : "We have faced an issue while validating your document(s)!"}
                 </h5>
               </div>
             </div>
@@ -398,7 +465,49 @@ function Document({ account, refreshCallback, refresh, nextPage, companyStatus }
           </div>
         </div>
       </div>
+
       <div className="col-xl-4">
+        {nonUploadedDocuments.length > 0 && (
+          <div className="profileView">
+            <div className="profileDetailsHolder">
+              <div className="header d-flex align-items-center pe-0">
+                <div className="col-12">Upload Documents</div>
+              </div>
+              <div className="mt-2">
+                {nonUploadedDocuments.map((item, index) => {
+                  return (
+                    <div
+                      className="formRow"
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginBottom: "5px",
+                      }}
+                      key={index}
+                    >
+                      <div className="">
+                        <label htmlFor={`data-${item.id}`}>{item?.name}</label>
+                      </div>
+                      <div
+                        onClick={() => {
+                          setUploadPopup(true);
+                          setuploadId(item.id);
+                          // setReUploadId(item.document_id);
+                        }}
+                        style={{ cursor: "pointer" }}
+                        className=" clearButton fw-bold float-end col-auto"
+                      >
+                        Upload <i className="fa-duotone fa-upload"></i>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="profileView">
           <div className="profileDetailsHolder">
             <div className="header d-flex align-items-center pe-0">
@@ -517,7 +626,8 @@ function Document({ account, refreshCallback, refresh, nextPage, companyStatus }
                 </div>
               </div>
             ) : (
-              <Link to="/upload-document">
+              // <Link to="/upload-document">
+              <>
                 <div className="imgWrapper">
                   <img
                     src={require("../../assets/images/upload-file.png")}
@@ -535,19 +645,26 @@ function Document({ account, refreshCallback, refresh, nextPage, companyStatus }
                     .
                   </h5>
                 </div>
-              </Link>
+              </>
+              // </Link>
             )}
           </div>
         </div>
       </div>
       <div className="col-xl-12">
         <div className="col-xl-3 mx-auto">
-          <div class={Number(companyStatus) >= 4 ? "approvalButton" : "approvalButton disabled"}
+          <div
+            class={
+              Number(companyStatus) >= 4
+                ? "approvalButton"
+                : "approvalButton disabled"
+            }
             onClick={() => {
               if (Number(companyStatus) >= 4) {
-                nextPage("configure")
+                nextPage("configure");
               }
-            }}>
+            }}
+          >
             Next<i class="fa-solid fa-caret-right ms-2"></i>
           </div>
         </div>
@@ -587,6 +704,65 @@ function Document({ account, refreshCallback, refresh, nextPage, companyStatus }
                     <button
                       className="panelButtonWhite m-0 float-end"
                       onClick={() => setReUploadPopUp(false)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+      {uploadPopup ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-4">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-triangle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-0">
+                  <h4>
+                    Upload{" "}
+                    {documentList.filter((item) => item.id == uploadId)[0].name}
+                  </h4>
+                  Please select the file you want to upload
+                  <input
+                    name="reg"
+                    className="formItem"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleUploadDoc(e)}
+                    // onChange={handleChange}
+                  />
+                  {uploadError ? (
+                    <span style={{ color: "red", fontSize: 12 }}>
+                      <i class="fa-solid fa-triangle-exclamation"></i> Image
+                      should be less than 1 MB
+                    </span>
+                  ) : (
+                    ""
+                  )}
+                  <div className="mt-2">
+                    <button
+                      className="panelButton m-0"
+                      // onClick={handleSubmit}
+                      onClick={() => handleUploadDocument(uploadId)}
+                    >
+                      Confirm
+                    </button>
+                    <button
+                      className="panelButtonWhite m-0 float-end"
+                      // onClick={() => setReUploadPopUp(false)}
+                      onClick={() => {
+                        setUploadPopup(false);
+                        setUploadError(false);
+                      }}
                     >
                       Cancel
                     </button>
