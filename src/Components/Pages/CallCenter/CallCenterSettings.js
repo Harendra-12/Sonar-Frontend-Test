@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import Header from "./Header";
+import Header from "../../CommonComponents/Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   backToTop,
   generalGetFunction,
   generalPutFunction,
-} from "../GlobalFunction/globalFunction";
+} from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CircularLoader from "../Loader/CircularLoader";
+import CircularLoader from "../../Loader/CircularLoader";
 import { useForm } from "react-hook-form";
 
 const CallCenterSettings = () => {

@@ -82,8 +82,9 @@ import AllContact from "./Components/Pages/WebRtc/AllContact";
 import AllVoicemails from "./Components/Pages/WebRtc/AllVoicemails";
 import CallDashboard from "./Components/Pages/WebRtc/CallDashboard";
 import { ToastContainer } from "react-toastify";
-import RingGroupSettings from "./Components/CommonComponents/RingGroupSettings";
-import CallCenterSettings from "./Components/CommonComponents/CallCenterSettings";
+// import RingGroupSettings from "./Components/CommonComponents/RingGroupSettings";
+import CallCenterSettings from "./Components/Pages/CallCenter/CallCenterSettings";
+import RingGroupSettings from "./Components/Pages/RingGroups/RingGroupSettings";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";

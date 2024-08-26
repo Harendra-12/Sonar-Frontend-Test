@@ -5,15 +5,15 @@ import {
   generalDeleteFunction,
   generalGetFunction,
   generalPutFunction,
-} from "../GlobalFunction/globalFunction";
+} from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CircularLoader from "../Loader/CircularLoader";
+import CircularLoader from "../../Loader/CircularLoader";
 import { useForm } from "react-hook-form";
-import { requiredValidator } from "../validations/validation";
-import ErrorMessage from "../CommonComponents/ErrorMessage";
-import Header from "../CommonComponents/Header";
+import { requiredValidator } from "../../validations/validation";
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import Header from "../../CommonComponents/Header";
 
 const RingGroupSettings = () => {
   const navigate = useNavigate();
