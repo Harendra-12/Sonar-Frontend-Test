@@ -79,7 +79,7 @@ const Extensions = () => {
                     effect="ripple"
                     className="panelButton"
                   >
-                    Add
+                    Buy Extension
                   </Link>
                   {/* <div className="my-auto position-relative mx-3">
                     <label className="switch">

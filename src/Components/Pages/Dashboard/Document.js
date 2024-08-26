@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { fileUploadFunction } from "../../GlobalFunction/globalFunction";
+import { fileUploadFunction, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../../Loader/CircularLoader";
 
 function Document({ account, refreshCallback, refresh, nextPage, companyStatus }) {
+  const [documentList,setDocumentList]=useState()
   const [rejectDocument, setRejectDocument] = useState([]);
   const [reUploadId, setReUploadId] = useState();
   const wrapperRef = useRef(null);
@@ -16,6 +17,13 @@ function Document({ account, refreshCallback, refresh, nextPage, companyStatus }
   const [uploadApprove, setUploadApprove] = useState([]);
   const [docId, setDocId] = useState([]);
   useEffect(() => {
+    async function getDocumentList() {
+      const apiData = await generalGetFunction("/documents")
+      if(apiData.status){
+        setDocumentList(apiData.data)
+      }
+    }
+    getDocumentList()
     setRejectDocument(account.details.filter((item) => item.status == "2"));
     const newDocItems = [...docId];
     account.details.forEach((item) => {
@@ -57,6 +65,8 @@ function Document({ account, refreshCallback, refresh, nextPage, companyStatus }
     };
   }, []);
 
+  console.log("documentList", documentList);
+  
   const downloadImage = async (imageUrl, fileName) => {
     try {
       const response = await fetch(imageUrl);
