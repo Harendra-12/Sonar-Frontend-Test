@@ -32,6 +32,7 @@ function CallCenterQueueEdit() {
   const [user, setUser] = useState();
   const account = useSelector((state) => state.account);
   const domain = useSelector((state) => state.domain);
+  const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const [prevAgents, setPrevAgents] = useState([]);
   const [extension, setExtension] = useState([]);
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
@@ -327,6 +328,10 @@ function CallCenterQueueEdit() {
     if (apiData.status) {
       setLoading(false);
       toast.success(apiData.message);
+      dispatch({
+        type: "SET_CALLCENTERREFRESH",
+        callCenterRefresh: callCenterRefresh + 1,
+      });
     } else {
       setLoading(false);
       const errorMessage = Object.keys(apiData.errors);

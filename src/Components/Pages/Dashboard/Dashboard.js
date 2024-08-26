@@ -19,6 +19,7 @@ const Dashboard = () => {
   const allCall = useSelector((state) => state.allCall || {});
   const activeCall = useSelector((state) => state.activeCall || []);
   const callCenter = useSelector((state) => state.callCenter || []);
+  const extension = useSelector((state) => state.extension || []);
 
   const [ringGroupCardData, setringGroupCardData] = useState({
     total: {
@@ -308,26 +309,34 @@ const Dashboard = () => {
   }, [activeCallData]);
 
   useEffect(() => {
-    dispatch({
-      type: "SET_EXTENSIONREFRESH",
-      extensionRefresh: extensionRefresh + 1,
-    });
-    dispatch({
-      type: "SET_ALLUSERREFRESH",
-      allUserRefresh: allUserRefresh + 1,
-    });
+    if (extension.length == 0) {
+      dispatch({
+        type: "SET_EXTENSIONREFRESH",
+        extensionRefresh: extensionRefresh + 1,
+      });
+    }
+    if (userList == 0) {
+      dispatch({
+        type: "SET_ALLUSERREFRESH",
+        allUserRefresh: allUserRefresh + 1,
+      });
+    }
     dispatch({
       type: "SET_CALLDETAILSREFRESH",
       callDetailsRefresh: callDetailsRefresh + 1,
     });
-    dispatch({
-      type: "SET_RINGGROUPREFRESH",
-      ringGroupRefresh: ringGroupRefresh + 1,
-    });
-    dispatch({
-      type: "SET_CALLCENTERREFRESH",
-      callCenterRefresh: callCenterRefresh + 1,
-    });
+    if (ringGroup.length == 0) {
+      dispatch({
+        type: "SET_RINGGROUPREFRESH",
+        ringGroupRefresh: ringGroupRefresh + 1,
+      });
+    }
+    if (callCenter.length == 0) {
+      dispatch({
+        type: "SET_CALLCENTERREFRESH",
+        callCenterRefresh: callCenterRefresh + 1,
+      });
+    }
   }, []);
   return (
     <main className="mainContent">

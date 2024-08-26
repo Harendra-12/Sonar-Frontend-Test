@@ -5,7 +5,7 @@ import {
   generalGetFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
@@ -20,7 +20,9 @@ import Header from "../../CommonComponents/Header";
 const UsersEdit = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
   const locationState = location.state;
+
   // const [domains, setDomains] = useState("");
   const [timeZone, setTimeZone] = useState("");
   const [loading, setLoading] = useState(true);
@@ -37,7 +39,7 @@ const UsersEdit = () => {
     handleSubmit,
     reset,
   } = useForm();
-
+  const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const account = useSelector((state) => state.account);
   const domain = useSelector((state) => state.domain);
   const { id: domainId = "" } = domain;
@@ -170,6 +172,10 @@ const UsersEdit = () => {
     if (addUser.status) {
       setLoading(false);
       toast.success(addUser.message);
+      dispatch({
+        type: "SET_ALLUSERREFRESH",
+        allUserRefresh: allUserRefresh + 1,
+      });
       setTimeout(() => {
         navigate(-1); // Navigate back to the previous page
       }, 3000);

@@ -37,7 +37,7 @@ const RingGroupAdd = () => {
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const allUserArr = useSelector((state) => state.allUser);
 
-  const [popUp, setPopUp] = useState(true);
+  // const [popUp, setPopUp] = useState(true);
 
   const {
     register,
@@ -366,7 +366,7 @@ const RingGroupAdd = () => {
       <section id="phonePage">
         <div className="container-fluid px-0">
           <div className="row justify-content-center" id="subPageHeader">
-          <Header title="Ring Group Add" />
+            <Header title="Ring Group Add" />
             <div className="col-xl-9 my-auto">
               {/* <h4 className="my-auto">Ring Group Add</h4> */}
               <p className="pt-2 mt-1 mb-0">
@@ -442,9 +442,9 @@ const RingGroupAdd = () => {
                     render={({ field: { onChange, value, ...field } }) => {
                       const options = allUser
                         ? allUser.map((item) => ({
-                          value: item.extension.extension,
-                          label: `${item.name} (${item.extension.extension})`,
-                        }))
+                            value: item.extension.extension,
+                            label: `${item.name} (${item.extension.extension})`,
+                          }))
                         : [];
                       const selectedOption =
                         options.find((option) => option.value === value) ||
@@ -1024,7 +1024,7 @@ const RingGroupAdd = () => {
             </form>
           </div>
         </div>
-        {popUp ? (
+        {/* {popUp ? (
           <div className="popup">
             <div className="container h-100">
               <div className="row h-100 justify-content-center align-items-center">
@@ -1037,14 +1037,15 @@ const RingGroupAdd = () => {
                   <div className="col-10 ps-0">
                     <h4>Warning!</h4>
                     <p>
-                      No Extension is currently asigned! Please add an extension first!
+                      No Extension is currently asigned! Please add an extension
+                      first!
                     </p>
                     <button
                       className="panelButton m-0"
                       onClick={() => {
                         // setForce(true);
                         setPopUp(false);
-                        navigate('/extensions-add')
+                        navigate("/extensions-add");
                       }}
                     >
                       Lets Go!
@@ -1062,7 +1063,7 @@ const RingGroupAdd = () => {
           </div>
         ) : (
           ""
-        )}
+        )} */}
       </section>
       {/* <ToastContainer
         position="bottom-right"

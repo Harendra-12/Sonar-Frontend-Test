@@ -5,7 +5,7 @@ import {
   generalGetFunction,
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
@@ -19,7 +19,9 @@ import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
 const UsersAdd = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const domain = useSelector((state) => state.domain);
+  const allUserRefresh = useSelector((state) => state.allUserRefresh);
   // const [domains, setDomains] = useState("");
   const [timeZone, setTimeZone] = useState("");
   const [loading, setLoading] = useState(false);
@@ -153,6 +155,10 @@ const UsersAdd = () => {
       setSelectedPermission([]);
       toast.success(addUser.message);
       setLoading(false);
+      dispatch({
+        type: "SET_ALLUSERREFRESH",
+        allUserRefresh: allUserRefresh + 1,
+      });
     } else {
       setLoading(false);
       const errorMessage = Object.keys(addUser.errors);

@@ -27,6 +27,7 @@ const RingGroupEdit = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
+  const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
   const [extensions, setExtensions] = useState();
   const [users, setUsers] = useState();
   const [loading, setLoading] = useState(true);
@@ -384,6 +385,10 @@ const RingGroupEdit = () => {
       // toast.success(apiData.message);
       setGetAllDataRefresh(getAllDataRefresh + 1);
       setSuccessMessage(apiData.message);
+      dispatch({
+        type: "SET_RINGGROUPREFRESH",
+        ringGroupRefresh: ringGroupRefresh + 1,
+      });
     } else {
       setLoading(false);
       const errorMessage = Object.keys(apiData.errors);
