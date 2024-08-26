@@ -56,8 +56,8 @@ function CdrReport() {
                       <th>Origin</th>
                       <th>Destination</th>
                       <th>Date</th>
-                      <th>Time</th>
                       <th>Recording</th>
+                      <th>Time</th>
                       <th>Duration</th>
                       <th>Hangup Cause</th>
                       <th>Orig. IP</th>
@@ -86,9 +86,11 @@ function CdrReport() {
                                   {item["variable_start_stamp"].split(" ")[0]}
                                 </td>
                                 <td>
-                                  <MusicPlayer
-                                    audioSrc={item["recording_path"]}
-                                  />
+                                  {item["recording_path"] && (
+                                    <MusicPlayer
+                                      audioSrc={item["recording_path"]}
+                                    />
+                                  )}
                                 </td>
                                 <td>
                                   {item["variable_start_stamp"].split(" ")[1]}
