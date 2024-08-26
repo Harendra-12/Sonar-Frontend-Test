@@ -129,10 +129,8 @@ function CallCenterQueue() {
                                 state: item,
                               })
                             }>{item.agents.length}</td>
-                            <td onClick={() =>
-                              navigate("/call-center-settings", {
-                                state: item,
-                              })
+                             <td onClick={() =>
+                              navigate(`/call-center-settings?id=${item.id}`)
                             }><i className="fa-duotone fa-gear text-success"></i></td>
                           </tr>
                         );

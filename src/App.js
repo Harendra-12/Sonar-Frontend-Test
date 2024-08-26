@@ -85,6 +85,7 @@ import { ToastContainer } from "react-toastify";
 // import RingGroupSettings from "./Components/CommonComponents/RingGroupSettings";
 import CallCenterSettings from "./Components/Pages/CallCenter/CallCenterSettings";
 import RingGroupSettings from "./Components/Pages/RingGroups/RingGroupSettings";
+import DidConfig from "./Components/Pages/NumberManagement/DidConfig";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -211,6 +212,7 @@ function App() {
           <Route path="/edit-rate-charge" element={<RateChargeEdit />} />
           <Route path="/get-did" element={<GetDid />} />
           <Route path="/did-listing" element={<DidListing />} />
+          <Route path="/did-config" element={<DidConfig />} />
           {/* Number Management Path End */}
 
           {/* Payment path start */}
