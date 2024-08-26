@@ -365,8 +365,8 @@ const RingGroupAdd = () => {
     <main className="mainContent">
       <section id="phonePage">
         <div className="container-fluid px-0">
+          <Header title="Ring Group Add" />
           <div className="row justify-content-center" id="subPageHeader">
-            <Header title="Ring Group Add" />
             <div className="col-xl-9 my-auto">
               {/* <h4 className="my-auto">Ring Group Add</h4> */}
               <p className="pt-2 mt-1 mb-0">
@@ -429,7 +429,29 @@ const RingGroupAdd = () => {
                   </label>
                 </div>
               </div>
+
               <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Extension</label>
+                </div>
+                <div className="col-12">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    {...register("extension", {
+                      ...requiredValidator,
+                      ...lengthValidator(3, 25),
+                    })}
+                  />
+                  {errors.extension && <ErrorMessage text={errors.extension.message} />}
+                  <label htmlFor="data" className="formItemDesc">
+                    Enter a extension.
+                  </label>
+                </div>
+              </div>
+
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Extension</label>
                 </div>
@@ -470,7 +492,7 @@ const RingGroupAdd = () => {
                     Enter the extension number.
                   </label>
                 </div>
-              </div>
+              </div> */}
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Follow Me</label>
