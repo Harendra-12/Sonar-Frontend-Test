@@ -405,7 +405,31 @@ function CallCenterQueueEdit() {
                   </label>
                 </div>
               </div>
+
               <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Extension</label>
+                </div>
+                <div className="col-12">
+                  <input
+                    type="text"
+                    name="extension"
+                    {...register("extension", {
+                      ...requiredValidator,
+                      ...nameValidator,
+                    })}
+                    className="formItem"
+                  />
+                  {errors.extension && (
+                    <ErrorMessage text={errors.extension.message} />
+                  )}
+                  <label htmlFor="data" className="formItemDesc">
+                    Enter the extension.
+                  </label>
+                </div>
+              </div>
+
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Extension</label>
                 </div>
@@ -447,7 +471,7 @@ function CallCenterQueueEdit() {
                     Enter the extension number.
                   </label>
                 </div>
-              </div>
+              </div> */}
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Greeting</label>

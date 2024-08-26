@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { backToTop } from "../../GlobalFunction/globalFunction";
 import ActionList from "../../CommonComponents/ActionList";
 
-const DidConfig = () => {
+const DidConfig = ({didVal}) => {
   const navigate = useNavigate();
+  const queryParams = new URLSearchParams(useLocation().search);
+  const did = queryParams.get("did");
   const [forwardEnable, setForwardEnable] = useState(0);
   const [formData, setFormData] = useState({
     did_number: "",
@@ -63,7 +65,7 @@ const DidConfig = () => {
                       type="text"
                       name="extension"
                       className="formItem"
-                      value="123456"
+                      value={did}
                       disabled
                     />
                   </div>
