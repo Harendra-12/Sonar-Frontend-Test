@@ -139,6 +139,10 @@ function Document({
         },
       ],
     };
+    if (!isValidImageFile(file)) {
+      toast.error("Only JPEG, JPG and PNG formats are allowed");
+      return;
+    }
 
     const apiData = await fileUploadFunction("/account-detail/store", payload);
     if (apiData.status) {
@@ -146,12 +150,22 @@ function Document({
       setLoading(false);
       setUploadPopup(false);
       refreshCallback(refresh + 1);
-      // navigate(-1);
     } else {
       setLoading(false);
       toast.error(apiData.message);
     }
   };
+
+  function isValidImageFile(file) {
+    if (!file || !(file instanceof File)) {
+      return false;
+    }
+
+    const allowedExtensions = ["png", "jpeg", "jpg"];
+    const fileExtension = file.name.split(".").pop().toLowerCase();
+
+    return allowedExtensions.includes(fileExtension);
+  }
 
   function handleChange(e) {
     const { name } = e.target;
@@ -732,9 +746,13 @@ function Document({
                     {documentList.filter((item) => item.id == uploadId)[0].name}
                   </h4>
                   Please select the file you want to upload
+                  <br />
+                  <span className="">
+                    Note: File size should be less than 1 MB.
+                  </span>
                   <input
                     name="reg"
-                    className="formItem"
+                    className="formItem mt-2"
                     type="file"
                     accept="image/*"
                     onChange={(e) => handleUploadDoc(e)}
