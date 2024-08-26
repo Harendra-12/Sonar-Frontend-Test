@@ -51,6 +51,13 @@ function Roles() {
   // }, [refresh]);
 
   useEffect(() => {
+    dispatch({
+      type: "SET_ROLES_PERMISSIONREFRESH",
+      rolesAndPermissionRefresh: rolesAndPermissionRefresh + 1,
+    });
+  }, []);
+
+  useEffect(() => {
     setRole(roles);
     setDefaultPermission(permissions);
   }, [roles, permissions]);

@@ -19,6 +19,7 @@ function GlobalCalls() {
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
+  const domainRefresh = useSelector((state) => state.domainRefresh);
   const usersRefresh = useSelector((state) => state.usersRefresh);
 
   const rolesAndPermissionRefresh = useSelector(
@@ -202,7 +203,9 @@ function GlobalCalls() {
         });
       }
     }
-    getData();
+    if (rolesAndPermissionRefresh > 0) {
+      getData();
+    }
   }, [rolesAndPermissionRefresh]);
 
   useEffect(() => {
@@ -217,8 +220,10 @@ function GlobalCalls() {
         });
       }
     }
-    getData();
-  }, []);
+    if (domainRefresh > 0) {
+      getData();
+    }
+  }, [domainRefresh]);
 
   return <div></div>;
 }

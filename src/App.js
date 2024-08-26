@@ -82,6 +82,7 @@ import AllContact from "./Components/Pages/WebRtc/AllContact";
 import AllVoicemails from "./Components/Pages/WebRtc/AllVoicemails";
 import CallDashboard from "./Components/Pages/WebRtc/CallDashboard";
 import { ToastContainer } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -97,7 +98,8 @@ const NavigationSetter = () => {
 };
 
 function App() {
-  // const account = useSelector((state) => state.account)
+  const dispatch = useDispatch();
+  const domainRefresh = useSelector((state) => state.domainRefresh);
   Socket();
 
   // Unlock this if want push notification add account edit here if id is available
@@ -111,6 +113,15 @@ function App() {
   //     console.log(payload);
   //   })
   // },[account])
+  useEffect(() => {
+    if (localStorage.getItem("token") !== null) {
+      dispatch({
+        type: "SET_DOMAINREFRESH",
+        domainRefresh: domainRefresh + 1,
+      });
+    }
+  }, []);
+
   return (
     <>
       <Router>
