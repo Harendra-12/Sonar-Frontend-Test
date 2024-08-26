@@ -485,7 +485,7 @@ function Document({
           <div className="profileView">
             <div className="profileDetailsHolder">
               <div className="header d-flex align-items-center pe-0">
-                <div className="col-12">Upload Documents</div>
+                <div className="col-12">Upload Below Documents</div>
               </div>
               <div className="mt-2">
                 {nonUploadedDocuments.map((item, index) => {
@@ -522,148 +522,155 @@ function Document({
           </div>
         )}
 
-        <div className="profileView">
-          <div className="profileDetailsHolder">
-            <div className="header d-flex align-items-center pe-0">
-              <div className="col-12">Documents Uploaded</div>
-            </div>
-            {account.details.length > 0 ? (
-              <div className="qLinkContent" ref={wrapperRef}>
-                <div
-                  class="accordion accordion-flush"
-                  id="accordionFlushExample"
-                >
-                  {docId.map((item2, key) => {
-                    return (
-                      <div class="accordion-item">
-                        <h2 class="accordion-header" id={`flush-heading${key}`}>
-                          <button
-                            class="accordion-button collapsed"
-                            style={{ padding: "15px 5px" }}
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target={`#flush-collapse${key}`}
-                            aria-expanded="false"
-                            aria-controls={`flush-collapse${key}`}
+        {account.details.length > 0 ? (
+          <div className="profileView">
+            <div className="profileDetailsHolder">
+              <div className="header d-flex align-items-center pe-0">
+                <div className="col-12">Uploaded Documents</div>
+              </div>
+              {account.details.length > 0 ? (
+                <div className="qLinkContent" ref={wrapperRef}>
+                  <div
+                    class="accordion accordion-flush"
+                    id="accordionFlushExample"
+                  >
+                    {docId.map((item2, key) => {
+                      return (
+                        <div class="accordion-item">
+                          <h2
+                            class="accordion-header"
+                            id={`flush-heading${key}`}
                           >
-                            {item2?.document?.name}
-                          </button>
-                        </h2>
-                        <div
-                          id={`flush-collapse${key}`}
-                          class="accordion-collapse collapse"
-                          aria-labelledby={`flush-heading${key}`}
-                          data-bs-parent="#accordionFlushExample"
-                        >
-                          {account.details.map((item) => {
-                            if (item.document_id === item2.document_id) {
-                              return (
-                                <div class="accordion-body">
-                                  <div className="row position-relative align-items-center">
-                                    <div className="col-auto ps-0 pe-2">
-                                      <div className="iconWrapper2">
-                                        {item.status === "1" ? (
-                                          <i className="fa-solid fa-check text-success"></i>
-                                        ) : item.status === "2" ? (
-                                          <i className="fa-solid fa-xmark text-danger"></i>
-                                        ) : (
-                                          <i className="fa-solid fa-image"></i>
-                                        )}
+                            <button
+                              class="accordion-button collapsed"
+                              style={{ padding: "15px 5px" }}
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target={`#flush-collapse${key}`}
+                              aria-expanded="false"
+                              aria-controls={`flush-collapse${key}`}
+                            >
+                              {item2?.document?.name}
+                            </button>
+                          </h2>
+                          <div
+                            id={`flush-collapse${key}`}
+                            class="accordion-collapse collapse"
+                            aria-labelledby={`flush-heading${key}`}
+                            data-bs-parent="#accordionFlushExample"
+                          >
+                            {account.details.map((item) => {
+                              if (item.document_id === item2.document_id) {
+                                return (
+                                  <div class="accordion-body">
+                                    <div className="row position-relative align-items-center">
+                                      <div className="col-auto ps-0 pe-2">
+                                        <div className="iconWrapper2">
+                                          {item.status === "1" ? (
+                                            <i className="fa-solid fa-check text-success"></i>
+                                          ) : item.status === "2" ? (
+                                            <i className="fa-solid fa-xmark text-danger"></i>
+                                          ) : (
+                                            <i className="fa-solid fa-image"></i>
+                                          )}
+                                        </div>
                                       </div>
-                                    </div>
-                                    <div className="col-8 my-auto ps-1">
-                                      <p>{item?.document?.name}</p>
-                                    </div>
-                                    <div
-                                      className="col-auto px-0 my-auto ms-auto"
-                                      onClick={() => {
-                                        setOpenPopup(!openPopup);
-                                        setOpenNumber(key);
-                                      }}
-                                    >
-                                      <div className="iconWrapper">
-                                        <i className="fa-solid fa-ellipsis"></i>
+                                      <div className="col-8 my-auto ps-1">
+                                        <p>{item?.document?.name}</p>
                                       </div>
-                                    </div>
-                                    <div className="col-12">
-                                      <p
-                                        style={{
-                                          fontSize: 12,
-                                          paddingLeft: 20,
-                                          color: "#ff2e2e",
+                                      <div
+                                        className="col-auto px-0 my-auto ms-auto"
+                                        onClick={() => {
+                                          setOpenPopup(!openPopup);
+                                          setOpenNumber(key);
                                         }}
                                       >
-                                        {item.description}
-                                      </p>
-                                    </div>
-                                    {openPopup && openNumber === key ? (
-                                      <div className="buttonPopup">
-                                        <div style={{ cursor: "pointer" }}>
-                                          <div
-                                            className="clearButton"
-                                            onClick={() =>
-                                              downloadImage(
-                                                item.path,
-                                                "Register file"
-                                              )
-                                            }
-                                          >
-                                            <i className="fa-solid fa-file-arrow-down"></i>{" "}
-                                            Download
-                                          </div>
-                                        </div>
-                                        <div style={{ cursor: "pointer" }}>
-                                          <div className="clearButton">
-                                            <a
-                                              href={item.path}
-                                              target="_blank"
-                                              rel="noreferrer"
-                                            >
-                                              <i className="fa-sharp fa-solid fa-eye"></i>{" "}
-                                              View
-                                            </a>
-                                          </div>
+                                        <div className="iconWrapper">
+                                          <i className="fa-solid fa-ellipsis"></i>
                                         </div>
                                       </div>
-                                    ) : (
-                                      ""
-                                    )}
+                                      <div className="col-12">
+                                        <p
+                                          style={{
+                                            fontSize: 12,
+                                            paddingLeft: 20,
+                                            color: "#ff2e2e",
+                                          }}
+                                        >
+                                          {item.description}
+                                        </p>
+                                      </div>
+                                      {openPopup && openNumber === key ? (
+                                        <div className="buttonPopup">
+                                          <div style={{ cursor: "pointer" }}>
+                                            <div
+                                              className="clearButton"
+                                              onClick={() =>
+                                                downloadImage(
+                                                  item.path,
+                                                  "Register file"
+                                                )
+                                              }
+                                            >
+                                              <i className="fa-solid fa-file-arrow-down"></i>{" "}
+                                              Download
+                                            </div>
+                                          </div>
+                                          <div style={{ cursor: "pointer" }}>
+                                            <div className="clearButton">
+                                              <a
+                                                href={item.path}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                              >
+                                                <i className="fa-sharp fa-solid fa-eye"></i>{" "}
+                                                View
+                                              </a>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      ) : (
+                                        ""
+                                      )}
+                                    </div>
                                   </div>
-                                </div>
-                              );
-                            }
-                          })}
+                                );
+                              }
+                            })}
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            ) : (
-              // <Link to="/upload-document">
-              <>
-                <div className="imgWrapper">
-                  <img
-                    src={require("../../assets/images/upload-file.png")}
-                    alt=""
-                  />
-                </div>
-                <div className="text-center mt-3">
-                  <h5>
-                    Please upload the{" "}
-                    <span
-                      style={{ color: "var(--ui-accent)", cursor: "pointer" }}
-                    >
-                      <b>required documents</b>
-                    </span>
-                    .
-                  </h5>
-                </div>
-              </>
-              // </Link>
-            )}
+              ) : (
+                // <Link to="/upload-document">
+                <>
+                  <div className="imgWrapper">
+                    <img
+                      src={require("../../assets/images/upload-file.png")}
+                      alt=""
+                    />
+                  </div>
+                  <div className="text-center mt-3">
+                    <h5>
+                      Please upload the{" "}
+                      <span
+                        style={{ color: "var(--ui-accent)", cursor: "pointer" }}
+                      >
+                        <b>required documents</b>
+                      </span>
+                      .
+                    </h5>
+                  </div>
+                </>
+                // </Link>
+              )}
+            </div>
           </div>
-        </div>
+        ) : (
+          ""
+        )}
       </div>
       <div className="col-xl-12">
         <div className="col-xl-3 mx-auto">

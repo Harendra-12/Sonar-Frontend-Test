@@ -134,7 +134,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Login />} />
-          {/* <Route element={<ProtectedRoute />}> */}
+          <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/temporary-dashboard" element={<TempDashboard />} />
           <Route path="/my-profile" element={<Profile />} />
@@ -245,7 +245,10 @@ function App() {
             path="/cal-center-queue-add"
             element={<CallCenterQueueAdd />}
           />
-          <Route path="/call-center-settings" element={<CallCenterSettings />} />
+          <Route
+            path="/call-center-settings"
+            element={<CallCenterSettings />}
+          />
           {/* Call Center queue path End */}
 
           {/* Settings path start */}
@@ -271,7 +274,7 @@ function App() {
           />
           {/* Billing Pages End */}
 
-          {/* </Route> */}
+          </Route>
 
           {/* 404 Redirection */}
           <Route path="*" element={<Navigate to="/dashboard" />} />

@@ -1,7 +1,10 @@
 import { CircularProgress } from "@mui/material";
 import { green } from "@mui/material/colors";
 import React, { useState } from "react";
-import { generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
+import {
+  generalGetFunction,
+  generalPostFunction,
+} from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -10,21 +13,21 @@ function ConfigureStepDashboard({ account2 }) {
   console.log("This is account", account2);
   const account = useSelector((state) => state.account);
   const [configure, setConfigure] = useState(false);
-  const [npx,setNpx] = useState("")
+  const [npx, setNpx] = useState("");
   const [didSearch, setDidSearch] = useState(true);
   const [didRawData, setDidRawData] = useState();
   const [purchingDid, setPurchingDid] = useState("");
   const [did, setDid] = useState("");
-  const [purchaseComplete,setPurchaseComplete] = useState(false)
+  const [purchaseComplete, setPurchaseComplete] = useState(false);
   const [searchingDid, setSearchingDid] = useState(false);
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  async function searchDid(){
-    if(npx.length < 3){
+  async function searchDid() {
+    if (npx.length < 3) {
       toast.error("NPX must be  3 characters");
-    }else{
-      setSearchingDid(true)
+    } else {
+      setSearchingDid(true);
       const parsedData = {
         searchType: "tollfree",
         quantity: "1",
@@ -32,20 +35,19 @@ function ConfigureStepDashboard({ account2 }) {
         companyId: account.account_id,
       };
       const apiData = await generalPostFunction("/searchTfn", parsedData);
-      if(apiData.status){
-        setSearchingDid(false)
-        setDidRawData(apiData)
+      if (apiData.status) {
+        setSearchingDid(false);
+        setDidRawData(apiData);
         setDid(apiData.data[0].id);
-    }else{
-      setSearchingDid(false)
-      setDidRawData(apiData)
-      setDid("No DID found with the given NPX")
+      } else {
+        setSearchingDid(false);
+        setDidRawData(apiData);
+        setDid("No DID found with the given NPX");
+      }
     }
   }
-   
-  }
 
-  async function takeDid(){
+  async function takeDid() {
     setPurchingDid(true);
     const parsedData = {
       companyId: account.account_id,
@@ -62,45 +64,45 @@ function ConfigureStepDashboard({ account2 }) {
       ],
     };
     const apiData = await generalPostFunction("/purchaseTfn", parsedData);
-    if(apiData.status){
+    if (apiData.status) {
       setPurchingDid(false);
       setPurchaseComplete(true);
       const profile = await generalGetFunction("/user");
-          if (profile.status) {
-            dispatch({
-              type: "SET_ACCOUNT",
-              account: profile.data,
-            });
-            dispatch({
-              type: "SET_BILLINGLISTREFRESH",
-              billingListRefresh: 1,
-            });
-            dispatch({
-              type: "SET_CARDLISTREFRESH",
-              cardListRefresh: 1,
-            });
-            localStorage.setItem("account", JSON.stringify(profile.data));
-            const accountData = await generalGetFunction(
-              `/account/${profile.data.account_id}`
-            );
-            if (accountData.status) {
-              dispatch({
-                type: "SET_ACCOUNTDETAILS",
-                accountDetails: accountData.data,
-              });
-              localStorage.setItem(
-                "accountDetails",
-                JSON.stringify(accountData.data)
-              );
-             navigate("/did-listing")
-            } else {
-              setPurchingDid(false);;
-              toast.error("Server error !");
-            }
-          } else {
-            setPurchingDid(false);
-            toast.error("unauthorized access!");
-          }
+      if (profile.status) {
+        dispatch({
+          type: "SET_ACCOUNT",
+          account: profile.data,
+        });
+        dispatch({
+          type: "SET_BILLINGLISTREFRESH",
+          billingListRefresh: 1,
+        });
+        dispatch({
+          type: "SET_CARDLISTREFRESH",
+          cardListRefresh: 1,
+        });
+        localStorage.setItem("account", JSON.stringify(profile.data));
+        const accountData = await generalGetFunction(
+          `/account/${profile.data.account_id}`
+        );
+        if (accountData.status) {
+          dispatch({
+            type: "SET_ACCOUNTDETAILS",
+            accountDetails: accountData.data,
+          });
+          localStorage.setItem(
+            "accountDetails",
+            JSON.stringify(accountData.data)
+          );
+          navigate("/did-listing");
+        } else {
+          setPurchingDid(false);
+          toast.error("Server error !");
+        }
+      } else {
+        setPurchingDid(false);
+        toast.error("unauthorized access!");
+      }
     }
   }
   return (
@@ -119,7 +121,8 @@ function ConfigureStepDashboard({ account2 }) {
               ""
             ) : (
               <div className="col-xl-2 mx-auto">
-                <button className="payNow"
+                <button
+                  className="payNow"
                   // onClick={configureAccount}
                   onClick={() => setConfigure(true)}
                 >
@@ -135,52 +138,71 @@ function ConfigureStepDashboard({ account2 }) {
                 <li>
                   <div class="coolinput">
                     <div className="coolSearch">
-                      <label for="input" class="text">NPX:</label>
-                      <input type="text" placeholder="Write here..." name="input" class="input" onChange={(e) => setNpx(e.target.value)} value={npx} />
+                      <label for="input" class="text">
+                        NPX:
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Write here..."
+                        name="input"
+                        class="input"
+                        onChange={(e) => setNpx(e.target.value)}
+                        value={npx}
+                      />
                     </div>
-                    <button onClick={() => {searchDid();setDid("")}}>
+                    <button
+                      onClick={() => {
+                        searchDid();
+                        setDid("");
+                      }}
+                    >
                       <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
                   </div>
                 </li>
               </ul>
-              {searchingDid || did!=="" ? <ul className="borderMan" style={{ height: 'fit-content' }}>
-                {did === "" ? (
-                  <li>
-                    <div
-                      className={
-                        didSearch === ""
-                          ? "configProgress pending "
-                          : didSearch === true
+              {searchingDid || did !== "" ? (
+                <ul className="borderMan" style={{ height: "fit-content" }}>
+                  {did === "" ? (
+                    <li>
+                      <div
+                        className={
+                          didSearch === ""
+                            ? "configProgress pending "
+                            : didSearch === true
                             ? "configProgress"
                             : "configProgress success"
-                      }
-                    >
-                      {didSearch === "" ? (
-                        <i className="fa-duotone fa-check"></i>
-                      ) : didSearch === true ? (
-                        <CircularProgress
-                          size="35px"
-                          sx={{ color: green[500] }}
-                        />
+                        }
+                      >
+                        {didSearch === "" ? (
+                          <i className="fa-duotone fa-check"></i>
+                        ) : didSearch === true ? (
+                          <CircularProgress
+                            size="35px"
+                            sx={{ color: green[500] }}
+                          />
+                        ) : (
+                          <i className="fa-duotone fa-check"></i>
+                        )}
+                      </div>
+                      <div className="configProgressText">
+                        <p>Searching for available DID</p>
+                      </div>
+                    </li>
+                  ) : (
+                    <li>
+                      {did === "No DID found with the given NPX" ? (
+                        <div className="configProgressText did">
+                          <p>{did}</p>
+                        </div>
                       ) : (
-                        <i className="fa-duotone fa-check"></i>
-                      )}
-                    </div>
-                    <div className="configProgressText">
-                      <p>Searching for available DID</p>
-                    </div>
-                  </li>
-                ) : (
-                  <li>
-                    {did==="No DID found with the given NPX"?
-                    <div className="configProgressText did">
-                      <p>{did}</p>
-                    </div>:<div className="configProgressText did">
-                      <p>Your DID is: <span>{did}</span></p>
-                      <button onClick={takeDid} >
-                        <i class="fa-solid fa-check"></i>
-                        {/* {false ? <div className="selectDidOpt">
+                        <div className="configProgressText did">
+                          <p>
+                            Your DID is: <span>{did}</span>
+                          </p>
+                          <button onClick={takeDid}>
+                            <i class="fa-solid fa-check"></i>
+                            {/* {false ? <div className="selectDidOpt">
                           <div className="d-flex">
                             <input type="checkbox" defaultChecked={'checked'} /> <span>Voice</span>
                           </div>
@@ -194,31 +216,36 @@ function ConfigureStepDashboard({ account2 }) {
                             <input type="checkbox" /> <span>e911</span>
                           </div>
                         </div> : ""} */}
-                      </button>
-                      <button className="shuffle" onClick={()=>{searchDid();setDid("")}}><i class="fa-solid fa-rotate-reverse"></i></button>
-                    </div>
-                  }
-                    
-                  </li>
-                )}
-                {(purchingDid && did!=="")? <li>
-                    <div
-                      className={
-                        "configProgress"
-                      }
-                    >
-                     
+                          </button>
+                          <button
+                            className="shuffle"
+                            onClick={() => {
+                              searchDid();
+                              setDid("");
+                            }}
+                          >
+                            <i class="fa-solid fa-rotate-reverse"></i>
+                          </button>
+                        </div>
+                      )}
+                    </li>
+                  )}
+                  {purchingDid && did !== "" ? (
+                    <li>
+                      <div className={"configProgress"}>
                         <CircularProgress
                           size="35px"
                           sx={{ color: green[500] }}
                         />
-                     
-                    </div>
-                    <div className="configProgressText">
-                      <p>Purching Did</p>
-                    </div>
-                  </li>:""}
-                {/* <li>
+                      </div>
+                      <div className="configProgressText">
+                        <p>Purching Did</p>
+                      </div>
+                    </li>
+                  ) : (
+                    ""
+                  )}
+                  {/* <li>
                         <div className={acquiringDid==="" ? 'configProgress pending ' : acquiringDid===true? "configProgress": "configProgress success"}>
                             {acquiringDid===""  ? <i className="fa-duotone fa-check"></i> : acquiringDid===true ?<CircularProgress size="35px" sx={{ color: green[500], }} />: <i className="fa-duotone fa-check"></i>}
                         </div>
@@ -226,7 +253,7 @@ function ConfigureStepDashboard({ account2 }) {
                             <p>Acquiring your DID</p>
                         </div>
                     </li> */}
-                {/* <li>
+                  {/* <li>
                   <div
                     className={
                       purchingDid === ""
@@ -251,7 +278,10 @@ function ConfigureStepDashboard({ account2 }) {
                     <p>Purching your DID</p>
                   </div>
                 </li> */}
-              </ul> : ""}
+                </ul>
+              ) : (
+                ""
+              )}
             </div>
           ) : (
             ""

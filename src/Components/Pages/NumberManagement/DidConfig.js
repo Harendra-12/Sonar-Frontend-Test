@@ -13,7 +13,7 @@ const DidConfig = () => {
     did_forward_action: "",
     did_forward_number: "",
     did_forward_type: "",
-  })
+  });
 
   const actionListValue = (value) => {
     // setValue("dial_action", value[0]);
