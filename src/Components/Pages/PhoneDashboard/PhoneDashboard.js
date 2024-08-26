@@ -73,7 +73,6 @@ function PhoneDashboard() {
     } else {
       setOnlineExtension([0]);
     }
-
     if (extensionRefresh > 0) {
       setExtensionList(extension.length);
     } else {
@@ -163,9 +162,6 @@ function PhoneDashboard() {
       });
     }
   }, [callCenter, allCall]);
-
-  console.log("call center", callCenter);
-  console.log("call que", callQueue);
 
   return (
     <main className="mainContent">
@@ -336,17 +332,22 @@ function PhoneDashboard() {
                     <div className="label">
                       {" "}
                       {(allUser.data &&
-                        allUser.data.filter((user) => {
-                          onlineUser.includes(user.extension.extension);
-                        }).length) ||
-                        0}{" "}
+                        allUser.data.filter(
+                          (user) =>
+                            user.extension !== null &&
+                            user.extension.extension !== null &&
+                            onlineUser.includes(user.extension.extension)
+                        ).length) ||
+                        0}
                       Active Users
                     </div>
                     <div className="label">
                       {(allUser.data &&
                         allUser.data.length -
                           allUser.data.filter((user) => {
-                            onlineUser.includes(user.extension.extension);
+                            user.extension !== null &&
+                              user.extension.extension !== null &&
+                              onlineUser.includes(user.extension.extension);
                           }).length) ||
                         0}{" "}
                       Idle Users
@@ -453,7 +454,7 @@ function PhoneDashboard() {
           </div>
         </div>
       </section>
-      <GlobalCalls />
+      {/* <GlobalCalls /> */}
     </main>
   );
 }

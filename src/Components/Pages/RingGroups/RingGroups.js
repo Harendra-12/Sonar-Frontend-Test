@@ -4,7 +4,7 @@ import {
   backToTop,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import Header from "../../CommonComponents/Header";
@@ -12,9 +12,20 @@ import Header from "../../CommonComponents/Header";
 const RingGroups = () => {
   const [ringGroup, setRingGroup] = useState();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
+  const [popUp, setPopUp] = useState(false);
   const account = useSelector((state) => state.account);
+  const allUser = useSelector((state) => state.allUser);
+  const [error, setError] = useState("");
+  const [redirectRoutes, setRedirectRoutes] = useState("");
+  const allUserRefresh = useSelector((state) => state.allUserRefresh);
+  const { data: usersData = [] } = allUser;
   useEffect(() => {
+    dispatch({
+      type: "SET_ALLUSERREFRESH",
+      allUserRefresh: allUserRefresh + 1,
+    });
     if (account && account.id) {
       async function getData() {
         const apidata = await generalGetFunction(
@@ -29,11 +40,32 @@ const RingGroups = () => {
       }
       getData();
     } else {
-      navigate("/")
+      navigate("/");
     }
   }, []);
+  console.log(allUser);
+  const handleRingGroupAddValidation = (e) => {
+    e.preventDefault();
 
-  console.log(ringGroup);
+    if (usersData.length === 0) {
+      setPopUp(true);
+      setError("Please add users to create a queue");
+      setRedirectRoutes("/users");
+      return;
+    }
+
+    const hasExtension = usersData.some((item) => item.extension_id);
+
+    if (!hasExtension) {
+      setPopUp(true);
+      setError("Please add an extension to the users to create a queue");
+      setRedirectRoutes("/extensions");
+      return;
+    }
+
+    navigate("/ring-groups-add");
+    backToTop();
+  };
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -61,8 +93,9 @@ const RingGroups = () => {
                     Refresh
                   </button> */}
                   <Link
-                    to="/ring-groups-add"
-                    onClick={backToTop}
+                    // to="/ring-groups-add"
+                    // onClick={backToTop}
+                    onClick={handleRingGroupAddValidation}
                     effect="ripple"
                     className="panelButton"
                   >
@@ -104,13 +137,26 @@ const RingGroups = () => {
                     {ringGroup &&
                       ringGroup.map((item, index) => {
                         return (
-                          <tr key={index} onClick={() => navigate(`/ring-groups-edit?id=${item.id}`)}>
+                          <tr
+                            key={index}
+                            onClick={() =>
+                              navigate(`/ring-groups-edit?id=${item.id}`)
+                            }
+                          >
                             <td>{item.name}</td>
                             <td>{item.extension}</td>
                             <td>{item.strategy}</td>
                             <td>{item.ring_group_destination.length}</td>
                             <td>
-                              <label className={item.status === 'active' ? "tableLabel success" : "tableLabel fail"}>{item.status}</label>
+                              <label
+                                className={
+                                  item.status === "active"
+                                    ? "tableLabel success"
+                                    : "tableLabel fail"
+                                }
+                              >
+                                {item.status}
+                              </label>
                             </td>
                             <td className="ellipsis" id="detailBox">
                               {item.description}
@@ -132,6 +178,43 @@ const RingGroups = () => {
           </div>
         </div>
       </section>
+      {popUp ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-4">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-triangle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-0">
+                  <h4>Warning!</h4>
+                  <p>{error}</p>
+                  <button
+                    className="panelButton m-0"
+                    onClick={() => {
+                      // setForce(true);
+                      setPopUp(false);
+                      navigate(`${redirectRoutes}`);
+                    }}
+                  >
+                    Lets Go!
+                  </button>
+                  <button
+                    className="panelButtonWhite m-0 float-end"
+                    onClick={() => setPopUp(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </main>
   );
 };
