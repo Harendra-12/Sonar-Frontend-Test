@@ -416,7 +416,7 @@ function CallCenterQueueEdit() {
                     name="extension"
                     {...register("extension", {
                       ...requiredValidator,
-                      ...nameValidator,
+                      // ...nameValidator,
                     })}
                     className="formItem"
                   />

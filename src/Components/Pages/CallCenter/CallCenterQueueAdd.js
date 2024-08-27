@@ -343,7 +343,7 @@ function CallCenterQueueAdd() {
                     name="extension"
                     {...register("extension", {
                       ...requiredValidator,
-                      ...nameValidator,
+                      // ...nameValidator,
                     })}
                     className="formItem"
                   />
