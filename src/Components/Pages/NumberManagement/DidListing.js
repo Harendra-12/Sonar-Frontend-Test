@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import {  useNavigate } from "react-router-dom";
 import {
+  generalDeleteFunction,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import ContentLoader from "../../Loader/ContentLoader";
@@ -26,6 +27,16 @@ function DidListing() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleClick = async (id)=>{
+    setLoading(true)
+    const apiData = await generalDeleteFunction(`/did/configure/destroy/${id}`)
+    if(apiData.status){
+      setLoading(false)
+    }else{
+      setLoading(false)
+    }
+  }
+
   console.log("This is transition details", did);
   return (
     <main className="mainContent">
@@ -45,7 +56,7 @@ function DidListing() {
                       <th>Cname</th>
                       <th>SMS</th>
                       <th>Configure</th>
-                      <th></th>
+                      <th>Reset Configuration</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -60,7 +71,9 @@ function DidListing() {
                                 <td>{item?.cnam}</td>
                                 <td>{item?.sms}</td>
                                 {/* <td onClick={() => navigate(item.dialplan?"/destination-edit":"/destination-add",{ state: { state: item.dialplan ? item.dialplan : item, did: item.did } })}>Configure</td> */}
-                                <td onClick={()=>navigate(`/did-config?did_id=${item.did}`)}>Configure</td>
+                                {/* <td onClick={()=>navigate(`/did-config?did_id=${item.did}`)}>Configure</td> */}
+                                <td onClick={()=>navigate(`/did-config`, {state:  item})}>Configure</td>
+                                {item.configuration !== null &&<td onClick={()=>handleClick(item.configuration.id)}>Reset</td>}
                               </tr>
                             )
                         })}

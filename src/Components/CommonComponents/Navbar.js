@@ -570,6 +570,16 @@ function Navbar() {
                       <div className="itemTitle">Call Center</div>
                     </NavLink>
                   </li>
+                  <li className="dashboard ">
+                    <NavLink
+                      to="/variable"
+                      onClick={backToTop}
+                      type="button"
+                      effect="ripple"
+                    >
+                      <div className="itemTitle">Variable</div>
+                    </NavLink>
+                  </li>
                   {account?.extension?
                   <li className="dashboard ">
                     <a

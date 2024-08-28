@@ -87,6 +87,7 @@ import CallCenterSettings from "./Components/Pages/CallCenter/CallCenterSettings
 import RingGroupSettings from "./Components/Pages/RingGroups/RingGroupSettings";
 import DidConfig from "./Components/Pages/NumberManagement/DidConfig";
 import { useDispatch, useSelector } from "react-redux";
+import Variable from "./Components/Pages/Variable/Variable";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -134,7 +135,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route element={<ProtectedRoute />}>
+          <Route element={<ProtectedRoute />}/>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/temporary-dashboard" element={<TempDashboard />} />
           <Route path="/my-profile" element={<Profile />} />
@@ -273,6 +274,10 @@ function App() {
             element={<WalletTransactionsList />}
           />
           {/* Billing Pages End */}
+
+          {/* Variable Page Start */}
+          <Route path="/variable" element={<Variable />}>
+          {/* Variable Page End  */}
 
           </Route>
 
