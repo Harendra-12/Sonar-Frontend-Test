@@ -12,7 +12,91 @@ import RechargeWalletPopup from "../Billing/RechargeWalletPopup";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
+import Select from "react-select";
 
+const option = [
+  {
+    label: "Voice",
+    value: "voice",
+  },
+  {
+    label: "Text",
+    value: "text",
+  },
+  {
+    label: "Fax",
+    value: "fax",
+  },
+  {
+    label: "Emergency",
+    value: "emergency",
+  },
+];
+// Custom styles for react-select
+const customStyles = {
+  control: (provided, state) => ({
+    ...provided,
+    // border: '1px solid var(--color4)',
+    border: "1px solid #ababab",
+    borderRadius: "2px",
+    outline: "none",
+    fontSize: "14px",
+    width: "100%",
+    minHeight: "32px",
+    height: "auto",
+    boxShadow: state.isFocused ? "none" : provided.boxShadow,
+    "&:hover": {
+      borderColor: "none",
+    },
+  }),
+  valueContainer: (provided) => ({
+    ...provided,
+    height: "auto",
+    padding: "0 6px",
+  }),
+  input: (provided) => ({
+    ...provided,
+    margin: "0",
+  }),
+  indicatorSeparator: (provided) => ({
+    display: "none",
+  }),
+  indicatorsContainer: (provided) => ({
+    ...provided,
+    height: "32px",
+  }),
+  dropdownIndicator: (provided) => ({
+    ...provided,
+    color: "#202020",
+    "&:hover": {
+      color: "#202020",
+    },
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    paddingLeft: "15px",
+    paddingTop: 0,
+    paddingBottom: 0,
+    // backgroundColor: state.isSelected ? "transparent" : "transparent",
+    "&:hover": {
+      backgroundColor: "#0055cc",
+      color: "#fff",
+    },
+    fontSize: "14px",
+  }),
+  menu: (provided) => ({
+    ...provided,
+    margin: 0,
+    padding: 0,
+  }),
+  menuList: (provided) => ({
+    ...provided,
+    padding: 0,
+    margin: 0,
+    maxHeight: "150px",
+    overflowY: "auto",
+  }),
+};
 function GetDid() {
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
@@ -29,6 +113,12 @@ function GetDid() {
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("wallet");
   const [didBuyPopUP, setDidBuyPopUp] = useState(false);
+  const [selectedUsage, setSelectedUsage] = useState([
+    {
+      label: "Voice",
+      value: "voice",
+    },
+  ]);
   const {
     register,
     handleSubmit,
@@ -38,11 +128,21 @@ function GetDid() {
   // Handle TFN search
   const onSubmit = async (data) => {
     setLoading(true);
+    const usagePayload = option.reduce((acc, curr) => {
+      acc[curr.label] = 0;
+      return acc;
+    }, {});
+
+    selectedUsage.forEach((item) => {
+      usagePayload[item.label] = 1;
+    });
+
     const parsedData = {
       searchType: data.searchType,
       quantity: data.quantity,
       npa: data.npa,
       companyId: account.account_id,
+      usage: usagePayload,
     };
     const apiData = await generalPostFunction("/searchTfn", parsedData);
     setLoading(false);
@@ -65,6 +165,13 @@ function GetDid() {
   function removeDid(item) {
     setSelectedDid(selectedDid.filter((item1) => item1 !== item));
   }
+
+  const handleChangeUsage = (newValue) => {
+    const nonRemovable = { label: "Voice", value: "voice" };
+
+    const updatedValue = newValue.filter((option) => option.value !== "voice");
+    setSelectedUsage([...updatedValue, nonRemovable]);
+  };
 
   // Handle payment
   async function handlePayment() {
@@ -149,7 +256,7 @@ function GetDid() {
                   <div colSpan={99}><CircularLoader /></div> : ""} */}
               <div className="mx-2" id="detailsContent">
                 <form onSubmit={handleSubmit(onSubmit)}>
-                  <div className="row col-xl-9">
+                  <div className="row col-xl-12">
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="searchType">Search Type</label>
@@ -157,8 +264,9 @@ function GetDid() {
                       <div className="col-12">
                         <select
                           name="searchType"
-                          className={`formItem ${errors.searchType ? "error" : ""
-                            }`}
+                          className={`formItem ${
+                            errors.searchType ? "error" : ""
+                          }`}
                           {...register("searchType", {
                             required: "Search Type is required",
                           })}
@@ -170,7 +278,7 @@ function GetDid() {
                         )}
                       </div>
                     </div>
-                    <div className="formRow col-xl-4">
+                    <div className="formRow col-xl-2">
                       <div className="formLabel">
                         <label htmlFor="quantity">Quantity</label>
                       </div>
@@ -178,8 +286,9 @@ function GetDid() {
                         <input
                           type="number"
                           name="quantity"
-                          className={`formItem ${errors.quantity ? "error" : ""
-                            }`}
+                          className={`formItem ${
+                            errors.quantity ? "error" : ""
+                          }`}
                           {...register("quantity", {
                             required: "Quantity is required",
                             max: {
@@ -194,7 +303,26 @@ function GetDid() {
                         )}
                       </div>
                     </div>
-                    <div className="formRow col-xl-4">
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="">Usage</label>
+                      </div>
+                      <div className="col-12 d-flex flex-column">
+                        <Select
+                          options={option}
+                          styles={customStyles}
+                          isMulti
+                          value={selectedUsage}
+                          onChange={handleChangeUsage}
+                          classNamePrefix="select"
+                          placeholder="Select usage..."
+                        />
+                        <label htmlFor="data" className="formItemDesc">
+                          Set how the Destination will be used.
+                        </label>
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="npa">NPA</label>
                       </div>

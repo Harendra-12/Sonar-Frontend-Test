@@ -39,7 +39,19 @@ function Document({
       }
     }
     getDocumentList();
-    setRejectDocument(account.details.filter((item) => item.status == "2"));
+    const maxIdItems = account.details.reduce((acc, item) => {
+      const name = item.document.name;
+      if ((!acc[name] || item.id > acc[name].id) && item.status == "2") {
+        acc[name] = item;
+      }
+      return acc;
+    }, {});
+
+    setRejectDocument(Object.values(maxIdItems));
+
+    // console.log(account.details.filter((item) => item.status == "2"));
+    // setRejectDocument(account.details.filter((item) => item.status == "2"));
+
     const newDocItems = [...docId];
     account.details.forEach((item) => {
       if (!newDocItems.some((doc) => doc.document_id === item.document_id)) {
@@ -58,16 +70,18 @@ function Document({
       });
     setUploadDocument(newUploadDocument);
 
-    const newApprovedDocument = account.details
-      .filter((item) => item.status === "2")
-      .map((item) => {
-        const hasMatch = account.details.some(
-          (item2) =>
-            item2.document_id === item.document_id && item2.status === "1"
-        );
-        return hasMatch ? true : undefined;
-      })
-      .filter((item) => item !== undefined);
+    const newApprovedDocument =
+      // account.details
+      //   .filter((item) => item.status === "2")
+      Object.values(maxIdItems)
+        .map((item) => {
+          const hasMatch = account.details.some(
+            (item2) =>
+              item2.document_id === item.document_id && item2.status === "1"
+          );
+          return hasMatch ? true : undefined;
+        })
+        .filter((item) => item !== undefined);
 
     setUploadApprove(newApprovedDocument);
     function handleClickOutside(event) {
