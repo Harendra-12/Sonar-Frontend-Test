@@ -63,7 +63,7 @@ export const emailValidator = {
   },
 };
 
-export const usageValidator = {
+export const usagesValidator = {
   validate: (value) =>
     value.length > 0 || "At least one option must be selected",
 };

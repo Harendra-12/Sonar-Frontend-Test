@@ -8,13 +8,13 @@ import { useForm } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import {
   requiredValidator,
-  usageValidator,
+  usagesValidator,
 } from "../../validations/validation";
 
 const DidConfig = () => {
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(useLocation().search);
-  const did = queryParams.get("did");
+  const did_id = queryParams.get("did_id");
   const {
     register,
     setError: setErr,
@@ -25,57 +25,57 @@ const DidConfig = () => {
   } = useForm();
 
   useEffect(() => {
-    register("usage", {
-      validate: usageValidator.validate,
+    register("usages", {
+      validate: usagesValidator.validate,
       ...requiredValidator,
     });
-    register("did", { required: true });
+    register("did_id", { required: true });
 
-    if (did !== undefined) {
-      setValue("did", did);
+    if (did_id !== undefined) {
+      setValue("did_id", did_id);
     }
-  }, [register, did, setValue]);
+  }, [register, did_id, setValue]);
 
   useEffect(() => {
-    if (watch("forward_status") === "disable") {
-      setValue("forword_extension", "");
+    if (watch("forward") === "disable") {
+      setValue("forward_to", "");
       setValue("direct_extension", "");
-    } else if (watch("forward_status") === "pstn") {
+    } else if (watch("forward") === "pstn") {
       setValue("direct_extension", "");
-    } else if (watch("forward_status") === "direct") {
-      setValue("forword_extension", "");
+    } else if (watch("forward") === "direct") {
+      setValue("forward_to", "");
     }
-  }, [watch("forward_status"), setValue]);
+  }, [watch("forward"), setValue]);
 
   const actionListValue = (value) => {
-    setValue("dial_action", value[0]);
+    setValue("action", value[0]);
   };
   const directListValue = (value) => {
     setValue("direct_extension", value[0]);
   };
-  const usageOptions = [
+  const usagesOptions = [
     { value: "voice", label: "Voice" },
     { value: "text", label: "Text" },
     { value: "fax", label: "Fax" },
     { value: "emergency", label: "Emergency" },
   ];
-  const selectedUsage = watch("usage", []);
-  const forwardStatus = watch("forward_status", "disable");
+  const selectedUsages = watch("usages", []);
+  const forwardStatus = watch("forward", "disable");
 
   const handleFormSubmit = handleSubmit((data) => {
-    if (data.forward_status === "pstn") {
-      if (!data.forword_extension) {
-        setErr("forword_extension", {
+    if (data.forward === "pstn") {
+      if (!data.forward_to) {
+        setErr("forward_to", {
           type: "required",
           message: "This field is required when forwarding to PSTN.",
         });
-      } else if (data.forword_extension.length < 10) {
-        setErr("forword_extension", {
+      } else if (data.forward_to.length < 10) {
+        setErr("forward_to", {
           type: "minLength",
           message: "Number must be at least 10 digits.",
         });
       }
-    } else if (data.forward_status === "direct") {
+    } else if (data.forward === "direct") {
       if (!data.direct_extension) {
         setErr("direct_extension", {
           type: "required",
@@ -85,14 +85,14 @@ const DidConfig = () => {
     }
 
     // if only one key is needed
-    // if (data.forward_status === "pstn") {
-    //   data.forword_extension = data.forword_extension || "";
-    // } else if (data.forward_status === "direct") {
-    //   data.forword_extension = data.direct_extension || "";
-    // } else {
-    //   data.forword_extension = "";
-    // }
-    // delete data.direct_extension;
+    if (data.forward === "pstn") {
+      data.forward_to = data.forward_to || "";
+    } else if (data.forward === "direct") {
+      data.forward_to = data.direct_extension || "";
+    } else {
+      data.forward_to = "";
+    }
+    delete data.direct_extension;
     console.log(data);
   });
 
@@ -208,11 +208,11 @@ const DidConfig = () => {
                   <div className="col-12">
                     <input
                       type="text"
-                      name="did"
+                      name="did_id"
                       className="formItem"
-                      defaultValue={did === undefined ? "" : did}
+                      defaultValue={did_id === undefined ? "" : did_id}
                       disabled
-                      {...register("did")}
+                      {...register("did_id")}
                     />
                   </div>
                   <label htmlFor="data" className="formItemDesc">
@@ -227,21 +227,21 @@ const DidConfig = () => {
                     <Select
                       closeMenuOnSelect={false}
                       isMulti
-                      options={usageOptions}
-                      value={usageOptions.filter((option) =>
-                        selectedUsage.includes(option.value)
+                      options={usagesOptions}
+                      value={usagesOptions.filter((option) =>
+                        selectedUsages.includes(option.value)
                       )}
                       styles={customStyles}
                       onChange={(selectedOptions) => {
                         const values = selectedOptions
                           ? selectedOptions.map((option) => option.value)
                           : [];
-                        setValue("usage", values);
+                        setValue("usages", values);
                       }}
                     />
 
-                    {errors.usage && (
-                      <ErrorMessage text={errors.usage.message} />
+                    {errors.usages && (
+                      <ErrorMessage text={errors.usages.message} />
                     )}
                     <label htmlFor="data" className="formItemDesc">
                       Set how the Destination will be used.
@@ -252,11 +252,11 @@ const DidConfig = () => {
                 <div className="formRow col-xl-3">
                   <ActionList
                     getDropdownValue={actionListValue}
-                    value={watch().dial_action}
-                    {...register("dial_action", requiredValidator)}
+                    value={watch().action}
+                    {...register("action", requiredValidator)}
                   />
-                  {errors.dial_action && (
-                    <ErrorMessage text={errors.dial_action.message} />
+                  {errors.action && (
+                    <ErrorMessage text={errors.action.message} />
                   )}
                 </div>
 
@@ -267,10 +267,10 @@ const DidConfig = () => {
                   <div className="col-12 d-flex flex-column">
                     <select
                       className="formItem"
-                      name="forward_status"
+                      name="forward"
                       id="selectFormRow"
                       // onChange={(e) => setForwardEnable(e.target.value)}
-                      {...register("forward_status")}
+                      {...register("forward")}
                     >
                       <option value="disable">Disable</option>
                       <option value="pstn">PSTN</option>
@@ -284,17 +284,17 @@ const DidConfig = () => {
                 {forwardStatus === "pstn" && (
                   <div className="formRow col-xl-3">
                     <div className="formLabel">
-                      <label htmlFor="forword_extension">
-                        Forward Extension
+                      <label htmlFor="forward_to">
+                        Select PSTN
                       </label>
                     </div>
                     <div className="col-12">
                       <input
                         type="number"
-                        name="forword_extension"
+                        name="forward_to"
                         className="formItem"
-                        {...register("forword_extension", {
-                          required: "Forward extension is required",
+                        {...register("forward_to", {
+                          required: "PSTN is required",
                           pattern: {
                             value: /^[0-9]*$/,
                             message: "Only digits are allowed",
@@ -305,12 +305,12 @@ const DidConfig = () => {
                           },
                         })}
                       />
-                      {errors.forword_extension && (
-                        <ErrorMessage text={errors.forword_extension.message} />
+                      {errors.forward_to && (
+                        <ErrorMessage text={errors.forward_to.message} />
                       )}
                     </div>
                     <label htmlFor="data" className="formItemDesc">
-                      Select extension.
+                      Select a PSTN.
                     </label>
                   </div>
                 )}
@@ -341,10 +341,10 @@ const DidConfig = () => {
                       id="selectFormRow"
                       {...register("record")}
                     >
-                      <option selected="" value="true">
+                      <option selected="" value={true}>
                         True
                       </option>
-                      <option value="false">False</option>
+                      <option value={false}>False</option>
                     </select>
                   </div>
                   <label htmlFor="data" className="formItemDesc">
@@ -361,7 +361,7 @@ const DidConfig = () => {
                       className="formItem"
                       name=""
                       id="selectFormRow"
-                      {...register("holdMusic")}
+                      {...register("hold_music")}
                     >
                       <option selected="" value="default">
                         default
