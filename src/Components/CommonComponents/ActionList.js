@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 
-const ActionList = ({ getDropdownValue, value }) => {
+const ActionList = ({
+  getDropdownValue,
+  value,
+  title = "Action",
+  label = "Set the action to perform when the max wait time is reached.",
+}) => {
   const dispatch = useDispatch();
 
   const [ringGroup, setRingGroup] = useState([]);
@@ -146,7 +151,7 @@ const ActionList = ({ getDropdownValue, value }) => {
   return (
     <>
       <div className="formLabel">
-        <label htmlFor="">Action</label>
+        <label htmlFor="">{title}</label>
       </div>
       <div className="col-12">
         <Select
@@ -163,7 +168,7 @@ const ActionList = ({ getDropdownValue, value }) => {
         />
         <br />
         <label htmlFor="data" className="formItemDesc" style={{ margin: 0 }}>
-          Set the action to perform when the max wait time is reached.
+          {label}
         </label>
       </div>
     </>
