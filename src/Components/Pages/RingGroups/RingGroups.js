@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   backToTop,
+  generalDeleteFunction,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
@@ -66,6 +67,18 @@ const RingGroups = () => {
     navigate("/ring-groups-add");
     backToTop();
   };
+
+  async function handleDelete(id) {
+    setLoading(true);
+    const apiData = await generalDeleteFunction(`/ringgroup/${id}`);
+    if(apiData.status){
+      const newArray = ringGroup.filter((item) => item.id !== id);
+      setRingGroup(newArray);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  }
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -123,6 +136,7 @@ const RingGroups = () => {
                       <th>Status</th>
                       <th>Description</th>
                       <th>Setting</th>
+                      <th>Delete</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -133,9 +147,8 @@ const RingGroups = () => {
                         </td>
                       </tr>
                     ) : (
-                      ""
-                    )}
-                    {ringGroup &&
+                     <>
+                      {ringGroup &&
                       ringGroup.map((item, index) => {
                         return (
                           <tr key={index}>
@@ -198,6 +211,7 @@ const RingGroups = () => {
                             >
                               <i className="fa-duotone fa-gear text-success"></i>
                             </td>
+                            <td onClick={()=>handleDelete(item.id)}>Delete</td>
                           </tr>
                         );
                       })}
@@ -208,6 +222,9 @@ const RingGroups = () => {
                     ) : (
                       ""
                     )}
+                     </>
+                    )}
+                   
                   </tbody>
                 </table>
               </div>

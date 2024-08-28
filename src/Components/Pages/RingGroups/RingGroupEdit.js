@@ -490,10 +490,8 @@ const RingGroupEdit = () => {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("extension", {
-                      ...requiredValidator,
-                      ...lengthValidator(3, 25),
-                    })}
+                    {...register("extension")}
+                    disabled
                   />
                   {errors.extension && <ErrorMessage text={errors.extension.message} />}
                   <label htmlFor="data" className="formItemDesc">

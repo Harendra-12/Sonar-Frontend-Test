@@ -3,6 +3,7 @@ import Header from "../../CommonComponents/Header";
 import { Link, useNavigate } from "react-router-dom";
 import {
   backToTop,
+  generalDeleteFunction,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import ContentLoader from "../../Loader/ContentLoader";
@@ -19,6 +20,7 @@ function CallCenterQueue() {
   const allUser = useSelector((state) => state.allUser);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const { data: usersData = [] } = allUser;
+  const [refresh,setRefresh]=useState(0)
 
   useEffect(() => {
     dispatch({
@@ -35,7 +37,7 @@ function CallCenterQueue() {
       }
     }
     getData();
-  }, []);
+  }, [refresh]);
 
   const handleAddCallCenterValidation = (e) => {
     e.preventDefault();
@@ -59,6 +61,17 @@ function CallCenterQueue() {
     navigate("/cal-center-queue-add");
     backToTop();
   };
+
+  async function handleDelete(id){
+    setLoading(true)
+    const apiData = await generalDeleteFunction(`/call-center-queue/destroy/${id}`)
+    if(apiData.status){
+      setLoading(false)
+      setRefresh(refresh+1)
+    }else{
+      setLoading(false)
+    }
+  }
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -116,6 +129,7 @@ function CallCenterQueue() {
                       <th>Prefix</th>
                       <th>Total Agents</th>
                       <th>Settings</th>
+                      <th>Delete</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -126,9 +140,8 @@ function CallCenterQueue() {
                         </td>
                       </tr>
                     ) : (
-                      ""
-                    )}
-                    {callCenter &&
+                     <>
+                      {callCenter &&
                       callCenter.map((item) => {
                         return (
                           <tr
@@ -167,9 +180,15 @@ function CallCenterQueue() {
                              <td onClick={() =>
                               navigate(`/call-center-settings?id=${item.id}`)
                             }><i className="fa-duotone fa-gear text-success"></i></td>
+                            <td onClick={()=>handleDelete(item.id)}>
+                              Delete
+                            </td>
                           </tr>
                         );
                       })}
+                     </>
+                    )}
+                   
                   </tbody>
                 </table>
               </div>

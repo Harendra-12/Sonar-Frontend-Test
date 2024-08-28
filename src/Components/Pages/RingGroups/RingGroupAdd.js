@@ -430,7 +430,7 @@ const RingGroupAdd = () => {
                 </div>
               </div>
 
-              <div className="formRow col-xl-3">
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Extension</label>
                 </div>
@@ -449,7 +449,7 @@ const RingGroupAdd = () => {
                     Enter a extension.
                   </label>
                 </div>
-              </div>
+              </div> */}
 
               {/* <div className="formRow col-xl-3">
                 <div className="formLabel">

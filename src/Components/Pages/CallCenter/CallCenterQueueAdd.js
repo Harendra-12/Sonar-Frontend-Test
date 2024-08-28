@@ -333,7 +333,7 @@ function CallCenterQueueAdd() {
                   </label>
                 </div>
               </div>
-              <div className="formRow col-xl-3">
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Extension</label>
                 </div>
@@ -355,7 +355,7 @@ function CallCenterQueueAdd() {
                     Enter the extension.
                   </label>
                 </div>
-              </div>
+              </div> */}
               {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Extension</label>
@@ -870,6 +870,13 @@ function CallCenterQueueAdd() {
           ""
         )} */}
       </section>
+      {loading ? (
+            <div colSpan={99}>
+              <CircularLoader />
+            </div>
+          ) : (
+            ""
+          )}
       {/* <ToastContainer
         position="bottom-right"
         autoClose={false}

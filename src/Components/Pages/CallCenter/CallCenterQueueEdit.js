@@ -414,10 +414,8 @@ function CallCenterQueueEdit() {
                   <input
                     type="text"
                     name="extension"
-                    {...register("extension", {
-                      ...requiredValidator,
-                      // ...nameValidator,
-                    })}
+                    {...register("extension")}
+                    disabled
                     className="formItem"
                   />
                   {errors.extension && (

@@ -139,7 +139,7 @@ function CallDetails({ clickedCall, callHistory }) {
         <nav>
           <div className="nav nav-tabs" id="nav-tab" role="tablist">
             <button
-              className="tabLink active"
+              className="tabLink"
               effect="ripple"
               data-bs-toggle="tab"
               data-bs-target="#nav-home"
@@ -151,7 +151,7 @@ function CallDetails({ clickedCall, callHistory }) {
               <i className="fa-regular fa-circle-info" />
             </button>
             <button
-              className="tabLink"
+              className="tabLink active"
               effect="ripple"
               data-bs-toggle="tab"
               data-bs-target="#nav-profile"

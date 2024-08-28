@@ -570,6 +570,7 @@ function Navbar() {
                       <div className="itemTitle">Call Center</div>
                     </NavLink>
                   </li>
+                  {account?.extension?
                   <li className="dashboard ">
                     <a
                       href="/call"
@@ -581,6 +582,7 @@ function Navbar() {
                       <div className="itemTitle">WebRtc</div>
                     </a>
                   </li>
+                  :""}
                   <li className="dashboard ">
                     <NavLink
                       to="/"

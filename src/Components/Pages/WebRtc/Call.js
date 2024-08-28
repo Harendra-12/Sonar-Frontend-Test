@@ -75,10 +75,10 @@ function Call() {
         if (apiData.status) {
           // setAllCalls(apiData.data.calls.reverse());
           // console.log("apiData", apiData.data.calls);
-          setAllApiData(apiData.data.calls);
+          setAllApiData(apiData.data.calls.reverse());
           const uniqueArray = [
             ...new Map(
-              apiData.data.calls.map((item) => [
+              apiData.data.calls.reverse().map((item) => [
                 item["Caller-Callee-ID-Number"],
                 item,
               ])
