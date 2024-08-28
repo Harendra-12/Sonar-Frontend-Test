@@ -69,7 +69,7 @@ const CallCenterSettings = () => {
     };
 
     console.log("Payload:", payload);
-    
+
     setLoading(true);
     const apiData = await generalPutFunction(
       `/call-center-queue/update/${id}`,

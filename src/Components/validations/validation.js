@@ -55,10 +55,26 @@ export const nameValidator = {
   },
 };
 
+export const nameNumberValidator = {
+  // Check if name is not empty and has a minimum length
+  minLength: {
+    value: 2, // Minimum length for the name
+    message: "Name must be at least 2 characters long",
+  },
+  maxLength: {
+    value: 50, // Maximum length for the name
+    message: "Name must be no more than 50 characters long",
+  },
+  pattern: {
+    value: /^[A-Za-z0-9\s]+$/, // Allows letters, numbers, and spaces
+    message: "Name must only contain letters, numbers, and spaces",
+  },
+};
+
 export const emailValidator = {
   // Check if email is valid
   pattern: {
-    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, // Basic email format regex
+    value: /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/,
     message: "Invalid email address",
   },
 };
@@ -66,4 +82,13 @@ export const emailValidator = {
 export const usagesValidator = {
   validate: (value) =>
     value.length > 0 || "At least one option must be selected",
+};
+
+export const noSpecialCharactersValidator = {
+  // Check if the input contains only letters, numbers, and spaces
+  pattern: {
+    value: /^[A-Za-z0-9\s]+$/,
+    message:
+      "Input must only contain letters, numbers, and spaces, without any special characters",
+  },
 };

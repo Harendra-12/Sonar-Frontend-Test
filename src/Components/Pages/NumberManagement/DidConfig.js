@@ -7,6 +7,7 @@ import Select from "react-select";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import {
+  noSpecialCharactersValidator,
   requiredValidator,
   usagesValidator,
 } from "../../validations/validation";
@@ -212,8 +213,14 @@ const DidConfig = () => {
                       className="formItem"
                       defaultValue={did_id === undefined ? "" : did_id}
                       disabled
-                      {...register("did_id")}
+                      {...register("did_id", {
+                        ...noSpecialCharactersValidator,
+                      })}
                     />
+
+                    {errors.did_id && (
+                      <ErrorMessage text={errors.did_id.message} />
+                    )}
                   </div>
                   <label htmlFor="data" className="formItemDesc">
                     Selected DID.
@@ -284,9 +291,7 @@ const DidConfig = () => {
                 {forwardStatus === "pstn" && (
                   <div className="formRow col-xl-3">
                     <div className="formLabel">
-                      <label htmlFor="forward_to">
-                        Select PSTN
-                      </label>
+                      <label htmlFor="forward_to">Select PSTN</label>
                     </div>
                     <div className="col-12">
                       <input
@@ -303,6 +308,8 @@ const DidConfig = () => {
                             value: 10,
                             message: "Must be at least 10 digits",
                           },
+
+                          ...noSpecialCharactersValidator,
                         })}
                       />
                       {errors.forward_to && (

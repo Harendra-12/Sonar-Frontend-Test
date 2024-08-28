@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import {
   emailValidator,
   nameValidator,
+  noSpecialCharactersValidator,
   requiredValidator,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
@@ -370,6 +371,7 @@ const UsersEdit = () => {
                       {...register("firstName", {
                         ...requiredValidator,
                         ...nameValidator,
+                        ...noSpecialCharactersValidator,
                       })}
                     />
                     {errors.firstName && (
@@ -386,8 +388,13 @@ const UsersEdit = () => {
                       type="text"
                       name="extension"
                       className="formItem"
-                      {...register("lastName")}
+                      {...register("lastName", {
+                        ...noSpecialCharactersValidator,
+                      })}
                     />
+                    {errors.lastName && (
+                      <ErrorMessage text={errors.lastName.message} />
+                    )}
                   </div>
                 </div>
                 <div className="formRow col-xl-3">

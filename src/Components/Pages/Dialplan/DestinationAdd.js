@@ -13,6 +13,7 @@ import ActionList from "../../CommonComponents/ActionList";
 import { useForm } from "react-hook-form";
 import {
   lengthValidator,
+  noSpecialCharactersValidator,
   requiredValidator,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
@@ -182,6 +183,7 @@ function DestinationAdd() {
                       {...register("country_code", {
                         ...requiredValidator,
                         ...lengthValidator(1, 4),
+                        ...noSpecialCharactersValidator,
                       })}
                     />
                     {errors.country_code && (
@@ -201,7 +203,10 @@ function DestinationAdd() {
                       type="text"
                       name="extension"
                       className="formItem"
-                      {...register("destination", { ...requiredValidator })}
+                      {...register("destination", {
+                        ...requiredValidator,
+                        ...noSpecialCharactersValidator,
+                      })}
                     />
                     {errors.destination && (
                       <ErrorMessage text={errors.destination.message} />
@@ -222,8 +227,13 @@ function DestinationAdd() {
                           type="text"
                           name="extension"
                           className="formItem"
-                          {...register("caller_Id_name")}
+                          {...register("caller_Id_name", {
+                            ...noSpecialCharactersValidator,
+                          })}
                         />
+                        {errors.caller_Id_name && (
+                          <ErrorMessage text={errors.caller_Id_name.message} />
+                        )}
                       </div>
 
                       <label htmlFor="data" className="formItemDesc">
@@ -239,8 +249,15 @@ function DestinationAdd() {
                           type="text"
                           name="extension"
                           className="formItem"
-                          {...register("caller_Id_number")}
+                          {...register("caller_Id_number", {
+                            ...noSpecialCharactersValidator,
+                          })}
                         />
+                        {errors.caller_Id_number && (
+                          <ErrorMessage
+                            text={errors.caller_Id_number.message}
+                          />
+                        )}
                       </div>
 
                       <label htmlFor="data" className="formItemDesc">
@@ -259,7 +276,10 @@ function DestinationAdd() {
                       type="text"
                       name="extension"
                       className="formItem"
-                      {...register("context", { ...requiredValidator })}
+                      {...register("context", {
+                        ...requiredValidator,
+                        ...noSpecialCharactersValidator,
+                      })}
                     />
                     {errors.context && (
                       <ErrorMessage text={errors.context.message} />
@@ -340,8 +360,16 @@ function DestinationAdd() {
                           type="text"
                           name="extension"
                           className="formItem"
-                          {...register("caller_Id_name_prefix")}
+                          {...register("caller_Id_name_prefix", {
+                            ...noSpecialCharactersValidator,
+                          })}
                         />
+
+                        {errors.caller_Id_name_prefix && (
+                          <ErrorMessage
+                            text={errors.caller_Id_name_prefix.message}
+                          />
+                        )}
 
                         <label htmlFor="data" className="formItemDesc">
                           Set a prefix on the caller ID name.
@@ -405,8 +433,14 @@ function DestinationAdd() {
                         <input
                           type="text"
                           name="extension"
-                          {...register("distinctiveRing")}
+                          {...register("distinctiveRing", {
+                            ...noSpecialCharactersValidator,
+                          })}
                         />
+
+                        {errors.distinctiveRing && (
+                          <ErrorMessage text={errors.distinctiveRing.message} />
+                        )}
 
                         <label htmlFor="data" className="formItemDesc">
                           Select a sound for a distinctive ring.
@@ -422,8 +456,14 @@ function DestinationAdd() {
                           type="text"
                           name="extension"
                           className="formItem"
-                          {...register("accountCode")}
+                          {...register("accountCode", {
+                            ...noSpecialCharactersValidator,
+                          })}
                         />
+
+                        {errors.accountCode && (
+                          <ErrorMessage text={errors.accountCode.message} />
+                        )}
 
                         <label htmlFor="data" className="formItemDesc">
                           Enter account code.
@@ -522,7 +562,10 @@ function DestinationAdd() {
                       type="text"
                       name="extension"
                       className="formItem"
-                      {...register("description", { ...requiredValidator })}
+                      {...register("description", {
+                        ...requiredValidator,
+                        ...noSpecialCharactersValidator,
+                      })}
                     />
                     {errors.description && (
                       <ErrorMessage text={errors.description.message} />

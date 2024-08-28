@@ -15,6 +15,7 @@ import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import {
   domainValidator,
   lengthValidator,
+  noSpecialCharactersValidator,
   numberValidator,
   requiredValidator,
 } from "../../validations/validation";
@@ -150,7 +151,6 @@ const ExtensionsAdd = () => {
                   {errors.extension && (
                     <ErrorMessage text={errors.extension.message} />
                   )}
-
                   <label htmlFor="data" className="formItemDesc">
                     Enter the numeric extension. The default configuration
                     allows 2 - 15 digit extensions.
@@ -277,8 +277,13 @@ const ExtensionsAdd = () => {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("account_code")}
+                    {...register("account_code", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.account_code && (
+                    <ErrorMessage text={errors.account_code.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the account code here.
@@ -294,8 +299,13 @@ const ExtensionsAdd = () => {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("effectiveCallerIdName")}
+                    {...register("effectiveCallerIdName", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.effectiveCallerIdName && (
+                    <ErrorMessage text={errors.effectiveCallerIdName.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the internal caller ID name here.
@@ -311,8 +321,15 @@ const ExtensionsAdd = () => {
                     type="number"
                     name="extension"
                     className="formItem"
-                    {...register("effectiveCallerIdNumber")}
+                    {...register("effectiveCallerIdNumber", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.effectiveCallerIdNumber && (
+                    <ErrorMessage
+                      text={errors.effectiveCallerIdNumber.message}
+                    />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the internal caller ID number here.
@@ -328,8 +345,13 @@ const ExtensionsAdd = () => {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("outbundCallerIdName")}
+                    {...register("outbundCallerIdName", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.outbundCallerIdName && (
+                    <ErrorMessage text={errors.outbundCallerIdName.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the external (public) caller ID name here.
@@ -345,8 +367,13 @@ const ExtensionsAdd = () => {
                     type="number"
                     name="extension"
                     className="formItem"
-                    {...register("outbundCallerIdNumber")}
+                    {...register("outbundCallerIdNumber", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.outbundCallerIdNumber && (
+                    <ErrorMessage text={errors.outbundCallerIdNumber.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the external (public) caller ID number here.
@@ -362,8 +389,13 @@ const ExtensionsAdd = () => {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("emergencyCallerIdName")}
+                    {...register("emergencyCallerIdName", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.emergencyCallerIdName && (
+                    <ErrorMessage text={errors.emergencyCallerIdName.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the emergency caller ID name here.
@@ -379,8 +411,15 @@ const ExtensionsAdd = () => {
                     type="number"
                     name="extension"
                     className="formItem"
-                    {...register("emergencyCallerIdNumber")}
+                    {...register("emergencyCallerIdNumber", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.emergencyCallerIdNumber && (
+                    <ErrorMessage
+                      text={errors.emergencyCallerIdNumber.message}
+                    />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the emergency caller ID number here.
@@ -396,8 +435,13 @@ const ExtensionsAdd = () => {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("directoryFullname")}
+                    {...register("directoryFullname", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.directoryFullname && (
+                    <ErrorMessage text={errors.directoryFullname.message} />
+                  )}
 
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -437,8 +481,13 @@ const ExtensionsAdd = () => {
                     type="number"
                     name="extension"
                     className="formItem"
-                    {...register("maxRegistration")}
+                    {...register("maxRegistration", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.maxRegistration && (
+                    <ErrorMessage text={errors.maxRegistration.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the maximum concurrent registrations allowed.
@@ -454,8 +503,13 @@ const ExtensionsAdd = () => {
                     type="number"
                     name="extension"
                     className="formItem"
-                    {...register("limitMax")}
+                    {...register("limitMax", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.limitMax && (
+                    <ErrorMessage text={errors.limitMax.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the maximum number of concurrent outbound calls
@@ -472,8 +526,13 @@ const ExtensionsAdd = () => {
                     type="number"
                     name="extension"
                     className="formItem"
-                    {...register("limitDestinations")}
+                    {...register("limitDestinations", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.limitDestinations && (
+                    <ErrorMessage text={errors.limitDestinations.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the destination to send the calls when the max number
@@ -512,8 +571,13 @@ const ExtensionsAdd = () => {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("voiceEmailTo")}
+                    {...register("voiceEmailTo", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.voiceEmailTo && (
+                    <ErrorMessage text={errors.voiceEmailTo.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the email address to send voicemail to (optional).
@@ -602,8 +666,13 @@ const ExtensionsAdd = () => {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("tollAllowValue")}
+                    {...register("tollAllowValue", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.tollAllowValue && (
+                    <ErrorMessage text={errors.tollAllowValue.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the toll allow value here. (Examples:
@@ -620,8 +689,13 @@ const ExtensionsAdd = () => {
                     type="number"
                     name="extension"
                     className="formItem"
-                    {...register("callTimeOut")}
+                    {...register("callTimeOut", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.callTimeOut && (
+                    <ErrorMessage text={errors.callTimeOut.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the ring time (delay in seconds) before sending a call
@@ -638,8 +712,13 @@ const ExtensionsAdd = () => {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("callGroup")}
+                    {...register("callGroup", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.callGroup && (
+                    <ErrorMessage text={errors.callGroup.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the user call group here. Groups available by default:
@@ -701,8 +780,13 @@ const ExtensionsAdd = () => {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("description")}
+                    {...register("description", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.description && (
+                    <ErrorMessage text={errors.description.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the description.

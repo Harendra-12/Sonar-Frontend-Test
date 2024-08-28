@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { generalGetFunction, generalPutFunction } from "../../GlobalFunction/globalFunction";
+import {
+  generalGetFunction,
+  generalPutFunction,
+} from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,7 +25,7 @@ const RingGroupSettings = () => {
     setValue,
     handleSubmit,
     reset,
-    formState: { errors }
+    formState: { errors },
   } = useForm();
 
   useEffect(() => {
@@ -38,18 +41,19 @@ const RingGroupSettings = () => {
       async function getData() {
         const ringData = await generalGetFunction(`/ringgroup/${value}`);
         if (ringData.status) {
-          const { ring_group_destination, followme, status, name, extension } = ringData.data[0];
+          const { ring_group_destination, followme, status, name, extension } =
+            ringData.data[0];
           setprevDestinations(ring_group_destination);
 
           const updatedEditData = {
             followme: followme === 1,
             status: status === "active",
             strategy: ringData.data[0].strategy || "",
-            ring_back: ringData.data[0].ring_back || ""
+            ring_back: ringData.data[0].ring_back || "",
           };
           reset(updatedEditData);
-          setValue('name', name || '');
-          setValue('extension', extension || '');
+          setValue("name", name || "");
+          setValue("extension", extension || "");
           setLoading(false);
         } else {
           setLoading(false);
@@ -69,11 +73,14 @@ const RingGroupSettings = () => {
       strategy: data.strategy,
       ring_back: data.ring_back,
       name: data.name,
-      extension: data.extension
+      extension: data.extension,
     };
 
     setLoading(true);
-    const apiData = await generalPutFunction(`/ringgroup/${value}`, updatedData);
+    const apiData = await generalPutFunction(
+      `/ringgroup/${value}`,
+      updatedData
+    );
     if (apiData.status) {
       setLoading(false);
       setSuccessMessage(apiData.message);

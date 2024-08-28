@@ -16,7 +16,9 @@ import { useForm, Controller } from "react-hook-form";
 import {
   emailValidator,
   lengthValidator,
+  nameNumberValidator,
   nameValidator,
+  noSpecialCharactersValidator,
   numberValidator,
   requiredValidator,
 } from "../../validations/validation";
@@ -261,16 +263,26 @@ const RingGroupEdit = () => {
   // Function to handle changes in destination fields
   const handleDestinationChange = (index, event) => {
     const { name, value } = event.target;
-    if (name === "destination") {
+
+    const allowedCharacters = /^[A-Za-z0-9\s]*$/;
+
+    if (name === "destination" && !allowedCharacters.test(value)) {
+      console.log("Invalid characters detected");
+      return;
+    }
+
+    if (extensions && name === "destination") {
       setDestinationList(true);
       setFilterExtension(
         extensions.filter((item) => item.extension.includes(value))
       );
     }
+
     setDestinationId(index);
     const newDestination = [...destination];
     newDestination[index][name] = value;
     setDestination(newDestination);
+
     if (destinationValidation()) {
       clearErrors("destinations");
     } else {
@@ -473,6 +485,7 @@ const RingGroupEdit = () => {
                     {...register("name", {
                       ...requiredValidator,
                       ...lengthValidator(3, 25),
+                      ...nameNumberValidator,
                     })}
                   />
                   {errors.name && <ErrorMessage text={errors.name.message} />}
@@ -493,7 +506,9 @@ const RingGroupEdit = () => {
                     {...register("extension")}
                     disabled
                   />
-                  {errors.extension && <ErrorMessage text={errors.extension.message} />}
+                  {errors.extension && (
+                    <ErrorMessage text={errors.extension.message} />
+                  )}
                   <label htmlFor="data" className="formItemDesc">
                     Enter a name.
                   </label>
@@ -820,7 +835,10 @@ const RingGroupEdit = () => {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("call_timeout", { ...requiredValidator })}
+                    {...register("call_timeout", {
+                      ...requiredValidator,
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
                   {errors.call_timeout && (
                     <ErrorMessage text={errors.call_timeout.message} />
@@ -836,8 +854,13 @@ const RingGroupEdit = () => {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("distinctive_ring")}
+                    {...register("distinctive_ring", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.distinctive_ring && (
+                    <ErrorMessage text={errors.distinctive_ring.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Select a sound for a distinctive ring.
@@ -954,6 +977,7 @@ const RingGroupEdit = () => {
                         {...register("ring_group_forward_destination", {
                           ...requiredValidator,
                           ...numberValidator,
+                          ...noSpecialCharactersValidator,
                         })}
                         placeholder="Number"
                         style={{ width: "60%" }}
@@ -979,8 +1003,13 @@ const RingGroupEdit = () => {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("toll_allow")}
+                    {...register("toll_allow", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.toll_allow && (
+                    <ErrorMessage text={errors.toll_allow.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Ring group forwarding toll allow.
@@ -996,8 +1025,13 @@ const RingGroupEdit = () => {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("context")}
+                    {...register("context", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.context && (
+                    <ErrorMessage text={errors.context.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the context.
@@ -1013,8 +1047,13 @@ const RingGroupEdit = () => {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("description")}
+                    {...register("description", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.description && (
+                    <ErrorMessage text={errors.description.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the description.
@@ -1031,8 +1070,13 @@ const RingGroupEdit = () => {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("greeting")}
+                    {...register("greeting", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.greeting && (
+                    <ErrorMessage text={errors.greeting.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the Greeting.

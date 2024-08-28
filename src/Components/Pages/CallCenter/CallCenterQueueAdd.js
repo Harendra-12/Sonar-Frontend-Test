@@ -14,7 +14,9 @@ import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useForm, Controller } from "react-hook-form";
 import {
+  nameNumberValidator,
   nameValidator,
+  noSpecialCharactersValidator,
   numberValidator,
   requiredValidator,
 } from "../../validations/validation";
@@ -205,7 +207,7 @@ function CallCenterQueueAdd() {
   };
 
   const handleFormSubmit = handleSubmit(async (data) => {
-    setLoading(true)
+    setLoading(true);
     if (!validateAgents()) {
       setErr("agent", {
         type: "manual",
@@ -321,7 +323,7 @@ function CallCenterQueueAdd() {
                     name="extension"
                     {...register("queue_name", {
                       ...requiredValidator,
-                      ...nameValidator,
+                      ...nameNumberValidator,
                     })}
                     className="formItem"
                   />
@@ -503,8 +505,15 @@ function CallCenterQueueAdd() {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("discard_abandoned_after")}
+                    {...register("discard_abandoned_after", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.discard_abandoned_after && (
+                    <ErrorMessage
+                      text={errors.discard_abandoned_after.message}
+                    />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     The number of seconds before the abandoned call is removed
@@ -521,8 +530,13 @@ function CallCenterQueueAdd() {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("queue_cid_prefix")}
+                    {...register("queue_cid_prefix", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.queue_cid_prefix && (
+                    <ErrorMessage text={errors.queue_cid_prefix.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Set a prefix on the caller ID name.
@@ -571,8 +585,13 @@ function CallCenterQueueAdd() {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("tier_rule_wait_second")}
+                    {...register("tier_rule_wait_second", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.tier_rule_wait_second && (
+                    <ErrorMessage text={errors.tier_rule_wait_second.message} />
+                  )}
                   <br />
                 </div>
               </div>
@@ -872,12 +891,12 @@ function CallCenterQueueAdd() {
         )} */}
       </section>
       {loading ? (
-            <div colSpan={99}>
-              <CircularLoader />
-            </div>
-          ) : (
-            ""
-          )}
+        <div colSpan={99}>
+          <CircularLoader />
+        </div>
+      ) : (
+        ""
+      )}
       {/* <ToastContainer
         position="bottom-right"
         autoClose={false}

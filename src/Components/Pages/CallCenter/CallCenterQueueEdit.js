@@ -15,7 +15,9 @@ import ActionList from "../../CommonComponents/ActionList";
 import Select from "react-select";
 import { useForm, Controller } from "react-hook-form";
 import {
+  nameNumberValidator,
   nameValidator,
+  noSpecialCharactersValidator,
   numberValidator,
   requiredValidator,
 } from "../../validations/validation";
@@ -344,7 +346,7 @@ function CallCenterQueueEdit() {
     <main className="mainContent">
       <section id="phonePage">
         <div className="container-fluid px-0">
-            <Header title="Edit Call Center Queue" />
+          <Header title="Edit Call Center Queue" />
           <div className="row justify-content-center" id="subPageHeader">
             <div className="col-xl-6 my-auto">
               {/* <h4 className="my-auto">Edit Call Center Queue</h4> */}
@@ -393,7 +395,7 @@ function CallCenterQueueEdit() {
                     name="extension"
                     {...register("queue_name", {
                       ...requiredValidator,
-                      ...nameValidator,
+                      ...nameNumberValidator,
                     })}
                     className="formItem"
                   />
@@ -414,7 +416,9 @@ function CallCenterQueueEdit() {
                   <input
                     type="text"
                     name="extension"
-                    {...register("extension")}
+                    {...register("extension", {
+                      ...noSpecialCharactersValidator,
+                    })}
                     disabled
                     className="formItem"
                   />
@@ -565,8 +569,15 @@ function CallCenterQueueEdit() {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("discard_abandoned_after")}
+                    {...register("discard_abandoned_after", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.discard_abandoned_after && (
+                    <ErrorMessage
+                      text={errors.discard_abandoned_after.message}
+                    />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     The number of seconds before the abandoned call is removed
@@ -583,8 +594,13 @@ function CallCenterQueueEdit() {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("queue_cid_prefix")}
+                    {...register("queue_cid_prefix", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.queue_cid_prefix && (
+                    <ErrorMessage text={errors.queue_cid_prefix.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Set a prefix on the caller ID name.
@@ -633,8 +649,13 @@ function CallCenterQueueEdit() {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("tier_rule_wait_second")}
+                    {...register("tier_rule_wait_second", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.tier_rule_wait_second && (
+                    <ErrorMessage text={errors.tier_rule_wait_second.message} />
+                  )}
                   <br />
                 </div>
               </div>

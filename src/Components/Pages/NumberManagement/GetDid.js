@@ -13,6 +13,11 @@ import { useForm } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
 import Select from "react-select";
+import {
+  lengthValidator,
+  noSpecialCharactersValidator,
+  requiredValidator,
+} from "../../validations/validation";
 
 const option = [
   {
@@ -244,9 +249,9 @@ function GetDid() {
                     >
                       Back
                     </button>
-                    <button effect="ripple" className="panelButton">
+                    {/* <button effect="ripple" className="panelButton">
                       Save
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               </div>
@@ -267,9 +272,7 @@ function GetDid() {
                           className={`formItem ${
                             errors.searchType ? "error" : ""
                           }`}
-                          {...register("searchType", {
-                            required: "Search Type is required",
-                          })}
+                          {...register("searchType", { ...requiredValidator })}
                         >
                           <option value="tollfree">Toll free</option>
                         </select>
@@ -290,12 +293,9 @@ function GetDid() {
                             errors.quantity ? "error" : ""
                           }`}
                           {...register("quantity", {
-                            required: "Quantity is required",
-                            max: {
-                              value: 10,
-                              message:
-                                "Quantity must be less than or equal to 10",
-                            },
+                            ...requiredValidator,
+                            ...lengthValidator(1, 10),
+                            ...noSpecialCharactersValidator,
                           })}
                         />
                         {errors.quantity && (
@@ -332,15 +332,9 @@ function GetDid() {
                           name="npa"
                           className={`formItem ${errors.npa ? "error" : ""}`}
                           {...register("npa", {
-                            required: "NPA is required",
-                            minLength: {
-                              value: 3,
-                              message: "NPA must be 3 digits",
-                            },
-                            maxLength: {
-                              value: 3,
-                              message: "NPA must be 3 digits",
-                            },
+                            ...requiredValidator,
+                            ...lengthValidator(3, 3),
+                            ...noSpecialCharactersValidator,
                           })}
                         />
                         {errors.npa && (
