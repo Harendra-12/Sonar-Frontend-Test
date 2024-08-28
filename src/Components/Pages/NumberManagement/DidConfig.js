@@ -1,7 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { useLocation, useNavigate } from "react-router-dom";
-import { backToTop } from "../../GlobalFunction/globalFunction";
+import {
+  backToTop,
+  generalPostFunction,
+  generalPutFunction,
+} from "../../GlobalFunction/globalFunction";
 import ActionList from "../../CommonComponents/ActionList";
 import Select from "react-select";
 import { useForm } from "react-hook-form";
@@ -11,11 +15,15 @@ import {
   requiredValidator,
   usagesValidator,
 } from "../../validations/validation";
+import { toast } from "react-toastify";
 
 const DidConfig = () => {
   const navigate = useNavigate();
-  const queryParams = new URLSearchParams(useLocation().search);
-  const did_id = queryParams.get("did_id");
+  const location = useLocation();
+  const locationData = location.state;
+  const [dataAvailable, setDataAvailable] = useState(true);
+  // const queryParams = new URLSearchParams(useLocation().search);
+  // const did_id_view = queryParams.get("did_id_view");
   const {
     register,
     setError: setErr,
@@ -26,16 +34,54 @@ const DidConfig = () => {
   } = useForm();
 
   useEffect(() => {
+    if (locationData.configuration !== null) {
+      setDataAvailable(false);
+      console.log("This is configuration", locationData.configuration);
+
+      setValue("usages", locationData.configuration.usages || []);
+      setValue("did_id_view", locationData.did || "");
+      setValue("forward", locationData.configuration.forward || "");
+      // if(locationData.configuration.forward === "direct"){
+      // }else if (locationData.configuration.forward === "forward_to"){
+      // }else{
+      //   setValue("forward_to", "");
+      // }
+      setValue("direct_extension", locationData.configuration.forward_to || "");
+      setValue("forward_to", locationData.configuration.forward_to || "");
+      setValue("action", locationData.configuration.action || "");
+      setValue("hold_music", locationData.configuration.hold_music || "");
+      setValue(
+        "record",
+        locationData.configuration.record === 0 ? false : true || ""
+      );
+      setValue(
+        "status",
+        locationData.configuration.status === 0 ? false : true || ""
+      );
+    } else {
+      setDataAvailable(true);
+    }
+  }, [locationData]);
+
+  useEffect(() => {
+    if (locationData) {
+      setValue("did_id_view", locationData.did || "");
+    } else {
+      console.warn(
+        "Location data is undefined or missing expected properties."
+      );
+    }
+
     register("usages", {
       validate: usagesValidator.validate,
       ...requiredValidator,
     });
-    register("did_id", { required: true });
+    register("did_id_view", { required: true });
 
-    if (did_id !== undefined) {
-      setValue("did_id", did_id);
-    }
-  }, [register, did_id, setValue]);
+    // if (locationData !== undefined) {
+    //   setValue("did_id_view", locationData.did_id_view);
+    // }
+  }, [register, setValue]);
 
   useEffect(() => {
     if (watch("forward") === "disable") {
@@ -63,29 +109,32 @@ const DidConfig = () => {
   const selectedUsages = watch("usages", []);
   const forwardStatus = watch("forward", "disable");
 
-  const handleFormSubmit = handleSubmit((data) => {
-    if (data.forward === "pstn") {
-      if (!data.forward_to) {
-        setErr("forward_to", {
-          type: "required",
-          message: "This field is required when forwarding to PSTN.",
-        });
-      } else if (data.forward_to.length < 10) {
-        setErr("forward_to", {
-          type: "minLength",
-          message: "Number must be at least 10 digits.",
-        });
-      }
-    } else if (data.forward === "direct") {
-      if (!data.direct_extension) {
-        setErr("direct_extension", {
-          type: "required",
-          message: "This field is required when forwarding directly.",
-        });
-      }
+  const handleFormSubmit = handleSubmit(async (data) => {
+    data.record = data.record === true || data.record === "true";
+    data.status = data.status === true || data.status === "true";
+
+    if (!Array.isArray(data.usages)) {
+      data.usages = [data.usages];
     }
 
-    // if only one key is needed
+    if (data.forward === "pstn" && !data.forward_to) {
+      setErr("forward_to", {
+        type: "required",
+        message: "This field is required when forwarding to PSTN.",
+      });
+    } else if (data.forward === "pstn" && data.forward_to.length < 10) {
+      setErr("forward_to", {
+        type: "minLength",
+        message: "Number must be at least 10 digits.",
+      });
+    } else if (data.forward === "direct" && !data.direct_extension) {
+      setErr("direct_extension", {
+        type: "required",
+        message: "This field is required when forwarding directly.",
+      });
+    }
+
+    // Final data preparation
     if (data.forward === "pstn") {
       data.forward_to = data.forward_to || "";
     } else if (data.forward === "direct") {
@@ -94,7 +143,29 @@ const DidConfig = () => {
       data.forward_to = "";
     }
     delete data.direct_extension;
-    console.log(data);
+    delete data.did_id;
+    const payload = { ...data, did_id: locationData.id };
+
+    if (locationData.configuration === null) {
+      const apiData = await generalPostFunction("/did/configure", payload);
+      if (apiData.status) {
+        toast.success(apiData.message);
+      } else {
+        toast.error(apiData.message);
+      }
+    }
+    if (locationData.configuration) {
+      const apiData = await generalPutFunction(
+        `/did/configure/update/${locationData.configuration.id}`,
+        payload
+      );
+      if (apiData.status) {
+        toast.success(apiData.message);
+      } else {
+        toast.error(apiData.message);
+      }
+    }
+    console.log("payload", payload);
   });
 
   // Custom styles for react-select
@@ -193,7 +264,7 @@ const DidConfig = () => {
                     className="panelButton"
                     onClick={handleFormSubmit}
                   >
-                    Save
+                    {locationData.configuration ? "Update" : "Save"}
                   </button>
                 </div>
               </div>
@@ -209,9 +280,9 @@ const DidConfig = () => {
                   <div className="col-12">
                     <input
                       type="text"
-                      name="did_id"
+                      name="did_id_view"
                       className="formItem"
-                      defaultValue={did_id === undefined ? "" : did_id}
+                      value={locationData.did && locationData.did}
                       disabled
                       {...register("did_id", {
                         ...noSpecialCharactersValidator,
@@ -329,7 +400,7 @@ const DidConfig = () => {
                       title="Forward Extension"
                       label="Select extension."
                       {...register("direct_extension", {
-                        required: "Select at least one option",
+                        requiredValidator,
                       })}
                     />
                     {errors.direct_extension && (
@@ -348,10 +419,10 @@ const DidConfig = () => {
                       id="selectFormRow"
                       {...register("record")}
                     >
-                      <option selected="" value={true}>
+                      <option selected="" value="true">
                         True
                       </option>
-                      <option value={false}>False</option>
+                      <option value="false">False</option>
                     </select>
                   </div>
                   <label htmlFor="data" className="formItemDesc">
@@ -389,20 +460,14 @@ const DidConfig = () => {
                     <select
                       className="formItem"
                       name=""
-                      defaultValue={""}
                       id="selectFormRow"
-                      {...register("status", {
-                        ...requiredValidator,
-                      })}
+                      {...register("status")}
                     >
-                      <option selected="" value={true}>
+                      <option selected="" value="true">
                         True
                       </option>
-                      <option value={false}>False</option>
+                      <option value="false">False</option>
                     </select>
-                    {errors.status && (
-                      <ErrorMessage text={errors.status.message} />
-                    )}
                   </div>
                 </div>
               </form>
