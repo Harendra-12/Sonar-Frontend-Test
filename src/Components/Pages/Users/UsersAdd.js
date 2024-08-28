@@ -20,7 +20,7 @@ import Header from "../../CommonComponents/Header";
 const UsersAdd = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const domain = useSelector((state) => state.domain);
+  // const domain = useSelector((state) => state.domain);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   // const [domains, setDomains] = useState("");
   const [timeZone, setTimeZone] = useState("");
@@ -32,7 +32,7 @@ const UsersAdd = () => {
   const [isUserNameAvailable, setIsUserNameAvailable] = useState();
   const [userNameValidationLoader, setuserNameValidationLoader] =
     useState(false);
-  const { id: domainId = "" } = domain;
+  // const { id: domainId = "" } = domain;
   // const [popUp, setPopUp] = useState(true);
 
   const {
@@ -120,6 +120,7 @@ const UsersAdd = () => {
   }, [watch().username]);
 
   const handleFormSubmit = handleSubmit(async (data) => {
+    setLoading(true);
     if (data.cPassword !== data.password) {
       setError("cPassword", {
         type: "manual",
@@ -135,7 +136,7 @@ const UsersAdd = () => {
       ...data,
       ...{
         name: `${firstName} ${lastName}`,
-        domain_id: `${domainId}`,
+        // domain_id: `${domainId}`,
       },
     };
 

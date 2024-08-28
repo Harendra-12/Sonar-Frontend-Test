@@ -205,6 +205,7 @@ function CallCenterQueueAdd() {
   };
 
   const handleFormSubmit = handleSubmit(async (data) => {
+    setLoading(true)
     if (!validateAgents()) {
       setErr("agent", {
         type: "manual",

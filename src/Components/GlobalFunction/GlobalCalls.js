@@ -223,7 +223,7 @@ function GlobalCalls() {
     if (domainRefresh > 0) {
       getData();
     }
-  }, [domainRefresh]);
+  }, [domainRefresh,account]);
 
   return <div></div>;
 }
