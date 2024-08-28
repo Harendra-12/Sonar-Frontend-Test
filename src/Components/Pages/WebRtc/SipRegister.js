@@ -17,10 +17,10 @@ export const SipRegister = () => {
   // const password = pswrd;
   useEffect(() => {
     connectAndRegister({
-      // username: extension,
-      // password: password,
-      username: "1001",
-      password: "1001",
+      username: extension,
+      password: password,
+      // username: "1001",
+      // password: "1001",
     });
   }, [
     connectAndRegister,

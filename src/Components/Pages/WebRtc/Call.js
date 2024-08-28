@@ -78,10 +78,9 @@ function Call() {
           setAllApiData(apiData.data.calls.reverse());
           const uniqueArray = [
             ...new Map(
-              apiData.data.calls.reverse().map((item) => [
-                item["Caller-Callee-ID-Number"],
-                item,
-              ])
+              apiData.data.calls
+                .reverse()
+                .map((item) => [item["Caller-Callee-ID-Number"], item])
             ).values(),
           ];
           setAllCalls(uniqueArray.reverse());
@@ -472,6 +471,7 @@ function Call() {
                 >
                   {callProgress ? (
                     <OngoingCall
+                      key={callProgressId}
                       id={callProgressId}
                       destination={callProgressDestination}
                       setHangupRefresh={setHangupRefresh}
