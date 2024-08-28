@@ -60,7 +60,7 @@ function DidListing() {
                                 <td>{item?.cnam}</td>
                                 <td>{item?.sms}</td>
                                 {/* <td onClick={() => navigate(item.dialplan?"/destination-edit":"/destination-add",{ state: { state: item.dialplan ? item.dialplan : item, did: item.did } })}>Configure</td> */}
-                                <td onClick={()=>navigate(`/did-config?did=${item.did}`)}>Configure</td>
+                                <td onClick={()=>navigate(`/did-config?did_id=${item.did}`)}>Configure</td>
                               </tr>
                             )
                         })}
