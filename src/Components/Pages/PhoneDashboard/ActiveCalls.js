@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
@@ -9,6 +9,8 @@ import CircularLoader from "../../Loader/CircularLoader";
 function ActiveCalls() {
   const activeCall = useSelector((state) => state.activeCall);
   const [loading, setLoading] = useState(false);
+  const [bargeStatus,setBargeStatus]=useState("disable")
+  const [id,setId]=useState("")
   async function killCall(id) {
     setLoading(true);
     const apiData = await generalGetFunction(`/freeswitch/call-kill/${id}`);
@@ -66,6 +68,16 @@ function ActiveCalls() {
     }
   }
 
+  useEffect(()=>{
+    if(bargeStatus==="burge"){
+      bargeCall(id)
+    }else if(bargeStatus==="intercept"){
+      interceptCall(id)
+    }else if(bargeStatus==="eavesdrop"){
+      eavesdropCall(id)
+    }
+  },[bargeStatus,id])
+
   return (
     <>
       <main className="mainContent">
@@ -108,21 +120,22 @@ function ActiveCalls() {
                                 <td>{item.b_cid_num}</td>
                                 <td>{item.dest}</td>
                                 <td>
-                                  <select>
+                                  <select onChange={(e)=>{setBargeStatus(e.target.value);setId(item.uuid)}} >
+                                    <option value="disbale"></option>
                                     <option
-                                      value="Burge"
+                                      value="burge"
                                       onClick={() => bargeCall(item.uuid)}
                                     >
                                       Burge
                                     </option>
                                     <option
-                                      value="Intercept"
+                                      value="intercept"
                                       onClick={() => interceptCall(item.uuid)}
                                     >
                                       Intercept
                                     </option>
                                     <option
-                                      value="Eavesdrop"
+                                      value="eavesdrop"
                                       onClick={() => eavesdropCall(item.uuid)}
                                     >
                                       Eavesdrop
