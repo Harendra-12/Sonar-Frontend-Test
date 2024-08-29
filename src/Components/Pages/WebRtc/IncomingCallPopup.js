@@ -14,17 +14,22 @@ function IncomingCallPopup({ sessionId, lastIncomingCall, index }) {
     if (!lastIncomingCall) {
       setIsMinimized(true);
     }
-  }, [sessionId, lastIncomingCall]);
+  }, [lastIncomingCall]);
 
   useEffect(() => {
-    dispatch({
-      type: "SET_SESSIONS",
-      sessions: [
-        ...globalSession,
-        { id: sessionId, destination: callerExtension },
-      ],
-    });
-  }, [sessionId]);
+    // Check if the sessionId is already present in globalSession
+    const sessionExists = globalSession.some(session => session.id === sessionId);
+  
+    if (!sessionExists) {
+      dispatch({
+        type: "SET_SESSIONS",
+        sessions: [
+          ...globalSession,
+          { id: sessionId, destination: callerExtension },
+        ],
+      });
+    }
+  }, [sessionId, globalSession]);
 
   const callerExtension = session.incomingInviteRequest
     ? session?.incomingInviteRequest?.message?.from?._displayName

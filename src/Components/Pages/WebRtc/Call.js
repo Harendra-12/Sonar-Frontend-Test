@@ -490,7 +490,10 @@ function Call() {
             </div>
           </section>
         </main>
+        {console.log("this is session", sessions)}
         {sessions.length > 0 && Object.keys(sessions).length > 0 ? (
+        
+          
           <>
             <section className="activeCallsSidePanel">
               <div className="container">
