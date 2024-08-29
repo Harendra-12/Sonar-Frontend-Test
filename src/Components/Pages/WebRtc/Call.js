@@ -84,7 +84,7 @@ function Call() {
             ).values(),
           ];
           setAllCalls(uniqueArray.reverse());
-          console.log("uniqueArray", uniqueArray);
+
           setLoading(false);
         }
       }
@@ -299,6 +299,15 @@ function Call() {
   //     return acc;
   //   }, {});
   // };
+  const sortKeys = (keys) => {
+    return keys.sort((a, b) => {
+      if (a === "Today") return -1;
+      if (b === "Today") return 1;
+      if (a === "Yesterday") return -1;
+      if (b === "Yesterday") return 1;
+      return new Date(b) - new Date(a); // Sort by date in descending order
+    });
+  };
 
   const groupedCalls = groupCallsByDate(previewCalls);
 
@@ -310,7 +319,6 @@ function Call() {
   };
 
   useWebSocketErrorHandling(options);
-  console.log("This is sessions", sessions);
 
   return (
     <div className="browserPhoneWrapper">
@@ -446,7 +454,7 @@ function Call() {
                         {loading ? (
                           <ContentLoader />
                         ) : Object.keys(groupedCalls).length > 0 ? (
-                          Object.keys(groupedCalls).map((date) => (
+                          sortKeys(Object.keys(groupedCalls)).map((date) => (
                             <div
                               key={date}
                               className="text-center callListItem"
@@ -501,6 +509,7 @@ function Call() {
                   {sessions.length > 0 &&
                     sessions.map((session, chennel) => (
                       <ActiveCallSidePanel
+                        key={chennel}
                         sessionId={session.id}
                         destination={session.destination}
                         chennel={chennel}

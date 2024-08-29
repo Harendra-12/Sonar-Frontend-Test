@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useSessionCall } from "react-sipjs";
 import { CallTimer } from "./CallTimer";
 import { SessionState } from "sip.js";
+import { toast } from "react-toastify";
 
 function OngoingCall({ setHangupRefresh, hangupRefresh }) {
+  const dispatch = useDispatch();
+  const globalSession = useSelector((state) => state.sessions);
   const callProgressId = useSelector((state) => state.callProgressId);
   const [hideDialpad,setHideDialpad] = useState(false)
   const [destNumber,setDestNumber]=useState("")
@@ -35,6 +38,55 @@ function OngoingCall({ setHangupRefresh, hangupRefresh }) {
       }
     } else {
       console.error('No active session found');
+    }
+  }
+  const canHold = session && session._state === SessionState.Established;
+  const canMute = session && session._state === SessionState.Established;
+  const holdCall = (type) => {
+    if (canHold) {
+      if (type === "hold") {
+        hold();
+        dispatch({
+          type: "SET_SESSIONS",
+          sessions: globalSession.map((item) =>
+            item.id === session.id ? { ...item, state: "OnHold" } : item
+          ),
+        });
+      } else if (type === "unhold") {
+        unhold();
+        dispatch({
+          type: "SET_SESSIONS",
+          sessions: globalSession.map((item) =>
+            item.id === session.id ? { ...item, state: "Established" } : item
+          ),
+        });
+      }
+    } else {
+      toast.warn("Call has not been established");
+    }
+  };
+
+  const muteCall = (type) => {
+    if (canMute) {
+      if (type === "mute") {
+        mute();
+        dispatch({
+          type: "SET_SESSIONS",
+          sessions: globalSession.map((item) =>
+            item.id === session.id ? { ...item, state: "Mute" } : item
+          ),
+        });
+      } else if (type === "unmute") {
+        unmute();
+        dispatch({
+          type: "SET_SESSIONS",
+          sessions: globalSession.map((item) =>
+            item.id === session.id ? { ...item, state: "Established" } : item
+          ),
+        });
+      }
+    } else {
+      toast.warn("Call has not been established");
     }
   };
   return (
@@ -80,7 +132,9 @@ function OngoingCall({ setHangupRefresh, hangupRefresh }) {
           </div>
           <div className="row footer">
             <button
-              onClick={isMuted ? unmute : mute}
+              onClick={
+                isMuted ? () => muteCall("unmute") : () => muteCall("mute")
+              }
               className={
                 isMuted ? "appPanelButtonCaller active" : "appPanelButtonCaller"
               }
@@ -105,7 +159,10 @@ function OngoingCall({ setHangupRefresh, hangupRefresh }) {
               P
             </button>
             <button
-              onClick={isHeld ? unhold : hold}
+              // onClick={isHeld ? unhold : hold}
+              onClick={
+                isHeld ? () => holdCall("unhold") : () => holdCall("hold")
+              }
               className={
                 isHeld ? "appPanelButtonCaller active" : "appPanelButtonCaller"
               }

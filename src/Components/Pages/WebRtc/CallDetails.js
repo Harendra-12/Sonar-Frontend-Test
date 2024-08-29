@@ -94,6 +94,7 @@ function CallDetails({ clickedCall, callHistory }) {
         {
           id: apiData._id,
           destination: Number(callDetails.variable_sip_from_user),
+          state: "Established",
         },
       ],
     });
