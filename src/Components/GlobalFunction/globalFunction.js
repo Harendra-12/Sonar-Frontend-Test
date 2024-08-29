@@ -1,5 +1,5 @@
 import axios from "axios";
-import { handleNavigation } from "./Navigation";
+import { handleNavigation,handleDispatch } from "./Navigation";
 // const baseName = "http://127.0.0.1:8000/api"
 const baseName = "http://192.168.1.88/UcaasS-Backend/api";
 
@@ -46,12 +46,24 @@ export async function login(userName, password) {
 
 // General Get Function
 export async function generalGetFunction(endpoint) {
+  handleDispatch({
+    type: "SET_LOADING",
+   loading:true,
+  })
   return axiosInstance
     .get(endpoint)
     .then((res) => {
+      handleDispatch({
+        type: "SET_LOADING",
+       loading:false,
+      })
       return res.data;
     })
     .catch((err) => {
+      handleDispatch({
+        type: "SET_LOADING",
+       loading:false,
+      })
       if (err.response.status === 401) {
         handleNavigation("/");
         return err.response.data;

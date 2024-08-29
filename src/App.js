@@ -55,7 +55,7 @@ import EditVendor from "./Components/Pages/NumberManagement/EditVendor";
 import RateCharge from "./Components/Pages/NumberManagement/RateCharge";
 import RateChargeEdit from "./Components/Pages/NumberManagement/RateChargeEdit";
 import GetDid from "./Components/Pages/NumberManagement/GetDid";
-import { setNavigate } from "./Components/GlobalFunction/Navigation";
+import { setNavigate,setDispatch } from "./Components/GlobalFunction/Navigation";
 import { useEffect } from "react";
 import PaymentGatewayAdd from "./Components/Pages/Payment/PaymentGatewayAdd";
 import PaymentGateway from "./Components/Pages/Payment/PaymentGateway";
@@ -102,9 +102,20 @@ const NavigationSetter = () => {
   return null; // This component doesn't render anything
 };
 
+const DispatchSetter = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    setDispatch(dispatch);
+  }, [dispatch]);
+  return null; // This component doesn't render anything
+};
+
 function App() {
   const dispatch = useDispatch();
   const domainRefresh = useSelector((state) => state.domainRefresh);
+  const loading = useSelector((state) => state.loading);
+  console.log("this is loading", loading);
+  
   Socket();
 
   // Unlock this if want push notification add account edit here if id is available
@@ -131,6 +142,7 @@ function App() {
     <>
       <Router>
         <NavigationSetter />
+        <DispatchSetter />
         <GlobalCalls />
         <Navbar />
         <Routes>

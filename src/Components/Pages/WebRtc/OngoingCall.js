@@ -15,18 +15,16 @@ function OngoingCall({ setHangupRefresh, hangupRefresh }) {
   const {
     isHeld,
     isMuted,
-    decline,
     hangup,
     hold,
     mute,
-    answer,
     session,
     unhold,
     unmute,
-    direction,
     timer,
   } = useSessionCall(callProgressId);
 
+  // Handle dialpad press and send DTMF
   const handleDigitPress = (digit) => {
     if (session) {
       const dtmfSender = session.sessionDescriptionHandler.peerConnection.getSenders().find(sender => sender.dtmf);
