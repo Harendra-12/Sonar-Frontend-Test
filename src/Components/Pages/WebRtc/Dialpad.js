@@ -29,7 +29,7 @@ function Dialpad({ hideDialpad }) {
         type: "SET_SESSIONS",
         sessions: [
           ...globalSession,
-          { id: apiData._id, destination: destNumber },
+          { id: apiData._id, destination: destNumber, state: "Established" },
         ],
       });
       dispatch({
@@ -144,8 +144,9 @@ function Dialpad({ hideDialpad }) {
                   <h4>9</h4>
                   <h6>WXYZ</h6>
                 </div>
-                <div className="col-4"
-                onClick={() => setDestNumber(destNumber + "*")}
+                <div
+                  className="col-4"
+                  onClick={() => setDestNumber(destNumber + "*")}
                 >
                   <h4>
                     <i className="fa-light fa-asterisk" />
@@ -158,8 +159,9 @@ function Dialpad({ hideDialpad }) {
                   <h4>0</h4>
                   <h6>+</h6>
                 </div>
-                <div className="col-4"
-                onClick={() => setDestNumber(destNumber + "#")}
+                <div
+                  className="col-4"
+                  onClick={() => setDestNumber(destNumber + "#")}
                 >
                   <h4>
                     <i className="fa-light fa-hashtag" />

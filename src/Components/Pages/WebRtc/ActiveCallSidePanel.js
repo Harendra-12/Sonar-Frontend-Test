@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSessionCall } from "react-sipjs";
 
@@ -6,7 +6,37 @@ function ActiveCallSidePanel({ sessionId, chennel, destination }) {
   const dispatch = useDispatch();
   const globalSession = useSelector((state) => state.sessions);
   const callProgressId = useSelector((state) => state.callProgressId);
-  const { isHeld, session, timer } = useSessionCall(sessionId);
+  const { session, timer, hold, unhold } = useSessionCall(sessionId);
+  //Keep track for previous call progress Id
+  const [prevCallProgressId, setPrevCallProgressId] = useState(callProgressId);
+
+  const currentSession = globalSession.find(
+    (session) => session.id === sessionId
+  );
+  const isHeld = currentSession?.state === "OnHold";
+  //Effect to handle when session state is changed
+  useEffect(() => {
+    //If callProgressId changes
+
+    if (prevCallProgressId && prevCallProgressId !== callProgressId) {
+      const prevSession = globalSession.find(
+        (item) => item.id === prevCallProgressId
+      );
+
+      //Hold previous call
+      if (prevSession && session._state == "Established") {
+        hold(prevSession.id);
+        dispatch({
+          type: "SET_SESSIONS",
+          sessions: globalSession.map((item) =>
+            item.id === prevSession.id ? { ...item, state: "OnHold" } : item
+          ),
+        });
+      }
+    }
+    //update current callProgressId
+    setPrevCallProgressId(callProgressId);
+  }, [callProgressId]);
 
   if (session["_state"] === "Terminated") {
     if (callProgressId === session._id) {
@@ -31,8 +61,6 @@ function ActiveCallSidePanel({ sessionId, chennel, destination }) {
       sessions: updatedSession,
     });
   }
-
-  console.log("Active call", session._state);
 
   function handleActiveCall(id, dest) {
     dispatch({

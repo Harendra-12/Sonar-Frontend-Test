@@ -21,7 +21,7 @@ function IncomingCallPopup({ sessionId, lastIncomingCall, index }) {
       type: "SET_SESSIONS",
       sessions: [
         ...globalSession,
-        { id: sessionId, destination: callerExtension },
+        { id: sessionId, destination: callerExtension, state: "Initial" },
       ],
     });
   }, [sessionId]);
