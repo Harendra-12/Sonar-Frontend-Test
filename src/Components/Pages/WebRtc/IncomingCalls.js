@@ -4,11 +4,12 @@ import { useSIPProvider } from "react-sipjs";
 import { useDispatch, useSelector } from "react-redux";
 
 const IncomingCalls = () => {
-  const dispatch = useDispatch();
   const { sessions: sipSessions } = useSIPProvider();
-  const globalSession = useSelector((state) => state.sessions);
+
   const incomingSessionsArray = Object.keys(sipSessions).filter(
-    (sessionId) => sipSessions[sessionId].state === "Initial"
+    (sessionId) =>
+      sipSessions[sessionId].state === "Initial" &&
+      sipSessions[sessionId].logger.category == "sip.Invitation"
   );
 
   //1001 (Initial) => 1002 (self)

@@ -196,8 +196,57 @@ function Call() {
     );
   };
 
+  // const renderCallItem = (item) => (
+  //   // <div key={item.id} className={`callListItem ${clickStatus}`}>
+  //   <div
+  //     key={item.id}
+  //     onClick={() => {
+  //       setClickedCall(item);
+  //       setCallHistory(
+  //         allApiData.filter(
+  //           (e) =>
+  //             e["Caller-Callee-ID-Number"] === item["Caller-Callee-ID-Number"]
+  //         )
+  //       );
+  //     }}
+  //     className={`callListItem ${
+  //       item["Call-Direction"] === "inbound"
+  //         ? "incoming"
+  //         : item["Call-Direction"] === "outbound"
+  //         ? "outgoing"
+  //         : item["Call-Direction"] === "missed"
+  //         ? "missed"
+  //         : item["Call-Direction"] === "voicemail"
+  //         ? "voicemail"
+  //         : ""
+  //     }`}
+  //     style={{
+  //       backgroundColor:
+  //         clickedCall && clickedCall.id === item.id ? "#d7eeefcf" : "",
+  //     }}
+  //   >
+  //     <div className="row justify-content-between">
+  //       <div className="col-8 ms-4 text-start" style={{ cursor: "pointer" }}>
+  //         <h4>{item["Caller-Callee-ID-Number"]}</h4>
+  //         <h5>{item.caller_user ? item.caller_user.username : "USER XYZ"}</h5>
+  //         <h6>Call, {formatTime(item.variable_duration)}</h6>
+  //       </div>
+  //       <div className="col-3 text-end">
+  //         <h5>
+  //           {new Date(item.variable_start_stamp)
+  //             .toLocaleTimeString([], {
+  //               hour: "2-digit",
+  //               minute: "2-digit",
+  //               hour12: true,
+  //             })
+  //             .replace(" AM", "am")
+  //             .replace(" PM", "pm")}
+  //         </h5>
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
   const renderCallItem = (item) => (
-    // <div key={item.id} className={`callListItem ${clickStatus}`}>
     <div
       key={item.id}
       onClick={() => {
@@ -319,7 +368,16 @@ function Call() {
   };
 
   useWebSocketErrorHandling(options);
-
+  const sortedGroupedCalls = sortKeys(Object.keys(groupedCalls)).reduce(
+    (acc, date) => {
+      acc[date] = groupedCalls[date].sort(
+        (a, b) =>
+          new Date(b.variable_start_stamp) - new Date(a.variable_start_stamp)
+      );
+      return acc;
+    },
+    {}
+  );
   return (
     <div className="browserPhoneWrapper">
       <SIPProvider options={options}>
@@ -460,7 +518,7 @@ function Call() {
                               className="text-center callListItem"
                             >
                               <h5 className="fw-semibold">{date}</h5>
-                              {groupedCalls[date].map(renderCallItem)}
+                              {sortedGroupedCalls[date].map(renderCallItem)}
                             </div>
                           ))
                         ) : (
@@ -500,8 +558,6 @@ function Call() {
         </main>
         {console.log("this is session", sessions)}
         {sessions.length > 0 && Object.keys(sessions).length > 0 ? (
-        
-          
           <>
             <section className="activeCallsSidePanel">
               <div className="container">
