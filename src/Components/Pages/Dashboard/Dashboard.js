@@ -459,10 +459,10 @@ const Dashboard = () => {
                         <div className="data-number">
                           {callCardData.missedCalls.count}
                         </div>
-                        <div className="label">
+                        {/* <div className="label">
                           {callCardData.missedCalls.voiceMissed} Voicecall
                           Missed
-                        </div>
+                        </div> */}
                         <div className="label">
                           {callCardData.missedCalls.callMissed} Calls Missed
                         </div>
@@ -478,8 +478,8 @@ const Dashboard = () => {
                         <div className="data-number">
                           {callCardData.abandonedCalls.count}
                         </div>
-                        <div className="label">0 Internal Call</div>
-                        <div className="label">0 External Calls</div>
+                        {/* <div className="label">0 Internal Call</div>
+                        <div className="label">0 External Calls</div> */}
                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/devices'" effect="ripple"><i className="fa-duotone fa-mobile-retro"></i> View All Devices</button> */}
                       </div>
                     </div>
@@ -499,9 +499,9 @@ const Dashboard = () => {
                           <i className="fa-duotone fa-message-arrow-down"></i>{" "}
                           Received Messages
                         </div>
-                        <div className="data-number">10</div>
-                        <div className="label">7 UnRead Messages</div>
-                        <div className="label">3 Read Messages</div>
+                        {/* <div className="data-number">10</div> */}
+                        {/* <div className="label">7 UnRead Messages</div>
+                        <div className="label">3 Read Messages</div> */}
                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/user'" effect="ripple"><i className="fa-duotone fa-users"></i> View All Users</button> */}
                       </div>
                     </div>
@@ -511,9 +511,9 @@ const Dashboard = () => {
                           <i className="fa-duotone fa-message-arrow-up"></i>{" "}
                           Messages Sent
                         </div>
-                        <div className="data-number">20</div>
-                        <div className="label">17 Internal Messages</div>
-                        <div className="label">3 External Messages</div>
+                        {/* <div className="data-number">20</div> */}
+                        {/* <div className="label">17 Internal Messages</div>
+                        <div className="label">3 External Messages</div> */}
                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/extensions'" effect="ripple"><i className="fa-duotone fa-phone-office"></i> View All Extensions</button> */}
                       </div>
                     </div>
@@ -522,9 +522,9 @@ const Dashboard = () => {
                         <div className="heading">
                           <i className="fa-duotone fa-inbox"></i> Total Inbox
                         </div>
-                        <div className="data-number">50</div>
-                        <div className="label">1.26 KB Used</div>
-                        <div className="label">100 GB Available</div>
+                        {/* <div className="data-number">50</div> */}
+                        {/* <div className="label">1.26 KB Used</div>
+                        <div className="label">100 GB Available</div> */}
                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/devices'" effect="ripple"><i className="fa-duotone fa-mobile-retro"></i> View All Devices</button> */}
                       </div>
                     </div>
@@ -533,10 +533,10 @@ const Dashboard = () => {
                         <div className="heading">
                           <i className="fa-duotone fa-envelopes"></i> Emails
                         </div>
-                        <div className="data-number">6</div>
-                        <div className="label">1 Sent Email</div>
+                        {/* <div className="data-number">6</div> */}
+                        {/* <div className="label">1 Sent Email</div>
                         <div className="label">5 Unread Email</div>
-                        <div className="label">1 Draft</div>
+                        <div className="label">1 Draft</div> */}
                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/devices'" effect="ripple"><i className="fa-duotone fa-mobile-retro"></i> View All Devices</button> */}
                       </div>
                     </div>
@@ -560,8 +560,8 @@ const Dashboard = () => {
                           {" "}
                           {callCenterQueue.total.count}{" "}
                         </div>
-                        <div className="label">3 Currently Active Queue</div>
-                        <div className="label">7 Inactive Queue</div>
+                        {/* <div className="label">3 Currently Active Queue</div>
+                        <div className="label">7 Inactive Queue</div> */}
                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/user'" effect="ripple"><i className="fa-duotone fa-users"></i> View All Users</button> */}
                       </div>
                     </div>
@@ -573,8 +573,8 @@ const Dashboard = () => {
                         <div className="data-number">
                           {callCenterQueue.totalAgents.count}{" "}
                         </div>
-                        <div className="label">15 Agents in Queue</div>
-                        <div className="label">5 Agents Not in Queue</div>
+                        {/* <div className="label">15 Agents in Queue</div>
+                        <div className="label">5 Agents Not in Queue</div> */}
                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/extensions'" effect="ripple"><i className="fa-duotone fa-phone-office"></i> View All Extensions</button> */}
                       </div>
                     </div>
@@ -587,8 +587,8 @@ const Dashboard = () => {
                         <div className="data-number">
                           {callCenterQueue.totalCalls.count}
                         </div>
-                        <div className="label">1 Waiting in Queue 1</div>
-                        <div className="label">4 Waiting in Queue 2</div>
+                        {/* <div className="label">1 Waiting in Queue 1</div>
+                        <div className="label">4 Waiting in Queue 2</div> */}
                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/devices'" effect="ripple"><i className="fa-duotone fa-mobile-retro"></i> View All Devices</button> */}
                       </div>
                     </div>
@@ -601,8 +601,8 @@ const Dashboard = () => {
                         <div className="data-number">
                           {callCenterQueue.missedCalls.count}
                         </div>
-                        <div className="label">4 Calls Overflown</div>
-                        <div className="label">2 Calls Abandoned</div>
+                        {/* <div className="label">4 Calls Overflown</div>
+                        <div className="label">2 Calls Abandoned</div> */}
                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/devices'" effect="ripple"><i className="fa-duotone fa-mobile-retro"></i> View All Devices</button> */}
                       </div>
                     </div>
@@ -666,8 +666,8 @@ const Dashboard = () => {
                         <div className="data-number">
                           {ringGroupCardData.totalCalls.count || 0}
                         </div>
-                        <div className="label">1 Waiting in Queue 1</div>
-                        <div className="label">4 Waiting in Queue 2</div>
+                        {/* <div className="label">1 Waiting in Queue 1</div>
+                        <div className="label">4 Waiting in Queue 2</div> */}
                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/devices'" effect="ripple"><i className="fa-duotone fa-mobile-retro"></i> View All Devices</button> */}
                       </div>
                     </div>
@@ -680,8 +680,8 @@ const Dashboard = () => {
                         <div className="data-number">
                           {ringGroupCardData.missed.count}
                         </div>
-                        <div className="label">4 Calls Overflown</div>
-                        <div className="label">2 Calls Abandoned</div>
+                        {/* <div className="label">4 Calls Overflown</div>
+                        <div className="label">2 Calls Abandoned</div> */}
                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/devices'" effect="ripple"><i className="fa-duotone fa-mobile-retro"></i> View All Devices</button> */}
                       </div>
                     </div>

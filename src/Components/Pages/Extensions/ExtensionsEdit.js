@@ -11,6 +11,15 @@ import "react-toastify/dist/ReactToastify.css";
 import { useLocation } from "react-router-dom";
 import CircularLoader from "../../Loader/CircularLoader";
 import Header from "../../CommonComponents/Header";
+import { useForm } from "react-hook-form";
+import {
+  emailValidator,
+  lengthValidator,
+  noSpecialCharactersValidator,
+  numberValidator,
+  requiredValidator,
+} from "../../validations/validation";
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
 
 const ExtensionsEdit = () => {
   const navigate = useNavigate();
@@ -85,6 +94,14 @@ const ExtensionsEdit = () => {
     user: "",
   });
 
+  const {
+    register,
+    watch,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm();
+
   const account = useSelector((state) => state.account);
   useEffect(() => {
     setLoading(true);
@@ -126,37 +143,40 @@ const ExtensionsEdit = () => {
         const apiData = await generalGetFunction(`/extension/${value}`);
         if (apiData.status) {
           setLoading(false);
-          setExtensionState((prevState) => ({
-            ...prevState,
-            extension: apiData.data.extension,
-            voicePass: apiData.data.voicemail_password,
-            accountCode: apiData.data.account_code,
-            effCallerIdName: apiData.data.effectiveCallerIdName,
-            effCallerIdNumber: apiData.data.effectiveCallerIdNumber,
-            outCallerIdName: apiData.data.outbundCallerIdName,
-            outCallerIdNumber: apiData.data.outbundCallerIdNumber,
-            emeCallerIdName: apiData.data.emergencyCallerIdName,
-            emeCallerIdNumber: apiData.data.emergencyCallerIdNumber,
-            dirFullName: apiData.data.directoryFullname,
-            dirExtensionVisible: apiData.data.directoryExtensionVisible,
-            maxRegistration: apiData.data.maxRegistration,
-            limitMax: apiData.data.limitMax,
-            limitDest: apiData.data.limitDestinations,
-            voiceMailEnable: apiData.data.voicemailEnabled,
-            voiceEmailTo: apiData.data.voiceEmailTo,
-            voiceMialFile: apiData.data.voiceMailFile,
-            voiceMailKeepFile: apiData.data.voiceMailkeepFile,
-            missedCall: apiData.data.missedCall,
-            toAllowValue: apiData.data.tollAllowValue,
-            callTimeOut: apiData.data.callTimeOut,
-            callGroup: apiData.data.callgroup,
+
+          const resetInfo = {
+            account_code: apiData.data.account_code,
+            callgroup: apiData.data.callgroup,
             callScreen: apiData.data.callScreen,
-            record: apiData.data.record,
-            domain: apiData.data.domain,
-            desc: apiData.data.description,
+            callTimeOut: apiData.data.callTimeOut,
+            description: apiData.data.description,
+            directoryExtensionVisible: apiData.data.directoryExtensionVisible,
+            directoryFullname: apiData.data.directoryFullname,
+            effectiveCallerIdName: apiData.data.effectiveCallerIdName,
+            effectiveCallerIdNumber: apiData.data.effectiveCallerIdNumber,
+            emergencyCallerIdName: apiData.data.emergencyCallerIdName,
+            emergencyCallerIdNumber: apiData.data.emergencyCallerIdNumber,
+            extension: apiData.data.extension,
+            limitDestinations: apiData.data.limitDestinations,
+            limitMax: apiData.data.limitMax,
+            maxRegistration: apiData.data.maxRegistration,
+            missedCall: apiData.data.missedCall,
+            moh: apiData.data.moh_sound,
+            outbundCallerIdName: apiData.data.outbundCallerIdName,
+            outbundCallerIdNumber: apiData.data.outbundCallerIdNumber,
             password: apiData.data.password,
+            record: apiData.data.record,
+            tollAllowValue: apiData.data.tollAllowValue,
             user: apiData.data.user,
-          }));
+            voiceEmailTo: apiData.data.voiceEmailTo,
+            voiceMailFile: apiData.data.voiceMailFile,
+            voiceMailkeepFile: apiData.data.voiceMailkeepFile,
+            voicemailEnabled: apiData.data.voicemailEnabled,
+            voicemail_password: apiData.data.voicemail_password,
+          };
+
+          reset(resetInfo);
+
           setMusicHold(apiData.data.moh);
         } else {
           setLoading(false);
@@ -168,147 +188,119 @@ const ExtensionsEdit = () => {
       navigate("/");
     }
   }, [account, navigate, value]);
-  // Handle validation and create store
-  async function handleSubmit(title) {
-    if (extensionState.extension.trim().length > 2) {
-      setExtensionState((prevState) => ({
-        ...prevState,
-        extensionMissing: false,
-      }));
-    } else {
-      setExtensionState((prevState) => ({
-        ...prevState,
-        extensionMissing: true,
-      }));
-    }
-    // if (
-    //   extensionState.domain === "" ||
-    //   extensionState.domain === "Select Domain"
-    // ) {
-    //   setExtensionState((prevState) => ({
-    //     ...prevState,
-    //     domainMissing: true,
-    //   }));
-    // } else {
-    //   setExtensionState((prevState) => ({
-    //     ...prevState,
-    //     domainMissing: false,
-    //   }));
-    // }
-    if (extensionState.password === "" || extensionState.password.length < 4) {
-      setExtensionState((prevState) => ({
-        ...prevState,
-        passwordMising: true,
-      }));
-    } else {
-      setExtensionState((prevState) => ({
-        ...prevState,
-        passwordMising: false,
-      }));
-    }
-    if (extensionState.voicePass.trim().length > 3) {
-      setExtensionState((prevState) => ({
-        ...prevState,
-        voicePassMissing: false,
-      }));
-    } else {
-      setExtensionState((prevState) => ({
-        ...prevState,
-        voicePassMissing: true,
-      }));
-    }
 
-    if (
-      extensionState.extension.trim().length > 2 &&
-      !(extensionState.password === "" || extensionState.password.length < 4) &&
-      extensionState.voicePass.trim().length > 3
-      // &&
-      // !(
-      //   extensionState.domain === "" ||
-      //   extensionState.domain === "Select Domain"
-      // )
-    ) {
-      setLoading(true);
+  const handleFormSubmit = handleSubmit(async (data, title) => {
+    setLoading(true);
+    try {
       if (title === "force") {
-        var parseddata = {
+        var parsedData = {
           account_id: acount.account_id,
-          voicemail_password: extensionState.voicePass,
-          account_code: extensionState.accountCode,
-          effectiveCallerIdName: extensionState.effCallerIdName,
-          effectiveCallerIdNumber: extensionState.effCallerIdNumber,
-          outbundCallerIdName: extensionState.outCallerIdName,
-          outbundCallerIdNumber: extensionState.outCallerIdNumber,
-          emergencyCallerIdName: extensionState.emeCallerIdName,
-          emergencyCallerIdNumber: extensionState.emeCallerIdNumber,
-          directoryFullname: extensionState.dirFullName,
-          directoryExtensionVisible: extensionState.dirExtensionVisible,
-          maxRegistration: extensionState.maxRegistration,
-          limitMax: extensionState.limitMax,
-          limitDestinations: extensionState.limitDest,
-          voicemailEnabled: extensionState.voiceMailEnable,
-          voiceEmailTo: extensionState.voiceEmailTo,
-          voiceMailFile: extensionState.voiceMialFile,
-          voiceMailkeepFile: extensionState.voiceMailKeepFile,
-          missedCall: extensionState.missedCall,
-          tollAllowValue: extensionState.toAllowValue,
-          callTimeOut: extensionState.callTimeOut,
-          callgroup: extensionState.callGroup,
-          callScreen: extensionState.callScreen,
-          record: extensionState.record,
+          voicemail_password: data.voicemail_password,
+          account_code: data.account_code,
+          effectiveCallerIdName: data.effectiveCallerIdName,
+          effectiveCallerIdNumber: data.effectiveCallerIdNumber,
+          outbundCallerIdName: data.outbundCallerIdName,
+          outbundCallerIdNumber: data.outbundCallerIdNumber,
+          emergencyCallerIdName: data.emergencyCallerIdName,
+          emergencyCallerIdNumber: data.emergencyCallerIdNumber,
+          directoryFullname: data.directoryFullname,
+          directoryExtensionVisible: data.directoryExtensionVisible,
+          maxRegistration: data.maxRegistration,
+          limitMax: data.limitMax,
+          limitDestinations: data.limitDestinations,
+          voicemailEnabled: data.voicemailEnabled,
+          voiceEmailTo: data.voiceEmailTo,
+          voiceMailFile: data.voiceMailFile,
+          voiceMailkeepFile: data.voiceMailkeepFile,
+          missedCall: data.missedCall,
+          tollAllowValue: data.tollAllowValue,
+          callTimeOut: data.callTimeOut,
+          callgroup: data.callgroup,
+          callScreen: data.callScreen,
+          record: data.record,
           domain: `${domainId}`,
-          description: extensionState.desc,
-          moh: musicHold,
-          password: extensionState.password,
-          ...(extensionState.user === "" || extensionState.user === null
+          description: data.description,
+          // moh: data.moh,
+          password: data.password,
+          ...(data.user === "" || data.user === null
             ? {}
-            : { user: extensionState.user }),
+            : { user: data.user }),
           forceUpdate: true,
         };
       } else {
         // eslint-disable-next-line no-redeclare
-        var parseddata = {
+        var parsedData = {
           account_id: acount.account_id,
-          voicemail_password: extensionState.voicePass,
-          account_code: extensionState.accountCode,
-          effectiveCallerIdName: extensionState.effCallerIdName,
-          effectiveCallerIdNumber: extensionState.effCallerIdNumber,
-          outbundCallerIdName: extensionState.outCallerIdName,
-          outbundCallerIdNumber: extensionState.outCallerIdNumber,
-          emergencyCallerIdName: extensionState.emeCallerIdName,
-          emergencyCallerIdNumber: extensionState.emeCallerIdNumber,
-          directoryFullname: extensionState.dirFullName,
-          directoryExtensionVisible: extensionState.dirExtensionVisible,
-          maxRegistration: extensionState.maxRegistration,
-          limitMax: extensionState.limitMax,
-          limitDestinations: extensionState.limitDest,
-          voicemailEnabled: extensionState.voiceMailEnable,
-          voiceEmailTo: extensionState.voiceEmailTo,
-          voiceMailFile: extensionState.voiceMialFile,
-          voiceMailkeepFile: extensionState.voiceMailKeepFile,
-          missedCall: extensionState.missedCall,
-          tollAllowValue: extensionState.toAllowValue,
-          callTimeOut: extensionState.callTimeOut,
-          callgroup: extensionState.callGroup,
-          callScreen: extensionState.callScreen,
-          record: extensionState.record,
-          domain: `${domainId}`,
-          description: extensionState.desc,
-          password: extensionState.password,
-          user: extensionState.user,
+          voicemail_password: data.voicemail_password,
+          account_code: data.account_code,
+          effectiveCallerIdName: data.effectiveCallerIdName,
+          effectiveCallerIdNumber: data.effectiveCallerIdNumber,
+          outbundCallerIdName: data.outbundCallerIdName,
+          outbundCallerIdNumber: data.outbundCallerIdNumber,
+          emergencyCallerIdName: data.emergencyCallerIdName,
+          emergencyCallerIdNumber: data.emergencyCallerIdNumber,
+          directoryFullname: data.directoryFullname,
+          directoryExtensionVisible: data.directoryExtensionVisible,
+          maxRegistration: data.maxRegistration,
+          limitMax: data.limitMax,
+          limitDestinations: data.limitDestinations,
+          voicemailEnabled: data.voicemailEnabled,
+          voiceEmailTo: data.voiceEmailTo,
+          voiceMailFile: data.voiceMailFile,
+          voiceMailkeepFile: data.voiceMailkeepFile,
+          missedCall: data.missedCall,
+          tollAllowValue: data.tollAllowValue,
+          callTimeOut: data.callTimeOut,
+          callgroup: data.callgroup,
+          callScreen: data.callScreen,
+          record: data.record,
+          // domain: `${domainId}`,
+          description: data.description,
+          password: data.password,
+          ...(data.user !== "" ? { user: data.user } : {}),
         };
       }
+      // const parsedData = {
+      //   account_id: acount.account_id,
+      //   voicemail_password: data.voicemail_password,
+      //   account_code: data.account_code,
+      //   effectiveCallerIdName: data.effectiveCallerIdName,
+      //   effectiveCallerIdNumber: data.effectiveCallerIdNumber,
+      //   outbundCallerIdName: data.outbundCallerIdName,
+      //   outbundCallerIdNumber: data.outbundCallerIdNumber,
+      //   emergencyCallerIdName: data.emergencyCallerIdName,
+      //   emergencyCallerIdNumber: data.emergencyCallerIdNumber,
+      //   directoryFullname: data.directoryFullname,
+      //   directoryExtensionVisible: data.directoryExtensionVisible,
+      //   maxRegistration: data.maxRegistration,
+      //   limitMax: data.limitMax,
+      //   limitDestinations: data.limitDestinations,
+      //   voicemailEnabled: data.voicemailEnabled,
+      //   voiceEmailTo: data.voiceEmailTo,
+      //   voiceMailFile: data.voiceMailFile,
+      //   voiceMailkeepFile: data.voiceMailkeepFile,
+      //   missedCall: data.missedCall,
+      //   tollAllowValue: data.tollAllowValue,
+      //   callTimeOut: data.callTimeOut,
+      //   callgroup: data.callgroup,
+      //   callScreen: data.callScreen,
+      //   record: data.record,
+      //   domain: `${domainId}`,
+      //   description: data.description,
+      //   moh_sound: data.moh != "" ? Number(data.moh) : 0,
+      //   password: data.password,
+      //   ...(data.user ? { user: data.user } : {}),
+      //   forceUpdate: title === "force",
+      // };
 
       const apiData = await generalPutFunction(
         `/extension/${value}`,
-        parseddata
+        parsedData
       );
       if (apiData.status) {
-        setLoading(false);
-
         toast.success(apiData.message);
         await generalGetFunction(`/user/all`);
       } else {
-        setLoading(false);
         if (apiData.message === "Already assigned to a different user") {
           setPopUp(true);
         } else {
@@ -316,8 +308,13 @@ const ExtensionsEdit = () => {
           toast.error(apiData.errors[errorMessage[0]][0]);
         }
       }
+    } catch (error) {
+      toast.error("An unexpected error occurred");
+    } finally {
+      setLoading(false);
     }
-  }
+  });
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -342,7 +339,7 @@ const ExtensionsEdit = () => {
                 <button
                   effect="ripple"
                   className="panelButton"
-                  onClick={handleSubmit}
+                  onClick={() => handleFormSubmit()}
                 >
                   Save
                 </button>
@@ -363,27 +360,18 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Extension</label>
-                  {!extensionState.extensionMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <input
                     type="text"
                     name="extension"
                     className="formItem"
-                    value={extensionState.extension}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        extension: e.target.value,
-                      }));
-                    }}
+                    {...register("extension", { ...requiredValidator })}
                     disabled
                   />
+                  {errors.extension && (
+                    <ErrorMessage text={errors.extension.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the alphanumeric extension. The default configuration
@@ -428,26 +416,20 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Password</label>
-                  {!extensionState.passwordMising ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Invalid Password</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <input
                     type="text"
                     name="extension"
                     className="formItem"
-                    value={extensionState.password}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        password: e.target.value,
-                      }));
-                    }}
+                    {...register("password", {
+                      ...requiredValidator,
+                      ...lengthValidator(4, 50),
+                    })}
                   />
+                  {errors.password && (
+                    <ErrorMessage text={errors.password.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Password length must be atleast 4 character
@@ -495,28 +477,20 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Voicemail Password</label>
-                  {!extensionState.voicePassMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">
-                      Password length must be greter than 3
-                    </label>
-                  )}
                 </div>
                 <div className="col-12">
                   <input
                     type="text"
                     name="extension"
                     className="formItem"
-                    value={extensionState.voicePass}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        voicePass: e.target.value,
-                      }));
-                    }}
+                    {...register("voicemail_password", {
+                      ...requiredValidator,
+                      ...lengthValidator(4, 50),
+                    })}
                   />
+                  {errors.voicemail_password && (
+                    <ErrorMessage text={errors.voicemail_password.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the numeric voicemail password here.
@@ -529,16 +503,13 @@ const ExtensionsEdit = () => {
                 </div>
                 <select
                   className="formItem"
-                  value={extensionState.user}
-                  onChange={(e) => {
-                    setExtensionState((prevState) => ({
-                      ...prevState,
-                      user: e.target.value,
-                    }));
-                  }}
+                  {...register("user")}
                   id="selectFormRow"
                 >
-                  <option value="">Select User</option>
+                  <option value="" disabled>
+                    Select User
+                  </option>
+                  <option value={""}>None</option>
                   {users &&
                     users.map((item, key) => {
                       return (
@@ -548,9 +519,7 @@ const ExtensionsEdit = () => {
                       );
                     })}
                 </select>
-                {/* <button className="panelButton" effect="ripple" type="button">
-                                                Add
-                                            </button> */}
+
                 <br />
                 <label htmlFor="data" className="formItemDesc">
                   Define users assigned to this Extension.
@@ -562,14 +531,10 @@ const ExtensionsEdit = () => {
                   <label htmlFor="">Music on Hold</label>
                 </div>
                 <div className="col-12">
-                  <select
-                    value={musicHold}
-                    onChange={(e) => {
-                      setMusicHold(e.target.value);
-                    }}
-                    className="formItem w-100"
-                  >
-                    <option></option>
+                  <select {...register("moh")} className="formItem w-100">
+                    <option disabled value="">
+                      Select
+                    </option>
                     {music &&
                       music.map((item, index) => {
                         return (
@@ -578,7 +543,6 @@ const ExtensionsEdit = () => {
                           </option>
                         );
                       })}
-                    {/* <option>test</option> */}
                   </select>
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -590,26 +554,19 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Account Code</label>
-                  {!extensionState.accountCodeMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <input
                     type="text"
                     name="extension"
                     className="formItem"
-                    value={extensionState.accountCode}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        accountCode: e.target.value,
-                      }));
-                    }}
+                    {...register("account_code", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.account_code && (
+                    <ErrorMessage text={errors.account_code.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the account code here.
@@ -653,26 +610,19 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Effective Caller ID Name</label>
-                  {!extensionState.effCallerIdNameMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <input
                     type="text"
                     name="extension"
                     className="formItem"
-                    value={extensionState.effCallerIdName}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        effCallerIdName: e.target.value,
-                      }));
-                    }}
+                    {...register("effectiveCallerIdName", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.effectiveCallerIdName && (
+                    <ErrorMessage text={errors.effectiveCallerIdName.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the internal caller ID name here.
@@ -682,26 +632,21 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Effective Caller ID Number</label>
-                  {!extensionState.effCallerIdNumberMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <input
-                    type="number"
+                    type="text"
                     name="extension"
                     className="formItem"
-                    value={extensionState.effCallerIdNumber}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        effCallerIdNumber: e.target.value,
-                      }));
-                    }}
+                    {...register("effectiveCallerIdNumber", {
+                      ...numberValidator,
+                    })}
                   />
+                  {errors.effectiveCallerIdNumber && (
+                    <ErrorMessage
+                      text={errors.effectiveCallerIdNumber.message}
+                    />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the internal caller ID number here.
@@ -711,26 +656,19 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Outbound Caller ID Name</label>
-                  {!extensionState.outCallerIdNameMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <input
                     type="text"
                     name="extension"
                     className="formItem"
-                    value={extensionState.outCallerIdName}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        outCallerIdName: e.target.value,
-                      }));
-                    }}
+                    {...register("outbundCallerIdName", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.outbundCallerIdName && (
+                    <ErrorMessage text={errors.outbundCallerIdName.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the external (public) caller ID name here.
@@ -740,26 +678,19 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Outbound Caller ID Number</label>
-                  {!extensionState.outCallerIdNumberMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <input
-                    type="number"
+                    type="text"
                     name="extension"
                     className="formItem"
-                    value={extensionState.outCallerIdNumber}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        outCallerIdNumber: e.target.value,
-                      }));
-                    }}
+                    {...register("outbundCallerIdNumber", {
+                      ...numberValidator,
+                    })}
                   />
+                  {errors.outbundCallerIdNumber && (
+                    <ErrorMessage text={errors.outbundCallerIdNumber.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the external (public) caller ID number here.
@@ -769,26 +700,19 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Emergency Caller ID Name</label>
-                  {!extensionState.emeCallerIdNameMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <input
                     type="text"
                     name="extension"
                     className="formItem"
-                    value={extensionState.emeCallerIdName}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        emeCallerIdName: e.target.value,
-                      }));
-                    }}
+                    {...register("emergencyCallerIdName", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.emergencyCallerIdName && (
+                    <ErrorMessage text={errors.emergencyCallerIdName.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the emergency caller ID name here.
@@ -798,26 +722,21 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Emergency Caller ID Number</label>
-                  {!extensionState.emeCallerIdNumberMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <input
-                    type="number"
+                    type="text"
                     name="extension"
                     className="formItem"
-                    value={extensionState.emeCallerIdNumber}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        emeCallerIdNumber: e.target.value,
-                      }));
-                    }}
+                    {...register("emergencyCallerIdNumber", {
+                      ...numberValidator,
+                    })}
                   />
+                  {errors.emergencyCallerIdNumber && (
+                    <ErrorMessage
+                      text={errors.emergencyCallerIdNumber.message}
+                    />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the emergency caller ID number here.
@@ -827,27 +746,19 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Directory Full Name</label>
-                  {!extensionState.dirFullNameMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <input
                     type="text"
                     name="extension"
                     className="formItem"
-                    value={extensionState.dirFullName}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        dirFullName: e.target.value,
-                      }));
-                    }}
+                    {...register("directoryFullname", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
-
+                  {errors.directoryFullname && (
+                    <ErrorMessage text={errors.directoryFullname.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the first name followed by the last name.
@@ -859,30 +770,25 @@ const ExtensionsEdit = () => {
                   <label htmlFor="selectFormRow">
                     Directory Extension Visible
                   </label>
-                  {!extensionState.dirExtensionVisibleMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <select
                     className="formItem"
                     name=""
                     id="selectFormRow"
-                    value={extensionState.dirExtensionVisible}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        dirExtensionVisible: e.target.value,
-                      }));
-                    }}
+                    {...register("directoryExtensionVisible", {})}
                   >
-                    <option value="">Select Visibility</option>
+                    <option value="" disabled>
+                      Select Visibility
+                    </option>
                     <option value="true">True</option>
                     <option value="false">False</option>
                   </select>
+                  {errors.directoryExtensionVisible && (
+                    <ErrorMessage
+                      text={errors.directoryExtensionVisible.message}
+                    />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Select whether announce the extension when calling the
@@ -893,26 +799,19 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Max Registrations</label>
-                  {!extensionState.maxRegistrationMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <input
-                    type="number"
+                    type="text"
                     name="extension"
                     className="formItem"
-                    value={extensionState.maxRegistration}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        maxRegistration: e.target.value,
-                      }));
-                    }}
+                    {...register("maxRegistration", {
+                      ...numberValidator,
+                    })}
                   />
+                  {errors.maxRegistration && (
+                    <ErrorMessage text={errors.maxRegistration.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the maximum concurrent registrations allowed.
@@ -922,26 +821,19 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Limit Max</label>
-                  {!extensionState.limitDestMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <input
-                    type="number"
+                    type="text"
                     name="extension"
                     className="formItem"
-                    value={extensionState.limitMax}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        limitMax: e.target.value,
-                      }));
-                    }}
+                    {...register("limitMax", {
+                      ...numberValidator,
+                    })}
                   />
+                  {errors.limitMax && (
+                    <ErrorMessage text={errors.limitMax.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the maximum number of concurrent outbound calls
@@ -952,25 +844,15 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Limit Destination</label>
-                  {!extensionState.limitDestMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <input
-                    type="number"
+                    type="text"
                     name="extension"
                     className="formItem"
-                    value={extensionState.limitDest}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        limitDest: e.target.value,
-                      }));
-                    }}
+                    {...register("limitDestinations", {
+                      ...numberValidator,
+                    })}
                   />
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -982,30 +864,23 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Voicemail Enabled</label>
-                  {!extensionState.voiceMailEnableMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <select
                     className="formItem"
                     name=""
                     id="selectFormRow"
-                    value={extensionState.voiceMailEnable}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        voiceMailEnable: e.target.value,
-                      }));
-                    }}
+                    {...register("voicemailEnabled", {})}
                   >
-                    <option value="">Select Voicemail</option>
+                    <option value="" disabled>
+                      Select Voicemail
+                    </option>
                     <option value="Y">True</option>
                     <option value="N">False</option>
                   </select>
+                  {errors.voicemailEnabled && (
+                    <ErrorMessage text={errors.voicemailEnabled.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enable/disable voicemail for this extension.
@@ -1015,26 +890,19 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Voicemail Mail To</label>
-                  {!extensionState.voiceEmailToMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <input
                     type="text"
                     name="extension"
                     className="formItem"
-                    value={extensionState.voiceEmailTo}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        voiceEmailTo: e.target.value,
-                      }));
-                    }}
+                    {...register("voiceEmailTo", {
+                      ...emailValidator,
+                    })}
                   />
+                  {errors.voiceEmailTo && (
+                    <ErrorMessage text={errors.voiceEmailTo.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the email address to send voicemail to (optional).
@@ -1063,33 +931,26 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Voicemail File</label>
-                  {!extensionState.voiceMialFileMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <select
                     className="formItem"
                     name=""
                     id="selectFormRow"
-                    value={extensionState.voiceMialFile}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        voiceMialFile: e.target.value,
-                      }));
-                    }}
+                    {...register("voiceMailFile", {})}
                   >
-                    <option value="">Select Voicemail File</option>
+                    <option value="" disabled>
+                      Select Voicemail File
+                    </option>
                     <option value="audio">Audio File Attachment</option>
                     <option value="listen">Listen Link (Login Required)</option>
                     <option value="download">
                       Download Link (No Login Required)
                     </option>
                   </select>
+                  {errors.voiceMailFile && (
+                    <ErrorMessage text={errors.voiceMailFile.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Select a listening option to include with the email
@@ -1100,30 +961,23 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Voicemail Keep Local</label>
-                  {!extensionState.voiceMailKeepFileMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <select
                     className="formItem"
                     name=""
                     id="selectFormRow"
-                    value={extensionState.voiceMailKeepFile}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        voiceMailKeepFile: e.target.value,
-                      }));
-                    }}
+                    {...register("voiceMailkeepFile", {})}
                   >
-                    <option value="">Select User</option>
+                    <option value="" disabled>
+                      Select User
+                    </option>
                     <option value="true">True</option>
                     <option value="false">False</option>
                   </select>
+                  {errors.voiceMailkeepFile && (
+                    <ErrorMessage text={errors.voiceMailkeepFile.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Choose whether to keep the voicemail in the system after
@@ -1134,30 +988,23 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Missed Call</label>
-                  {!extensionState.missedCallMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <select
                     className="formItem"
                     name=""
                     id="selectFormRow"
-                    value={extensionState.missedCall}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        missedCall: e.target.value,
-                      }));
-                    }}
+                    {...register("missedCall", {})}
                   >
-                    <option value="">Select Notification Type</option>
+                    <option value="" disabled>
+                      Select Notification Type
+                    </option>
                     <option value="email">Email</option>
                     <option value="none">None</option>
                   </select>
+                  {errors.missedCall && (
+                    <ErrorMessage text={errors.missedCall.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Select the notification type, and enter the appropriate
@@ -1168,26 +1015,19 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Toll Allow</label>
-                  {!extensionState.toAllowValueMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <input
                     type="text"
                     name="extension"
                     className="formItem"
-                    value={extensionState.toAllowValue}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        toAllowValue: e.target.value,
-                      }));
-                    }}
+                    {...register("tollAllowValue", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.tollAllowValue && (
+                    <ErrorMessage text={errors.tollAllowValue.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the toll allow value here. (Examples:
@@ -1198,25 +1038,15 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Call Timeout</label>
-                  {!extensionState.callTimeOutMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <input
                     type="number"
                     name="extension"
                     className="formItem"
-                    value={extensionState.callTimeOut}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        callTimeOut: e.target.value,
-                      }));
-                    }}
+                    {...register("callTimeOut", {
+                      ...numberValidator,
+                    })}
                   />
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -1228,26 +1058,19 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Call Group</label>
-                  {!extensionState.callGroupMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <input
                     type="text"
                     name="extension"
                     className="formItem"
-                    value={extensionState.callGroup}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        callGroup: e.target.value,
-                      }));
-                    }}
+                    {...register("callgroup", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.callgroup && (
+                    <ErrorMessage text={errors.callgroup.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the user call group here. Groups available by default:
@@ -1258,30 +1081,23 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Call Screen</label>
-                  {!extensionState.callScreenMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <select
                     className="formItem"
                     name=""
                     id="selectFormRow"
-                    value={extensionState.callScreen}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        callScreen: e.target.value,
-                      }));
-                    }}
+                    {...register("callScreen", {})}
                   >
-                    <option value="">Select Notification Type</option>
+                    <option value="" disabled>
+                      Select Notification Type
+                    </option>
                     <option value="Enable">Enable</option>
                     <option value="Disable">Disable</option>
                   </select>
+                  {errors.callScreen && (
+                    <ErrorMessage text={errors.callScreen.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Choose whether to enable or disable call screening.
@@ -1291,27 +1107,17 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Record</label>
-                  {!extensionState.recordMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <select
                     className="formItem"
                     name=""
                     id="selectFormRow"
-                    value={extensionState.record}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        record: e.target.value,
-                      }));
-                    }}
+                    {...register("record", {})}
                   >
-                    <option value="">Select Type</option>
+                    <option value="" disabled>
+                      Select Type
+                    </option>
                     <option value="D">Disabled</option>
                     <option value="A">All</option>
                     <option value="L">Local</option>
@@ -1361,26 +1167,19 @@ const ExtensionsEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Description</label>
-                  {!extensionState.descMissing ? (
-                    ""
-                  ) : (
-                    <label className="status missing">Field missing</label>
-                  )}
                 </div>
                 <div className="col-12">
                   <input
                     type="text"
                     name="extension"
                     className="formItem"
-                    value={extensionState.desc}
-                    required="required"
-                    onChange={(e) => {
-                      setExtensionState((prevState) => ({
-                        ...prevState,
-                        desc: e.target.value,
-                      }));
-                    }}
+                    {...register("description", {
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                  {errors.description && (
+                    <ErrorMessage text={errors.description.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Enter the description.
@@ -1650,7 +1449,8 @@ const ExtensionsEdit = () => {
                       onClick={() => {
                         // setForce(true);
                         setPopUp(false);
-                        handleSubmit("force");
+                        // handleSubmit("force");
+                        handleFormSubmit("force");
                       }}
                     >
                       Confirm
@@ -1670,18 +1470,6 @@ const ExtensionsEdit = () => {
           ""
         )}
       </section>
-      {/* <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      /> */}
     </main>
   );
 };

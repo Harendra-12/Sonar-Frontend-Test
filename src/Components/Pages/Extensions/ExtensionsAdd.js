@@ -14,8 +14,10 @@ import { useForm } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import {
   domainValidator,
+  emailValidator,
   lengthValidator,
   noSpecialCharactersValidator,
+  noSpecialCharNumberValidator,
   numberValidator,
   requiredValidator,
 } from "../../validations/validation";
@@ -139,13 +141,14 @@ const ExtensionsAdd = () => {
                 </div>
                 <div className="col-12">
                   <input
-                    type="number"
+                    type="text"
                     name="extension"
                     className="formItem"
                     {...register("extension", {
                       ...requiredValidator,
                       ...numberValidator,
                       ...lengthValidator(2, 15),
+                      ...noSpecialCharNumberValidator,
                     })}
                   />
                   {errors.extension && (
@@ -318,11 +321,11 @@ const ExtensionsAdd = () => {
                 </div>
                 <div className="col-12">
                   <input
-                    type="number"
+                    type="text"
                     name="extension"
                     className="formItem"
                     {...register("effectiveCallerIdNumber", {
-                      ...noSpecialCharactersValidator,
+                      ...numberValidator,
                     })}
                   />
                   {errors.effectiveCallerIdNumber && (
@@ -364,11 +367,12 @@ const ExtensionsAdd = () => {
                 </div>
                 <div className="col-12">
                   <input
-                    type="number"
+                    type="text"
                     name="extension"
                     className="formItem"
                     {...register("outbundCallerIdNumber", {
                       ...noSpecialCharactersValidator,
+                      ...numberValidator,
                     })}
                   />
                   {errors.outbundCallerIdNumber && (
@@ -408,11 +412,12 @@ const ExtensionsAdd = () => {
                 </div>
                 <div className="col-12">
                   <input
-                    type="number"
+                    type="text"
                     name="extension"
                     className="formItem"
                     {...register("emergencyCallerIdNumber", {
                       ...noSpecialCharactersValidator,
+                      ...numberValidator,
                     })}
                   />
                   {errors.emergencyCallerIdNumber && (
@@ -478,11 +483,12 @@ const ExtensionsAdd = () => {
                 </div>
                 <div className="col-12">
                   <input
-                    type="number"
+                    type="text"
                     name="extension"
                     className="formItem"
                     {...register("maxRegistration", {
                       ...noSpecialCharactersValidator,
+                      ...numberValidator,
                     })}
                   />
                   {errors.maxRegistration && (
@@ -500,11 +506,12 @@ const ExtensionsAdd = () => {
                 </div>
                 <div className="col-12">
                   <input
-                    type="number"
+                    type="text"
                     name="extension"
                     className="formItem"
                     {...register("limitMax", {
                       ...noSpecialCharactersValidator,
+                      ...numberValidator,
                     })}
                   />
                   {errors.limitMax && (
@@ -523,11 +530,12 @@ const ExtensionsAdd = () => {
                 </div>
                 <div className="col-12">
                   <input
-                    type="number"
+                    type="text"
                     name="extension"
                     className="formItem"
                     {...register("limitDestinations", {
                       ...noSpecialCharactersValidator,
+                      ...numberValidator,
                     })}
                   />
                   {errors.limitDestinations && (
@@ -573,6 +581,7 @@ const ExtensionsAdd = () => {
                     className="formItem"
                     {...register("voiceEmailTo", {
                       ...noSpecialCharactersValidator,
+                      ...emailValidator,
                     })}
                   />
                   {errors.voiceEmailTo && (
@@ -686,11 +695,12 @@ const ExtensionsAdd = () => {
                 </div>
                 <div className="col-12">
                   <input
-                    type="number"
+                    type="text"
                     name="extension"
                     className="formItem"
                     {...register("callTimeOut", {
                       ...noSpecialCharactersValidator,
+                      ...numberValidator,
                     })}
                   />
                   {errors.callTimeOut && (

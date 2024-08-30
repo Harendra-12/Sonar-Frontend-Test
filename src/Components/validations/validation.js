@@ -92,3 +92,10 @@ export const noSpecialCharactersValidator = {
       "Input must only contain letters, numbers, and spaces, without any special characters",
   },
 };
+export const noSpecialCharNumberValidator = {
+  // Check if the input contains only letters, numbers, and spaces
+  pattern: {
+    value: /^[0-9\s]+$/,
+    message: "Input must only contain numbers.",
+  },
+};
