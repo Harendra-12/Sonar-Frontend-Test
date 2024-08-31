@@ -5,22 +5,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
-import ConfigureStepDashboard from "./ConfigureStepDashboard"
+import ConfigureStepDashboard from "./ConfigureStepDashboard";
 import Account from "./Account";
 import Payment from "./Payment";
 import Document from "./Document";
 
 function TempDashboard() {
   const dispatch = useDispatch();
-  const [statusClick, setStatusClick] = useState("account")
-  const [refreshDetails, setRefreshDetails] = useState(1)
+  const [statusClick, setStatusClick] = useState("account");
+  const [refreshDetails, setRefreshDetails] = useState(1);
 
   const navigate = useNavigate();
   const [account, setAccount] = useState(
     useSelector((state) => state.tempAccount)
   );
+  console.log("Temporary account:", account)
   function handleRefresh(value) {
-    setRefreshDetails(value)
+    setRefreshDetails(value);
   }
   console.log("This is refresh data", refreshDetails);
   useEffect(() => {
@@ -32,19 +33,25 @@ function TempDashboard() {
           type: "SET_TEMPACCOUNT",
           tempAccount: apiData.data,
         });
-        if (Number(apiData.data.company_status) === 1 || Number(apiData.data.company_status) === 2) {
-          setStatusClick("payment")
-        } else if (Number(apiData.data.company_status) === 3 || Number(apiData.data.company_status) === 4) {
-          setStatusClick("document")
+        if (
+          Number(apiData.data.company_status) === 1 ||
+          Number(apiData.data.company_status) === 2
+        ) {
+          setStatusClick("payment");
+        } else if (
+          Number(apiData.data.company_status) === 3 ||
+          Number(apiData.data.company_status) === 4
+        ) {
+          setStatusClick("document");
         } else {
-          setStatusClick("configure")
+          setStatusClick("configure");
         }
         localStorage.setItem("tempAccount", JSON.stringify(apiData.data));
         if (Number(apiData.data.company_status) > 5) {
           dispatch({
             type: "SET_ACCOUNT",
             account: apiData.data,
-          })
+          });
           navigate("/dashboard");
         }
       }
@@ -54,13 +61,13 @@ function TempDashboard() {
 
   useEffect(() => {
     if (refreshDetails > 1) {
-      setStatusClick("payment")
+      setStatusClick("payment");
     }
-  }, [refreshDetails])
+  }, [refreshDetails]);
 
   // Callback handle for differnt tab
   function handleCallBack(value) {
-    setStatusClick(value)
+    setStatusClick(value);
   }
 
   return (
@@ -162,19 +169,25 @@ function TempDashboard() {
                         <div
                           className="progress-bar progress-bar-striped progress-bar-animated bg-success"
                           style={{
-                            width: `${Number(account.company_status) === 1
-                              ? "40"
-                              : Number(account.company_status) === 2
+                            width: `${
+                              Number(account.company_status) === 1
+                                ? "40"
+                                : Number(account.company_status) === 2
                                 ? "55"
                                 : Number(account.company_status) === 3
-                                  ? "65" : Number(account.company_status) === 4 ?
-                                    "85" : "100"
-                              }%`,
+                                ? "65"
+                                : Number(account.company_status) === 4
+                                ? "85"
+                                : "100"
+                            }%`,
                           }}
                         ></div>
                       </div>
                       <div className="progressStepWrapper">
-                        <div className="stepWrapper col-3 success" onClick={() => setStatusClick("account")}>
+                        <div
+                          className="stepWrapper col-3 success"
+                          onClick={() => setStatusClick("account")}
+                        >
                           {/* <div className="status">Verified</div> */}
                           <div className="step">
                             <Tippy content="Your Account is verified">
@@ -185,10 +198,11 @@ function TempDashboard() {
                         </div>
                         <div
                           onClick={() => setStatusClick("payment")}
-                          className={`stepWrapper col-3 ${Number(account.company_status) > 1
-                            ? "success"
-                            : "pending"
-                            }`}
+                          className={`stepWrapper col-3 ${
+                            Number(account.company_status) > 1
+                              ? "success"
+                              : "pending"
+                          }`}
                         >
                           {/* <div className="status">
                             {" "}
@@ -210,59 +224,64 @@ function TempDashboard() {
                           <label>Payment</label>
                         </div>
                         <div
-                          onClick={() => { if (Number(account.company_status) > 1) { setStatusClick("document") } }}
-                          className={`stepWrapper col-3 ${Number(account.company_status) === 3
-                            ? "pending"
-                            : Number(account.company_status) > 3
+                          onClick={() => {
+                            if (Number(account.company_status) > 1) {
+                              setStatusClick("document");
+                            }
+                          }}
+                          className={`stepWrapper col-3 ${
+                            Number(account.company_status) === 3
+                              ? "pending"
+                              : Number(account.company_status) > 3
                               ? "success"
                               : ""
-                            }`}
+                          }`}
                         >
                           <div className="step ">
-                            {
-                              Number(account.company_status) < 3 ? (
-                                <Tippy content="Document not uploaded">
-                                  <i className="fa-sharp fa-solid fa-file-contract"></i>
-                                </Tippy>
-                              ) :
-
-                                Number(account.company_status) > 3 ? (
-                                  <Tippy content="Your Document is verified">
-                                    <i className="fa-sharp fa-solid fa-check"></i>
-                                  </Tippy>
-                                ) : (
-                                  <Tippy content="Your Document is under verification">
-                                    <i className="fa-sharp fa-solid fa-file-contract fa-fade"></i>
-                                  </Tippy>
-                                )}
+                            {Number(account.company_status) < 3 ? (
+                              <Tippy content="Document not uploaded">
+                                <i className="fa-sharp fa-solid fa-file-contract"></i>
+                              </Tippy>
+                            ) : Number(account.company_status) > 3 ? (
+                              <Tippy content="Your Document is verified">
+                                <i className="fa-sharp fa-solid fa-check"></i>
+                              </Tippy>
+                            ) : (
+                              <Tippy content="Your Document is under verification">
+                                <i className="fa-sharp fa-solid fa-file-contract fa-fade"></i>
+                              </Tippy>
+                            )}
                           </div>
                           <label>Documents</label>
                         </div>
                         <div
-                          onClick={() => { if (Number(account.company_status) >= 4) { setStatusClick("config") } }}
-                          className={`stepWrapper col-3 ${Number(account.company_status) === 4
-                            ? "pending"
-                            : Number(account.company_status) > 4
+                          onClick={() => {
+                            if (Number(account.company_status) >= 4) {
+                              setStatusClick("config");
+                            }
+                          }}
+                          className={`stepWrapper col-3 ${
+                            Number(account.company_status) === 4
+                              ? "pending"
+                              : Number(account.company_status) > 4
                               ? "success"
                               : ""
-                            }`}
+                          }`}
                         >
                           <div className="step">
                             {Number(account.company_status) >= 4 ? (
                               <Tippy content="Your Account is being configured">
                                 <i className="fa-sharp fa-solid fa-gear fa-spin"></i>
                               </Tippy>
-                            ) :
-                              Number(account.company_status) > 5 ? (
-                                <Tippy content="Your Account is configured successfully">
-                                  <i className="fa-sharp fa-solid fa-check"></i>
-                                </Tippy>
-                              ) :
-                                (
-                                  <Tippy content="Your Account will be configured">
-                                    <i className="fa-sharp fa-solid fa-gear"></i>
-                                  </Tippy>
-                                )}
+                            ) : Number(account.company_status) > 5 ? (
+                              <Tippy content="Your Account is configured successfully">
+                                <i className="fa-sharp fa-solid fa-check"></i>
+                              </Tippy>
+                            ) : (
+                              <Tippy content="Your Account will be configured">
+                                <i className="fa-sharp fa-solid fa-gear"></i>
+                              </Tippy>
+                            )}
                           </div>
                           <label>Configure Account</label>
                         </div>
@@ -273,7 +292,33 @@ function TempDashboard() {
               </div>
             </div>
             <div className="col-xl-12">
-              {statusClick === "account" ? <Account account={account} companyStatus={account.company_status} nextPage={handleCallBack} /> : statusClick === "payment" ? <Payment account={account} companyStatus={account.company_status} nextPage={handleCallBack} /> : statusClick === "document" ? <Document account={account} refreshCallback={handleRefresh} refresh={refreshDetails} companyStatus={account.company_status} nextPage={handleCallBack} /> : <ConfigureStepDashboard account2={account} companyStatus={account.company_status} nextPage={handleCallBack} />}
+              {statusClick === "account" ? (
+                <Account
+                  account={account}
+                  companyStatus={account.company_status}
+                  nextPage={handleCallBack}
+                />
+              ) : statusClick === "payment" ? (
+                <Payment
+                  account={account}
+                  companyStatus={account.company_status}
+                  nextPage={handleCallBack}
+                />
+              ) : statusClick === "document" ? (
+                <Document
+                  account={account}
+                  refreshCallback={handleRefresh}
+                  refresh={refreshDetails}
+                  companyStatus={account.company_status}
+                  nextPage={handleCallBack}
+                />
+              ) : (
+                <ConfigureStepDashboard
+                  account2={account}
+                  companyStatus={account.company_status}
+                  nextPage={handleCallBack}
+                />
+              )}
             </div>
           </div>
         </div>
