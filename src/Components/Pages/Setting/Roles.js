@@ -129,7 +129,7 @@ function Roles() {
         setLoading(false);
         dispatch({
           type: "SET_ROLES_PERMISSIONREFRESH",
-          payload: rolesAndPermissionRefresh + 1,
+          rolesAndPermissionRefresh: rolesAndPermissionRefresh + 1,
         });
       } else {
         setLoading(false);
@@ -222,6 +222,16 @@ function Roles() {
     setParentChecked(updatedParentChecked);
   };
 
+  const handleChange = (e) => {
+    e.preventDefault();
+    const value = e.target.value;
+    // Regular expression to match only alphanumeric characters and spaces
+    const validValue = value.replace(/[^a-zA-Z0-9\s]/g, "");
+
+    // Update state with the filtered value
+    setNewRole(validValue);
+  };
+
   // Handle parent checkbox change
   const handleParentCheckboxChange = (item) => {
     const newParentChecked = !parentChecked[item];
@@ -299,8 +309,16 @@ function Roles() {
                             <input
                               type="text"
                               value={newRole}
-                              onChange={(e) => setNewRole(e.target.value)}
+                              // onChange={(e) => setNewRole(e.target.value)}
+                              onChange={handleChange}
                               placeholder="Add new Role"
+                              //on enter press, add new role
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                  setPopup(true);
+                                  setSaveClick(true);
+                                }
+                              }}
                             ></input>
                           </div>
                           <div className="col-auto">
@@ -318,6 +336,7 @@ function Roles() {
                                 className="fa-duotone fa-trash"
                                 onClick={() => {
                                   setAddRole(false);
+                                  setNewRole("");
                                 }}
                               ></i>
                             </button>
