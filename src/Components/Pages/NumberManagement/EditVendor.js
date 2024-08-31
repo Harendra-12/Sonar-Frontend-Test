@@ -28,6 +28,7 @@ function EditVendor() {
     }
   }, [locationState, navigate]);
   async function handleSubmit() {
+    setLoading(true)
     if (name === "") {
       toast.error("Please enter a name");
     } else if (userName === "") {

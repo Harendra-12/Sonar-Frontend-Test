@@ -84,7 +84,7 @@ const DidConfig = () => {
   }, [register, setValue]);
 
   useEffect(() => {
-    if (watch("forward") === "disable") {
+    if (watch("forward") === "disabled") {
       setValue("forward_to", "");
       setValue("direct_extension", "");
     } else if (watch("forward") === "pstn") {
@@ -107,7 +107,7 @@ const DidConfig = () => {
     { value: "emergency", label: "Emergency" },
   ];
   const selectedUsages = watch("usages", []);
-  const forwardStatus = watch("forward", "disable");
+  const forwardStatus = watch("forward", "disabled");
 
   const handleFormSubmit = handleSubmit(async (data) => {
     data.record = data.record === true || data.record === "true";
@@ -350,9 +350,9 @@ const DidConfig = () => {
                       // onChange={(e) => setForwardEnable(e.target.value)}
                       {...register("forward")}
                     >
-                      <option value="disable">Disable</option>
+                      <option value="disabled">Disable</option>
                       <option value="pstn">PSTN</option>
-                      <option value="direct">Direct</option>
+                      <option value="direct">Direct</option>  
                     </select>
                     <label htmlFor="data" className="formItemDesc">
                       Want to forword DID.

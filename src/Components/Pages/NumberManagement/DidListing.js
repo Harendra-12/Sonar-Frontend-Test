@@ -43,7 +43,7 @@ function DidListing() {
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row">
-            <Header title="Wallet Transactions" />
+            <Header title="All DID" />
             <div className="col-12" style={{ overflow: "auto" }}>
               <div className="tableContainer">
                 <table>
@@ -72,8 +72,8 @@ function DidListing() {
                                 <td>{item?.sms}</td>
                                 {/* <td onClick={() => navigate(item.dialplan?"/destination-edit":"/destination-add",{ state: { state: item.dialplan ? item.dialplan : item, did: item.did } })}>Configure</td> */}
                                 {/* <td onClick={()=>navigate(`/did-config?did_id=${item.did}`)}>Configure</td> */}
-                                <td onClick={()=>navigate(`/did-config`, {state:  item})}>Configure</td>
-                                {item.configuration !== null &&<td onClick={()=>handleClick(item.configuration.id)}>Reset</td>}
+                                <td className="tableLabel success" onClick={()=>navigate(`/did-config`, {state:  item})}>Configure</td>
+                                {item.configuration !== null &&<td className="tableLabel success" onClick={()=>handleClick(item.configuration.id)}>Reset</td>}
                               </tr>
                             )
                         })}

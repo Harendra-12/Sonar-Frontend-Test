@@ -395,16 +395,6 @@ function Roles() {
                           );
                         })}
                     </ul>
-                    <div className="col-xl-12 mt-3">
-                      <div className="col-xl-3 mx-auto">
-                        <button
-                          class="approvalButton"
-                          onClick={handlePermissionSave}
-                        >
-                          <i class="fa-duotone fa-check-double me-2"></i> Save
-                        </button>
-                      </div>
-                    </div>
                   </div>
                 </div>
                 {selectedRoleId && (
@@ -412,7 +402,7 @@ function Roles() {
                     <div className="profileView">
                       <div className="profileDetailsHolder position-relative">
                         <div className="col-xl-12">
-                          <div class="headerCommon d-flex align-items-center">
+                          <div class="headerCommon d-flex justify-content-between align-items-center">
                             <div class="col-5">
                               Permissions for{" "}
                               <span
@@ -424,6 +414,11 @@ function Roles() {
                               >
                                 {selectedRole}
                               </span>
+                            </div>
+                            <div className="col-2 text-end">
+                              <button className="btn btn-success py-1 px-2" onClick={handlePermissionSave}>
+                              <i class="fa-duotone fa-check-double me-2"></i> Save
+                              </button>
                             </div>
                           </div>
                         </div>
