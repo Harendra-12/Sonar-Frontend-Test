@@ -361,7 +361,7 @@ function Call() {
   const groupedCalls = groupCallsByDate(previewCalls);
 
   const options = {
-    domain: "192.168.2.225",
+    domain: account.domain.domain_name,
     webSocketServer: "ws://192.168.2.225:5066",
     // domain: "192.168.0.91",
     // webSocketServer: "ws://192.168.0.91:5066",
