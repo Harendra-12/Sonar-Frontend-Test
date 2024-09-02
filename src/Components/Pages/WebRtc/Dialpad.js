@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";
 
 function Dialpad({ hideDialpad }) {
+  const account = useSelector((state) => state.account);
   const globalSession = useSelector((state) => state.sessions);
   const dispatch = useDispatch();
   const { sessionManager } = useSIPProvider();
@@ -21,7 +22,7 @@ function Dialpad({ hideDialpad }) {
       hideDialpad(false);
       // e.preventDefault();
       const apiData = await sessionManager?.call(
-        `sip:${Number(destNumber)}@192.168.2.225`,
+        `sip:${Number(destNumber)}@${account.domain.domain_name}`,
         {}
       );
 

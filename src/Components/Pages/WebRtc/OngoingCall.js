@@ -20,8 +20,9 @@ function OngoingCall({ setHangupRefresh, hangupRefresh }) {
   const globalSession = useSelector((state) => state.sessions);
   const callProgressId = useSelector((state) => state.callProgressId);
   const [hideDialpad, setHideDialpad] = useState(false);
+  const [attendShow, setAttendShow] = useState(false);
   const [destNumber, setDestNumber] = useState("");
-  const [attendedTransferDialpad, setattendedTransferDialpad] = useState(false);
+  const [attendedTransferNumber, setattendedTransferNumber] = useState("");
   const callProgressDestination = useSelector(
     (state) => state.callProgressDestination
   );
@@ -105,9 +106,9 @@ function OngoingCall({ setHangupRefresh, hangupRefresh }) {
 
   const handleAttendedTransfer = async (e) => {
     e.preventDefault();
-    if (destNumber.length > 3) {
+    if (attendedTransferNumber.length > 3) {
       const dialog = session.dialog;
-      const transferTo = `sip:${destNumber}@192.168.2.225`;
+      const transferTo = `sip:${attendedTransferNumber}@${account.domain.domain_name}`;
 
       if (session.state !== "Established") {
         toast.warn("cannot transfer call: session is not established");
@@ -118,7 +119,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh }) {
         const customHeaders = {
           "X-Custom-Header": "Value",
           "Refer-To": transferTo,
-          "Referred-By": `sip:${extension}@192.168.2.225`,
+          "Referred-By": `sip:${extension}@${account.domain.domain_name}`,
         };
 
         const target = UserAgent.makeURI(transferTo);
@@ -209,7 +210,6 @@ function OngoingCall({ setHangupRefresh, hangupRefresh }) {
             <button
               onClick={() => {
                 setHideDialpad(!hideDialpad);
-                setattendedTransferDialpad(false);
               }}
               className={
                 hideDialpad
@@ -225,11 +225,14 @@ function OngoingCall({ setHangupRefresh, hangupRefresh }) {
               <i className="fa-thin fa-user-plus" />
             </button>
             <button
-              className="appPanelButtonCaller"
+              className={
+                attendShow
+                  ? "appPanelButtonCaller active"
+                  : "appPanelButtonCaller"
+              }
               effect="ripple"
               onClick={() => {
-                setHideDialpad(!hideDialpad);
-                setattendedTransferDialpad(true);
+                setAttendShow(!attendShow);
               }}
             >
               <i className="fa-thin fa-phone-arrow-up-right" />
@@ -294,17 +297,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh }) {
                       // onChange={handleInputChange}
                     />
                   </div>
-                  {attendedTransferDialpad && (
-                    <div>
-                      <button
-                        className="appPanelButtonCaller"
-                        effect="ripple"
-                        onClick={handleAttendedTransfer}
-                      >
-                        <i className="fa-thin fa-phone-arrow-up-right" />
-                      </button>
-                    </div>
-                  )}
+                  
                   <div className="dialerWrap mt-2">
                     <div
                       className="col-4"
@@ -428,6 +421,181 @@ function OngoingCall({ setHangupRefresh, hangupRefresh }) {
                         <i className="fa-light fa-hashtag" />
                       </h4>
                     </div>
+                  </div>
+                  {/* <div 
+                // onClick={onSubmit}
+                >
+                <button className="callButton">
+                  <i className="fa-thin fa-phone" />
+                </button>
+              </div> */}
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+
+
+{attendShow ? (
+          <div id="dialPad" className="inCall">
+            <div className="container h-100">
+              <div className="row align-items-center justify-content-center h-100">
+                <div className="col-xl-5 col-md-6 col-11 dialPadContainer p-2">
+                  <div className="d-flex justify-content-end pt-1 pb-1 px-2">
+                    {/* <div>
+                  <i className="fa-light fa-address-book fs-5" />
+                </div> */}
+                    {/* <div>
+                  <h3>Dial Number:</h3>
+                </div> */}
+                    <div
+                      onClick={() => setAttendShow(false)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <i className="fa-regular fa-xmark fs-5 text-white" />
+                    </div>
+                  </div>
+                  <div className="mb-2">
+                    {/* <span>Outbound ID: (999) 999-9999</span> */}
+                  </div>
+                  <div>
+                    <input
+                      type="text"
+                      placeholder=""
+                      className="dialerInput"
+                      value={attendedTransferNumber}
+                      onChange={(e) => setattendedTransferNumber(e.target.value)}
+                    />
+                    <buton className="clearButton" style={{marginLeft: '-30px'}} onClick={() => setattendedTransferNumber(attendedTransferNumber.slice(0, -1))}>
+                    <i class="fa-light fa-delete-left"></i>
+                    </buton>
+                  </div>
+                 
+                  
+                  <div className="dialerWrap mt-2">
+                    <div
+                      className="col-4"
+                      onClick={() => {
+                        setattendedTransferNumber(attendedTransferNumber + "1");
+                      }}
+                    >
+                      <h4>1</h4>
+                      <h6>&nbsp;</h6>
+                    </div>
+                    <div
+                      className="col-4"
+                      onClick={() => {
+                        setattendedTransferNumber(attendedTransferNumber + "2");
+                      }}
+                    >
+                      <h4>2</h4>
+                      <h6>ABC</h6>
+                    </div>
+                    <div
+                      className="col-4"
+                      onClick={() => {
+                        setattendedTransferNumber(attendedTransferNumber + "3");
+                      }}
+                    >
+                      <h4>3</h4>
+                      <h6>DEF</h6>
+                    </div>
+                    <div
+                      className="col-4"
+                      onClick={() => {
+                        setattendedTransferNumber(attendedTransferNumber + "4");
+                      }}
+                    >
+                      <h4>4</h4>
+                      <h6>GHI</h6>
+                    </div>
+                    <div
+                      className="col-4"
+                      onClick={() => {
+                        setattendedTransferNumber(attendedTransferNumber + "5");
+                      }}
+                    >
+                      <h4>5</h4>
+                      <h6>JKL</h6>
+                    </div>
+                    <div
+                      className="col-4"
+                      onClick={() => {
+                        setattendedTransferNumber(attendedTransferNumber + "6");
+                      }}
+                    >
+                      <h4>6</h4>
+                      <h6>MNO</h6>
+                    </div>
+                    <div
+                      className="col-4"
+                      onClick={() => {
+                        setattendedTransferNumber(attendedTransferNumber + "7");
+                      }}
+                    >
+                      <h4>7</h4>
+                      <h6>PQRS</h6>
+                    </div>
+                    <div
+                      className="col-4"
+                      onClick={() => {
+                        setattendedTransferNumber(attendedTransferNumber + "8");
+                      }}
+                    >
+                      <h4>8</h4>
+                      <h6>TUV</h6>
+                    </div>
+                    <div
+                      className="col-4"
+                      onClick={() => {
+                        setattendedTransferNumber(attendedTransferNumber + "9");
+                      }}
+                    >
+                      <h4>9</h4>
+                      <h6>WXYZ</h6>
+                    </div>
+                    <div
+                      className="col-4"
+                      onClick={() => {
+                        setattendedTransferNumber(attendedTransferNumber + "*");
+                      }}
+                    >
+                      <h4>
+                        <i className="fa-light fa-asterisk" />
+                      </h4>
+                    </div>
+                    <div
+                      className="col-4"
+                      onClick={() => {
+                        setattendedTransferNumber(attendedTransferNumber + "0");
+                      }}
+                    >
+                      <h4>0</h4>
+                      <h6>+</h6>
+                    </div>
+                    <div
+                      className="col-4"
+                      onClick={() => {
+                        setattendedTransferNumber(attendedTransferNumber + "#");
+                      }}
+                    >
+                      <h4>
+                        <i className="fa-light fa-hashtag" />
+                      </h4>
+                    </div>
+                   
+                    <div>
+                      <button
+                        className="callButton bg-primary"
+                        effect="ripple"
+                        onClick={handleAttendedTransfer}
+                      >
+                        <i className="fa-thin fa-phone-arrow-up-right" />
+                      </button>
+                    </div>
+                
                   </div>
                   {/* <div 
                 // onClick={onSubmit}
