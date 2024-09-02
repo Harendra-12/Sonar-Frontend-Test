@@ -315,3 +315,9 @@
 .mainContentApp .tab-content .contactListItem:hover {
     background-color: #00000015;
 }
+
+.mainContentApp .callPage .allCallHistory .webRtcHeading {
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+}

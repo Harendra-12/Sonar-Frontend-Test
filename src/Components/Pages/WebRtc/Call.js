@@ -398,9 +398,18 @@ function Call() {
                   className="col-12 col-xl-6 allCallHistory"
                   // style={{ height: "100%" }}
                 >
-                  <SipRegister />
-
-                  <div className="col-auto d-flex">
+                  <div className="col-12 webRtcHeading">
+                  <div className="col-2">
+                    <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
+                      Calls
+                    </h3>
+                  </div>
+                  <div className="col-5">
+                    <h5 style={{ fontFamily: "Outfit", color: "#444444", marginBottom: '0' }}>
+                      Extension - XXX
+                    </h5>
+                  </div>
+                  <div className="col-5 d-flex justify-content-end">
                     <div className="col-auto">
                       <button
                         className="appPanelButton"
@@ -410,11 +419,13 @@ function Call() {
                         <i className="fa-light fa-mobile-retro" />
                       </button>
                     </div>
-                    <div className="col-auto">
+                    <div className="col-auto  position-relative">
                       <button className="appPanelButton" effect="ripple">
                         <i className="fa-light fa-satellite-dish" />
                       </button>
+                      <SipRegister />
                     </div>
+                  </div>
                   </div>
 
                   <div className="col-12">
@@ -513,13 +524,15 @@ function Call() {
                           <ContentLoader />
                         ) : Object.keys(groupedCalls).length > 0 ? (
                           sortKeys(Object.keys(groupedCalls)).map((date) => (
-                            <div
-                              key={date}
-                              className="text-center callListItem"
-                            >
-                              <h5 className="fw-semibold">{date}</h5>
+                            <>
+                              <div
+                                key={date}
+                                className="text-center callListItem"
+                              >
+                                <h5 className="fw-semibold">{date}</h5>
+                              </div>
                               {sortedGroupedCalls[date].map(renderCallItem)}
-                            </div>
+                            </>
                           ))
                         ) : (
                           <h3 className="text-center pt-10">

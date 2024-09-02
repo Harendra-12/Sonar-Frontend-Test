@@ -28,13 +28,13 @@ export const SipRegister = () => {
   ]);
 
   return (
-    <div className="col-auto">
-      <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
-        Freeswitch Status: {connectStatus}
-      </h3>
-      <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
-        SIP Status: {registerStatus}
-      </h3>
+    <div className="profileDropdown" style={{top: '55px', right: '-40px'}}>
+      <div>
+        <span> Freeswitch Status: <span style={{color: connectStatus === "CONNECTED"?'#00ff00': 'red'}}>{connectStatus}</span></span>
+      </div>
+      <div>
+        <span> SIP Status: <span style={{color: registerStatus === "REGISTERED"?'#00ff00': 'red'}}>{registerStatus}</span></span>
+      </div>
       <MediaPermissions />
     </div>
   );
