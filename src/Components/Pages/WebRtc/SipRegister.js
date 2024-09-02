@@ -10,17 +10,17 @@ export const SipRegister = () => {
   const { connectAndRegister, registerStatus, connectStatus } =
     useSIPProvider();
   const account = useSelector((state) => state.account);
-  const {
-    extension: { extension, password },
-  } = account;
+  // const {
+  //   extension: { extension, password },
+  // } = account;
   // const username = extension;
   // const password = pswrd;
   useEffect(() => {
     connectAndRegister({
-      username: extension,
-      password: password,
-      // username: "1001",
-      // password: "1001",
+      // username: extension,
+      // password: password,
+      username: "1004",
+      password: "12345",
     });
   }, [
     connectAndRegister,
