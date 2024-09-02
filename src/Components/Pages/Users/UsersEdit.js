@@ -158,7 +158,7 @@ const UsersEdit = () => {
     const payload = {
       name: `${firstName} ${lastName}`,
       email,
-      domain_id: domainId,
+      // domain_id: domainId,
       timezone_id,
       status,
       role_id,
