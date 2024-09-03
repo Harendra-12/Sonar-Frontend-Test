@@ -55,7 +55,10 @@ import EditVendor from "./Components/Pages/NumberManagement/EditVendor";
 import RateCharge from "./Components/Pages/NumberManagement/RateCharge";
 import RateChargeEdit from "./Components/Pages/NumberManagement/RateChargeEdit";
 import GetDid from "./Components/Pages/NumberManagement/GetDid";
-import { setNavigate,setDispatch } from "./Components/GlobalFunction/Navigation";
+import {
+  setNavigate,
+  setDispatch,
+} from "./Components/GlobalFunction/Navigation";
 import { useEffect } from "react";
 import PaymentGatewayAdd from "./Components/Pages/Payment/PaymentGatewayAdd";
 import PaymentGateway from "./Components/Pages/Payment/PaymentGateway";
@@ -88,6 +91,7 @@ import RingGroupSettings from "./Components/Pages/RingGroups/RingGroupSettings";
 import DidConfig from "./Components/Pages/NumberManagement/DidConfig";
 import { useDispatch, useSelector } from "react-redux";
 import Variable from "./Components/Pages/Variable/Variable";
+import CallCenter from "./Components/Pages/WebRtc/CallCenter";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -115,7 +119,7 @@ function App() {
   const domainRefresh = useSelector((state) => state.domainRefresh);
   const loading = useSelector((state) => state.loading);
   console.log("this is loading", loading);
-  
+
   Socket();
 
   // Unlock this if want push notification add account edit here if id is available
@@ -147,7 +151,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route element={<ProtectedRoute />}/>
+          <Route element={<ProtectedRoute />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/temporary-dashboard" element={<TempDashboard />} />
           <Route path="/my-profile" element={<Profile />} />
@@ -210,6 +214,7 @@ function App() {
           {/* WebRtc path start */}
           <Route path="/call" element={<Call />} />
           <Route path="/all-contacts" element={<AllContact />} />
+          <Route path="/call-center" element={<CallCenter />} />
           <Route path="/all-voicemails" element={<AllVoicemails />} />
           <Route path="/ongoing-call" element={<OngoingCall />} />
           <Route path="/cdr-report" element={<CdrReport />} />
@@ -289,8 +294,7 @@ function App() {
 
           {/* Variable Page Start */}
           <Route path="/variable" element={<Variable />}>
-          {/* Variable Page End  */}
-
+            {/* Variable Page End  */}
           </Route>
 
           {/* 404 Redirection */}

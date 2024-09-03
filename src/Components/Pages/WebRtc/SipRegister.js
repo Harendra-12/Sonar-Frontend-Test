@@ -19,7 +19,7 @@ export const SipRegister = () => {
     connectAndRegister({
       // username: extension,
       // password: password,
-      username: "1004",
+      username: "1003",
       password: "12345",
     });
   }, [
@@ -28,12 +28,30 @@ export const SipRegister = () => {
   ]);
 
   return (
-    <div className="profileDropdown" style={{top: '55px', right: '-40px'}}>
+    <div className="profileDropdown" style={{ top: "55px", right: "-40px" }}>
       <div>
-        <span> Freeswitch Status: <span style={{color: connectStatus === "CONNECTED"?'#00ff00': 'red'}}>{connectStatus}</span></span>
+        <span>
+          {" "}
+          Freeswitch Status:{" "}
+          <span
+            style={{ color: connectStatus === "CONNECTED" ? "#00ff00" : "red" }}
+          >
+            {connectStatus}
+          </span>
+        </span>
       </div>
       <div>
-        <span> SIP Status: <span style={{color: registerStatus === "REGISTERED"?'#00ff00': 'red'}}>{registerStatus}</span></span>
+        <span>
+          {" "}
+          SIP Status:{" "}
+          <span
+            style={{
+              color: registerStatus === "REGISTERED" ? "#00ff00" : "red",
+            }}
+          >
+            {registerStatus}
+          </span>
+        </span>
       </div>
       <MediaPermissions />
     </div>
