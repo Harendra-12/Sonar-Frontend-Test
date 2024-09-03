@@ -33,6 +33,13 @@
     height: calc(100vh - 150px);
 }
 
+.callDashboardPrimTable table.callCenter th.sl{
+    width: 100px;
+}
+.callDashboardPrimTable table.callCenter th{
+    width: 500px;
+}
+
 .callDashboardSecTable {
     height: 305px;
 }

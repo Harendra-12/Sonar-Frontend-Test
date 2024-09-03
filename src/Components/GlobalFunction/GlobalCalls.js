@@ -31,7 +31,7 @@ function GlobalCalls() {
     if (account && account?.account_id) {
       async function getData() {
         const apiData = await generalGetFunction(
-          `/call-details?account_id=${account.account_id}`
+          `/call-details?account_id=${account?.account_id}`
         );
         if (apiData.status) {
           dispatch({
@@ -53,7 +53,7 @@ function GlobalCalls() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(
-        `/card/all?account_id=${account.account_id}`
+        `/card/all?account_id=${account?.account_id}`
       );
       if (apiData.status) {
         dispatch({
@@ -73,7 +73,7 @@ function GlobalCalls() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(
-        `/billing-address/all?account_id=${account.account_id}`
+        `/billing-address/all?account_id=${account?.account_id}`
       );
       if (apiData.status) {
         dispatch({
@@ -94,7 +94,7 @@ function GlobalCalls() {
   useEffect(() => {
     async function getData() {
       const accountData = await generalGetFunction(
-        `/account/${account.account_id}`
+        `/account/${account?.account_id}`
       );
       if (accountData.status) {
         dispatch({
@@ -134,7 +134,7 @@ function GlobalCalls() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(
-        `/extension/search?account=${account.account_id}`
+        `/extension/search?account=${account?.account_id}`
       );
       if (apiData.status) {
         dispatch({
@@ -153,7 +153,7 @@ function GlobalCalls() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(
-        `/ringgroup?account=${account.account_id}`
+        `/ringgroup?account=${account?.account_id}`
       );
       if (apiData.status) {
         dispatch({
@@ -211,7 +211,7 @@ function GlobalCalls() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(
-        `/domain/search?account=${account.account_id}`
+        `/domain/search?account=${account?.account_id}`
       );
       if (apiData.status) {
         dispatch({

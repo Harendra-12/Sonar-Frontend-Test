@@ -4,15 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { generalPutFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
+import ActiveCallSidePanel from "./ActiveCallSidePanel";
 
 const CallCenter = () => {
+  const sessions = useSelector((state) => state.sessions);
   const dispatch = useDispatch();
   const callCenter = useSelector((state) => state.callCenter);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const account = useSelector((state) => state.account) || {};
   const [assignerCallcenter, setAssignerCallcenter] = useState([]);
 
-  const Id = account?.extension?.id || "";
+  const Id = account?.id || "";
 
   useEffect(() => {
     dispatch({
@@ -24,7 +26,7 @@ const CallCenter = () => {
   useEffect(() => {
     if (callCenter.length > 0) {
       const AssignedCallcenter = [...callCenter].filter((queue) =>
-        queue.agents.some((agent) => agent.agent_name == Id)
+        queue.agents.some((agent) => Number(agent.agent_name) == Id)
       );
 
       setAssignerCallcenter(AssignedCallcenter);
@@ -33,10 +35,23 @@ const CallCenter = () => {
 
   return (
     <>
+    <style>
+      {`
+        .callDashboardPrimTable{
+          height: calc(100vh - 70px);
+        }
+      `}
+    </style>
       <SideNavbarApp />
-      <main className="mainContentApp">
+      <main className="mainContentApp"
+      style={{
+        marginRight:
+          sessions.length > 0 && Object.keys(sessions).length > 0
+            ? "250px"
+            : "0",
+      }}>
         <div className="container-fluid">
-          <div className="d-felx flex-column">
+          <div className="d-felx flex-column pt-2">
             <div>
               <h3 style={{ fontFamily: "Outfit", color: "rgb(68, 68, 68)" }}>
                 Call Center
@@ -48,15 +63,14 @@ const CallCenter = () => {
                 style={{ overflow: "auto" }}
               >
                 <div className="tableContainer allItems">
-                  <table>
+                  <table className="callCenter">
                     <thead>
                       <tr>
-                        <th>S.No</th>
+                        <th className="sl">S.No</th>
                         <th>Name</th>
-                        <th>Extension</th>
-                        <th></th>
-
-                        <th>Options</th>
+                        <th className="extension">Extension</th>
+                        <th className="options">Options</th>
+                        {/* <th className="options">Break</th> */}
                       </tr>
                     </thead>
                     <tbody>
@@ -79,6 +93,27 @@ const CallCenter = () => {
           </div>
         </div>
       </main>
+      {sessions.length > 0 && Object.keys(sessions).length > 0 ? (
+          <>
+            <section className="activeCallsSidePanel">
+              <div className="container">
+                <div className="row">
+                  {sessions.length > 0 &&
+                    sessions.map((session, chennel) => (
+                      <ActiveCallSidePanel
+                        key={chennel}
+                        sessionId={session.id}
+                        destination={session.destination}
+                        chennel={chennel}
+                      />
+                    ))}
+                </div>
+              </div>
+            </section>
+          </>
+        ) : (
+          ""
+        )}
     </>
   );
 };
@@ -86,11 +121,13 @@ const CallCenter = () => {
 export default CallCenter;
 
 const CallCenterListItem = ({ item, index, Id }) => {
+  console.log("This is id", Id);
+  
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isOnBreak, setIsOnBreak] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const refId = item.agents.filter((item) => item.agent_name == Id)[0].id || "";
+  const refId = item.agents.filter((item) => Number(item.agent_name) == Id)[0].id || "";
 
   async function handleLoginLogout(CallerId, action) {
     const parsedData = {
@@ -128,34 +165,32 @@ const CallCenterListItem = ({ item, index, Id }) => {
         </td>
         <td>{item?.queue_name}</td>
         <td>{item?.extension}</td>
-        <td></td>
-
         <td className="">
           {isLoggedIn ? (
             <div className="d-flex gap-2">
-              <button
-                className={`btn ${isOnBreak ? "btn-danger" : "btn-success"}`}
+              <label
+                className={`tableLabel  ${isOnBreak ? "pending" : "success"}`}
                 onClick={() => {
                   if (!isOnBreak) handleLoginLogout(refId, "On Break");
                   else if (isOnBreak) handleLoginLogout(refId, "Available");
                 }}
               >
                 Break
-              </button>
-              <button
-                className="btn btn-danger"
+              </label>
+              <label
+                className="tableLabel fail"
                 onClick={() => handleLoginLogout(refId, "Logged Out")}
               >
                 Logout
-              </button>
+              </label>
             </div>
           ) : (
-            <button
-              className="btn btn-success fs-6"
+            <label
+              className="tableLabel success"
               onClick={() => handleLoginLogout(refId, "Available")}
             >
               Login
-            </button>
+            </label>
           )}
         </td>
       </tr>

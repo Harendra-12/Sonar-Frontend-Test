@@ -314,6 +314,10 @@
     background-color: #ff0000;
 }
 
+.tableLabel.pending{
+    background-color: orange;
+}
+
 .payNow {
     width: 100%;
     height: 40px;
