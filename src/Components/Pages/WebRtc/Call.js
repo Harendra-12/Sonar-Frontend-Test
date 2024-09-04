@@ -35,6 +35,7 @@ function Call() {
   const callProgressDestination = useSelector(
     (state) => state.callProgressDestination
   );
+  const [clickedExtension, setClickedExtension] = useState(null);
 
   function handleHideDialpad(value) {
     setDialpadShow(value);
@@ -68,19 +69,33 @@ function Call() {
   useEffect(() => {
     setLoading(true);
     if (account && account.account_id) {
+      console.log("current active account:", account);
       async function getData() {
         const apiData = await generalGetFunction(
           `/call-details?account_id=${account.account_id}`
         );
         if (apiData.status) {
-          // setAllCalls(apiData.data.calls.reverse());
-          // console.log("apiData", apiData.data.calls);
           setAllApiData(apiData.data.calls.reverse());
           const uniqueArray = [
             ...new Map(
               apiData.data.calls
+                .filter(
+                  (item) =>
+                    item["Caller-Callee-ID-Number"] ===
+                      account.extension.extension ||
+                    item["Caller-Caller-ID-Number"] ===
+                      account.extension.extension
+                )
                 .reverse()
-                .map((item) => [item["Caller-Callee-ID-Number"], item])
+                .map((item) => [
+                  // item["Caller-Callee-ID-Number"],
+                  //   item["Caller-Caller-ID-Number"],
+                  // item["Hangup-Cause"] &&
+                  // item["variable_start_stamp"] &&
+                  // item["variable_billsec"],
+                  item,
+                  item,
+                ])
             ).values(),
           ];
           setAllCalls(uniqueArray.reverse());
@@ -94,23 +109,27 @@ function Call() {
     }
   }, [account, navigate, hangupRefresh]);
 
-  // user data filter based on name and number(currently id)
+  // user data filter based on the extension
   useEffect(() => {
     let filteredCalls = [];
     switch (clickStatus) {
       case "incoming":
         filteredCalls = allCalls.filter(
-          (e) => e["Call-Direction"] === "inbound"
+          (e) =>
+            e["Caller-Callee-ID-Number"] === account.extension.extension &&
+            e["variable_billsec"] > 0
         );
         break;
       case "outgoing":
         filteredCalls = allCalls.filter(
-          (e) => e["Call-Direction"] === "outbound"
+          (e) => e["Caller-Caller-ID-Number"] === account.extension.extension
         );
         break;
       case "missed":
         filteredCalls = allCalls.filter(
-          (e) => e["Call-Direction"] === "missed"
+          (e) =>
+            e["Caller-Callee-ID-Number"] === account.extension.extension &&
+            e["variable_billsec"] === 0
         );
         break;
       case "voicemail":
@@ -123,6 +142,7 @@ function Call() {
         filteredCalls = allCalls;
         break;
     }
+    // search functionality
     if (searchQuery) {
       const lowerCaseSearchQuery = searchQuery.toLowerCase();
       filteredCalls = filteredCalls.filter((call) => {
@@ -139,51 +159,26 @@ function Call() {
     }
     setPreviewCalls(filteredCalls);
     setClickedCall(filteredCalls[0]);
+    if (filteredCalls[0]) {
+      setClickedExtension(
+        filteredCalls[0]["Caller-Callee-ID-Number"] ===
+          account.extension.extension
+          ? filteredCalls[0]["Caller-Caller-ID-Number"]
+          : filteredCalls[0]["Caller-Callee-ID-Number"]
+      );
+    }
+
     setCallHistory(
       filteredCalls[0] &&
         allApiData.filter(
-          (e) =>
-            e["Caller-Callee-ID-Number"] ===
-            filteredCalls[0]["Caller-Callee-ID-Number"]
+          (item) =>
+            (item["Caller-Callee-ID-Number"] === account.extension.extension &&
+              item["Caller-Caller-ID-Number"] === clickedExtension) ||
+            (item["Caller-Caller-ID-Number"] === account.extension.extension &&
+              item["Caller-Callee-ID-Number"] === clickedExtension)
         )
     );
   }, [allCalls, clickStatus, searchQuery]);
-
-  // useEffect(() => {
-  //   let filteredCalls = [];
-  //   switch (clickStatus) {
-  //     case "incoming":
-  //       filteredCalls = allCalls.filter(
-  //         (e) => e["Call-Direction"] === "inbound"
-  //       );
-  //       setClickedCall(filteredCalls[0]);
-  //       break;
-  //     case "outgoing":
-  //       filteredCalls = allCalls.filter(
-  //         (e) => e["Call-Direction"] === "outbound"
-  //       );
-  //       setClickedCall(filteredCalls[0]);
-  //       break;
-  //     case "missed":
-  //       filteredCalls = allCalls.filter(
-  //         (e) => e["Call-Direction"] === "missed"
-  //       );
-  //       setClickedCall(filteredCalls[0]);
-  //       break;
-  //     case "voicemail":
-  //       filteredCalls = allCalls.filter(
-  //         (e) => e["Call-Direction"] === "voicemail"
-  //       );
-  //       setClickedCall(filteredCalls[0]);
-  //       break;
-  //     case "all":
-  //     default:
-  //       filteredCalls = allCalls;
-  //       setClickedCall(filteredCalls[0]);
-  //       break;
-  //   }
-  //   setPreviewCalls(filteredCalls);
-  // }, [allCalls, clickStatus]);
 
   const formatTime = (duration) => {
     const sec = Math.floor(duration % 60);
@@ -196,74 +191,27 @@ function Call() {
     );
   };
 
-  // const renderCallItem = (item) => (
-  //   // <div key={item.id} className={`callListItem ${clickStatus}`}>
-  //   <div
-  //     key={item.id}
-  //     onClick={() => {
-  //       setClickedCall(item);
-  //       setCallHistory(
-  //         allApiData.filter(
-  //           (e) =>
-  //             e["Caller-Callee-ID-Number"] === item["Caller-Callee-ID-Number"]
-  //         )
-  //       );
-  //     }}
-  //     className={`callListItem ${
-  //       item["Call-Direction"] === "inbound"
-  //         ? "incoming"
-  //         : item["Call-Direction"] === "outbound"
-  //         ? "outgoing"
-  //         : item["Call-Direction"] === "missed"
-  //         ? "missed"
-  //         : item["Call-Direction"] === "voicemail"
-  //         ? "voicemail"
-  //         : ""
-  //     }`}
-  //     style={{
-  //       backgroundColor:
-  //         clickedCall && clickedCall.id === item.id ? "#d7eeefcf" : "",
-  //     }}
-  //   >
-  //     <div className="row justify-content-between">
-  //       <div className="col-8 ms-4 text-start" style={{ cursor: "pointer" }}>
-  //         <h4>{item["Caller-Callee-ID-Number"]}</h4>
-  //         <h5>{item.caller_user ? item.caller_user.username : "USER XYZ"}</h5>
-  //         <h6>Call, {formatTime(item.variable_duration)}</h6>
-  //       </div>
-  //       <div className="col-3 text-end">
-  //         <h5>
-  //           {new Date(item.variable_start_stamp)
-  //             .toLocaleTimeString([], {
-  //               hour: "2-digit",
-  //               minute: "2-digit",
-  //               hour12: true,
-  //             })
-  //             .replace(" AM", "am")
-  //             .replace(" PM", "pm")}
-  //         </h5>
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
+  const handleCallItemClick = (item) => {
+    setClickedCall(item);
+    setClickedExtension(
+      item["Caller-Callee-ID-Number"] === account.extension.extension
+        ? item["Caller-Caller-ID-Number"]
+        : item["Caller-Callee-ID-Number"]
+    );
+  };
+
   const renderCallItem = (item) => (
     <div
       key={item.id}
-      onClick={() => {
-        setClickedCall(item);
-        setCallHistory(
-          allApiData.filter(
-            (e) =>
-              e["Caller-Callee-ID-Number"] === item["Caller-Callee-ID-Number"]
-          )
-        );
-      }}
+      onClick={() => handleCallItemClick(item)}
       className={`callListItem ${
-        item["Call-Direction"] === "inbound"
+        item["Caller-Callee-ID-Number"] === account.extension.extension &&
+        item["variable_billsec"] > 0
           ? "incoming"
-          : item["Call-Direction"] === "outbound"
+          : item["Caller-Caller-ID-Number"] === account.extension.extension
           ? "outgoing"
-          : item["Call-Direction"] === "missed"
+          : item["Caller-Callee-ID-Number"] === account.extension.extension &&
+            item["variable_billsec"] === 0
           ? "missed"
           : item["Call-Direction"] === "voicemail"
           ? "voicemail"
@@ -276,9 +224,13 @@ function Call() {
     >
       <div className="row justify-content-between">
         <div className="col-8 ms-4 text-start" style={{ cursor: "pointer" }}>
-          <h4>{item["Caller-Callee-ID-Number"]}</h4>
+          <h4>
+            {item["Caller-Callee-ID-Number"] === account.extension.extension
+              ? item["Caller-Caller-ID-Number"]
+              : item["Caller-Callee-ID-Number"]}
+          </h4>
           <h5>{item.caller_user ? item.caller_user.username : "USER XYZ"}</h5>
-          <h6>Call, {formatTime(item.variable_duration)}</h6>
+          <h6>Call, {formatTime(item["variable_billsec"])}</h6>
         </div>
         <div className="col-3 text-end">
           <h5>
@@ -295,11 +247,22 @@ function Call() {
       </div>
     </div>
   );
+  useEffect(() => {
+    if (clickedExtension) {
+      const filteredHistory = allApiData.filter(
+        (item) =>
+          (item["Caller-Callee-ID-Number"] === account.extension.extension &&
+            item["Caller-Caller-ID-Number"] === clickedExtension) ||
+          (item["Caller-Caller-ID-Number"] === account.extension.extension &&
+            item["Caller-Callee-ID-Number"] === clickedExtension)
+      );
+      setCallHistory(filteredHistory);
+    }
+  }, [clickedExtension, allApiData, account.extension.extension]);
 
   const groupCallsByDate = (calls) => {
     return calls.reduce((acc, call) => {
       // Parse the date as UTC and handle different formats
-      // const callDate = new Date(call.created_at);
       const callDate = new Date(call.variable_start_stamp);
       const today = new Date();
 
@@ -331,30 +294,13 @@ function Call() {
       return acc;
     }, {});
   };
-
-  // const groupCallsByDate = (calls) => {
-  //   return calls.reduce((acc, call) => {
-  //     const date = new Date(call.created_at).toLocaleDateString("en-US", {
-  //       month: "short",
-  //       day: "numeric",
-  //       year: "numeric",
-  //     });
-
-  //     if (!acc[date]) {
-  //       acc[date] = [];
-  //     }
-
-  //     acc[date].push(call);
-  //     return acc;
-  //   }, {});
-  // };
   const sortKeys = (keys) => {
     return keys.sort((a, b) => {
       if (a === "Today") return -1;
       if (b === "Today") return 1;
       if (a === "Yesterday") return -1;
       if (b === "Yesterday") return 1;
-      return new Date(b) - new Date(a); // Sort by date in descending order
+      return new Date(b) - new Date(a);
     });
   };
 
@@ -400,33 +346,41 @@ function Call() {
                   // style={{ height: "100%" }}
                 >
                   <div className="col-12 webRtcHeading">
-                  <div className="col-2">
-                    <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
-                      Calls
-                    </h3>
-                  </div>
-                  <div className="col-5">
-                    <h5 style={{ fontFamily: "Outfit", color: "#444444", marginBottom: '0' }}>
-                      Extension - XXX
-                    </h5>
-                  </div>
-                  <div className="col-5 d-flex justify-content-end">
-                    <div className="col-auto">
-                      <button
-                        className="appPanelButton"
-                        effect="ripple"
-                        onClick={() => setDialpadShow(!dialpadShow)}
+                    <div className="col-2">
+                      <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
+                        Calls
+                      </h3>
+                    </div>
+                    <div className="col-5">
+                      <h5
+                        style={{
+                          fontFamily: "Outfit",
+                          color: "#444444",
+                          marginBottom: "0",
+                        }}
                       >
-                        <i className="fa-light fa-mobile-retro" />
-                      </button>
+                        Extension - {account && account.extension.extension}
+                      </h5>
                     </div>
-                    <div className="col-auto  position-relative">
-                      <button className="appPanelButton" effect="ripple">
-                        <i className="fa-light fa-satellite-dish" />
-                      </button>
-                      <SipRegister />
+                    <div className="col-5 d-flex justify-content-end">
+                      <div className="col-auto">
+                        <button
+                          className="appPanelButton"
+                          effect="ripple"
+                          onClick={() => setDialpadShow(!dialpadShow)}
+                        >
+                          <i className="fa-light fa-mobile-retro" />
+                        </button>
+                      </div>
+                      <div className="col-auto  position-relative">
+                        <button className="appPanelButton" effect="ripple">
+                          <i className="fa-light fa-satellite-dish" />
+                        </button>
+                        <div>
+                          <SipRegister />
+                        </div>
+                      </div>
                     </div>
-                  </div>
                   </div>
 
                   <div className="col-12">
@@ -570,7 +524,7 @@ function Call() {
             </div>
           </section>
         </main>
-        {console.log("this is session", sessions)}
+        {/* {console.log("this is session", sessions)} */}
         {sessions.length > 0 && Object.keys(sessions).length > 0 ? (
           <>
             <section className="activeCallsSidePanel">
