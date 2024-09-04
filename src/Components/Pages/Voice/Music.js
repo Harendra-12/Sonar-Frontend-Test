@@ -147,8 +147,7 @@ function Music() {
                             <td>{item.created_at.split("T")[0]}</td>
                             <td>
                               <MusicPlayer
-                                audioSrc={
-                                  "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+                                audioSrc={item.path
                                 }
                               />
                             </td>
@@ -186,6 +185,7 @@ function Music() {
                           >
                             <option value="hold">Hold</option>
                             <option value="busy">Busy</option>
+                            <option value="ringback">Ringback</option>
                           </select>
                         </div>
                         <div className="col-8">

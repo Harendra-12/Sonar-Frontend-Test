@@ -53,16 +53,17 @@ function CdrReport() {
                   <thead>
                     <tr>
                       <th>Sr. no</th>
+                      <th>Call Type</th>
                       <th>Origin</th>
                       <th>Destination</th>
                       <th>Date</th>
-                      <th>Recording</th>
                       <th>Time</th>
+                      <th>Recording</th>
                       <th>Duration</th>
                       <th>Hangup Cause</th>
                       <th>Orig. IP</th>
                       <th>Dest. IP</th>
-                      <th>Port</th>
+                      <th>Charge</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -79,11 +80,14 @@ function CdrReport() {
                             return (
                               <tr key={index}>
                                 <td>{(pageNumber - 1) * 20 + (index + 1)}</td>
+                                <td>{item["Call-Direction"]}</td>
                                 <td>{item["variable_sip_from_user"]}</td>
-                                {/* <td>{item["Caller-Orig-Caller-ID-Name"]}</td> */}
                                 <td>{item["variable_sip_to_user"]}</td>
                                 <td>
                                   {item["variable_start_stamp"].split(" ")[0]}
+                                </td>
+                                <td>
+                                  {item["variable_start_stamp"].split(" ")[1]}
                                 </td>
                                 <td>
                                   {item["recording_path"] && (
@@ -92,9 +96,7 @@ function CdrReport() {
                                     />
                                   )}
                                 </td>
-                                <td>
-                                  {item["variable_start_stamp"].split(" ")[1]}
-                                </td>
+                                
                                 <td>{item["variable_billsec"]}</td>
                                 <td>
                                   {item["variable_DIALSTATUS"] === null
@@ -114,9 +116,7 @@ function CdrReport() {
                                 </td>
                                 <td>
                                   {
-                                    item["Other-Leg-Network-Addr"]?.split(
-                                      ":"
-                                    )?.[1]
+                                   0.00
                                   }
                                 </td>
                               </tr>
