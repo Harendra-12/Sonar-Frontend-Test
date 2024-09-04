@@ -3,6 +3,7 @@ import Header from "../../CommonComponents/Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   backToTop,
+  generalGetFunction,
   generalPostFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
@@ -16,12 +17,17 @@ import {
   usagesValidator,
 } from "../../validations/validation";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import CircularLoader from "../../Loader/CircularLoader";
 
 const DidConfig = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const locationData = location.state;
   const [dataAvailable, setDataAvailable] = useState(true);
+  const account = useSelector((state) => state.account);
+  const [holdMusic, setHoldMusic] = useState();
+  const [loading, setLoading] = useState(true);
   // const queryParams = new URLSearchParams(useLocation().search);
   // const did_id_view = queryParams.get("did_id_view");
   const {
@@ -50,6 +56,8 @@ const DidConfig = () => {
       setValue("forward_to", locationData.configuration.forward_to || "");
       setValue("action", locationData.configuration.action || "");
       setValue("hold_music", locationData.configuration.hold_music || "");
+      // setValue("hold_music", "6");
+
       setValue(
         "record",
         locationData.configuration.record === 0 ? false : true || ""
@@ -62,6 +70,25 @@ const DidConfig = () => {
       setDataAvailable(true);
     }
   }, [locationData]);
+
+  console.log("hold music,", watch("hold_music"));
+  useEffect(() => {
+    if (account && account.id) {
+      async function getData() {
+        const holdMusic = await generalGetFunction("/sound/all?type=hold");
+        setLoading(false);
+        if (holdMusic.status) {
+          setHoldMusic(holdMusic.data);
+        } else {
+          navigate("/");
+        }
+      }
+      getData();
+    }else{
+      setLoading(false);
+      navigate("/");
+    }
+  }, [navigate, account]);
 
   useEffect(() => {
     if (locationData) {
@@ -145,23 +172,29 @@ const DidConfig = () => {
     delete data.direct_extension;
     delete data.did_id;
     const payload = { ...data, did_id: locationData.id };
-
+    
     if (locationData.configuration === null) {
+      setLoading(true);
       const apiData = await generalPostFunction("/did/configure", payload);
       if (apiData.status) {
+        setLoading(false);
         toast.success(apiData.message);
       } else {
+        setLoading(false);
         toast.error(apiData.message);
       }
     }
     if (locationData.configuration) {
+      setLoading(true);
       const apiData = await generalPutFunction(
         `/did/configure/update/${locationData.configuration.id}`,
         payload
       );
       if (apiData.status) {
+        setLoading(false);
         toast.success(apiData.message);
       } else {
+        setLoading(false);
         toast.error(apiData.message);
       }
     }
@@ -271,6 +304,13 @@ const DidConfig = () => {
             </div>
           </div>
           <div className="col-xl-12" style={{ overflow: "auto" }}>
+          {loading ? (
+            <div colSpan={99}>
+              <CircularLoader />
+            </div>
+          ) : (
+            ""
+          )}
             <div className="mx-2" id="detailsContent">
               <form className="row">
                 <div className="formRow col-xl-3">
@@ -352,7 +392,7 @@ const DidConfig = () => {
                     >
                       <option value="disabled">Disable</option>
                       <option value="pstn">PSTN</option>
-                      <option value="direct">Direct</option>  
+                      <option value="direct">Direct</option>
                     </select>
                     <label htmlFor="data" className="formItemDesc">
                       Want to forword DID.
@@ -440,11 +480,19 @@ const DidConfig = () => {
                       name=""
                       id="selectFormRow"
                       {...register("hold_music")}
+                      value={watch().hold_music}
                     >
-                      <option selected="" value="default">
+                      <option  value="default">
                         default
                       </option>
-                      <option value="none">none</option>
+                      {holdMusic &&
+                        holdMusic.map((ring) => {
+                          return (
+                            <option key={ring.id} value={ring.id}>
+                              {ring.name}
+                            </option>
+                          );
+                        })}
                     </select>
                   </div>
                   <label htmlFor="data" className="formItemDesc">
