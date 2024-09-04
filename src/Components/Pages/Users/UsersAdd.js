@@ -121,7 +121,7 @@ const UsersAdd = () => {
   }, [watch().username]);
 
   const handleFormSubmit = handleSubmit(async (data) => {
-    setLoading(true);
+    // setLoading(true);
     if (data.cPassword !== data.password) {
       setError("cPassword", {
         type: "manual",
@@ -151,6 +151,7 @@ const UsersAdd = () => {
         permissions: selectedPermission,
       },
     };
+    setLoading(true)
     const addUser = await generalPostFunction("/user/create", payload);
     if (addUser.status) {
       reset();

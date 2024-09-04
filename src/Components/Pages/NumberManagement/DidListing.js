@@ -55,8 +55,8 @@ function DidListing() {
                       <th>E911</th>
                       <th>Cname</th>
                       <th>SMS</th>
-                      <th>Configure</th>
-                      <th>Reset Configuration</th>
+                      <th style={{width: 150}}>Configure</th>
+                      <th style={{width: 150}}>Reset Configuration</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -72,8 +72,8 @@ function DidListing() {
                                 <td>{item?.sms}</td>
                                 {/* <td onClick={() => navigate(item.dialplan?"/destination-edit":"/destination-add",{ state: { state: item.dialplan ? item.dialplan : item, did: item.did } })}>Configure</td> */}
                                 {/* <td onClick={()=>navigate(`/did-config?did_id=${item.did}`)}>Configure</td> */}
-                                <td className="tableLabel success" onClick={()=>navigate(`/did-config`, {state:  item})}>Configure</td>
-                                {item.configuration !== null &&<td className="tableLabel success" onClick={()=>handleClick(item.configuration.id)}>Reset</td>}
+                                <td><label className="tableLabel success" onClick={()=>navigate(`/did-config`, {state:  item})}>Configure</label></td>
+                                <td> {item.configuration !== null &&<label className="tableLabel success" onClick={()=>handleClick(item.configuration.id)}>Reset</label>}</td>
                               </tr>
                             )
                         })}
