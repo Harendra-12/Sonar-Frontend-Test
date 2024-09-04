@@ -38,6 +38,7 @@ const RingGroupAdd = () => {
   const [allUser, setAllUser] = useState();
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const allUserArr = useSelector((state) => state.allUser);
+  const [ringBack, setRingBack] = useState();
 
   // const [popUp, setPopUp] = useState(true);
 
@@ -61,6 +62,7 @@ const RingGroupAdd = () => {
         const apidataUser = await generalGetFunction(
           `/user/search?account=${account.account_id}`
         );
+        const ringBack = await generalGetFunction("/sound/all?type=ringback");
         setLoading(false);
         if (apiData.status) {
           setExtensions(apiData.data);
@@ -69,6 +71,11 @@ const RingGroupAdd = () => {
         }
         if (apidataUser.status) {
           setUsers(apidataUser.data);
+        } else {
+          navigate("/");
+        }
+        if (ringBack.status) {
+          setRingBack(ringBack.data);
         } else {
           navigate("/");
         }
@@ -506,7 +513,7 @@ const RingGroupAdd = () => {
                   </label>
                 </div>
               </div> */}
-              <div className="formRow col-xl-3">
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Follow Me</label>
                 </div>
@@ -525,7 +532,7 @@ const RingGroupAdd = () => {
                     Choose to follow a ring group destination's follow me.
                   </label>
                 </div>
-              </div>
+              </div> */}
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Strategy</label>
@@ -800,7 +807,7 @@ const RingGroupAdd = () => {
                   )}
                 </div>
               </div>
-              <div className="formRow col-xl-3">
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Distinctive Ring</label>
                 </div>
@@ -821,7 +828,7 @@ const RingGroupAdd = () => {
                     Select a sound for a distinctive ring.
                   </label>
                 </div>
-              </div>
+              </div> */}
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Ring Back</label>
@@ -832,9 +839,17 @@ const RingGroupAdd = () => {
                     {...register("ring_back", { ...requiredValidator })}
                     id="selectFormRow"
                   >
-                    <option>us-ring</option>
+                    {/* <option>us-ring</option>
                     <option value="uk-ring">uk-ring</option>
-                    <option value="eu-ring">eu-ring</option>
+                    <option value="eu-ring">eu-ring</option> */}
+                    {ringBack &&
+                      ringBack.map((ring) => {
+                        return (
+                          <option key={ring.id} value={ring.id}>
+                            {ring.name}
+                          </option>
+                        );
+                      })}
                   </select>
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -843,7 +858,7 @@ const RingGroupAdd = () => {
                   </label>
                 </div>
               </div>
-              <div className="formRow col-xl-3">
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">User List</label>
                 </div>
@@ -973,8 +988,9 @@ const RingGroupAdd = () => {
                     Forward a called Ring Group to an alternate destination.
                   </label>
                 </div>
-              </div>
-              <div className="formRow col-xl-3">
+              </div> */}
+
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Forward Toll Allow</label>
                 </div>
@@ -1017,7 +1033,7 @@ const RingGroupAdd = () => {
                     Enter the context.
                   </label>
                 </div>
-              </div>
+              </div> */}
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Description</label>
@@ -1040,8 +1056,7 @@ const RingGroupAdd = () => {
                   </label>
                 </div>
               </div>
-
-              <div className="formRow col-xl-3">
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Greeting</label>
                 </div>
@@ -1062,7 +1077,7 @@ const RingGroupAdd = () => {
                     Enter the Greeting.
                   </label>
                 </div>
-              </div>
+              </div> */}
               <div className="formRow  col-xl-3">
                 <div className="d-flex flex-wrap align-items-center">
                   <div className="formLabel">
