@@ -1,4 +1,3 @@
-import { duration } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";
@@ -8,6 +7,7 @@ function CallDetails({ clickedCall, callHistory }) {
   const dispatch = useDispatch();
   const globalSession = useSelector((state) => state.sessions);
   const { sessionManager } = useSIPProvider();
+  const account = useSelector((state) => state.account);
 
   useEffect(() => {
     setCallDetails(clickedCall);
@@ -48,38 +48,6 @@ function CallDetails({ clickedCall, callHistory }) {
       }` || "0 sec"
     );
   };
-
-  const renderCallHistory = (item) => {
-    <tr key={item.id}>
-      <td style={{ color: "#444444" }}>
-        {formatDate(item.variable_start_stamp)}
-      </td>
-      <td>{formatTime(item.variable_start_stamp)}</td>
-      <td
-        className={`${
-          item["Call-Direction"] === "inbound"
-            ? "incoming"
-            : item["Call-Direction"] === "outbound"
-            ? "outgoing"
-            : item["Call-Direction"] === "missed"
-            ? "missed"
-            : item["Call-Direction"] === "voicemail"
-            ? "voicemail"
-            : ""
-        }`}
-      >
-        <span>
-          {item["Call-Direction"].charAt(0).toUpperCase() +
-            item["Call-Direction"].slice(1).toLowerCase()}
-        </span>
-      </td>
-      <td>{item["Caller-Caller-ID-Number"]}</td>
-      <td style={{ color: "#444444" }}>
-        {formatDuration(item.variable_duration)}
-      </td>
-    </tr>;
-  };
-
   async function onCall(e) {
     e.preventDefault();
     const apiData = await sessionManager?.call(
@@ -118,9 +86,12 @@ function CallDetails({ clickedCall, callHistory }) {
         <div className="profileHolder">
           <i className="fa-light fa-user fs-3" />
         </div>
-        {/* <h4>1 (999) 999-9999</h4> */}
-        <h4>{callDetails && callDetails["Caller-Callee-ID-Number"]}</h4>
-        {/* <h5>USER XYZ</h5> */}
+        <h4>
+          {callDetails &&
+          callDetails?.["Caller-Callee-ID-Number"] === account.extension.extension
+            ? callDetails?.["Caller-Caller-ID-Number"]
+            : callDetails?.["Caller-Callee-ID-Number"]}
+        </h4>
         <h5>
           {(callDetails && callDetails.caller_user?.username) || "USER XYZ"}
         </h5>
@@ -140,7 +111,7 @@ function CallDetails({ clickedCall, callHistory }) {
         <nav>
           <div className="nav nav-tabs" id="nav-tab" role="tablist">
             <button
-              className="tabLink"
+              className="tabLink active"
               effect="ripple"
               data-bs-toggle="tab"
               data-bs-target="#nav-home"
@@ -152,7 +123,7 @@ function CallDetails({ clickedCall, callHistory }) {
               <i className="fa-regular fa-circle-info" />
             </button>
             <button
-              className="tabLink active"
+              className="tabLink"
               effect="ripple"
               data-bs-toggle="tab"
               data-bs-target="#nav-profile"
@@ -191,11 +162,16 @@ function CallDetails({ clickedCall, callHistory }) {
                     </td>
                     <td
                       className={`${
-                        callDetails?.["Call-Direction"] === "inbound"
+                        callDetails?.["Caller-Callee-ID-Number"] ===
+                          account.extension.extension &&
+                        callDetails?.["variable_billsec"] > 0
                           ? "incoming"
-                          : callDetails?.["Call-Direction"] === "outbound"
+                          : callDetails?.["Caller-Caller-ID-Number"] ===
+                            account.extension.extension
                           ? "outgoing"
-                          : callDetails?.["Call-Direction"] === "missed"
+                          : callDetails?.["Caller-Callee-ID-Number"] ===
+                              account.extension.extension &&
+                            callDetails?.["variable_billsec"] === 0
                           ? "missed"
                           : callDetails?.["Call-Direction"] === "voicemail"
                           ? "voicemail"
@@ -204,12 +180,20 @@ function CallDetails({ clickedCall, callHistory }) {
                     >
                       <span>
                         {callDetails &&
-                          callDetails["Call-Direction"]
-                            .charAt(0)
-                            .toUpperCase() +
-                            callDetails["Call-Direction"]
-                              .slice(1)
-                              .toLowerCase()}
+                        callDetails?.["Caller-Callee-ID-Number"] ===
+                          account.extension.extension &&
+                        callDetails?.["variable_billsec"] > 0
+                          ? "Incoming"
+                          : callDetails?.["Caller-Caller-ID-Number"] ===
+                            account.extension.extension
+                          ? "Outgoing"
+                          : callDetails?.["Caller-Callee-ID-Number"] ===
+                              account.extension.extension &&
+                            callDetails?.["variable_billsec"] === 0
+                          ? "Missed"
+                          : callDetails?.["Call-Direction"] === "voicemail"
+                          ? "voicemail"
+                          : ""}
                       </span>
                     </td>
                     {/* <td>1 (999) 999-9999</td> */}
@@ -217,7 +201,7 @@ function CallDetails({ clickedCall, callHistory }) {
                     {/* <td style={{ color: "#444444" }}>16 sec</td> */}
                     <td style={{ color: "#444444" }}>
                       {formatDuration(
-                        callDetails && callDetails.variable_duration
+                        callDetails && callDetails.variable_billsec
                       )}
                     </td>
                   </tr>
@@ -243,11 +227,16 @@ function CallDetails({ clickedCall, callHistory }) {
                       <td>{formatTime(item.variable_start_stamp)}</td>
                       <td
                         className={`${
-                          item["Call-Direction"] === "inbound"
+                          item["Caller-Callee-ID-Number"] ===
+                            account.extension.extension &&
+                          item["variable_billsec"] > 0
                             ? "incoming"
-                            : item["Call-Direction"] === "outbound"
+                            : item["Caller-Caller-ID-Number"] ===
+                              account.extension.extension
                             ? "outgoing"
-                            : item["Call-Direction"] === "missed"
+                            : item["Caller-Callee-ID-Number"] ===
+                                account.extension.extension &&
+                              item["variable_billsec"] === 0
                             ? "missed"
                             : item["Call-Direction"] === "voicemail"
                             ? "voicemail"
@@ -255,52 +244,35 @@ function CallDetails({ clickedCall, callHistory }) {
                         }`}
                       >
                         <span>
-                          {item["Call-Direction"].charAt(0).toUpperCase() +
-                            item["Call-Direction"].slice(1).toLowerCase()}
+                          {item &&
+                          item?.["Caller-Callee-ID-Number"] ===
+                            account.extension.extension &&
+                          item?.["variable_billsec"] > 0
+                            ? "Incoming"
+                            : item?.["Caller-Caller-ID-Number"] ===
+                              account.extension.extension
+                            ? "Outgoing"
+                            : item?.["Caller-Callee-ID-Number"] ===
+                                account.extension.extension &&
+                              item?.["variable_billsec"] === 0
+                            ? "Missed"
+                            : item?.["Call-Direction"] === "voicemail"
+                            ? "Voicemail"
+                            : ""}
                         </span>
                       </td>
-                      <td>{item["Caller-Caller-ID-Number"]}</td>
+                      {/* <td>{item["Caller-Caller-ID-Number"]}</td> */}
+                      {/* <td>
+                        {item["Caller-Caller-ID-Number"] ===
+                        account.extension.extension
+                          ? item["Caller-Caller-ID-Number"]
+                          : item["Caller-Callee-ID-Number"]}
+                      </td> */}
                       <td style={{ color: "#444444" }}>
-                        {formatDuration(item.variable_duration)}
+                        {formatDuration(item.variable_billsec)}
                       </td>
                     </tr>
                   ))}
-                  {/* <tr>
-                    <td style={{ color: "#444444" }}>Jan 16, 2022</td>
-                    <td>12:46 PM</td>
-                    <td className="missed">
-                      <span>Missed</span>
-                    </td>
-                    <td>1 (999) 999-9999</td>
-                    <td style={{ color: "#444444" }}>24 sec</td>
-                  </tr>
-                  <tr>
-                    <td style={{ color: "#444444" }}>Jan 16, 2022</td>
-                    <td>12:46 PM</td>
-                    <td className="incoming">
-                      <span>Incoming</span>
-                    </td>
-                    <td>1 (999) 999-9999</td>
-                    <td style={{ color: "#444444" }}>10 sec</td>
-                  </tr>
-                  <tr>
-                    <td style={{ color: "#444444" }}>Jan 16, 2022</td>
-                    <td>12:46 PM</td>
-                    <td className="outgoing">
-                      <span>Outgoing</span>
-                    </td>
-                    <td>1 (999) 999-9999</td>
-                    <td style={{ color: "#444444" }}>1 min 10 sec</td>
-                  </tr>
-                  <tr>
-                    <td style={{ color: "#444444" }}>Jan 16, 2022</td>
-                    <td>12:46 PM</td>
-                    <td className="outgoing">
-                      <span>Outgoing</span>
-                    </td>
-                    <td>1 (999) 999-9999</td>
-                    <td style={{ color: "#444444" }}>35 sec</td>
-                  </tr> */}
                 </tbody>
               </table>
             </div>

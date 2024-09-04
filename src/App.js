@@ -114,7 +114,7 @@ function App() {
   const dispatch = useDispatch();
   const domainRefresh = useSelector((state) => state.domainRefresh);
   const loading = useSelector((state) => state.loading);
-  console.log("this is loading", loading);
+  // console.log("this is loading", loading);
   
   Socket();
 
