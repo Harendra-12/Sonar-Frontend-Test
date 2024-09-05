@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSessionCall } from "react-sipjs";
 
-function ActiveCallSidePanel({ sessionId, chennel, destination }) {
+function ActiveCallSidePanel({
+  sessionId,
+  chennel,
+  destination,
+  setHangupRefresh,
+  hangupRefresh,
+  setSelectedModule,
+}) {
   const dispatch = useDispatch();
   const globalSession = useSelector((state) => state.sessions);
   const callProgressId = useSelector((state) => state.callProgressId);
@@ -39,6 +46,8 @@ function ActiveCallSidePanel({ sessionId, chennel, destination }) {
   }, [callProgressId]);
 
   if (session["_state"] === "Terminated") {
+    setHangupRefresh(hangupRefresh + 1);
+    setSelectedModule("callDetails");
     if (callProgressId === session._id) {
       dispatch({
         type: "SET_CALLPROGRESSID",

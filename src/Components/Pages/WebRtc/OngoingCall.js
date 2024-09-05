@@ -13,7 +13,7 @@ import {
 import { toast } from "react-toastify";
 import { Dialog, UserAgentCore } from "sip.js/lib/core";
 
-function OngoingCall({ setHangupRefresh, hangupRefresh }) {
+function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
@@ -256,6 +256,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh }) {
               onClick={() => {
                 hangup();
                 setHangupRefresh(hangupRefresh + 1);
+                setSelectedModule("callDetails");
               }}
               className="appPanelButtonCaller bg-danger"
               effect="ripple"
@@ -297,7 +298,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh }) {
                       // onChange={handleInputChange}
                     />
                   </div>
-                  
+
                   <div className="dialerWrap mt-2">
                     <div
                       className="col-4"
@@ -437,8 +438,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh }) {
           ""
         )}
 
-
-{attendShow ? (
+        {attendShow ? (
           <div id="dialPad" className="inCall">
             <div className="container h-100">
               <div className="row align-items-center justify-content-center h-100">
@@ -466,14 +466,23 @@ function OngoingCall({ setHangupRefresh, hangupRefresh }) {
                       placeholder=""
                       className="dialerInput"
                       value={attendedTransferNumber}
-                      onChange={(e) => setattendedTransferNumber(e.target.value)}
+                      onChange={(e) =>
+                        setattendedTransferNumber(e.target.value)
+                      }
                     />
-                    <buton className="clearButton" style={{marginLeft: '-30px'}} onClick={() => setattendedTransferNumber(attendedTransferNumber.slice(0, -1))}>
-                    <i class="fa-light fa-delete-left"></i>
+                    <buton
+                      className="clearButton"
+                      style={{ marginLeft: "-30px" }}
+                      onClick={() =>
+                        setattendedTransferNumber(
+                          attendedTransferNumber.slice(0, -1)
+                        )
+                      }
+                    >
+                      <i class="fa-light fa-delete-left"></i>
                     </buton>
                   </div>
-                 
-                  
+
                   <div className="dialerWrap mt-2">
                     <div
                       className="col-4"
@@ -585,7 +594,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh }) {
                         <i className="fa-light fa-hashtag" />
                       </h4>
                     </div>
-                   
+
                     <div>
                       <button
                         className="callButton bg-primary"
@@ -595,7 +604,6 @@ function OngoingCall({ setHangupRefresh, hangupRefresh }) {
                         <i className="fa-thin fa-phone-arrow-up-right" />
                       </button>
                     </div>
-                
                   </div>
                   {/* <div 
                 // onClick={onSubmit}

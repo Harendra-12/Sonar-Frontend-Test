@@ -4,7 +4,12 @@ import { useSessionCall, useSIPProvider } from "react-sipjs";
 import { toast } from "react-toastify";
 import { UserAgent } from "sip.js";
 
-function IncomingCallPopup({ sessionId, lastIncomingCall, index }) {
+function IncomingCallPopup({
+  sessionId,
+  lastIncomingCall,
+  index,
+  setSelectedModule,
+}) {
   const [isMinimized, setIsMinimized] = useState(false);
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
@@ -47,6 +52,7 @@ function IncomingCallPopup({ sessionId, lastIncomingCall, index }) {
   const handleAnswerCall = async (e) => {
     e.preventDefault();
     answer();
+    setSelectedModule("onGoingCall");
     dispatch({
       type: "SET_CALLPROGRESSID",
       callProgressId: sessionId,

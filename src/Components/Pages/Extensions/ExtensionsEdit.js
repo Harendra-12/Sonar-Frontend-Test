@@ -257,7 +257,9 @@ const ExtensionsEdit = () => {
           // domain: `${domainId}`,
           description: data.description,
           password: data.password,
-          ...(data.user !== "" ? { user: data.user } : {}),
+          ...(data.user === "" || data.user === null
+            ? {}
+            : { user: data.user }),
         };
       }
       // const parsedData = {

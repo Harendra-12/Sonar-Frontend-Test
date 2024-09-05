@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";
 
-function Dialpad({ hideDialpad }) {
+function Dialpad({ hideDialpad, setSelectedModule }) {
   const account = useSelector((state) => state.account);
   const globalSession = useSelector((state) => state.sessions);
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ function Dialpad({ hideDialpad }) {
         `sip:${Number(destNumber)}@${account.domain.domain_name}`,
         {}
       );
-
+      setSelectedModule("onGoingCall");
       dispatch({
         type: "SET_SESSIONS",
         sessions: [

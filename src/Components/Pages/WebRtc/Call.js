@@ -7,7 +7,7 @@ import IncomingCallPopup from "./IncomingCallPopup";
 import SideNavbarApp from "./SideNavbarApp";
 import CallDetails from "./CallDetails";
 import OngoingCall from "./OngoingCall";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import IncomingCalls from "./IncomingCalls";
 import AddNewContactPopup from "./AddNewContactPopup";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
@@ -15,7 +15,10 @@ import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 
 function Call() {
+  const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
+  const allCall = useSelector((state) => state.allCall);
+  const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const [dialpadShow, setDialpadShow] = useState(false);
   const [clickStatus, setClickStatus] = useState("all");
   const callProgress = useSelector((state) => state.callProgress);
@@ -32,6 +35,7 @@ function Call() {
   const [loading, setLoading] = useState(true);
   const [allApiData, setAllApiData] = useState([]);
   const [callHistory, setCallHistory] = useState([]);
+  const [selectedModule, setSelectedModule] = useState("");
   const callProgressDestination = useSelector(
     (state) => state.callProgressDestination
   );
@@ -67,43 +71,44 @@ function Call() {
   };
 
   useEffect(() => {
+    if (allCall && allCall.calls) {
+      const apiData = allCall;
+      setAllApiData(apiData.calls.reverse());
+
+      const uniqueArray = [
+        ...new Map(
+          apiData.calls
+            .filter(
+              (item) =>
+                item["Caller-Callee-ID-Number"] ===
+                  account.extension.extension ||
+                item["Caller-Caller-ID-Number"] === account.extension.extension
+            )
+            .reverse()
+            .map((item) => [
+              // item["Caller-Callee-ID-Number"],
+              //   item["Caller-Caller-ID-Number"],
+              // item["Hangup-Cause"] &&
+              // item["variable_start_stamp"] &&
+              // item["variable_billsec"],
+              item,
+              item,
+            ])
+        ).values(),
+      ];
+      setAllCalls(uniqueArray.reverse());
+
+      setLoading(false);
+    }
+  }, [allCall]);
+
+  useEffect(() => {
     setLoading(true);
     if (account && account.account_id) {
-      console.log("current active account:", account);
-      async function getData() {
-        const apiData = await generalGetFunction(
-          `/call-details?account_id=${account.account_id}`
-        );
-        if (apiData.status) {
-          setAllApiData(apiData.data.calls.reverse());
-          const uniqueArray = [
-            ...new Map(
-              apiData.data.calls
-                .filter(
-                  (item) =>
-                    item["Caller-Callee-ID-Number"] ===
-                      account.extension.extension ||
-                    item["Caller-Caller-ID-Number"] ===
-                      account.extension.extension
-                )
-                .reverse()
-                .map((item) => [
-                  // item["Caller-Callee-ID-Number"],
-                  //   item["Caller-Caller-ID-Number"],
-                  // item["Hangup-Cause"] &&
-                  // item["variable_start_stamp"] &&
-                  // item["variable_billsec"],
-                  item,
-                  item,
-                ])
-            ).values(),
-          ];
-          setAllCalls(uniqueArray.reverse());
-
-          setLoading(false);
-        }
-      }
-      getData();
+      dispatch({
+        type: "SET_CALLDETAILSREFRESH",
+        callDetailsRefresh: callDetailsRefresh + 1,
+      });
     } else {
       navigate("/");
     }
@@ -474,8 +479,12 @@ function Call() {
                         </div>
                       </div> */}
 
-                      <div className="callList">
-                        {loading ? (
+                      <div
+                        className="callList"
+                        onClick={() => setSelectedModule("callDetails")}
+                      >
+                        {loading &&
+                        (callDetailsRefresh == 0 || callDetailsRefresh == 1) ? (
                           <ContentLoader />
                         ) : Object.keys(groupedCalls).length > 0 ? (
                           sortKeys(Object.keys(groupedCalls)).map((date) => (
@@ -503,7 +512,7 @@ function Call() {
                   style={{ height: "100vh" }}
                   id="callDetails"
                 >
-                  {callProgress ? (
+                  {/* {callProgress ? (
                     <OngoingCall
                       key={callProgressId}
                       id={callProgressId}
@@ -518,7 +527,24 @@ function Call() {
                         callHistory={callHistory}
                       />
                     )
-                  )}
+                  )} */}
+                  {selectedModule == "onGoingCall"
+                    ? callProgress && (
+                        <OngoingCall
+                          key={callProgressId}
+                          id={callProgressId}
+                          destination={callProgressDestination}
+                          setHangupRefresh={setHangupRefresh}
+                          hangupRefresh={hangupRefresh}
+                          setSelectedModule={setSelectedModule}
+                        />
+                      )
+                    : clickedCall && (
+                        <CallDetails
+                          clickedCall={clickedCall}
+                          callHistory={callHistory}
+                        />
+                      )}
                 </div>
               </div>
             </div>
@@ -527,7 +553,10 @@ function Call() {
         {/* {console.log("this is session", sessions)} */}
         {sessions.length > 0 && Object.keys(sessions).length > 0 ? (
           <>
-            <section className="activeCallsSidePanel">
+            <section
+              className="activeCallsSidePanel"
+              onClick={() => setSelectedModule("onGoingCall")}
+            >
               <div className="container">
                 <div className="row">
                   {sessions.length > 0 &&
@@ -537,6 +566,9 @@ function Call() {
                         sessionId={session.id}
                         destination={session.destination}
                         chennel={chennel}
+                        setHangupRefresh={setHangupRefresh}
+                        hangupRefresh={hangupRefresh}
+                        setSelectedModule={setSelectedModule}
                       />
                     ))}
                 </div>
@@ -547,8 +579,15 @@ function Call() {
           ""
         )}
         {/* <IncomingCallPopup /> */}
-        <IncomingCalls />
-        {dialpadShow ? <Dialpad hideDialpad={handleHideDialpad} /> : ""}
+        <IncomingCalls setSelectedModule={setSelectedModule} />
+        {dialpadShow ? (
+          <Dialpad
+            hideDialpad={handleHideDialpad}
+            setSelectedModule={setSelectedModule}
+          />
+        ) : (
+          ""
+        )}
         {addContactToggle && (
           <AddNewContactPopup setAddContactToggle={setAddContactToggle} />
         )}
