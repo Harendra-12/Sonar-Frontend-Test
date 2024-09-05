@@ -738,11 +738,11 @@ const Dashboard = () => {
                       percentage={[
                         registerUser.length,
                         extensionList,
-                        Number(accountDetails.package?.number_of_user) -
+                        Number(accountDetails?.package?.number_of_user) -
                           extensionList,
                       ]}
                       centerTitle={`${extensionList}/${Number(
-                        accountDetails.package?.number_of_user
+                        accountDetails?.package?.number_of_user
                       )}`}
                       centerDesc="Extensions Details"
                       colors={["#9999", "#FF6384", "#36A2EB"]}
@@ -760,11 +760,11 @@ const Dashboard = () => {
                       percentage={[
                         loginUser.length,
                         userList,
-                        Number(accountDetails.package?.number_of_user) -
+                        Number(accountDetails?.package?.number_of_user) -
                           userList,
                       ]}
                       centerTitle={`${userList}/${Number(
-                        accountDetails.package?.number_of_user
+                        accountDetails?.package?.number_of_user
                       )}`}
                       centerDesc="Total Users Available"
                       colors={["#9999", "#FF6384", "#36A2EB"]}
@@ -793,14 +793,14 @@ const Dashboard = () => {
                     <GraphChart
                       fields={["Available Extension", "Registered Extension"]}
                       percentage={[
-                        ((Number(accountDetails.package?.number_of_user) -
+                        ((Number(accountDetails?.package?.number_of_user) -
                           extensionList) *
                           100) /
-                          Number(accountDetails.package?.number_of_user),
+                          Number(accountDetails?.package?.number_of_user),
                         (extensionList * 100) /
-                          Number(accountDetails.package?.number_of_user),
+                          Number(accountDetails?.package?.number_of_user),
                       ]}
-                      centerTitle={`${extensionList}/${accountDetails.package?.number_of_user}`}
+                      centerTitle={`${extensionList}/${accountDetails?.package?.number_of_user}`}
                       centerDesc="Total Extensions"
                       colors={["#f18f01", "#36A2EB"]}
                     />
