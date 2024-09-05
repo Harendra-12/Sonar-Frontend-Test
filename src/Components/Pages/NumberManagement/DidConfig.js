@@ -56,7 +56,6 @@ const DidConfig = () => {
       setValue("forward_to", locationData.configuration.forward_to || "");
       setValue("action", locationData.configuration.action || "");
       setValue("hold_music", locationData.configuration.hold_music || "");
-      // setValue("hold_music", "6");
 
       setValue(
         "record",
@@ -70,8 +69,6 @@ const DidConfig = () => {
       setDataAvailable(true);
     }
   }, [locationData]);
-
-  console.log("hold music,", watch("hold_music"));
   useEffect(() => {
     if (account && account.id) {
       async function getData() {
