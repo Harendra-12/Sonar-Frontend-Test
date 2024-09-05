@@ -127,39 +127,40 @@ function Music() {
             </div>
             <div className="col-12" style={{ overflow: "auto" }}>
               <div className="tableContainer">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Music</th>
-                      <th>Type</th>
-                      <th>Added Date</th>
-                      <th>Play</th>
-                      <th>Delete</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {music &&
-                      music.map((item) => {
-                        return (
-                          <tr>
-                            <td>{item.name}</td>
-                            <td>{item.type}</td>
-                            <td>{item.created_at.split("T")[0]}</td>
-                            <td>
-                              <MusicPlayer
-                                audioSrc={item.path
-                                }
-                              />
-                            </td>
+                {loading ? (
+                  <ContentLoader />
+                ) : (
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Music</th>
+                        <th>Type</th>
+                        <th>Added Date</th>
+                        <th>Play</th>
+                        <th>Delete</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {music &&
+                        music.map((item) => {
+                          return (
+                            <tr>
+                              <td>{item.name}</td>
+                              <td>{item.type}</td>
+                              <td>{item.created_at.split("T")[0]}</td>
+                              <td>
+                                <MusicPlayer audioSrc={item.path} />
+                              </td>
 
-                            <td onClick={() => handleDelete(item.id)}>
-                              <i className="fa-duotone fa-trash text-danger fs-6"></i>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </table>
+                              <td onClick={() => handleDelete(item.id)}>
+                                <i className="fa-duotone fa-trash text-danger fs-6"></i>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                )}
               </div>
             </div>
           </div>
@@ -227,7 +228,7 @@ function Music() {
           ) : (
             ""
           )}
-          {loading ? <ContentLoader /> : ""}
+          {/* {loading ? <ContentLoader /> : ""} */}
           {/* {music && music.data.length > 0 ? (
             <PaginationComponent
               pageNumber={(e) => setPageNumber(e)}

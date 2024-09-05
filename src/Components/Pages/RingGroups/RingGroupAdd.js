@@ -14,6 +14,7 @@ import { useForm, Controller } from "react-hook-form";
 import {
   emailValidator,
   lengthValidator,
+  minValidator,
   nameNumberValidator,
   nameValidator,
   noSpecialCharactersValidator,
@@ -113,7 +114,7 @@ const RingGroupAdd = () => {
       destination: "",
       delay: 0,
       timeOut: "30",
-      prompt: "",
+      // prompt: "",
       status: "inactive",
     },
     // {
@@ -191,7 +192,7 @@ const RingGroupAdd = () => {
         destination: "",
         delay: 0,
         timeOut: "30",
-        prompt: "",
+        // prompt: "",
         status: "inactive",
       },
     ]);
@@ -301,7 +302,7 @@ const RingGroupAdd = () => {
               return {
                 destination: item.destination,
                 delay_order: item.delay,
-                prompt: item.prompt,
+                // prompt: item.prompt,
                 destination_timeout: item.timeOut,
                 status: item.status,
                 created_by: account.account_id,
@@ -324,7 +325,7 @@ const RingGroupAdd = () => {
           destination: "",
           delay: 0,
           timeOut: "30",
-          prompt: "",
+          // prompt: "",
           status: "inactive",
         },
         // {
@@ -675,7 +676,7 @@ const RingGroupAdd = () => {
                           })()}
                         </select>
                       </div>
-                      <div className="col-2 pe-2">
+                      {/* <div className="col-2 pe-2">
                         {index === 0 ? (
                           <div className="formLabel">
                             <label htmlFor="">Prompt</label>
@@ -694,7 +695,7 @@ const RingGroupAdd = () => {
                           <option className="status">Prompt</option>
                           <option value="confirm">Confirm</option>
                         </select>
-                      </div>
+                      </div> */}
                       <div className="col-2 pe-2">
                         {index === 0 ? (
                           <div className="formLabel">
@@ -800,6 +801,12 @@ const RingGroupAdd = () => {
                     {...register("call_timeout", {
                       ...requiredValidator,
                       ...noSpecialCharactersValidator,
+                      ...minValidator(
+                        destination.reduce(
+                          (max, obj) => Math.max(max, obj.delay),
+                          0
+                        )
+                      ),
                     })}
                   />
                   {errors.call_timeout && (
@@ -836,9 +843,11 @@ const RingGroupAdd = () => {
                 <div className="col-12">
                   <select
                     className="formItem"
-                    {...register("ring_back", { ...requiredValidator })}
+                    {...register("ring_back")}
                     id="selectFormRow"
+                    defaultValue={"null"}
                   >
+                    <option value="null">None</option>
                     {/* <option>us-ring</option>
                     <option value="uk-ring">uk-ring</option>
                     <option value="eu-ring">eu-ring</option> */}
