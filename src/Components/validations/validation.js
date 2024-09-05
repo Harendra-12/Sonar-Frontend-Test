@@ -99,3 +99,18 @@ export const noSpecialCharNumberValidator = {
     message: "Input must only contain numbers.",
   },
 };
+
+export const minValidator = (min) => {
+  return {
+    // minLength: {
+    //   value: min,
+    //   message: `Value must be at least ${min}`,
+    // },
+    validate: (value) => {
+      // console.log('Validating value:', Number(value), 'with minimum:', min);
+     return Number(value) >= min || `Value must be at least ${min}`
+    },
+    // min: min,
+    // message: `Value must be at least ${min}`,
+  };
+};

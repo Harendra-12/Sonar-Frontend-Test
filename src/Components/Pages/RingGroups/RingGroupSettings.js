@@ -20,6 +20,7 @@ const RingGroupSettings = () => {
   const value = queryParams.get("id");
   const [successMessage, setSuccessMessage] = useState("");
   const [prevDestinations, setprevDestinations] = useState([]);
+  const [ringBack, setRingBack] = useState();
   const {
     register,
     setValue,
@@ -40,13 +41,20 @@ const RingGroupSettings = () => {
       setLoading(true);
       async function getData() {
         const ringData = await generalGetFunction(`/ringgroup/${value}`);
+        const ringBack = await generalGetFunction("/sound/all?type=ringback");
         if (ringData.status) {
-          const { ring_group_destination, followme, status, name, extension } =
-            ringData.data[0];
+          console.log("data:", ringData.data);
+          const {
+            ring_group_destination,
+            description,
+            status,
+            name,
+            extension,
+          } = ringData.data[0];
           setprevDestinations(ring_group_destination);
 
           const updatedEditData = {
-            followme: followme === 1,
+            description: ringData.data[0].description || "",
             status: status === "active",
             strategy: ringData.data[0].strategy || "",
             ring_back: ringData.data[0].ring_back || "",
@@ -59,6 +67,11 @@ const RingGroupSettings = () => {
           setLoading(false);
           navigate("/");
         }
+        if (ringBack.status) {
+          setRingBack(ringBack.data);
+        } else {
+          navigate("/");
+        }
       }
       getData();
     } else {
@@ -68,7 +81,8 @@ const RingGroupSettings = () => {
 
   const handleFormSubmit = handleSubmit(async (data) => {
     const updatedData = {
-      followme: data.followme,
+      // followme: data.followme,
+      description: data.description,
       status: data.status ? "active" : "inactive",
       strategy: data.strategy,
       ring_back: data.ring_back,
@@ -137,33 +151,6 @@ const RingGroupSettings = () => {
                 <div className="formRow col-xl-12 px-xl-4">
                   <div className="col-12 d-flex justify-content-start">
                     <div className="formLabel pe-2 col-2">
-                      <label className="text-dark" htmlFor="followme">
-                        Follow Me
-                      </label>
-                    </div>
-                    <div className="col-2 pe-2">
-                      <div className="formLabel">
-                        <label htmlFor="followme">Status</label>
-                      </div>
-                      <select
-                        className="formItem me-0"
-                        style={{ width: "100%" }}
-                        {...register("followme")}
-                        id="followme"
-                      >
-                        <option value={true}>True</option>
-                        <option value={false}>False</option>
-                      </select>
-                      <br />
-                      <label htmlFor="followme" className="formItemDesc">
-                        Choose to follow a ring group destination's follow me.
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <div className="formRow col-xl-12 px-xl-4">
-                  <div className="col-12 d-flex justify-content-start">
-                    <div className="formLabel pe-2 col-2">
                       <label className="text-dark" htmlFor="strategy">
                         Strategy
                       </label>
@@ -205,14 +192,46 @@ const RingGroupSettings = () => {
                         {...register("ring_back")}
                         id="ring_back"
                       >
-                        <option value="us-ring">us-ring</option>
+                        <option value="null">None</option>
+                        {/* <option value="us-ring">us-ring</option>
                         <option value="uk-ring">uk-ring</option>
-                        <option value="eu-ring">eu-ring</option>
+                        <option value="eu-ring">eu-ring</option> */}
+                        {ringBack &&
+                          ringBack.map((ring) => {
+                            return (
+                              <option key={ring.id} value={ring.id}>
+                                {ring.name}
+                              </option>
+                            );
+                          })}
                       </select>
                       <br />
                       <label htmlFor="ring_back" className="formItemDesc">
                         Defines what the caller will hear while the destination
                         is being called.
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div className="formRow col-xl-12 px-xl-4">
+                  <div className="col-12 d-flex justify-content-start">
+                    <div className="formLabel pe-2 col-2">
+                      <label className="text-dark" htmlFor="description">
+                        Description
+                      </label>
+                    </div>
+                    <div className="col-2 pe-2">
+                      <input
+                        type="text"
+                        name="extension"
+                        className="formItem me-0"
+                        style={{ width: "100%" }}
+                        {...register("description")}
+                        id="description"
+                      />
+                      <br />
+                      <label htmlFor="description" className="formItemDesc">
+                        Enter the description.
                       </label>
                     </div>
                   </div>

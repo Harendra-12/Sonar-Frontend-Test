@@ -16,6 +16,7 @@ import { useForm, Controller } from "react-hook-form";
 import {
   emailValidator,
   lengthValidator,
+  minValidator,
   nameNumberValidator,
   nameValidator,
   noSpecialCharactersValidator,
@@ -65,7 +66,7 @@ const RingGroupEdit = () => {
       destination: "",
       delay: 0,
       timeOut: "30",
-      prompt: "",
+      // prompt: "",
       status: "inactive",
     },
   ]);
@@ -101,7 +102,6 @@ const RingGroupEdit = () => {
         }
         if (ringBack.status) {
           setRingBack(ringBack.data);
-          console.log("ringBack", ringBack);
         } else {
           navigate("/");
         }
@@ -119,7 +119,7 @@ const RingGroupEdit = () => {
                 return {
                   destination: item.destination,
                   delay: item.delay_order,
-                  prompt: item.prompt,
+                  // prompt: item.prompt,
                   timeOut: item.destination_timeout,
                   status: item.status,
                   id: item.id,
@@ -317,7 +317,7 @@ const RingGroupEdit = () => {
         destination: "",
         delay: 0,
         timeOut: "30",
-        prompt: "",
+        // prompt: "",
         status: "inactive",
       },
     ]);
@@ -385,7 +385,7 @@ const RingGroupEdit = () => {
               return {
                 destination: item.destination,
                 delay_order: item.delay,
-                prompt: item.prompt,
+                // prompt: item.prompt,
                 destination_timeout: item.timeOut,
                 status: item.status,
                 created_by: account.account_id,
@@ -725,7 +725,7 @@ const RingGroupEdit = () => {
                           })()}
                         </select>
                       </div>
-                      <div className="col-2 pe-2">
+                      {/* <div className="col-2 pe-2">
                         {index === 0 ? (
                           <div className="formLabel">
                             <label htmlFor="">Prompt</label>
@@ -744,7 +744,7 @@ const RingGroupEdit = () => {
                           <option className="status">Prompt</option>
                           <option value="confirm">Confirm</option>
                         </select>
-                      </div>
+                      </div> */}
                       <div className="col-2 pe-2">
                         {index === 0 ? (
                           <div className="formLabel">
@@ -846,6 +846,12 @@ const RingGroupEdit = () => {
                     {...register("call_timeout", {
                       ...requiredValidator,
                       ...noSpecialCharactersValidator,
+                      ...minValidator(
+                        destination.reduce(
+                          (max, obj) => Math.max(max, obj.delay),
+                          0
+                        )
+                      ),
                     })}
                   />
                   {errors.call_timeout && (
@@ -882,9 +888,10 @@ const RingGroupEdit = () => {
                 <div className="col-12">
                   <select
                     className="formItem"
-                    {...register("ring_back", { ...requiredValidator })}
+                    {...register("ring_back")}
                     id="selectFormRow"
                   >
+                    <option value="null">None</option>
                     {/* <option>us-ring</option>
                     <option value="uk-ring">uk-ring</option>
                     <option value="eu-ring">eu-ring</option> */}
