@@ -441,7 +441,7 @@ function Navbar() {
                           </li>
                           <li className="tabItem" effect="ripple">
                             <NavLink
-                              to="/dashboard"
+                              to="/port-number"
                               onClick={backToTop}
                               className="nav-link"
                             >

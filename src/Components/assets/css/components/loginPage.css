@@ -1,47 +1,81 @@
 main.login {
-    /* background-image: url('../../images/login_bg2.jpg'); */
-    background-size: cover;
+    /* background: linear-gradient(119deg, rgba(91, 42, 134, 1) 0%, rgba(17, 21, 37, 1) 100%); */
+    background: linear-gradient(130deg, rgba(121, 43, 189, 1) 0%, rgba(64, 32, 115, 1) 50%, rgba(7, 10, 22, 1) 100%);
+    background-size: 200% 200%;
     background-position: center;
+    animation: gradientAnimation 5s ease infinite;
     width: 100%;
     height: 100vh;
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .loginWrapper {
     backdrop-filter: blur(10px);
     background-color: #ffffff25;
-    padding: 20px;
-    border-radius: 15px;
-    border: 1px solid #fff;
-    height: 435px;
+    /* background-color: #fff; */
+    /* padding: 20px; */
+    /* border-radius: 15px; */
+    border-radius: 5px;
+    /* border: 1px solid #fff; */
+    /* height: 435px; */
+    height: 80%;
+
+    display: flex;
+    flex-wrap: wrap;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .loginFormItem {
-    border: 1px solid #fff;
-    background-color: #ffffff45;
+    /* border: 1px solid #fff; */
+    border: none;
+    /* background-color: #ffffff45; */
+    background-color: var(--bgdark-color);
     border-radius: 50px;
     width: 100%;
     height: 35px;
     color: #fff;
     margin-bottom: 25px;
     padding: 5px 15px 5px 40px;
+    /* padding: 5px 15px 5px 30px; */
     font-family: Outfit;
     font-size: 16px;
     font-weight: 200;
     outline: none;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .loginFormItem::placeholder {
-    color: #fff;
+    /* color: #fff; */
+    color: #ddd;
     font-family: Outfit;
     font-weight: 200;
     font-size: 14px;
     letter-spacing: 1px;
 }
 
+.loginWrapper form label {
+    color: #fff;
+    margin-bottom: 5px;
+}
+
 .loginWrapper form i {
     position: absolute;
     top: 10px;
     left: 13px;
+    /* left: 5px; */
     font-size: 18px;
     color: #fff;
 }
@@ -77,8 +111,10 @@ a.loginLabel {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    border: 5px solid #ffffff45;
+    /* border: 5px solid #ffffff45; */
+    border: 5px solid var(--bgdark-color);
     margin-bottom: 35px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .loginWrapper .iconWrapper i {
@@ -86,7 +122,8 @@ a.loginLabel {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #ffffff45;
+    /* color: #ffffff45; */
+    color: var(--bgdark-color);
 }
 
 .login .someText {
@@ -150,6 +187,31 @@ a.loginLabel {
     display: none;
 }
 
+.loginWrapper .imgWrapper {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    filter: blur(3px);
+    -webkit-filter: blur(3px);
+}
+
+.loginWrapper .imgWrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* .loginWrapper .coolLoginText {
+    font-size: 6.0vw;
+    line-height: 8.9vh;
+    font-weight: 800;
+    text-transform: uppercase;
+    background: url('../../images/testLogin.webp') center center / cover;
+    color: #de466c;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -3px;
+} */
 
 
 
@@ -205,4 +267,9 @@ a.loginLabel {
 
 .count-particles {
     border-radius: 0 0 3px 3px;
+}
+
+#tsparticles {
+    height: 100%;
+    width: 100%;
 }
