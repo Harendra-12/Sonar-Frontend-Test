@@ -82,7 +82,7 @@ function CallCenterQueueAdd() {
       level: "0",
       position: "0",
       type: "callback",
-      status: "Logged Out",
+      // status: "Logged Out",
       password: "1234",
       contact: "",
     },
@@ -101,7 +101,7 @@ function CallCenterQueueAdd() {
         level: "0",
         position: "0",
         type: "callback",
-        status: "Logged Out",
+        // status: "Logged Out",
         password: "1234",
         contact: "",
       },
@@ -238,7 +238,7 @@ function CallCenterQueueAdd() {
         account_id: account.account_id,
         created_by: account.id,
       },
-      ...xmlObj,
+      // ...xmlObj,
 
       ...{
         agents: agent.map((item) => {
@@ -247,7 +247,7 @@ function CallCenterQueueAdd() {
             tier_level: item.level,
             tier_position: item.position,
             type: item.type,
-            status: "Logged Out",
+            // status: "Logged Out",
             password: item.password,
             contact: item.contact,
           };
@@ -784,7 +784,7 @@ function CallCenterQueueAdd() {
                             <option value={"uuid-standby"}>UUID Standbu</option>
                           </select>
                         </div>
-                        <div className="col-2 pe-2">
+                        {/* <div className="col-2 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Status</label>
@@ -806,7 +806,7 @@ function CallCenterQueueAdd() {
                             </option>
                             <option value={"On Break"}>On Break</option>
                           </select>
-                        </div>
+                        </div> */}
 
                         {index === 0 ? (
                           ""

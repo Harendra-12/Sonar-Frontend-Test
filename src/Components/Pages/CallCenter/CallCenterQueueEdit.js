@@ -48,7 +48,7 @@ function CallCenterQueueEdit() {
       level: "0",
       position: "0",
       type: "callback",
-      status: "Logged Out",
+      // status: "Logged Out",
       password: "1234",
       contact: "",
       time_base_score: "queue",
@@ -112,7 +112,7 @@ function CallCenterQueueEdit() {
             level: item.tier_level,
             position: item.tier_position,
             type: item.type,
-            status: item.status,
+            // status: item.status,
             password: item?.password,
             contact: item.contact,
           };
@@ -150,7 +150,7 @@ function CallCenterQueueEdit() {
         level: "0",
         position: "0",
         type: "callback",
-        status: "Logged Out",
+        // status: "Logged Out",
         password: "1234",
         contact: "",
       },
@@ -285,7 +285,7 @@ function CallCenterQueueEdit() {
         account_id: account.account_id,
         created_by: account.id,
       },
-      ...xmlObj,
+      // ...xmlObj,
 
       ...{
         agents: agent
@@ -300,7 +300,7 @@ function CallCenterQueueEdit() {
                 tier_level: item.level,
                 tier_position: item.position,
                 type: item.type,
-                status: "Logged Out",
+                // status: "Logged Out",
                 password: item.password,
                 contact: item.contact,
                 ...(hasId ? { id: item.id } : {}), // Conditionally add 'id' field
@@ -851,7 +851,7 @@ function CallCenterQueueEdit() {
                             <option value={"uuid-standby"}>UUID Standbu</option>
                           </select>
                         </div>
-                        <div className="col-2 pe-2">
+                        {/* <div className="col-2 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Status</label>
@@ -874,7 +874,7 @@ function CallCenterQueueEdit() {
                             </option>
                             <option value={"On Break"}>On Break</option>
                           </select>
-                        </div>
+                        </div> */}
 
                         {index === 0 ? (
                           ""
