@@ -42,7 +42,7 @@ function Login() {
                     },
                   },
                   fullScreen: {
-                    enable: false
+                    enable: true
                   },
                   fpsLimit: 120,
                   interactivity: {
