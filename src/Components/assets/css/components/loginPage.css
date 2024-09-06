@@ -206,3 +206,8 @@ a.loginLabel {
 .count-particles {
     border-radius: 0 0 3px 3px;
 }
+
+#tsparticles {
+    height: 100%;
+    width: 100%;
+}
