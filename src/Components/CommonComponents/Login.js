@@ -41,6 +41,9 @@ function Login() {
                       value: "#111525",
                     },
                   },
+                  fullScreen: {
+                    enable: false
+                  },
                   fpsLimit: 120,
                   interactivity: {
                     events: {
@@ -52,16 +55,19 @@ function Login() {
                         enable: true,
                         mode: "attract",
                       },
-                      resize: true,
+                      onChange: {
+                        enable: false,
+                      },
+                      resize: false,
                     },
                     modes: {
                       pull: {
                         quantity: 20,
                       },
                       attract: {
-                        distance: 150,
-                        duration: 10,
-                        speed: 6,
+                        distance: 50,
+                        duration: 2,
+                        speed: 5,
                       },
                     },
                   },
@@ -97,12 +103,7 @@ function Login() {
                     opacity: {
                       value: 0.5,
                       random: false,
-                      anim: {
-                        enable: false,
-                        speed: 1,
-                        opacity_min: 0.1,
-                        sync: false,
-                      },
+                      anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false },
                     },
                     shape: {
                       type: "circle",
