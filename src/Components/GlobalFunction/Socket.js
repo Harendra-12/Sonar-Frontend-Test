@@ -23,7 +23,9 @@ const Socket = () => {
           if(JSON.parse(JSON.parse(event.data))["key"] === "UserRegister"){
             dispatch({
               type: "SET_REGISTERUSER",
-              registerUser: JSON.parse(JSON.parse(event.data))["result"]
+              registerUser: JSON.parse(JSON.parse(event.data))["result"].filter((item) => {
+                return item.account_id === account.account_id
+              })
             });
           }else if(JSON.parse(JSON.parse(event.data))["key"] === "onlineUser"){
             dispatch({

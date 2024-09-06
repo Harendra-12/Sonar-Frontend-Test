@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import {
   backToTop,
+  generalDeleteFunction,
   generalGetFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
@@ -337,10 +338,43 @@ function CallCenterQueueEdit() {
       });
     } else {
       setLoading(false);
-      const errorMessage = Object.keys(apiData.errors);
-      toast.error(apiData.errors[errorMessage[0]][0]);
+      if(apiData.error){
+        toast.error(apiData.error);
+      }else{
+        const errorMessage = Object.keys(apiData.errors);
+        toast.error(apiData.errors[errorMessage[0]][0]);
+      }
     }
   });
+
+  const checkPrevDestination = (id) => {
+    const result = prevAgents.filter((item, idx) => {
+      return item.id == id;
+    });
+    if (result.length > 0) return true;
+    return false;
+  };
+  async function deleteDestination(id) {
+    if (checkPrevDestination(id)) {
+      setLoading(true);
+      const deleteGroup = await generalDeleteFunction(
+        `/call-center-agent/destroy/${id}`
+      );
+      if (deleteGroup.status) {
+        const updatedDestination = agent.filter((item) => item.id !== id);
+        setAgent(updatedDestination);
+        setLoading(false);
+        toast.success(deleteGroup.message);
+      } else {
+        setLoading(false);
+        toast.error(deleteGroup.message);
+      }
+    } else {
+      setAgent(agent.filter((item) => item.id !== id));
+    }
+  }
+
+
 
   return (
     <main className="mainContent">
@@ -880,7 +914,7 @@ function CallCenterQueueEdit() {
                           ""
                         ) : (
                           <div
-                            onClick={() => removeAgenet(item.id)}
+                            onClick={() => deleteDestination(item.id)}
                             className="col-auto h-100 d-flex align-items-center"
                           >
                             <button
