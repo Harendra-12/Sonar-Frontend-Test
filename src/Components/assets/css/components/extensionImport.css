@@ -73,12 +73,15 @@
 .formLabel .status.missing {
     color: #fd4800;
 }
-.formItem.missing{
+
+.formItem.missing {
     border: 1px solid #fd4800;
 }
-.formItem.error{
+
+.formItem.error {
     border: 1px solid red;
 }
+
 .formLabel .status.missing::before {
     content: '\f06a';
     font-size: 14px;
@@ -104,7 +107,8 @@
 }
 
 #detailsContent .formRow select {
-    width: 170px;
+    /* width: 170px; */
+    width: 100%;
 }
 
 /* #detailsContent  */
