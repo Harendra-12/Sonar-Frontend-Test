@@ -68,7 +68,7 @@ function PortNumber() {
                   <table>
                     <thead>
                       <tr>
-                        <th>Account Id</th>
+                        <th>Id</th>
                         <th>Name</th>
                         <th>Company Name</th>
                         <th>Billing Address</th>
@@ -88,9 +88,7 @@ function PortNumber() {
                                 navigate(`/port-number-edit?id=${item.id}`)
                               }
                             >
-                              <td style={{ cursor: "default" }}>
-                                {item.account_id}
-                              </td>
+                              <td style={{ cursor: "default" }}>{item.id}</td>
                               <td style={{ cursor: "default" }}>
                                 {item.fullname}
                               </td>
