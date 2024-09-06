@@ -39,7 +39,7 @@ function AllContact() {
   }, [contact]);
   return (
     <>
-      <SideNavbarApp />
+      {/* <SideNavbarApp /> */}
       <main
         className="mainContentApp"
         style={{

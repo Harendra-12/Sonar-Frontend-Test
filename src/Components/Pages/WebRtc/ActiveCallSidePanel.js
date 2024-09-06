@@ -14,6 +14,7 @@ function ActiveCallSidePanel({
   const globalSession = useSelector((state) => state.sessions);
   const callProgressId = useSelector((state) => state.callProgressId);
   const { session, timer, hold, unhold } = useSessionCall(sessionId);
+  console.log(session);
   //Keep track for previous call progress Id
   const [prevCallProgressId, setPrevCallProgressId] = useState(callProgressId);
 
