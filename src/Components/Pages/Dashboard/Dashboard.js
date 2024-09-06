@@ -763,7 +763,7 @@ const Dashboard = () => {
                         Number(accountDetails?.package?.number_of_user) -
                           userList,
                       ]}
-                      centerTitle={`${userList}/${Number(
+                      centerTitle={`${userList}/${(
                         accountDetails?.package?.number_of_user
                       )}`}
                       centerDesc="Total Users Available"
