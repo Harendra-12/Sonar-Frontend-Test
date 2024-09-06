@@ -31,7 +31,7 @@ function Login() {
       </style>
       <div>
         <main className="login">
-          <div className="h-100 position-absolute top-0 start-0">
+          <div className="h-100 w-100 position-absolute top-0 start-0">
             {init && (
               <Particles
                 id="tsparticles"
@@ -42,7 +42,7 @@ function Login() {
                     },
                   },
                   fullScreen: {
-                    enable: true
+                    enable: false
                   },
                   fpsLimit: 120,
                   interactivity: {
