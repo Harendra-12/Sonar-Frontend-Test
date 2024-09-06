@@ -1,15 +1,19 @@
-import React from 'react'
+import React from "react";
 import { MdErrorOutline } from "react-icons/md";
 
+const style = {
+  fontSize: "12px",
+};
 
-const style={
-    fontSize: "12px"
-}
-
-const ErrorMessage = ({text}) => {
+const ErrorMessage = ({ text }) => {
   return (
-    <span style={style} className='text-danger d-flex align-items-center'><MdErrorOutline />{" "}{text}</span>    
-  )
-}
+    <div className="d-flex align-items-start">
+      <MdErrorOutline className="text-danger" style={{ flexShrink: 0 }} />
+      <span style={style} className="text-danger ms-1">
+        {text}
+      </span>
+    </div>
+  );
+};
 
-export default ErrorMessage
+export default ErrorMessage;
