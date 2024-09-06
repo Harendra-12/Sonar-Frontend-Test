@@ -1,10 +1,31 @@
-import React from "react";
-import { backToTop } from "../../GlobalFunction/globalFunction";
-import { useNavigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import React, { useEffect, useState } from "react";
+import {
+  backToTop,
+  generalGetFunction,
+} from "../../GlobalFunction/globalFunction";
+import { Link, useNavigate } from "react-router-dom";
+
+import ContentLoader from "../../Loader/ContentLoader";
 
 function PortNumber() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [portData, setPortData] = useState([]);
+
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction(`/ports/all`);
+      if (apiData.status) {
+        setLoading(false);
+        setPortData(apiData.data);
+      } else {
+        setLoading(false);
+        navigate(-1);
+      }
+    }
+    getData();
+  }, []);
+
   return (
     <>
       <main className="mainContent">
@@ -26,253 +47,78 @@ function PortNumber() {
                   >
                     Back
                   </button>
-                  <button effect="ripple" className="panelButton">
-                    Save
-                  </button>
+                  <Link
+                    to="/port-number-add"
+                    onClick={backToTop}
+                    effect="ripple"
+                    className="panelButton"
+                  >
+                    Add
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
           <div className="col-xl-12">
-            <div className="mx-2" id="detailsContent">
-              <form action="#" className="row">
-                <div className="formRow col-xl-12 px-xl-4">
-                  <div className="col-12 d-flex justify-content-start">
-                    <div className="formLabel pe-2 col-2">
-                      <label className="text-dark">Full Name</label>
-                      <br />
-                      <label
-                        htmlFor="data"
-                        className="formItemDesc"
-                        style={{
-                          fontSize: 12,
-                          lineHeight: "18px",
-                          marginTop: 5,
-                        }}
-                      >
-                        Full legal name of the current owner.
-                      </label>
-                    </div>
-                    <div className="col-2 pe-2">
-                      <div className="formLabel">
-                        <label className="status missing">Field missing</label>
-                      </div>
-                      <input
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                        required="required"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="formRow col-xl-12 px-xl-4">
-                  <div className="col-12 d-flex justify-content-start">
-                    <div className="formLabel pe-2 col-2">
-                      <label className="text-dark">Company Name</label>
-                      <br />
-                      <label
-                        htmlFor="data"
-                        className="formItemDesc"
-                        style={{
-                          fontSize: 12,
-                          lineHeight: "18px",
-                          marginTop: 5,
-                        }}
-                      >
-                        The company to whom the number is registered.
-                      </label>
-                    </div>
-                    <div className="col-2 pe-2">
-                      <div className="formLabel">
-                        <label className="status missing">Field missing</label>
-                      </div>
-                      <input
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                        required="required"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="formRow col-xl-12 px-xl-4">
-                  <div className="col-12 d-flex justify-content-start">
-                    <div className="formLabel pe-2 col-2">
-                      <label className="text-dark">Billing Address</label>
-                      <br />
-                      <label
-                        htmlFor="data"
-                        className="formItemDesc"
-                        style={{
-                          fontSize: 12,
-                          lineHeight: "18px",
-                          marginTop: 5,
-                        }}
-                      >
-                        The address associated with the current number.
-                      </label>
-                    </div>
-                    <div className="col-2 pe-2">
-                      <div className="formLabel">
-                        <label className="status missing">Field missing</label>
-                      </div>
-                      <input
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                        required="required"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="formRow col-xl-12 px-xl-4">
-                  <div className="col-12 d-flex justify-content-start">
-                    <div className="formLabel pe-2 col-2">
-                      <label className="text-dark">PIN or Password</label>
-                      <br />
-                      <label
-                        htmlFor="data"
-                        className="formItemDesc"
-                        style={{
-                          fontSize: 12,
-                          lineHeight: "18px",
-                          marginTop: 5,
-                        }}
-                      >
-                        Some carriers require a PIN for porting.
-                      </label>
-                    </div>
-                    <div className="col-2 pe-2">
-                      <div className="formLabel">
-                        <label className="status missing">Field missing</label>
-                      </div>
-                      <input
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                        required="required"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="formRow col-xl-12 px-xl-4">
-                  <div className="col-12 d-flex justify-content-start">
-                    <div className="formLabel pe-2 col-2">
-                      <label className="text-dark">Carrier</label>
-                      <br />
-                      <label
-                        htmlFor="data"
-                        className="formItemDesc"
-                        style={{
-                          fontSize: 12,
-                          lineHeight: "18px",
-                          marginTop: 5,
-                        }}
-                      >
-                        The current vendor/carrier of the number.
-                      </label>
-                    </div>
-                    <div className="col-2 pe-2">
-                      <div className="formLabel">
-                        <label className="status missing">Field missing</label>
-                      </div>
-                      <input
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                        required="required"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="formRow col-xl-12 px-xl-4">
-                  <div className="col-12 d-flex justify-content-start">
-                    <div className="formLabel pe-2 col-2">
-                      <label className="text-dark">Account Number</label>
-                      <br />
-                      <label
-                        htmlFor="data"
-                        className="formItemDesc"
-                        style={{
-                          fontSize: 12,
-                          lineHeight: "18px",
-                          marginTop: 5,
-                        }}
-                      >
-                        Account Number with Current Provider. This can often be
-                        found on
-                      </label>
-                    </div>
-                    <div className="col-2 pe-2">
-                      <div className="formLabel">
-                        <label className="status missing">Field missing</label>
-                      </div>
-                      <input
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                        required="required"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="formRow col-xl-12 px-xl-4">
-                  <div className="col-12 d-flex justify-content-start">
-                    <div className="formLabel pe-2 col-2">
-                      <label className="text-dark">Phone Number</label>
-                      <br />
-                      <label
-                        htmlFor="data"
-                        className="formItemDesc"
-                        style={{
-                          fontSize: 12,
-                          lineHeight: "18px",
-                          marginTop: 5,
-                        }}
-                      >
-                        The number(s) that need to be ported.
-                      </label>
-                    </div>
-                    <div className="col-2 pe-2">
-                      <div className="formLabel">
-                        <label className="status missing">Field missing</label>
-                      </div>
-                      <input
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                        required="required"
-                      />
-                    </div>
-                    <div class="col-xl-2 mt-auto">
-                      <button
-                        class="panelButton ms-xl-5"
-                        effect="ripple"
-                        type="button"
-                      >
-                        <i class="fa-duotone fa-circle-plus me-2"></i>Add More
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </form>
+            <div className="col-12" style={{ overflow: "auto" }}>
+              <div className="tableContainer">
+                {loading ? (
+                  <ContentLoader />
+                ) : (
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Company Name</th>
+                        <th>Billing Address</th>
+                        <th>Pin</th>
+                        <th>Carrier</th>
+                        <th>Account no.</th>
+                        <th>Phone no.</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {portData.length > 0 &&
+                        portData.map((item) => {
+                          return (
+                            <tr
+                              key={item.id}
+                              onClick={() =>
+                                navigate(`/port-number-edit?id=${item.id}`)
+                              }
+                            >
+                              <td style={{ cursor: "default" }}>{item.id}</td>
+                              <td style={{ cursor: "default" }}>
+                                {item.fullname}
+                              </td>
+                              <td style={{ cursor: "default" }}>
+                                {item.company_name}
+                              </td>
+                              <td style={{ cursor: "default" }}>
+                                {item?.billing_address}
+                              </td>
+                              <td style={{ cursor: "default" }}>{item?.pin}</td>
+                              <td style={{ cursor: "default" }}>
+                                {item?.carrier}
+                              </td>
+
+                              <td style={{ cursor: "default" }}>
+                                {item?.account_number}
+                              </td>
+                              <td style={{ cursor: "default" }}>
+                                {item?.phone_number}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                )}
+              </div>
             </div>
           </div>
         </section>
-
-        <ToastContainer
-          position="bottom-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        />
       </main>
     </>
   );

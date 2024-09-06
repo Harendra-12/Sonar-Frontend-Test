@@ -93,6 +93,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Variable from "./Components/Pages/Variable/Variable";
 import CallCenter from "./Components/Pages/WebRtc/CallCenter";
 import PortNumber from "./Components/Pages/NumberManagement/PortNumber";
+import PortNumberAdd from "./Components/Pages/NumberManagement/PortNumberAdd";
+import PortNumberEdit from "./Components/Pages/NumberManagement/PortNumberEdit";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -244,6 +246,8 @@ function App() {
           <Route path="/did-listing" element={<DidListing />} />
           <Route path="/did-config" element={<DidConfig />} />
           <Route path="/port-number" element={<PortNumber />} />
+          <Route path="/port-number-add" element={<PortNumberAdd />} />
+          <Route path="/port-number-edit" element={<PortNumberEdit />} />
           {/* Number Management Path End */}
 
           {/* Payment path start */}
