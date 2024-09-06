@@ -12,12 +12,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 function Login() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   // Init Particle js and use it
   const [init, setInit] = useState(false);
-  const [loading, setLoading] = useState(false);
   useEffect(() => {
     initParticlesEngine(async (engine) => {
       await loadSlim(engine);
@@ -25,106 +21,6 @@ function Login() {
       setInit(true);
     });
   }, []);
-
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-
-  // Function to handle login
-  const userLogin = useCallback(async () => {
-    if (userName === "") {
-      toast.error("Username is required!");
-    } else if (password === "") {
-      toast.error("Password is required!");
-    } else {
-      setLoading(true);
-      const data = await login(userName, password);
-      if (data) {
-        if (data.status) {
-          const profile = await generalGetFunction("/user");
-          if (profile.status) {
-            dispatch({
-              type: "SET_ACCOUNT",
-              account: profile.data,
-            });
-            dispatch({
-              type: "SET_BILLINGLISTREFRESH",
-              billingListRefresh: 1,
-            });
-            dispatch({
-              type: "SET_CARDLISTREFRESH",
-              cardListRefresh: 1,
-            });
-            localStorage.setItem("account", JSON.stringify(profile.data));
-            const accountData = await generalGetFunction(
-              `/account/${profile.data.account_id}`
-            );
-            if (accountData.status) {
-              dispatch({
-                type: "SET_ACCOUNTDETAILS",
-                accountDetails: accountData.data,
-              });
-              localStorage.setItem(
-                "accountDetails",
-                JSON.stringify(accountData.data)
-              );
-              if (Number(accountData.data.company_status) < 6) {
-                dispatch({
-                  type: "SET_TEMPACCOUNT",
-                  tempAccount: accountData.data,
-                });
-                localStorage.setItem(
-                  "tempAccount",
-                  JSON.stringify(accountData.data)
-                );
-                setLoading(false);
-                window.scrollTo(0, 0);
-                navigate("/temporary-dashboard");
-              } else {
-                dispatch({
-                  type: "SET_TEMPACCOUNT",
-                  tempAccount: null,
-                });
-                setLoading(false);
-                window.scrollTo(0, 0);
-                navigate("/dashboard");
-              }
-            } else {
-              setLoading(false);
-              toast.error("Server error !");
-            }
-          } else {
-            setLoading(false);
-            toast.error("unauthorized access!");
-          }
-        } else {
-          setLoading(false);
-          console.log(data, "This is error data");
-
-          // const errorMessage = Object.keys(data.error);
-          toast.error(data.response.data.message);
-        }
-      }
-    }
-  }, [userName, password, dispatch, navigate]);
-
-  // Function to handle Enter key press
-  const handleKeyDown = useCallback(
-    (event) => {
-      if (event.key === "Enter") {
-        userLogin();
-      }
-    },
-    [userLogin]
-  );
-
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-
-    // Clean up the event listener on component unmount
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [handleKeyDown]);
 
   return (
     <>
@@ -230,54 +126,7 @@ function Login() {
           <div className="container h-100">
             <div className="row h-100">
               <div className="loginWrapper col-xl-6 m-auto">
-                <form className="loginForm">
-                  <div className="col-xl-8 m-auto">
-                    <div className="iconWrapper">
-                      <i className="fa-regular fa-user" />
-                    </div>
-                    <div className="position-relative">
-                      <i className="fa-thin fa-user" />
-                      <input
-                        type="text"
-                        placeholder="USERNAME"
-                        className="loginFormItem"
-                        value={userName}
-                        onChange={(e) => setUserName(e.target.value)}
-                      />
-                    </div>
-                    <div className="position-relative">
-                      <i className="fa-thin fa-lock" />
-                      <input
-                        type="password"
-                        placeholder="PASSWORD"
-                        className="loginFormItem"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                      />
-                    </div>
-                    <div onClick={backToTop}>
-                      <button
-                        className="formSubmit"
-                        type="button"
-                        effect="ripple"
-                        onClick={() => {
-                          localStorage.clear();
-                          userLogin();
-                        }}
-                      >
-                        {loading ? (
-                          <img
-                            width="6%"
-                            src={require("../assets/images/loader-gif.webp")}
-                            alt=""
-                          />
-                        ) : (
-                          "LOGIN"
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                </form>
+                <LoginComponent />
                 <form className="forgotPassword">
                   <div className="col-xl-8 m-auto">
                     <div className="position-relative">
@@ -356,3 +205,161 @@ function Login() {
 }
 
 export default Login;
+
+export function LoginComponent() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+
+  // Function to handle login
+  const userLogin = useCallback(async () => {
+    if (userName === "") {
+      toast.error("Username is required!");
+    } else if (password === "") {
+      toast.error("Password is required!");
+    } else {
+      setLoading(true);
+      const data = await login(userName, password);
+      if (data) {
+        if (data.status) {
+          const profile = await generalGetFunction("/user");
+          if (profile.status) {
+            dispatch({
+              type: "SET_ACCOUNT",
+              account: profile.data,
+            });
+            dispatch({
+              type: "SET_BILLINGLISTREFRESH",
+              billingListRefresh: 1,
+            });
+            dispatch({
+              type: "SET_CARDLISTREFRESH",
+              cardListRefresh: 1,
+            });
+            localStorage.setItem("account", JSON.stringify(profile.data));
+            const accountData = await generalGetFunction(
+              `/account/${profile.data.account_id}`
+            );
+            if (accountData.status) {
+              dispatch({
+                type: "SET_ACCOUNTDETAILS",
+                accountDetails: accountData.data,
+              });
+              localStorage.setItem(
+                "accountDetails",
+                JSON.stringify(accountData.data)
+              );
+              if (Number(accountData.data.company_status) < 6) {
+                dispatch({
+                  type: "SET_TEMPACCOUNT",
+                  tempAccount: accountData.data,
+                });
+                localStorage.setItem(
+                  "tempAccount",
+                  JSON.stringify(accountData.data)
+                );
+                setLoading(false);
+                window.scrollTo(0, 0);
+                navigate("/temporary-dashboard");
+              } else {
+                dispatch({
+                  type: "SET_TEMPACCOUNT",
+                  tempAccount: null,
+                });
+                setLoading(false);
+                window.scrollTo(0, 0);
+                navigate("/dashboard");
+              }
+            } else {
+              setLoading(false);
+              toast.error("Server error !");
+            }
+          } else {
+            setLoading(false);
+            toast.error("unauthorized access!");
+          }
+        } else {
+          setLoading(false);
+          console.log(data, "This is error data");
+
+          // const errorMessage = Object.keys(data.error);
+          toast.error(data.response.data.message);
+        }
+      }
+    }
+  }, [userName, password, dispatch, navigate]);
+
+  // Function to handle Enter key press
+  const handleKeyDown = useCallback(
+    (event) => {
+      if (event.key === "Enter") {
+        userLogin();
+      }
+    },
+    [userLogin]
+  );
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleKeyDown]);
+
+  return (
+    <form className="loginForm">
+      <div className="col-xl-8 m-auto">
+        <div className="iconWrapper">
+          <i className="fa-regular fa-user" />
+        </div>
+        <div className="position-relative">
+          <i className="fa-thin fa-user" />
+          <input
+            type="text"
+            placeholder="USERNAME"
+            className="loginFormItem"
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+          />
+        </div>
+        <div className="position-relative">
+          <i className="fa-thin fa-lock" />
+          <input
+            type="password"
+            placeholder="PASSWORD"
+            className="loginFormItem"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div onClick={backToTop}>
+          <button
+            className="formSubmit"
+            type="button"
+            effect="ripple"
+            onClick={() => {
+              localStorage.clear();
+              userLogin();
+            }}
+          >
+            {loading ? (
+              <img
+                width="6%"
+                src={require("../assets/images/loader-gif.webp")}
+                alt=""
+              />
+            ) : (
+              "LOGIN"
+            )}
+          </button>
+        </div>
+      </div>
+    </form>
+  );
+}
