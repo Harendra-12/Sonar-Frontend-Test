@@ -52,9 +52,7 @@ function Header(props) {
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef);
   return (
-    <div
-      className="d-flex flex-wrap px-xl-3 py-2 justify-content-between"
-      id="detailsHeader"
+    <div id="detailsHeader"
     >
       <div className="col-auto d-flex align-items-center">
         <div className="d-xl-none d-block me-3">

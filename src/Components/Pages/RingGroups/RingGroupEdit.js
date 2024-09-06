@@ -437,7 +437,7 @@ const RingGroupEdit = () => {
       <section id="phonePage">
         <div className="container-fluid px-0">
           <Header title="Ring Group Edit" />
-          <div className="row justify-content-center" id="subPageHeader">
+          <div id="subPageHeader">
             <div className="col-xl-9 my-auto">
               {/* <h4 className="my-auto">Ring Group Edit</h4> */}
               <p className="pt-2 mt-1 mb-0">
@@ -455,7 +455,7 @@ const RingGroupEdit = () => {
                   type="button"
                   effect="ripple"
                   className="panelButton"
-                  // onClick={() => { window.location = "/ring-groups" }}
+                // onClick={() => { window.location = "/ring-groups" }}
                 >
                   Back
                 </button>
@@ -895,7 +895,7 @@ const RingGroupEdit = () => {
                     {/* <option>us-ring</option>
                     <option value="uk-ring">uk-ring</option>
                     <option value="eu-ring">eu-ring</option> */}
-                     {ringBack &&
+                    {ringBack &&
                       ringBack.map((ring) => {
                         return (
                           <option key={ring.id} value={ring.id}>

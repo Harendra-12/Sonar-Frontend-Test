@@ -60,14 +60,14 @@ const CallSettings = (props) => {
               apiData.data.voicemailEnabled === "Y"
                 ? "Voicemail"
                 : apiData.data.callforward === 1
-                ? "Forward"
-                : "Disabled",
+                  ? "Forward"
+                  : "Disabled",
             noAnswerForward:
               apiData.data.voicemailEnabled === "Y"
                 ? apiData.data.voiceEmailTo
                 : apiData.data.callforward === 1
-                ? apiData.data.callforwardTo
-                : "",
+                  ? apiData.data.callforwardTo
+                  : "",
             callRecording: apiData.data.record,
             onBusyState: apiData.data.onbusy,
             onBusyForward: apiData.data.onbusyTo,
@@ -78,16 +78,16 @@ const CallSettings = (props) => {
             callTimeOut: apiData.data.callTimeOut,
             callBlocking:
               apiData.data.blockIncomingStatus === 1 &&
-              apiData.data.blockOutGoingStatus === 1
+                apiData.data.blockOutGoingStatus === 1
                 ? "All"
                 : apiData.data.blockIncomingStatus === 0 &&
                   apiData.data.blockOutGoingStatus === 0
-                ? "Disabled"
-                : apiData.data.blockIncomingStatus === 1
-                ? "Incoming"
-                : apiData.data.blockOutGoingStatus === 1
-                ? "Outgoing"
-                : "Disabled",
+                  ? "Disabled"
+                  : apiData.data.blockIncomingStatus === 1
+                    ? "Incoming"
+                    : apiData.data.blockOutGoingStatus === 1
+                      ? "Outgoing"
+                      : "Disabled",
           }));
           if (apiData.data.followmes.length > 0) {
             setCallSetting((prevData) => ({
@@ -216,14 +216,14 @@ const CallSettings = (props) => {
           callSetting.callBlocking === "Incoming"
             ? 1
             : callSetting.callBlocking === "All"
-            ? 1
-            : 0,
+              ? 1
+              : 0,
         blockOutGoingStatus:
           callSetting.callBlocking === "Outgoing"
             ? 1
             : callSetting.callBlocking === "All"
-            ? 1
-            : 0,
+              ? 1
+              : 0,
       };
 
       // Conditionally add the 'data' field if followMe is equal to 1
@@ -273,7 +273,7 @@ const CallSettings = (props) => {
         <section id="phonePage">
           <div className="container-fluid px-0">
             <Header title="Call Settings" />
-            <div className="row justify-content-center" id="subPageHeader">
+            <div id="subPageHeader">
               <div className="col-xl-9 my-auto">
                 {/* <h4 className="my-auto">Call Settings</h4> */}
                 <p className="pt-2 mt-1 mb-0">

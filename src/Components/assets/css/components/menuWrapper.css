@@ -119,8 +119,9 @@
     top: 1px;
 }
 
-#phonePage #headerSearch:focus {
-    border: 1px solid var(--color2);
+#phonePage #headerSearch:focus,
+#phonePage #headerSearch:hover {
+    border: 1px solid var(--ui-accent);
 }
 
 [type=search] {

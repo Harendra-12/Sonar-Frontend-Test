@@ -81,7 +81,7 @@ const DidConfig = () => {
         }
       }
       getData();
-    }else{
+    } else {
       setLoading(false);
       navigate("/");
     }
@@ -169,7 +169,7 @@ const DidConfig = () => {
     delete data.direct_extension;
     delete data.did_id;
     const payload = { ...data, did_id: locationData.id };
-    
+
     if (locationData.configuration === null) {
       setLoading(true);
       const apiData = await generalPostFunction("/did/configure", payload);
@@ -270,7 +270,7 @@ const DidConfig = () => {
         <section id="phonePage">
           <div className="container-fluid px-0">
             <Header title="Destination Config" />
-            <div className="row justify-content-center" id="subPageHeader">
+            <div id="subPageHeader">
               <div className="col-xl-9 my-auto">
                 <p className="pt-2 mt-1 mb-0">
                   Inbound destinations are the DID/DDI, DNIS or Alias for
@@ -301,13 +301,13 @@ const DidConfig = () => {
             </div>
           </div>
           <div className="col-xl-12" style={{ overflow: "auto" }}>
-          {loading ? (
-            <div colSpan={99}>
-              <CircularLoader />
-            </div>
-          ) : (
-            ""
-          )}
+            {loading ? (
+              <div colSpan={99}>
+                <CircularLoader />
+              </div>
+            ) : (
+              ""
+            )}
             <div className="mx-2" id="detailsContent">
               <form className="row">
                 <div className="formRow col-xl-3">
@@ -479,7 +479,7 @@ const DidConfig = () => {
                       {...register("hold_music")}
                       value={watch().hold_music}
                     >
-                      <option  value="default">
+                      <option value="default">
                         default
                       </option>
                       {holdMusic &&

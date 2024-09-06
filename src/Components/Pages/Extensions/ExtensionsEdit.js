@@ -321,12 +321,9 @@ const ExtensionsEdit = () => {
     <main className="mainContent">
       <section id="phonePage">
         <div className="container-fluid px-0">
-          <div className="row justify-content-center" id="subPageHeader">
+          <div id="subPageHeader">
             <Header title="Update Extension" />
-            <div className="col-xl-6 my-auto">
-              {/* <h4 className="my-auto">Update Extension</h4> */}
-            </div>
-            <div className="col-xl-6 ps-2">
+            <div className="col-xl-12 ps-2">
               <div className="d-flex justify-content-end">
                 <button
                   effect="ripple"

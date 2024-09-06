@@ -89,7 +89,7 @@ const CallCenterSettings = () => {
       <section id="phonePage">
         <div className="container-fluid px-0">
           <Header title="Call Center Settings" />
-          <div className="row justify-content-center" id="subPageHeader">
+          <div id="subPageHeader">
             <div className="col-xl-9 my-auto"></div>
             <div className="col-xl-3 ps-2">
               <div className="d-flex justify-content-end">

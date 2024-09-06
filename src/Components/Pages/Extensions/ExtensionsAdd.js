@@ -97,11 +97,8 @@ const ExtensionsAdd = () => {
       <section id="phonePage">
         <div className="container-fluid px-0">
           <Header title="Extension Add" />
-          <div className="row justify-content-center" id="subPageHeader">
-            <div className="col-xl-6 my-auto">
-              {/* <h4 className="my-auto">Extension Add</h4> */}
-            </div>
-            <div className="col-xl-6 ps-2">
+          <div id="subPageHeader">
+            <div className="col-xl-12 ps-2">
               <div className="d-flex justify-content-end">
                 <button
                   effect="ripple"
@@ -117,7 +114,7 @@ const ExtensionsAdd = () => {
                   effect="ripple"
                   className="panelButton"
                   onClick={handleFormSubmit}
-                  // onClick={handleSubmit}
+                // onClick={handleSubmit}
                 >
                   Save
                 </button>

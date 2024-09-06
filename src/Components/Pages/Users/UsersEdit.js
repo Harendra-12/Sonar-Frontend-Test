@@ -280,10 +280,12 @@ const UsersEdit = () => {
       <main className="mainContent">
         <section id="phonePage">
           <div className="container-fluid px-0">
-            <div className="row justify-content-center" id="subPageHeader">
-              <Header title="User Edit" />
-              <div className="col-6 my-auto">
-                {/* <h4 className="my-auto">User Edit</h4> */}
+            <Header title="User Edit" />
+            <div id="subPageHeader">
+              <div className="col-6 my-1">
+                <p className="p-0 m-0">
+                  Edit user information and group membership.
+                </p>
               </div>
               <div className="col-6 ps-2">
                 <div className="d-flex justify-content-end">
@@ -305,11 +307,6 @@ const UsersEdit = () => {
                     Save
                   </button>
                 </div>
-              </div>
-              <div className="col-12 my-1">
-                <p className="p-0 m-0">
-                  Edit user information and group membership.
-                </p>
               </div>
             </div>
           </div>
@@ -469,8 +466,8 @@ const UsersEdit = () => {
                           e.target.value === ""
                             ? ""
                             : role[e.target.value].permissions.map((item) => {
-                                return item.permission_id;
-                              })
+                              return item.permission_id;
+                            })
                         );
                       }}
                     >

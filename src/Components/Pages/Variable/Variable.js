@@ -4,14 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { backToTop } from "../../GlobalFunction/globalFunction";
 
 const Variable = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <>
       <main className="mainContent">
         <section id="phonePage">
           <div className="container-fluid px-0">
             <Header title="Variable" />
-            <div className="row justify-content-center" id="subPageHeader">
+            <div id="subPageHeader">
               <div className="col-xl-9 my-auto">
                 <p className="pt-2 mt-1 mb-0">
                   Inbound variable

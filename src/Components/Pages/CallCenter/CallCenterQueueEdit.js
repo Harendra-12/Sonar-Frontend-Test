@@ -338,9 +338,9 @@ function CallCenterQueueEdit() {
       });
     } else {
       setLoading(false);
-      if(apiData.error){
+      if (apiData.error) {
         toast.error(apiData.error);
-      }else{
+      } else {
         const errorMessage = Object.keys(apiData.errors);
         toast.error(apiData.errors[errorMessage[0]][0]);
       }
@@ -381,7 +381,7 @@ function CallCenterQueueEdit() {
       <section id="phonePage">
         <div className="container-fluid px-0">
           <Header title="Edit Call Center Queue" />
-          <div className="row justify-content-center" id="subPageHeader">
+          <div id="subPageHeader">
             <div className="col-xl-6 my-auto">
               {/* <h4 className="my-auto">Edit Call Center Queue</h4> */}
             </div>
@@ -591,7 +591,7 @@ function CallCenterQueueEdit() {
                 <ActionList
                   getDropdownValue={actionListValue}
                   value={watch().queue_timeout_action}
-                  // value={callCenter.action}
+                // value={callCenter.action}
                 />
               </div>
               <div className="formRow col-xl-3">

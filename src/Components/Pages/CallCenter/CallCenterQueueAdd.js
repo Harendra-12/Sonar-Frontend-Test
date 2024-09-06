@@ -268,13 +268,13 @@ function CallCenterQueueAdd() {
       });
     } else {
       setLoading(false);
-      if(apiData.error){
+      if (apiData.error) {
         toast.error(apiData.error);
-      }else{
+      } else {
         const errorMessage = Object.keys(apiData.errors);
         toast.error(apiData.errors[errorMessage[0]][0]);
       }
-      
+
     }
   });
 
@@ -283,7 +283,7 @@ function CallCenterQueueAdd() {
       <section id="phonePage">
         <div className="container-fluid px-0">
           <Header title="Call Center Queue" />
-          <div className="row justify-content-center" id="subPageHeader">
+          <div id="subPageHeader">
             <div className="col-xl-6 my-auto">
               {/* <h4 className="my-auto">Add Call Center Queue</h4> */}
             </div>

@@ -10,7 +10,7 @@ function PortNumber() {
       <main className="mainContent">
         <section id="phonePage">
           <div className="container-fluid px-0">
-            <div className="row justify-content-center" id="subPageHeader">
+            <div id="subPageHeader">
               <div className="col-xl-6 my-auto">
                 <h4 className="my-auto">Port Number</h4>
               </div>

@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Header from "../../CommonComponents/Header";
 import { useSelector } from "react-redux";
+import { backToTop } from "../../GlobalFunction/globalFunction";
 
 const Profile = () => {
   const account = useSelector((state) => state.account);
@@ -68,8 +69,8 @@ const Profile = () => {
                         <span>
                           <i className="fa-duotone fa-server"></i>
                         </span>{" "}
-                        {account?.domain.domain_name
-                          ? account?.domain.domain_name
+                        {account?.domain?.domain_name
+                          ? account?.domain?.domain_name
                           : "https://www.webviotechnologies.com/"}
                       </p>
                       <p>
@@ -309,16 +310,16 @@ const Profile = () => {
                     <p>Store</p>
                     <ul>
                       <li>
-                        <Link>Buy Extensions</Link>
+                        <Link to="/extensions-add" onClick={backToTop}>Buy Extensions</Link>
                       </li>
                       <li>
-                        <Link>Increase Users</Link>
+                        <Link to="/users-add" onClick={backToTop}>Increase Users</Link>
                       </li>
                       <li>
                         <Link>Explore Modules</Link>
                       </li>
                     </ul>
-                    <p>How to UcaaS</p>
+                    <p>How to AngelPBX</p>
                     <ul>
                       <li>
                         <Link>Setup Guide</Link>

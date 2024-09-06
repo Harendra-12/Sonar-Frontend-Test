@@ -5,8 +5,9 @@
     position: fixed;
     left: 0;
     overflow-y: auto;
-    z-index: 2;
-    background-color: var(--nav-color);
+    z-index: 10;
+    /* background-color: var(--nav-color); */
+    background: linear-gradient(0deg, #004793 0%, #0071e9 100%);
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     transition: all 0.2s ease-in-out;
 }
@@ -41,11 +42,19 @@
 }
 
 #sidenNav .sidenavItems ul li i {
-    font-size: 17px;
+    font-size: 15px;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ff8400;
+    background-color: #ffffff;
 }
 
 #sidenNav .sidenavItems .iconHolder {
-    width: 35px;
+    width: 27px;
 }
 
 #sidenNav .sidenavItems ul .dashboard button {
@@ -117,7 +126,7 @@
 
 
 #sidenNav .sidenavItems ul li a {
-    color: var(--ui-icon);
+    /* color: var(--ui-icon); */
     text-decoration: none;
     border: none;
     background: none;
@@ -125,7 +134,7 @@
     height: 100%;
     display: flex;
     align-items: center;
-    padding-left: 10px;
+    padding-left: 20px;
 }
 
 .sidenavItems .tabMenu .iconHolder {

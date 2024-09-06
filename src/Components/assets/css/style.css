@@ -46,7 +46,8 @@
 
 :root {
     /* --bg-color: #e7f8ff; */
-    --bg-color: #5d6aff0d;
+    /* --bg-color: #5d6aff0d; */
+    --bg-color: #0098ff0d;
     --bgdark-color: #111525;
     /* Dark Mode */
     --nav-color: #161b2e;
@@ -91,4 +92,9 @@ body {
     margin: 0;
     padding: 0;
     /* overflow: hidden; */
+}
+
+ul {
+    padding-left: 0;
+    margin-bottom: 0;
 }

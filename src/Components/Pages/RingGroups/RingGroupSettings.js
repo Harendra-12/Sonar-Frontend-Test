@@ -111,7 +111,7 @@ const RingGroupSettings = () => {
         <section id="phonePage">
           <div className="container-fluid px-0">
             <Header title="Ring Group Edit" />
-            <div className="row justify-content-center" id="subPageHeader">
+            <div id="subPageHeader">
               <div className="col-xl-9 my-auto">
                 <p className="pt-2 mt-1 mb-0">
                   A ring group is a set of destinations that can be called with
