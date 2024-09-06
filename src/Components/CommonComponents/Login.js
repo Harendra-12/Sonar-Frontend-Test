@@ -31,7 +31,7 @@ function Login() {
       </style>
       <div>
         <main className="login">
-          <div>
+          <div className="h-100 position-absolute top-0 start-0">
             {init && (
               <Particles
                 id="tsparticles"
