@@ -9,6 +9,7 @@ function IncomingCallPopup({
   lastIncomingCall,
   index,
   setSelectedModule,
+  setactivePage,
 }) {
   const [isMinimized, setIsMinimized] = useState(false);
   const account = useSelector((state) => state.account);
@@ -53,6 +54,7 @@ function IncomingCallPopup({
     e.preventDefault();
     answer();
     setSelectedModule("onGoingCall");
+    setactivePage("call");
     dispatch({
       type: "SET_CALLPROGRESSID",
       callProgressId: sessionId,

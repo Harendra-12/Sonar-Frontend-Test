@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
-function SideNavbarApp() {
+function SideNavbarApp({ setactivePage }) {
   const navigate = useNavigate();
   return (
     <section>
@@ -22,52 +22,76 @@ function SideNavbarApp() {
               </button>
             </li>
             <li effect="ripple">
-              <NavLink to="/" className="navItem">
+              <a
+                // to="/"
+                onClick={() => setactivePage("messages")}
+                className="navItem"
+              >
                 <div className="iconHolder">
                   <i className="fa-solid fa-message" />
                 </div>
                 <div className="itemTitle">Messages</div>
-              </NavLink>
+              </a>
             </li>
             <li effect="ripple">
-              <NavLink to="/call" className="navItem">
+              <a
+                // to="/call"
+                onClick={() => setactivePage("call")}
+                className="navItem"
+              >
                 <div className="iconHolder">
                   <i className="fa-solid fa-phone" />
                 </div>
                 <div className="itemTitle">Calls</div>
-              </NavLink>
+              </a>
             </li>
             <li effect="ripple">
-              <NavLink to="/efax" className="navItem">
+              <a
+                // to="/efax"
+                onClick={() => setactivePage("e-fax")}
+                className="navItem"
+              >
                 <div className="iconHolder">
                   <i className="fa-solid fa-fax" />
                 </div>
                 <div className="itemTitle">eFax</div>
-              </NavLink>
+              </a>
             </li>
             <li effect="ripple">
-              <NavLink to="/all-voicemails" className="navItem">
+              <a
+                onClick={() => setactivePage("all-voice-mails")}
+                // to="/all-voicemails"
+                className="navItem"
+              >
                 <div className="iconHolder">
                   <i className="fa-solid fa-voicemail" />
                 </div>
                 <div className="itemTitle">Voicemails</div>
-              </NavLink>
+              </a>
             </li>
             <li effect="ripple">
-              <NavLink to="/" className="navItem">
+              <a
+                //  to="/"
+                onClick={() => setactivePage("favorites")}
+                className="navItem"
+              >
                 <div className="iconHolder">
                   <i className="fa-solid fa-star" />
                 </div>
                 <div className="itemTitle">Favorites</div>
-              </NavLink>
+              </a>
             </li>
             <li effect="ripple">
-              <NavLink to="/all-contacts" className="navItem">
+              <a
+                // to="/all-contacts"
+                onClick={() => setactivePage("all-contacts")}
+                className="navItem"
+              >
                 <div className="iconHolder">
                   <i className="fa-solid fa-address-book" />
                 </div>
                 <div className="itemTitle">Contacts</div>
-              </NavLink>
+              </a>
             </li>
             {/* <li effect="ripple">
               <NavLink to="/" className='navItem'>
@@ -78,52 +102,76 @@ function SideNavbarApp() {
               </NavLink>
             </li> */}
             <li effect="ripple">
-              <NavLink to="/" className="navItem">
+              <a
+                // to="/"
+                onClick={() => setactivePage("settings")}
+                className="navItem"
+              >
                 <div className="iconHolder">
                   <i className="fa-solid fa-sliders" />
                 </div>
                 <div className="itemTitle">Settings</div>
-              </NavLink>
+              </a>
             </li>
             <li effect="ripple">
-              <NavLink to="/call-dashboard" className="navItem">
+              <a
+                // to="/call-dashboard"
+                onClick={() => setactivePage("call-dashboard")}
+                className="navItem"
+              >
                 <div className="iconHolder">
                   <i className="fa-solid fa-sliders" />
                 </div>
                 <div className="itemTitle">Call Dashboard</div>
-              </NavLink>
+              </a>
             </li>
             <li effect="ripple">
-              <NavLink to="/call-center" className="navItem">
+              <a
+                // to="/call-center"
+                onClick={() => setactivePage("call-center")}
+                className="navItem"
+              >
                 <div className="iconHolder">
                   <i className="fa-solid fa-sliders" />
                 </div>
                 <div className="itemTitle">Call Center</div>
-              </NavLink>
+              </a>
             </li>
             <li effect="ripple">
-              <NavLink to="/" className="navItem">
+              <a
+                //  to="/"
+                onClick={() => setactivePage("admin")}
+                className="navItem"
+              >
                 <div className="iconHolder">
                   <i className="fa-brands fa-black-tie" />
                 </div>
                 <div className="itemTitle">Admin</div>
-              </NavLink>
+              </a>
             </li>
             <li effect="ripple">
-              <NavLink to="/" className="navItem">
+              <a
+                // to="/"
+                onClick={() => setactivePage("reports")}
+                className="navItem"
+              >
                 <div className="iconHolder">
                   <i className="fa-solid fa-chart-column" />
                 </div>
                 <div className="itemTitle">Reports</div>
-              </NavLink>
+              </a>
             </li>
             <li effect="ripple">
-              <NavLink to="/" className="navItem">
+              <a
+                // to="/"
+                onClick={() => setactivePage("conference")}
+                className="navItem"
+              >
                 <div className="iconHolder">
                   <i className="fa-sharp fa-solid fa-people-group" />
                 </div>
                 <div className="itemTitle">Conference</div>
-              </NavLink>
+              </a>
             </li>
           </ul>
         </div>

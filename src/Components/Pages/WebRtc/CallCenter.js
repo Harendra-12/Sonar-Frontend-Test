@@ -42,7 +42,7 @@ const CallCenter = () => {
         }
       `}
       </style>
-      <SideNavbarApp />
+      {/* <SideNavbarApp /> */}
       <main
         className="mainContentApp"
         style={{

@@ -14,7 +14,12 @@ import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 
-function Call() {
+function Call({
+  setHangupRefresh,
+  hangupRefresh,
+  selectedModule,
+  setSelectedModule,
+}) {
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
   const allCall = useSelector((state) => state.allCall);
@@ -26,7 +31,7 @@ function Call() {
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
   const [allCalls, setAllCalls] = useState([]);
-  const [hangupRefresh, setHangupRefresh] = useState(0);
+  // const [hangupRefresh, setHangupRefresh] = useState(0);
 
   const [previewCalls, setPreviewCalls] = useState([]);
   const [addContactToggle, setAddContactToggle] = useState(false);
@@ -35,7 +40,7 @@ function Call() {
   const [loading, setLoading] = useState(true);
   const [allApiData, setAllApiData] = useState([]);
   const [callHistory, setCallHistory] = useState([]);
-  const [selectedModule, setSelectedModule] = useState("");
+  // const [selectedModule, setSelectedModule] = useState("");
   const callProgressDestination = useSelector(
     (state) => state.callProgressDestination
   );
@@ -45,30 +50,30 @@ function Call() {
     setDialpadShow(value);
   }
 
-  const useWebSocketErrorHandling = (options) => {
-    useEffect(() => {
-      const webSocket = new WebSocket(options.webSocketServer);
+  // const useWebSocketErrorHandling = (options) => {
+  //   useEffect(() => {
+  //     const webSocket = new WebSocket(options.webSocketServer);
 
-      webSocket.onerror = (event) => {
-        console.error("WebSocket error:", event);
-        // Prevent default error handling
-        event.preventDefault();
-      };
+  //     webSocket.onerror = (event) => {
+  //       console.error("WebSocket error:", event);
+  //       // Prevent default error handling
+  //       event.preventDefault();
+  //     };
 
-      webSocket.onclose = (event) => {
-        if (event.code === 1006) {
-          console.error(
-            `WebSocket closed ${options.webSocketServer} (code: ${event.code})`
-          );
-          // Handle the WebSocket close event
-        }
-      };
-      console.log(global);
-      return () => {
-        webSocket.close();
-      };
-    }, [options.webSocketServer]);
-  };
+  //     webSocket.onclose = (event) => {
+  //       if (event.code === 1006) {
+  //         console.error(
+  //           `WebSocket closed ${options.webSocketServer} (code: ${event.code})`
+  //         );
+  //         // Handle the WebSocket close event
+  //       }
+  //     };
+  //     console.log(global);
+  //     return () => {
+  //       webSocket.close();
+  //     };
+  //   }, [options.webSocketServer]);
+  // };
 
   useEffect(() => {
     if (allCall && allCall.calls) {
@@ -311,15 +316,15 @@ function Call() {
 
   const groupedCalls = groupCallsByDate(previewCalls);
 
-  const options = {
-    domain: account.domain.domain_name,
-    webSocketServer: "ws://192.168.2.225:5066",
-    // domain: "192.168.0.91",
-    // domain: "webvio.1.com",
-    // webSocketServer: "ws://192.168.0.91:5066",
-  };
+  // const options = {
+  //   domain: account.domain.domain_name,
+  //   webSocketServer: "ws://192.168.2.225:5066",
+  //   // domain: "192.168.0.91",
+  //   // domain: "webvio.1.com",
+  //   // webSocketServer: "ws://192.168.0.91:5066",
+  // };
 
-  useWebSocketErrorHandling(options);
+  // useWebSocketErrorHandling(options);
   const sortedGroupedCalls = sortKeys(Object.keys(groupedCalls)).reduce(
     (acc, date) => {
       acc[date] = groupedCalls[date].sort(
@@ -332,143 +337,142 @@ function Call() {
   );
   return (
     <div className="browserPhoneWrapper">
-      <SIPProvider options={options}>
-        <SideNavbarApp />
-        <main
-          className="mainContentApp"
-          style={{
-            marginRight:
-              sessions.length > 0 && Object.keys(sessions).length > 0
-                ? "250px"
-                : "0",
-          }}
-        >
-          <section className="callPage">
-            <div className="container-fluid">
-              <div className="row">
-                <div
-                  className="col-12 col-xl-6 allCallHistory"
-                  // style={{ height: "100%" }}
-                >
-                  <div className="col-12 webRtcHeading">
-                    <div className="col-2">
-                      <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
-                        Calls
-                      </h3>
-                    </div>
-                    <div className="col-5">
-                      <h5
-                        style={{
-                          fontFamily: "Outfit",
-                          color: "#444444",
-                          marginBottom: "0",
-                        }}
+      {/* <SideNavbarApp /> */}
+      <main
+        className="mainContentApp"
+        style={{
+          marginRight:
+            sessions.length > 0 && Object.keys(sessions).length > 0
+              ? "250px"
+              : "0",
+        }}
+      >
+        <section className="callPage">
+          <div className="container-fluid">
+            <div className="row">
+              <div
+                className="col-12 col-xl-6 allCallHistory"
+                // style={{ height: "100%" }}
+              >
+                <div className="col-12 webRtcHeading">
+                  <div className="col-2">
+                    <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
+                      Calls
+                    </h3>
+                  </div>
+                  <div className="col-5">
+                    <h5
+                      style={{
+                        fontFamily: "Outfit",
+                        color: "#444444",
+                        marginBottom: "0",
+                      }}
+                    >
+                      Extension - {account && account.extension.extension}
+                    </h5>
+                  </div>
+                  <div className="col-5 d-flex justify-content-end">
+                    <div className="col-auto">
+                      <button
+                        className="appPanelButton"
+                        effect="ripple"
+                        onClick={() => setDialpadShow(!dialpadShow)}
                       >
-                        Extension - {account && account.extension.extension}
-                      </h5>
+                        <i className="fa-light fa-mobile-retro" />
+                      </button>
                     </div>
-                    <div className="col-5 d-flex justify-content-end">
-                      <div className="col-auto">
-                        <button
-                          className="appPanelButton"
-                          effect="ripple"
-                          onClick={() => setDialpadShow(!dialpadShow)}
-                        >
-                          <i className="fa-light fa-mobile-retro" />
-                        </button>
-                      </div>
-                      <div className="col-auto  position-relative">
-                        <button className="appPanelButton" effect="ripple">
-                          <i className="fa-light fa-satellite-dish" />
-                        </button>
-                        <div>
-                          <SipRegister />
-                        </div>
-                      </div>
+                    <div className="col-auto  position-relative">
+                      <button className="appPanelButton" effect="ripple">
+                        <i className="fa-light fa-satellite-dish" />
+                      </button>
+                      {/* <div>
+                        <SipRegister />
+                      </div> */}
                     </div>
                   </div>
+                </div>
 
-                  <div className="col-12">
-                    <nav>
-                      <div className="nav nav-tabs">
-                        <button
-                          onClick={() => setClickStatus("all")}
-                          className={
-                            clickStatus === "all" ? "tabLink active" : "tabLink"
-                          }
-                          data-category="all"
-                        >
-                          <i className="fa-light fa-phone" />
-                        </button>
-                        <button
-                          onClick={() => setClickStatus("incoming")}
-                          className={
-                            clickStatus === "incoming"
-                              ? "tabLink active"
-                              : "tabLink"
-                          }
-                          effect="ripple"
-                          data-category="incoming"
-                        >
-                          <i className="fa-light fa-phone-arrow-down-left" />
-                        </button>
-                        <button
-                          onClick={() => setClickStatus("outgoing")}
-                          className={
-                            clickStatus === "outgoing"
-                              ? "tabLink active"
-                              : "tabLink"
-                          }
-                          effect="ripple"
-                          data-category="outgoing"
-                        >
-                          <i className="fa-light fa-phone-arrow-up-right" />
-                        </button>
-                        <button
-                          onClick={() => setClickStatus("missed")}
-                          className={
-                            clickStatus === "missed"
-                              ? "tabLink active"
-                              : "tabLink"
-                          }
-                          effect="ripple"
-                          data-category="missed"
-                        >
-                          <i className="fa-light fa-phone-missed" />
-                        </button>
-                        <button
-                          onClick={() => setClickStatus("voicemail")}
-                          className={
-                            clickStatus === "voicemail"
-                              ? "tabLink active"
-                              : "tabLink"
-                          }
-                          effect="ripple"
-                          data-category="voicemail"
-                        >
-                          <i className="fa-light fa-microphone-lines" />
-                        </button>
-                      </div>
-                    </nav>
-                    <div className="tab-content">
-                      <div className="position-relative searchBox d-flex mt-3">
-                        <input
-                          type="search"
-                          name="Search"
-                          id="headerSearch"
-                          placeholder="Search"
-                          value={searchQuery}
-                          onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                        <button
-                          className="ms-2 me-0 appPanelButton"
-                          effect="ripple"
-                          onClick={() => setAddContactToggle(true)}
-                        >
-                          <i className="fa-light fa-user-plus" />
-                        </button>
-                      </div>
-                      {/* <div className="callList">
+                <div className="col-12">
+                  <nav>
+                    <div className="nav nav-tabs">
+                      <button
+                        onClick={() => setClickStatus("all")}
+                        className={
+                          clickStatus === "all" ? "tabLink active" : "tabLink"
+                        }
+                        data-category="all"
+                      >
+                        <i className="fa-light fa-phone" />
+                      </button>
+                      <button
+                        onClick={() => setClickStatus("incoming")}
+                        className={
+                          clickStatus === "incoming"
+                            ? "tabLink active"
+                            : "tabLink"
+                        }
+                        effect="ripple"
+                        data-category="incoming"
+                      >
+                        <i className="fa-light fa-phone-arrow-down-left" />
+                      </button>
+                      <button
+                        onClick={() => setClickStatus("outgoing")}
+                        className={
+                          clickStatus === "outgoing"
+                            ? "tabLink active"
+                            : "tabLink"
+                        }
+                        effect="ripple"
+                        data-category="outgoing"
+                      >
+                        <i className="fa-light fa-phone-arrow-up-right" />
+                      </button>
+                      <button
+                        onClick={() => setClickStatus("missed")}
+                        className={
+                          clickStatus === "missed"
+                            ? "tabLink active"
+                            : "tabLink"
+                        }
+                        effect="ripple"
+                        data-category="missed"
+                      >
+                        <i className="fa-light fa-phone-missed" />
+                      </button>
+                      <button
+                        onClick={() => setClickStatus("voicemail")}
+                        className={
+                          clickStatus === "voicemail"
+                            ? "tabLink active"
+                            : "tabLink"
+                        }
+                        effect="ripple"
+                        data-category="voicemail"
+                      >
+                        <i className="fa-light fa-microphone-lines" />
+                      </button>
+                    </div>
+                  </nav>
+                  <div className="tab-content">
+                    <div className="position-relative searchBox d-flex mt-3">
+                      <input
+                        type="search"
+                        name="Search"
+                        id="headerSearch"
+                        placeholder="Search"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                      <button
+                        className="ms-2 me-0 appPanelButton"
+                        effect="ripple"
+                        onClick={() => setAddContactToggle(true)}
+                      >
+                        <i className="fa-light fa-user-plus" />
+                      </button>
+                    </div>
+                    {/* <div className="callList">
                         <div className="text-center callListItem">
                           <h5 className="fw-semibold">Today</h5>
                           {previewCalls.length > 0 ? (
@@ -479,119 +483,102 @@ function Call() {
                         </div>
                       </div> */}
 
-                      <div
-                        className="callList"
-                        onClick={() => setSelectedModule("callDetails")}
-                      >
-                        {loading &&
-                        (callDetailsRefresh == 0 || callDetailsRefresh == 1) ? (
-                          <ContentLoader />
-                        ) : Object.keys(groupedCalls).length > 0 ? (
-                          sortKeys(Object.keys(groupedCalls)).map((date) => (
-                            <>
-                              <div
-                                key={date}
-                                className="text-center callListItem"
-                              >
-                                <h5 className="fw-semibold">{date}</h5>
-                              </div>
-                              {sortedGroupedCalls[date].map(renderCallItem)}
-                            </>
-                          ))
-                        ) : (
-                          <h3 className="text-center pt-10">
-                            No {clickStatus} calls
-                          </h3>
-                        )}
-                      </div>
+                    <div
+                      className="callList"
+                      onClick={() => setSelectedModule("callDetails")}
+                    >
+                      {loading &&
+                      (callDetailsRefresh == 0 || callDetailsRefresh == 1) ? (
+                        <ContentLoader />
+                      ) : Object.keys(groupedCalls).length > 0 ? (
+                        sortKeys(Object.keys(groupedCalls)).map((date) => (
+                          <>
+                            <div
+                              key={date}
+                              className="text-center callListItem"
+                            >
+                              <h5 className="fw-semibold">{date}</h5>
+                            </div>
+                            {sortedGroupedCalls[date].map(renderCallItem)}
+                          </>
+                        ))
+                      ) : (
+                        <h3 className="text-center pt-10">
+                          No {clickStatus} calls
+                        </h3>
+                      )}
                     </div>
                   </div>
                 </div>
-                <div
-                  className="col-12 callDetails col-xl-6"
-                  style={{ height: "100vh" }}
-                  id="callDetails"
-                >
-                  {/* {callProgress ? (
-                    <OngoingCall
-                      key={callProgressId}
-                      id={callProgressId}
-                      destination={callProgressDestination}
-                      setHangupRefresh={setHangupRefresh}
-                      hangupRefresh={hangupRefresh}
-                    />
-                  ) : (
-                    clickedCall && (
-                      <CallDetails
-                        clickedCall={clickedCall}
-                        callHistory={callHistory}
-                      />
-                    )
-                  )} */}
-                  {selectedModule == "onGoingCall"
-                    ? callProgress && (
-                        <OngoingCall
-                          key={callProgressId}
-                          id={callProgressId}
-                          destination={callProgressDestination}
-                          setHangupRefresh={setHangupRefresh}
-                          hangupRefresh={hangupRefresh}
-                          setSelectedModule={setSelectedModule}
-                        />
-                      )
-                    : clickedCall && (
-                        <CallDetails
-                          clickedCall={clickedCall}
-                          callHistory={callHistory}
-                        />
-                      )}
-                </div>
               </div>
-            </div>
-          </section>
-        </main>
-        {/* {console.log("this is session", sessions)} */}
-        {sessions.length > 0 && Object.keys(sessions).length > 0 ? (
-          <>
-            <section
-              className="activeCallsSidePanel"
-              onClick={() => setSelectedModule("onGoingCall")}
-            >
-              <div className="container">
-                <div className="row">
-                  {sessions.length > 0 &&
-                    sessions.map((session, chennel) => (
-                      <ActiveCallSidePanel
-                        key={chennel}
-                        sessionId={session.id}
-                        destination={session.destination}
-                        chennel={chennel}
+              <div
+                className="col-12 callDetails col-xl-6"
+                style={{ height: "100vh" }}
+                id="callDetails"
+              >
+                {selectedModule == "onGoingCall"
+                  ? callProgress && (
+                      <OngoingCall
+                        key={callProgressId}
+                        id={callProgressId}
+                        destination={callProgressDestination}
                         setHangupRefresh={setHangupRefresh}
                         hangupRefresh={hangupRefresh}
                         setSelectedModule={setSelectedModule}
                       />
-                    ))}
-                </div>
+                    )
+                  : clickedCall && (
+                      <CallDetails
+                        clickedCall={clickedCall}
+                        callHistory={callHistory}
+                      />
+                    )}
               </div>
-            </section>
-          </>
-        ) : (
-          ""
-        )}
-        {/* <IncomingCallPopup /> */}
-        <IncomingCalls setSelectedModule={setSelectedModule} />
-        {dialpadShow ? (
-          <Dialpad
-            hideDialpad={handleHideDialpad}
-            setSelectedModule={setSelectedModule}
-          />
-        ) : (
-          ""
-        )}
-        {addContactToggle && (
-          <AddNewContactPopup setAddContactToggle={setAddContactToggle} />
-        )}
-      </SIPProvider>
+            </div>
+          </div>
+        </section>
+      </main>
+      {/* {console.log("this is session", sessions)} */}
+      {/* {sessions.length > 0 && Object.keys(sessions).length > 0 ? (
+        <>
+          <section
+            className="activeCallsSidePanel"
+            onClick={() => setSelectedModule("onGoingCall")}
+          >
+            <div className="container">
+              <div className="row">
+                {sessions.length > 0 &&
+                  sessions.map((session, chennel) => (
+                    <ActiveCallSidePanel
+                      key={chennel}
+                      sessionId={session.id}
+                      destination={session.destination}
+                      chennel={chennel}
+                      setHangupRefresh={setHangupRefresh}
+                      hangupRefresh={hangupRefresh}
+                      setSelectedModule={setSelectedModule}
+                    />
+                  ))}
+              </div>
+            </div>
+          </section>
+        </>
+      ) : (
+        ""
+      )} */}
+      {/* <IncomingCallPopup /> */}
+      {/* <IncomingCalls setSelectedModule={setSelectedModule} /> */}
+      {dialpadShow ? (
+        <Dialpad
+          hideDialpad={handleHideDialpad}
+          setSelectedModule={setSelectedModule}
+        />
+      ) : (
+        ""
+      )}
+      {addContactToggle && (
+        <AddNewContactPopup setAddContactToggle={setAddContactToggle} />
+      )}
     </div>
   );
 }

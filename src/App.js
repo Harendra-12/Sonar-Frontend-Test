@@ -95,6 +95,13 @@ import CallCenter from "./Components/Pages/WebRtc/CallCenter";
 import PortNumber from "./Components/Pages/NumberManagement/PortNumber";
 import PortNumberAdd from "./Components/Pages/NumberManagement/PortNumberAdd";
 import PortNumberEdit from "./Components/Pages/NumberManagement/PortNumberEdit";
+import CallPage from "./Components/Pages/WebRtcPages/CallPage";
+import AllContactPage from "./Components/Pages/WebRtcPages/AllContactPage";
+import CallCenterPage from "./Components/Pages/WebRtcPages/CallCenterPage";
+import AllVoiceMailsPage from "./Components/Pages/WebRtcPages/AllVoiceMailsPage";
+import OngoingCallPage from "./Components/Pages/WebRtcPages/OngoingCallPage";
+import CallDashboardPage from "./Components/Pages/WebRtcPages/CallDashboardPage";
+import WebrtcWrapper from "./Components/Pages/WebRtc/WebrtcWrapper";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -151,7 +158,8 @@ function App() {
         <NavigationSetter />
         <DispatchSetter />
         <GlobalCalls />
-        <Navbar />
+        {/* <Navbar /> */}
+
         <Routes>
           <Route path="/" element={<Login />} />
           <Route element={<ProtectedRoute />} />
@@ -215,14 +223,15 @@ function App() {
           {/* Sofia path end */}
 
           {/* WebRtc path start */}
-          <Route path="/call" element={<Call />} />
-          <Route path="/all-contacts" element={<AllContact />} />
-          <Route path="/call-center" element={<CallCenter />} />
-          <Route path="/all-voicemails" element={<AllVoicemails />} />
-          <Route path="/ongoing-call" element={<OngoingCall />} />
+          <Route path="/webrtc" element={<WebrtcWrapper />} />
+          {/* <Route path="/call" element={<CallPage />} />
+          <Route path="/all-contacts" element={<AllContactPage />} />
+          <Route path="/call-center" element={<CallCenterPage />} />
+          <Route path="/all-voicemails" element={<AllVoiceMailsPage />} />
+          <Route path="/ongoing-call" element={<OngoingCallPage />} /> */}
           <Route path="/cdr-report" element={<CdrReport />} />
-          <Route path="/efax" element={<EFax />} />
-          <Route path="/call-dashboard" element={<CallDashboard />} />
+          {/* <Route path="/efax" element={<EFax />} />
+          <Route path="/call-dashboard" element={<CallDashboardPage />} /> */}
           {/* WebRtc path end */}
 
           {/* Admin Packages path start */}
