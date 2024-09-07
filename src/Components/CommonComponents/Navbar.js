@@ -104,7 +104,7 @@ function Navbar() {
                               className="nav-link"
                             >
                               <div className="iconHolder">
-                                <i class="fa-solid fa-user"></i>
+                                <i class="fa-duotone fa-user"></i>
                               </div>
                               <div className="itemTitle">My Profile</div>
                             </NavLink>
@@ -117,7 +117,7 @@ function Navbar() {
                               className="nav-link"
                             >
                               <div className="iconHolder">
-                                <i className="fa-solid fa-swap-arrows" />
+                                <i className="fa-duotone fa-swap-arrows" />
                               </div>
                               <div className="itemTitle">Details</div>
                             </NavLink>
@@ -130,7 +130,7 @@ function Navbar() {
                               className="nav-link"
                             >
                               <div className="iconHolder">
-                                <i class="fa-solid fa-unlock"></i>
+                                <i class="fa-duotone fa-unlock"></i>
                               </div>
                               <div className="itemTitle">Change Password</div>
                             </NavLink>
@@ -165,7 +165,7 @@ function Navbar() {
                                 className="nav-link"
                               >
                                 <div className="iconHolder">
-                                  <i className="fa-solid fa-swap-arrows" />
+                                  <i className="fa-duotone fa-swap-arrows" />
                                 </div>
                                 <div className="itemTitle">Master</div>
                               </NavLink>
@@ -181,7 +181,7 @@ function Navbar() {
                               className="nav-link"
                             >
                               <div className="iconHolder">
-                                <i class="fa-solid fa-arrow-up-big-small"></i>
+                                <i class="fa-duotone fa-arrow-up-big-small"></i>
                               </div>
                               <div className="itemTitle">
                                 Roles and Permisson
@@ -196,7 +196,7 @@ function Navbar() {
                               className="nav-link"
                             >
                               <div className="iconHolder">
-                                <i class="fa-solid fa-laptop-mobile"></i>
+                                <i class="fa-duotone fa-laptop-mobile"></i>
                               </div>
                               <div className="itemTitle">
                                 Device Provisioning
@@ -211,7 +211,7 @@ function Navbar() {
                                 className="nav-link"
                               >
                                 <div className="iconHolder">
-                                  <i class="fa-solid fa-cube"></i>
+                                  <i class="fa-duotone fa-cube"></i>
                                 </div>
                                 <div className="itemTitle">Packages</div>
                               </NavLink>
@@ -233,7 +233,7 @@ function Navbar() {
                       aria-controls="collapseOne"
                       effect="ripple"
                     >
-                      {/* <div className="iconHolder"><i className="fa-solid fa-users"></i></div> */}
+                      {/* <div className="iconHolder"><i className="fa-duotone fa-users"></i></div> */}
                       <div className="itemTitle">Phone System</div>
                     </button>
                     <div
@@ -246,7 +246,7 @@ function Navbar() {
                           <li className="tabItem " effect="ripple">
                             <NavLink to="/phone-dashboard">
                               <div className="iconHolder">
-                                <i className="fa-solid fa-solid fa-list-dropdown"></i>
+                                <i className="fa-duotone fa-duotone fa-list-dropdown"></i>
                               </div>
                               <div className="itemTitle">Phone Dashboard</div>
                             </NavLink>
@@ -254,7 +254,7 @@ function Navbar() {
                           <li className="tabItem " effect="ripple">
                             <NavLink to="/extensions">
                               <div className="iconHolder">
-                                <i className="fa-solid fa-phone-office" />
+                                <i className="fa-duotone fa-phone-office" />
                               </div>
                               <div className="itemTitle">Extensions</div>
                             </NavLink>
@@ -263,7 +263,7 @@ function Navbar() {
                           <li className="tabItem " effect="ripple">
                             <NavLink to="/voice-music">
                               <div className="iconHolder">
-                                <i class="fa-solid fa-user-music"></i>
+                                <i class="fa-duotone fa-user-music"></i>
                               </div>
                               <div className="itemTitle">Voice Music</div>
                             </NavLink>
@@ -271,7 +271,7 @@ function Navbar() {
                           <li className="tabItem " effect="ripple">
                             <NavLink to="/active-calls">
                               <div className="iconHolder">
-                                <i class="fa-solid fa-phone-volume"></i>
+                                <i class="fa-duotone fa-phone-volume"></i>
                               </div>
                               <div className="itemTitle">Active Calls</div>
                             </NavLink>
@@ -300,7 +300,7 @@ function Navbar() {
                           <li className="tabItem" effect="ripple">
                             <NavLink to="/destination" className="nav-link">
                               <div className="iconHolder">
-                                <i className="fa-solid fa-swap-arrows" />
+                                <i className="fa-duotone fa-swap-arrows" />
                               </div>
                               <div className="itemTitle">Destinations</div>
                             </NavLink>
@@ -309,7 +309,7 @@ function Navbar() {
                           <li className="tabItem" effect="ripple">
                             <NavLink to="/destinations" className="nav-link">
                               <div className="iconHolder">
-                                <i className="fa-solid fa-swap-arrows" />
+                                <i className="fa-duotone fa-swap-arrows" />
                               </div>
                               <div className="itemTitle">Routes</div>
                             </NavLink>
@@ -325,7 +325,7 @@ function Navbar() {
                           className="nav-link"
                         >
                           <div className="iconHolder">
-                            <i className="fa-sharp fa-solid fa-group-arrows-rotate" />
+                            <i className="fa-sharp fa-duotone fa-group-arrows-rotate" />
                           </div>
                           <div className="itemTitle">Dialplan Manager</div>
                         </a>
@@ -336,7 +336,7 @@ function Navbar() {
                           className="nav-link"
                         >
                           <div className="iconHolder">
-                            <i className="fa-sharp fa-solid fa-phone-volume" />
+                            <i className="fa-sharp fa-duotone fa-phone-volume" />
                           </div>
                           <div className="itemTitle">Inbound Routes</div>
                         </a>
@@ -347,7 +347,7 @@ function Navbar() {
                           className="nav-link"
                         >
                           <div className="iconHolder">
-                            <i className="fa-solid fa-phone-arrow-up-right" />
+                            <i className="fa-duotone fa-phone-arrow-up-right" />
                           </div>
                           <div className="itemTitle">Outbound Routes</div>
                         </a>
@@ -376,7 +376,7 @@ function Navbar() {
                           className="nav-link"
                         >
                           <div className="iconHolder">
-                            <i className="fa-solid fa-swap-arrows" />
+                            <i className="fa-duotone fa-swap-arrows" />
                           </div>
                           <div className="itemTitle">Call</div>
                         </NavLink>
@@ -388,7 +388,7 @@ function Navbar() {
                               className="nav-link"
                             >
                               <div className="iconHolder">
-                                <i class="fa-solid fa-chart-bar"></i>
+                                <i class="fa-duotone fa-chart-bar"></i>
                               </div>
                               <div className="itemTitle">CDR Report</div>
                             </NavLink>
@@ -422,7 +422,7 @@ function Navbar() {
                               className="nav-link"
                             >
                               <div className="iconHolder">
-                                <i className="fa-solid fa-swap-arrows" />
+                                <i className="fa-duotone fa-swap-arrows" />
                               </div>
                               <div className="itemTitle">Get DID</div>
                             </NavLink>
@@ -434,7 +434,7 @@ function Navbar() {
                               className="nav-link"
                             >
                               <div className="iconHolder">
-                                <i class="fa-solid fa-hashtag"></i>
+                                <i class="fa-duotone fa-hashtag"></i>
                               </div>
                               <div className="itemTitle">DID Listing</div>
                             </NavLink>
@@ -446,7 +446,7 @@ function Navbar() {
                               className="nav-link"
                             >
                               <div className="iconHolder">
-                                <i class="fa-solid fa-hashtag-lock"></i>
+                                <i class="fa-duotone fa-hashtag-lock"></i>
                               </div>
                               <div className="itemTitle">Port number</div>
                             </NavLink>
@@ -480,7 +480,7 @@ function Navbar() {
                               className="nav-link"
                             >
                               <div className="iconHolder">
-                                <i class="fa-solid fa-money-check-dollar-pen"></i>
+                                <i class="fa-duotone fa-money-check-dollar-pen"></i>
                               </div>
                               <div className="itemTitle">Payment Details</div>
                             </NavLink>
@@ -492,7 +492,7 @@ function Navbar() {
                               className="nav-link"
                             >
                               <div className="iconHolder">
-                                <i className="fa-solid fa-swap-arrows" />
+                                <i className="fa-duotone fa-swap-arrows" />
                               </div>
                               <div className="itemTitle">Invoice Details</div>
                             </NavLink>
@@ -504,7 +504,7 @@ function Navbar() {
                               className="nav-link"
                             >
                               <div className="iconHolder">
-                                <i className="fa-solid fa-swap-arrows" />
+                                <i className="fa-duotone fa-swap-arrows" />
                               </div>
                               <div className="itemTitle">Expenses</div>
                             </NavLink>
@@ -516,7 +516,7 @@ function Navbar() {
                               className="nav-link"
                             >
                               <div className="iconHolder">
-                                <i class="fa-solid fa-credit-card"></i>
+                                <i class="fa-duotone fa-credit-card"></i>
                               </div>
                               <div className="itemTitle">Card Transactions</div>
                             </NavLink>
@@ -528,7 +528,7 @@ function Navbar() {
                               className="nav-link"
                             >
                               <div className="iconHolder">
-                                <i class="fa-solid fa-wallet"></i>
+                                <i class="fa-duotone fa-wallet"></i>
                               </div>
                               <div className="itemTitle">
                                 Wallet Transactions
@@ -604,7 +604,7 @@ function Navbar() {
                         className="iconHolder"
                         style={{ margin: "0 0", textAlign: "left", width: 30 }}
                       >
-                        <i className="fa-solid fa-power-off text-danger"></i>
+                        <i className="fa-duotone fa-power-off text-danger"></i>
                       </div>
                       <div className="itemTitle">Log Out</div>
                     </NavLink>

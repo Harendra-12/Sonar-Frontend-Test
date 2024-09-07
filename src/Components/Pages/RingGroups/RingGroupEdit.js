@@ -318,7 +318,7 @@ const RingGroupEdit = () => {
         delay: 0,
         timeOut: "30",
         // prompt: "",
-        status: "inactive",
+        status: "active",
       },
     ]);
   };
@@ -373,6 +373,7 @@ const RingGroupEdit = () => {
       ...data,
       ...{
         account_id: account.account_id,
+        recording_enabled:data.recording_enabled,
         followme: data.followme == "true" ? true : false,
         status: data.status == true ? "active" : "inactive",
         destination: destination
@@ -1106,6 +1107,25 @@ const RingGroupEdit = () => {
                   </label>
                 </div>
               </div> */}
+               <div className="col-2 pe-2">
+                      
+                      <div className="formLabel">
+                        <label htmlFor="">Recording</label>
+                      </div>
+                    <select
+                      className="formItem me-0"
+                      style={{ width: "100%" }}
+                      value={watch().recording_enabled}
+                      {...register("recording_enabled")}
+                      id="selectFormRow"
+                      name="status"
+                    >
+                      <option className="status" value={1}>
+                        True
+                      </option>
+                      <option value={0}>False</option>
+                    </select>
+                  </div>
               <div className="formRow  col-xl-3">
                 <div className="d-flex flex-wrap align-items-center">
                   <div className="formLabel">

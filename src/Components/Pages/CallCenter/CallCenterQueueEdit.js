@@ -282,7 +282,7 @@ function CallCenterQueueEdit() {
     const payload = {
       ...data,
       ...{
-        record_template: record_template === "true" ? 1 : 0,
+        recording_enabled: record_template === "true" ? 1 : 0,
         account_id: account.account_id,
         created_by: account.id,
       },
