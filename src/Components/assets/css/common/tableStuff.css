@@ -15,7 +15,7 @@ table th {
 
 table thead tr {
     /* background-color: var(--div-color); */
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--nav-color);
 }
 
 table tbody tr {
@@ -69,6 +69,10 @@ table tr th:first-child {
     /* border: 1px solid var(--ui-accent); */
     overflow-x: auto;
     /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 5px;
+    background-color: #fff;
 }
 
 #detailsHeader .profileHolder {
