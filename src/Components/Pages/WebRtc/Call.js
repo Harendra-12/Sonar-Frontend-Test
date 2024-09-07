@@ -108,6 +108,8 @@ function Call({
   }, [allCall]);
 
   useEffect(() => {
+    console.log("This is account",account && account.account_id);
+    
     setLoading(true);
     if (account && account.account_id) {
       dispatch({

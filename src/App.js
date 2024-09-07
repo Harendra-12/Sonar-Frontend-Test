@@ -158,7 +158,7 @@ function App() {
         <NavigationSetter />
         <DispatchSetter />
         <GlobalCalls />
-        {/* <Navbar /> */}
+        <Navbar />
 
         <Routes>
           <Route path="/" element={<Login />} />

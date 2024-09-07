@@ -583,7 +583,7 @@ function Navbar() {
                   {account?.extension ?
                     <li className="dashboard ">
                       <a
-                        href="/call"
+                        href="/webrtc"
                         target="_blank"
                         // onClick={backToTop}
                         type="button"
