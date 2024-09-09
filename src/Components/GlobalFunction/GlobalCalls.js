@@ -208,22 +208,22 @@ function GlobalCalls() {
     }
   }, [rolesAndPermissionRefresh]);
 
-  useEffect(() => {
-    async function getData() {
-      const apiData = await generalGetFunction(
-        `/domain/search?account=${account?.account_id}`
-      );
-      if (apiData.status) {
-        dispatch({
-          type: "SET_DOMAIN",
-          domain: apiData.data[0],
-        });
-      }
-    }
-    if (domainRefresh > 0) {
-      getData();
-    }
-  }, [domainRefresh,account]);
+  // useEffect(() => {
+  //   async function getData() {
+  //     const apiData = await generalGetFunction(
+  //       `/domain/search?account=${account?.account_id}`
+  //     );
+  //     if (apiData.status) {
+  //       dispatch({
+  //         type: "SET_DOMAIN",
+  //         domain: apiData.data[0],
+  //       });
+  //     }
+  //   }
+  //   if (domainRefresh > 0) {
+  //     getData();
+  //   }
+  // }, [domainRefresh,account]);
 
   return <div></div>;
 }

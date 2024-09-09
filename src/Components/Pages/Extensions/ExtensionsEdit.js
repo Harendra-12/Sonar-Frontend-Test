@@ -24,8 +24,8 @@ import ErrorMessage from "../../CommonComponents/ErrorMessage";
 const ExtensionsEdit = () => {
   const navigate = useNavigate();
   const acount = useSelector((state) => state.account);
-  const domain = useSelector((state) => state.domain);
-  const { id: domainId = "" } = domain;
+  // const domain = useSelector((state) => state.domain);
+  // const { id: domainId = "" } = domain;
   // const [domains, setDomains] = useState();
   const queryParams = new URLSearchParams(useLocation().search);
   const value = queryParams.get("id");
@@ -218,7 +218,7 @@ const ExtensionsEdit = () => {
           callgroup: data.callgroup,
           callScreen: data.callScreen,
           record: data.record,
-          domain: `${domainId}`,
+          // domain: `${domainId}`,
           description: data.description,
           // moh: data.moh,
           password: data.password,

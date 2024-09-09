@@ -27,8 +27,8 @@ function DestinationAdd() {
   // const [domains, setDomains] = useState();
   const [users, setUsers] = useState();
   const account = useSelector((state) => state.account);
-  const domain = useSelector((state) => state.domain);
-  const { id: domainId } = domain;
+  // const domain = useSelector((state) => state.domain);
+  // const { id: domainId } = domain;
   const {
     register,
     watch,
@@ -77,7 +77,7 @@ function DestinationAdd() {
       ...{
         account_id: account.account_id,
         destination_status: data.destination_status == "true" ? true : false,
-        domain: `${domainId}`,
+        // domain: `${domainId}`,
       },
     };
     const apiData = await generalPostFunction(`/dialplan/store`, payload);

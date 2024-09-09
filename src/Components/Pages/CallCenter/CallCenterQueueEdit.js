@@ -35,13 +35,13 @@ function CallCenterQueueEdit() {
   const [ringGroup, setRingGroup] = useState();
   const [user, setUser] = useState();
   const account = useSelector((state) => state.account);
-  const domain = useSelector((state) => state.domain);
+  // const domain = useSelector((state) => state.domain);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const [prevAgents, setPrevAgents] = useState([]);
   const [extension, setExtension] = useState([]);
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
   const extensionArr = useSelector((state) => state.extension);
-  const { domain_name = "" } = domain;
+  // const { domain_name = "" } = domain;
   const [agent, setAgent] = useState([
     {
       id: 1,
@@ -267,17 +267,17 @@ function CallCenterQueueEdit() {
 
     const { record_template, queue_name, extension, queue_timeout_action } =
       data;
-    const xmlObj = {
-      xml: `<extension name="${queue_name.trim()}">
-        <condition field="destination_number" expression="^(callcenter\+)?${extension}$" >
-          <action application="answer" data=""/>
-          <action application="set" data="hangup_after_bridge=true"/>
-          <action application="sleep" data="1000"/>
-          <action application="callcenter" data="${extension}@${domain_name}"/>
-           <action application="transfer" data="${queue_timeout_action} XML ${domain_name}"/>
-        </condition>
-</extension>`,
-    };
+    //     const xmlObj = {
+    //       xml: `<extension name="${queue_name.trim()}">
+    //         <condition field="destination_number" expression="^(callcenter\+)?${extension}$" >
+    //           <action application="answer" data=""/>
+    //           <action application="set" data="hangup_after_bridge=true"/>
+    //           <action application="sleep" data="1000"/>
+    //           <action application="callcenter" data="${extension}@${domain_name}"/>
+    //            <action application="transfer" data="${queue_timeout_action} XML ${domain_name}"/>
+    //         </condition>
+    // </extension>`,
+    //     };
 
     const payload = {
       ...data,
