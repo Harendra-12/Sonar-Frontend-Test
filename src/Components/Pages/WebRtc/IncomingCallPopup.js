@@ -44,6 +44,20 @@ function IncomingCallPopup({
     }
   }, [sessionId, globalSession]);
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Enter" && lastIncomingCall) {
+        handleAnswerCall(event);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [lastIncomingCall]);
+
   const callerExtension = session.incomingInviteRequest
     ? session?.incomingInviteRequest?.message?.from?._displayName
     : session?.outgoingInviteRequest?.message?.to?.uri?.normal?.user;

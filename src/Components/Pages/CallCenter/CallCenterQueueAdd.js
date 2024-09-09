@@ -213,6 +213,7 @@ function CallCenterQueueAdd() {
         type: "manual",
         message: "Agent name and password required in all rows",
       });
+      setLoading(false);
       return;
     }
 
@@ -234,7 +235,8 @@ function CallCenterQueueAdd() {
     const payload = {
       ...data,
       ...{
-        recording_enabled: record_template === "true" ? 1 : 0,
+        record_template: record_template === true,
+        recording_enabled: record_template === "true" ? true : false,
         account_id: account.account_id,
         created_by: account.id,
       },
@@ -254,6 +256,7 @@ function CallCenterQueueAdd() {
         }),
       },
     };
+    delete payload.record_template;
     const apiData = await generalPostFunction(
       "/call-center-queue/store",
       payload
@@ -486,8 +489,8 @@ function CallCenterQueueAdd() {
                     {...register("record_template")}
                     className="formItem w-100"
                   >
-                    <option>True</option>
-                    <option>False</option>
+                    <option value={true}>True</option>
+                    <option value={false}>False</option>
                   </select>
                   <br />
                   <label htmlFor="data" className="formItemDesc">

@@ -374,7 +374,7 @@ const RingGroupEdit = () => {
       ...{
         account_id: account.account_id,
         recording_enabled:data.recording_enabled,
-        followme: data.followme == "true" ? true : false,
+        followme: data.followme === "true" ? true : false,
         status: data.status == true ? "active" : "inactive",
         destination: destination
           .map((item) => {
@@ -1115,10 +1115,10 @@ const RingGroupEdit = () => {
                     <select
                       className="formItem me-0"
                       style={{ width: "100%" }}
-                      value={watch().recording_enabled}
+                      // value={watch().recording_enabled}
                       {...register("recording_enabled")}
                       id="selectFormRow"
-                      name="status"
+                      name="recording_enabled"
                     >
                       <option className="status" value={1}>
                         True

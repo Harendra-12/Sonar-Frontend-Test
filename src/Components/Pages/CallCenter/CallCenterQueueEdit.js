@@ -282,7 +282,7 @@ function CallCenterQueueEdit() {
     const payload = {
       ...data,
       ...{
-        recording_enabled: record_template === "true" ? 1 : 0,
+        recording_enabled: record_template === "true" ? true : false,
         account_id: account.account_id,
         created_by: account.id,
       },
@@ -325,6 +325,7 @@ function CallCenterQueueEdit() {
       },
     };
     setLoading(true);
+    delete payload.record_template;
     const apiData = await generalPutFunction(
       `/call-center-queue/update/${locationState.id}`,
       payload
@@ -373,8 +374,6 @@ function CallCenterQueueEdit() {
       setAgent(agent.filter((item) => item.id !== id));
     }
   }
-
-
 
   return (
     <main className="mainContent">
@@ -591,7 +590,7 @@ function CallCenterQueueEdit() {
                 <ActionList
                   getDropdownValue={actionListValue}
                   value={watch().queue_timeout_action}
-                // value={callCenter.action}
+                  // value={callCenter.action}
                 />
               </div>
               <div className="formRow col-xl-3">
