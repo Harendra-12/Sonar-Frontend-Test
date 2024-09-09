@@ -1096,14 +1096,11 @@ const RingGroupAdd = () => {
                         <select
                           className="formItem me-0"
                           style={{ width: "100%" }}
-                          value={watch().recording_enabled}
                           {...register("recording_enabled")}
                           id="selectFormRow"
-                          name="status"
+                          name="recording_enabled"
                         >
-                          <option className="status" value={1}>
-                            True
-                          </option>
+                          <option value={1}>True</option>
                           <option value={0}>False</option>
                         </select>
                       </div>
