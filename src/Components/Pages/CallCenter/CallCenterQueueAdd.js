@@ -234,7 +234,8 @@ function CallCenterQueueAdd() {
     const payload = {
       ...data,
       ...{
-        recording_enabled: record_template === "true" ? 1 : 0,
+        record_template: record_template === true,
+        recording_enabled: record_template === "true" ? true : false,
         account_id: account.account_id,
         created_by: account.id,
       },
