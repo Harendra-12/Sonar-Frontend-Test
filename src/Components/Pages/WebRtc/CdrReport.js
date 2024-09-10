@@ -39,14 +39,11 @@ function CdrReport() {
   return (
     <main className="mainContent">
       <section id="phonePage">
+        <div className="container-fluid px-0">
+          <Header title="CDR Reports" />
+        </div>
         <div className="container-fluid">
           <div className="row">
-            <div className="col-12">
-              <div className="row px-xl-3 " id="detailsHeader">
-                <Header title="CDR Reports" />
-                {/* <div className="mt-4" /> */}
-              </div>
-            </div>
             <div className="col-12" style={{ overflow: "auto" }}>
               <div className="tableContainer">
                 <table>
@@ -96,15 +93,15 @@ function CdrReport() {
                                     />
                                   )}
                                 </td>
-                                
+
                                 <td>{item["variable_billsec"]}</td>
                                 <td>
                                   {item["variable_DIALSTATUS"] === null
                                     ? "NOT CONNECTED"
                                     : item["variable_DIALSTATUS"] ===
                                       "NO_USER_RESPONSE"
-                                    ? "BUSY"
-                                    : item["variable_DIALSTATUS"]}
+                                      ? "BUSY"
+                                      : item["variable_DIALSTATUS"]}
                                 </td>
                                 <td>{item["Caller-Network-Addr"]}</td>
                                 <td>
@@ -116,7 +113,7 @@ function CdrReport() {
                                 </td>
                                 <td>
                                   {
-                                   0.00
+                                    0.00
                                   }
                                 </td>
                               </tr>

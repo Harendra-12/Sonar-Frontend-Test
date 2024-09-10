@@ -5,12 +5,13 @@ import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
+import EmptyPrompt from "../../Loader/EmptyPrompt";
 
 function ActiveCalls() {
   const activeCall = useSelector((state) => state.activeCall);
   const [loading, setLoading] = useState(false);
-  const [bargeStatus,setBargeStatus]=useState("disable")
-  const [id,setId]=useState("")
+  const [bargeStatus, setBargeStatus] = useState("disable")
+  const [id, setId] = useState("")
   async function killCall(id) {
     setLoading(true);
     const apiData = await generalGetFunction(`/freeswitch/call-kill/${id}`);
@@ -68,15 +69,15 @@ function ActiveCalls() {
     }
   }
 
-  useEffect(()=>{
-    if(bargeStatus==="burge"){
+  useEffect(() => {
+    if (bargeStatus === "burge") {
       bargeCall(id)
-    }else if(bargeStatus==="intercept"){
+    } else if (bargeStatus === "intercept") {
       interceptCall(id)
-    }else if(bargeStatus==="eavesdrop"){
+    } else if (bargeStatus === "eavesdrop") {
       eavesdropCall(id)
     }
-  },[bargeStatus,id])
+  }, [bargeStatus, id])
 
   return (
     <>
@@ -120,7 +121,7 @@ function ActiveCalls() {
                                 <td>{item.b_cid_num}</td>
                                 <td>{item.dest}</td>
                                 <td>
-                                  <select onChange={(e)=>{setBargeStatus(e.target.value);setId(item.uuid)}} >
+                                  <select onChange={(e) => { setBargeStatus(e.target.value); setId(item.uuid) }} >
                                     <option value="disbale"></option>
                                     <option
                                       value="burge"
@@ -236,6 +237,13 @@ function ActiveCalls() {
                           </tr>
                         );
                       })} */}
+                      {activeCall && activeCall.length === 0 ? (
+                        <td colSpan={99}>
+                          <EmptyPrompt name="Call" link="call" />
+                        </td>
+                      ) : (
+                        ""
+                      )}
                     </tbody>
                   </table>
                 </div>
