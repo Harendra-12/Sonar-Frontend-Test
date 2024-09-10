@@ -22,12 +22,12 @@ function DestinationEdit() {
   // const [domains, setDomains] = useState();
   const [users, setUsers] = useState();
   const account = useSelector((state) => state.account);
-  const domain = useSelector((state) => state.domain);
+  // const domain = useSelector((state) => state.domain);
   const [loading, setLoading] = useState(false);
   const queryParams = new URLSearchParams(useLocation().search);
   const value = queryParams.get("id");
   const ringGroup = useSelector((state) => state.ringGroup);
-  const { id: domainId = "" } = domain;
+  // const { id: domainId = "" } = domain;
   const [destination, setDestination] = useState({
     type: "Inbound",
     countryCode: "",
@@ -255,7 +255,7 @@ function DestinationEdit() {
         caller_Id_number: destination.callerIdNumber,
         caller_Id_name_prefix: destination.callerIdNamePrefix,
         usage: destination.usage,
-        domain: `${domainId}`,
+        // domain: `${domainId}`,
         order: destination.order,
         destination_status: destination.enabled === "true" ? true : false,
         description: destination.description,

@@ -143,14 +143,14 @@ function App() {
   //     console.log(payload);
   //   })
   // },[account])
-  useEffect(() => {
-    if (localStorage.getItem("token") !== null) {
-      dispatch({
-        type: "SET_DOMAINREFRESH",
-        domainRefresh: domainRefresh + 1,
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.getItem("token") !== null) {
+  //     dispatch({
+  //       type: "SET_DOMAINREFRESH",
+  //       domainRefresh: domainRefresh + 1,
+  //     });
+  //   }
+  // }, []);
 
   return (
     <>

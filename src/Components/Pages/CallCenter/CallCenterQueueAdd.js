@@ -32,9 +32,9 @@ function CallCenterQueueAdd() {
   const [user, setUser] = useState();
   const [music, setMusic] = useState();
   const account = useSelector((state) => state.account);
-  const domain = useSelector((state) => state.domain);
+  // const domain = useSelector((state) => state.domain);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
-  const { domain_name = "" } = domain;
+  // const { domain_name = "" } = domain;
   // const [popUp, setPopUp] = useState(true);
 
   const {
@@ -220,17 +220,17 @@ function CallCenterQueueAdd() {
     const { record_template, queue_name, extension, queue_timeout_action } =
       data;
 
-    const xmlObj = {
-      xml: `<extension name="${queue_name.trim()}">
-        <condition field="destination_number" expression="^(callcenter\+)?${extension}$" >
-          <action application="answer" data=""/>
-          <action application="set" data="hangup_after_bridge=true"/>
-          <action application="sleep" data="1000"/>
-          <action application="callcenter" data="${extension}@${domain_name}"/>
-           <action application="transfer" data="${queue_timeout_action} XML ${domain_name}"/>
-        </condition>
-</extension>`,
-    };
+    //     const xmlObj = {
+    //       xml: `<extension name="${queue_name.trim()}">
+    //         <condition field="destination_number" expression="^(callcenter\+)?${extension}$" >
+    //           <action application="answer" data=""/>
+    //           <action application="set" data="hangup_after_bridge=true"/>
+    //           <action application="sleep" data="1000"/>
+    //           <action application="callcenter" data="${extension}@${domain_name}"/>
+    //            <action application="transfer" data="${queue_timeout_action} XML ${domain_name}"/>
+    //         </condition>
+    // </extension>`,
+    //     };
 
     const payload = {
       ...data,
@@ -277,7 +277,6 @@ function CallCenterQueueAdd() {
         const errorMessage = Object.keys(apiData.errors);
         toast.error(apiData.errors[errorMessage[0]][0]);
       }
-
     }
   });
 

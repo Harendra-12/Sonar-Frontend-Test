@@ -42,8 +42,8 @@ const UsersEdit = () => {
   } = useForm();
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const account = useSelector((state) => state.account);
-  const domain = useSelector((state) => state.domain);
-  const { id: domainId = "" } = domain;
+  // const domain = useSelector((state) => state.domain);
+  // const { id: domainId = "" } = domain;
   useEffect(() => {
     if (account === null) {
       navigate("/");
@@ -466,8 +466,8 @@ const UsersEdit = () => {
                           e.target.value === ""
                             ? ""
                             : role[e.target.value].permissions.map((item) => {
-                              return item.permission_id;
-                            })
+                                return item.permission_id;
+                              })
                         );
                       }}
                     >

@@ -74,7 +74,8 @@ const Extensions = () => {
               <div className="col-xl-8 pt-3 pt-xl-0">
                 <div className="d-flex justify-content-end">
                   <Link
-                    to="/extensions-add"
+                    // to="/extensions-add"
+                    to="#"
                     onClick={backToTop}
                     effect="ripple"
                     className="panelButton"

@@ -24,7 +24,7 @@ const ActionList = ({
   const ringGroupArr = useSelector((state) => state.ringGroup);
 
   useEffect(() => {
-    if (extensionRefresh > 1) {
+    if (extensionRefresh > 0) {
       setExtension(extensionArr);
     } else {
       dispatch({
@@ -32,7 +32,7 @@ const ActionList = ({
         extensionRefresh: extensionRefresh + 1,
       });
     }
-    if (ringGroupRefresh > 1) {
+    if (ringGroupRefresh > 0) {
       setRingGroup(ringGroupArr);
     } else {
       dispatch({
@@ -40,7 +40,7 @@ const ActionList = ({
         ringGroupRefresh: ringGroupRefresh + 1,
       });
     }
-    if (callCenterRefresh > 1) {
+    if (callCenterRefresh > 0) {
       setCallCenter(callCenterArr);
     } else {
       dispatch({
