@@ -9,6 +9,7 @@ import {
 import ContentLoader from "../../Loader/ContentLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import EmptyPrompt from "../../Loader/EmptyPrompt";
 
 function CallCenterQueue() {
   const navigate = useNavigate();
@@ -232,6 +233,16 @@ function CallCenterQueue() {
                               </tr>
                             );
                           })}
+                        {callCenter && callCenter.length === 0 ? (
+                          <td colSpan={99}>
+                            <EmptyPrompt
+                              name="Call Center"
+                              link="cal-center-queue-add"
+                            />
+                          </td>
+                        ) : (
+                          ""
+                        )}
                       </>
                     )}
                   </tbody>

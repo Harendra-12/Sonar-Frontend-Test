@@ -1088,7 +1088,7 @@ const RingGroupAdd = () => {
                   </label>
                 </div>
               </div> */}
-              <div className="col-2 pe-2">
+              <div className="formRow col-xl-3 pe-2">
                 <div className="formLabel">
                   <label htmlFor="">Recording</label>
                 </div>
