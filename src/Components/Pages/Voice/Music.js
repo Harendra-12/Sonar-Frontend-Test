@@ -159,14 +159,14 @@ function Music() {
                                 <MusicPlayer audioSrc={item.path} />
                               </td>
 
-                              <td
-                                onClick={() => {
+                              <td>
+                                <button className="tableButton delete" onClick={() => {
                                   // handleDelete(item.id)
                                   setDeletePopup(true);
                                   setDeleteId(item.id);
-                                }}
-                              >
-                                <i className="fa-duotone fa-trash text-danger fs-6"></i>
+                                }}>
+                                  <i className="fa-duotone fa-trash text-danger fs-6"></i>
+                                </button>
                               </td>
                             </tr>
                           );
