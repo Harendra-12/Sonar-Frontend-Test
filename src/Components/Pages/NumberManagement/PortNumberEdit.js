@@ -77,7 +77,7 @@ function PortNumberEdit() {
     if (apiData.status) {
       setLoading(false);
       toast.success(apiData.message);
-      setgetportByIdRefresh(getportByIdRefresh + 1);
+      // setgetportByIdRefresh(getportByIdRefresh + 1);
     } else {
       setLoading(false);
       const errorMessage = Object.keys(apiData.errors);
