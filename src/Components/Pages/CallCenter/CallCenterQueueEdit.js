@@ -103,7 +103,7 @@ function CallCenterQueueEdit() {
     }
     getData();
     if (locationState) {
-      const { agents, record_template } = locationState;
+      const { agents, recording_enabled } = locationState;
       setPrevAgents(agents);
       setAgent(
         agents.map((item, index) => {
@@ -122,7 +122,7 @@ function CallCenterQueueEdit() {
 
       const destructuredData = {
         ...locationState,
-        ...{ record_template: record_template == 1 ? true : false },
+        ...{ recording_enabled: recording_enabled === 1 ? "true" : "false" },
       };
 
       reset(destructuredData);
@@ -160,16 +160,40 @@ function CallCenterQueueEdit() {
 
   function removeAgenet(id) {
     const updatedAgent = agent.filter((item) => item.id !== id);
+    if (validateAgents()) {
+      clearErrors("agent");
+    }
     setAgent(updatedAgent);
   }
+
+  // const handleAgentChange = (event, index) => {
+  //   const { name, value } = event.target;
+  //   const newAgent = [...agent];
+  //   newAgent[index][name] = value;
+  //   setAgent(agent);
+
+  //   if (validateAgents()) {
+  //     clearErrors("agent");
+  //   } else {
+  //     setErr("agent", {
+  //       type: "manual",
+  //       message: "Agent name and password required in all rows",
+  //     });
+  //   }
+  // };
 
   const handleAgentChange = (event, index) => {
     const { name, value } = event.target;
     const newAgent = [...agent];
     newAgent[index][name] = value;
-    setAgent(agent);
+    setAgent(newAgent);
 
-    if (validateAgents()) {
+    if (!validateUniqueAgents()) {
+      setErr("agent", {
+        type: "manual",
+        message: "Same agent can't be selected for two or more fields",
+      });
+    } else if (validateAgents()) {
       clearErrors("agent");
     } else {
       setErr("agent", {
@@ -184,6 +208,11 @@ function CallCenterQueueEdit() {
       (item) => item.name.trim() !== "" && item.password.trim() !== ""
     );
     return allFieldsFilled;
+  };
+  const validateUniqueAgents = () => {
+    const agentValues = agent.map((item) => item.name);
+    const uniqueValues = [...new Set(agentValues)];
+    return agentValues.length === uniqueValues.length;
   };
 
   const handleExtensionChange = (selectedOption) => {
@@ -265,7 +294,7 @@ function CallCenterQueueEdit() {
       return;
     }
 
-    const { record_template, queue_name, extension, queue_timeout_action } =
+    const { recording_enabled, queue_name, extension, queue_timeout_action } =
       data;
     //     const xmlObj = {
     //       xml: `<extension name="${queue_name.trim()}">
@@ -282,7 +311,8 @@ function CallCenterQueueEdit() {
     const payload = {
       ...data,
       ...{
-        recording_enabled: record_template === "true" ? true : false,
+        // recording_enabled: record_template === "true" ? 1 : 0,
+        recording_enabled: recording_enabled === "true" ? 1 : 0,
         account_id: account.account_id,
         created_by: account.id,
       },
@@ -574,11 +604,12 @@ function CallCenterQueueEdit() {
                 </div>
                 <div className="col-12">
                   <select
-                    {...register("record_template")}
+                    {...register("recording_enabled")}
                     className="formItem w-100"
+                    name="recording_enabled"
                   >
-                    <option value={true}>True</option>
-                    <option value={false}>False</option>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
                   </select>
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -909,11 +940,12 @@ function CallCenterQueueEdit() {
                           </select>
                         </div> */}
 
-                        {index === 0 ? (
+                        {agent.length === 1 ? (
                           ""
                         ) : (
                           <div
-                            onClick={() => deleteDestination(item.id)}
+                            // onClick={() => deleteDestination(item.id)}
+                            onClick={() => removeAgenet(item.id)}
                             className="col-auto h-100 d-flex align-items-center"
                           >
                             <button
@@ -924,7 +956,8 @@ function CallCenterQueueEdit() {
                             </button>
                           </div>
                         )}
-                        {index === agent.length - 1 ? (
+                        {index === agent.length - 1 &&
+                        index !== (user && user.length - 1) ? (
                           <div
                             onClick={addNewAgent}
                             className="col-auto h-100 d-flex align-items-center"
