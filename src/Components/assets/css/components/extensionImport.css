@@ -110,8 +110,8 @@
     transition: all 0.3s ease-in-out;
 }
 
-.formItem:focus,
-.formItem:hover {
+.formItem:not([type="file"]):focus,
+.formItem:not([type="file"]):hover {
     border: 1px solid var(--ui-accent);
 }
 

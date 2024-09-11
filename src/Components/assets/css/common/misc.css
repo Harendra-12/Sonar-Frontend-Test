@@ -37,8 +37,8 @@
 
 .extensionStatus {
     display: block;
-    width: 12px;
-    height: 12px;
+    width: 15px;
+    height: 15px;
     border-radius: 50%;
     background-color: red;
 }

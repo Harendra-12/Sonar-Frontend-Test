@@ -42,8 +42,8 @@ const customStyles = {
   control: (provided, state) => ({
     ...provided,
     // border: '1px solid var(--color4)',
-    border: "1px solid #ababab",
-    borderRadius: "2px",
+    border: "1px solid #abababa6",
+    borderRadius: "5px",
     outline: "none",
     fontSize: "14px",
     width: "100%",
@@ -57,7 +57,7 @@ const customStyles = {
   valueContainer: (provided) => ({
     ...provided,
     height: "auto",
-    padding: "0 6px",
+    padding: "0 3px",
   }),
   input: (provided) => ({
     ...provided,
@@ -68,7 +68,7 @@ const customStyles = {
   }),
   indicatorsContainer: (provided) => ({
     ...provided,
-    height: "32px",
+    height: "30px",
   }),
   dropdownIndicator: (provided) => ({
     ...provided,
@@ -269,9 +269,8 @@ function GetDid() {
                       <div className="col-12">
                         <select
                           name="searchType"
-                          className={`formItem ${
-                            errors.searchType ? "error" : ""
-                          }`}
+                          className={`formItem ${errors.searchType ? "error" : ""
+                            }`}
                           {...register("searchType", { ...requiredValidator })}
                         >
                           <option value="tollfree">Toll free</option>
@@ -289,9 +288,8 @@ function GetDid() {
                         <input
                           type="number"
                           name="quantity"
-                          className={`formItem ${
-                            errors.quantity ? "error" : ""
-                          }`}
+                          className={`formItem ${errors.quantity ? "error" : ""
+                            }`}
                           {...register("quantity", {
                             ...requiredValidator,
                             ...lengthValidator(1, 10),
@@ -303,7 +301,7 @@ function GetDid() {
                         )}
                       </div>
                     </div>
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-auto">
                       <div className="formLabel">
                         <label htmlFor="">Usage</label>
                       </div>

@@ -195,17 +195,17 @@ const Extensions = () => {
                                 }
                               ></span>
                             </td>
-                            <td
-                              onClick={() =>
-                                navigate("/call-settings", {
-                                  state: {
-                                    id: item.id,
-                                    extension: item.extension,
-                                  },
-                                })
-                              }
-                            >
-                              <i className="fa-duotone fa-gear text-success"></i>
+                            <td>
+                              <button class="tableButton"
+                                onClick={() =>
+                                  navigate("/call-settings", {
+                                    state: {
+                                      id: item.id,
+                                      extension: item.extension,
+                                    },
+                                  })
+                                }><i className="fa-duotone fa-gear"></i>
+                              </button>
                             </td>
                           </tr>
                         );

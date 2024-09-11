@@ -299,12 +299,13 @@
 
 .tableLabel {
     color: #fff;
-    padding: 1px 7px;
+    padding: 3px 5px;
     border-radius: 5px;
     width: 62px;
     text-align: center;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
+
 
 .tableLabel.success {
     background-color: #00ab2b;
@@ -314,7 +315,7 @@
     background-color: #ff0000;
 }
 
-.tableLabel.pending{
+.tableLabel.pending {
     background-color: orange;
 }
 
@@ -424,4 +425,44 @@
 .approvalButton:active {
     transform: translate(5px, 5px);
     transition-duration: .3s;
+}
+
+.tableButton {
+    border: none;
+    border-radius: 50%;
+    background-color: var(--ui-accent);
+    color: #fff;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s ease-in-out;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.tableButton:hover {
+    background-color: var(--bg-color);
+    box-shadow: none;
+}
+
+.tableButton:hover i {
+    color: var(--ui-accent) !important;
+}
+
+.tableButton i {
+    font-size: 14px;
+    color: #fff !important;
+}
+
+.tableButton.delete {
+    background-color: #ff4444;
+}
+
+.tableButton.delete:hover {
+    background-color: #ff00000d;
+}
+
+.tableButton.delete:hover i {
+    color: #ff4444 !important;
 }
