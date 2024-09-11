@@ -51,7 +51,7 @@ function CallDetails({ clickedCall, callHistory }) {
   async function onCall(e) {
     e.preventDefault();
     const apiData = await sessionManager?.call(
-      `sip:${Number(callDetails.variable_sip_from_user)}@192.168.2.225`,
+      `sip:${Number(callDetails?.["Caller-Callee-ID-Number"])}@192.168.2.225`,
       {}
     );
 
@@ -61,7 +61,7 @@ function CallDetails({ clickedCall, callHistory }) {
         ...globalSession,
         {
           id: apiData._id,
-          destination: Number(callDetails.variable_sip_from_user),
+          destination: Number(callDetails?.["Caller-Callee-ID-Number"]),
           state: "Established",
         },
       ],
@@ -72,7 +72,7 @@ function CallDetails({ clickedCall, callHistory }) {
     });
     dispatch({
       type: "SET_CALLPROGRESSDESTINATION",
-      callProgressDestination: Number(callDetails.variable_sip_from_user),
+      callProgressDestination: Number(callDetails?.["Caller-Callee-ID-Number"]),
     });
     dispatch({
       type: "SET_CALLPROGRESS",
