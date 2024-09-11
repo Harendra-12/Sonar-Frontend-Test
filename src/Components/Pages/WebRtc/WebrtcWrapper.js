@@ -57,6 +57,9 @@ const WebrtcWrapper = () => {
     <>
       <SideNavbarApp setactivePage={setactivePage} />
       <SIPProvider options={options}>
+      <div>
+          <SipRegister />
+        </div>
         {activePage == "call" && (
           <Call
             setHangupRefresh={setHangupRefresh}
@@ -75,9 +78,7 @@ const WebrtcWrapper = () => {
           setSelectedModule={setSelectedModule}
           setactivePage={setactivePage}
         />
-        <div>
-          <SipRegister />
-        </div>
+       
         {sessions.length > 0 && Object.keys(sessions).length > 0 ? (
           <>
             <section

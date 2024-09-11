@@ -294,7 +294,7 @@ const RingGroupAdd = () => {
       ...data,
       ...{
         account_id: account.account_id,
-        recording_enabled:data.recording_enabled,
+        recording_enabled: data.recording_enabled === "true" ? 1 : 0,
         followme: data.followme == "true" ? true : false,
         status: data.status == true ? "active" : "inactive",
         destination: destination
@@ -719,7 +719,7 @@ const RingGroupAdd = () => {
                           <option value="inactive">False</option>
                         </select>
                       </div>
-                      {index === 0 ? (
+                      {destination.length === 1 ? (
                         ""
                       ) : (
                         <div className="col-auto h-100 my-auto">
@@ -1088,22 +1088,21 @@ const RingGroupAdd = () => {
                   </label>
                 </div>
               </div> */}
-               <div className="col-2 pe-2">
-                      
-                          <div className="formLabel">
-                            <label htmlFor="">Recording</label>
-                          </div>
-                        <select
-                          className="formItem me-0"
-                          style={{ width: "100%" }}
-                          {...register("recording_enabled")}
-                          id="selectFormRow"
-                          name="recording_enabled"
-                        >
-                          <option value={1}>True</option>
-                          <option value={0}>False</option>
-                        </select>
-                      </div>
+              <div className="col-2 pe-2">
+                <div className="formLabel">
+                  <label htmlFor="">Recording</label>
+                </div>
+                <select
+                  className="formItem me-0"
+                  style={{ width: "100%" }}
+                  {...register("recording_enabled")}
+                  id="selectFormRow"
+                  name="recording_enabled"
+                >
+                  <option value="true">True</option>
+                  <option value="false">False</option>
+                </select>
+              </div>
               <div className="formRow  col-xl-3">
                 <div className="d-flex flex-wrap align-items-center">
                   <div className="formLabel">
