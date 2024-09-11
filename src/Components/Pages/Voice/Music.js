@@ -165,7 +165,7 @@ function Music() {
                                   setDeletePopup(true);
                                   setDeleteId(item.id);
                                 }}>
-                                  <i className="fa-duotone fa-trash text-danger fs-6"></i>
+                                  <i className="fa-solid fa-trash fs-6"></i>
                                 </button>
                               </td>
                             </tr>
