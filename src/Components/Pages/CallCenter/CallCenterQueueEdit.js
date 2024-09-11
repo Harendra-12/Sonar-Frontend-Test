@@ -157,7 +157,9 @@ function CallCenterQueueEdit() {
       },
     ]);
   }
-
+  if (agent.length === 0) {
+    addNewAgent();
+  }
   function removeAgenet(id) {
     const updatedAgent = agent.filter((item) => item.id !== id);
     if (validateAgents()) {
@@ -393,6 +395,9 @@ function CallCenterQueueEdit() {
       );
       if (deleteGroup.status) {
         const updatedDestination = agent.filter((item) => item.id !== id);
+        if (validateAgents()) {
+          clearErrors("agent");
+        }
         setAgent(updatedDestination);
         setLoading(false);
         toast.success(deleteGroup.message);
@@ -431,7 +436,7 @@ function CallCenterQueueEdit() {
                   className="panelButton"
                   onClick={handleFormSubmit}
                 >
-                  Save
+                  Update
                 </button>
               </div>
             </div>
@@ -944,8 +949,8 @@ function CallCenterQueueEdit() {
                           ""
                         ) : (
                           <div
-                            // onClick={() => deleteDestination(item.id)}
-                            onClick={() => removeAgenet(item.id)}
+                            onClick={() => deleteDestination(item.id)}
+                            // onClick={() => removeAgenet(item.id)}
                             className="col-auto h-100 d-flex align-items-center"
                           >
                             <button

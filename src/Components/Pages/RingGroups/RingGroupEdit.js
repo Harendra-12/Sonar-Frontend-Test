@@ -468,7 +468,7 @@ const RingGroupEdit = () => {
                   className="panelButton"
                   onClick={handleFormSubmit}
                 >
-                  Save
+                  Update
                 </button>
               </div>
             </div>

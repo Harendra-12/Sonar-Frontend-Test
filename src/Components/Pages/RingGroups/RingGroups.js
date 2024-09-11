@@ -229,7 +229,9 @@ const RingGroups = () => {
                                     setDeleteId(item.id);
                                   }}
                                 >
-                                  Delete
+                                  <label className="tableLabel fail">
+                                    Delete
+                                  </label>
                                 </td>
                               </tr>
                             );

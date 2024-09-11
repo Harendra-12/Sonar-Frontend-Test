@@ -152,6 +152,10 @@ function CallCenterQueueAdd() {
     }
   };
 
+  if (agent.length === 0) {
+    addNewAgent();
+  }
+
   const validateAgents = () => {
     const allFieldsFilled = agent.every(
       (item) => item.name.trim() !== "" && item.password.trim() !== ""
