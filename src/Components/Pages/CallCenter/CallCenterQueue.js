@@ -227,7 +227,9 @@ function CallCenterQueue() {
                                     setDeleteId(item.id);
                                   }}
                                 >
-                                  Delete
+                                  <label className="tableLabel fail">
+                                    Delete
+                                  </label>
                                 </td>
                               </tr>
                             );
