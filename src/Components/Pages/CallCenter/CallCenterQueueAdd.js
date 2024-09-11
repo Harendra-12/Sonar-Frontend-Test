@@ -110,16 +110,39 @@ function CallCenterQueueAdd() {
 
   function removeAgenet(id) {
     const updatedAgent = agent.filter((item) => item.id !== id);
+    if (validateAgents()) {
+      clearErrors("agent");
+    }
     setAgent(updatedAgent);
   }
+  // const handleAgentChange = (event, index) => {
+  //   const { name, value } = event.target;
+  //   const newAgent = [...agent];
+  //   newAgent[index][name] = value;
+  //   setAgent(agent);
+
+  //   if (validateAgents()) {
+  //     clearErrors("agent");
+  //   } else {
+  //     setErr("agent", {
+  //       type: "manual",
+  //       message: "Agent name and password required in all rows",
+  //     });
+  //   }
+  // };
 
   const handleAgentChange = (event, index) => {
     const { name, value } = event.target;
     const newAgent = [...agent];
     newAgent[index][name] = value;
-    setAgent(agent);
+    setAgent(newAgent);
 
-    if (validateAgents()) {
+    if (!validateUniqueAgents()) {
+      setErr("agent", {
+        type: "manual",
+        message: "Same agent can't be selected for two or more fields",
+      });
+    } else if (validateAgents()) {
       clearErrors("agent");
     } else {
       setErr("agent", {
@@ -134,6 +157,11 @@ function CallCenterQueueAdd() {
       (item) => item.name.trim() !== "" && item.password.trim() !== ""
     );
     return allFieldsFilled;
+  };
+  const validateUniqueAgents = () => {
+    const agentValues = agent.map((item) => item.name);
+    const uniqueValues = [...new Set(agentValues)];
+    return agentValues.length === uniqueValues.length;
   };
 
   const handleExtensionChange = (selectedOption) => {
@@ -217,7 +245,7 @@ function CallCenterQueueAdd() {
       return;
     }
 
-    const { record_template, queue_name, extension, queue_timeout_action } =
+    const { recording_enabled, queue_name, extension, queue_timeout_action } =
       data;
 
     //     const xmlObj = {
@@ -235,8 +263,8 @@ function CallCenterQueueAdd() {
     const payload = {
       ...data,
       ...{
-        record_template: record_template === true,
-        recording_enabled: record_template === "true" ? true : false,
+        // record_template: record_template === true,
+        recording_enabled: recording_enabled === "true" ? 1 : 0,
         account_id: account.account_id,
         created_by: account.id,
       },
@@ -256,7 +284,7 @@ function CallCenterQueueAdd() {
         }),
       },
     };
-    delete payload.record_template;
+    // delete payload.record_template;
     const apiData = await generalPostFunction(
       "/call-center-queue/store",
       payload
@@ -485,11 +513,12 @@ function CallCenterQueueAdd() {
                 </div>
                 <div className="col-12">
                   <select
-                    {...register("record_template")}
+                    {...register("recording_enabled")}
                     className="formItem w-100"
+                    name="recording_enabled"
                   >
-                    <option value={true}>True</option>
-                    <option value={false}>False</option>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
                   </select>
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -673,7 +702,7 @@ function CallCenterQueueAdd() {
                             <select
                               type="text"
                               name="name"
-                              defaultValue=""
+                              value={item.name}
                               onChange={(e) => {
                                 handleAgentChange(e, index);
                                 user.map((item) => {
@@ -734,6 +763,7 @@ function CallCenterQueueAdd() {
                             className="formItem me-0"
                             style={{ width: "100%" }}
                             name="level"
+                            value={item.level}
                             onChange={(e) => handleAgentChange(e, index)}
                             id="selectFormRow"
                           >
@@ -761,6 +791,7 @@ function CallCenterQueueAdd() {
                             className="formItem me-0"
                             style={{ width: "100%" }}
                             name="position"
+                            value={item.position}
                             onChange={(e) => handleAgentChange(e, index)}
                             id="selectFormRow"
                           >
@@ -786,6 +817,7 @@ function CallCenterQueueAdd() {
                             name="type"
                             onChange={(e) => handleAgentChange(e, index)}
                             id="selectFormRow"
+                            value={item.type}
                           >
                             <option value={"callback"}>Call Back</option>
                             <option value={"uuid-standby"}>UUID Standbu</option>
@@ -815,7 +847,7 @@ function CallCenterQueueAdd() {
                           </select>
                         </div> */}
 
-                        {index === 0 ? (
+                        {agent.length === 1 ? (
                           ""
                         ) : (
                           <div
@@ -830,7 +862,8 @@ function CallCenterQueueAdd() {
                             </button>
                           </div>
                         )}
-                        {index === agent.length - 1 ? (
+                        {index === agent.length - 1 &&
+                        index !== (user && user.length - 1) ? (
                           <div
                             onClick={addNewAgent}
                             className="col-auto h-100 d-flex align-items-center"

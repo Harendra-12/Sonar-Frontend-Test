@@ -137,6 +137,8 @@ const RingGroupEdit = () => {
             ...{
               followme: followme == 1 ? true : false,
               status: status == "active" ? true : false,
+              recording_enabled:
+                editData.recording_enabled === 1 ? true : false,
             },
           };
 
@@ -373,7 +375,7 @@ const RingGroupEdit = () => {
       ...data,
       ...{
         account_id: account.account_id,
-        recording_enabled:data.recording_enabled,
+        recording_enabled: data.recording_enabled === "true" ? 1 : 0,
         followme: data.followme === "true" ? true : false,
         status: data.status == true ? "active" : "inactive",
         destination: destination
@@ -456,7 +458,7 @@ const RingGroupEdit = () => {
                   type="button"
                   effect="ripple"
                   className="panelButton"
-                // onClick={() => { window.location = "/ring-groups" }}
+                  // onClick={() => { window.location = "/ring-groups" }}
                 >
                   Back
                 </button>
@@ -768,7 +770,7 @@ const RingGroupEdit = () => {
                           <option value="inactive">False</option>
                         </select>
                       </div>
-                      {index === 0 ? (
+                      {destination.length === 1 ? (
                         ""
                       ) : (
                         <div className="col-auto h-100 my-auto">
@@ -1107,25 +1109,24 @@ const RingGroupEdit = () => {
                   </label>
                 </div>
               </div> */}
-               <div className="col-2 pe-2">
-                      
-                      <div className="formLabel">
-                        <label htmlFor="">Recording</label>
-                      </div>
-                    <select
-                      className="formItem me-0"
-                      style={{ width: "100%" }}
-                      // value={watch().recording_enabled}
-                      {...register("recording_enabled")}
-                      id="selectFormRow"
-                      name="recording_enabled"
-                    >
-                      <option className="status" value={1}>
-                        True
-                      </option>
-                      <option value={0}>False</option>
-                    </select>
-                  </div>
+              <div className="col-2 pe-2">
+                <div className="formLabel">
+                  <label htmlFor="">Recording</label>
+                </div>
+                <select
+                  className="formItem me-0"
+                  style={{ width: "100%" }}
+                  // value={watch().recording_enabled}
+                  {...register("recording_enabled")}
+                  id="selectFormRow"
+                  name="recording_enabled"
+                >
+                  <option className="status" value="true">
+                    True
+                  </option>
+                  <option value="false">False</option>
+                </select>
+              </div>
               <div className="formRow  col-xl-3">
                 <div className="d-flex flex-wrap align-items-center">
                   <div className="formLabel">
