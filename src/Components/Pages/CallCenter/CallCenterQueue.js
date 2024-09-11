@@ -8,6 +8,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import ContentLoader from "../../Loader/ContentLoader";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 function CallCenterQueue() {
   const navigate = useNavigate();
@@ -17,10 +18,11 @@ function CallCenterQueue() {
   const [callCenter, setCallCenter] = useState();
   const [error, setError] = useState("");
   const [redirectRoutes, setRedirectRoutes] = useState("");
+  // const [deleteToggle, setDeleteToggle] = useState();
+  const [deleteId, setDeleteId] = useState("");
   const allUser = useSelector((state) => state.allUser);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const { data: usersData = [] } = allUser;
-  const [refresh,setRefresh]=useState(0)
 
   useEffect(() => {
     dispatch({
@@ -37,7 +39,7 @@ function CallCenterQueue() {
       }
     }
     getData();
-  }, [refresh]);
+  }, []);
 
   const handleAddCallCenterValidation = (e) => {
     e.preventDefault();
@@ -62,14 +64,23 @@ function CallCenterQueue() {
     backToTop();
   };
 
-  async function handleDelete(id){
-    setLoading(true)
-    const apiData = await generalDeleteFunction(`/call-center-queue/destroy/${id}`)
-    if(apiData.status){
-      setLoading(false)
-      setRefresh(refresh+1)
-    }else{
-      setLoading(false)
+  async function handleDelete(id) {
+    setLoading(true);
+    setPopUp(false);
+    const apiData = await generalDeleteFunction(
+      `/call-center-queue/destroy/${id}`
+    );
+    if (apiData.status) {
+      setLoading(false);
+      // setRefresh(refresh+1)
+      const updatedCallCenter = callCenter.filter((item) => item.id !== id);
+      setCallCenter(updatedCallCenter);
+      toast.success(apiData.message);
+      setDeleteId("");
+    } else {
+      setLoading(false);
+      toast.error(apiData.error);
+      setDeleteId("");
     }
   }
   return (
@@ -140,55 +151,89 @@ function CallCenterQueue() {
                         </td>
                       </tr>
                     ) : (
-                     <>
-                      {callCenter &&
-                      callCenter.map((item) => {
-                        return (
-                          <tr
-                            
-                          >
-                            <td onClick={() =>
-                              navigate("/cal-center-queue-edit", {
-                                state: item,
-                              })
-                            }>{item.queue_name}</td>
-                            <td onClick={() =>
-                              navigate("/cal-center-queue-edit", {
-                                state: item,
-                              })
-                            }>{item.extension}</td>
-                            <td onClick={() =>
-                              navigate("/cal-center-queue-edit", {
-                                state: item,
-                              })
-                            }>{item.strategy}</td>
-                            <td onClick={() =>
-                              navigate("/cal-center-queue-edit", {
-                                state: item,
-                              })
-                            }>{item.queue_timeout_action}</td>
-                            <td onClick={() =>
-                              navigate("/cal-center-queue-edit", {
-                                state: item,
-                              })
-                            }>{item.queue_cid_prefix}</td>
-                            <td onClick={() =>
-                              navigate("/cal-center-queue-edit", {
-                                state: item,
-                              })
-                            }>{item.agents.length}</td>
-                             <td onClick={() =>
-                              navigate(`/call-center-settings?id=${item.id}`)
-                            }><i className="fa-duotone fa-gear text-success"></i></td>
-                            <td onClick={()=>handleDelete(item.id)}>
-                              Delete
-                            </td>
-                          </tr>
-                        );
-                      })}
-                     </>
+                      <>
+                        {callCenter &&
+                          callCenter.map((item) => {
+                            return (
+                              <tr>
+                                <td
+                                  onClick={() =>
+                                    navigate("/cal-center-queue-edit", {
+                                      state: item,
+                                    })
+                                  }
+                                >
+                                  {item.queue_name}
+                                </td>
+                                <td
+                                  onClick={() =>
+                                    navigate("/cal-center-queue-edit", {
+                                      state: item,
+                                    })
+                                  }
+                                >
+                                  {item.extension}
+                                </td>
+                                <td
+                                  onClick={() =>
+                                    navigate("/cal-center-queue-edit", {
+                                      state: item,
+                                    })
+                                  }
+                                >
+                                  {item.strategy}
+                                </td>
+                                <td
+                                  onClick={() =>
+                                    navigate("/cal-center-queue-edit", {
+                                      state: item,
+                                    })
+                                  }
+                                >
+                                  {item.queue_timeout_action}
+                                </td>
+                                <td
+                                  onClick={() =>
+                                    navigate("/cal-center-queue-edit", {
+                                      state: item,
+                                    })
+                                  }
+                                >
+                                  {item.queue_cid_prefix}
+                                </td>
+                                <td
+                                  onClick={() =>
+                                    navigate("/cal-center-queue-edit", {
+                                      state: item,
+                                    })
+                                  }
+                                >
+                                  {item.agents.length}
+                                </td>
+                                <td
+                                  onClick={() =>
+                                    navigate(
+                                      `/call-center-settings?id=${item.id}`
+                                    )
+                                  }
+                                >
+                                  <i className="fa-duotone fa-gear text-success"></i>
+                                </td>
+                                <td
+                                  // onClick={() => handleDelete(item.id)}
+                                  onClick={() => {
+                                    setPopUp(true);
+                                    // setDeleteToggle(true);
+                                    setDeleteId(item.id);
+                                  }}
+                                >
+                                  Delete
+                                </td>
+                              </tr>
+                            );
+                          })}
+                      </>
                     )}
-                   
                   </tbody>
                 </table>
               </div>
@@ -225,20 +270,36 @@ function CallCenterQueue() {
                 </div>
                 <div className="col-10 ps-0">
                   <h4>Warning!</h4>
-                  <p>{error}</p>
-                  <button
-                    className="panelButton m-0"
-                    onClick={() => {
-                      // setForce(true);
-                      setPopUp(false);
-                      navigate(`${redirectRoutes}`);
-                    }}
-                  >
-                    Lets Go!
-                  </button>
+                  <p>
+                    {deleteId == ""
+                      ? error
+                      : "Are you sure you want to delete this queue?"}
+                  </p>
+                  {deleteId == "" ? (
+                    <button
+                      className="panelButton m-0"
+                      onClick={() => {
+                        setPopUp(false);
+                        navigate(`${redirectRoutes}`);
+                      }}
+                    >
+                      Lets Go!
+                    </button>
+                  ) : (
+                    <button
+                      className="panelButton m-0"
+                      onClick={() => handleDelete(deleteId)}
+                    >
+                      Confirm
+                    </button>
+                  )}
+
                   <button
                     className="panelButtonWhite m-0 float-end"
-                    onClick={() => setPopUp(false)}
+                    onClick={() => {
+                      setPopUp(false);
+                      setDeleteId("");
+                    }}
                   >
                     Cancel
                   </button>

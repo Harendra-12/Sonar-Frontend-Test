@@ -20,7 +20,9 @@ function Music() {
   const [newMusicPopup, setNewMusicPopup] = useState(false);
   const [newMusic, setNewMusic] = useState();
   const [newMusicType, setNewMusicType] = useState("hold");
+  const [deletePopup, setDeletePopup] = useState(false);
   const [refresh, setRefresh] = useState(1);
+  const [deleteId, setDeleteId] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
     async function getData() {
@@ -38,6 +40,7 @@ function Music() {
 
   //   Handle delete function
   const handleDelete = async (id) => {
+    setDeletePopup(false);
     setLoading(true);
     const apiData = await generalDeleteFunction(`/sound/${id}`);
     if (apiData.status) {
@@ -45,9 +48,13 @@ function Music() {
       setMusic(newArray);
       toast.success(apiData.message);
       setLoading(false);
+
+      const newList = music.filter((item) => item.id !== id);
+      setMusic(newList);
     } else {
       setLoading(false);
-      toast.error(apiData.message);
+
+      toast.error(apiData.error);
     }
   };
 
@@ -152,7 +159,13 @@ function Music() {
                                 <MusicPlayer audioSrc={item.path} />
                               </td>
 
-                              <td onClick={() => handleDelete(item.id)}>
+                              <td
+                                onClick={() => {
+                                  // handleDelete(item.id)
+                                  setDeletePopup(true);
+                                  setDeleteId(item.id);
+                                }}
+                              >
                                 <i className="fa-duotone fa-trash text-danger fs-6"></i>
                               </td>
                             </tr>
@@ -220,6 +233,44 @@ function Music() {
                           Cancel
                         </button>
                       </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
+          {deletePopup ? (
+            <div className="popup">
+              <div className="container h-100">
+                <div className="row h-100 justify-content-center align-items-center">
+                  <div className="row content col-xl-4">
+                    <div className="col-2 px-0">
+                      <div className="iconWrapper">
+                        <i className="fa-duotone fa-triangle-exclamation"></i>
+                      </div>
+                    </div>
+                    <div className="col-10 ps-0">
+                      <h4>Warning!</h4>
+                      <p>Are you sure you want to delete this music ?</p>
+
+                      <button
+                        className="panelButton m-0"
+                        onClick={() => {
+                          handleDelete(deleteId);
+                        }}
+                      >
+                        Confirm
+                      </button>
+                      <button
+                        className="panelButtonWhite m-0 float-end"
+                        onClick={() => {
+                          setDeletePopup(false);
+                        }}
+                      >
+                        Cancel
+                      </button>
                     </div>
                   </div>
                 </div>

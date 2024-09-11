@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import Header from "../../CommonComponents/Header";
+import { toast } from "react-toastify";
 
 const RingGroups = () => {
   const [ringGroup, setRingGroup] = useState();
@@ -20,6 +21,8 @@ const RingGroups = () => {
   const allUser = useSelector((state) => state.allUser);
   const [error, setError] = useState("");
   const [redirectRoutes, setRedirectRoutes] = useState("");
+  // const [deleteToggle, setDeleteToggle] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const { data: usersData = [] } = allUser;
   useEffect(() => {
@@ -44,7 +47,7 @@ const RingGroups = () => {
       navigate("/");
     }
   }, []);
-  console.log(allUser);
+
   const handleRingGroupAddValidation = (e) => {
     e.preventDefault();
 
@@ -69,14 +72,20 @@ const RingGroups = () => {
   };
 
   async function handleDelete(id) {
+    setPopUp(false);
     setLoading(true);
     const apiData = await generalDeleteFunction(`/ringgroup/${id}`);
-    if(apiData.status){
+    if (apiData.status) {
       const newArray = ringGroup.filter((item) => item.id !== id);
       setRingGroup(newArray);
       setLoading(false);
+      toast.success(apiData.message);
+
+      setDeleteId("");
     } else {
       setLoading(false);
+      toast.error(apiData.error);
+      setDeleteId("");
     }
   }
   return (
@@ -147,84 +156,96 @@ const RingGroups = () => {
                         </td>
                       </tr>
                     ) : (
-                     <>
-                      {ringGroup &&
-                      ringGroup.map((item, index) => {
-                        return (
-                          <tr key={index}>
-                            <td
-                              onClick={() =>
-                                navigate(`/ring-groups-edit?id=${item.id}`)
-                              }
-                            >
-                              {item.name}
-                            </td>
-                            <td
-                              onClick={() =>
-                                navigate(`/ring-groups-edit?id=${item.id}`)
-                              }
-                            >
-                              {item.extension}
-                            </td>
-                            <td
-                              onClick={() =>
-                                navigate(`/ring-groups-edit?id=${item.id}`)
-                              }
-                            >
-                              {item.strategy}
-                            </td>
-                            <td
-                              onClick={() =>
-                                navigate(`/ring-groups-edit?id=${item.id}`)
-                              }
-                            >
-                              {item.ring_group_destination.length}
-                            </td>
-                            <td
-                              onClick={() =>
-                                navigate(`/ring-groups-edit?id=${item.id}`)
-                              }
-                            >
-                              <label
-                                className={
-                                  item.status === "active"
-                                    ? "tableLabel success"
-                                    : "tableLabel fail"
-                                }
-                              >
-                                {item.status}
-                              </label>
-                            </td>
-                            <td
-                              onClick={() =>
-                                navigate(`/ring-groups-edit?id=${item.id}`)
-                              }
-                              className="ellipsis"
-                              id="detailBox"
-                            >
-                              {item.description}
-                            </td>
-                            <td
-                              onClick={() =>
-                                navigate(`/ring-groups-settings?id=${item.id}`)
-                              }
-                            >
-                              <i className="fa-duotone fa-gear text-success"></i>
-                            </td>
-                            <td onClick={()=>handleDelete(item.id)}>Delete</td>
-                          </tr>
-                        );
-                      })}
-                    {ringGroup && ringGroup.length === 0 ? (
-                      <td colSpan={99}>
-                        <EmptyPrompt name="Ring Group" link="ring-groups-add" />
-                      </td>
-                    ) : (
-                      ""
+                      <>
+                        {ringGroup &&
+                          ringGroup.map((item, index) => {
+                            return (
+                              <tr key={index}>
+                                <td
+                                  onClick={() =>
+                                    navigate(`/ring-groups-edit?id=${item.id}`)
+                                  }
+                                >
+                                  {item.name}
+                                </td>
+                                <td
+                                  onClick={() =>
+                                    navigate(`/ring-groups-edit?id=${item.id}`)
+                                  }
+                                >
+                                  {item.extension}
+                                </td>
+                                <td
+                                  onClick={() =>
+                                    navigate(`/ring-groups-edit?id=${item.id}`)
+                                  }
+                                >
+                                  {item.strategy}
+                                </td>
+                                <td
+                                  onClick={() =>
+                                    navigate(`/ring-groups-edit?id=${item.id}`)
+                                  }
+                                >
+                                  {item.ring_group_destination.length}
+                                </td>
+                                <td
+                                  onClick={() =>
+                                    navigate(`/ring-groups-edit?id=${item.id}`)
+                                  }
+                                >
+                                  <label
+                                    className={
+                                      item.status === "active"
+                                        ? "tableLabel success"
+                                        : "tableLabel fail"
+                                    }
+                                  >
+                                    {item.status}
+                                  </label>
+                                </td>
+                                <td
+                                  onClick={() =>
+                                    navigate(`/ring-groups-edit?id=${item.id}`)
+                                  }
+                                  className="ellipsis"
+                                  id="detailBox"
+                                >
+                                  {item.description}
+                                </td>
+                                <td
+                                  onClick={() =>
+                                    navigate(
+                                      `/ring-groups-settings?id=${item.id}`
+                                    )
+                                  }
+                                >
+                                  <i className="fa-duotone fa-gear text-success"></i>
+                                </td>
+                                <td
+                                  onClick={() => {
+                                    setPopUp(true);
+
+                                    setDeleteId(item.id);
+                                  }}
+                                >
+                                  Delete
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        {ringGroup && ringGroup.length === 0 ? (
+                          <td colSpan={99}>
+                            <EmptyPrompt
+                              name="Ring Group"
+                              link="ring-groups-add"
+                            />
+                          </td>
+                        ) : (
+                          ""
+                        )}
+                      </>
                     )}
-                     </>
-                    )}
-                   
                   </tbody>
                 </table>
               </div>
@@ -244,20 +265,38 @@ const RingGroups = () => {
                 </div>
                 <div className="col-10 ps-0">
                   <h4>Warning!</h4>
-                  <p>{error}</p>
-                  <button
-                    className="panelButton m-0"
-                    onClick={() => {
-                      // setForce(true);
-                      setPopUp(false);
-                      navigate(`${redirectRoutes}`);
-                    }}
-                  >
-                    Lets Go!
-                  </button>
+                  <p>
+                    {deleteId == ""
+                      ? error
+                      : "Are you sure you want to delete this ring group?"}
+                  </p>
+                  {deleteId !== "" ? (
+                    <button
+                      className="panelButton m-0"
+                      onClick={() => handleDelete(deleteId)}
+                    >
+                      Confirm
+                    </button>
+                  ) : (
+                    <button
+                      className="panelButton m-0"
+                      onClick={() => {
+                        // setForce(true);
+                        setPopUp(false);
+                        navigate(`${redirectRoutes}`);
+                      }}
+                    >
+                      Lets Go!
+                    </button>
+                  )}
+
                   <button
                     className="panelButtonWhite m-0 float-end"
-                    onClick={() => setPopUp(false)}
+                    onClick={() => {
+                      setPopUp(false);
+                      setDeleteId("");
+                      // setDeleteToggle(false);
+                    }}
                   >
                     Cancel
                   </button>
