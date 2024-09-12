@@ -35,6 +35,7 @@ var rolesAndPermissionRefresh = 0;
 var domain = {};
 var domainRefresh = 0;
 var loading = false;
+var balance = "";
 
 const initialState = {
   account,
@@ -73,6 +74,7 @@ const initialState = {
   domain,
   domainRefresh,
   loading,
+  balance,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -147,15 +149,14 @@ const counterReducer = (state = initialState, action) => {
         ...state,
         rolesAndPermissionRefresh: action.rolesAndPermissionRefresh,
       };
-
     case "SET_DOMAIN":
       return { ...state, domain: action.domain };
-
     case "SET_DOMAINREFRESH":
       return { ...state, domainRefresh: action.domainRefresh };
-
     case "SET_LOADING":
       return { ...state, loading: action.loading };
+    case "SET_BALANCE":
+      return { ...state, balance: action.balance };
     default:
       return state;
   }

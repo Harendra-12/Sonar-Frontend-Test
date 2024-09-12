@@ -9,6 +9,7 @@ function Header(props) {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
+  const balance = useSelector((state) => state.balance);
   const [accounName, setAccountName] = useState();
   const [dropDown, setDropDown] = useState(false);
   const navigate = useNavigate();
@@ -80,9 +81,7 @@ function Header(props) {
                   <i className="fa-regular fa-wallet" />{" "}
                   <span className="d-none d-xl-inline-block">
                     $
-                    {accountDetails?.balance?.amount
-                      ? accountDetails?.balance?.amount
-                      : "0"}
+                    {balance===""?accountDetails?.balance?.amount:balance}
                   </span>
                 </div>
               </Tippy>
