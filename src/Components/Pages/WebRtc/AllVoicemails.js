@@ -1,10 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import SideNavbarApp from "./SideNavbarApp";
 import ActiveCallSidePanel from "./ActiveCallSidePanel";
+import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 
 function AllVoicemails() {
   const sessions = useSelector((state) => state.sessions);
+  const [voiceMail,setVoiceMail]=useState([])
+
+  useEffect(()=>{
+    async function getData(){
+      const apiData = await generalGetFunction("/voicemails")
+      if(apiData.status){
+        setVoiceMail(apiData.data)
+      }
+    }
+    getData()
+  },[])
+
+  console.log("This is voice mail data",voiceMail);
+  
   return (
     <>
       {/* <SideNavbarApp /> */}
@@ -275,9 +290,9 @@ function AllVoicemails() {
                         </table>
                         <div className="audio-container">
                           <audio controls={true}>
-                            <source src="horse.ogg" type="audio/ogg" />
+                            <source src="" type="audio/ogg" />
                             <source
-                              src="https://www.fesliyanstudios.com/play-mp3/6560"
+                              src="https://crmdata-test.s3.us-east-2.amazonaws.com/192.168.2.225/voicemail/2024/Sep/11/25584b73-1bc5-4602-a29c-8cf6ec75231f.wav"
                               type="audio/mpeg"
                             />
                           </audio>

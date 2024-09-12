@@ -29,7 +29,7 @@ export const SipRegister = () => {
 
   return (
     <div className="profileDropdowns" style={{ top: "55px", right: "-40px" }}>
-      <div>
+      {/* <div>
         <span>
           {" "}
           Freeswitch Status:{" "}
@@ -39,8 +39,8 @@ export const SipRegister = () => {
             {connectStatus}
           </span>
         </span>
-      </div>
-      <div>
+      </div> */}
+      {/* <div>
         <span>
           {" "}
           SIP Status:{" "}
@@ -52,7 +52,7 @@ export const SipRegister = () => {
             {registerStatus}
           </span>
         </span>
-      </div>
+      </div> */}
       <MediaPermissions />
     </div>
   );
