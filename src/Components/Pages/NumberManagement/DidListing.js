@@ -76,18 +76,18 @@ function DidListing() {
                         did.map((item) => {
                           return (
                             <tr>
-                              <td style={{cursor: "default"}}>{item.did}</td>
-                              <td style={{cursor: "default"}}>{item.created_at.split("T")[0]}</td>
-                              <td style={{cursor: "default"}}>${item.price}</td>
-                              <td style={{cursor: "default"}}>{item?.e911}</td>
-                              <td style={{cursor: "default"}}>{item?.cnam}</td>
-                              <td style={{cursor: "default"}}>{item?.sms}</td>
+                              <td style={{ cursor: "default" }}>{item.did}</td>
+                              <td style={{ cursor: "default" }}>{item.created_at.split("T")[0]}</td>
+                              <td style={{ cursor: "default" }}>${item.price}</td>
+                              <td style={{ cursor: "default" }}>{item?.e911}</td>
+                              <td style={{ cursor: "default" }}>{item?.cnam}</td>
+                              <td style={{ cursor: "default" }}>{item?.sms}</td>
                               {/* <td onClick={() => navigate(item.dialplan?"/destination-edit":"/destination-add",{ state: { state: item.dialplan ? item.dialplan : item, did: item.did } })}>Configure</td> */}
                               {/* <td onClick={()=>navigate(`/did-config?did_id=${item.did}`)}>Configure</td> */}
-                              <td style={{cursor: "default"}}>
+                              <td style={{ cursor: "default" }}>
                                 <label
                                   className="tableLabel success"
-                                  style={{cursor: "pointer"}}
+                                  style={{ cursor: "pointer" }}
                                   onClick={() =>
                                     navigate(`/did-config`, { state: item })
                                   }
@@ -97,18 +97,16 @@ function DidListing() {
                                     : "Configure"}
                                 </label>
                               </td>
-                              <td style={{cursor: "default"}}>
+                              <td style={{ cursor: "default" }}>
                                 {" "}
                                 {item.configuration !== null && (
-                                  <label
-                                    className="tableLabel success"
-                                    style={{cursor: "pointer"}}
+                                  <button className="tableButton delete"
+                                    style={{ cursor: "pointer" }}
                                     onClick={() =>
                                       handleClick(item.configuration.id)
-                                    }
-                                  >
-                                    Reset
-                                  </label>
+                                    }>
+                                    <i class="fa-solid fa-arrows-rotate"></i>
+                                  </button>
                                 )}
                               </td>
                             </tr>
