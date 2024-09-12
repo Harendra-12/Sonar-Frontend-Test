@@ -203,8 +203,8 @@ const DidConfig = () => {
     control: (provided, state) => ({
       ...provided,
       // border: '1px solid var(--color4)',
-      border: "1px solid #ababab",
-      borderRadius: "2px",
+      border: "1px solid var(--color4)",
+      borderRadius: "5px",
       outline: "none",
       fontSize: "14px",
       width: "100%",
@@ -212,7 +212,7 @@ const DidConfig = () => {
       height: "auto",
       boxShadow: state.isFocused ? "none" : provided.boxShadow,
       "&:hover": {
-        borderColor: "none",
+        borderColor: "var(--ui-accent)",
       },
     }),
     valueContainer: (provided) => ({

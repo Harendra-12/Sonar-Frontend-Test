@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { backToTop, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
@@ -41,6 +41,53 @@ function CdrReport() {
       <section id="phonePage">
         <div className="container-fluid px-0">
           <Header title="CDR Reports" />
+          <div className="d-flex flex-wrap px-xl-3 py-2" id="detailsHeader">
+            <div className="col-xl-4 my-auto">
+              <div className="position-relative searchBox">
+                <input
+                  type="search"
+                  name="Search"
+                  id="headerSearch"
+                  placeholder="Search"
+                />
+              </div>
+            </div>
+            <div className="col-xl-8 pt-3 pt-xl-0">
+              <div className="d-flex justify-content-end">
+                <div className="my-auto position-relative mx-3">
+                  <label className="switch">
+                    <input type="checkbox" id="showAllCheck" />
+                    <span className="slider round" />
+                  </label>
+                  <span className="position-relative mx-1">Show All</span>
+                </div>
+                <Link
+                  to="#"
+                  onClick={backToTop}
+                  effect="ripple"
+                  className="panelButton"
+                >
+                  Extension
+                </Link>
+                <Link
+                  to="#"
+                  onClick={backToTop}
+                  effect="ripple"
+                  className="panelButton"
+                >
+                  Call Center
+                </Link>
+                <Link
+                  to="#"
+                  onClick={backToTop}
+                  effect="ripple"
+                  className="panelButton"
+                >
+                  Ring Group
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="container-fluid">
           <div className="row">
