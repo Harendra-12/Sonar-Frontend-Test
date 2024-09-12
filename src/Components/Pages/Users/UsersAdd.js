@@ -265,10 +265,12 @@ const UsersAdd = () => {
           <div className="container-fluid px-0">
             <Header title="User Add" />
             <div id="subPageHeader">
-              <div className="col-6 my-auto">
-                {/* <h4 className="my-auto">User Add</h4> */}
+              <div className="col-xl-9 my-auto">
+                <p className="p-0 m-0">
+                  Edit user information and group membership.
+                </p>
               </div>
-              <div className="col-6 ps-2">
+              <div className="col-xl-3 ps-2">
                 <div className="d-flex justify-content-end">
                   <button
                     effect="ripple"
@@ -289,11 +291,7 @@ const UsersAdd = () => {
                   </button>
                 </div>
               </div>
-              <div className="col-12 my-1">
-                <p className="p-0 m-0">
-                  Edit user information and group membership.
-                </p>
-              </div>
+
             </div>
           </div>
           <div className="col-xl-12" style={{ overflow: "auto" }}>
