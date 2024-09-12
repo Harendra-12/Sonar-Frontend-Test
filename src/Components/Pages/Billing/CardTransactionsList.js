@@ -84,18 +84,16 @@ function CardTransactionsList() {
                             <td>{item.payment_details.card_number}</td>
                             <td>{item.transaction_date.split(" ")[0]}</td>
                             <td>{item.transaction_id}</td>
-                            <td>{item.amount_subtotal}</td>
+                            <td><label className={item.transaction_type === "credit" ? "tableLabel success" : "tableLabel fail"}>${item.amount_subtotal}</label></td>
                             <td>{item.description}</td>
-                            <td>{item.transaction_type}</td>
-                            <td
-                              onClick={() =>
+                            <td><i className={item.transaction_type === "credit" ? "fa-duotone fa-circle-up text-success me-1" : "fa-duotone fa-circle-down text-danger me-1"}></i> {item.transaction_type === "credit" ? "Credit" : "Debit"}</td>
+                            <td>
+                              <button className="tableButton" onClick={() =>
                                 downloadImage(
                                   item.invoice_url,
                                   `${item.description}invoice`
                                 )
-                              }
-                            >
-                              <i className="fa-duotone fa-download text-success"></i>
+                              }><i className="fa-duotone fa-download text-success"></i></button>
                             </td>
                           </tr>
                         );

@@ -27,8 +27,8 @@ function WalletTransactionsList() {
     getData();
   }, [pageNumber]);
 
-//   Handle download invoice
-const downloadImage = async (imageUrl, fileName) => {
+  //   Handle download invoice
+  const downloadImage = async (imageUrl, fileName) => {
     try {
       const response = await fetch(imageUrl);
       if (!response.ok) {
@@ -72,25 +72,25 @@ const downloadImage = async (imageUrl, fileName) => {
                   </thead>
                   <tbody>
 
-                        {transaction && transaction.data.map((item)=>{
-                            return(
-                                <tr>
-                                <td>{item.descriptor}</td>
-                                <td>{item.transaction_type}</td>
-                                <td>{item.created_at.split("T")[0]}</td>
-                                <td>{item.payment_gateway_transaction_id}</td>
-                                <td>${item.amount}</td>
-                                <td  onClick={() =>
-                                              downloadImage(
-                                                item.invoice_url,
-                                                `${item.descriptor}invoice`
-                                              )
-                                            }>
-                                  <i className="fa-duotone fa-download text-success"></i>
-                                </td>
-                              </tr>
-                            )
-                        })}
+                    {transaction && transaction.data.map((item) => {
+                      return (
+                        <tr>
+                          <td>{item.descriptor}</td>
+                          <td><i className={item.transaction_type === "credit" ? "fa-duotone fa-circle-up text-success me-1" : "fa-duotone fa-circle-down text-danger me-1"}></i> {item.transaction_type === "credit" ? "Credit" : "Debit"}</td>
+                          <td>{item.created_at.split("T")[0]}</td>
+                          <td>{item.payment_gateway_transaction_id}</td>
+                          <td><label className={item.transaction_type === "credit" ? "tableLabel success" : "tableLabel fail"}>${item.amount}</label></td>
+                          <td>
+                            <button class="tableButton" onClick={() =>
+                              downloadImage(
+                                item.invoice_url,
+                                `${item.descriptor}invoice`
+                              )
+                            }><i className="fa-solid fa-download"></i></button>
+                          </td>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </table>
               </div>

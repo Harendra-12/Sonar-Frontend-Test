@@ -15,13 +15,16 @@ table th {
 
 table thead tr {
     /* background-color: var(--div-color); */
-    border-bottom: 1px solid var(--nav-color);
+    border-bottom: 1px solid var(--ui-accent);
 }
 
 table tbody tr {
     background-color: #fff;
     transition: 0.1s ease-in;
-    border: 1px solid #1196ba63;
+}
+
+table tbody tr:not(:last-child) {
+    border-bottom: 1px solid #1196ba63;
 }
 
 table tbody tr td {
