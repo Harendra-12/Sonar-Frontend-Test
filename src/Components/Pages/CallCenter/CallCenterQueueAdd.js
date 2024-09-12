@@ -689,12 +689,11 @@ function CallCenterQueueAdd() {
                     return (
                       <div className="d-flex flex-wrap" key={index}>
                         <div
-                          className="formLabel pe-2 m-0 mt-auto"
-                          style={{ width: 14 }}
+                          className="formLabel col-auto pe-2 m-0 mt-auto"
                         >
                           <label>{index + 1}.</label>
                         </div>
-                        <div className="col-auto pe-1">
+                        <div className="col-2 pe-1">
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Agent Name</label>
@@ -755,7 +754,7 @@ function CallCenterQueueAdd() {
                             />
                           </div>
                         </div>
-                        <div className="col-1 pe-2">
+                        <div className="col-2 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Tier Level</label>
@@ -783,7 +782,7 @@ function CallCenterQueueAdd() {
                             <option value={9}>9</option>
                           </select>
                         </div>
-                        <div className="col-1 pe-2">
+                        <div className="col-2 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Tier Position</label>
@@ -867,7 +866,7 @@ function CallCenterQueueAdd() {
                           </div>
                         )}
                         {index === agent.length - 1 &&
-                        index !== (user && user.length - 1) ? (
+                          index !== (user && user.length - 1) ? (
                           <div
                             onClick={addNewAgent}
                             className="col-auto h-100 d-flex align-items-center"

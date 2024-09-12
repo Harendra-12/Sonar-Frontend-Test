@@ -466,8 +466,8 @@ const UsersEdit = () => {
                           e.target.value === ""
                             ? ""
                             : role[e.target.value].permissions.map((item) => {
-                                return item.permission_id;
-                              })
+                              return item.permission_id;
+                            })
                         );
                       }}
                     >
@@ -556,7 +556,7 @@ const UsersEdit = () => {
                                   handleParentCheckboxChange(item)
                                 }
                               />
-                              <label>{item}</label>
+                              <label class="ms-2">{item}</label>
                             </div>
                           </div>
                           <div className="row px-2 pt-1 border-bottom">
