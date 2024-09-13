@@ -254,10 +254,6 @@ const UsersAdd = () => {
         .permissionListWrapper .formRow .formLabel{
           margin-left: 10px;
         }
-        .profileView .profileDetailsHolder{
-          background-color: none;
-          box-shadow: none;
-        }
       `}
       </style>
       <main className="mainContent">
