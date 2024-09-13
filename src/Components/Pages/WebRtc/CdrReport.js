@@ -14,7 +14,11 @@ function CdrReport() {
   const [pageNumber, setPageNumber] = useState(1);
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
-
+  const [all,setAll]=useState(true)
+  const [filterData,setFilterData]=useState([])
+  const [extensions,setExtensions]=useState(false)
+  const [callCenter,setCallCenter]=useState(false)
+  const [ringGroup,setRingGroup]=useState(false)
   useEffect(() => {
     setLoading(true);
     async function getData() {
@@ -35,14 +39,34 @@ function CdrReport() {
     }
     getData();
   }, [account, navigate, pageNumber]);
-  console.log("This is cdr report", cdr);
+  useEffect(()=>{
+    if(cdr){
+      if(all){
+        setFilterData(cdr.data)
+      }else if(extensions && callCenter && ringGroup){
+        setFilterData(cdr.data.filter(item=>item["application_state"]==="extension" || item["application_state"]==="callcenter" || item["application_state"]==="ringgroup"))
+    }else if(extensions && callCenter){
+        setFilterData(cdr.data.filter(item=>item["application_state"]==="extension" || item["application_state"]==="callcenter"))
+    }else if(extensions && ringGroup){
+        setFilterData(cdr.data.filter(item=>item["application_state"]==="extension" || item["application_state"]==="ringgroup"))
+    }else if(callCenter && ringGroup){
+        setFilterData(cdr.data.filter(item=>item["application_state"]==="callcenter" || item["application_state"]==="ringgroup"))
+    } else if(extensions){
+        setFilterData(cdr.data.filter(item=>item["application_state"]==="extension"))
+    }else if(callCenter){
+        setFilterData(cdr.data.filter(item=>item["application_state"]==="callcenter"))
+    }else if(ringGroup){
+        setFilterData(cdr.data.filter(item=>item["application_state"]==="ringgroup"))
+    }
+  }},[all,extensions,callCenter,ringGroup,cdr])
+  console.log("This is cdr report", filterData);
   return (
     <main className="mainContent">
       <section id="phonePage">
         <div className="container-fluid px-0">
           <Header title="CDR Reports" />
           <div className="d-flex flex-wrap px-xl-3 py-2" id="detailsHeader">
-            <div className="col-xl-4 my-auto">
+            {/* <div className="col-xl-4 my-auto">
               <div className="position-relative searchBox">
                 <input
                   type="search"
@@ -51,38 +75,38 @@ function CdrReport() {
                   placeholder="Search"
                 />
               </div>
-            </div>
-            <div className="col-xl-8 pt-3 pt-xl-0">
+            </div> */}
+            <div className="col-xl-8 pt-3 pt-xl-0 ms-auto">
               <div className="d-flex justify-content-end">
                 <Link
                   to="#"
-                  onClick={backToTop}
+                  onClick={()=>{setAll(!all);backToTop()}}
                   effect="ripple"
-                  className="toggleButton active"
+                  className={all?"toggleButton active":"toggleButton"}
                 >
                   All
                 </Link>
                 <Link
                   to="#"
-                  onClick={backToTop}
+                  onClick={()=>{setExtensions(!extensions);backToTop()}}
                   effect="ripple"
-                  className="toggleButton active"
+                  className={extensions?"toggleButton active":"toggleButton"}
                 >
                   Extension
                 </Link>
                 <Link
                   to="#"
-                  onClick={backToTop}
+                  onClick={()=>{setCallCenter(!callCenter);backToTop()}}
                   effect="ripple"
-                  className="toggleButton active"
+                  className={callCenter?"toggleButton active":"toggleButton"}
                 >
                   Call Center
                 </Link>
                 <Link
                   to="#"
-                  onClick={backToTop}
+                  onClick={()=>{setRingGroup(!ringGroup);backToTop()}}
                   effect="ripple"
-                  className="toggleButton active"
+                  className={ringGroup?"toggleButton active":"toggleButton"}
                 >
                   Ring Group
                 </Link>
@@ -98,16 +122,18 @@ function CdrReport() {
                   <thead>
                     <tr>
                       <th>Sr. no</th>
+                      <th>Call Direction</th>
                       <th>Call Type</th>
                       <th>Origin</th>
                       <th>Destination</th>
+                      <th>Destination Extension</th>
                       <th>Date</th>
                       <th>Time</th>
                       <th>Recording</th>
                       <th>Duration</th>
                       <th>Hangup Cause</th>
-                      <th>Orig. IP</th>
-                      <th>Dest. IP</th>
+                      {/* <th>Orig. IP</th>
+                      <th>Dest. IP</th> */}
                       <th>Charge</th>
                     </tr>
                   </thead>
@@ -121,13 +147,15 @@ function CdrReport() {
                     ) : (
                       <>
                         {cdr &&
-                          cdr.data.map((item, index) => {
+                          filterData.map((item, index) => {
                             return (
                               <tr key={index}>
                                 <td>{(pageNumber - 1) * 20 + (index + 1)}</td>
                                 <td>{item["Call-Direction"]}</td>
+                                <td>{item["application_state"]}</td>
                                 <td>{item["variable_sip_from_user"]}</td>
                                 <td>{item["variable_sip_to_user"]}</td>
+                                <td>{item["application_state_to_ext"]}</td>
                                 <td>
                                   {item["variable_start_stamp"].split(" ")[0]}
                                 </td>
@@ -151,17 +179,17 @@ function CdrReport() {
                                       ? "BUSY"
                                       : item["variable_DIALSTATUS"]}
                                 </td>
-                                <td>{item["Caller-Network-Addr"]}</td>
+                                {/* <td>{item["Caller-Network-Addr"]}</td>
                                 <td>
                                   {
                                     item["Other-Leg-Network-Addr"]
                                       ?.split("@")?.[1]
                                       ?.split(":")?.[0]
                                   }
-                                </td>
+                                </td> */}
                                 <td>
                                   {
-                                    0.00
+                                    item["call_cost"]
                                   }
                                 </td>
                               </tr>
