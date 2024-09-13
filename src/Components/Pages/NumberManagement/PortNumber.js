@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import ContentLoader from "../../Loader/ContentLoader";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
 
 function PortNumber() {
   const navigate = useNavigate();
@@ -15,19 +16,45 @@ function PortNumber() {
   const [portData, setPortData] = useState([]);
   const [popup, setPopup] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState();
+  const portsAll = useSelector((state) => state.portsAll);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    async function getData() {
-      const apiData = await generalGetFunction(`/ports/all`);
-      if (apiData.status) {
-        setLoading(false);
-        setPortData(apiData.data);
-      } else {
-        setLoading(false);
-        navigate(-1);
+    if (portsAll) {
+      setLoading(false);
+      setPortData(portsAll);
+      async function getData() {
+        const apiData = await generalGetFunction(`/ports/all`);
+        if (apiData.status) {
+          setLoading(false);
+          setPortData(apiData.data);
+          dispatch({
+            type: "SET_PORTSALL",
+            portsAll: apiData.data,
+          });
+        } else {
+          setLoading(false);
+          navigate(-1);
+        }
       }
+      getData();
+    } else {
+      async function getData() {
+        const apiData = await generalGetFunction(`/ports/all`);
+        if (apiData.status) {
+          setLoading(false);
+          setPortData(apiData.data);
+          dispatch({
+            type: "SET_PORTSALL",
+            portsAll: apiData.data,
+          });
+        } else {
+          setLoading(false);
+          navigate(-1);
+        }
+      }
+      getData();
     }
-    getData();
   }, []);
 
   const handleDeletePortNumber = async () => {

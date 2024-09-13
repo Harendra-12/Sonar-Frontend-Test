@@ -7,28 +7,61 @@ import {
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import ContentLoader from "../../Loader/ContentLoader";
+import { useDispatch, useSelector } from "react-redux";
 
 function WalletTransactionsList() {
   const [transaction, setTransaction] = useState();
   const [loading, setLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
   const navigate = useNavigate();
+  const allWaletTransactions = useSelector(
+    (state) => state.allWaletTransactions
+  );
+  const dispatch = useDispatch();
   useEffect(() => {
-    async function getData() {
-      const apiData = await generalGetFunction(`/transaction/wallet?page=${pageNumber}`);
-      if (apiData.status) {
-        setLoading(false);
-        setTransaction(apiData.data);
-      } else {
-        setLoading(false);
-        navigate(-1);
+    if (allWaletTransactions) {
+      setLoading(false);
+      setTransaction(allWaletTransactions);
+      async function getData() {
+        const apiData = await generalGetFunction(
+          `/transaction/wallet?page=${pageNumber}`
+        );
+        if (apiData.status) {
+          setLoading(false);
+          setTransaction(apiData.data);
+          dispatch({
+            type: "SET_ALLWALLETTRANSACTIONS",
+            allWaletTransactions: apiData.data,
+          });
+        } else {
+          setLoading(false);
+          navigate(-1);
+        }
       }
+      getData();
+    } else {
+      async function getData() {
+        const apiData = await generalGetFunction(
+          `/transaction/wallet?page=${pageNumber}`
+        );
+        if (apiData.status) {
+          setLoading(false);
+          setTransaction(apiData.data);
+          dispatch({
+            type: "SET_ALLWALLETTRANSACTIONS",
+            allWaletTransactions: apiData.data,
+          });
+        } else {
+          setLoading(false);
+          navigate(-1);
+        }
+      }
+      getData();
     }
-    getData();
   }, [pageNumber]);
 
-//   Handle download invoice
-const downloadImage = async (imageUrl, fileName) => {
+  //   Handle download invoice
+  const downloadImage = async (imageUrl, fileName) => {
     try {
       const response = await fetch(imageUrl);
       if (!response.ok) {
@@ -71,26 +104,28 @@ const downloadImage = async (imageUrl, fileName) => {
                     </tr>
                   </thead>
                   <tbody>
-
-                        {transaction && transaction.data.map((item)=>{
-                            return(
-                                <tr>
-                                <td>{item.descriptor}</td>
-                                <td>{item.transaction_type}</td>
-                                <td>{item.created_at.split("T")[0]}</td>
-                                <td>{item.payment_gateway_transaction_id}</td>
-                                <td>${item.amount}</td>
-                                <td  onClick={() =>
-                                              downloadImage(
-                                                item.invoice_url,
-                                                `${item.descriptor}invoice`
-                                              )
-                                            }>
-                                  <i className="fa-duotone fa-download text-success"></i>
-                                </td>
-                              </tr>
-                            )
-                        })}
+                    {transaction &&
+                      transaction.data.map((item) => {
+                        return (
+                          <tr>
+                            <td>{item.descriptor}</td>
+                            <td>{item.transaction_type}</td>
+                            <td>{item.created_at.split("T")[0]}</td>
+                            <td>{item.payment_gateway_transaction_id}</td>
+                            <td>${item.amount}</td>
+                            <td
+                              onClick={() =>
+                                downloadImage(
+                                  item.invoice_url,
+                                  `${item.descriptor}invoice`
+                                )
+                              }
+                            >
+                              <i className="fa-duotone fa-download text-success"></i>
+                            </td>
+                          </tr>
+                        );
+                      })}
                   </tbody>
                 </table>
               </div>

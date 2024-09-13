@@ -10,7 +10,7 @@ import {
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import ContentLoader from "../../Loader/ContentLoader";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import MusicPlayer from "../../CommonComponents/MusicPlayer";
 
 function Music() {
@@ -24,18 +24,37 @@ function Music() {
   const [refresh, setRefresh] = useState(1);
   const [deleteId, setDeleteId] = useState("");
   const navigate = useNavigate();
+  const musicAll = useSelector((state) => state.musicAll);
+  const dispatch = useDispatch();
   useEffect(() => {
-    async function getData() {
-      const apiData = await generalGetFunction(`/sound/all`);
-      if (apiData.status) {
-        setLoading(false);
-        setMusic(apiData.data);
-      } else {
-        setLoading(false);
-        navigate(-1);
+    if (musicAll) {
+      setLoading(false);
+      setMusic(musicAll);
+      async function getData() {
+        const apiData = await generalGetFunction(`/sound/all`);
+        if (apiData.status) {
+          setLoading(false);
+          setMusic(apiData.data);
+          dispatch({ type: "SET_MUSICALL", musicAll: apiData.data });
+        } else {
+          navigate(-1);
+        }
       }
+      getData();
+    } else {
+      async function getData() {
+        const apiData = await generalGetFunction(`/sound/all`);
+        if (apiData.status) {
+          setLoading(false);
+          setMusic(apiData.data);
+          dispatch({ type: "SET_MUSICALL", musicAll: apiData.data });
+        } else {
+          setLoading(false);
+          navigate(-1);
+        }
+      }
+      getData();
     }
-    getData();
   }, [refresh]);
 
   //   Handle delete function
@@ -160,11 +179,14 @@ function Music() {
                               </td>
 
                               <td>
-                                <button className="tableButton delete" onClick={() => {
-                                  // handleDelete(item.id)
-                                  setDeletePopup(true);
-                                  setDeleteId(item.id);
-                                }}>
+                                <button
+                                  className="tableButton delete"
+                                  onClick={() => {
+                                    // handleDelete(item.id)
+                                    setDeletePopup(true);
+                                    setDeleteId(item.id);
+                                  }}
+                                >
                                   <i className="fa-solid fa-trash fs-6"></i>
                                 </button>
                               </td>

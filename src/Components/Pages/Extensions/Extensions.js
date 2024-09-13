@@ -5,7 +5,7 @@ import {
   backToTop,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import ContentLoader from "../../Loader/ContentLoader";
 import Header from "../../CommonComponents/Header";
@@ -19,6 +19,9 @@ const Extensions = () => {
   const [onlineExtension, setOnlineExtension] = useState([0]);
   const [pageNumber, setPageNumber] = useState(1);
   const registerUser = useSelector((state) => state.registerUser);
+  const extensionByAccount = useSelector((state) => state.extensionByAccount);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (registerUser.length > 0) {
       setOnlineExtension(
@@ -31,29 +34,55 @@ const Extensions = () => {
     }
     generalGetFunction("/freeswitch/checkActiveExtensionOnServer");
   }, [registerUser]);
-  console.log("onlineExtension", onlineExtension);
 
   useEffect(() => {
-    setLoading(true);
-    async function getData() {
-      if (account && account.account_id) {
-        const apiData = await generalGetFunction(
-          `/extension/all?account=${account.account_id}&page=${pageNumber}`
-        );
-        if (apiData.status) {
-          setLoading(false);
-          setExtension(apiData.data);
+    if (extensionByAccount.data) {
+      setExtension(extensionByAccount);
+      setLoading(false);
+      async function getData() {
+        if (account && account.account_id) {
+          const apiData = await generalGetFunction(
+            `/extension/all?account=${account.account_id}&page=${pageNumber}`
+          );
+          if (apiData.status) {
+            setExtension(apiData.data);
+            dispatch({
+              type: "SET_EXTENSIONBYACCOUNT",
+              extensionByAccount: apiData.data,
+            });
+          } else {
+          }
+        } else {
+          navigate("/");
+        }
+      }
+      getData();
+    } else {
+      setLoading(true);
+      async function getData() {
+        if (account && account.account_id) {
+          const apiData = await generalGetFunction(
+            `/extension/all?account=${account.account_id}&page=${pageNumber}`
+          );
+          if (apiData.status) {
+            setLoading(false);
+            setExtension(apiData.data);
+            dispatch({
+              type: "SET_EXTENSIONBYACCOUNT",
+              extensionByAccount: apiData.data,
+            });
+          } else {
+            setLoading(false);
+          }
         } else {
           setLoading(false);
+          navigate("/");
         }
-      } else {
-        setLoading(false);
-        navigate("/");
       }
+      getData();
     }
-    getData();
   }, [account, navigate, pageNumber]);
-  console.log("This is Extension list", extension);
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -196,7 +225,8 @@ const Extensions = () => {
                               ></span>
                             </td>
                             <td>
-                              <button class="tableButton"
+                              <button
+                                class="tableButton"
                                 onClick={() =>
                                   navigate("/call-settings", {
                                     state: {
@@ -204,7 +234,9 @@ const Extensions = () => {
                                       extension: item.extension,
                                     },
                                   })
-                                }><i className="fa-duotone fa-gear"></i>
+                                }
+                              >
+                                <i className="fa-duotone fa-gear"></i>
                               </button>
                             </td>
                           </tr>

@@ -7,28 +7,58 @@ import {
 import Header from "../../CommonComponents/Header";
 import ContentLoader from "../../Loader/ContentLoader";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
+import { useDispatch, useSelector } from "react-redux";
 
 function CardTransactionsList() {
   const [transaction, setTransaction] = useState();
   const [loading, setLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
   const navigate = useNavigate();
+  const allCardTransactions = useSelector((state) => state.allCardTransactions);
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    async function getData() {
-      const apiData = await generalGetFunction(
-        `/payments/all?page=${pageNumber}`
-      );
-      if (apiData.status) {
-        setLoading(false);
-        setTransaction(apiData.data);
-      } else {
-        setLoading(false);
-        navigate(-1);
+    console.log("allCardTransactions", allCardTransactions);
+    if (allCardTransactions) {
+      setLoading(false);
+      setTransaction(allCardTransactions);
+      async function getData() {
+        const apiData = await generalGetFunction(
+          `/payments/all?page=${pageNumber}`
+        );
+        if (apiData.status) {
+          setLoading(false);
+          setTransaction(apiData.data);
+          dispatch({
+            type: "SET_ALLCARDTRANSACTIONS",
+            allCardTransactions: apiData.data,
+          });
+        } else {
+          setLoading(false);
+          navigate(-1);
+        }
       }
+      getData();
+    } else {
+      async function getData() {
+        const apiData = await generalGetFunction(
+          `/payments/all?page=${pageNumber}`
+        );
+        if (apiData.status) {
+          setLoading(false);
+          setTransaction(apiData.data);
+          dispatch({
+            type: "SET_ALLCARDTRANSACTIONS",
+            allCardTransactions: apiData.data,
+          });
+        } else {
+          setLoading(false);
+          navigate(-1);
+        }
+      }
+      getData();
     }
-    getData();
   }, [pageNumber]);
-  console.log("This is page number", pageNumber);
 
   //   Handle download invoice
   const downloadImage = async (imageUrl, fileName) => {

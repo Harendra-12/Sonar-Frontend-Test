@@ -6,31 +6,60 @@ import {
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import ContentLoader from "../../Loader/ContentLoader";
+import { useDispatch, useSelector } from "react-redux";
 
 function DidListing() {
   const [did, setDid] = useState();
   const [loading, setLoading] = useState(true);
   // const [pageNumber, setPageNumber] = useState(1);
   const navigate = useNavigate();
+  const didAll = useSelector((state) => state.didAll);
+  const dispatch = useDispatch();
   useEffect(() => {
-    async function getData() {
-      const apiData = await generalGetFunction(`/did/all`);
-      if (apiData.status) {
-        setLoading(false);
-        setDid(apiData.data);
-      } else {
-        setLoading(false);
-        navigate(-1);
+    if (didAll) {
+      setLoading(false);
+      setDid(didAll);
+      async function getData() {
+        const apiData = await generalGetFunction(`/did/all`);
+        if (apiData.status) {
+          setLoading(false);
+          setDid(apiData.data);
+          dispatch({
+            type: "SET_DIDALL",
+            didAll: apiData.data,
+          });
+        } else {
+          setLoading(false);
+          navigate(-1);
+        }
       }
+      getData();
+    } else {
+      async function getData() {
+        const apiData = await generalGetFunction(`/did/all`);
+        if (apiData.status) {
+          setLoading(false);
+          setDid(apiData.data);
+          dispatch({
+            type: "SET_DIDALL",
+            didAll: apiData.data,
+          });
+        } else {
+          setLoading(false);
+          navigate(-1);
+        }
+      }
+      getData();
     }
-    getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClick = async (id) => {
     setLoading(true);
     try {
-      const apiData = await generalDeleteFunction(`/did/configure/destroy/${id}`);
+      const apiData = await generalDeleteFunction(
+        `/did/configure/destroy/${id}`
+      );
       if (apiData.status) {
         const newData = await generalGetFunction(`/did/all`);
         if (newData.status) {
@@ -76,18 +105,26 @@ function DidListing() {
                         did.map((item) => {
                           return (
                             <tr>
-                              <td style={{cursor: "default"}}>{item.did}</td>
-                              <td style={{cursor: "default"}}>{item.created_at.split("T")[0]}</td>
-                              <td style={{cursor: "default"}}>${item.price}</td>
-                              <td style={{cursor: "default"}}>{item?.e911}</td>
-                              <td style={{cursor: "default"}}>{item?.cnam}</td>
-                              <td style={{cursor: "default"}}>{item?.sms}</td>
+                              <td style={{ cursor: "default" }}>{item.did}</td>
+                              <td style={{ cursor: "default" }}>
+                                {item.created_at.split("T")[0]}
+                              </td>
+                              <td style={{ cursor: "default" }}>
+                                ${item.price}
+                              </td>
+                              <td style={{ cursor: "default" }}>
+                                {item?.e911}
+                              </td>
+                              <td style={{ cursor: "default" }}>
+                                {item?.cnam}
+                              </td>
+                              <td style={{ cursor: "default" }}>{item?.sms}</td>
                               {/* <td onClick={() => navigate(item.dialplan?"/destination-edit":"/destination-add",{ state: { state: item.dialplan ? item.dialplan : item, did: item.did } })}>Configure</td> */}
                               {/* <td onClick={()=>navigate(`/did-config?did_id=${item.did}`)}>Configure</td> */}
-                              <td style={{cursor: "default"}}>
+                              <td style={{ cursor: "default" }}>
                                 <label
                                   className="tableLabel success"
-                                  style={{cursor: "pointer"}}
+                                  style={{ cursor: "pointer" }}
                                   onClick={() =>
                                     navigate(`/did-config`, { state: item })
                                   }
@@ -97,12 +134,12 @@ function DidListing() {
                                     : "Configure"}
                                 </label>
                               </td>
-                              <td style={{cursor: "default"}}>
+                              <td style={{ cursor: "default" }}>
                                 {" "}
                                 {item.configuration !== null && (
                                   <label
                                     className="tableLabel success"
-                                    style={{cursor: "pointer"}}
+                                    style={{ cursor: "pointer" }}
                                     onClick={() =>
                                       handleClick(item.configuration.id)
                                     }
