@@ -6,31 +6,60 @@ import {
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import ContentLoader from "../../Loader/ContentLoader";
+import { useDispatch, useSelector } from "react-redux";
 
 function DidListing() {
   const [did, setDid] = useState();
   const [loading, setLoading] = useState(true);
   // const [pageNumber, setPageNumber] = useState(1);
   const navigate = useNavigate();
+  const didAll = useSelector((state) => state.didAll);
+  const dispatch = useDispatch();
   useEffect(() => {
-    async function getData() {
-      const apiData = await generalGetFunction(`/did/all`);
-      if (apiData.status) {
-        setLoading(false);
-        setDid(apiData.data);
-      } else {
-        setLoading(false);
-        navigate(-1);
+    if (didAll) {
+      setLoading(false);
+      setDid(didAll);
+      async function getData() {
+        const apiData = await generalGetFunction(`/did/all`);
+        if (apiData.status) {
+          setLoading(false);
+          setDid(apiData.data);
+          dispatch({
+            type: "SET_DIDALL",
+            didAll: apiData.data,
+          });
+        } else {
+          setLoading(false);
+          navigate(-1);
+        }
       }
+      getData();
+    } else {
+      async function getData() {
+        const apiData = await generalGetFunction(`/did/all`);
+        if (apiData.status) {
+          setLoading(false);
+          setDid(apiData.data);
+          dispatch({
+            type: "SET_DIDALL",
+            didAll: apiData.data,
+          });
+        } else {
+          setLoading(false);
+          navigate(-1);
+        }
+      }
+      getData();
     }
-    getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClick = async (id) => {
     setLoading(true);
     try {
-      const apiData = await generalDeleteFunction(`/did/configure/destroy/${id}`);
+      const apiData = await generalDeleteFunction(
+        `/did/configure/destroy/${id}`
+      );
       if (apiData.status) {
         const newData = await generalGetFunction(`/did/all`);
         if (newData.status) {

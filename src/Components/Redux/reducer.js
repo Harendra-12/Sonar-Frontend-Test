@@ -35,6 +35,14 @@ var rolesAndPermissionRefresh = 0;
 var domain = {};
 var domainRefresh = 0;
 var loading = false;
+var balance = "";
+var extensionByAccount = [];
+var usersByAccount = [];
+var musicAll = [];
+var didAll = [];
+var portsAll = [];
+var allCardTransactions;
+var allWaletTransactions;
 
 const initialState = {
   account,
@@ -73,6 +81,14 @@ const initialState = {
   domain,
   domainRefresh,
   loading,
+  balance,
+  extensionByAccount,
+  usersByAccount,
+  musicAll,
+  didAll,
+  portsAll,
+  allCardTransactions,
+  allWaletTransactions,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -147,15 +163,29 @@ const counterReducer = (state = initialState, action) => {
         ...state,
         rolesAndPermissionRefresh: action.rolesAndPermissionRefresh,
       };
-
     case "SET_DOMAIN":
       return { ...state, domain: action.domain };
-
     case "SET_DOMAINREFRESH":
       return { ...state, domainRefresh: action.domainRefresh };
+    case "SET_EXTENSIONBYACCOUNT":
+      return { ...state, extensionByAccount: action.extensionByAccount };
+    case "SET_USERSBYACCOUNT":
+      return { ...state, usersByAccount: action.usersByAccount };
+    case "SET_MUSICALL":
+      return { ...state, musicAll: action.musicAll };
+    case "SET_DIDALL":
+      return { ...state, didAll: action.didAll };
+    case "SET_PORTSALL":
+      return { ...state, portsAll: action.portsAll };
+    case "SET_ALLCARDTRANSACTIONS":
+      return { ...state, allCardTransactions: action.allCardTransactions };
+    case "SET_ALLWALLETTRANSACTIONS":
+      return { ...state, allWaletTransactions: action.allWaletTransactions };
 
     case "SET_LOADING":
       return { ...state, loading: action.loading };
+    case "SET_BALANCE":
+      return { ...state, balance: action.balance };
     default:
       return state;
   }

@@ -37,11 +37,17 @@ const Socket = () => {
               type: "SET_CALLSTATE",
               callState: JSON.parse(JSON.parse(event.data))["result"]
             });
-          }else if(JSON.parse(JSON.parse(event.data))["key"]==="ChannelHangupComplete"){
+          }else if(JSON.parse(JSON.parse(event.data))["key"]==="ChannelHangupComplete"){                        
             dispatch({
               type:"SET_CHANNELHANGUP",
               channelHangupComplete:JSON.parse(JSON.parse(event.data))["result"]
             })
+            if(Number(JSON.parse(JSON.parse(event.data))["result"]["account_id"])===Number(account.account_id)){
+              dispatch({
+                type:"SET_BALANCE",
+                balance:JSON.parse(JSON.parse(event.data))["balance"]
+              })
+            }
           }else if(JSON.parse(JSON.parse(event.data))["key"]==="activeCalls"){
             console.log("inside activeCalls",JSON.parse(JSON.parse(event.data))["result"]);
             dispatch({
@@ -49,9 +55,8 @@ const Socket = () => {
               activeCall:JSON.parse(JSON.parse(event.data))["result"]
             })
           }
-
         } else {
-          // console.log("This is else condition", JSON.parse(event.data));
+          console.log("This is else condition", JSON.parse(event.data));
         }
       };
 

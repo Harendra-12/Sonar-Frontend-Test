@@ -208,6 +208,21 @@ function GlobalCalls() {
     }
   }, [rolesAndPermissionRefresh]);
 
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction("/account-balance");
+      if (apiData.status) {
+        console.log("This is balance",apiData);
+        
+        dispatch({
+          type: "SET_BALANCE",
+          balance: apiData.data,
+        });
+      }
+    }
+    getData()
+  }, []);
+
   // useEffect(() => {
   //   async function getData() {
   //     const apiData = await generalGetFunction(

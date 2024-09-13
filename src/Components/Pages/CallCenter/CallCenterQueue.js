@@ -24,22 +24,48 @@ function CallCenterQueue() {
   const allUser = useSelector((state) => state.allUser);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const { data: usersData = [] } = allUser;
+  const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
+  const callCenterState = useSelector((state) => state.callCenter);
 
   useEffect(() => {
     dispatch({
       type: "SET_ALLUSERREFRESH",
       allUserRefresh: allUserRefresh + 1,
     });
-    async function getData() {
-      const apiData = await generalGetFunction("/call-center-queues");
-      if (apiData.status) {
-        setLoading(false);
-        setCallCenter(apiData.data);
-      } else {
-        setLoading(false);
+
+    if (callCenterRefresh > 0) {
+      setCallCenter(callCenterState);
+      setLoading(false);
+      async function getData() {
+        const apiData = await generalGetFunction("/call-center-queues");
+        if (apiData.status) {
+          setLoading(false);
+          setCallCenter(apiData.data);
+        } else {
+          setLoading(false);
+        }
       }
+      getData();
+    } else {
+      async function getData() {
+        const apiData = await generalGetFunction("/call-center-queues");
+        if (apiData.status) {
+          setLoading(false);
+          setCallCenter(apiData.data);
+        } else {
+          setLoading(false);
+        }
+      }
+      dispatch({
+        type: "SET_CALLCENTERREFRESH",
+        callCenterRefresh: callCenterRefresh + 1,
+      });
+      getData();
+      dispatch({
+        type: "SET_CALLCENTERREFRESH",
+        callCenterRefresh: callCenterRefresh + 1,
+      });
     }
-    getData();
   }, []);
 
   const handleAddCallCenterValidation = (e) => {

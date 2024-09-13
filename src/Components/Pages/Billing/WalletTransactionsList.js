@@ -7,24 +7,57 @@ import {
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import ContentLoader from "../../Loader/ContentLoader";
+import { useDispatch, useSelector } from "react-redux";
 
 function WalletTransactionsList() {
   const [transaction, setTransaction] = useState();
   const [loading, setLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
   const navigate = useNavigate();
+  const allWaletTransactions = useSelector(
+    (state) => state.allWaletTransactions
+  );
+  const dispatch = useDispatch();
   useEffect(() => {
-    async function getData() {
-      const apiData = await generalGetFunction(`/transaction/wallet?page=${pageNumber}`);
-      if (apiData.status) {
-        setLoading(false);
-        setTransaction(apiData.data);
-      } else {
-        setLoading(false);
-        navigate(-1);
+    if (allWaletTransactions) {
+      setLoading(false);
+      setTransaction(allWaletTransactions);
+      async function getData() {
+        const apiData = await generalGetFunction(
+          `/transaction/wallet?page=${pageNumber}`
+        );
+        if (apiData.status) {
+          setLoading(false);
+          setTransaction(apiData.data);
+          dispatch({
+            type: "SET_ALLWALLETTRANSACTIONS",
+            allWaletTransactions: apiData.data,
+          });
+        } else {
+          setLoading(false);
+          navigate(-1);
+        }
       }
+      getData();
+    } else {
+      async function getData() {
+        const apiData = await generalGetFunction(
+          `/transaction/wallet?page=${pageNumber}`
+        );
+        if (apiData.status) {
+          setLoading(false);
+          setTransaction(apiData.data);
+          dispatch({
+            type: "SET_ALLWALLETTRANSACTIONS",
+            allWaletTransactions: apiData.data,
+          });
+        } else {
+          setLoading(false);
+          navigate(-1);
+        }
+      }
+      getData();
     }
-    getData();
   }, [pageNumber]);
 
   //   Handle download invoice
