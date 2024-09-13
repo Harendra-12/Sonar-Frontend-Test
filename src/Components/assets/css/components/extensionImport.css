@@ -4,7 +4,7 @@
     background-color: var(--div-color); */
     z-index: 1;
     padding: 10px 20px !important;
-    margin: 0px 8px;
+    margin: 8px !important;
     /* border-radius: 7px; */
     /* color: #fff; */
     /* box-shadow: rgba(0, 0, 0, 0.35) 0px 10px 15px; */
