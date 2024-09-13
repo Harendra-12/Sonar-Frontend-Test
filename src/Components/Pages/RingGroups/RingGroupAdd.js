@@ -115,7 +115,7 @@ const RingGroupAdd = () => {
       delay: 0,
       timeOut: "30",
       // prompt: "",
-      status: "inactive",
+      status: "active",
     },
     // {
     //   id: 2,
