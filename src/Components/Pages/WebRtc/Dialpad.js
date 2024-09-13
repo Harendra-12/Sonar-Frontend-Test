@@ -87,7 +87,7 @@ function Dialpad({ hideDialpad, setSelectedModule }) {
                   onClick={() => setDestNumber(destNumber + "1")}
                 >
                   <h4>1</h4>
-                  {/* <h6>DEL</h6> */}
+                  <h6>&nbsp;</h6>
                 </div>
                 <div
                   className="col-4"
