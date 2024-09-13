@@ -54,18 +54,19 @@ function CdrReport() {
             </div>
             <div className="col-xl-8 pt-3 pt-xl-0">
               <div className="d-flex justify-content-end">
-                <div className="my-auto position-relative mx-3">
-                  <label className="switch">
-                    <input type="checkbox" id="showAllCheck" />
-                    <span className="slider round" />
-                  </label>
-                  <span className="position-relative mx-1">Show All</span>
-                </div>
                 <Link
                   to="#"
                   onClick={backToTop}
                   effect="ripple"
-                  className="panelButton"
+                  className="toggleButton active"
+                >
+                  All
+                </Link>
+                <Link
+                  to="#"
+                  onClick={backToTop}
+                  effect="ripple"
+                  className="toggleButton active"
                 >
                   Extension
                 </Link>
@@ -73,7 +74,7 @@ function CdrReport() {
                   to="#"
                   onClick={backToTop}
                   effect="ripple"
-                  className="panelButton"
+                  className="toggleButton active"
                 >
                   Call Center
                 </Link>
@@ -81,7 +82,7 @@ function CdrReport() {
                   to="#"
                   onClick={backToTop}
                   effect="ripple"
-                  className="panelButton"
+                  className="toggleButton active"
                 >
                   Ring Group
                 </Link>

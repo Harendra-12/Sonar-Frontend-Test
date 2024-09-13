@@ -314,7 +314,7 @@ const CallSettings = (props) => {
           )}
           <div className="mx-2" id="detailsContent">
             <form className="row">
-              <div className="formRow col-xl-12 px-xl-4">
+              <div className="formRow col-xl-12 ">
                 <div className="col-12 d-flex justify-content-start">
                   <div className="formLabel pe-2 col-2">
                     <label className="text-dark">On Busy</label>
@@ -387,7 +387,7 @@ const CallSettings = (props) => {
                   )}
                 </div>
               </div>
-              <div className="formRow col-xl-12 px-xl-4">
+              <div className="formRow col-xl-12 ">
                 <div className="col-12 d-flex justify-content-start">
                   <div className="formLabel pe-2 col-2">
                     <label className="text-dark">No Answer</label>
@@ -490,7 +490,7 @@ const CallSettings = (props) => {
                   )}
                 </div>
               </div>
-              <div className="formRow col-xl-12 px-xl-4">
+              <div className="formRow col-xl-12 ">
                 <div className="col-12 d-flex justify-content-start">
                   <div className="formLabel pe-2 col-2">
                     <label className="text-dark">Not Registered</label>
@@ -564,7 +564,7 @@ const CallSettings = (props) => {
                   )}
                 </div>
               </div>
-              <div className="formRow col-xl-12 px-xl-4">
+              <div className="formRow col-xl-12 ">
                 <div className="col-12 d-flex justify-content-start">
                   <div className="formLabel pe-2 col-2">
                     <label className="text-dark">Follow Me</label>
@@ -738,7 +738,7 @@ const CallSettings = (props) => {
                   </div>
                 )}
               </div>
-              <div className="formRow col-xl-12 px-xl-4">
+              <div className="formRow col-xl-12 ">
                 <div className="col-12 d-flex justify-content-start">
                   <div className="formLabel pe-2 col-2">
                     <label className="text-dark">Do Not Disturb</label>
@@ -768,7 +768,7 @@ const CallSettings = (props) => {
                 </div>
               </div>
 
-              <div className="formRow col-xl-12 px-xl-4">
+              <div className="formRow col-xl-12 ">
                 <div className="col-12 d-flex justify-content-start">
                   <div className="formLabel pe-2 col-2">
                     <label className="text-dark">Call Recording</label>
@@ -801,7 +801,7 @@ const CallSettings = (props) => {
                 </div>
               </div>
 
-              <div className="formRow col-xl-12 px-xl-4">
+              <div className="formRow col-xl-12 ">
                 <div className="col-12 d-flex justify-content-start">
                   <div className="formLabel pe-2 col-2">
                     <label className="text-dark">Call Blocking</label>
