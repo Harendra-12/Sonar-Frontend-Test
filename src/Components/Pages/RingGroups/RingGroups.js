@@ -25,26 +25,54 @@ const RingGroups = () => {
   const [deleteId, setDeleteId] = useState("");
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const { data: usersData = [] } = allUser;
+  const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
+  const ringGroupState = useSelector((state) => state.ringGroup);
+
   useEffect(() => {
     dispatch({
       type: "SET_ALLUSERREFRESH",
       allUserRefresh: allUserRefresh + 1,
     });
-    if (account && account.id) {
-      async function getData() {
-        const apidata = await generalGetFunction(
-          `/ringgroup?account=${account.account_id}`
-        );
-        if (apidata.status) {
-          setRingGroup(apidata.data);
-          setLoading(false);
-        } else {
-          navigate("/");
+
+    if (ringGroupRefresh > 0) {
+      setLoading(false);
+      setRingGroup(ringGroupState);
+      if (account && account.id) {
+        async function getData() {
+          const apidata = await generalGetFunction(
+            `/ringgroup?account=${account.account_id}`
+          );
+          if (apidata.status) {
+            setRingGroup(apidata.data);
+          } else {
+            navigate("/");
+          }
         }
+        getData();
+      } else {
+        navigate("/");
       }
-      getData();
     } else {
-      navigate("/");
+      if (account && account.id) {
+        async function getData() {
+          const apidata = await generalGetFunction(
+            `/ringgroup?account=${account.account_id}`
+          );
+          if (apidata.status) {
+            setRingGroup(apidata.data);
+            setLoading(false);
+          } else {
+            navigate("/");
+          }
+        }
+        getData();
+      } else {
+        navigate("/");
+      }
+      dispatch({
+        type: "SET_RINGGROUPREFRESH",
+        ringGroupRefresh: ringGroupRefresh + 1,
+      });
     }
   }, []);
 

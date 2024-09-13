@@ -30,6 +30,7 @@ const Users = () => {
   const [changeState, setChangeState] = useState(1);
   const [popUp, setPopUp] = useState(false);
   const [error, setError] = useState("");
+  const usersByAccount = useSelector((state) => state.usersByAccount);
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
       setOnlineUSer(
@@ -48,20 +49,47 @@ const Users = () => {
   }, []);
 
   useEffect(() => {
-    setLoading(true);
-    async function getApi() {
-      const apiData = await generalGetFunction(
-        `/user/all?account=${account.account_id}&page=${pageNumber}`
-      );
-      if (apiData.status) {
-        setUser(apiData.data);
-        setFilterUser(apiData.data.data);
-        setLoading(false);
-      } else {
-        navigate("/");
+    console.log("usersByAccount", usersByAccount);
+    if (usersByAccount.data) {
+      setUser(usersByAccount);
+      setFilterUser(usersByAccount.data);
+      setLoading(false);
+      async function getApi() {
+        const apiData = await generalGetFunction(
+          `/user/all?account=${account.account_id}&page=${pageNumber}`
+        );
+        if (apiData.status) {
+          setUser(apiData.data);
+          setFilterUser(apiData.data.data);
+          dispatch({
+            type: "SET_USERSBYACCOUNT",
+            usersByAccount: apiData.data,
+          });
+        } else {
+          navigate("/");
+        }
       }
+      getApi();
+    } else {
+      setLoading(true);
+      async function getApi() {
+        const apiData = await generalGetFunction(
+          `/user/all?account=${account.account_id}&page=${pageNumber}`
+        );
+        if (apiData.status) {
+          setUser(apiData.data);
+          setFilterUser(apiData.data.data);
+          dispatch({
+            type: "SET_USERSBYACCOUNT",
+            usersByAccount: apiData.data,
+          });
+          setLoading(false);
+        } else {
+          navigate("/");
+        }
+      }
+      getApi();
     }
-    getApi();
   }, [account, navigate, pageNumber, changeState]);
 
   // Filter user based on input
