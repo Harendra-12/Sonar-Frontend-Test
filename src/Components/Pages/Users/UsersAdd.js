@@ -36,6 +36,9 @@ const UsersAdd = () => {
   const [extension, setExtension] = useState();
   const [user, setUser] = useState();
   const [filterExtensions, setFilterExtensions] = useState();
+  const allUser = useSelector((state) => state.allUser);
+  const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
+  const extensionAll = useSelector((state) => state.extensionAll);
   // const { id: domainId = "" } = domain;
   // const [popUp, setPopUp] = useState(true);
 
@@ -43,7 +46,6 @@ const UsersAdd = () => {
     register,
     watch,
     setError,
-
     formState: { errors },
     handleSubmit,
     reset,
@@ -59,7 +61,7 @@ const UsersAdd = () => {
         //   `/domain/search?account=${account.account_id}`
         // );
         const permissionData = await generalGetFunction("/permission");
-        const timeZ = await generalGetFunction(`/timezone/all`);
+        const timeZ = await generalGetFunction(`/timezones`);
         const apiRole = await generalGetFunction(`/role/all`);
         // if (domain.status) {
         //   setDomains(
@@ -93,42 +95,30 @@ const UsersAdd = () => {
   }, []);
 
   useEffect(() => {
-    async function getData() {
-      setLoading(true);
-      if (account && account.account_id) {
-        const extensionData = await generalGetFunction(
-          `/extension/all?account=${account.account_id}`
-        );
-        const userData = await generalGetFunction(
-          `/user/all?account=${account.account_id}`
-        );
-        if (extensionData.status) {
-          setLoading(false);
-          setExtension(extensionData.data);
-        } else {
-          setLoading(false);
-        }
-
-        if (userData.status) {
-          setUser(userData.data);
-          setLoading(false);
-        } else {
-          setLoading(false);
-        }
-      } else {
-        setLoading(false);
-        navigate("/");
-      }
+    if (allUserRefresh > 0) {
+      setUser(allUser.data);
+    } else {
+      dispatch({
+        type: "SET_ALLUSERREFRESH",
+        allUserRefresh: allUserRefresh + 1,
+      });
     }
-    getData();
-  }, [account, navigate]);
+    if (extensionAllRefresh > 0) {
+      setExtension(extensionAll.data);
+    } else {
+      dispatch({
+        type: "SET_EXTENSIONALLREFRESH",
+        extensionAllRefresh: extensionAllRefresh + 1,
+      });
+    }
+  }, [allUser, extensionAll]);
 
   // filter only those extension that are not assign with any user
   useEffect(() => {
     if (extension && user) {
       setFilterExtensions(
-        extension.data.filter((item) => {
-          return !user.data.some((userItem) => {
+        extension.filter((item) => {
+          return !user.some((userItem) => {
             return userItem.extension_id === item.id;
           });
         })
@@ -208,6 +198,10 @@ const UsersAdd = () => {
       dispatch({
         type: "SET_ALLUSERREFRESH",
         allUserRefresh: allUserRefresh + 1,
+      });
+      dispatch({
+        type: "SET_EXTENSIONALLREFRESH",
+        extensionAllRefresh: extensionAllRefresh + 1,
       });
     } else {
       setLoading(false);

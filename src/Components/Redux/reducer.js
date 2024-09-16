@@ -43,6 +43,10 @@ var didAll = [];
 var portsAll = [];
 var allCardTransactions;
 var allWaletTransactions;
+var extensionAll = [];
+var extensionAllRefresh = 0;
+var timeZone = [];
+var timeZoneRefresh = 0;
 
 const initialState = {
   account,
@@ -89,6 +93,10 @@ const initialState = {
   portsAll,
   allCardTransactions,
   allWaletTransactions,
+  extensionAll,
+  extensionAllRefresh,
+  timeZone,
+  timeZoneRefresh,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -186,6 +194,14 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, loading: action.loading };
     case "SET_BALANCE":
       return { ...state, balance: action.balance };
+    case "SET_EXTENSIONALL":
+      return { ...state, extensionAll: action.extensionAll };
+    case "SET_EXTENSIONALLREFRESH":
+      return { ...state, extensionAllRefresh: action.extensionAllRefresh };
+    case "SET_TIMEZONE":
+      return { ...state, timeZone: action.timeZone };
+    case "SET_TIMEZONEREFRESH":
+      return { ...state, timeZoneRefresh: action.timeZoneRefresh };
     default:
       return state;
   }

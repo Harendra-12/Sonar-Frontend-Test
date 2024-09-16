@@ -398,6 +398,7 @@ const UsersEdit = () => {
                     <select
                       className="formItem"
                       name=""
+                      value={watch().timezone_id}
                       {...register("timezone_id", { ...requiredValidator })}
                     >
                       <option disabled value="">
@@ -462,8 +463,8 @@ const UsersEdit = () => {
                           e.target.value === ""
                             ? ""
                             : role[e.target.value].permissions.map((item) => {
-                              return item.permission_id;
-                            })
+                                return item.permission_id;
+                              })
                         );
                       }}
                     >

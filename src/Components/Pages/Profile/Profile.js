@@ -1,36 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../CommonComponents/Header";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   backToTop,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 
 const Profile = () => {
+  const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
-  const [timeZone, setTimeZone] = useState();
+  const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
+  const timeZone = useSelector((state) => state.timeZone);
+  const [timeZoneVal, setTimeZoneVal] = useState();
   console.log("user:", account);
   console.log("accountDetails:", accountDetails);
 
   useEffect(() => {
-    if (account && accountDetails) {
-      async function getApi() {
-        const getTimeZone = await generalGetFunction(`/timezone/all`);
-        console.log("getTimeZone", getTimeZone);
-        if (getTimeZone.status) {
-          setTimeZone(
-            getTimeZone.data.filter((item) => {
-              return item.id === account.timezone_id;
-            })
-          );
-        }
-      }
-      getApi();
+    if (timeZoneRefresh > 0) {
+      setTimeZoneVal(
+        timeZone.filter((item) => {
+          return item.id === account.timezone_id;
+        })
+      );
+    } else {
+      dispatch({
+        type: "SET_TIMEZONEREFRESH",
+        timeZoneRefresh: timeZoneRefresh + 1,
+      });
     }
-  }, [account, accountDetails]);
-  console.log("timeZone", timeZone);
+  }, [timeZone]);
 
   return (
     <main className="mainContent">
@@ -135,7 +135,7 @@ const Profile = () => {
                             ></img>
                             &nbsp;&nbsp;{account?.language && account?.language}
                           </p>
-                          <p>{timeZone && timeZone[0].name}</p>
+                          <p>{timeZoneVal && timeZoneVal[0].name}</p>
                         </div>
                       </div>
                     </div>

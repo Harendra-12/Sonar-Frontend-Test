@@ -82,6 +82,7 @@ const Extensions = () => {
       getData();
     }
   }, [account, navigate, pageNumber]);
+  console.log("extension:", extension);
 
   return (
     <main className="mainContent">
@@ -127,6 +128,7 @@ const Extensions = () => {
                   <thead>
                     <tr>
                       <th>Extensions</th>
+                      {/* <th>User</th> */}
                       {/* <th>Domains</th> */}
                       <th>Effective CID Name</th>
                       <th>Outbound CID Name</th>
