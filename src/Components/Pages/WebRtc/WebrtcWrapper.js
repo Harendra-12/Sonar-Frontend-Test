@@ -46,7 +46,7 @@ const WebrtcWrapper = () => {
   };
   const options = {
     domain: account.domain.domain_name,
-    webSocketServer: "ws://192.168.2.225:5066",
+    webSocketServer: "wss://192.168.2.225:7443",
     // domain: "192.168.0.91",
     // domain: "webvio.1.com",
     // webSocketServer: "ws://192.168.0.91:5066",

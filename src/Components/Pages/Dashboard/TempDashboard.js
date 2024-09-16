@@ -324,7 +324,7 @@ function TempDashboard() {
         </div>
         <div className="mt-4 text-center">
           <span className="">
-            Feel free to contact us if you have any queries!
+            Feel free to contact us if you have any queries at 0000000000 or email@gmail.com!
           </span>
         </div>
       </div>
