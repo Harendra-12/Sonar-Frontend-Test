@@ -187,7 +187,7 @@ function Music() {
                                     setDeleteId(item.id);
                                   }}
                                 >
-                                  <i className="fa-solid fa-trash fs-6"></i>
+                                  <i className="fa-solid fa-trash"></i>
                                 </button>
                               </td>
                             </tr>
