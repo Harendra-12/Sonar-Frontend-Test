@@ -20,6 +20,12 @@ function ConfigureStepDashboard({ account2 }) {
   const [did, setDid] = useState("");
   const [purchaseComplete, setPurchaseComplete] = useState(false);
   const [searchingDid, setSearchingDid] = useState(false);
+  const [configuringExtension, setConfiguringExtension] = useState(false);
+  const [configuringRole, setConfiguringRole] = useState(false);
+  const [configuredPurchase, setConfiguredPurchase] = useState(false);
+  const [configuredExtension, setConfiguredExtension] = useState(false);
+  const [configuredRole, setConfiguredRole] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -65,8 +71,19 @@ function ConfigureStepDashboard({ account2 }) {
     };
     const apiData = await generalPostFunction("/purchaseTfn", parsedData);
     if (apiData.status) {
-      setPurchingDid(false);
+      // await new Promise((resolve) => setTimeout(resolve, 2000));
+      setConfiguredPurchase(true);
+
+      setConfiguringExtension(true);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      setConfiguredExtension(true);
+
+      setConfiguringRole(true);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      setConfiguredRole(true);
+
       setPurchaseComplete(true);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       const profile = await generalGetFunction("/user");
       if (profile.status) {
         dispatch({
@@ -105,6 +122,7 @@ function ConfigureStepDashboard({ account2 }) {
       }
     }
   }
+
   return (
     <div>
       <div className="profileView">
@@ -117,6 +135,7 @@ function ConfigureStepDashboard({ account2 }) {
               You are at the final step of getting access to <b>Angel PBX</b>,
               please <span>configure your account</span> to proceed further.
             </p>
+
             {account2.company_status === "5" ? (
               ""
             ) : (
@@ -135,6 +154,12 @@ function ConfigureStepDashboard({ account2 }) {
           {configure ? (
             <div className="configProgressWrapper">
               <ul>
+                <li>
+                  <p className="text-center">
+                    Please write last 3 digits of the number which you want in
+                    DID.
+                  </p>
+                </li>
                 <li>
                   <div class="coolinput">
                     <div className="coolSearch">
@@ -230,20 +255,56 @@ function ConfigureStepDashboard({ account2 }) {
                       )}
                     </li>
                   )}
-                  {purchingDid && did !== "" ? (
+                  {purchingDid && did !== "" && (
                     <li>
                       <div className={"configProgress"}>
-                        <CircularProgress
-                          size="35px"
-                          sx={{ color: green[500] }}
-                        />
+                        {configuredPurchase === true ? (
+                          <i className="fad fa-check-circle text-success"></i>
+                        ) : (
+                          <CircularProgress
+                            size="35px"
+                            sx={{ color: green[500] }}
+                          />
+                        )}
                       </div>
                       <div className="configProgressText">
                         <p>Purching Did</p>
                       </div>
                     </li>
-                  ) : (
-                    ""
+                  )}
+                  {configuringExtension && did !== "" && (
+                    <li>
+                      <div className={"configProgress"}>
+                        {configuredExtension === true ? (
+                          <i className="fad fa-check-circle text-success"></i>
+                        ) : (
+                          <CircularProgress
+                            size="35px"
+                            sx={{ color: green[500] }}
+                          />
+                        )}
+                      </div>
+                      <div className="configProgressText">
+                        <p>Configuring Extension</p>
+                      </div>
+                    </li>
+                  )}
+                  {configuringRole && did !== "" && (
+                    <li>
+                      <div className={"configProgress"}>
+                        {configuredRole === true ? (
+                          <i className="fad fa-check-circle text-success"></i>
+                        ) : (
+                          <CircularProgress
+                            size="35px"
+                            sx={{ color: green[500] }}
+                          />
+                        )}
+                      </div>
+                      <div className="configProgressText">
+                        <p>Configuring Roles</p>
+                      </div>
+                    </li>
                   )}
                   {/* <li>
                         <div className={acquiringDid==="" ? 'configProgress pending ' : acquiringDid===true? "configProgress": "configProgress success"}>
