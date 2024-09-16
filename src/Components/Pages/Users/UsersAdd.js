@@ -33,6 +33,9 @@ const UsersAdd = () => {
   const [isUserNameAvailable, setIsUserNameAvailable] = useState();
   const [userNameValidationLoader, setuserNameValidationLoader] =
     useState(false);
+  const [extension, setExtension] = useState();
+  const [user, setUser] = useState();
+  const [filterExtensions, setFilterExtensions] = useState();
   // const { id: domainId = "" } = domain;
   // const [popUp, setPopUp] = useState(true);
 
@@ -88,6 +91,50 @@ const UsersAdd = () => {
       getDomain();
     }
   }, []);
+
+  useEffect(() => {
+    async function getData() {
+      setLoading(true);
+      if (account && account.account_id) {
+        const extensionData = await generalGetFunction(
+          `/extension/all?account=${account.account_id}`
+        );
+        const userData = await generalGetFunction(
+          `/user/all?account=${account.account_id}`
+        );
+        if (extensionData.status) {
+          setLoading(false);
+          setExtension(extensionData.data);
+        } else {
+          setLoading(false);
+        }
+
+        if (userData.status) {
+          setUser(userData.data);
+          setLoading(false);
+        } else {
+          setLoading(false);
+        }
+      } else {
+        setLoading(false);
+        navigate("/");
+      }
+    }
+    getData();
+  }, [account, navigate]);
+
+  // filter only those extension that are not assign with any user
+  useEffect(() => {
+    if (extension && user) {
+      setFilterExtensions(
+        extension.data.filter((item) => {
+          return !user.data.some((userItem) => {
+            return userItem.extension_id === item.id;
+          });
+        })
+      );
+    }
+  }, [extension, user]);
 
   //Calling useName api for availability check after user stop typing
   async function checkUserName() {
@@ -151,7 +198,7 @@ const UsersAdd = () => {
         permissions: selectedPermission,
       },
     };
-    setLoading(true)
+    setLoading(true);
     const addUser = await generalPostFunction("/user/create", payload);
     if (addUser.status) {
       reset();
@@ -287,7 +334,6 @@ const UsersAdd = () => {
                   </button>
                 </div>
               </div>
-
             </div>
           </div>
           <div className="col-xl-12" style={{ overflow: "auto" }}>
@@ -629,6 +675,34 @@ const UsersAdd = () => {
                     <label htmlFor="data" className="formItemDesc">
                       Select Default to enable login or to disable login select
                       Virtual.
+                    </label>
+                  </div>
+                </div>
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="selectFormRow">Select extension</label>
+                  </div>
+                  <div className="col-12">
+                    <select
+                      className="formItem"
+                      name="extension_id"
+                      defaultValue=""
+                      {...register("extension_id")}
+                    >
+                      <option value="" disabled>
+                        Available Extensions
+                      </option>
+                      {filterExtensions &&
+                        filterExtensions.map((extension, key) => {
+                          return (
+                            <option value={extension.id} key={key}>
+                              {extension.extension}
+                            </option>
+                          );
+                        })}
+                    </select>
+                    <label htmlFor="data" className="formItemDesc">
+                      Assign an extension to the newly created user.
                     </label>
                   </div>
                 </div>
