@@ -91,8 +91,8 @@ function DidListing() {
                     <thead>
                       <tr>
                         <th>DID</th>
-                        <th>Payment Date</th>
-                        <th>Transaction Amount</th>
+                        {/* <th>Payment Date</th>
+                        <th>Transaction Amount</th> */}
                         <th>E911</th>
                         <th>Cname</th>
                         <th>SMS</th>
@@ -106,10 +106,14 @@ function DidListing() {
                           return (
                             <tr>
                               <td style={{ cursor: "default" }}>{item.did}</td>
-                              <td style={{ cursor: "default" }}>{item.created_at.split("T")[0]}</td>
-                              <td style={{ cursor: "default" }}>${item.price}</td>
-                              <td style={{ cursor: "default" }}>{item?.e911}</td>
-                              <td style={{ cursor: "default" }}>{item?.cnam}</td>
+                              {/* <td style={{ cursor: "default" }}>{item.created_at.split("T")[0]}</td>
+                              <td style={{ cursor: "default" }}>${item.price}</td> */}
+                              <td style={{ cursor: "default" }}>
+                                {item?.e911}
+                              </td>
+                              <td style={{ cursor: "default" }}>
+                                {item?.cnam}
+                              </td>
                               <td style={{ cursor: "default" }}>{item?.sms}</td>
                               {/* <td onClick={() => navigate(item.dialplan?"/destination-edit":"/destination-add",{ state: { state: item.dialplan ? item.dialplan : item, did: item.did } })}>Configure</td> */}
                               {/* <td onClick={()=>navigate(`/did-config?did_id=${item.did}`)}>Configure</td> */}
@@ -129,11 +133,13 @@ function DidListing() {
                               <td style={{ cursor: "default" }}>
                                 {" "}
                                 {item.configuration !== null && (
-                                  <button className="tableButton delete"
+                                  <button
+                                    className="tableButton delete"
                                     style={{ cursor: "pointer" }}
                                     onClick={() =>
                                       handleClick(item.configuration.id)
-                                    }>
+                                    }
+                                  >
                                     <i class="fa-solid fa-arrows-rotate"></i>
                                   </button>
                                 )}

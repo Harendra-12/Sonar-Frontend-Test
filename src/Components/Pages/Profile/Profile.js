@@ -1,14 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../CommonComponents/Header";
 import { useSelector } from "react-redux";
-import { backToTop } from "../../GlobalFunction/globalFunction";
+import {
+  backToTop,
+  generalGetFunction,
+} from "../../GlobalFunction/globalFunction";
 
 const Profile = () => {
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
+  const [timeZone, setTimeZone] = useState();
   console.log("user:", account);
   console.log("accountDetails:", accountDetails);
+
+  useEffect(() => {
+    if (account && accountDetails) {
+      async function getApi() {
+        const getTimeZone = await generalGetFunction(`/timezone/all`);
+        console.log("getTimeZone", getTimeZone);
+        if (getTimeZone.status) {
+          setTimeZone(
+            getTimeZone.data.filter((item) => {
+              return item.id === account.timezone_id;
+            })
+          );
+        }
+      }
+      getApi();
+    }
+  }, [account, accountDetails]);
+  console.log("timeZone", timeZone);
 
   return (
     <main className="mainContent">
@@ -65,14 +87,14 @@ const Profile = () => {
                         </span>{" "}
                         {account?.email ? account?.email : "user@mail.com"}
                       </p>
-                      <p>
+                      {/* <p>
                         <span>
                           <i className="fa-duotone fa-server"></i>
                         </span>{" "}
                         {account?.domain?.domain_name
                           ? account?.domain?.domain_name
                           : "https://www.webviotechnologies.com/"}
-                      </p>
+                      </p> */}
                       <p>
                         <span>
                           <i className="fa-duotone fa-location-dot"></i>
@@ -113,31 +135,18 @@ const Profile = () => {
                             ></img>
                             &nbsp;&nbsp;{account?.language && account?.language}
                           </p>
-                          <p>
-                            {accountDetails?.timezone.value &&
-                              accountDetails?.timezone.value}
-                          </p>
+                          <p>{timeZone && timeZone[0].name}</p>
                         </div>
                       </div>
                     </div>
-                    <div className="summaryDetails">
-                      <div className="content ms-0">
-                        <h5>Summary</h5>
-                        <p>
-                          We are the leading expertise in rendering the best of
-                          the BPO services and also aid you in creating the
-                          innovative and the unique service, to alleviate the
-                          net rate of the productivity of your firm. Get
-                          all-encompassing digital services at the most
-                          affordable rates to ensure a steady business growth
-                          and high ROI. We have invested long hours and
-                          brilliant minds to amp up our digital marketing
-                          service game. We have ensured that our understanding
-                          of market and trends are infallible with thorough
-                          studies, assessments and hands-on experience.
-                        </p>
+                    {accountDetails.summery && (
+                      <div className="summaryDetails">
+                        <div className="content ms-0">
+                          <h5>Summary</h5>
+                          <p>{accountDetails?.summery}</p>
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -173,7 +182,7 @@ const Profile = () => {
                         />
                       </div>
                     </div>
-                    <div className="formRow col-xl-4">
+                    {/* <div className="formRow col-xl-4">
                       <div className="formLabel">
                         <label htmlFor="data">Password</label>
                       </div>
@@ -185,8 +194,8 @@ const Profile = () => {
                           disabled
                         />
                       </div>
-                    </div>
-                    <div className="formRow col-xl-4">
+                    </div> */}
+                    {/* <div className="formRow col-xl-4">
                       <div className="formLabel">
                         <label htmlFor="data">Country Code</label>
                       </div>
@@ -198,7 +207,7 @@ const Profile = () => {
                           disabled
                         />
                       </div>
-                    </div>
+                    </div> */}
                     <div className="formRow col-xl-4">
                       <div className="formLabel">
                         <label htmlFor="data">Phone Number</label>
@@ -215,7 +224,7 @@ const Profile = () => {
                         />
                       </div>
                     </div>
-                    <div className="formRow col-xl-4">
+                    {/* <div className="formRow col-xl-4">
                       <div className="formLabel">
                         <label htmlFor="data">Two Factor Authentication</label>
                       </div>
@@ -231,7 +240,7 @@ const Profile = () => {
                           <option value={2}>Disabled</option>
                         </select>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -310,10 +319,14 @@ const Profile = () => {
                     <p>Store</p>
                     <ul>
                       <li>
-                        <Link to="/extensions-add" onClick={backToTop}>Buy Extensions</Link>
+                        <Link to="/extensions-add" onClick={backToTop}>
+                          Buy Extensions
+                        </Link>
                       </li>
                       <li>
-                        <Link to="/users-add" onClick={backToTop}>Increase Users</Link>
+                        <Link to="/users-add" onClick={backToTop}>
+                          Increase Users
+                        </Link>
                       </li>
                       <li>
                         <Link>Explore Modules</Link>
