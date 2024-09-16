@@ -19,7 +19,9 @@ const Extensions = () => {
   const [onlineExtension, setOnlineExtension] = useState([0]);
   const [pageNumber, setPageNumber] = useState(1);
   const registerUser = useSelector((state) => state.registerUser);
+  const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const extensionByAccount = useSelector((state) => state.extensionByAccount);
+  const userList = useSelector((state) => state.allUser?.data) || [];
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -34,7 +36,22 @@ const Extensions = () => {
     }
     generalGetFunction("/freeswitch/checkActiveExtensionOnServer");
   }, [registerUser]);
+  useEffect(() => {
+    if (userList.length == 0) {
+      dispatch({
+        type: "SET_ALLUSERREFRESH",
+        allUserRefresh: allUserRefresh + 1,
+      });
+    }
+  }, []);
 
+  const userWithExtension = userList
+    .filter((user) => user.extension && user.extension.extension) // Filter out null or undefined extensions
+    .map((user) => ({
+      name: user.name,
+      extension: user.extension.extension, // Access the nested extension value
+    }));
+  console.log(userWithExtension);
   useEffect(() => {
     if (extensionByAccount.data) {
       setExtension(extensionByAccount);
@@ -149,6 +166,10 @@ const Extensions = () => {
                     )}
                     {extension &&
                       extension.data.map((item, index) => {
+                        const foundUser = userWithExtension.find(
+                          (value) => value.extension === item.extension
+                        );
+
                         return (
                           <tr key={index}>
                             <td
@@ -156,7 +177,8 @@ const Extensions = () => {
                                 navigate(`/extensions-edit?id=${item.id}`)
                               }
                             >
-                              {item.extension}
+                              {item.extension}{" "}
+                              {foundUser ? `(${foundUser.name})` : ""}
                             </td>
                             {/* <td
                               onClick={() =>

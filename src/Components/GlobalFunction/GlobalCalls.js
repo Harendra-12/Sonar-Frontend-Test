@@ -212,15 +212,15 @@ function GlobalCalls() {
     async function getData() {
       const apiData = await generalGetFunction("/account-balance");
       if (apiData.status) {
-        console.log("This is balance",apiData);
-        
+        console.log("This is balance", apiData);
+
         dispatch({
           type: "SET_BALANCE",
           balance: apiData.data,
         });
       }
     }
-    getData()
+    getData();
   }, []);
 
   // useEffect(() => {
@@ -239,6 +239,24 @@ function GlobalCalls() {
   //     getData();
   //   }
   // }, [domainRefresh,account]);
+
+  useEffect(() => {
+    const getLoginInfo = async () => {
+      const profile = await generalGetFunction("/user");
+      if (profile.status) {
+        dispatch({
+          type: "SET_ACCOUNT",
+          account: profile.data,
+        });
+
+        localStorage.setItem("account", JSON.stringify(profile.data));
+      } else {
+        navigate("/login");
+      }
+    };
+
+    getLoginInfo();
+  }, []);
 
   return <div></div>;
 }

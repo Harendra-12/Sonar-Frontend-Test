@@ -42,7 +42,7 @@ function Login() {
                     },
                   },
                   fullScreen: {
-                    enable: false
+                    enable: false,
                   },
                   fpsLimit: 120,
                   interactivity: {
@@ -103,7 +103,12 @@ function Login() {
                     opacity: {
                       value: 0.5,
                       random: false,
-                      anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false },
+                      anim: {
+                        enable: false,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false,
+                      },
                     },
                     shape: {
                       type: "circle",
@@ -214,7 +219,6 @@ export function LoginComponent() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
 
   // Function to handle login
   const userLogin = useCallback(async () => {

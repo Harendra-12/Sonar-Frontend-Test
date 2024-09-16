@@ -16,9 +16,11 @@ import SideNavbarApp from "./SideNavbarApp";
 const WebrtcWrapper = () => {
   const sessions = useSelector((state) => state.sessions);
   const account = useSelector((state) => state.account);
+  const accountDetails = useSelector((state) => state.accountDetails);
   const [hangupRefresh, setHangupRefresh] = useState(0);
   const [selectedModule, setSelectedModule] = useState("");
   const [activePage, setactivePage] = useState("call");
+  const isCustomerAdmin = account?.email == accountDetails?.email;
 
   const useWebSocketErrorHandling = (options) => {
     useEffect(() => {
@@ -57,15 +59,14 @@ const WebrtcWrapper = () => {
     <>
       <SideNavbarApp setactivePage={setactivePage} />
       <SIPProvider options={options}>
-      <div>
-          <SipRegister />
-        </div>
+        <div>{!isCustomerAdmin && <SipRegister />}</div>
         {activePage == "call" && (
           <Call
             setHangupRefresh={setHangupRefresh}
             hangupRefresh={hangupRefresh}
             selectedModule={selectedModule}
             setSelectedModule={setSelectedModule}
+            isCustomerAdmin={isCustomerAdmin}
           />
         )}
         {activePage == "all-contacts" && <AllContact />}
@@ -78,7 +79,7 @@ const WebrtcWrapper = () => {
           setSelectedModule={setSelectedModule}
           setactivePage={setactivePage}
         />
-       
+
         {sessions.length > 0 && Object.keys(sessions).length > 0 ? (
           <>
             <section
