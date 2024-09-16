@@ -132,13 +132,27 @@ function Payment({ account, nextPage, companyStatus }) {
             </div>
           </div>
           <div className="col-xl-12">
-            <div className="col-xl-3 mx-auto">
-              <div class={Number(companyStatus) >= 2 ? "approvalButton" : "approvalButton disabled"}
+            <div className="col-xl-3 mx-auto d-flex gap-3">
+              <div
+                class={"approvalButton "}
+                onClick={() => {
+                  nextPage("account");
+                }}
+              >
+                <i class="fa-solid fa-caret-left me-2"></i> Back
+              </div>
+              <div
+                class={
+                  Number(companyStatus) >= 2
+                    ? "approvalButton"
+                    : "approvalButton disabled"
+                }
                 onClick={() => {
                   if (Number(companyStatus) >= 2) {
-                    nextPage("document")
+                    nextPage("document");
                   }
-                }}>
+                }}
+              >
                 Next<i class="fa-solid fa-caret-right ms-2"></i>
               </div>
             </div>

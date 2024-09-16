@@ -19,7 +19,7 @@ function TempDashboard() {
   const [account, setAccount] = useState(
     useSelector((state) => state.tempAccount)
   );
-  console.log("Temporary account:", account)
+  console.log("Temporary account:", account);
   function handleRefresh(value) {
     setRefreshDetails(value);
   }
@@ -321,6 +321,11 @@ function TempDashboard() {
               )}
             </div>
           </div>
+        </div>
+        <div className="mt-4 text-center">
+          <span className="">
+            Feel free to contact us if you have any queries!
+          </span>
         </div>
       </div>
     </>

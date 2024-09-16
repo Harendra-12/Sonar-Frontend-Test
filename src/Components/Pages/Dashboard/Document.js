@@ -28,6 +28,7 @@ function Document({
   const [uploadId, setuploadId] = useState("");
   const [file, setFile] = useState();
   const [uploadError, setUploadError] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
   // const [getDataRefresh, setgetDataRefresh] = useState(0);
 
   const [docId, setDocId] = useState([]);
@@ -144,6 +145,11 @@ function Document({
   const nonUploadedDocuments = getNonUploadedDocuments();
 
   const handleUploadDocument = async (documentId) => {
+    if (!file) {
+      toast.error("Please select a file");
+      return;
+    }
+
     const payload = {
       account_id: account.id,
       documents: [
@@ -163,8 +169,10 @@ function Document({
       toast.success(apiData.message);
       setLoading(false);
       setUploadPopup(false);
+      setImagePreview(null);
       refreshCallback(refresh + 1);
     } else {
+      setImagePreview(null);
       setLoading(false);
       toast.error(apiData.message);
     }
@@ -200,15 +208,21 @@ function Document({
         [name]: true,
       }));
     }
+    setImagePreview(URL.createObjectURL(selectedFile)); // Assuming you have a state for the image preview
   }
 
   const handleUploadDoc = (e) => {
     const selectedFile = e.target.files[0];
+
     if (selectedFile && selectedFile.size <= 1024 * 1024) {
       setUploadError(false);
-      setFile(e.target.files[0]);
+
+      const imagePreviewUrl = URL.createObjectURL(selectedFile);
+
+      setFile(selectedFile);
+      setImagePreview(imagePreviewUrl); // Assuming you have a state for the image preview
     } else {
-      setUploadError(true);
+      setUploadError("File size must be less than 1MB.");
     }
   };
 
@@ -687,7 +701,15 @@ function Document({
         )}
       </div>
       <div className="col-xl-12">
-        <div className="col-xl-3 mx-auto">
+        <div className="col-xl-3 mx-auto d-flex gap-3">
+          <div
+            class={"approvalButton "}
+            onClick={() => {
+              nextPage("payment");
+            }}
+          >
+            <i class="fa-solid fa-caret-left me-2"></i> Back
+          </div>
           <div
             class={
               Number(companyStatus) >= 4
@@ -717,6 +739,10 @@ function Document({
                 <div className="col-10 ps-0">
                   <h4>Warning!</h4>
                   Please select the file you want to upload
+                  <br />
+                  <span style={{ fontSize: 14 }}>
+                    Note: File size should be less than 1 MB.
+                  </span>
                   <input
                     name="reg"
                     className="formItem"
@@ -724,13 +750,26 @@ function Document({
                     accept="image/*"
                     onChange={handleChange}
                   />
+                  <span style={{ fontSize: 10 }}>
+                    Only JPEG/JPG/PNG files are accepted.
+                  </span>
                   {formDataError.reg ? (
-                    <span style={{ color: "red", fontSize: 12 }}>
-                      <i class="fa-solid fa-triangle-exclamation"></i> Image
-                      should be less than 1 MB
-                    </span>
+                    <>
+                      <br />
+                      <span style={{ color: "red", fontSize: 12 }}>
+                        <i class="fa-solid fa-triangle-exclamation"></i> Image
+                        should be less than 1 MB
+                      </span>
+                    </>
                   ) : (
                     ""
+                  )}
+                  {imagePreview && (
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      style={{ maxWidth: "400px", maxHeight: "400px" }}
+                    />
                   )}
                   <div className="mt-2">
                     <button className="panelButton m-0" onClick={handleSubmit}>
@@ -738,7 +777,10 @@ function Document({
                     </button>
                     <button
                       className="panelButtonWhite m-0 float-end"
-                      onClick={() => setReUploadPopUp(false)}
+                      onClick={() => {
+                        setReUploadPopUp(false);
+                        setImagePreview(null);
+                      }}
                     >
                       Cancel
                     </button>
@@ -768,9 +810,10 @@ function Document({
                   </h4>
                   Please select the file you want to upload
                   <br />
-                  <span className="">
+                  <span style={{ fontSize: 14 }}>
                     Note: File size should be less than 1 MB.
                   </span>
+                  <br />
                   <input
                     name="reg"
                     className="formItem mt-2"
@@ -779,13 +822,26 @@ function Document({
                     onChange={(e) => handleUploadDoc(e)}
                     // onChange={handleChange}
                   />
+                  <span style={{ fontSize: 10 }}>
+                    Only JPEG/JPG/PNG files are accepted.
+                  </span>
                   {uploadError ? (
-                    <span style={{ color: "red", fontSize: 12 }}>
-                      <i class="fa-solid fa-triangle-exclamation"></i> Image
-                      should be less than 1 MB
-                    </span>
+                    <>
+                      <br />
+                      <span style={{ color: "red", fontSize: 12 }}>
+                        <i class="fa-solid fa-triangle-exclamation"></i> Image
+                        should be less than 1 MB
+                      </span>
+                    </>
                   ) : (
                     ""
+                  )}
+                  {imagePreview && (
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      style={{ maxWidth: "400px", maxHeight: "400px" }}
+                    />
                   )}
                   <div className="mt-2">
                     <button
@@ -801,6 +857,8 @@ function Document({
                       onClick={() => {
                         setUploadPopup(false);
                         setUploadError(false);
+                        setImagePreview(null);
+                        setFile();
                       }}
                     >
                       Cancel
