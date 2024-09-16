@@ -71,7 +71,6 @@ function ConfigureStepDashboard({ account2 }) {
     };
     const apiData = await generalPostFunction("/purchaseTfn", parsedData);
     if (apiData.status) {
-      // await new Promise((resolve) => setTimeout(resolve, 2000));
       setConfiguredPurchase(true);
 
       setConfiguringExtension(true);
