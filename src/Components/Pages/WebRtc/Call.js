@@ -19,6 +19,7 @@ function Call({
   hangupRefresh,
   selectedModule,
   setSelectedModule,
+  isCustomerAdmin,
 }) {
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
@@ -31,6 +32,7 @@ function Call({
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
   const [allCalls, setAllCalls] = useState([]);
+  const extension = account?.extension?.extension || "";
   // const [hangupRefresh, setHangupRefresh] = useState(0);
 
   const [previewCalls, setPreviewCalls] = useState([]);
@@ -75,6 +77,38 @@ function Call({
   //   }, [options.webSocketServer]);
   // };
 
+  // useEffect(() => {
+  //   if (allCall && allCall.calls) {
+  //     const apiData = allCall;
+  //     setAllApiData(apiData.calls.reverse());
+
+  //     const uniqueArray = [
+  //       ...new Map(
+  //         apiData.calls
+  //           .filter(
+  //             (item) =>
+  //               item["Caller-Callee-ID-Number"] ===
+  //                 extension ||
+  //               item["Caller-Caller-ID-Number"] ===
+  //                 extension
+  //           )
+  //           .reverse()
+  //           .map((item) => [
+  //             // item["Caller-Callee-ID-Number"],
+  //             //   item["Caller-Caller-ID-Number"],
+  //             // item["Hangup-Cause"] &&
+  //             // item["variable_start_stamp"] &&
+  //             // item["variable_billsec"],
+  //             item,
+  //             item,
+  //           ])
+  //       ).values(),
+  //     ];
+  //     setAllCalls(uniqueArray.reverse());
+
+  //     setLoading(false);
+  //   }
+  // }, [allCall]);
   useEffect(() => {
     if (allCall && allCall.calls) {
       const apiData = allCall;
@@ -83,33 +117,31 @@ function Call({
       const uniqueArray = [
         ...new Map(
           apiData.calls
-            .filter(
-              (item) =>
-                item["Caller-Callee-ID-Number"] ===
-                  account.extension.extension ||
-                item["Caller-Caller-ID-Number"] === account.extension.extension
-            )
+            .filter((item) => {
+              // Apply the filter condition if 'applyFilter' is true
+              if (!isCustomerAdmin) {
+                return (
+                  item["Caller-Callee-ID-Number"] === extension ||
+                  item["Caller-Caller-ID-Number"] === extension
+                );
+              }
+              // If applyFilter is false, return all items
+              return true;
+            })
             .reverse()
-            .map((item) => [
-              // item["Caller-Callee-ID-Number"],
-              //   item["Caller-Caller-ID-Number"],
-              // item["Hangup-Cause"] &&
-              // item["variable_start_stamp"] &&
-              // item["variable_billsec"],
-              item,
-              item,
-            ])
+            .map((item) => [item, item])
         ).values(),
       ];
-      setAllCalls(uniqueArray.reverse());
+      console.log(uniqueArray);
 
+      setAllCalls(uniqueArray.reverse());
       setLoading(false);
     }
-  }, [allCall]);
+  }, [allCall, isCustomerAdmin]);
 
   useEffect(() => {
-    console.log("This is account",account && account.account_id);
-    
+    console.log("This is account", account && account.account_id);
+
     setLoading(true);
     if (account && account.account_id) {
       dispatch({
@@ -128,19 +160,19 @@ function Call({
       case "incoming":
         filteredCalls = allCalls.filter(
           (e) =>
-            e["Caller-Callee-ID-Number"] === account.extension.extension &&
+            e["Caller-Callee-ID-Number"] === extension &&
             e["variable_billsec"] > 0
         );
         break;
       case "outgoing":
         filteredCalls = allCalls.filter(
-          (e) => e["Caller-Caller-ID-Number"] === account.extension.extension
+          (e) => e["Caller-Caller-ID-Number"] === extension
         );
         break;
       case "missed":
         filteredCalls = allCalls.filter(
           (e) =>
-            e["Caller-Callee-ID-Number"] === account.extension.extension &&
+            e["Caller-Callee-ID-Number"] === extension &&
             e["variable_billsec"] === 0
         );
         break;
@@ -173,8 +205,7 @@ function Call({
     setClickedCall(filteredCalls[0]);
     if (filteredCalls[0]) {
       setClickedExtension(
-        filteredCalls[0]["Caller-Callee-ID-Number"] ===
-          account.extension.extension
+        filteredCalls[0]["Caller-Callee-ID-Number"] === extension
           ? filteredCalls[0]["Caller-Caller-ID-Number"]
           : filteredCalls[0]["Caller-Callee-ID-Number"]
       );
@@ -182,13 +213,17 @@ function Call({
 
     setCallHistory(
       filteredCalls[0] &&
-        allApiData.filter(
-          (item) =>
-            (item["Caller-Callee-ID-Number"] === account.extension.extension &&
-              item["Caller-Caller-ID-Number"] === clickedExtension) ||
-            (item["Caller-Caller-ID-Number"] === account.extension.extension &&
-              item["Caller-Callee-ID-Number"] === clickedExtension)
-        )
+        allApiData.filter((item) => {
+          if (!isCustomerAdmin) {
+            return (
+              (item["Caller-Callee-ID-Number"] === extension &&
+                item["Caller-Caller-ID-Number"] === clickedExtension) ||
+              (item["Caller-Caller-ID-Number"] === extension &&
+                item["Caller-Callee-ID-Number"] === clickedExtension)
+            );
+          }
+          return true;
+        })
     );
   }, [allCalls, clickStatus, searchQuery]);
 
@@ -206,7 +241,7 @@ function Call({
   const handleCallItemClick = (item) => {
     setClickedCall(item);
     setClickedExtension(
-      item["Caller-Callee-ID-Number"] === account.extension.extension
+      item["Caller-Callee-ID-Number"] === extension
         ? item["Caller-Caller-ID-Number"]
         : item["Caller-Callee-ID-Number"]
     );
@@ -217,12 +252,12 @@ function Call({
       key={item.id}
       onClick={() => handleCallItemClick(item)}
       className={`callListItem ${
-        item["Caller-Callee-ID-Number"] === account.extension.extension &&
+        item["Caller-Callee-ID-Number"] === extension &&
         item["variable_billsec"] > 0
           ? "incoming"
-          : item["Caller-Caller-ID-Number"] === account.extension.extension
+          : item["Caller-Caller-ID-Number"] === extension
           ? "outgoing"
-          : item["Caller-Callee-ID-Number"] === account.extension.extension &&
+          : item["Caller-Callee-ID-Number"] === extension &&
             item["variable_billsec"] === 0
           ? "missed"
           : item["Call-Direction"] === "voicemail"
@@ -235,15 +270,29 @@ function Call({
       }}
     >
       <div className="row justify-content-between">
-        <div className="col-8 ms-4 text-start" style={{ cursor: "pointer" }}>
-          <h4>
-            {item["Caller-Callee-ID-Number"] === account.extension.extension
-              ? item["Caller-Caller-ID-Number"]
-              : item["Caller-Callee-ID-Number"]}
-          </h4>
-          <h5>{item.caller_user ? item.caller_user.username : "USER XYZ"}</h5>
-          <h6>Call, {formatTime(item["variable_billsec"])}</h6>
-        </div>
+        {!isCustomerAdmin ? (
+          <div className="col-8 ms-4 text-start" style={{ cursor: "pointer" }}>
+            <h4>
+              {item["Caller-Callee-ID-Number"] === extension
+                ? item["Caller-Caller-ID-Number"]
+                : item["Caller-Callee-ID-Number"]}
+            </h4>
+            <h5>{item.caller_user ? item.caller_user.username : "USER XYZ"}</h5>
+            <h6>Call, {formatTime(item["variable_billsec"])}</h6>
+          </div>
+        ) : (
+          <div className="col-8 ms-4 text-start" style={{ cursor: "pointer" }}>
+            <h4>
+              {item["Caller-Callee-ID-Number"]}
+              ==<i class="fa-solid fa-angles-right"></i>
+              {item["Caller-Caller-ID-Number"]}
+            </h4>
+            <h6 className="mt-2">
+              Call, {formatTime(item["variable_billsec"])}
+            </h6>
+          </div>
+        )}
+
         <div className="col-3 text-end">
           <h5>
             {new Date(item.variable_start_stamp)
@@ -261,16 +310,20 @@ function Call({
   );
   useEffect(() => {
     if (clickedExtension) {
-      const filteredHistory = allApiData.filter(
-        (item) =>
-          (item["Caller-Callee-ID-Number"] === account.extension.extension &&
-            item["Caller-Caller-ID-Number"] === clickedExtension) ||
-          (item["Caller-Caller-ID-Number"] === account.extension.extension &&
-            item["Caller-Callee-ID-Number"] === clickedExtension)
-      );
+      const filteredHistory = allApiData.filter((item) => {
+        if (!isCustomerAdmin) {
+          return (
+            (item["Caller-Callee-ID-Number"] === extension &&
+              item["Caller-Caller-ID-Number"] === clickedExtension) ||
+            (item["Caller-Caller-ID-Number"] === extension &&
+              item["Caller-Callee-ID-Number"] === clickedExtension)
+          );
+        }
+        return item["Caller-Callee-ID-Number"] === clickedExtension;
+      });
       setCallHistory(filteredHistory);
     }
-  }, [clickedExtension, allApiData, account.extension.extension]);
+  }, [clickedExtension, allApiData, extension]);
 
   const groupCallsByDate = (calls) => {
     return calls.reduce((acc, call) => {
@@ -370,7 +423,7 @@ function Call({
                         marginBottom: "0",
                       }}
                     >
-                      Extension - {account && account.extension.extension}
+                      Extension - {account && extension}
                     </h5>
                   </div>
                   <div className="col-5 d-flex justify-content-end">
@@ -484,13 +537,15 @@ function Call({
                           )}
                         </div>
                       </div> */}
-
+                    {console.log(sortedGroupedCalls)}
                     <div
                       className="callList"
                       onClick={() => setSelectedModule("callDetails")}
                     >
                       {loading &&
-                      (callDetailsRefresh == 0 || callDetailsRefresh == 1) ? (
+                      (callDetailsRefresh == 0 ||
+                        callDetailsRefresh == 1 ||
+                        callDetailsRefresh == 2) ? (
                         <ContentLoader />
                       ) : Object.keys(groupedCalls).length > 0 ? (
                         sortKeys(Object.keys(groupedCalls)).map((date) => (
@@ -533,6 +588,7 @@ function Call({
                       <CallDetails
                         clickedCall={clickedCall}
                         callHistory={callHistory}
+                        isCustomerAdmin={isCustomerAdmin}
                       />
                     )}
               </div>

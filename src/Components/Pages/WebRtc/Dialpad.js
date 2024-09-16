@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";
+import { toast } from "react-toastify";
 
 function Dialpad({ hideDialpad, setSelectedModule }) {
   const account = useSelector((state) => state.account);
@@ -8,7 +9,7 @@ function Dialpad({ hideDialpad, setSelectedModule }) {
   const dispatch = useDispatch();
   const { sessionManager } = useSIPProvider();
   const [destNumber, setDestNumber] = useState("");
-
+  const extension = account?.extension?.extension || "";
   const handleInputChange = (e) => {
     const { value } = e.target;
     const regex = /^[0-9*#]*$/;
@@ -18,6 +19,10 @@ function Dialpad({ hideDialpad, setSelectedModule }) {
   };
 
   async function onSubmit(e) {
+    if (extension == "") {
+      toast.error("No extension assigned to your account");
+      return;
+    }
     if (destNumber.length > 3) {
       hideDialpad(false);
       // e.preventDefault();

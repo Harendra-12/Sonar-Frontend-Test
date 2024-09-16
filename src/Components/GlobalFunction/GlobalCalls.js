@@ -278,6 +278,24 @@ function GlobalCalls() {
   //   }
   // }, [domainRefresh,account]);
 
+  useEffect(() => {
+    const getLoginInfo = async () => {
+      const profile = await generalGetFunction("/user");
+      if (profile.status) {
+        dispatch({
+          type: "SET_ACCOUNT",
+          account: profile.data,
+        });
+
+        localStorage.setItem("account", JSON.stringify(profile.data));
+      } else {
+        navigate("/login");
+      }
+    };
+
+    getLoginInfo();
+  }, []);
+
   return <div></div>;
 }
 

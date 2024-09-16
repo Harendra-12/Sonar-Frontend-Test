@@ -15,6 +15,7 @@ function Navbar() {
   const accountDetails = useSelector((state) => state.accountDetails);
   const tempAccount = useSelector((state) => state.tempAccount);
   const userType = account?.usertype; // "Company"
+  const isCustomerAdmin = account.email == accountDetails.email || false;
   async function logOut() {
     const apiData = await generalGetFunction("/logout");
     localStorage.clear();
@@ -580,7 +581,7 @@ function Navbar() {
                       <div className="itemTitle">Variable</div>
                     </NavLink>
                   </li>
-                  {account?.extension ?
+                  {account?.extension || isCustomerAdmin ? (
                     <li className="dashboard ">
                       <a
                         href="/webrtc"
@@ -592,7 +593,9 @@ function Navbar() {
                         <div className="itemTitle">WebRtc</div>
                       </a>
                     </li>
-                    : ""}
+                  ) : (
+                    ""
+                  )}
                   <li className="dashboard ">
                     <NavLink
                       to="/"

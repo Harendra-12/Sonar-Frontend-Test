@@ -22,7 +22,7 @@ function AllVoicemails() {
   }, [clickedVoiceMail]);
 
   const account = useSelector((state) => state.account);
-  const extension = account.extension.extension || "";
+  const extension = account?.extension?.extension || "";
 
   useEffect(() => {
     setLoading(true);
@@ -515,7 +515,7 @@ function AllVoicemails() {
           </div>
         </section>
       </main>
-      {sessions.length > 0 && Object.keys(sessions).length > 0 ? (
+      {/* {sessions.length > 0 && Object.keys(sessions).length > 0 ? (
         <>
           <section className="activeCallsSidePanel">
             <div className="container">
@@ -534,7 +534,7 @@ function AllVoicemails() {
         </>
       ) : (
         ""
-      )}
+      )} */}
     </>
   );
 }

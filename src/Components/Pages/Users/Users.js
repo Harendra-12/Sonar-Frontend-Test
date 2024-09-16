@@ -227,6 +227,14 @@ const Users = () => {
                       <>
                         {user &&
                           filterUser.map((item, index) => {
+                            const isCustomerAdmin =
+                              account.email === item.email;
+
+                            // Skip rendering the row if isCustomerAdmin is true
+                            if (isCustomerAdmin) {
+                              return null; // Return null to avoid rendering the row
+                            }
+
                             return (
                               <tr key={index}>
                                 <td
@@ -247,15 +255,6 @@ const Users = () => {
                                 >
                                   {item.account_id}
                                 </td>
-                                {/* <td
-                                  onClick={() =>
-                                    navigate(`/users-edit`, {
-                                      state: item,
-                                    })
-                                  }
-                                >
-                                  {item?.domain?.domain_name}
-                                </td> */}
                                 <td
                                   onClick={() =>
                                     navigate(`/users-edit`, {
@@ -320,8 +319,8 @@ const Users = () => {
               pageNumber={(e) => setPageNumber(e)}
               totalPage={user.last_page}
               from={(pageNumber - 1) * user.per_page + 1}
-              to={user.to}
-              total={user.total}
+              to={user.to - 1} // -1 because customeradmin user is removed form the list
+              total={user.total - 1} // -1 because customeradmin user is removed form the list
             />
           ) : (
             ""
