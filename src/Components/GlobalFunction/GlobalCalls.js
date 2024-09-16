@@ -21,6 +21,8 @@ function GlobalCalls() {
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const domainRefresh = useSelector((state) => state.domainRefresh);
   const usersRefresh = useSelector((state) => state.usersRefresh);
+  const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
+  const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
 
   const rolesAndPermissionRefresh = useSelector(
     (state) => state.rolesAndPermissionRefresh
@@ -149,6 +151,42 @@ function GlobalCalls() {
     }
   }, [extensionRefresh]);
 
+  // Getting extension all details
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction(
+        `/extension/all?account=${account?.account_id}`
+      );
+      if (apiData.status) {
+        dispatch({
+          type: "SET_EXTENSIONALL",
+          extensionAll: apiData.data,
+        });
+      }
+    }
+    // getData();
+    if (extensionAllRefresh > 0) {
+      getData();
+    }
+  }, [extensionAllRefresh]);
+
+  // Getting timezone details
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction("/timezones");
+      if (apiData.status) {
+        dispatch({
+          type: "SET_TIMEZONE",
+          timeZone: apiData.data,
+        });
+      }
+    }
+    // getData();
+    if (timeZoneRefresh > 0) {
+      getData();
+    }
+  }, [timeZoneRefresh]);
+
   // Getting ring group details
   useEffect(() => {
     async function getData() {
@@ -212,15 +250,15 @@ function GlobalCalls() {
     async function getData() {
       const apiData = await generalGetFunction("/account-balance");
       if (apiData.status) {
-        console.log("This is balance",apiData);
-        
+        console.log("This is balance", apiData);
+
         dispatch({
           type: "SET_BALANCE",
           balance: apiData.data,
         });
       }
     }
-    getData()
+    getData();
   }, []);
 
   // useEffect(() => {
