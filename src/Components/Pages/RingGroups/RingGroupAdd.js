@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 // import { Link } from 'react-router-dom'
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   backToTop,
   generalGetFunction,
@@ -24,6 +24,7 @@ import {
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import CircularLoader from "../../Loader/CircularLoader";
 import Header from "../../CommonComponents/Header";
+import ActionList from "../../CommonComponents/ActionList";
 
 const RingGroupAdd = () => {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ const RingGroupAdd = () => {
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const allUserArr = useSelector((state) => state.allUser);
   const [ringBack, setRingBack] = useState();
+  const [user, setUser] = useState();
 
   // const [popUp, setPopUp] = useState(true);
 
@@ -215,6 +217,10 @@ const RingGroupAdd = () => {
     setValue("extension", selectedOption.value);
   };
 
+  const actionListValue = (value) => {
+    setValue("timeout_destination", value[0]);
+  };
+
   // Custom styles for react-select
   const customStyles = {
     control: (provided, state) => ({
@@ -358,6 +364,27 @@ const RingGroupAdd = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    async function getData() {
+      const userData = await generalGetFunction("/user/all");
+      if (userData.status) {
+        if (userData.data.data.length === 0) {
+          toast.error("Please create user first");
+        } else {
+          const filterUser = userData.data.data.filter(
+            (item) => item.extension_id !== null
+          );
+          if (filterUser.length > 0) {
+            setUser(filterUser);
+          } else {
+            toast.error("No user found with assign extension");
+          }
+        }
+      }
+    }
+    getData();
+  }, [account.account_id]);
 
   return (
     <main className="mainContent">
@@ -553,7 +580,7 @@ const RingGroupAdd = () => {
                         ) : (
                           ""
                         )}
-                        <div className="position-relative">
+                        {/* <div className="position-relative">
                           <input
                             type="text"
                             name="destination"
@@ -585,11 +612,56 @@ const RingGroupAdd = () => {
                                       </li>
                                     );
                                   })}
+                                <Link
+                                  to="/users-add"
+                                  className="text-center border bg-info-subtle fs-6 fw-bold text-info"
+                                >
+                                  Add User
+                                </Link>
                               </ul>
                             </div>
                           ) : (
                             ""
                           )}
+                        </div> */}
+                        <div className="position-relative">
+                          <select
+                            type="text"
+                            name="destination"
+                            value={item.destination}
+                            onChange={(e) => {
+                              const selectedValue = e.target.value;
+                              if (selectedValue === "addUser") {
+                                navigate("/users-add");
+                              } else {
+                                handleDestinationChange(index, e);
+                              }
+                            }}
+                            className="formItem"
+                            placeholder="Destination"
+                          >
+                            <option value={""} disabled>
+                              Choose agent
+                            </option>
+                            {user &&
+                              user.map((item) => {
+                                return (
+                                  <option
+                                    value={item.extension?.extension}
+                                    key={item.id}
+                                  >
+                                    {item.username}({item.extension?.extension})
+                                  </option>
+                                );
+                              })}
+                            <option
+                              value="addUser"
+                              className="text-center border bg-info-subtle fs-6 fw-bold text-info"
+                              style={{ cursor: "pointer" }}
+                            >
+                              Add User
+                            </option>
+                          </select>
                         </div>
                       </div>
                       <div className="col-2 pe-2">
@@ -734,7 +806,7 @@ const RingGroupAdd = () => {
                 </button>
               </div>
               <div />
-              <div className="formRow col-xl-3">
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Timeout Destination</label>
                 </div>
@@ -766,6 +838,14 @@ const RingGroupAdd = () => {
                     Select the timeout destination for this ring group.
                   </label>
                 </div>
+              </div> */}
+              <div className="formRow col-xl-3">
+                <ActionList
+                  title="Timeout Destination"
+                  label="Select the timeout destination for this ring group."
+                  getDropdownValue={actionListValue}
+                  value={watch().timeout_destination}
+                />
               </div>
               <div className="formRow col-xl-3">
                 <div className="formLabel">

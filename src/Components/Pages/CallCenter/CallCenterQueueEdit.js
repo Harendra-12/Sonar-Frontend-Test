@@ -27,9 +27,11 @@ import Header from "../../CommonComponents/Header";
 function CallCenterQueueEdit() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const location = useLocation();
+  // const location = useLocation();
 
-  const { state: locationState } = location;
+  // const { state: locationState } = location;
+  const queryParams = new URLSearchParams(useLocation().search);
+  const value = queryParams.get("id");
   const [loading, setLoading] = useState(false);
   const [ringGroup, setRingGroup] = useState();
   const [user, setUser] = useState();
@@ -74,60 +76,100 @@ function CallCenterQueueEdit() {
   } = useForm();
 
   useEffect(() => {
-    async function getData() {
-      const userData = await generalGetFunction("/user/all");
+    if (account && account.id) {
+      async function getData() {
+        setLoading(true);
+        const userData = await generalGetFunction("/user/all");
+        const callCenterData = await generalGetFunction(
+          `call-center-queue/${value}`
+        );
 
-      if (userData.status) {
-        if (userData.data.data.length === 0) {
-          toast.error("Please create user first");
-        } else {
-          const filterUser = userData.data.data.filter(
-            (item) => item.extension_id !== null
-          );
-
-          if (filterUser.length > 0) {
-            setUser(filterUser);
+        if (userData.status) {
+          setLoading(false);
+          if (userData.data.data.length === 0) {
+            toast.error("Please create user first");
           } else {
-            toast.error("No user found with assign extension");
+            const filterUser = userData.data.data.filter(
+              (item) => item.extension_id !== null
+            );
+
+            if (filterUser.length > 0) {
+              setUser(filterUser);
+            } else {
+              toast.error("No user found with assign extension");
+            }
           }
         }
-      }
-      // if (apidata.status) {
-      //   setRingGroup(apidata.data);
-      // }
-      // if (extensionData.status) {
-      //   setExtension(extensionData.data);
-      //   setLoading(false);
-      // }
-    }
-    getData();
-    if (locationState) {
-      const { agents, recording_enabled } = locationState;
-      setPrevAgents(agents);
-      setAgent(
-        agents.map((item, index) => {
-          return {
-            id: item.id,
-            name: item.agent_name,
-            level: item.tier_level,
-            position: item.tier_position,
-            type: item.type,
-            // status: item.status,
-            password: item?.password,
-            contact: item.contact,
+        // if (apidata.status) {
+        //   setRingGroup(apidata.data);
+        // }
+        // if (extensionData.status) {
+        //   setExtension(extensionData.data);
+        //   setLoading(false);
+        // }
+
+        if (callCenterData.status) {
+          setLoading(false);
+          const { agents, recording_enabled } = callCenterData.data;
+          setPrevAgents(agents);
+          setAgent(
+            agents.map((item, index) => {
+              return {
+                id: item.id,
+                name: item.agent_name,
+                level: item.tier_level,
+                position: item.tier_position,
+                type: item.type,
+                // status: item.status,
+                password: item?.password,
+                contact: item.contact,
+              };
+            })
+          );
+
+          const destructuredData = {
+            ...callCenterData.data,
+            ...{
+              recording_enabled: recording_enabled === 1 ? "true" : "false",
+            },
           };
-        })
-      );
 
-      const destructuredData = {
-        ...locationState,
-        ...{ recording_enabled: recording_enabled === 1 ? "true" : "false" },
-      };
-
-      reset(destructuredData);
+          reset(destructuredData);
+        } else {
+          navigate(-1);
+        }
+      }
+      getData();
     } else {
-      navigate(-1);
+      setLoading(false);
     }
+    // if (locationState) {
+    //   const { agents, recording_enabled } = locationState;
+    //   setPrevAgents(agents);
+    //   setAgent(
+    //     agents.map((item, index) => {
+    //       return {
+    //         id: item.id,
+    //         name: item.agent_name,
+    //         level: item.tier_level,
+    //         position: item.tier_position,
+    //         type: item.type,
+    //         // status: item.status,
+    //         password: item?.password,
+    //         contact: item.contact,
+    //       };
+    //     })
+    //   );
+
+    //   const destructuredData = {
+    //     ...locationState,
+    //     ...{ recording_enabled: recording_enabled === 1 ? "true" : "false" },
+    //   };
+
+    //   reset(destructuredData);
+    // } else {
+    //   navigate(-1);
+    // }
   }, []);
 
   const actionListValue = (value) => {
@@ -358,7 +400,8 @@ function CallCenterQueueEdit() {
     setLoading(true);
     delete payload.record_template;
     const apiData = await generalPutFunction(
-      `/call-center-queue/update/${locationState.id}`,
+      // `/call-center-queue/update/${locationState.id}`,
+      `/call-center-queue/update/${value}`,
       payload
     );
     if (apiData.status) {
@@ -776,6 +819,29 @@ function CallCenterQueueEdit() {
                   <br />
                 </div>
               </div>
+              <div className="formRow  col-xl-3">
+                <div className="d-flex flex-wrap align-items-center">
+                  <div className="formLabel">
+                    <label htmlFor="selectFormRow">Enabled</label>
+                  </div>
+                  <div className="col-12">
+                    <div className="my-auto position-relative mx-1">
+                      <label className="switch">
+                        <input
+                          type="checkbox"
+                          checked={watch().status}
+                          {...register("status")}
+                          id="showAllCheck"
+                        />
+                        <span className="slider round" />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <label htmlFor="data" className="formItemDesc">
+                  Set the status of this call center queue.
+                </label>
+              </div>
               <div className="formRow col-xl-12 row">
                 {agent &&
                   agent.map((item, index) => {
@@ -801,16 +867,22 @@ function CallCenterQueueEdit() {
                               name="name"
                               value={item.name}
                               onChange={(e) => {
-                                handleAgentChange(e, index);
-                                user.map((item) => {
-                                  if (item.id == e.target.value) {
-                                    const newAgent = [...agent];
-                                    newAgent[index][
-                                      "contact"
-                                    ] = `user/${item.extension.extension}@${item.domain.domain_name}`;
-                                    setAgent(agent);
-                                  }
-                                });
+                                const selectedValue = e.target.value;
+                                // Redirect to the Add User page
+                                if (selectedValue === "addUser") {
+                                  navigate("/users-add");
+                                } else {
+                                  handleAgentChange(e, index);
+                                  user.map((item) => {
+                                    if (item.id == e.target.value) {
+                                      const newAgent = [...agent];
+                                      newAgent[index][
+                                        "contact"
+                                      ] = `user/${item.extension.extension}@${item.domain.domain_name}`;
+                                      setAgent(agent);
+                                    }
+                                  });
+                                }
                               }}
                               className="formItem"
                               placeholder="Destination"
@@ -822,10 +894,18 @@ function CallCenterQueueEdit() {
                                 user.map((item) => {
                                   return (
                                     <option value={item.id}>
-                                      {item.name}({item.extension?.extension})
+                                      {item.username}(
+                                      {item.extension?.extension})
                                     </option>
                                   );
                                 })}
+                              <option
+                                value="addUser"
+                                className="text-center border bg-info-subtle fs-6 fw-bold text-info"
+                                style={{ cursor: "pointer" }}
+                              >
+                                Add User
+                              </option>
                             </select>
                           </div>
                         </div>

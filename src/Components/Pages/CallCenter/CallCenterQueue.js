@@ -185,54 +185,54 @@ function CallCenterQueue() {
                               <tr>
                                 <td
                                   onClick={() =>
-                                    navigate("/cal-center-queue-edit", {
-                                      state: item,
-                                    })
+                                    navigate(
+                                      `/cal-center-queue-edit?id=${item.id}`
+                                    )
                                   }
                                 >
                                   {item.queue_name}
                                 </td>
                                 <td
                                   onClick={() =>
-                                    navigate("/cal-center-queue-edit", {
-                                      state: item,
-                                    })
+                                    navigate(
+                                      `/cal-center-queue-edit?id=${item.id}`
+                                    )
                                   }
                                 >
                                   {item.extension}
                                 </td>
                                 <td
                                   onClick={() =>
-                                    navigate("/cal-center-queue-edit", {
-                                      state: item,
-                                    })
+                                    navigate(
+                                      `/cal-center-queue-edit?id=${item.id}`
+                                    )
                                   }
                                 >
                                   {item.strategy}
                                 </td>
                                 <td
                                   onClick={() =>
-                                    navigate("/cal-center-queue-edit", {
-                                      state: item,
-                                    })
+                                    navigate(
+                                      `/cal-center-queue-edit?id=${item.id}`
+                                    )
                                   }
                                 >
                                   {item.queue_timeout_action}
                                 </td>
                                 <td
                                   onClick={() =>
-                                    navigate("/cal-center-queue-edit", {
-                                      state: item,
-                                    })
+                                    navigate(
+                                      `/cal-center-queue-edit?id=${item.id}`
+                                    )
                                   }
                                 >
                                   {item.queue_cid_prefix}
                                 </td>
                                 <td
                                   onClick={() =>
-                                    navigate("/cal-center-queue-edit", {
-                                      state: item,
-                                    })
+                                    navigate(
+                                      `/cal-center-queue-edit?id=${item.id}`
+                                    )
                                   }
                                 >
                                   {item.agents.length}
