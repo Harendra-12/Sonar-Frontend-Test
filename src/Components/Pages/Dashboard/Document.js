@@ -809,24 +809,24 @@ function Document({
                     ""
                   )}
                   {imagePreview && (
-                    <>
+                    <div className="position-relative">
                       <img
                         src={imagePreview}
                         alt="Preview"
-                        style={{ maxWidth: "270px", maxHeight: "400px" }}
+                        style={{ width: "100%", maxHeight: "400px" }}
                       />
                       <br />
                       <div
-                        className="d-flex justify-content-end mt-2 align-items-center"
-                        style={{ cursor: "pointer" }}
+                        className="tableButton"
+                        style={{ cursor: "pointer", position: 'absolute', right: '10px', top: '10px' }}
                         onClick={() => setEnlargeImage(true)}
                       >
-                        <span style={{ fontSize: 12 }} className="me-1">
+                        {/* <span style={{ fontSize: 12 }} className="me-1">
                           View
-                        </span>
+                        </span> */}
                         <i class="fa-solid fa-expand"></i>
                       </div>
-                    </>
+                    </div>
                   )}
                   <div className="mt-2">
                     <button className="panelButton m-0" onClick={handleSubmit}>
@@ -894,24 +894,24 @@ function Document({
                     ""
                   )}
                   {imagePreview && (
-                    <>
+                    <div className="position-relative">
                       <img
                         src={imagePreview}
                         alt="Preview"
-                        style={{ maxWidth: "270px", maxHeight: "400px" }}
+                        style={{ width: "100%", maxHeight: "400px" }}
                       />
                       <br />
                       <div
-                        className="d-flex justify-content-end mt-2 align-items-center"
-                        style={{ cursor: "pointer" }}
+                      className="tableButton"
+                        style={{ cursor: "pointer", position: 'absolute', right: '10px', top: '10px' }}
                         onClick={() => setEnlargeImage(true)}
                       >
-                        <span style={{ fontSize: 12 }} className="me-1">
+                        {/* <span style={{ fontSize: 14, fontWeight: 600 }} className="me-1">
                           View
-                        </span>
+                        </span> */}
                         <i class="fa-solid fa-expand"></i>
                       </div>
-                    </>
+                    </div>
                   )}
                   <div className="mt-2">
                     <button
