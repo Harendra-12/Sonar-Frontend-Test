@@ -3,7 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";
 import { toast } from "react-toastify";
 
-function CallDetails({ clickedCall, callHistory, isCustomerAdmin }) {
+function CallDetails({
+  clickedCall,
+  callHistory,
+  isCustomerAdmin,
+  setCallNow,
+  callNow,
+  setSelectedModule,
+}) {
   const [callDetails, setCallDetails] = useState();
   const dispatch = useDispatch();
   const globalSession = useSelector((state) => state.sessions);
@@ -49,8 +56,16 @@ function CallDetails({ clickedCall, callHistory, isCustomerAdmin }) {
       }` || "0 sec"
     );
   };
+
+  useEffect(() => {
+    if (callNow) {
+      onCall();
+    }
+  }, [callNow]);
+
   async function onCall(e) {
-    e.preventDefault();
+    // e.preventDefault();
+    setCallNow(false);
     if (extension == "") {
       toast.error("No extension assigned to your account");
       return;
@@ -59,6 +74,7 @@ function CallDetails({ clickedCall, callHistory, isCustomerAdmin }) {
       `sip:${Number(callDetails?.["Caller-Callee-ID-Number"])}@192.168.2.225`,
       {}
     );
+    setSelectedModule("onGoingCall");
 
     dispatch({
       type: "SET_SESSIONS",
@@ -103,7 +119,11 @@ function CallDetails({ clickedCall, callHistory, isCustomerAdmin }) {
           <button className="appPanelButton" effect="ripple">
             <i className="fa-light fa-message-dots" />
           </button>
-          <button className="appPanelButton" effect="ripple" onClick={onCall}>
+          <button
+            className="appPanelButton"
+            effect="ripple"
+            onClick={() => onCall()}
+          >
             <i className="fa-light fa-phone" />
           </button>
           <button className="appPanelButton" effect="ripple">

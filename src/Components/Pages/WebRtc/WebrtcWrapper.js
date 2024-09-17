@@ -21,6 +21,7 @@ const WebrtcWrapper = () => {
   const [selectedModule, setSelectedModule] = useState("");
   const [activePage, setactivePage] = useState("call");
   const isCustomerAdmin = account?.email == accountDetails?.email;
+  const extension = account?.extension?.extension || "";
 
   const useWebSocketErrorHandling = (options) => {
     useEffect(() => {
@@ -59,7 +60,7 @@ const WebrtcWrapper = () => {
     <>
       <SideNavbarApp setactivePage={setactivePage} />
       <SIPProvider options={options}>
-        <div>{!isCustomerAdmin && <SipRegister />}</div>
+        <div>{extension && <SipRegister />}</div>
         {activePage == "call" && (
           <Call
             setHangupRefresh={setHangupRefresh}
