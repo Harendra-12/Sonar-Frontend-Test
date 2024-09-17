@@ -7,7 +7,7 @@ import {
   generalGetFunction,
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
@@ -287,7 +287,7 @@ function CallCenterQueueAdd() {
         }),
       },
     };
-    // delete payload.record_template;
+    delete payload.record_template;
     const apiData = await generalPostFunction(
       "/call-center-queue/store",
       payload
@@ -683,6 +683,29 @@ function CallCenterQueueAdd() {
                   <br />
                 </div>
               </div>
+              <div className="formRow  col-xl-3">
+                <div className="d-flex flex-wrap align-items-center">
+                  <div className="formLabel">
+                    <label htmlFor="selectFormRow">Enabled</label>
+                  </div>
+                  <div className="col-12">
+                    <div className="my-auto position-relative mx-1">
+                      <label className="switch">
+                        <input
+                          type="checkbox"
+                          checked={watch().status}
+                          {...register("status")}
+                          id="showAllCheck"
+                        />
+                        <span className="slider round" />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <label htmlFor="data" className="formItemDesc">
+                  Set the status of this call center queue.
+                </label>
+              </div>
               <div className="formRow col-xl-12 row">
                 {agent &&
                   agent.map((item, index) => {
@@ -705,16 +728,22 @@ function CallCenterQueueAdd() {
                               name="name"
                               value={item.name}
                               onChange={(e) => {
-                                handleAgentChange(e, index);
-                                user.map((item) => {
-                                  if (item.id == e.target.value) {
-                                    const newAgent = [...agent];
-                                    newAgent[index][
-                                      "contact"
-                                    ] = `user/${item.extension.extension}@${item.domain.domain_name}`;
-                                    setAgent(agent);
-                                  }
-                                });
+                                const selectedValue = e.target.value;
+                                // Redirect to the Add User page
+                                if (selectedValue === "addUser") {
+                                  navigate("/users-add");
+                                } else {
+                                  handleAgentChange(e, index);
+                                  user.forEach((item) => {
+                                    if (item.id == selectedValue) {
+                                      const newAgent = [...agent];
+                                      newAgent[index][
+                                        "contact"
+                                      ] = `user/${item.extension.extension}@${item.domain.domain_name}`;
+                                      setAgent(agent);
+                                    }
+                                  });
+                                }
                               }}
                               className="formItem"
                               placeholder="Destination"
@@ -726,10 +755,18 @@ function CallCenterQueueAdd() {
                                 user.map((item) => {
                                   return (
                                     <option value={item.id} key={item.id}>
-                                      {item.name}({item.extension?.extension})
+                                      {item.username}(
+                                      {item.extension?.extension})
                                     </option>
                                   );
                                 })}
+                              <option
+                                value="addUser"
+                                className="text-center border bg-info-subtle fs-6 fw-bold text-info"
+                                style={{ cursor: "pointer" }}
+                              >
+                                Add User
+                              </option>
                             </select>
                           </div>
                         </div>

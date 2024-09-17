@@ -34,7 +34,7 @@ function Call({
   const [allCalls, setAllCalls] = useState([]);
   const extension = account?.extension?.extension || "";
   // const [hangupRefresh, setHangupRefresh] = useState(0);
-
+  const [callNow, setCallNow] = useState(false);
   const [previewCalls, setPreviewCalls] = useState([]);
   const [addContactToggle, setAddContactToggle] = useState(false);
   const [clickedCall, setClickedCall] = useState(null);
@@ -202,7 +202,9 @@ function Call({
       });
     }
     setPreviewCalls(filteredCalls);
-    setClickedCall(filteredCalls[0]);
+    if (clickedCall == null) {
+      setClickedCall(filteredCalls[0]);
+    }
     if (filteredCalls[0]) {
       setClickedExtension(
         filteredCalls[0]["Caller-Callee-ID-Number"] === extension
@@ -247,10 +249,15 @@ function Call({
     );
   };
 
+  const handleDoubleClickCall = (item) => {
+    setCallNow(true);
+  };
+
   const renderCallItem = (item) => (
     <div
       key={item.id}
       onClick={() => handleCallItemClick(item)}
+      onDoubleClick={() => handleDoubleClickCall(item)}
       className={`callListItem ${
         item["Caller-Callee-ID-Number"] === extension &&
         item["variable_billsec"] > 0
@@ -537,7 +544,7 @@ function Call({
                           )}
                         </div>
                       </div> */}
-                    {console.log(sortedGroupedCalls)}
+
                     <div
                       className="callList"
                       onClick={() => setSelectedModule("callDetails")}
@@ -589,6 +596,9 @@ function Call({
                         clickedCall={clickedCall}
                         callHistory={callHistory}
                         isCustomerAdmin={isCustomerAdmin}
+                        setCallNow={setCallNow}
+                        callNow={callNow}
+                        setSelectedModule={setSelectedModule}
                       />
                     )}
               </div>
