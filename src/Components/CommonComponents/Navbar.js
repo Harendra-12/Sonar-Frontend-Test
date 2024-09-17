@@ -15,7 +15,7 @@ function Navbar() {
   const accountDetails = useSelector((state) => state.accountDetails);
   const tempAccount = useSelector((state) => state.tempAccount);
   const userType = account?.usertype; // "Company"
-  const isCustomerAdmin = account.email == accountDetails.email || false;
+  const isCustomerAdmin = account?.email == accountDetails?.email || false;
   async function logOut() {
     const apiData = await generalGetFunction("/logout");
     localStorage.clear();
