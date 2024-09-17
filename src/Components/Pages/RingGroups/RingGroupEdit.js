@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 // import { Link } from 'react-router-dom'
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   backToTop,
   generalDeleteFunction,
@@ -25,6 +25,7 @@ import {
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
+import ActionList from "../../CommonComponents/ActionList";
 
 const RingGroupEdit = () => {
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ const RingGroupEdit = () => {
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const allUserArr = useSelector((state) => state.allUser);
   const [ringBack, setRingBack] = useState();
+  const [user, setUser] = useState();
   const {
     register,
     watch,
@@ -77,6 +79,26 @@ const RingGroupEdit = () => {
       setSuccessMessage(""); // Clear success message after showing it
     }
   }, [toastAfterSaveCounter]);
+  useEffect(() => {
+    async function getData() {
+      const userData = await generalGetFunction("/user/all");
+      if (userData.status) {
+        if (userData.data.data.length === 0) {
+          toast.error("Please create user first");
+        } else {
+          const filterUser = userData.data.data.filter(
+            (item) => item.extension_id !== null
+          );
+          if (filterUser.length > 0) {
+            setUser(filterUser);
+          } else {
+            toast.error("No user found with assign extension");
+          }
+        }
+      }
+    }
+    getData();
+  }, [account.account_id]);
   useEffect(() => {
     if (account && account.id) {
       setLoading(true);
@@ -202,6 +224,9 @@ const RingGroupEdit = () => {
 
   const handleExtensionChange = (selectedOption) => {
     setValue("extension", selectedOption.value);
+  };
+  const actionListValue = (value) => {
+    setValue("timeout_destination", value[0]);
   };
 
   // Custom styles for react-select
@@ -627,7 +652,7 @@ const RingGroupEdit = () => {
                         ) : (
                           ""
                         )}
-                        <div className="position-relative">
+                        {/* <div className="position-relative">
                           <input
                             type="text"
                             name="destination"
@@ -659,11 +684,56 @@ const RingGroupEdit = () => {
                                       </li>
                                     );
                                   })}
+                                <Link
+                                  to="/users-add"
+                                  className="text-center border bg-info-subtle fs-6 fw-bold text-info"
+                                >
+                                  Add User
+                                </Link>
                               </ul>
                             </div>
                           ) : (
                             ""
                           )}
+                        </div> */}
+                        <div className="position-relative">
+                          <select
+                            type="text"
+                            name="destination"
+                            value={item.destination}
+                            onChange={(e) => {
+                              const selectedValue = e.target.value;
+                              if (selectedValue === "addUser") {
+                                navigate("/users-add");
+                              } else {
+                                handleDestinationChange(index, e);
+                              }
+                            }}
+                            className="formItem"
+                            placeholder="Destination"
+                          >
+                            <option value={""} disabled>
+                              Choose agent
+                            </option>
+                            {user &&
+                              user.map((item) => {
+                                return (
+                                  <option
+                                    value={item.extension?.extension}
+                                    key={item.id}
+                                  >
+                                    {item.username}({item.extension?.extension})
+                                  </option>
+                                );
+                              })}
+                            <option
+                              value="addUser"
+                              className="text-center border bg-info-subtle fs-6 fw-bold text-info"
+                              style={{ cursor: "pointer" }}
+                            >
+                              Add User
+                            </option>
+                          </select>
                         </div>
                       </div>
                       <div className="col-2 pe-2">
@@ -807,7 +877,7 @@ const RingGroupEdit = () => {
                 </button>
               </div>
               <div />
-              <div className="formRow col-xl-3">
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Timeout Destination</label>
                 </div>
@@ -836,6 +906,14 @@ const RingGroupEdit = () => {
                     Select the timeout destination for this ring group.
                   </label>
                 </div>
+              </div> */}
+              <div className="formRow col-xl-3">
+                <ActionList
+                  title="Timeout Destination"
+                  label="Select the timeout destination for this ring group."
+                  getDropdownValue={actionListValue}
+                  value={watch().timeout_destination}
+                />
               </div>
               <div className="formRow col-xl-3">
                 <div className="formLabel">
