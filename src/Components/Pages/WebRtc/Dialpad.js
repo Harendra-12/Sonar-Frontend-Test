@@ -23,6 +23,10 @@ function Dialpad({ hideDialpad, setSelectedModule }) {
       toast.error("No extension assigned to your account");
       return;
     }
+    if (destNumber == extension) {
+      toast.error("You cannot call yourself");
+      return;
+    }
     if (destNumber.length > 3) {
       hideDialpad(false);
       // e.preventDefault();
@@ -84,6 +88,11 @@ function Dialpad({ hideDialpad, setSelectedModule }) {
                   value={destNumber}
                   // onChange={(e) => setDestNumber(e.target.value)}
                   onChange={handleInputChange}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      onSubmit();
+                    }
+                  }}
                 />
               </div>
               <div className="dialerWrap mt-2">

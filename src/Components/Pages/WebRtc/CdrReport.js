@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Header from "../../CommonComponents/Header";
-import { backToTop, generalGetFunction } from "../../GlobalFunction/globalFunction";
+import {
+  backToTop,
+  generalGetFunction,
+} from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
@@ -14,11 +17,13 @@ function CdrReport() {
   const [pageNumber, setPageNumber] = useState(1);
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
-  const [all,setAll]=useState(true)
-  const [filterData,setFilterData]=useState([])
-  const [extensions,setExtensions]=useState(false)
-  const [callCenter,setCallCenter]=useState(false)
-  const [ringGroup,setRingGroup]=useState(false)
+  const [all, setAll] = useState(true);
+  const [filterData, setFilterData] = useState([]);
+  const [extensions, setExtensions] = useState(false);
+  const [callCenter, setCallCenter] = useState(false);
+  const [ringGroup, setRingGroup] = useState(false);
+  const [currentPlaying, setCurrentPlaying] = useState(null); // For tracking the currently playing audio
+
   useEffect(() => {
     setLoading(true);
     async function getData() {
@@ -39,74 +44,115 @@ function CdrReport() {
     }
     getData();
   }, [account, navigate, pageNumber]);
-  useEffect(()=>{
-    if(cdr){
-      if(all){
-        setFilterData(cdr.data)
-      }else if(extensions && callCenter && ringGroup){
-        setFilterData(cdr.data.filter(item=>item["application_state"]==="extension" || item["application_state"]==="callcenter" || item["application_state"]==="ringgroup"))
-    }else if(extensions && callCenter){
-        setFilterData(cdr.data.filter(item=>item["application_state"]==="extension" || item["application_state"]==="callcenter"))
-    }else if(extensions && ringGroup){
-        setFilterData(cdr.data.filter(item=>item["application_state"]==="extension" || item["application_state"]==="ringgroup"))
-    }else if(callCenter && ringGroup){
-        setFilterData(cdr.data.filter(item=>item["application_state"]==="callcenter" || item["application_state"]==="ringgroup"))
-    } else if(extensions){
-        setFilterData(cdr.data.filter(item=>item["application_state"]==="extension"))
-    }else if(callCenter){
-        setFilterData(cdr.data.filter(item=>item["application_state"]==="callcenter"))
-    }else if(ringGroup){
-        setFilterData(cdr.data.filter(item=>item["application_state"]==="ringgroup"))
+
+  useEffect(() => {
+    if (cdr) {
+      if (all) {
+        setFilterData(cdr.data);
+      } else if (extensions && callCenter && ringGroup) {
+        setFilterData(
+          cdr.data.filter(
+            (item) =>
+              item["application_state"] === "extension" ||
+              item["application_state"] === "callcenter" ||
+              item["application_state"] === "ringgroup"
+          )
+        );
+      } else if (extensions && callCenter) {
+        setFilterData(
+          cdr.data.filter(
+            (item) =>
+              item["application_state"] === "extension" ||
+              item["application_state"] === "callcenter"
+          )
+        );
+      } else if (extensions && ringGroup) {
+        setFilterData(
+          cdr.data.filter(
+            (item) =>
+              item["application_state"] === "extension" ||
+              item["application_state"] === "ringgroup"
+          )
+        );
+      } else if (callCenter && ringGroup) {
+        setFilterData(
+          cdr.data.filter(
+            (item) =>
+              item["application_state"] === "callcenter" ||
+              item["application_state"] === "ringgroup"
+          )
+        );
+      } else if (extensions) {
+        setFilterData(
+          cdr.data.filter((item) => item["application_state"] === "extension")
+        );
+      } else if (callCenter) {
+        setFilterData(
+          cdr.data.filter((item) => item["application_state"] === "callcenter")
+        );
+      } else if (ringGroup) {
+        setFilterData(
+          cdr.data.filter((item) => item["application_state"] === "ringgroup")
+        );
+      }
     }
-  }},[all,extensions,callCenter,ringGroup,cdr])
+  }, [all, extensions, callCenter, ringGroup, cdr]);
+
   console.log("This is cdr report", filterData);
+
   return (
     <main className="mainContent">
       <section id="phonePage">
         <div className="container-fluid px-0">
           <Header title="CDR Reports" />
           <div className="d-flex flex-wrap px-xl-3 py-2" id="detailsHeader">
-            {/* <div className="col-xl-4 my-auto">
-              <div className="position-relative searchBox">
-                <input
-                  type="search"
-                  name="Search"
-                  id="headerSearch"
-                  placeholder="Search"
-                />
-              </div>
-            </div> */}
             <div className="col-xl-8 pt-3 pt-xl-0 ms-auto">
               <div className="d-flex justify-content-end">
                 <Link
                   to="#"
-                  onClick={()=>{setAll(!all);backToTop()}}
+                  onClick={() => {
+                    setAll(!all);
+                    backToTop();
+                  }}
                   effect="ripple"
-                  className={all?"toggleButton active":"toggleButton"}
+                  className={all ? "toggleButton active" : "toggleButton"}
                 >
                   All
                 </Link>
                 <Link
                   to="#"
-                  onClick={()=>{setExtensions(!extensions);backToTop()}}
+                  onClick={() => {
+                    setExtensions(!extensions);
+                    backToTop();
+                  }}
                   effect="ripple"
-                  className={extensions?"toggleButton active":"toggleButton"}
+                  className={
+                    extensions ? "toggleButton active" : "toggleButton"
+                  }
                 >
                   Extension
                 </Link>
                 <Link
                   to="#"
-                  onClick={()=>{setCallCenter(!callCenter);backToTop()}}
+                  onClick={() => {
+                    setCallCenter(!callCenter);
+                    backToTop();
+                  }}
                   effect="ripple"
-                  className={callCenter?"toggleButton active":"toggleButton"}
+                  className={
+                    callCenter ? "toggleButton active" : "toggleButton"
+                  }
                 >
                   Call Center
                 </Link>
                 <Link
                   to="#"
-                  onClick={()=>{setRingGroup(!ringGroup);backToTop()}}
+                  onClick={() => {
+                    setRingGroup(!ringGroup);
+                    backToTop();
+                  }}
                   effect="ripple"
-                  className={ringGroup?"toggleButton active":"toggleButton"}
+                  className={ringGroup ? "toggleButton active" : "toggleButton"}
                 >
                   Ring Group
                 </Link>
@@ -132,8 +178,6 @@ function CdrReport() {
                       <th>Recording</th>
                       <th>Duration</th>
                       <th>Hangup Cause</th>
-                      {/* <th>Orig. IP</th>
-                      <th>Dest. IP</th> */}
                       <th>Charge</th>
                     </tr>
                   </thead>
@@ -166,32 +210,29 @@ function CdrReport() {
                                   {item["recording_path"] && (
                                     <MusicPlayer
                                       audioSrc={item["recording_path"]}
+                                      isPlaying={
+                                        currentPlaying ===
+                                        item["recording_path"]
+                                      }
+                                      onPlay={() =>
+                                        setCurrentPlaying(
+                                          item["recording_path"]
+                                        )
+                                      }
+                                      onStop={() => setCurrentPlaying(null)}
                                     />
                                   )}
                                 </td>
-
                                 <td>{item["variable_billsec"]}</td>
                                 <td>
                                   {item["variable_DIALSTATUS"] === null
                                     ? "NOT CONNECTED"
                                     : item["variable_DIALSTATUS"] ===
                                       "NO_USER_RESPONSE"
-                                      ? "BUSY"
-                                      : item["variable_DIALSTATUS"]}
+                                    ? "BUSY"
+                                    : item["variable_DIALSTATUS"]}
                                 </td>
-                                {/* <td>{item["Caller-Network-Addr"]}</td>
-                                <td>
-                                  {
-                                    item["Other-Leg-Network-Addr"]
-                                      ?.split("@")?.[1]
-                                      ?.split(":")?.[0]
-                                  }
-                                </td> */}
-                                <td>
-                                  {
-                                    item["call_cost"]
-                                  }
-                                </td>
+                                <td>{item["call_cost"]}</td>
                               </tr>
                             );
                           })}
