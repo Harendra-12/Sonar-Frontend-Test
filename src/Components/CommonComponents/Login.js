@@ -7,7 +7,7 @@ import {
   login,
 } from "../GlobalFunction/globalFunction";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
@@ -237,14 +237,7 @@ export function LoginComponent() {
               type: "SET_ACCOUNT",
               account: profile.data,
             });
-            dispatch({
-              type: "SET_BILLINGLISTREFRESH",
-              billingListRefresh: 1,
-            });
-            dispatch({
-              type: "SET_CARDLISTREFRESH",
-              cardListRefresh: 1,
-            });
+
             localStorage.setItem("account", JSON.stringify(profile.data));
             const accountData = await generalGetFunction(
               `/account/${profile.data.account_id}`
@@ -259,6 +252,14 @@ export function LoginComponent() {
                 JSON.stringify(accountData.data)
               );
               if (Number(accountData.data.company_status) < 6) {
+                dispatch({
+                  type: "SET_BILLINGLISTREFRESH",
+                  billingListRefresh: 1,
+                });
+                dispatch({
+                  type: "SET_CARDLISTREFRESH",
+                  cardListRefresh: 1,
+                });
                 dispatch({
                   type: "SET_TEMPACCOUNT",
                   tempAccount: accountData.data,

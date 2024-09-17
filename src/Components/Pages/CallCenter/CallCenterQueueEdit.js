@@ -10,7 +10,6 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
 import ActionList from "../../CommonComponents/ActionList";
 import Select from "react-select";
@@ -412,6 +411,7 @@ function CallCenterQueueEdit() {
         type: "SET_CALLCENTERREFRESH",
         callCenterRefresh: callCenterRefresh + 1,
       });
+      navigate("/cal-center-queue");
     } else {
       setLoading(false);
       if (apiData.error) {

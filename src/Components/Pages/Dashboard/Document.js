@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import {
   fileUploadFunction,
   generalGetFunction,
@@ -29,6 +28,7 @@ function Document({
   const [file, setFile] = useState();
   const [uploadError, setUploadError] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
+  const [enlargeImage, setEnlargeImage] = useState(false);
   // const [getDataRefresh, setgetDataRefresh] = useState(0);
 
   const [docId, setDocId] = useState([]);
@@ -69,6 +69,7 @@ function Document({
             item2.document_id === item.document_id && item2.status === "3"
         );
       });
+
     setUploadDocument(newUploadDocument);
 
     const newApprovedDocument =
@@ -188,6 +189,39 @@ function Document({
 
     return allowedExtensions.includes(fileExtension);
   }
+  const checkDocumentStatus = (documents) => {
+    const documentMap = {};
+
+    // First get the documents with max id for each document_id
+    documents.forEach((doc) => {
+      const docId = doc.document_id;
+      if (!documentMap[docId] || doc.id > documentMap[docId].id) {
+        documentMap[docId] = doc;
+      }
+    });
+
+    // Convert the document map back to an array
+    const resultArray = Object.values(documentMap);
+
+    // Check conditions based on status
+    const containsStatus1 = resultArray.some((doc) => doc.status === "1"); //Approved
+    const containsStatus2 = resultArray.some((doc) => doc.status === "2"); //Rejected
+    const containsStatus3 = resultArray.some((doc) => doc.status === "3"); //Uploaded
+    const allStatus1 = resultArray.every((doc) => doc.status === "1"); //approved
+
+    if (containsStatus2) {
+      return null;
+    } else if (allStatus1 && documentList.length == resultArray.length) {
+      return "All documents approved";
+    } else if (
+      (containsStatus1 || containsStatus3) &&
+      documentList.length == resultArray.length
+    ) {
+      return "Document under verification, wait for admin to approve";
+    }
+
+    return null;
+  };
 
   function handleChange(e) {
     const { name } = e.target;
@@ -263,6 +297,16 @@ function Document({
   return (
     <div className="d-flex flex-wrap documentPending">
       <div className="col-xl-8">
+        {checkDocumentStatus(account.details) != null && (
+          <div className="statusMessage">
+            <div className="mx-2">
+              <h5>
+                <i className="fa-solid fa-triangle-exclamation text-success me-1"></i>{" "}
+                {checkDocumentStatus(account.details)}
+              </h5>
+            </div>
+          </div>
+        )}
         {rejectDocument.length !== 0 &&
         rejectDocument.length !== uploadApprove.length ? (
           <>
@@ -306,10 +350,10 @@ function Document({
                               </div>
                             ) : uploadApprove[key] ? (
                               <div
-                                onClick={() => {
-                                  setReUploadPopUp(true);
-                                  setReUploadId(item.document_id);
-                                }}
+                                // onClick={() => {
+                                //   setReUploadPopUp(true);
+                                //   setReUploadId(item.document_id);
+                                // }}
                                 style={{ cursor: "pointer" }}
                                 className="pe-5 clearButton fw-bold float-end col-auto"
                               >
@@ -765,11 +809,24 @@ function Document({
                     ""
                   )}
                   {imagePreview && (
-                    <img
-                      src={imagePreview}
-                      alt="Preview"
-                      style={{ maxWidth: "400px", maxHeight: "400px" }}
-                    />
+                    <div className="position-relative">
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        style={{ width: "100%", maxHeight: "400px" }}
+                      />
+                      <br />
+                      <div
+                        className="tableButton"
+                        style={{ cursor: "pointer", position: 'absolute', right: '10px', top: '10px' }}
+                        onClick={() => setEnlargeImage(true)}
+                      >
+                        {/* <span style={{ fontSize: 12 }} className="me-1">
+                          View
+                        </span> */}
+                        <i class="fa-solid fa-expand"></i>
+                      </div>
+                    </div>
                   )}
                   <div className="mt-2">
                     <button className="panelButton m-0" onClick={handleSubmit}>
@@ -837,11 +894,24 @@ function Document({
                     ""
                   )}
                   {imagePreview && (
-                    <img
-                      src={imagePreview}
-                      alt="Preview"
-                      style={{ maxWidth: "400px", maxHeight: "400px" }}
-                    />
+                    <div className="position-relative">
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        style={{ width: "100%", maxHeight: "400px" }}
+                      />
+                      <br />
+                      <div
+                      className="tableButton"
+                        style={{ cursor: "pointer", position: 'absolute', right: '10px', top: '10px' }}
+                        onClick={() => setEnlargeImage(true)}
+                      >
+                        {/* <span style={{ fontSize: 14, fontWeight: 600 }} className="me-1">
+                          View
+                        </span> */}
+                        <i class="fa-solid fa-expand"></i>
+                      </div>
+                    </div>
                   )}
                   <div className="mt-2">
                     <button
@@ -866,6 +936,21 @@ function Document({
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+      {enlargeImage ? (
+        <div className="popup" onClick={() => setEnlargeImage(false)}>
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <img
+                src={imagePreview}
+                alt="Preview"
+                style={{ maxWidth: "800px", maxHeight: "800px" }}
+              />
             </div>
           </div>
         </div>

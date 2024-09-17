@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import * as cardValidator from "card-validator";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
 
 function NewCardPaymentMethod({
@@ -268,7 +267,7 @@ function NewCardPaymentMethod({
             setLoading(false);
             toast.error(apiData.error);
           }
-        }else{
+        } else {
           const parsedData = {
             type: "card",
             account_id: account.account_id,
@@ -321,7 +320,6 @@ function NewCardPaymentMethod({
             console.log("Old address error", apiData);
           }
         }
-       
       }
     } else {
       if (selectedBillId === undefined && newBilling === false) {
@@ -354,16 +352,16 @@ function NewCardPaymentMethod({
             ),
             cvc: cardDetails.cvv,
             rate: Number(selectedDid[0].price) * selectedDid.length,
-          accountId: selectedDid[0].vendorAccountId,
-          dids: selectedDid.map((item) => {
-            return {
-              dids: item.id,
-            };
-          }),
-          vendorId: selectedDid[0].vendorId,
-          didQty: selectedDid.length,
-          companyId: account.account_id,
-          didType: "random",
+            accountId: selectedDid[0].vendorAccountId,
+            dids: selectedDid.map((item) => {
+              return {
+                dids: item.id,
+              };
+            }),
+            vendorId: selectedDid[0].vendorId,
+            didQty: selectedDid.length,
+            companyId: account.account_id,
+            didType: "random",
           };
 
           const apiData = await generalPostFunction("/purchaseTfn", parsedData);

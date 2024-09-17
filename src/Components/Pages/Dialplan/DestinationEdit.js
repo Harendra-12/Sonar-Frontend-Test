@@ -7,7 +7,6 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
 import ActionList from "../../CommonComponents/ActionList";
 import Header from "../../CommonComponents/Header";

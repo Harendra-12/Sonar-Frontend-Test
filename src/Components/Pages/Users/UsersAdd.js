@@ -7,7 +7,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import CircularLoader from "../../Loader/CircularLoader";
 import { useForm } from "react-hook-form";
 import {
@@ -203,6 +203,7 @@ const UsersAdd = () => {
         type: "SET_EXTENSIONALLREFRESH",
         extensionAllRefresh: extensionAllRefresh + 1,
       });
+      navigate("/users");
     } else {
       setLoading(false);
       const errorMessage = Object.keys(addUser.errors);

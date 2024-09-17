@@ -5,7 +5,7 @@ import "react-credit-cards-2/dist/es/styles-compiled.css";
 import NewCardPaymentMethod from "./NewCardPaymentMethod";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import CircularLoader from "../../Loader/CircularLoader";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
@@ -79,7 +79,7 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
               dids: item.id,
             };
           }),
-        }
+        };
 
         const apiData = await generalPostFunction("/purchaseTfn", parsedData);
         if (apiData.status) {
@@ -107,7 +107,10 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
           cvc: cvv,
           amount: amount,
         };
-        const apiData = await generalPostFunction("/wallet-recharge", parsedData);
+        const apiData = await generalPostFunction(
+          "/wallet-recharge",
+          parsedData
+        );
         if (apiData.status) {
           setLoading(false);
           dispatch({
@@ -126,7 +129,6 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
           toast.error(apiData.error);
         }
       }
-
     }
   }
   return (
@@ -196,8 +198,9 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                         return (
                           <div className="col-xl-12 mb-2" key={key}>
                             <div
-                              className={`savedCardWrapper ${item.id === selectedCardId ? "active" : ""
-                                }`}
+                              className={`savedCardWrapper ${
+                                item.id === selectedCardId ? "active" : ""
+                              }`}
                             >
                               <div className="imgWrapper">
                                 <div className="card-logo-container">
@@ -281,8 +284,9 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                         >
                           <div className="accordion-item">
                             <h2
-                              className={`accordion-header addressDrawer ${item.id === selectedBillId ? "active" : ""
-                                }`}
+                              className={`accordion-header addressDrawer ${
+                                item.id === selectedBillId ? "active" : ""
+                              }`}
                             >
                               <div
                                 className="d-flex flex-wrap align-items-center"

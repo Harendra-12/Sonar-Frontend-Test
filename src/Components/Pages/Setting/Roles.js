@@ -6,7 +6,7 @@ import {
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import Header from "../../CommonComponents/Header";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useDispatch, useSelector } from "react-redux";
@@ -435,8 +435,12 @@ function Roles() {
                               </span>
                             </div>
                             <div className="col-2 text-end">
-                              <button className="btn btn-success py-1 px-2" onClick={handlePermissionSave}>
-                              <i class="fa-duotone fa-check-double me-2"></i> Save
+                              <button
+                                className="btn btn-success py-1 px-2"
+                                onClick={handlePermissionSave}
+                              >
+                                <i class="fa-duotone fa-check-double me-2"></i>{" "}
+                                Save
                               </button>
                             </div>
                           </div>

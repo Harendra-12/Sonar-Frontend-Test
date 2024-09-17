@@ -7,7 +7,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import CircularLoader from "../../Loader/CircularLoader";
 import { useForm } from "react-hook-form";
 import {
@@ -177,9 +177,8 @@ const UsersEdit = () => {
         type: "SET_ALLUSERREFRESH",
         allUserRefresh: allUserRefresh + 1,
       });
-      setTimeout(() => {
-        navigate(-1); // Navigate back to the previous page
-      }, 3000);
+
+      navigate("/users"); // Navigate back to the previous page
     } else {
       setLoading(false);
       const errorMessage = Object.keys(addUser.error);

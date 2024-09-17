@@ -6,7 +6,6 @@ import "react-credit-cards-2/dist/es/styles-compiled.css";
 import { useDispatch, useSelector } from "react-redux";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 function BillingCardSave({ closePopup }) {
   const dispatch = useDispatch();

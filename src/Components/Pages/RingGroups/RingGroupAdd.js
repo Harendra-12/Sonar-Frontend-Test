@@ -8,7 +8,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import Select from "react-select";
 import { useForm, Controller } from "react-hook-form";
 import {
@@ -335,36 +335,13 @@ const RingGroupAdd = () => {
           // prompt: "",
           status: "inactive",
         },
-        // {
-        //   id: 2,
-        //   destination: "",
-        //   delay: 0,
-        //   timeOut: "30",
-        //   prompt: "",
-        //   status: "inactive",
-        // },
-        // {
-        //   id: 3,
-        //   destination: "",
-        //   delay: 0,
-        //   timeOut: "30",
-        //   prompt: "",
-        //   status: "inactive",
-        // },
-        // {
-        //   id: 4,
-        //   destination: "",
-        //   delay: 0,
-        //   timeOut: "30",
-        //   prompt: "",
-        //   status: "inactive",
-        // },
       ]);
       toast.success(apiData.message);
       dispatch({
         type: "SET_RINGGROUPREFRESH",
         ringGroupRefresh: ringGroupRefresh + 1,
       });
+      navigate("/ring-groups");
     } else {
       setLoading(false);
       const errorMessage = Object.keys(apiData.errors);

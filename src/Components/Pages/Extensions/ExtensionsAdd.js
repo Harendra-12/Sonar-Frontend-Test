@@ -8,7 +8,6 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
@@ -114,7 +113,7 @@ const ExtensionsAdd = () => {
                   effect="ripple"
                   className="panelButton"
                   onClick={handleFormSubmit}
-                // onClick={handleSubmit}
+                  // onClick={handleSubmit}
                 >
                   Save
                 </button>

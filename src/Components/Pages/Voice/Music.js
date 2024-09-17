@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import { useNavigate } from "react-router-dom";
 import {
   backToTop,

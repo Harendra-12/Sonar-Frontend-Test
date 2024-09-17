@@ -5,7 +5,6 @@ import {
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useDispatch, useSelector } from "react-redux";
 import RechargeWalletPopup from "../Billing/RechargeWalletPopup";
@@ -269,8 +268,9 @@ function GetDid() {
                       <div className="col-12">
                         <select
                           name="searchType"
-                          className={`formItem ${errors.searchType ? "error" : ""
-                            }`}
+                          className={`formItem ${
+                            errors.searchType ? "error" : ""
+                          }`}
                           {...register("searchType", { ...requiredValidator })}
                         >
                           <option value="tollfree">Toll free</option>
@@ -288,8 +288,9 @@ function GetDid() {
                         <input
                           type="number"
                           name="quantity"
-                          className={`formItem ${errors.quantity ? "error" : ""
-                            }`}
+                          className={`formItem ${
+                            errors.quantity ? "error" : ""
+                          }`}
                           {...register("quantity", {
                             ...requiredValidator,
                             ...lengthValidator(1, 10),

@@ -7,7 +7,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import { useLocation } from "react-router-dom";
 import CircularLoader from "../../Loader/CircularLoader";
 import Header from "../../CommonComponents/Header";
@@ -302,6 +302,7 @@ const ExtensionsEdit = () => {
       if (apiData.status) {
         toast.success(apiData.message);
         await generalGetFunction(`/user/all`);
+        navigate("/extensions");
       } else {
         if (apiData.message === "Already assigned to a different user") {
           setPopUp(true);

@@ -9,7 +9,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import CircularLoader from "../../Loader/CircularLoader";
 import Select from "react-select";
 import { useForm, Controller } from "react-hook-form";
@@ -430,13 +430,14 @@ const RingGroupEdit = () => {
     const apiData = await generalPutFunction(`/ringgroup/${value}`, payLoad);
     if (apiData.status) {
       setLoading(false);
-      // toast.success(apiData.message);
+      toast.success(apiData.message);
       setGetAllDataRefresh(getAllDataRefresh + 1);
       setSuccessMessage(apiData.message);
       dispatch({
         type: "SET_RINGGROUPREFRESH",
         ringGroupRefresh: ringGroupRefresh + 1,
       });
+      navigate("/ring-groups");
     } else {
       setLoading(false);
       const errorMessage = Object.keys(apiData.errors);

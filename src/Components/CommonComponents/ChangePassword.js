@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { generalPostFunction } from "../GlobalFunction/globalFunction";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import { useNavigate } from "react-router-dom";
 import CircularLoader from "../Loader/CircularLoader";
 import Header from "./Header";

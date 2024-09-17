@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { generalPutFunction } from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../../Loader/CircularLoader";
 
@@ -28,7 +27,7 @@ function EditVendor() {
     }
   }, [locationState, navigate]);
   async function handleSubmit() {
-    setLoading(true)
+    setLoading(true);
     if (name === "") {
       toast.error("Please enter a name");
     } else if (userName === "") {
