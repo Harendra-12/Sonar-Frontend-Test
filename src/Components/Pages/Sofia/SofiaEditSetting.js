@@ -6,10 +6,10 @@ import {
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import Header from '../../CommonComponents/Header';
+
+import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Header from "../../CommonComponents/Header";
 
 function SofiaEditSetting() {
   const navigate = useNavigate();
@@ -93,7 +93,7 @@ function SofiaEditSetting() {
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row justify-content-center">
-          <Header title="Edit Sofia Setting" />
+            <Header title="Edit Sofia Setting" />
             <div className="col-12" id="subPageHeader">
               <div className="row px-xl-3">
                 <div className="col-xl-9 my-auto">

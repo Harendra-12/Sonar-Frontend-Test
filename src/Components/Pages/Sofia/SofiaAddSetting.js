@@ -4,10 +4,10 @@ import {
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import Header from '../../CommonComponents/Header';
+
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Header from "../../CommonComponents/Header";
 
 function SofiaAddSetting() {
   const navigate = useNavigate();
@@ -72,7 +72,7 @@ function SofiaAddSetting() {
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row justify-content-center">
-          <Header title="Add new Sofia Setting" />
+            <Header title="Add new Sofia Setting" />
             <div className="col-12" id="subPageHeader">
               <div className="row px-xl-3">
                 <div className="col-xl-9 my-auto">

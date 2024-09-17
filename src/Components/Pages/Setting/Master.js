@@ -8,7 +8,7 @@ import {
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import Header from "../../CommonComponents/Header";
 
 function Master() {

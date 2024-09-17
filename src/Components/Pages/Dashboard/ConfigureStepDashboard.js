@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 function ConfigureStepDashboard({ account2 }) {
   console.log("This is account", account2);
   const account = useSelector((state) => state.account);
+  const accountDetails = useSelector((state) => state.accountDetails);
   const [configure, setConfigure] = useState(false);
   const [npx, setNpx] = useState("");
   const [didSearch, setDidSearch] = useState(true);
@@ -25,7 +26,7 @@ function ConfigureStepDashboard({ account2 }) {
   const [configuredPurchase, setConfiguredPurchase] = useState(false);
   const [configuredExtension, setConfiguredExtension] = useState(false);
   const [configuredRole, setConfiguredRole] = useState(false);
-
+  const availableUsers = accountDetails?.extensions?.length || 0;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -171,6 +172,7 @@ function ConfigureStepDashboard({ account2 }) {
                         name="input"
                         class="input"
                         onChange={(e) => setNpx(e.target.value)}
+                        maxLength={3}
                         value={npx}
                       />
                     </div>
@@ -267,7 +269,7 @@ function ConfigureStepDashboard({ account2 }) {
                         )}
                       </div>
                       <div className="configProgressText">
-                        <p>Purching Did</p>
+                        <p>Purchasing Did</p>
                       </div>
                     </li>
                   )}
@@ -284,7 +286,7 @@ function ConfigureStepDashboard({ account2 }) {
                         )}
                       </div>
                       <div className="configProgressText">
-                        <p>Configuring Extension</p>
+                        <p>Configuring Extensions ({availableUsers})</p>
                       </div>
                     </li>
                   )}

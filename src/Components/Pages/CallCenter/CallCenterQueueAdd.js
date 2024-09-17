@@ -10,7 +10,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useForm, Controller } from "react-hook-form";
 import {
@@ -301,6 +300,7 @@ function CallCenterQueueAdd() {
         type: "SET_CALLCENTERREFRESH",
         callCenterRefresh: callCenterRefresh + 1,
       });
+      navigate("/cal-center-queue");
     } else {
       setLoading(false);
       if (apiData.error) {
@@ -688,9 +688,7 @@ function CallCenterQueueAdd() {
                   agent.map((item, index) => {
                     return (
                       <div className="d-flex flex-wrap" key={index}>
-                        <div
-                          className="formLabel col-auto pe-2 m-0 mt-auto"
-                        >
+                        <div className="formLabel col-auto pe-2 m-0 mt-auto">
                           <label>{index + 1}.</label>
                         </div>
                         <div className="col-2 pe-1">
@@ -866,7 +864,7 @@ function CallCenterQueueAdd() {
                           </div>
                         )}
                         {index === agent.length - 1 &&
-                          index !== (user && user.length - 1) ? (
+                        index !== (user && user.length - 1) ? (
                           <div
                             onClick={addNewAgent}
                             className="col-auto h-100 d-flex align-items-center"

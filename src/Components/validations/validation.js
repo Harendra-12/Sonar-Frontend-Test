@@ -40,34 +40,32 @@ export function domainValidator() {
 }
 
 export const nameValidator = {
-  // Check if name is not empty and has a minimum length
   minLength: {
-    value: 2, // Minimum length for the name
+    value: 2,
     message: "Name must be at least 2 characters long",
   },
   maxLength: {
-    value: 50, // Maximum length for the name
+    value: 50,
     message: "Name must be no more than 50 characters long",
   },
   pattern: {
-    value: /^[A-Za-z\s]+$/, // Allows only letters and spaces
-    message: "Name must only contain letters and spaces",
+    value: /^[A-Za-z\s\-]+$/, // Allows letters, spaces, and hyphens
+    message: "Name must only contain letters, spaces, and hyphens",
   },
 };
 
 export const nameNumberValidator = {
-  // Check if name is not empty and has a minimum length
   minLength: {
-    value: 2, // Minimum length for the name
+    value: 2,
     message: "Name must be at least 2 characters long",
   },
   maxLength: {
-    value: 50, // Maximum length for the name
+    value: 50,
     message: "Name must be no more than 50 characters long",
   },
   pattern: {
-    value: /^[A-Za-z0-9\s]+$/, // Allows letters, numbers, and spaces
-    message: "Name must only contain letters, numbers, and spaces",
+    value: /^[A-Za-z0-9\s\-]+$/, // Allows letters, numbers, spaces, and hyphens
+    message: "Name must only contain letters, numbers, spaces, and hyphens",
   },
 };
 
@@ -85,18 +83,19 @@ export const usagesValidator = {
 };
 
 export const noSpecialCharactersValidator = {
-  // Check if the input contains only letters, numbers, and spaces
+  // Check if the input contains only letters, numbers, spaces, and hyphens
   pattern: {
-    value: /^[A-Za-z0-9\s]+$/,
+    value: /^[A-Za-z0-9\s\-]+$/, // Allows letters, numbers, spaces, and hyphens
     message:
-      "Input must only contain letters, numbers, and spaces, without any special characters",
+      "Input must only contain letters, numbers, spaces, and hyphens, without any other special characters",
   },
 };
+
 export const noSpecialCharNumberValidator = {
-  // Check if the input contains only letters, numbers, and spaces
+  // Check if the input contains only numbers, spaces, and hyphens
   pattern: {
-    value: /^[0-9\s]+$/,
-    message: "Input must only contain numbers.",
+    value: /^[0-9\s\-]+$/, // Allows numbers, spaces, and hyphens
+    message: "Input must only contain numbers, spaces, and hyphens.",
   },
 };
 
@@ -108,7 +107,7 @@ export const minValidator = (min) => {
     // },
     validate: (value) => {
       // console.log('Validating value:', Number(value), 'with minimum:', min);
-     return Number(value) >= min || `Value must be at least ${min}`
+      return Number(value) >= min || `Value must be at least ${min}`;
     },
     // min: min,
     // message: `Value must be at least ${min}`,

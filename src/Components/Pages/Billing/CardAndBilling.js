@@ -12,7 +12,7 @@ import {
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import CircularLoader from "../../Loader/CircularLoader";
 
 function CardAndBilling() {
