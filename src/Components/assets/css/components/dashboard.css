@@ -27,6 +27,16 @@
     margin-top: 5px;
     text-align: left;
     position: relative;
+    transition: 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.mainContent .itemWrapperb:hover {
+    border: 1px solid var(--ui-accent);
+}
+
+.mainContent .itemWrapperb:hover .heading {
+    color: var(--ui-accent);
 }
 
 .mainContent .title {

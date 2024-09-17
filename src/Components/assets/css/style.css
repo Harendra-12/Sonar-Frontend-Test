@@ -43,6 +43,9 @@
 /* Responsive CSS */
 @import url('./common/responsive.css');
 
+/* Themes */
+@import url('./common/darkTheme.css');
+
 
 :root {
     /* --bg-color: #e7f8ff; */
@@ -67,6 +70,7 @@
     /* Highlight, Notification & Alert Color */
     --color-text: #fff;
     /* Contrast Text Color */
+    --border-color: #1196ba63;
 
     /* Light Mode */
     --color4: #abababa6;

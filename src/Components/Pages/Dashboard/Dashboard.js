@@ -739,7 +739,7 @@ const Dashboard = () => {
                         registerUser.length,
                         extensionList,
                         Number(accountDetails?.package?.number_of_user) -
-                          extensionList,
+                        extensionList,
                       ]}
                       centerTitle={`${extensionList}/${Number(
                         accountDetails?.package?.number_of_user
@@ -761,7 +761,7 @@ const Dashboard = () => {
                         loginUser.length,
                         userList,
                         Number(accountDetails?.package?.number_of_user) -
-                          userList,
+                        userList,
                       ]}
                       centerTitle={`${userList}/${(
                         accountDetails?.package?.number_of_user
@@ -796,9 +796,9 @@ const Dashboard = () => {
                         ((Number(accountDetails?.package?.number_of_user) -
                           extensionList) *
                           100) /
-                          Number(accountDetails?.package?.number_of_user),
+                        Number(accountDetails?.package?.number_of_user),
                         (extensionList * 100) /
-                          Number(accountDetails?.package?.number_of_user),
+                        Number(accountDetails?.package?.number_of_user),
                       ]}
                       centerTitle={`${extensionList}/${accountDetails?.package?.number_of_user}`}
                       centerDesc="Total Extensions"

@@ -41,7 +41,7 @@ function Navbar() {
                     <Link to="/temporary-dashboard" onClick={backToTop}>
                       <div className="imgWrapper">
                         <img
-                          src={require("../assets/images/logo.webp")}
+                          src={require("../assets/images/logo_login.png")}
                           alt="img"
                         />
                       </div>
@@ -64,7 +64,7 @@ function Navbar() {
                     <Link to="/dashboard" onClick={backToTop}>
                       <div className="imgWrapper">
                         <img
-                          src={require("../assets/images/logo.webp")}
+                          src={require("../assets/images/logo_login.png")}
                           alt="img"
                         />
                       </div>

@@ -20,7 +20,7 @@
 }
 
 .masterList ul li {
-    border-bottom: 1px solid #1196ba63;
+    border-bottom: 1px solid var(--border-color);
     /* width: 150px; */
     margin-bottom: 10px;
     display: flex;

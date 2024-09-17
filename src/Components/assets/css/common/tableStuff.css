@@ -24,7 +24,7 @@ table tbody tr {
 }
 
 table tbody tr:not(:last-child) {
-    border-bottom: 1px solid #1196ba63;
+    border-bottom: 1px solid var(--border-color);
 }
 
 table tbody tr td {

@@ -1,0 +1,33 @@
+:root {
+    --bg-color: #f0f2f5 !important;
+    --nav-color: linear-gradient(195deg, #000000, #191919) !important;
+    --button-dark: linear-gradient(195deg, #ec407a, #d81b60) !important;
+    --ui-accent: #ec407a !important;
+    --ui-icon: #ec407a !important;
+    --ui-blue: #439fdd;
+    --border-color: #ec407a65 !important;
+}
+
+#sidenNav .sidenavItems a.active {
+    background: var(--button-dark) !important;
+}
+
+#sidenNav .sidenavItems a.active i {
+    color: #fff;
+}
+
+.tableButton {
+    background-color: var(--ui-blue);
+}
+
+.tabButton.active {
+    background-color: #ec407a20;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #ec407a15;
+}
+
+.toggleButton.active {
+    border: 1px solid #ec407a;
+}
