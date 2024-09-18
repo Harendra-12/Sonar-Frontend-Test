@@ -58,8 +58,8 @@ const WebrtcWrapper = () => {
   useWebSocketErrorHandling(options);
   return (
     <>
-      <SideNavbarApp setactivePage={setactivePage} />
       <SIPProvider options={options}>
+        <SideNavbarApp setactivePage={setactivePage} />
         <div>{extension && <SipRegister />}</div>
         {activePage == "call" && (
           <Call

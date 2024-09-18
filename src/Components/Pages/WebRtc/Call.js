@@ -215,17 +215,17 @@ function Call({
 
     setCallHistory(
       filteredCalls[0] &&
-      allApiData.filter((item) => {
-        if (!isCustomerAdmin) {
-          return (
-            (item["Caller-Callee-ID-Number"] === extension &&
-              item["Caller-Caller-ID-Number"] === clickedExtension) ||
-            (item["Caller-Caller-ID-Number"] === extension &&
-              item["Caller-Callee-ID-Number"] === clickedExtension)
-          );
-        }
-        return true;
-      })
+        allApiData.filter((item) => {
+          if (!isCustomerAdmin) {
+            return (
+              (item["Caller-Callee-ID-Number"] === extension &&
+                item["Caller-Caller-ID-Number"] === clickedExtension) ||
+              (item["Caller-Caller-ID-Number"] === extension &&
+                item["Caller-Callee-ID-Number"] === clickedExtension)
+            );
+          }
+          return true;
+        })
     );
   }, [allCalls, clickStatus, searchQuery]);
 
@@ -234,7 +234,8 @@ function Call({
     const min = Math.floor((duration / 60) % 60);
     const hour = Math.floor(duration / 3600);
     return (
-      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""}${sec ? sec + " sec" : ""
+      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""}${
+        sec ? sec + " sec" : ""
       }` || "0 sec"
     );
   };
@@ -257,18 +258,19 @@ function Call({
       key={item.id}
       onClick={() => handleCallItemClick(item)}
       onDoubleClick={() => handleDoubleClickCall(item)}
-      className={`callListItem ${item["Caller-Callee-ID-Number"] === extension &&
+      className={`callListItem ${
+        item["Caller-Callee-ID-Number"] === extension &&
         item["variable_billsec"] > 0
-        ? "incoming"
-        : item["Caller-Caller-ID-Number"] === extension
+          ? "incoming"
+          : item["Caller-Caller-ID-Number"] === extension
           ? "outgoing"
           : item["Caller-Callee-ID-Number"] === extension &&
             item["variable_billsec"] === 0
-            ? "missed"
-            : item["Call-Direction"] === "voicemail"
-              ? "voicemail"
-              : ""
-        } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
+          ? "missed"
+          : item["Call-Direction"] === "voicemail"
+          ? "voicemail"
+          : ""
+      } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
     >
       <div className="row justify-content-between">
         {!isCustomerAdmin ? (
@@ -408,7 +410,7 @@ function Call({
             <div className="row">
               <div
                 className="col-12 col-xl-6 allCallHistory"
-              // style={{ height: "100%" }}
+                // style={{ height: "100%" }}
               >
                 <div className="col-12 webRtcHeading">
                   <div className="col-2">
@@ -544,9 +546,9 @@ function Call({
                       onClick={() => setSelectedModule("callDetails")}
                     >
                       {loading &&
-                        (callDetailsRefresh == 0 ||
-                          callDetailsRefresh == 1 ||
-                          callDetailsRefresh == 2) ? (
+                      (callDetailsRefresh == 0 ||
+                        callDetailsRefresh == 1 ||
+                        callDetailsRefresh == 2) ? (
                         <ContentLoader />
                       ) : Object.keys(groupedCalls).length > 0 ? (
                         sortKeys(Object.keys(groupedCalls)).map((date) => (
@@ -576,25 +578,25 @@ function Call({
               >
                 {selectedModule == "onGoingCall"
                   ? callProgress && (
-                    <OngoingCall
-                      key={callProgressId}
-                      id={callProgressId}
-                      destination={callProgressDestination}
-                      setHangupRefresh={setHangupRefresh}
-                      hangupRefresh={hangupRefresh}
-                      setSelectedModule={setSelectedModule}
-                    />
-                  )
+                      <OngoingCall
+                        key={callProgressId}
+                        id={callProgressId}
+                        destination={callProgressDestination}
+                        setHangupRefresh={setHangupRefresh}
+                        hangupRefresh={hangupRefresh}
+                        setSelectedModule={setSelectedModule}
+                      />
+                    )
                   : clickedCall && (
-                    <CallDetails
-                      clickedCall={clickedCall}
-                      callHistory={callHistory}
-                      isCustomerAdmin={isCustomerAdmin}
-                      setCallNow={setCallNow}
-                      callNow={callNow}
-                      setSelectedModule={setSelectedModule}
-                    />
-                  )}
+                      <CallDetails
+                        clickedCall={clickedCall}
+                        callHistory={callHistory}
+                        isCustomerAdmin={isCustomerAdmin}
+                        setCallNow={setCallNow}
+                        callNow={callNow}
+                        setSelectedModule={setSelectedModule}
+                      />
+                    )}
               </div>
             </div>
           </div>

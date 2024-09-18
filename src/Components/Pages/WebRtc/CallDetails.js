@@ -70,6 +70,10 @@ function CallDetails({
       toast.error("No extension assigned to your account");
       return;
     }
+    if (callDetails?.["Caller-Callee-ID-Number"] === extension) {
+      toast.error("You can't call yourself");
+      return;
+    }
     const apiData = await sessionManager?.call(
       `sip:${Number(callDetails?.["Caller-Callee-ID-Number"])}@192.168.2.225`,
       {}
@@ -108,8 +112,11 @@ function CallDetails({
           <i className="fa-light fa-user fs-3" />
         </div>
         <h4>
-          {callDetails && callDetails?.["Caller-Callee-ID-Number"] === extension
-            ? callDetails?.["Caller-Caller-ID-Number"]
+          {!isCustomerAdmin
+            ? callDetails &&
+              callDetails?.["Caller-Callee-ID-Number"] === extension
+              ? callDetails?.["Caller-Caller-ID-Number"]
+              : callDetails?.["Caller-Callee-ID-Number"]
             : callDetails?.["Caller-Callee-ID-Number"]}
         </h4>
         <h5>

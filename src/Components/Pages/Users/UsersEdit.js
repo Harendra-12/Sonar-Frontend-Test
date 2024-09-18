@@ -110,7 +110,7 @@ const UsersEdit = () => {
               ...{
                 firstName: firstName,
                 lastName: lastName,
-                role_id: role_id,
+                role_id: `${role_id}`,
               },
             };
 
@@ -132,8 +132,8 @@ const UsersEdit = () => {
         navigate("/");
       }
     }
-  }, [account, navigate, value]);
-
+  }, [account, navigate]);
+  console.log(watch());
   const handleFormSubmit = handleSubmit(async (data) => {
     const {
       firstName,
@@ -202,6 +202,8 @@ const UsersEdit = () => {
     return result;
   };
 
+  console.log(defaultPermission);
+
   // Handel permission check box click
   // const handleCheckboxChange = (id) => {
   //   if (selectedPermission.includes(id)) {
@@ -214,6 +216,7 @@ const UsersEdit = () => {
     defaultPermission,
     account.permissions
   );
+  console.log(filteredPermission);
 
   const [parentChecked, setParentChecked] = useState({});
 
@@ -226,8 +229,8 @@ const UsersEdit = () => {
       );
     });
     setParentChecked(initialParentChecked);
-  }, [selectedPermission]);
-
+  }, [selectedPermission, defaultPermission]);
+  console.log(selectedPermission);
   // Handle permission check box click
   const handleCheckboxChange = (id) => {
     const newSelectedPermission = selectedPermission.includes(id)
@@ -245,6 +248,7 @@ const UsersEdit = () => {
     });
     setParentChecked(updatedParentChecked);
   };
+  console.log(parentChecked);
 
   // Handle parent checkbox change
   const handleParentCheckboxChange = (item) => {
@@ -263,6 +267,7 @@ const UsersEdit = () => {
     setSelectedPermission(newSelectedPermission);
     setParentChecked({ ...parentChecked, [item]: newParentChecked });
   };
+  console.log(filteredPermission);
   return (
     <>
       <style>
@@ -449,10 +454,11 @@ const UsersEdit = () => {
                     <label htmlFor="selectFormRow">Role Type</label>
                   </div>
                   <div className="col-12">
+                    {/* {console.log(watch())} */}
                     <select
                       className="formItem"
                       name=""
-                      defaultValue={watch().role_id}
+                      value={watch().role_id}
                       {...register("role_id", { ...requiredValidator })}
                       onChange={(e) => {
                         setSelectedRole(

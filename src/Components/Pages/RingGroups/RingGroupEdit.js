@@ -764,7 +764,7 @@ const RingGroupEdit = () => {
                             <option value={""} disabled>
                               Choose agent
                             </option>
-                            {user &&
+                            {/* {user &&
                               user.map((item) => {
                                 return (
                                   <option
@@ -774,7 +774,32 @@ const RingGroupEdit = () => {
                                     {item.username}({item.extension?.extension})
                                   </option>
                                 );
-                              })}
+                              })} */}
+                            {user &&
+                              user
+                                .filter((item1) => {
+                                  return (
+                                    item1.extension.extension ==
+                                      destination[index]?.destination ||
+                                    !destination.some(
+                                      (destinationItem, destinationIndex) =>
+                                        destinationItem.destination ==
+                                          item1.extension.extension &&
+                                        destinationIndex != index
+                                    )
+                                  );
+                                })
+                                .map((item) => {
+                                  return (
+                                    <option
+                                      value={item.extension?.extension}
+                                      key={item.id}
+                                    >
+                                      {item.username}(
+                                      {item.extension?.extension})
+                                    </option>
+                                  );
+                                })}
                             <option
                               value="addUser"
                               className="text-center border bg-info-subtle fs-6 fw-bold text-info"
