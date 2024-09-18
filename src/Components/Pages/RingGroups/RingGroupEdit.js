@@ -49,6 +49,8 @@ const RingGroupEdit = () => {
   const allUserArr = useSelector((state) => state.allUser);
   const [ringBack, setRingBack] = useState();
   const [user, setUser] = useState();
+  const extension = useSelector((state) => state.extension);
+  const extensionRefresh = useSelector((state) => state.extensionRefresh);
   const {
     register,
     watch,
@@ -80,43 +82,48 @@ const RingGroupEdit = () => {
     }
   }, [toastAfterSaveCounter]);
   useEffect(() => {
-    async function getData() {
-      const userData = await generalGetFunction("/user/all");
-      if (userData.status) {
-        if (userData.data.data.length === 0) {
-          toast.error("Please create user first");
+    // async function getData() {
+    // const userData = await generalGetFunction("/user/all");
+    if (allUserRefresh > 0) {
+      if (allUserArr.data.length === 0) {
+        toast.error("Please create user first");
+      } else {
+        const filterUser = allUserArr.data.filter(
+          (item) => item.extension_id !== null
+        );
+        if (filterUser.length > 0) {
+          setUser(filterUser);
         } else {
-          const filterUser = userData.data.data.filter(
-            (item) => item.extension_id !== null
-          );
-          if (filterUser.length > 0) {
-            setUser(filterUser);
-          } else {
-            toast.error("No user found with assign extension");
-          }
+          toast.error("No user found with assign extension");
         }
       }
+    } else {
+      dispatch({
+        type: "SET_ALLUSERREFRESH",
+        allUserRefresh: allUserRefresh + 1,
+      });
     }
-    getData();
-  }, [account.account_id]);
+    // }
+    // getData();
+  }, [allUserArr]);
   useEffect(() => {
     if (account && account.id) {
       setLoading(true);
       async function getData() {
         const ringData = await generalGetFunction(`/ringgroup/${value}`);
-        const apiData = await generalGetFunction(
-          `/extension/search?account=${account.account_id}`
-        );
+        // const apiData = await generalGetFunction(
+        //   `/extension/search?account=${account.account_id}`
+        // );
         const apidataUser = await generalGetFunction(
           `/user/search?account=${account.account_id}`
         );
         const ringBack = await generalGetFunction("/sound/all?type=ringback");
 
-        if (apiData.status) {
-          setExtensions(apiData.data);
-        } else {
-          navigate("/");
-        }
+        // if (apiData.status) {
+        //   setExtensions(apiData.data);
+        // } else {
+        //   navigate("/");
+        // }
         if (apidataUser.status) {
           setUsers(apidataUser.data);
         } else {
@@ -133,7 +140,8 @@ const RingGroupEdit = () => {
 
           let editData = ringData.data[0];
 
-          const { ring_group_destination, followme, status } = editData;
+          const { ring_group_destination, followme, status, call_timeout } =
+            editData;
           setprevDestinations(ring_group_destination);
           if (ring_group_destination.length > 0) {
             setDestination(
@@ -161,6 +169,7 @@ const RingGroupEdit = () => {
               status: status == "active" ? true : false,
               recording_enabled:
                 editData.recording_enabled === 1 ? true : false,
+              call_timeout: call_timeout !== null ? call_timeout : "",
             },
           };
 
@@ -182,7 +191,7 @@ const RingGroupEdit = () => {
 
   // Get all users with valid extension
   useEffect(() => {
-    if (allUserRefresh > 1) {
+    if (allUserRefresh > 0) {
       const filterUser = allUserArr.data.filter(
         (item) => item.extension_id !== null
       );
@@ -197,7 +206,16 @@ const RingGroupEdit = () => {
         allUserRefresh: allUserRefresh + 1,
       });
     }
-  }, [allUserArr]);
+
+    if (extensionRefresh > 0) {
+      setExtensions(extension);
+    } else {
+      dispatch({
+        type: "SET_EXTENSIONREFRESH",
+        extensionRefresh: extensionRefresh + 1,
+      });
+    }
+  }, [allUserArr, extensions]);
 
   // useEffect(() => {
   //   if (extensionRefresh > 1) {
@@ -326,6 +344,35 @@ const RingGroupEdit = () => {
         message: "All fields are required",
       });
     }
+    if (!validateUniqueAgents()) {
+      setError("destinations", {
+        type: "manual",
+        message: "Same agent can't be selected for two or more fields",
+      });
+    } else if (validateAgents()) {
+      clearErrors("destinations");
+    } else {
+      setError("destinations", {
+        type: "manual",
+        message: "Agent name required in all rows",
+      });
+    }
+  };
+  if (destination.length === 0) {
+    addNewDestination();
+  }
+
+  const validateAgents = () => {
+    const allFieldsFilled = destination.every(
+      (item) => item.destination.trim() !== ""
+      //  && item.password.trim() !== ""
+    );
+    return allFieldsFilled;
+  };
+  const validateUniqueAgents = () => {
+    const agentValues = destination.map((item) => item.destination);
+    const uniqueValues = [...new Set(agentValues)];
+    return agentValues.length === uniqueValues.length;
   };
 
   // Handle list click
@@ -403,6 +450,7 @@ const RingGroupEdit = () => {
         recording_enabled: data.recording_enabled === "true" ? 1 : 0,
         followme: data.followme === "true" ? true : false,
         status: data.status == true ? "active" : "inactive",
+        // call_timeout: data.call_timeout !== null ? call_timeout : "",
         destination: destination
           .map((item) => {
             // Call checkPrevDestination with the current item
@@ -926,15 +974,25 @@ const RingGroupEdit = () => {
                     name="extension"
                     className="formItem"
                     {...register("call_timeout", {
-                      ...requiredValidator,
                       ...noSpecialCharactersValidator,
-                      ...minValidator(
-                        destination.reduce(
-                          (max, obj) => Math.max(max, obj.delay),
-                          0
-                        )
-                      ),
+                      ...(watch("call_timeout") !== "" &&
+                        minValidator(
+                          destination.reduce(
+                            (max, obj) => Math.max(max, obj.delay),
+                            0
+                          )
+                        )),
                     })}
+                    // {...register("call_timeout", {
+                    //   ...requiredValidator,
+                    //   ...noSpecialCharactersValidator,
+                    //   ...minValidator(
+                    //     destination.reduce(
+                    //       (max, obj) => Math.max(max, obj.delay),
+                    //       0
+                    //     )
+                    //   ),
+                    // })}
                   />
                   {errors.call_timeout && (
                     <ErrorMessage text={errors.call_timeout.message} />
