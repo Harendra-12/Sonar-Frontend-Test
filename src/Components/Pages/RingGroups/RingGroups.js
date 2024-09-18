@@ -241,14 +241,14 @@ const RingGroups = () => {
                                 >
                                   {item.description}
                                 </td>
-                                <td
-                                  onClick={() =>
+                                <td>
+                                  <button onClick={() =>
                                     navigate(
                                       `/ring-groups-settings?id=${item.id}`
                                     )
-                                  }
-                                >
-                                  <i className="fa-duotone fa-gear text-success"></i>
+                                  } className="tableButton">
+                                    <i className="fa-duotone fa-gear text-success"></i>
+                                  </button>
                                 </td>
                                 <td
                                   onClick={() => {
