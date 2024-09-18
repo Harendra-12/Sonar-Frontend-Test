@@ -1,7 +1,10 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useSIPProvider } from "react-sipjs";
 
 function SideNavbarApp({ setactivePage }) {
+  const { connectStatus } = useSIPProvider();
+  console.log(connectStatus);
   const navigate = useNavigate();
   return (
     <section>
@@ -20,7 +23,17 @@ function SideNavbarApp({ setactivePage }) {
                 </div>
                 <div className="userTitle">Username</div>
               </button>
-            </li>
+            </li>{" "}
+            <div className="text-center">
+              <span
+                style={{
+                  color: connectStatus === "CONNECTED" ? "#00ff00" : "red",
+                  fontSize: "12px",
+                }}
+              >
+                {connectStatus}
+              </span>
+            </div>
             <li effect="ripple">
               <a
                 // to="/"

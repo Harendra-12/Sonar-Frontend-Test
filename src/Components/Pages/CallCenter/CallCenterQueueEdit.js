@@ -213,9 +213,14 @@ function CallCenterQueueEdit() {
   //   const { name, value } = event.target;
   //   const newAgent = [...agent];
   //   newAgent[index][name] = value;
-  //   setAgent(agent);
+  //   setAgent(newAgent);
 
-  //   if (validateAgents()) {
+  //   if (!validateUniqueAgents()) {
+  //     setErr("agent", {
+  //       type: "manual",
+  //       message: "Same agent can't be selected for two or more fields",
+  //     });
+  //   } else if (validateAgents()) {
   //     clearErrors("agent");
   //   } else {
   //     setErr("agent", {
@@ -224,13 +229,29 @@ function CallCenterQueueEdit() {
   //     });
   //   }
   // };
-
   const handleAgentChange = (event, index) => {
-    const { name, value } = event.target;
-    const newAgent = [...agent];
-    newAgent[index][name] = value;
-    setAgent(newAgent);
+    const { name, value } = event.target; // Extract name and selected value
 
+    // Check if the user chose to add a new user
+    if (value === "addUser") {
+      navigate("/users-add");
+      return;
+    }
+
+    const newAgent = [...agent]; // Copy the agent array
+    newAgent[index][name] = value; // Update the name (id) of the selected agent
+
+    // Find the selected user from the user list to set contact info
+    const selectedUser = user.find((userItem) => userItem.id == value);
+    if (selectedUser) {
+      newAgent[index][
+        "contact"
+      ] = `user/${selectedUser.extension?.extension}@${selectedUser.domain?.domain_name}`;
+    }
+
+    setAgent(newAgent); // Update the agent array in the state
+
+    // Validate agents to ensure no duplicates and required fields are filled
     if (!validateUniqueAgents()) {
       setErr("agent", {
         type: "manual",
@@ -866,31 +887,32 @@ function CallCenterQueueEdit() {
                               type="text"
                               name="name"
                               value={item.name}
-                              onChange={(e) => {
-                                const selectedValue = e.target.value;
-                                // Redirect to the Add User page
-                                if (selectedValue === "addUser") {
-                                  navigate("/users-add");
-                                } else {
-                                  handleAgentChange(e, index);
-                                  user.map((item) => {
-                                    if (item.id == e.target.value) {
-                                      const newAgent = [...agent];
-                                      newAgent[index][
-                                        "contact"
-                                      ] = `user/${item.extension.extension}@${item.domain.domain_name}`;
-                                      setAgent(agent);
-                                    }
-                                  });
-                                }
-                              }}
+                              onChange={(e) => handleAgentChange(e, index)}
+                              // onChange={(e) => {
+                              //   const selectedValue = e.target.value;
+                              //   // Redirect to the Add User page
+                              //   if (selectedValue === "addUser") {
+                              //     navigate("/users-add");
+                              //   } else {
+                              //     handleAgentChange(e, index);
+                              //     user.map((item) => {
+                              //       if (item.id == e.target.value) {
+                              //         const newAgent = [...agent];
+                              //         newAgent[index][
+                              //           "contact"
+                              //         ] = `user/${item.extension.extension}@${item.domain.domain_name}`;
+                              //         setAgent(agent);
+                              //       }
+                              //     });
+                              //   }
+                              // }}
                               className="formItem"
                               placeholder="Destination"
                             >
                               <option value="" disabled>
                                 Choose agent
                               </option>
-                              {user &&
+                              {/* {user &&
                                 user.map((item) => {
                                   return (
                                     <option value={item.id}>
@@ -898,7 +920,29 @@ function CallCenterQueueEdit() {
                                       {item.extension?.extension})
                                     </option>
                                   );
-                                })}
+                                })} */}
+                              {user &&
+                                user
+                                  .filter((userItem) => {
+                                    // Keep the current agent for this index and exclude already selected ones in other indexes
+                                    return (
+                                      userItem.id == agent[index]?.name || // Keep the current agent for this index
+                                      !agent.some(
+                                        (agentItem, agentIndex) =>
+                                          agentItem.name == userItem.id &&
+                                          agentIndex != index
+                                      ) // Exclude agents selected in other rows
+                                    );
+                                  })
+                                  .map((userItem) => (
+                                    <option
+                                      value={userItem.id}
+                                      key={userItem.id}
+                                    >
+                                      {userItem.username} (
+                                      {userItem.extension?.extension})
+                                    </option>
+                                  ))}
                               <option
                                 value="addUser"
                                 className="text-center border bg-info-subtle fs-6 fw-bold text-info"

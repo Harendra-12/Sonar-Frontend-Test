@@ -28,7 +28,8 @@ function CallCenterQueueAdd() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState([]);
+  // const [users, setUsers] = useState([]); //same as user
   const [music, setMusic] = useState();
   const account = useSelector((state) => state.account);
   // const domain = useSelector((state) => state.domain);
@@ -114,13 +115,19 @@ function CallCenterQueueAdd() {
     }
     setAgent(updatedAgent);
   }
+
   // const handleAgentChange = (event, index) => {
   //   const { name, value } = event.target;
   //   const newAgent = [...agent];
   //   newAgent[index][name] = value;
-  //   setAgent(agent);
+  //   setAgent(newAgent);
 
-  //   if (validateAgents()) {
+  //   if (!validateUniqueAgents()) {
+  //     setErr("agent", {
+  //       type: "manual",
+  //       message: "Same agent can't be selected for two or more fields",
+  //     });
+  //   } else if (validateAgents()) {
   //     clearErrors("agent");
   //   } else {
   //     setErr("agent", {
@@ -129,13 +136,29 @@ function CallCenterQueueAdd() {
   //     });
   //   }
   // };
-
   const handleAgentChange = (event, index) => {
-    const { name, value } = event.target;
-    const newAgent = [...agent];
-    newAgent[index][name] = value;
-    setAgent(newAgent);
+    const { name, value } = event.target; // Extract name and selected value
 
+    // Check if the user chose to add a new user
+    if (value === "addUser") {
+      navigate("/users-add");
+      return;
+    }
+
+    const newAgent = [...agent]; // Copy the agent array
+    newAgent[index][name] = value; // Update the name (id) of the selected agent
+
+    // Find the selected user from the user list to set contact info
+    const selectedUser = user.find((userItem) => userItem.id == value);
+    if (selectedUser) {
+      newAgent[index][
+        "contact"
+      ] = `user/${selectedUser.extension?.extension}@${selectedUser.domain?.domain_name}`;
+    }
+
+    setAgent(newAgent); // Update the agent array in the state
+
+    // Validate agents to ensure no duplicates and required fields are filled
     if (!validateUniqueAgents()) {
       setErr("agent", {
         type: "manual",
@@ -250,18 +273,6 @@ function CallCenterQueueAdd() {
 
     const { recording_enabled, queue_name, extension, queue_timeout_action } =
       data;
-
-    //     const xmlObj = {
-    //       xml: `<extension name="${queue_name.trim()}">
-    //         <condition field="destination_number" expression="^(callcenter\+)?${extension}$" >
-    //           <action application="answer" data=""/>
-    //           <action application="set" data="hangup_after_bridge=true"/>
-    //           <action application="sleep" data="1000"/>
-    //           <action application="callcenter" data="${extension}@${domain_name}"/>
-    //            <action application="transfer" data="${queue_timeout_action} XML ${domain_name}"/>
-    //         </condition>
-    // </extension>`,
-    //     };
 
     const payload = {
       ...data,
@@ -727,31 +738,32 @@ function CallCenterQueueAdd() {
                               type="text"
                               name="name"
                               value={item.name}
-                              onChange={(e) => {
-                                const selectedValue = e.target.value;
-                                // Redirect to the Add User page
-                                if (selectedValue === "addUser") {
-                                  navigate("/users-add");
-                                } else {
-                                  handleAgentChange(e, index);
-                                  user.forEach((item) => {
-                                    if (item.id == selectedValue) {
-                                      const newAgent = [...agent];
-                                      newAgent[index][
-                                        "contact"
-                                      ] = `user/${item.extension.extension}@${item.domain.domain_name}`;
-                                      setAgent(agent);
-                                    }
-                                  });
-                                }
-                              }}
+                              onChange={(e) => handleAgentChange(e, index)}
+                              // onChange={(e) => {
+                              //   const selectedValue = e.target.value;
+                              //   // Redirect to the Add User page
+                              //   if (selectedValue === "addUser") {
+                              //     navigate("/users-add");
+                              //   } else {
+                              //     handleAgentChange(e, index);
+                              //     user.forEach((item) => {
+                              //       if (item.id == selectedValue) {
+                              //         const newAgent = [...agent];
+                              //         newAgent[index][
+                              //           "contact"
+                              //         ] = `user/${item.extension.extension}@${item.domain.domain_name}`;
+                              //         setAgent(newAgent);
+                              //       }
+                              //     });
+                              //   }
+                              // }}
                               className="formItem"
                               placeholder="Destination"
                             >
                               <option value="" disabled>
                                 Choose agent
                               </option>
-                              {user &&
+                              {/* {user &&
                                 user.map((item) => {
                                   return (
                                     <option value={item.id} key={item.id}>
@@ -759,7 +771,28 @@ function CallCenterQueueAdd() {
                                       {item.extension?.extension})
                                     </option>
                                   );
-                                })}
+                                })} */}
+                              {user &&
+                                user
+                                  .filter((userItem) => {
+                                    return (
+                                      userItem.id == agent[index]?.name ||
+                                      !agent.some(
+                                        (agentItem, agentIndex) =>
+                                          agentItem.name == userItem.id &&
+                                          agentIndex != index
+                                      )
+                                    );
+                                  })
+                                  .map((userItem) => (
+                                    <option
+                                      value={userItem.id}
+                                      key={userItem.id}
+                                    >
+                                      {userItem.username} (
+                                      {userItem.extension?.extension})
+                                    </option>
+                                  ))}
                               <option
                                 value="addUser"
                                 className="text-center border bg-info-subtle fs-6 fw-bold text-info"
@@ -975,18 +1008,6 @@ function CallCenterQueueAdd() {
       ) : (
         ""
       )}
-      {/* <ToastContainer
-        position="bottom-right"
-        autoClose={false}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      /> */}
     </main>
   );
 }
