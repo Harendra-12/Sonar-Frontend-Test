@@ -38,6 +38,7 @@ function Music() {
           dispatch({ type: "SET_MUSICALL", musicAll: apiData.data });
         } else {
           navigate(-1);
+          toast.error("Couldnt load sounds!");
         }
       }
       getData();

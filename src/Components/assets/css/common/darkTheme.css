@@ -25,7 +25,7 @@
 }
 
 table tbody tr:nth-child(even) {
-    background-color: #ec407a15;
+    background-color: #ffb2cc15;
 }
 
 .toggleButton.active {

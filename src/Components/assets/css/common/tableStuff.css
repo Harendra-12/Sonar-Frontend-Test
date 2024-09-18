@@ -39,8 +39,8 @@ table tbody tr td a {
 
 
 table tbody tr:hover {
-    /* background-color: #0000004f !important; */
-    background-color: #83b6ff4f !important;
+    background-color: #65cfff21 !important;
+    /* background-color: #83b6ff4f !important; */
 }
 
 table tbody tr:nth-child(even) {

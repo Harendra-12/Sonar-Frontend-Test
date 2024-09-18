@@ -74,21 +74,6 @@
     text-decoration: none;
 }
 
-.appPanelButton {
-    /* background-color: #0e111e; */
-    background-color: var(--nav-color);
-    border: none;
-    color: #fff;
-    width: 35px;
-    height: 35px;
-    margin: 0 3px;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-}
-
 .getApp {
     background-color: var(--nav-color);
     border: none;
@@ -255,6 +240,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    text-decoration: none;
+    transition: 0.3s ease-in-out;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.appPanelButton:hover {
+    background-color: #00000066;
+    box-shadow: none;
+}
+
+.appPanelButton:hover i {
+    color: #fff;
+    font-weight: 900;
 }
 
 .appPanelButton2 {
