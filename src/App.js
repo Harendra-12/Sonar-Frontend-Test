@@ -103,6 +103,7 @@ import OngoingCallPage from "./Components/Pages/WebRtcPages/OngoingCallPage";
 import CallDashboardPage from "./Components/Pages/WebRtcPages/CallDashboardPage";
 import WebrtcWrapper from "./Components/Pages/WebRtc/WebrtcWrapper";
 import "react-toastify/dist/ReactToastify.css";
+import Messages from "./Components/Pages/WebRtc/Messages";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -224,6 +225,7 @@ function App() {
 
           {/* WebRtc path start */}
           <Route path="/webrtc" element={<WebrtcWrapper />} />
+          <Route path="/message" element={<Messages />} />
           {/* <Route path="/call" element={<CallPage />} />
           <Route path="/all-contacts" element={<AllContactPage />} />
           <Route path="/call-center" element={<CallCenterPage />} />

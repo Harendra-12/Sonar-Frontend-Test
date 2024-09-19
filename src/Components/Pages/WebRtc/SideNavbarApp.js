@@ -35,8 +35,8 @@ function SideNavbarApp({ setactivePage }) {
               </span>
             </div>
             <li effect="ripple">
-              <a
-                // to="/"
+              <NavLink
+                to="/message"
                 onClick={() => setactivePage("messages")}
                 className="navItem"
               >
@@ -44,7 +44,7 @@ function SideNavbarApp({ setactivePage }) {
                   <i className="fa-solid fa-message" />
                 </div>
                 <div className="itemTitle">Messages</div>
-              </a>
+              </NavLink>
             </li>
             <li effect="ripple">
               <a

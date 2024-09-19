@@ -1,0 +1,237 @@
+.mainContentApp .nav-tabs {
+    border: none;
+
+}
+
+.mainContentApp .nav-link {
+    color: #444444;
+}
+
+.mainContentApp .tabLink {
+    background: transparent;
+    border: none;
+    padding: 10px 30px;
+    color: #9f9f9f;
+}
+
+.mainContentApp .tabLink i {
+    font-size: 20px;
+}
+
+.mainContentApp .tabLink.active {
+    color: var(--ui-accent) !important;
+    border-bottom: 3px solid var(--ui-accent) !important;
+    border: none;
+}
+
+.mainContentApp .nav-link:hover {
+    border: none;
+}
+
+.mainContentApp .nav-link:focus {
+    border: none;
+}
+
+.mainContentApp #headerSearch {
+    border: 1px solid #ddd;
+    padding: 5px 30px;
+    width: 100%;
+    color: #000000;
+    background: var(--bg-color) url(../../images/search_b.png) no-repeat 7px center / 17px 17px;
+}
+
+[type=search] {
+    outline-offset: 0px;
+}
+
+/* Messaging UI */
+.messageOverlay .contactHeader {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+}
+
+.messageOverlay .contactHeader h4 {
+    font-size: 18px !important;
+    margin-bottom: 5px;
+}
+
+.messageOverlay .contactHeader .status {
+    color: #454545;
+    font-size: 14px;
+    font-weight: 400;
+    position: relative;
+    margin-left: 15px;
+}
+
+.messageOverlay .contactHeader .status::after {
+    content: '';
+    background-color: #454545;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    position: absolute;
+    left: -12px;
+    top: 6px;
+}
+
+.messageOverlay .contactHeader .status.online::after {
+    background-color: #00d30b;
+}
+
+.messageOverlay .messageContent {
+    height: calc(100vh - 80px);
+    /* overflow-y: auto; */
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.messageOverlay .messageList {
+    height: 92%;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.messageContent .messageInput {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 5px;
+    border: 1px solid #454545;
+    background-color: #fff;
+    padding: 5px;
+    width: 100%;
+}
+
+.messageContent .messageInput input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+}
+
+.messageList .messageItem {
+    display: flex;
+    /* justify-content: space-between; */
+    padding: 10px;
+    /* margin-top: 10px; */
+    /* width: max-content; */
+}
+
+.messageItem.receiver .messageDetails {
+    background-color: #d6d6d6;
+    border-radius: 0px 10px 10px 10px;
+}
+
+.messageItem.sender .messageDetails {
+    background-color: #a9ddff;
+    border-radius: 10px 10px 0px 10px;
+}
+
+.messageItem.sender {
+    justify-content: end;
+}
+
+.messageItem.sender .first {
+    display: none;
+}
+
+.messageItem.sender .second .messageDetails {
+    float: inline-end;
+}
+
+.messageItem.sender .second h6 {
+    visibility: hidden;
+    text-align: end;
+}
+
+.messageItem.sender .second h6 span {
+    visibility: visible;
+}
+
+
+.messageList .messageItem .first {
+    width: 7%;
+}
+
+.messageList .profileHolder {
+    width: 35px;
+    height: 35px;
+    background-color: var(--div-color);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 14px;
+
+}
+
+.messageList .messageDetails {
+    /* min-width: max-content; */
+    display: inline-block;
+    max-width: 260px;
+    padding: 5px 10px;
+}
+
+.messageList .messageItem h6 {
+    font-size: 12px;
+    margin-bottom: 2px;
+}
+
+.messageList .messageItem h6 span {
+    font-size: 11px;
+    color: #757575;
+    margin-left: 6px;
+}
+
+.messageList .messageDetails p {
+    font-size: 14px;
+    color: #454545;
+    margin-bottom: 0px;
+    word-wrap: break-word;
+}
+
+.messageList .callListItem .profileHolder {
+    width: 40px !important;
+    height: 40px !important;
+}
+
+.callList.messageList .callListItem h4 {
+    font-size: 14px !important;
+}
+
+.callList.messageList .callListItem h5 {
+    font-size: 12px !important;
+}
+
+.mainContentApp .callList.messageList {
+    height: calc(100vh - 175px);
+}
+
+.messageList .callListItem .textWrapper {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+}
+
+
+/* Message List Active Selector */
+
+.callListItem.filterItem.active {
+    background-color: #4545452e;
+}
+
+.callListItem.filterItem.new::after {
+    content: '';
+    background-color: #ff7300;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    position: absolute;
+    top: 75%;
+    right: 15px;
+    transform: translate(50%);
+}
