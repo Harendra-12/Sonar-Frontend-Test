@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSIPProvider } from "react-sipjs";
 
 function SideNavbarApp({ setactivePage }) {
+  const [popUp, setPopUp] = useState(false);
   const { connectStatus } = useSIPProvider();
   console.log(connectStatus);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (connectStatus !== "CONNECTED") {
+      setPopUp(true);
+    }
+  }, [connectStatus]);
+
   return (
     <section>
       <style>
@@ -18,21 +26,21 @@ function SideNavbarApp({ setactivePage }) {
           <ul>
             <li>
               <button className="navItem">
-                <div className="profileHolder" id="profileOnlineNav">
+                <div className="profileHolder" id={connectStatus === "CONNECTED" ? "profileOnlineNav" : "profileOfflineNav"}>
                   NH
                 </div>
                 <div className="userTitle">Username</div>
               </button>
             </li>{" "}
             <div className="text-center">
-              <span
+              {/* <span
                 style={{
                   color: connectStatus === "CONNECTED" ? "#00ff00" : "red",
                   fontSize: "12px",
                 }}
               >
                 {connectStatus}
-              </span>
+              </span> */}
             </div>
             <li effect="ripple">
               <div
@@ -189,6 +197,37 @@ function SideNavbarApp({ setactivePage }) {
           </ul>
         </div>
       </div>
+
+      {popUp ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-3">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-circle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-2">
+                  <h4>Network Issue!</h4>
+                  <p className="mb-1">Failed to connect to the server!</p>
+                  <p style={{ fontSize: 12 }}>Error: <span className="fw-light text-danger">{connectStatus}</span></p>
+                  <button
+                    className="panelButton m-0"
+                    onClick={() => {
+                      setPopUp(false);
+                    }}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </section>
   );
 }
