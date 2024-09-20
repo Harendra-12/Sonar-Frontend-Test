@@ -12,6 +12,7 @@ import { SIPProvider } from "react-sipjs";
 import IncomingCalls from "./IncomingCalls";
 import { SipRegister } from "./SipRegister";
 import SideNavbarApp from "./SideNavbarApp";
+import Messages from "./Messages";
 
 const WebrtcWrapper = () => {
   const sessions = useSelector((state) => state.sessions);
@@ -49,7 +50,7 @@ const WebrtcWrapper = () => {
   };
   const options = {
     domain: account.domain.domain_name,
-    webSocketServer: "wss://192.168.2.225:7443",
+    webSocketServer: "wss://192.168.2.225:7443"
     // domain: "192.168.0.91",
     // domain: "webvio.1.com",
     // webSocketServer: "ws://192.168.0.91:5066",
@@ -76,6 +77,7 @@ const WebrtcWrapper = () => {
         {activePage == "on-going-calls" && <OngoingCall />}
         {activePage == "call-dashboard" && <CallDashboard />}
         {activePage == "e-fax" && <EFax />}
+        {activePage == "messages" && <Messages />}
         <IncomingCalls
           setSelectedModule={setSelectedModule}
           setactivePage={setactivePage}

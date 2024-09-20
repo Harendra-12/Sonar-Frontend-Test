@@ -10,22 +10,14 @@ export const SipRegister = () => {
   const { connectAndRegister, registerStatus, connectStatus } =
     useSIPProvider();
   const account = useSelector((state) => state.account);
-  // const { extension: { extension = "", password = "" } = {} } = account;
   const extension = account?.extension?.extension || "";
   const password = account?.extension?.password || "";
-  // const username = extension;
-  // const password = pswrd;
   useEffect(() => {
     connectAndRegister({
       username: extension,
       password: password,
-      // username: "1003",
-      // password: "12345",
     });
-  }, [
-    connectAndRegister,
-    // extension, password
-  ]);
+  }, [connectAndRegister]);
 
   return (
     <div className="profileDropdowns" style={{ top: "55px", right: "-40px" }}>
@@ -40,8 +32,8 @@ export const SipRegister = () => {
           </span>
         </span>
       </div> */}
-      {/* <div>
-        <span>
+      <div>
+        {/* <span>
           {" "}
           SIP Status:{" "}
           <span
@@ -51,8 +43,8 @@ export const SipRegister = () => {
           >
             {registerStatus}
           </span>
-        </span>
-      </div> */}
+        </span> */}
+      </div>
       <MediaPermissions />
     </div>
   );
