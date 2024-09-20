@@ -34,9 +34,9 @@ function Dialpad({ hideDialpad, setSelectedModule }) {
         `sip:${Number(destNumber)}@${account.domain.domain_name}`,
         {
              
-                // Contact: `<sip:${extension}@${account.domain.domain_name}>`,
-                // To: `<sip:${Number(destNumber)}@${account.domain.domain_name}>`,
-                // From: `<sip:${extension}@${account.domain.domain_name}>`
+                // Contact: `<sip:${extension}@${account.domain.domain_name}>`, 
+                // `To: <sip:${Number(destNumber)}@${account.domain.domain_name}>`,
+                // `From: <sip:${extension}@${account.domain.domain_name}>`
               
             }
       );

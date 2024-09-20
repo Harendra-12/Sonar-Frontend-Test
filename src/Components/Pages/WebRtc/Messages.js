@@ -283,7 +283,7 @@ function Messages() {
                                 </div>
                                 <div className="second">
                                   <h6>
-                                    {item.from} <span>10:12 PM</span>
+                                     <span>{item.time.split(" ")[1]}</span>
                                   </h6>
                                   <div className="messageDetails">
                                     <p>{item.body}</p>
@@ -297,7 +297,7 @@ function Messages() {
                                 </div>
                                 <div className="second">
                                   <h6>
-                                    {item.from} <span>10:12 PM</span>
+                                     <span>{item.time.split(" ")[1]}</span>
                                   </h6>
                                   <div className="messageDetails">
                                     <p>{item.body}</p>
