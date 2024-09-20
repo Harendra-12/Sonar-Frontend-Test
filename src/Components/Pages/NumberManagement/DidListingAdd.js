@@ -107,9 +107,11 @@ const DidListingAdd = () => {
                     </div>
                     <div className="col-2 pe-2">
                       <input
-                        type="number"
+                        type="text"
                         name="did"
                         className="formItem"
+                        minLength="8"
+                        maxLength="14"
                         {...register("did", {
                           ...requiredValidator,
                           ...numberValidator,
