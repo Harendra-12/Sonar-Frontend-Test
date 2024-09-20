@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   generalDeleteFunction,
   generalGetFunction,
@@ -82,6 +82,19 @@ function DidListing() {
         <div className="container-fluid">
           <div className="row">
             <Header title="All DID" />
+            <div
+              className="d-flex flex-wrap justify-content-end px-xl-3 py-2 position-relative"
+              style={{ zIndex: 1 }}
+              id="detailsHeader"
+            >
+              <div className="col-xl-8 pt-3 pt-xl-0">
+                <div className="d-flex justify-content-end">
+                  <Link to="/did-add" effect="ripple" className="panelButton">
+                    Add
+                  </Link>
+                </div>
+              </div>
+            </div>
             <div className="col-12" style={{ overflow: "auto" }}>
               <div className="tableContainer">
                 {loading ? (

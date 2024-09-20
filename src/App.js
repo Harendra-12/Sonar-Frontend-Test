@@ -104,6 +104,7 @@ import CallDashboardPage from "./Components/Pages/WebRtcPages/CallDashboardPage"
 import WebrtcWrapper from "./Components/Pages/WebRtc/WebrtcWrapper";
 import "react-toastify/dist/ReactToastify.css";
 import Messages from "./Components/Pages/WebRtc/Messages";
+import DidListingAdd from "./Components/Pages/NumberManagement/DidListingAdd";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -129,7 +130,7 @@ function App() {
   const dispatch = useDispatch();
   const domainRefresh = useSelector((state) => state.domainRefresh);
   const loading = useSelector((state) => state.loading);
-  console.log("this is loading", loading);
+  // console.log("this is loading", loading);
 
   Socket();
 
@@ -259,6 +260,7 @@ function App() {
           <Route path="/port-number" element={<PortNumber />} />
           <Route path="/port-number-add" element={<PortNumberAdd />} />
           <Route path="/port-number-edit" element={<PortNumberEdit />} />
+          <Route path="/did-add" element={<DidListingAdd />} />
           {/* Number Management Path End */}
 
           {/* Payment path start */}
