@@ -8,6 +8,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useForm } from "react-hook-form";
 import {
+  lengthValidator,
   numberValidator,
   requiredValidator,
 } from "../../validations/validation";
@@ -112,6 +113,7 @@ const DidListingAdd = () => {
                         {...register("did", {
                           ...requiredValidator,
                           ...numberValidator,
+                          ...lengthValidator(8, 14),
                         })}
                       />
 
@@ -135,6 +137,7 @@ const DidListingAdd = () => {
                         id="selectFormRow"
                         {...register("did_vendor_id", {
                           ...requiredValidator,
+                          ...numberValidator,
                         })}
                       >
                         <option disabled value={""}>
