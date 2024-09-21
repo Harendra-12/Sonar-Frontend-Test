@@ -378,7 +378,7 @@ function CdrReport() {
                   customInput={<ExampleCustomInput className="formItem mb-0" />}
                   isClearable={true}
                 />
-                <div className="d-flex align-items-center ms-1">
+                <div className="d-flex align-items-center ms-2">
 
                   <select
                     className="formItem mb-0"

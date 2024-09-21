@@ -99,6 +99,7 @@
 /* #detailsContent .formRow  */
 .formItem {
     /* background-color: #0e111e; */
+    background-color: #fff;
     border: 1px solid var(--color4);
     /* color: #fff; */
     padding: 5px 5px;
