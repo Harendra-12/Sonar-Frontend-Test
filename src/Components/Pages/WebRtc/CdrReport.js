@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, forwardRef } from "react";
 import Header from "../../CommonComponents/Header";
 import {
   backToTop,
@@ -10,6 +10,11 @@ import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import MusicPlayer from "../../CommonComponents/MusicPlayer";
+
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+// import 'react-datepicker/dist/react-datepicker-cssmodules.css'
 
 function CdrReport() {
   const [loading, setLoading] = useState(true);
@@ -26,6 +31,16 @@ function CdrReport() {
   const [outboundCalls, setOutboundCalls] = useState(false);
   const [missedCalls, setMissedCalls] = useState(false);
   const [currentPlaying, setCurrentPlaying] = useState(null); // For tracking the currently playing audio
+
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [startDate, endDate] = dateRange;
+  const ExampleCustomInput = forwardRef(
+    ({ value, onClick, className }, ref) => (
+      <button className={className} onClick={onClick} ref={ref}>
+        {value ? value : "Select Date"}
+      </button>
+    ),
+  );
 
   useEffect(() => {
     setLoading(true);
@@ -352,10 +367,21 @@ function CdrReport() {
           <Header title="CDR Reports" />
           <div className="d-flex flex-wrap px-xl-3 py-2" id="detailsHeader">
             <div className="col-xl-8 pt-3 pt-xl-0 ms-auto">
-              <div className="d-flex justify-content-end">
-                <div className="d-flex align-items-center">
+              <div className="d-flex justify-content-end align-items-center">
+                <DatePicker
+                  selectsRange={true}
+                  startDate={startDate}
+                  endDate={endDate}
+                  onChange={(update) => {
+                    setDateRange(update);
+                  }}
+                  customInput={<ExampleCustomInput className="formItem mb-0" />}
+                  isClearable={true}
+                />
+                <div className="d-flex align-items-center ms-1">
+
                   <select
-                    className="form-select"
+                    className="formItem mb-0"
                     onChange={(e) => handleCallDirectionFilter(e)}
                   >
                     <option value={"allCalls"}>All Calls</option>
@@ -485,8 +511,8 @@ function CdrReport() {
                                     ? "NOT CONNECTED"
                                     : item["variable_DIALSTATUS"] ===
                                       "NO_USER_RESPONSE"
-                                    ? "BUSY"
-                                    : item["variable_DIALSTATUS"]}
+                                      ? "BUSY"
+                                      : item["variable_DIALSTATUS"]}
                                 </td>
                                 <td>{item["call_cost"]}</td>
                               </tr>
