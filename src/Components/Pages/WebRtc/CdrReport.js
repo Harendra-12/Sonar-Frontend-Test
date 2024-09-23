@@ -12,7 +12,7 @@ import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import MusicPlayer from "../../CommonComponents/MusicPlayer";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 
 function CdrReport() {
   const [loading, setLoading] = useState(true);
@@ -33,27 +33,45 @@ function CdrReport() {
   const [callType, setCallType] = useState("");
   const [callOrigin, setCallOrigin] = useState("");
   const [debounceCallOrigin, setDebounceCallOrigin] = useState("");
+  const [debounceCallOriginFlag, setDebounceCallOriginFlag] = useState("");
   const [callDestination, setCallDestination] = useState("");
   const [debounceCallDestination, setDebounceCallDestination] = useState("");
+  const [debounceCallDestinationFlag, setDebounceCallDestinationFlag] =
+    useState("");
   const [hangupCause, setHagupCause] = useState("");
-  // const [startDate, setStartDate] = useState("");
-  // const [endDate, setEndDate] = useState("");
-  const [dateRange, setDateRange] = useState([null, null]);
-  const [startDate, endDate] = dateRange;
+  const [filterBy, setFilterBy] = useState("date");
+  const [startDateFlag, setStartDateFlag] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDateFlag, setEndDateFlag] = useState("");
+  const [endDate, setEndDate] = useState("");
 
-  const ExampleCustomInput = forwardRef(
-    ({ value, onClick, className }, ref) => (
-      <button className={className} onClick={onClick} ref={ref}>
-        {value ? value : "Select Date"}
-      </button>
-    )
-  );
-  const formattedStartDate = startDate ? format(startDate, "yyyy-MM-dd") : "";
-  const formattedEndDate = endDate ? format(endDate, "yyyy-MM-dd") : "";
+  useEffect(() => {
+    if (filterBy === "date" && startDateFlag !== "") {
+      setStartDate(startDateFlag);
+      setEndDate(startDateFlag);
+    }
+    if (
+      filterBy === "date_range" &&
+      endDateFlag !== "" &&
+      startDateFlag !== ""
+    ) {
+      setStartDate(startDateFlag);
+      setEndDate(endDateFlag);
+      setStartDateFlag("");
+      setEndDateFlag("");
+    }
+  }, [startDateFlag, endDateFlag, filterBy]);
 
   useEffect(() => {
     let timer = setTimeout(() => {
-      setCallOrigin(debounceCallOrigin);
+      if (debounceCallOrigin.length >= 3) {
+        setCallOrigin(debounceCallOrigin);
+      } else if (
+        debounceCallOrigin.length >= 0 &&
+        debounceCallOrigin.length < 3
+      ) {
+        setCallOrigin("");
+      }
     }, 1000);
 
     return () => clearTimeout(timer);
@@ -61,11 +79,44 @@ function CdrReport() {
 
   useEffect(() => {
     let timer = setTimeout(() => {
-      setCallDestination(debounceCallDestination);
+      if (debounceCallDestination.length >= 3) {
+        setCallDestination(debounceCallDestination);
+      } else if (
+        debounceCallDestination.length >= 0 &&
+        debounceCallDestination.length < 3
+      ) {
+        setCallDestination("");
+      }
     }, 1000);
 
     return () => clearTimeout(timer);
   }, [debounceCallDestination]);
+
+  const handleCallOriginChange = (e) => {
+    const newValue = e.target.value;
+    // Allow only digits and validate length
+    if (/^\d*$/.test(newValue) && newValue.length <= 5) {
+      setDebounceCallOriginFlag(newValue);
+      if (newValue.length >= 3) {
+        setDebounceCallOrigin(newValue);
+        setPageNumber(1);
+      } else {
+        setDebounceCallOrigin("");
+      }
+    }
+  };
+  const handleCallDestinationChange = (e) => {
+    const newValue = e.target.value;
+    if (/^\d*$/.test(newValue) && newValue.length <= 5) {
+      setDebounceCallDestinationFlag(newValue);
+      if (newValue.length >= 3) {
+        setDebounceCallDestination(newValue);
+        setPageNumber(1);
+      } else {
+        setDebounceCallDestination("");
+      }
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -89,8 +140,10 @@ function CdrReport() {
         application_state: callType,
         origin: callOrigin,
         destination: callDestination,
-        start_date: formattedStartDate,
-        end_date: formattedEndDate,
+        // start_date: formattedStartDate,
+        // end_date: formattedEndDate,
+        start_date: startDate,
+        end_date: endDate,
         hangupCause,
       }
     );
@@ -104,6 +157,9 @@ function CdrReport() {
         if (apiData.status) {
           setLoading(false);
           setCdr(apiData.data);
+
+          // setStartDateFlag("");
+          // setEndDateFlag("");
         } else {
           setLoading(false);
         }
@@ -121,8 +177,10 @@ function CdrReport() {
     callType,
     callOrigin,
     callDestination,
-    formattedStartDate,
-    formattedEndDate,
+    // formattedStartDate,
+    // formattedEndDate,
+    startDate,
+    endDate,
     hangupCause,
   ]);
 
@@ -431,51 +489,108 @@ function CdrReport() {
           <div className="d-flex flex-wrap px-xl-3 py-2" id="detailsHeader">
             <div className="col-xl-12 pt-3 pt-xl-0 ms-auto">
               <div className="d-flex justify-content-end">
-                {/* <div className="d-flex flex-column align-items-center flex-start ms-3">
+                <div className="formRow border-0 ms-3">
                   <label className="title text-start mb-2 w-100">
-                    Filter by Date
+                    Date Filter
                   </label>
-                  <input
-                    type="date"
+                  <select
                     className="formItem"
-                    max={new Date().toISOString().split("T")[0]}
-                    // value={debounceCallOrigin}
+                    value={filterBy}
                     onChange={(e) => {
-                      console.log(e.target.value);
+                      setFilterBy(e.target.value);
                     }}
-                  />
-                </div> */}
-                <div className="formRow border-0  ms-3">
-                  <label className="title text-start mb-2 w-100">
-                    Filter by Date Range
-                  </label>
-                  <DatePicker
-                    selectsRange={true}
-                    startDate={startDate}
-                    endDate={endDate}
-                    onChange={(update) => {
-                      setDateRange(update);
-                      setPageNumber(1);
-                    }}
-                    customInput={
-                      <ExampleCustomInput className="formItem mb-0" />
-                    }
-                    isClearable={true}
-                    maxDate={new Date()}
-                  />
+                  >
+                    <option value={"date"}>Only Date</option>
+                    <option value={"date_range"}>Date Range</option>
+                  </select>
                 </div>
+                {filterBy === "date" && (
+                  <div className="formRow border-0 ms-3">
+                    <label className="title text-start mb-2 w-100">
+                      Choose Date
+                    </label>
+                    <input
+                      type="date"
+                      className="formItem"
+                      max={new Date().toISOString().split("T")[0]}
+                      value={startDateFlag || startDate}
+                      onChange={(e) => {
+                        setStartDateFlag(e.target.value);
+                        setPageNumber(1);
+                      }}
+                    />
+                  </div>
+                )}
+                {filterBy === "date_range" && (
+                  <>
+                    <div className="formRow border-0 ms-3">
+                      <label className="title text-start mb-2 w-100">
+                        From
+                      </label>
+                      <input
+                        type="date"
+                        className="formItem"
+                        max={new Date().toISOString().split("T")[0]}
+                        value={startDateFlag || startDate}
+                        onChange={(e) => {
+                          setStartDateFlag(e.target.value);
+                          setPageNumber(1);
+                        }}
+                      />
+                    </div>
+                    <div className="formRow border-0 ms-3">
+                      <label className="title text-start mb-2 w-100">To</label>
+                      <input
+                        type="date"
+                        className="formItem"
+                        max={new Date().toISOString().split("T")[0]}
+                        value={endDateFlag || startDateFlag || endDate}
+                        onChange={(e) => {
+                          setEndDateFlag(e.target.value);
+                          setPageNumber(1);
+                        }}
+                        min={startDateFlag} // Prevent selecting an end date before the start date
+                      />
+                    </div>
+                  </>
+                )}
+                {/* {filterBy === "date_range" && (
+                  <div className="formRow border-0  ms-3">
+                    <label className="title text-start mb-2 w-100">
+                      Date Range Filter
+                    </label>
+                    <DatePicker
+                      selectsRange={true}
+                      startDate={startDate}
+                      endDate={endDate}
+                      onChange={(update) => {
+                        setDateRange(update);
+                        setPageNumber(1);
+                      }}
+                      customInput={
+                        <ExampleCustomInput className="formItem mb-0" />
+                      }
+                      isClearable={true}
+                      maxDate={new Date()}
+                    />
+                  </div>
+                )} */}
                 <div className="formRow border-0  ms-3">
                   <label className="title text-start mb-2 w-100">
                     Call Origin
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     className="formItem"
-                    value={debounceCallOrigin}
-                    onChange={(e) => {
-                      setDebounceCallOrigin(e.target.value);
-                      setPageNumber(1);
-                    }}
+                    // value={debounceCallOrigin}
+                    value={debounceCallOriginFlag}
+                    // onChange={(e) => {
+                    //   setDebounceCallOrigin(e.target.value);
+                    //   setPageNumber(1);
+                    // }}
+                    // min={100}
+                    // max={99999}
+                    onChange={handleCallOriginChange}
                   />
                 </div>
                 <div className="formRow border-0  ms-3">
@@ -483,13 +598,15 @@ function CdrReport() {
                     Call Destination
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     className="formItem"
-                    value={debounceCallDestination}
-                    onChange={(e) => {
-                      setDebounceCallDestination(e.target.value);
-                      setPageNumber(1);
-                    }}
+                    value={debounceCallDestinationFlag}
+                    // value={debounceCallDestination}
+                    // onChange={(e) => {
+                    //   setDebounceCallDestination(e.target.value);
+                    //   setPageNumber(1);
+                    // }}
+                    onChange={handleCallDestinationChange}
                   />
                 </div>
                 <div className="formRow border-0  ms-3">
