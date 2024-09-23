@@ -10,9 +10,6 @@ import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import MusicPlayer from "../../CommonComponents/MusicPlayer";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { format, set } from "date-fns";
 
 function CdrReport() {
   const [loading, setLoading] = useState(true);
@@ -49,16 +46,15 @@ function CdrReport() {
     if (filterBy === "date" && startDateFlag !== "") {
       setStartDate(startDateFlag);
       setEndDate(startDateFlag);
-    }
-    if (
+    } else if (
       filterBy === "date_range" &&
       endDateFlag !== "" &&
       startDateFlag !== ""
     ) {
       setStartDate(startDateFlag);
       setEndDate(endDateFlag);
-      setStartDateFlag("");
-      setEndDateFlag("");
+      // setStartDateFlag("");
+      // setEndDateFlag("");
     }
   }, [startDateFlag, endDateFlag, filterBy]);
 
@@ -498,6 +494,8 @@ function CdrReport() {
                     value={filterBy}
                     onChange={(e) => {
                       setFilterBy(e.target.value);
+                      setStartDateFlag("");
+                      setEndDateFlag("");
                     }}
                   >
                     <option value={"date"}>Only Date</option>
@@ -513,7 +511,7 @@ function CdrReport() {
                       type="date"
                       className="formItem"
                       max={new Date().toISOString().split("T")[0]}
-                      value={startDateFlag || startDate}
+                      value={startDateFlag}
                       onChange={(e) => {
                         setStartDateFlag(e.target.value);
                         setPageNumber(1);
@@ -531,7 +529,7 @@ function CdrReport() {
                         type="date"
                         className="formItem"
                         max={new Date().toISOString().split("T")[0]}
-                        value={startDateFlag || startDate}
+                        value={startDateFlag}
                         onChange={(e) => {
                           setStartDateFlag(e.target.value);
                           setPageNumber(1);
@@ -544,7 +542,7 @@ function CdrReport() {
                         type="date"
                         className="formItem"
                         max={new Date().toISOString().split("T")[0]}
-                        value={endDateFlag || startDateFlag || endDate}
+                        value={endDateFlag}
                         onChange={(e) => {
                           setEndDateFlag(e.target.value);
                           setPageNumber(1);
@@ -801,7 +799,7 @@ function CdrReport() {
                       </>
                     )}
 
-                    {cdr && cdr.data.length === 0 ? (
+                    {!loading && cdr && cdr.data.length === 0 ? (
                       <td colSpan={99}>
                         <EmptyPrompt name="Call" link="call" />
                       </td>
@@ -815,13 +813,14 @@ function CdrReport() {
           </div>
         </div>
         <div>
-          {cdr && cdr.data.length > 0 ? (
+          {!loading && cdr && cdr.data.length > 0 ? (
             <PaginationComponent
               pageNumber={(e) => setPageNumber(e)}
               totalPage={cdr.last_page}
               from={(pageNumber - 1) * cdr.per_page + 1}
               to={cdr.to}
               total={cdr.total}
+              defaultPage={pageNumber}
             />
           ) : (
             ""
