@@ -81,127 +81,129 @@ function PortNumber() {
     <>
       <main className="mainContent">
         <section id="phonePage">
-          <div className="container-fluid px-0">
-            <div id="subPageHeader">
-              <div className="col-xl-6 my-auto">
-                <h4 className="my-auto">Port Number</h4>
-              </div>
-              <div className="col-xl-6 ps-2">
-                <div className="d-flex justify-content-end">
-                  <button
-                    effect="ripple"
-                    className="panelButton"
-                    onClick={() => {
-                      navigate(-1);
-                      backToTop();
-                    }}
-                  >
-                    Back
-                  </button>
-                  <Link
-                    to="/port-number-add"
-                    onClick={backToTop}
-                    effect="ripple"
-                    className="panelButton"
-                  >
-                    Add
-                  </Link>
+          <div className="container-fluid">
+            <div className="row">
+              <div id="detailsHeader">
+                <div className="col-xl-6 my-auto">
+                  <h4 className="my-auto">Port Number</h4>
+                </div>
+                <div className="col-xl-6 ps-2">
+                  <div className="d-flex justify-content-end">
+                    <button
+                      effect="ripple"
+                      className="panelButton"
+                      onClick={() => {
+                        navigate(-1);
+                        backToTop();
+                      }}
+                    >
+                      Back
+                    </button>
+                    <Link
+                      to="/port-number-add"
+                      onClick={backToTop}
+                      effect="ripple"
+                      className="panelButton"
+                    >
+                      Add
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div className="col-xl-12">
-            <div className="col-12" style={{ overflow: "auto" }}>
-              <div className="tableContainer">
-                {loading ? (
-                  <ContentLoader />
-                ) : (
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Id</th>
-                        <th>Name</th>
-                        <th>Company Name</th>
-                        <th>Billing Address</th>
-                        <th>Pin</th>
-                        <th>Carrier</th>
-                        <th>Account no.</th>
-                        <th>Phone no.</th>
-                        <th>Delete</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {portData.length > 0 &&
-                        portData.map((item) => {
-                          const handleEditPortNumber = (id) => {
-                            navigate(`/port-number-edit?id=${id}`);
-                          };
-                          return (
-                            <tr key={item.id}>
-                              <td
-                                onClick={() => handleEditPortNumber(item.id)}
-                                style={{ cursor: "default" }}
-                              >
-                                {item.id}
-                              </td>
-                              <td
-                                onClick={() => handleEditPortNumber(item.id)}
-                                style={{ cursor: "default" }}
-                              >
-                                {item.fullname}
-                              </td>
-                              <td
-                                onClick={() => handleEditPortNumber(item.id)}
-                                style={{ cursor: "default" }}
-                              >
-                                {item.company_name}
-                              </td>
-                              <td
-                                onClick={() => handleEditPortNumber(item.id)}
-                                style={{ cursor: "default" }}
-                              >
-                                {item?.billing_address}
-                              </td>
-                              <td
-                                onClick={() => handleEditPortNumber(item.id)}
-                                style={{ cursor: "default" }}
-                              >
-                                {item?.pin}
-                              </td>
-                              <td
-                                onClick={() => handleEditPortNumber(item.id)}
-                                style={{ cursor: "default" }}
-                              >
-                                {item?.carrier}
-                              </td>
+              <div className="col-xl-12">
+                <div className="col-12" style={{ overflow: "auto" }}>
+                  <div className="tableContainer">
+                    {loading ? (
+                      <ContentLoader />
+                    ) : (
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Company Name</th>
+                            <th>Billing Address</th>
+                            <th>Pin</th>
+                            <th>Carrier</th>
+                            <th>Account no.</th>
+                            <th>Phone no.</th>
+                            <th>Delete</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {portData.length > 0 &&
+                            portData.map((item) => {
+                              const handleEditPortNumber = (id) => {
+                                navigate(`/port-number-edit?id=${id}`);
+                              };
+                              return (
+                                <tr key={item.id}>
+                                  <td
+                                    onClick={() => handleEditPortNumber(item.id)}
+                                    style={{ cursor: "default" }}
+                                  >
+                                    {item.id}
+                                  </td>
+                                  <td
+                                    onClick={() => handleEditPortNumber(item.id)}
+                                    style={{ cursor: "default" }}
+                                  >
+                                    {item.fullname}
+                                  </td>
+                                  <td
+                                    onClick={() => handleEditPortNumber(item.id)}
+                                    style={{ cursor: "default" }}
+                                  >
+                                    {item.company_name}
+                                  </td>
+                                  <td
+                                    onClick={() => handleEditPortNumber(item.id)}
+                                    style={{ cursor: "default" }}
+                                  >
+                                    {item?.billing_address}
+                                  </td>
+                                  <td
+                                    onClick={() => handleEditPortNumber(item.id)}
+                                    style={{ cursor: "default" }}
+                                  >
+                                    {item?.pin}
+                                  </td>
+                                  <td
+                                    onClick={() => handleEditPortNumber(item.id)}
+                                    style={{ cursor: "default" }}
+                                  >
+                                    {item?.carrier}
+                                  </td>
 
-                              <td
-                                onClick={() => handleEditPortNumber(item.id)}
-                                style={{ cursor: "default" }}
-                              >
-                                {item?.account_number}
-                              </td>
-                              <td
-                                onClick={() => handleEditPortNumber(item.id)}
-                                style={{ cursor: "default" }}
-                              >
-                                {item?.phone_number}
-                              </td>
-                              <td>
-                                <i
-                                  className="fa-duotone fa-trash text-danger fs-6"
-                                  onClick={() => {
-                                    setPopup(true);
-                                    setDeleteIndex(item.id);
-                                  }}
-                                ></i>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                    </tbody>
-                  </table>
-                )}
+                                  <td
+                                    onClick={() => handleEditPortNumber(item.id)}
+                                    style={{ cursor: "default" }}
+                                  >
+                                    {item?.account_number}
+                                  </td>
+                                  <td
+                                    onClick={() => handleEditPortNumber(item.id)}
+                                    style={{ cursor: "default" }}
+                                  >
+                                    {item?.phone_number}
+                                  </td>
+                                  <td>
+                                    <i
+                                      className="fa-duotone fa-trash text-danger fs-6"
+                                      onClick={() => {
+                                        setPopup(true);
+                                        setDeleteIndex(item.id);
+                                      }}
+                                    ></i>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

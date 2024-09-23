@@ -96,10 +96,10 @@ function WalletTransactionsList() {
                   <thead>
                     <tr>
                       <th>Descriptor</th>
-                      <th>Transaction Type</th>
                       <th>Payment Date</th>
                       <th>Transaction ID</th>
                       <th>Transaction Amount</th>
+                      <th>Transaction Type</th>
                       <th>Download</th>
                     </tr>
                   </thead>
@@ -109,10 +109,10 @@ function WalletTransactionsList() {
                       return (
                         <tr>
                           <td>{item.descriptor}</td>
-                          <td><i className={item.transaction_type === "credit" ? "fa-duotone fa-circle-up text-success me-1" : "fa-duotone fa-circle-down text-danger me-1"}></i> {item.transaction_type === "credit" ? "Credit" : "Debit"}</td>
                           <td>{item.created_at.split("T")[0]}</td>
                           <td>{item.payment_gateway_transaction_id}</td>
                           <td><label className={item.transaction_type === "credit" ? "tableLabel success" : "tableLabel fail"}>${item.amount}</label></td>
+                          <td><i className={item.transaction_type === "credit" ? "fa-duotone fa-circle-up text-success me-1" : "fa-duotone fa-circle-down text-danger me-1"}></i> {item.transaction_type === "credit" ? "Credit" : "Debit"}</td>
                           <td>
                             <button class="tableButton" onClick={() =>
                               downloadImage(
