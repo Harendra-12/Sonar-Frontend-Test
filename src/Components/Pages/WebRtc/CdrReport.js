@@ -31,9 +31,96 @@ function CdrReport() {
   const [outboundCalls, setOutboundCalls] = useState(false);
   const [missedCalls, setMissedCalls] = useState(false);
   const [currentPlaying, setCurrentPlaying] = useState(null); // For tracking the currently playing audio
+  const [callDirection, setCallDirection] = useState("");
+  const [callType, setCallType] = useState("");
+  const [callOrigin, setCallOrigin] = useState("");
+  const [debounceCallOrigin, setDebounceCallOrigin] = useState("");
+  const [debounceCallOriginFlag, setDebounceCallOriginFlag] = useState("");
+  const [callDestination, setCallDestination] = useState("");
+  const [debounceCallDestination, setDebounceCallDestination] = useState("");
+  const [debounceCallDestinationFlag, setDebounceCallDestinationFlag] =
+    useState("");
+  const [hangupCause, setHagupCause] = useState("");
+  const [filterBy, setFilterBy] = useState("date");
+  const [startDateFlag, setStartDateFlag] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDateFlag, setEndDateFlag] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  useEffect(() => {
+    if (filterBy === "date" && startDateFlag !== "") {
+      setStartDate(startDateFlag);
+      setEndDate(startDateFlag);
+    } else if (
+      filterBy === "date_range" &&
+      endDateFlag !== "" &&
+      startDateFlag !== ""
+    ) {
+      setStartDate(startDateFlag);
+      setEndDate(endDateFlag);
+      // setStartDateFlag("");
+      // setEndDateFlag("");
+    }
+  }, [startDateFlag, endDateFlag, filterBy]);
+
+  useEffect(() => {
+    let timer = setTimeout(() => {
+      if (debounceCallOrigin.length >= 3) {
+        setCallOrigin(debounceCallOrigin);
+      } else if (
+        debounceCallOrigin.length >= 0 &&
+        debounceCallOrigin.length < 3
+      ) {
+        setCallOrigin("");
+      }
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [debounceCallOrigin]);
+
+  useEffect(() => {
+    let timer = setTimeout(() => {
+      if (debounceCallDestination.length >= 3) {
+        setCallDestination(debounceCallDestination);
+      } else if (
+        debounceCallDestination.length >= 0 &&
+        debounceCallDestination.length < 3
+      ) {
+        setCallDestination("");
+      }
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [debounceCallDestination]);
+
+  const handleCallOriginChange = (e) => {
+    const newValue = e.target.value;
+    // Allow only digits and validate length
+    if (/^\d*$/.test(newValue) && newValue.length <= 5) {
+      setDebounceCallOriginFlag(newValue);
+      if (newValue.length >= 3) {
+        setDebounceCallOrigin(newValue);
+        setPageNumber(1);
+      } else {
+        setDebounceCallOrigin("");
+      }
+    }
+  };
+  const handleCallDestinationChange = (e) => {
+    const newValue = e.target.value;
+    if (/^\d*$/.test(newValue) && newValue.length <= 5) {
+      setDebounceCallDestinationFlag(newValue);
+      if (newValue.length >= 3) {
+        setDebounceCallDestination(newValue);
+        setPageNumber(1);
+      } else {
+        setDebounceCallDestination("");
+      }
+    }
+  };
 
   const [dateRange, setDateRange] = useState([null, null]);
-  const [startDate, endDate] = dateRange;
+  // const [startDate, endDate] = dateRange;
   const ExampleCustomInput = forwardRef(
     ({ value, onClick, className }, ref) => (
       <button className={className} onClick={onClick} ref={ref}>
@@ -44,14 +131,46 @@ function CdrReport() {
 
   useEffect(() => {
     setLoading(true);
+    // build a dynamic url which include only the available params to make API call easy
+    const buildUrl = (baseApiUrl, params) => {
+      const queryParams = Object.entries(params)
+        .filter(([key, value]) => value.length > 0)
+        .map(
+          ([key, value]) =>
+            `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+        )
+        .join("&");
+      // return `${baseApiUrl}?${queryParams}`;
+      return queryParams ? `${baseApiUrl}&${queryParams}` : baseApiUrl;
+    };
+    const finalUrl = buildUrl(
+      // `/cdr?account=${account.account_id}&page=${pageNumber}`,
+      `/cdr?account=${account.account_id}&page=${pageNumber}`,
+      {
+        callDirection,
+        application_state: callType,
+        origin: callOrigin,
+        destination: callDestination,
+        // start_date: formattedStartDate,
+        // end_date: formattedEndDate,
+        start_date: startDate,
+        end_date: endDate,
+        hangupCause,
+      }
+    );
+
     async function getData() {
       if (account && account.account_id) {
-        const apiData = await generalGetFunction(
-          `/cdr?account=${account.account_id}&page=${pageNumber}`
-        );
+        // const apiData = await generalGetFunction(
+        //   `/cdr?account=${account.account_id}&page=${pageNumber}`
+        // );
+        const apiData = await generalGetFunction(finalUrl);
         if (apiData.status) {
           setLoading(false);
           setCdr(apiData.data);
+
+          // setStartDateFlag("");
+          // setEndDateFlag("");
         } else {
           setLoading(false);
         }
@@ -61,304 +180,317 @@ function CdrReport() {
       }
     }
     getData();
-  }, [account, navigate, pageNumber]);
-
-  useEffect(() => {
-    if (cdr) {
-      if (all) {
-        if (inboundCalls) {
-          setFilterData(
-            cdr.data.filter((item) => item["Call-Direction"] === "inbound")
-          );
-        } else if (outboundCalls) {
-          setFilterData(
-            cdr.data.filter((item) => item["Call-Direction"] === "outbound")
-          );
-        } else if (missedCalls) {
-          setFilterData(
-            cdr.data.filter((item) => item["Call-Direction"] === "missed")
-          );
-        } else {
-          setFilterData(cdr.data);
-        }
-      } else if (extensions && callCenter && ringGroup) {
-        if (inboundCalls) {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                (item["application_state"] === "extension" ||
-                  item["application_state"] === "callcenter" ||
-                  item["application_state"] === "ringgroup") &&
-                item["Call-Direction"] === "inbound"
-            )
-          );
-        } else if (outboundCalls) {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                (item["application_state"] === "extension" ||
-                  item["application_state"] === "callcenter" ||
-                  item["application_state"] === "ringgroup") &&
-                item["Call-Direction"] === "outbound"
-            )
-          );
-        } else if (missedCalls) {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                (item["application_state"] === "extension" ||
-                  item["application_state"] === "callcenter" ||
-                  item["application_state"] === "ringgroup") &&
-                item["Call-Direction"] === "missed"
-            )
-          );
-        } else {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                item["application_state"] === "extension" ||
-                item["application_state"] === "callcenter" ||
-                item["application_state"] === "ringgroup"
-            )
-          );
-        }
-      } else if (extensions && callCenter) {
-        if (inboundCalls) {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                (item["application_state"] === "extension" ||
-                  item["application_state"] === "callcenter") &&
-                item["Call-Direction"] === "inbound"
-            )
-          );
-        } else if (outboundCalls) {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                (item["application_state"] === "extension" ||
-                  item["application_state"] === "callcenter") &&
-                item["Call-Direction"] === "outbound"
-            )
-          );
-        } else if (missedCalls) {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                (item["application_state"] === "extension" ||
-                  item["application_state"] === "callcenter") &&
-                item["Call-Direction"] === "missed"
-            )
-          );
-        } else {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                item["application_state"] === "extension" ||
-                item["application_state"] === "callcenter"
-            )
-          );
-        }
-      } else if (extensions && ringGroup) {
-        if (inboundCalls) {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                (item["application_state"] === "extension" ||
-                  item["application_state"] === "ringgroup") &&
-                item["Call-Direction"] === "inbound"
-            )
-          );
-        } else if (outboundCalls) {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                (item["application_state"] === "extension" ||
-                  item["application_state"] === "ringgroup") &&
-                item["Call-Direction"] === "outbound"
-            )
-          );
-        } else if (missedCalls) {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                (item["application_state"] === "extension" ||
-                  item["application_state"] === "ringgroup") &&
-                item["Call-Direction"] === "missed"
-            )
-          );
-        } else {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                item["application_state"] === "extension" ||
-                item["application_state"] === "ringgroup"
-            )
-          );
-        }
-      } else if (callCenter && ringGroup) {
-        if (inboundCalls) {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                (item["application_state"] === "callcenter" ||
-                  item["application_state"] === "ringgroup") &&
-                item["Call-Direction"] === "inbound"
-            )
-          );
-        } else if (outboundCalls) {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                (item["application_state"] === "callcenter" ||
-                  item["application_state"] === "ringgroup") &&
-                item["Call-Direction"] === "outbound"
-            )
-          );
-        } else if (missedCalls) {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                (item["application_state"] === "callcenter" ||
-                  item["application_state"] === "ringgroup") &&
-                item["Call-Direction"] === "missed"
-            )
-          );
-        } else {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                item["application_state"] === "callcenter" ||
-                item["application_state"] === "ringgroup"
-            )
-          );
-        }
-      } else if (extensions) {
-        if (inboundCalls) {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                item["application_state"] === "extension" &&
-                item["Call-Direction"] === "inbound"
-            )
-          );
-        } else if (outboundCalls) {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                item["application_state"] === "extension" &&
-                item["Call-Direction"] === "outbound"
-            )
-          );
-        } else if (missedCalls) {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                item["application_state"] === "extension" &&
-                item["Call-Direction"] === "missed"
-            )
-          );
-        } else {
-          setFilterData(
-            cdr.data.filter((item) => item["application_state"] === "extension")
-          );
-        }
-      } else if (callCenter) {
-        if (inboundCalls) {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                item["application_state"] === "callcenter" &&
-                item["Call-Direction"] === "inbound"
-            )
-          );
-        } else if (outboundCalls) {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                item["application_state"] === "callcenter" &&
-                item["Call-Direction"] === "outbound"
-            )
-          );
-        } else if (missedCalls) {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                item["application_state"] === "callcenter" &&
-                item["Call-Direction"] === "missed"
-            )
-          );
-        } else {
-          setFilterData(
-            cdr.data.filter(
-              (item) => item["application_state"] === "callcenter"
-            )
-          );
-        }
-      } else if (ringGroup) {
-        if (inboundCalls) {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                item["application_state"] === "ringgroup" &&
-                item["Call-Direction"] === "inbound"
-            )
-          );
-        } else if (outboundCalls) {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                item["application_state"] === "ringgroup" &&
-                item["Call-Direction"] === "outbound"
-            )
-          );
-        } else if (missedCalls) {
-          setFilterData(
-            cdr.data.filter(
-              (item) =>
-                item["application_state"] === "ringgroup" &&
-                item["Call-Direction"] === "missed"
-            )
-          );
-        } else {
-          setFilterData(
-            cdr.data.filter((item) => item["application_state"] === "ringgroup")
-          );
-        }
-      }
-    }
   }, [
-    all,
-    extensions,
-    callCenter,
-    ringGroup,
-    cdr,
-    inboundCalls,
-    outboundCalls,
-    missedCalls,
+    account,
+    navigate,
+    pageNumber,
+    callDirection,
+    callType,
+    callOrigin,
+    callDestination,
+    // formattedStartDate,
+    // formattedEndDate,
+    startDate,
+    endDate,
+    hangupCause,
   ]);
 
-  const handleCallDirectionFilter = (e) => {
-    const value = e.target.value;
-    if (value === "allCalls") {
-      setMissedCalls(false);
-      setOutboundCalls(false);
-      setInboundCalls(false);
-    } else if (value === "inboundCalls") {
-      setMissedCalls(false);
-      setOutboundCalls(false);
-      setInboundCalls(true);
-    } else if (value === "outboundCalls") {
-      setMissedCalls(false);
-      setOutboundCalls(true);
-      setInboundCalls(false);
-    } else if (value === "missedCalls") {
-      setMissedCalls(true);
-      setOutboundCalls(false);
-      setInboundCalls(false);
-    }
-  };
-  console.log("This is cdr report", filterData);
+  // useEffect(() => {
+  //   if (cdr) {
+  //     if (all) {
+  //       if (inboundCalls) {
+  //         setFilterData(
+  //           cdr.data.filter((item) => item["Call-Direction"] === "inbound")
+  //         );
+  //       } else if (outboundCalls) {
+  //         setFilterData(
+  //           cdr.data.filter((item) => item["Call-Direction"] === "outbound")
+  //         );
+  //       } else if (missedCalls) {
+  //         setFilterData(
+  //           cdr.data.filter((item) => item["Call-Direction"] === "missed")
+  //         );
+  //       } else {
+  //         setFilterData(cdr.data);
+  //       }
+  //     } else if (extensions && callCenter && ringGroup) {
+  //       if (inboundCalls) {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               (item["application_state"] === "extension" ||
+  //                 item["application_state"] === "callcenter" ||
+  //                 item["application_state"] === "ringgroup") &&
+  //               item["Call-Direction"] === "inbound"
+  //           )
+  //         );
+  //       } else if (outboundCalls) {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               (item["application_state"] === "extension" ||
+  //                 item["application_state"] === "callcenter" ||
+  //                 item["application_state"] === "ringgroup") &&
+  //               item["Call-Direction"] === "outbound"
+  //           )
+  //         );
+  //       } else if (missedCalls) {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               (item["application_state"] === "extension" ||
+  //                 item["application_state"] === "callcenter" ||
+  //                 item["application_state"] === "ringgroup") &&
+  //               item["Call-Direction"] === "missed"
+  //           )
+  //         );
+  //       } else {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               item["application_state"] === "extension" ||
+  //               item["application_state"] === "callcenter" ||
+  //               item["application_state"] === "ringgroup"
+  //           )
+  //         );
+  //       }
+  //     } else if (extensions && callCenter) {
+  //       if (inboundCalls) {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               (item["application_state"] === "extension" ||
+  //                 item["application_state"] === "callcenter") &&
+  //               item["Call-Direction"] === "inbound"
+  //           )
+  //         );
+  //       } else if (outboundCalls) {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               (item["application_state"] === "extension" ||
+  //                 item["application_state"] === "callcenter") &&
+  //               item["Call-Direction"] === "outbound"
+  //           )
+  //         );
+  //       } else if (missedCalls) {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               (item["application_state"] === "extension" ||
+  //                 item["application_state"] === "callcenter") &&
+  //               item["Call-Direction"] === "missed"
+  //           )
+  //         );
+  //       } else {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               item["application_state"] === "extension" ||
+  //               item["application_state"] === "callcenter"
+  //           )
+  //         );
+  //       }
+  //     } else if (extensions && ringGroup) {
+  //       if (inboundCalls) {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               (item["application_state"] === "extension" ||
+  //                 item["application_state"] === "ringgroup") &&
+  //               item["Call-Direction"] === "inbound"
+  //           )
+  //         );
+  //       } else if (outboundCalls) {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               (item["application_state"] === "extension" ||
+  //                 item["application_state"] === "ringgroup") &&
+  //               item["Call-Direction"] === "outbound"
+  //           )
+  //         );
+  //       } else if (missedCalls) {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               (item["application_state"] === "extension" ||
+  //                 item["application_state"] === "ringgroup") &&
+  //               item["Call-Direction"] === "missed"
+  //           )
+  //         );
+  //       } else {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               item["application_state"] === "extension" ||
+  //               item["application_state"] === "ringgroup"
+  //           )
+  //         );
+  //       }
+  //     } else if (callCenter && ringGroup) {
+  //       if (inboundCalls) {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               (item["application_state"] === "callcenter" ||
+  //                 item["application_state"] === "ringgroup") &&
+  //               item["Call-Direction"] === "inbound"
+  //           )
+  //         );
+  //       } else if (outboundCalls) {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               (item["application_state"] === "callcenter" ||
+  //                 item["application_state"] === "ringgroup") &&
+  //               item["Call-Direction"] === "outbound"
+  //           )
+  //         );
+  //       } else if (missedCalls) {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               (item["application_state"] === "callcenter" ||
+  //                 item["application_state"] === "ringgroup") &&
+  //               item["Call-Direction"] === "missed"
+  //           )
+  //         );
+  //       } else {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               item["application_state"] === "callcenter" ||
+  //               item["application_state"] === "ringgroup"
+  //           )
+  //         );
+  //       }
+  //     } else if (extensions) {
+  //       if (inboundCalls) {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               item["application_state"] === "extension" &&
+  //               item["Call-Direction"] === "inbound"
+  //           )
+  //         );
+  //       } else if (outboundCalls) {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               item["application_state"] === "extension" &&
+  //               item["Call-Direction"] === "outbound"
+  //           )
+  //         );
+  //       } else if (missedCalls) {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               item["application_state"] === "extension" &&
+  //               item["Call-Direction"] === "missed"
+  //           )
+  //         );
+  //       } else {
+  //         setFilterData(
+  //           cdr.data.filter((item) => item["application_state"] === "extension")
+  //         );
+  //       }
+  //     } else if (callCenter) {
+  //       if (inboundCalls) {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               item["application_state"] === "callcenter" &&
+  //               item["Call-Direction"] === "inbound"
+  //           )
+  //         );
+  //       } else if (outboundCalls) {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               item["application_state"] === "callcenter" &&
+  //               item["Call-Direction"] === "outbound"
+  //           )
+  //         );
+  //       } else if (missedCalls) {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               item["application_state"] === "callcenter" &&
+  //               item["Call-Direction"] === "missed"
+  //           )
+  //         );
+  //       } else {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) => item["application_state"] === "callcenter"
+  //           )
+  //         );
+  //       }
+  //     } else if (ringGroup) {
+  //       if (inboundCalls) {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               item["application_state"] === "ringgroup" &&
+  //               item["Call-Direction"] === "inbound"
+  //           )
+  //         );
+  //       } else if (outboundCalls) {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               item["application_state"] === "ringgroup" &&
+  //               item["Call-Direction"] === "outbound"
+  //           )
+  //         );
+  //       } else if (missedCalls) {
+  //         setFilterData(
+  //           cdr.data.filter(
+  //             (item) =>
+  //               item["application_state"] === "ringgroup" &&
+  //               item["Call-Direction"] === "missed"
+  //           )
+  //         );
+  //       } else {
+  //         setFilterData(
+  //           cdr.data.filter((item) => item["application_state"] === "ringgroup")
+  //         );
+  //       }
+  //     }
+  //   }
+  // }, [
+  //   all,
+  //   extensions,
+  //   callCenter,
+  //   ringGroup,
+  //   cdr,
+  //   inboundCalls,
+  //   outboundCalls,
+  //   missedCalls,
+  // ]);
+
+  // const handleCallDirectionFilter = (e) => {
+  //   const value = e.target.value;
+  //   if (value === "allCalls") {
+  //     setMissedCalls(false);
+  //     setOutboundCalls(false);
+  //     setInboundCalls(false);
+  //   } else if (value === "inboundCalls") {
+  //     setMissedCalls(false);
+  //     setOutboundCalls(false);
+  //     setInboundCalls(true);
+  //   } else if (value === "outboundCalls") {
+  //     setMissedCalls(false);
+  //     setOutboundCalls(true);
+  //     setInboundCalls(false);
+  //   } else if (value === "missedCalls") {
+  //     setMissedCalls(true);
+  //     setOutboundCalls(false);
+  //     setInboundCalls(false);
+  //   }
+  // };
+  // console.log("This is cdr report", filterData);
 
   return (
     <main className="mainContent">
@@ -366,31 +498,192 @@ function CdrReport() {
         <div className="container-fluid px-0">
           <Header title="CDR Reports" />
           <div className="d-flex flex-wrap px-xl-3 py-2" id="detailsHeader">
-            <div className="col-xl-8 pt-3 pt-xl-0 ms-auto">
-              <div className="d-flex justify-content-end align-items-center">
-                <DatePicker
-                  selectsRange={true}
-                  startDate={startDate}
-                  endDate={endDate}
-                  onChange={(update) => {
-                    setDateRange(update);
-                  }}
-                  customInput={<ExampleCustomInput className="formItem mb-0" />}
-                  isClearable={true}
-                />
-                <div className="d-flex align-items-center ms-2">
-
+            <div className="col-xl-12 pt-3 pt-xl-0 ms-auto">
+              <div className="d-flex justify-content-end">
+                <div className="formRow border-0 ms-3">
+                  <label className="title text-start mb-2 w-100">
+                    Date Filter
+                  </label>
                   <select
-                    className="formItem mb-0"
-                    onChange={(e) => handleCallDirectionFilter(e)}
+                    className="formItem"
+                    value={filterBy}
+                    onChange={(e) => {
+                      setFilterBy(e.target.value);
+                      setStartDateFlag("");
+                      setEndDateFlag("");
+                    }}
                   >
-                    <option value={"allCalls"}>All Calls</option>
-                    <option value={"inboundCalls"}>Inbound Calls</option>
-                    <option value={"outboundCalls"}>Outbound Calls</option>
-                    <option value={"missedCalls"}>Missed Calls</option>
+                    <option value={"date"}>Only Date</option>
+                    <option value={"date_range"}>Date Range</option>
                   </select>
                 </div>
-                <Link
+                {filterBy === "date" && (
+                  <div className="formRow border-0 ms-3">
+                    <label className="title text-start mb-2 w-100">
+                      Choose Date
+                    </label>
+                    <input
+                      type="date"
+                      className="formItem"
+                      max={new Date().toISOString().split("T")[0]}
+                      value={startDateFlag}
+                      onChange={(e) => {
+                        setStartDateFlag(e.target.value);
+                        setPageNumber(1);
+                      }}
+                    />
+                  </div>
+                )}
+                {filterBy === "date_range" && (
+                  <>
+                    <div className="formRow border-0 ms-3">
+                      <label className="title text-start mb-2 w-100">
+                        From
+                      </label>
+                      <input
+                        type="date"
+                        className="formItem"
+                        max={new Date().toISOString().split("T")[0]}
+                        value={startDateFlag}
+                        onChange={(e) => {
+                          setStartDateFlag(e.target.value);
+                          setPageNumber(1);
+                        }}
+                      />
+                    </div>
+                    <div className="formRow border-0 ms-3">
+                      <label className="title text-start mb-2 w-100">To</label>
+                      <input
+                        type="date"
+                        className="formItem"
+                        max={new Date().toISOString().split("T")[0]}
+                        value={endDateFlag}
+                        onChange={(e) => {
+                          setEndDateFlag(e.target.value);
+                          setPageNumber(1);
+                        }}
+                        min={startDateFlag} // Prevent selecting an end date before the start date
+                      />
+                    </div>
+                  </>
+                )}
+                {/* {filterBy === "date_range" && (
+                  <div className="formRow border-0  ms-3">
+                    <label className="title text-start mb-2 w-100">
+                      Date Range Filter
+                    </label>
+                    <DatePicker
+                      selectsRange={true}
+                      startDate={startDate}
+                      endDate={endDate}
+                      onChange={(update) => {
+                        setDateRange(update);
+                        setPageNumber(1);
+                      }}
+                      customInput={
+                        <ExampleCustomInput className="formItem mb-0" />
+                      }
+                      isClearable={true}
+                      maxDate={new Date()}
+                    />
+                  </div>
+                )} */}
+                <div className="formRow border-0  ms-3">
+                  <label className="title text-start mb-2 w-100">
+                    Call Origin
+                  </label>
+                  <input
+                    type="text"
+                    className="formItem"
+                    // value={debounceCallOrigin}
+                    value={debounceCallOriginFlag}
+                    // onChange={(e) => {
+                    //   setDebounceCallOrigin(e.target.value);
+                    //   setPageNumber(1);
+                    // }}
+                    // min={100}
+                    // max={99999}
+                    onChange={handleCallOriginChange}
+                  />
+                </div>
+                <div className="formRow border-0  ms-3">
+                  <label className="title text-start mb-2 w-100">
+                    Call Destination
+                  </label>
+                  <input
+                    type="text"
+                    className="formItem"
+                    value={debounceCallDestinationFlag}
+                    // value={debounceCallDestination}
+                    // onChange={(e) => {
+                    //   setDebounceCallDestination(e.target.value);
+                    //   setPageNumber(1);
+                    // }}
+                    onChange={handleCallDestinationChange}
+                  />
+                </div>
+                <div className="formRow border-0  ms-3">
+                  <label className="title text-start mb-2 w-100">
+                    Call Direction
+                  </label>
+                  <select
+                    className="formItem"
+                    onChange={(e) => {
+                      setCallDirection(e.target.value);
+                      setPageNumber(1);
+                    }}
+                    // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                  >
+                    <option value={""}>All Calls</option>
+                    <option value={"inbound"}>Inbound Calls</option>
+                    <option value={"outbound"}>Outbound Calls</option>
+                    <option value={"local"}>Missed Calls</option>
+                  </select>
+                </div>
+                <div className="formRow border-0  ms-3">
+                  <label className="title text-start mb-2 w-100">
+                    Call Type
+                  </label>
+                  <select
+                    className="formItem"
+                    onChange={(e) => {
+                      setCallType(e.target.value);
+                      setPageNumber(1);
+                    }}
+                  >
+                    <option value={""}>All Calls</option>
+                    <option value={"extension"}>Extension</option>
+                    <option value={"voicemail"}>Voice Mail</option>
+                    <option value={"callcenter"}>Call Center</option>
+                    <option value={"ringgroup"}>Ring Group</option>
+                  </select>
+                </div>
+                <div className="formRow border-0  ms-3">
+                  <label className="title text-start mb-2 w-100">
+                    Hangup Cause
+                  </label>
+                  <select
+                    className="formItem"
+                    onChange={(e) => {
+                      setHagupCause(e.target.value);
+                      setPageNumber(1);
+                    }}
+                  >
+                    <option value={""}>All</option>
+                    <option value={"SUCCESS"}>SUCCESS</option>
+                    <option value={"BUSY"}>BUSY</option>
+                    <option value={"NOANSWER"}>NOANSWER</option>
+                    <option value={"NOT CONNECTED"}>NOT CONNECTED</option>
+                    <option value={"USER_NOT_REGISTERED"}>
+                      USER NOT REGISTERED
+                    </option>
+                    <option value={"SUBSCRIBER_ABSENT"}>
+                      SUBSCRIBER_ABSENT
+                    </option>
+                    <option value={"CANCEL"}>CANCEL</option>
+                  </select>
+                </div>
+                {/* <Link
                   to="#"
                   onClick={() => {
                     setAll(!all);
@@ -437,7 +730,7 @@ function CdrReport() {
                   className={ringGroup ? "toggleButton active" : "toggleButton"}
                 >
                   Ring Group
-                </Link>
+                </Link> */}
               </div>
             </div>
           </div>
@@ -472,8 +765,8 @@ function CdrReport() {
                       </tr>
                     ) : (
                       <>
-                        {cdr &&
-                          filterData.map((item, index) => {
+                        {cdr.data &&
+                          cdr.data.map((item, index) => {
                             return (
                               <tr key={index}>
                                 <td>{(pageNumber - 1) * 20 + (index + 1)}</td>
@@ -521,7 +814,7 @@ function CdrReport() {
                       </>
                     )}
 
-                    {cdr && cdr.data.length === 0 ? (
+                    {!loading && cdr && cdr.data.length === 0 ? (
                       <td colSpan={99}>
                         <EmptyPrompt name="Call" link="call" />
                       </td>
@@ -535,13 +828,14 @@ function CdrReport() {
           </div>
         </div>
         <div>
-          {cdr && cdr.data.length > 0 ? (
+          {!loading && cdr && cdr.data.length > 0 ? (
             <PaginationComponent
               pageNumber={(e) => setPageNumber(e)}
               totalPage={cdr.last_page}
               from={(pageNumber - 1) * cdr.per_page + 1}
               to={cdr.to}
               total={cdr.total}
+              defaultPage={pageNumber}
             />
           ) : (
             ""
