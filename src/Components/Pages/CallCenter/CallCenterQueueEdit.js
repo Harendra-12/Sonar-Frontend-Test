@@ -628,24 +628,24 @@ function CallCenterQueueEdit() {
                 <div className="col-12">
                   <select {...register("strategy")} className="formItem w-100">
                     <option value="ring-all">Ring All</option>
-                    <option value="longest-idle-agent">
+                    {/* <option value="longest-idle-agent">
                       Longest Idle Agent
-                    </option>
-                    <option value="round-robin">Round Robin</option>
+                    </option> */}
+                    {/* <option value="round-robin">Round Robin</option>
                     <option value="top-down">Top Down</option>
                     <option value="agent-with-least-talk-time">
                       Agent with least talk time
                     </option>
                     <option value="agent-with-fewest-calls">
                       Agent with fewest calls
-                    </option>
-                    <option value="sequentially-by-aget-order">
+                    </option> */}
+                    <option value="sequentially-by-agent-order">
                       Sequentially by agent order
                     </option>
+                    <option value="random">Random</option>
                     <option value="ring-progressively">
                       Ring Progressively
                     </option>
-                    <option value="random">Random</option>
                   </select>
                   <br />
                   <label htmlFor="data" className="formItemDesc">
