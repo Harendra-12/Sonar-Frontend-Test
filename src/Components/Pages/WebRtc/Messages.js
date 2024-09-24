@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import SideNavbarApp from "./SideNavbarApp";
-import ActiveCallSidePanel from "./ActiveCallSidePanel";
 import { Messager, UserAgent } from "sip.js";
-import { SIPProvider, useSIPProvider, CONNECT_STATUS } from "react-sipjs";
+import { useSIPProvider, CONNECT_STATUS } from "react-sipjs";
+import AgentSearch from "./AgentSearch";
 
 function Messages() {
+  const messageListRef = useRef(null);
   const sipProvider = useSIPProvider();
   const sessions = useSelector((state) => state.sessions);
   const [recipient, setRecipient] = useState("1013");
@@ -52,6 +52,58 @@ function Messages() {
     }
   };
 
+const sendFileMessage = async (file) => {
+  if (isSIPReady) {
+    const targetURI = `sip:${recipient}@${account.domain.domain_name}`;
+    const userAgent = sipProvider?.sessionManager?.userAgent;
+  
+    const target = UserAgent.makeURI(targetURI);
+  
+    const convertImageToBase64 = (file) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+        reader.readAsDataURL(file); // This converts to Base64
+      });
+    };
+  
+    if (target && file) {
+      try {
+        // Convert file to Base64 string
+        const fileContent = await convertImageToBase64(file); // Await here!
+  
+        // Create a message with the Base64 content
+        const messager = new Messager(userAgent, target, fileContent, file.type); // Use correct content type
+  
+        // Send the message with proper MIME type and extra headers
+        messager.message({
+          extraHeaders: [
+            `Content-Type: ${file.type}`, // e.g., image/png
+            `Content-Disposition: attachment; filename="${file.name}"`,
+          ],
+        });
+  
+        // Add a record to the message history (optional)
+        const time = new Date().toLocaleString();
+        setAllMessage((prevState) => [
+          ...prevState,
+          { from: extension, body: `[File sent: ${file.name}]`, time: time },
+        ]);
+  
+        console.log("File sent to:", targetURI);
+      } catch (error) {
+        console.error("Error sending file:", error);
+      }
+    } else {
+      console.error("Invalid recipient address or file.");
+    }
+  } else {
+    console.error("UserAgent or session not ready.");
+  }
+};
+
+
   //   useEffect(() => {
   const userAgent = sipProvider?.sessionManager?.userAgent;
 
@@ -62,33 +114,50 @@ function Messages() {
         const from =
           message?.incomingMessageRequest?.message?.from?.uri?.user.toString();
         const body = message?.incomingMessageRequest?.message?.body;
-
+  
+        // Check Content-Type for the incoming message
+        const contentType = message?.incomingMessageRequest?.message?.getHeader(
+          "Content-Type"
+        );
+  
         // Get the current time when the message is received
         const time = new Date().toLocaleString(); // Or use .toISOString() for UTC format
-
-        setAllMessage((prevState) => [
-          ...prevState,
-          { from, body, time },
-        ]);
-
-        console.log(
-          `Received message from ${from}: ${body} at ${time}`,
-          message
-        );
+  
+        // Check if the content is an image
+        if (contentType && contentType.startsWith("image/")) {
+          // If it's an image, create a URL for the Base64 image to render it in <img>
+          const imageUrl = `${body}`;
+  
+          // Update the state to include the image
+          setAllMessage((prevState) => [
+            ...prevState,
+            { from, body: <img src={imageUrl} alt="Received" />, time },
+          ]);
+  
+          console.log(`Received image from ${from} at ${time}`, message);
+        } else {
+          // If it's a text message or other type, render as text
+          setAllMessage((prevState) => [
+            ...prevState,
+            { from, body, time },
+          ]);
+  
+          console.log(`Received message from ${from}: ${body} at ${time}`, message);
+        }
       },
     };
-
-    //   return () => {
-    //     // Cleanup delegate if needed
-    //     userAgent.delegate = null;
-    //   };
   }
-  //   }, [sipProvider]);
+  
+
+  useEffect(() => {
+    if (messageListRef.current) {
+      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+    }
+  }, [allMessage]);
 
   console.log(allMessage);
   return (
     <>
-      {/* <SideNavbarApp /> */}
       <main
         className="mainContentApp"
         style={{
@@ -133,33 +202,34 @@ function Messages() {
                         effect="ripple"
                         data-category="incoming"
                       >
-                        Received
+                        Online
                       </button>
-                      <button
+                      {/* <button
                         className={"tabLink"}
                         effect="ripple"
                         data-category="outgoing"
                       >
                         Sent
-                      </button>
-                      <button
+                      </button> */}
+                      {/* <button
                         className={"tabLink"}
                         effect="ripple"
                         data-category="missed"
                       >
                         Failed
-                      </button>
+                      </button> */}
                     </div>
                   </nav>
                   <div className="tab-content">
-                    <div className="position-relative searchBox d-flex mt-3">
+                    {/* <div className="position-relative searchBox d-flex mt-3">
                       <input
                         type="search"
                         name="Search"
                         id="headerSearch"
                         placeholder="Search"
                       />
-                    </div>
+                    </div> */}
+                    <AgentSearch getDropdownValue={setRecipient} />
                     <div className="callList">
                       <div className="text-center callListItem">
                         <h5 className="fw-semibold">Today</h5>
@@ -178,12 +248,6 @@ function Messages() {
                               <h5>1009</h5>
                             </div>
                           </div>
-                          {/* <div className="col-10 col-xl-4">
-                            <h4>
-                              <span>Received</span>
-                            </h4>
-                            <h5>1 Attachment</h5>
-                          </div> */}
                           <div className="col-auto text-end d-flex justify-content-center align-items-center">
                             <h5>12:46pm</h5>
                           </div>
@@ -203,12 +267,6 @@ function Messages() {
                               <h5>1001</h5>
                             </div>
                           </div>
-                          {/* <div className="col-10 col-xl-4">
-                            <h4>
-                              <span>Received</span>
-                            </h4>
-                            <h5>1 Attachment</h5>
-                          </div> */}
                           <div className="col-auto text-end d-flex justify-content-center align-items-center">
                             <h5>12:46pm</h5>
                           </div>
@@ -228,12 +286,6 @@ function Messages() {
                               <h5>1000</h5>
                             </div>
                           </div>
-                          {/* <div className="col-10 col-xl-4">
-                            <h4>
-                              <span>Received</span>
-                            </h4>
-                            <h5>1 Attachment</h5>
-                          </div> */}
                           <div className="col-auto text-end d-flex justify-content-center align-items-center">
                             <h5>12:46pm</h5>
                           </div>
@@ -272,7 +324,7 @@ function Messages() {
                     </div>
                   </div>
                   <div className="messageContent">
-                    <div className="messageList">
+                    <div className="messageList" ref={messageListRef}>
                       {allMessage.map((item, index) => {
                         return (
                           <>
@@ -327,12 +379,32 @@ function Messages() {
                         />
                       </div>
                       <div className="col-auto d-flex">
-                        <button
+                        {/* <button
                           effect="ripple"
                           className="appPanelButtonColor2 ms-auto"
                         >
-                          <i className="fa-regular fa-paperclip" />
-                        </button>
+                          <i className="fa-regular fa-paperclip" >
+                          <input
+                          type="file"
+                          name=""
+                          id=""
+                          placeholder="Please enter your message"
+                          // value={messageInput}
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                              sendFileMessage(file);
+                            }
+                          }}
+                          onKeyDown={(e) => {
+                            console.log(e);
+                            if (e.key === "Enter") {
+                              sendFileMessage();
+                            }
+                          }}
+                        />
+                          </i>
+                        </button> */}
                         <button
                           effect="ripple"
                           className="appPanelButtonColor"

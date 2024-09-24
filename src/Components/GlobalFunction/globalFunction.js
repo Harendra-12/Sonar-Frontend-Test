@@ -68,7 +68,7 @@ export async function generalGetFunction(endpoint) {
         handleNavigation("/");
         return err.response.data;
       } else {
-        return err.response.data;
+        return null;
       }
       // console.log("This is error log",err.response.status);
     });
