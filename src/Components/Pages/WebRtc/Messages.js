@@ -17,6 +17,8 @@ function Messages() {
 
   useEffect(() => {
     if (sipProvider && sipProvider.connectStatus === CONNECT_STATUS.CONNECTED) {
+      console.log("SIP provider connected",sipProvider.connectStatus);
+      
       setIsSIPReady(true);
     } else {
       setIsSIPReady(false);
@@ -371,7 +373,6 @@ function Messages() {
                           value={messageInput}
                           onChange={(e) => setMessageInput(e.target.value)}
                           onKeyDown={(e) => {
-                            console.log(e);
                             if (e.key === "Enter") {
                               sendMessage();
                             }
