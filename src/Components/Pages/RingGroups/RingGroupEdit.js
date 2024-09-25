@@ -523,7 +523,28 @@ const RingGroupEdit = () => {
               </p>
             </div>
             <div className="col-xl-3 ps-2">
-              <div className="d-flex justify-content-end">
+              <div className="d-flex align-items-center justify-content-end">
+                <div className="formRow border-0 p-0 me-2">
+                  <div className="d-flex align-items-center">
+                    <div className="formLabel py-0 me-2">
+                      <label htmlFor="selectFormRow">Enabled</label>
+                    </div>
+                    <div className="my-auto position-relative mx-1">
+                      <label className="switch">
+                        <input
+                          type="checkbox"
+                          checked={watch().status}
+                          {...register("status")}
+                          id="showAllCheck"
+                        />
+                        <span className="slider round" />
+                      </label>
+                    </div>
+                  </div>
+                  <label htmlFor="data" className="formItemDesc mt-0">
+                    Set the status of this ring group.
+                  </label>
+                </div>
                 <button
                   onClick={() => {
                     navigate(-1);
@@ -532,7 +553,7 @@ const RingGroupEdit = () => {
                   type="button"
                   effect="ripple"
                   className="panelButton"
-                  // onClick={() => { window.location = "/ring-groups" }}
+                // onClick={() => { window.location = "/ring-groups" }}
                 >
                   Back
                 </button>
@@ -780,11 +801,11 @@ const RingGroupEdit = () => {
                                 .filter((item1) => {
                                   return (
                                     item1.extension.extension ==
-                                      destination[index]?.destination ||
+                                    destination[index]?.destination ||
                                     !destination.some(
                                       (destinationItem, destinationIndex) =>
                                         destinationItem.destination ==
-                                          item1.extension.extension &&
+                                        item1.extension.extension &&
                                         destinationIndex != index
                                     )
                                   );
@@ -810,7 +831,7 @@ const RingGroupEdit = () => {
                           </select>
                         </div>
                       </div>
-                      <div className="col-2 pe-2">
+                      <div className="col-3 pe-2">
                         {index === 0 ? (
                           <div className="formLabel">
                             <label htmlFor="">Delay</label>
@@ -842,7 +863,7 @@ const RingGroupEdit = () => {
                           })()}
                         </select>
                       </div>
-                      <div className="col-2 pe-2">
+                      <div className="col-3 pe-2">
                         {index === 0 ? (
                           <div className="formLabel">
                             <label htmlFor="">Timeout</label>
@@ -892,7 +913,7 @@ const RingGroupEdit = () => {
                           <option value="confirm">Confirm</option>
                         </select>
                       </div> */}
-                      <div className="col-2 pe-2">
+                      <div className="col-3 pe-2">
                         {index === 0 ? (
                           <div className="formLabel">
                             <label htmlFor="">Status</label>
@@ -943,7 +964,7 @@ const RingGroupEdit = () => {
                 </div>
                 <button
                   onClick={() => addNewDestination()}
-                  className="panelButton ms-xl-5"
+                  className="panelButton ms-xl-5 mt-auto"
                   effect="ripple"
                   type="button"
                 >
@@ -1008,16 +1029,16 @@ const RingGroupEdit = () => {
                           )
                         )),
                     })}
-                    // {...register("call_timeout", {
-                    //   ...requiredValidator,
-                    //   ...noSpecialCharactersValidator,
-                    //   ...minValidator(
-                    //     destination.reduce(
-                    //       (max, obj) => Math.max(max, obj.delay),
-                    //       0
-                    //     )
-                    //   ),
-                    // })}
+                  // {...register("call_timeout", {
+                  //   ...requiredValidator,
+                  //   ...noSpecialCharactersValidator,
+                  //   ...minValidator(
+                  //     destination.reduce(
+                  //       (max, obj) => Math.max(max, obj.delay),
+                  //       0
+                  //     )
+                  //   ),
+                  // })}
                   />
                   {errors.call_timeout && (
                     <ErrorMessage text={errors.call_timeout.message} />
@@ -1289,7 +1310,7 @@ const RingGroupEdit = () => {
                   <option value="false">False</option>
                 </select>
               </div>
-              <div className="formRow  col-xl-3">
+              {/* <div className="formRow  col-xl-3">
                 <div className="d-flex flex-wrap align-items-center">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Enabled</label>
@@ -1311,7 +1332,7 @@ const RingGroupEdit = () => {
                 <label htmlFor="data" className="formItemDesc">
                   Set the status of this ring group.
                 </label>
-              </div>
+              </div> */}
             </form>
           </div>
         </div>

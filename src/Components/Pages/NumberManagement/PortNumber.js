@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
+import Header from "../../CommonComponents/Header";
 
 function PortNumber() {
   const navigate = useNavigate();
@@ -82,12 +83,14 @@ function PortNumber() {
       <main className="mainContent">
         <section id="phonePage">
           <div className="container-fluid">
-            <div className="row">
-              <div id="detailsHeader">
-                <div className="col-xl-6 my-auto">
-                  <h4 className="my-auto">Port Number</h4>
-                </div>
-                <div className="col-xl-6 ps-2">
+            <div className="row justify-content-center">
+              <Header title="Port Number" />
+              <div
+                className="d-flex flex-wrap justify-content-end px-xl-3 py-2 position-relative"
+                style={{ zIndex: 1 }}
+                id="detailsHeader"
+              >
+                <div className="col-xl-8 pt-3 pt-xl-0">
                   <div className="d-flex justify-content-end">
                     <button
                       effect="ripple"

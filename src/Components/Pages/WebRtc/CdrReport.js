@@ -500,8 +500,8 @@ function CdrReport() {
           <div className="d-flex flex-wrap px-xl-3 py-2" id="detailsHeader">
             <div className="col-xl-12 pt-3 pt-xl-0 ms-auto">
               <div className="d-flex justify-content-end">
-                <div className="formRow border-0 ms-3">
-                  <label className="title text-start mb-2 w-100">
+                <div className="formRow border-0">
+                  <label className="formLabel text-start mb-0 w-100">
                     Date Filter
                   </label>
                   <select
@@ -518,8 +518,8 @@ function CdrReport() {
                   </select>
                 </div>
                 {filterBy === "date" && (
-                  <div className="formRow border-0 ms-3">
-                    <label className="title text-start mb-2 w-100">
+                  <div className="formRow border-0">
+                    <label className="formLabel text-start mb-0 w-100">
                       Choose Date
                     </label>
                     <input
@@ -536,8 +536,8 @@ function CdrReport() {
                 )}
                 {filterBy === "date_range" && (
                   <>
-                    <div className="formRow border-0 ms-3">
-                      <label className="title text-start mb-2 w-100">
+                    <div className="formRow border-0">
+                      <label className="formLabel text-start mb-0 w-100">
                         From
                       </label>
                       <input
@@ -551,8 +551,8 @@ function CdrReport() {
                         }}
                       />
                     </div>
-                    <div className="formRow border-0 ms-3">
-                      <label className="title text-start mb-2 w-100">To</label>
+                    <div className="formRow border-0">
+                      <label className="formLabel text-start mb-0 w-100">To</label>
                       <input
                         type="date"
                         className="formItem"
@@ -588,8 +588,8 @@ function CdrReport() {
                     />
                   </div>
                 )} */}
-                <div className="formRow border-0  ms-3">
-                  <label className="title text-start mb-2 w-100">
+                <div className="formRow border-0">
+                  <label className="formLabel text-start mb-0 w-100">
                     Call Origin
                   </label>
                   <input
@@ -606,8 +606,8 @@ function CdrReport() {
                     onChange={handleCallOriginChange}
                   />
                 </div>
-                <div className="formRow border-0  ms-3">
-                  <label className="title text-start mb-2 w-100">
+                <div className="formRow border-0">
+                  <label className="formLabel text-start mb-0 w-100">
                     Call Destination
                   </label>
                   <input
@@ -622,8 +622,8 @@ function CdrReport() {
                     onChange={handleCallDestinationChange}
                   />
                 </div>
-                <div className="formRow border-0  ms-3">
-                  <label className="title text-start mb-2 w-100">
+                <div className="formRow border-0">
+                  <label className="formLabel text-start mb-0 w-100">
                     Call Direction
                   </label>
                   <select
@@ -632,7 +632,7 @@ function CdrReport() {
                       setCallDirection(e.target.value);
                       setPageNumber(1);
                     }}
-                    // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                  // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                   >
                     <option value={""}>All Calls</option>
                     <option value={"inbound"}>Inbound Calls</option>
@@ -640,8 +640,8 @@ function CdrReport() {
                     <option value={"local"}>Missed Calls</option>
                   </select>
                 </div>
-                <div className="formRow border-0  ms-3">
-                  <label className="title text-start mb-2 w-100">
+                <div className="formRow border-0">
+                  <label className="formLabel text-start mb-0 w-100">
                     Call Type
                   </label>
                   <select
@@ -658,8 +658,8 @@ function CdrReport() {
                     <option value={"ringgroup"}>Ring Group</option>
                   </select>
                 </div>
-                <div className="formRow border-0  ms-3">
-                  <label className="title text-start mb-2 w-100">
+                <div className="formRow border-0">
+                  <label className="formLabel text-start mb-0 w-100">
                     Hangup Cause
                   </label>
                   <select

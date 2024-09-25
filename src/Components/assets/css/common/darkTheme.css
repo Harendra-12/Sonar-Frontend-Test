@@ -31,3 +31,7 @@ table tbody tr:nth-child(even) {
 .toggleButton.active {
     border: 1px solid #ec407a;
 }
+
+input:checked+.slider {
+    background-color: var(--border-color);
+}
