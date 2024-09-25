@@ -376,12 +376,23 @@ function EFax() {
                               File(s) (maximum file size is 50 MB)
                             </label>
                             <div className="inputFileWrapper">
-                              <input type="file" />
+                              {/* <input type="file" /> */}
+                              <select>
+                                <option value="" disabled>
+                                  Chose file
+                                </option>
+                                {allFiles &&
+                                  allFiles.map((file) => (
+                                    <option value={file.id}>
+                                      {file.file_name}
+                                    </option>
+                                  ))}
+                              </select>
                             </div>
                           </div>
                           <div className="buttonControl">
                             <button className="panelButtonWhite">Cancel</button>
-                            <button className="panelButton">Send Later</button>
+                            {/* <button className="panelButton">Send Later</button> */}
                             <button className="panelButton">Send Now</button>
                           </div>
                         </div>
