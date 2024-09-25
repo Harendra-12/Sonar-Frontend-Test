@@ -395,7 +395,7 @@ function CallCenterQueueEdit() {
               return {
                 agent_name: item.name,
                 tier_level: item.level,
-                call_timeout: item.call_timeout===""?null:Number(item.call_timeout),
+                call_timeout: item.call_timeout===null?null:Number(item.call_timeout),
                 tier_position: item.position,
                 type: item.type,
                 // status: "Logged Out",
