@@ -64,7 +64,7 @@ export async function generalGetFunction(endpoint) {
         type: "SET_LOADING",
        loading:false,
       })
-      if (err.response.status === 401) {
+      if (err.response?.status === 401) {
         handleNavigation("/");
         return err.response.data;
       } else {

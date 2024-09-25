@@ -85,6 +85,7 @@ function CallCenterQueueAdd() {
       // status: "Logged Out",
       password: "1234",
       contact: "",
+      call_timeout:""
     },
   ]);
 
@@ -104,6 +105,7 @@ function CallCenterQueueAdd() {
         // status: "Logged Out",
         password: "1234",
         contact: "",
+        call_timeout:""
       },
     ]);
   }
@@ -288,6 +290,7 @@ function CallCenterQueueAdd() {
         agents: agent.map((item) => {
           return {
             agent_name: item.name,
+            call_timeout:item.call_timeout===""?null:Number(item.call_timeout),
             tier_level: item.level,
             tier_position: item.position,
             type: item.type,
@@ -900,7 +903,7 @@ function CallCenterQueueAdd() {
                             <option value={9}>9</option>
                           </select>
                         </div>
-                        <div className="col-2 pe-2">
+                        {/* <div className="col-2 pe-2">
                           <div className="formLabel">
                             {index === 0 ? <label htmlFor="">Type</label> : ""}
                           </div>
@@ -915,6 +918,25 @@ function CallCenterQueueAdd() {
                             <option value={"callback"}>Call Back</option>
                             <option value={"uuid-standby"}>UUID Standbu</option>
                           </select>
+                        </div> */}
+                        <div className="col-2 pe-2">
+                          <div className="formLabel">
+                            {index === 0 ? (
+                              <label htmlFor="">Call Timeout</label>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                          <div className="position-relative">
+                            <input
+                              type="text"
+                              name="call_timeout"
+                              value={item.call_timeout}
+                              onChange={(e) => handleAgentChange(e, index)}
+                              className="formItem"
+                              placeholder="Call Timeout"
+                            />
+                          </div>
                         </div>
                         {/* <div className="col-2 pe-2">
                           <div className="formLabel">
