@@ -197,7 +197,7 @@ input[type="file"]::file-selector-button {
     font-size: 12px;
 }
 
-#detailsContent .formRow .formItemDesc {
+.formRow .formItemDesc {
     font-size: 11px;
     line-height: 15px;
     margin-top: 8px;

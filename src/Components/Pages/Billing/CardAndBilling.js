@@ -14,9 +14,11 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 
 import CircularLoader from "../../Loader/CircularLoader";
+import { useNavigate } from "react-router-dom";
 
 function CardAndBilling() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const billingListRefresh = useSelector((state) => state.billingListRefresh);
   const account = useSelector((state) => state.account);
   const cardListRefresh = useSelector((state) => state.cardListRefresh);
@@ -355,17 +357,15 @@ function CardAndBilling() {
                       <Cards
                         className="cardWrapper row align-items-center col-12 mx-auto"
                         number={selectedCard?.[0]?.card_number}
-                        expiry={`${
-                          selectedCard?.[0]?.exp_month
-                            ? selectedCard?.[0]?.exp_month < 10
-                              ? `0${selectedCard?.[0]?.exp_month}`
-                              : selectedCard?.[0]?.exp_month
-                            : ""
-                        }/${
-                          selectedCard?.[0]?.exp_year
+                        expiry={`${selectedCard?.[0]?.exp_month
+                          ? selectedCard?.[0]?.exp_month < 10
+                            ? `0${selectedCard?.[0]?.exp_month}`
+                            : selectedCard?.[0]?.exp_month
+                          : ""
+                          }/${selectedCard?.[0]?.exp_year
                             ? selectedCard?.[0]?.exp_year
                             : ""
-                        }`}
+                          }`}
                         cvc={selectedCard?.[0]?.cvc}
                         name={selectedCard?.[0]?.name}
                       />
@@ -456,70 +456,69 @@ function CardAndBilling() {
                               </button>
                             </div>
                           </div>
-                          <div className="row px-2 pt-2 gy-3">
-                            {cardList &&
-                              cardList.map((item, key) => {
-                                return (
-                                  <div className="col-xl-6" key={key}>
-                                    <div
-                                      className={`savedCardWrapper ${
-                                        item.default ? "active" : ""
+                          {cardList && <div className="row px-2 pt-2 gy-3">
+
+                            {cardList.map((item, key) => {
+                              return (
+                                <div className="col-xl-6" key={key}>
+                                  <div
+                                    className={`savedCardWrapper ${item.default ? "active" : ""
                                       }`}
-                                    >
-                                      <div className="imgWrapper">
-                                        <div className="card-logo-container">
-                                          <Cards
-                                            number={item.card_number}
-                                            name=""
-                                            expiry=""
-                                            cvc=""
-                                            focused=""
-                                          />
-                                        </div>
-                                      </div>
-                                      <div className="ms-4">
-                                        <label>
-                                          **** **** ****{" "}
-                                          {item.card_number.slice(-4)}
-                                        </label>
-                                      </div>
-                                      <div className="ms-auto">
-                                        <label className="switch">
-                                          <input
-                                            type="checkbox"
-                                            id="showAllCheck"
-                                            checked={item.default}
-                                            onChange={(e) => {
-                                              if (e.target.checked) {
-                                                setSelectedCardId(item.id);
-                                                setCardConfirmationPopUp(true);
-                                                setDisableCard(false);
-                                              } else {
-                                                setSelectedCardId(item.id);
-                                                setCardConfirmationPopUp(true);
-                                                setDisableCard(true);
-                                              }
-                                            }}
-                                          />
-                                          <span className="slider round"></span>
-                                        </label>
-                                      </div>
-                                      <div className="ms-3">
-                                        <button
-                                          className="clearButton"
-                                          onClick={() => {
-                                            setCardDelId(item.id);
-                                            setCardDelPopUp(true);
-                                          }}
-                                        >
-                                          <i className="fa-duotone text-danger fa-trash"></i>
-                                        </button>
+                                  >
+                                    <div className="imgWrapper">
+                                      <div className="card-logo-container">
+                                        <Cards
+                                          number={item.card_number}
+                                          name=""
+                                          expiry=""
+                                          cvc=""
+                                          focused=""
+                                        />
                                       </div>
                                     </div>
+                                    <div className="ms-4">
+                                      <label>
+                                        **** **** ****{" "}
+                                        {item.card_number.slice(-4)}
+                                      </label>
+                                    </div>
+                                    <div className="ms-auto">
+                                      <label className="switch">
+                                        <input
+                                          type="checkbox"
+                                          id="showAllCheck"
+                                          checked={item.default}
+                                          onChange={(e) => {
+                                            if (e.target.checked) {
+                                              setSelectedCardId(item.id);
+                                              setCardConfirmationPopUp(true);
+                                              setDisableCard(false);
+                                            } else {
+                                              setSelectedCardId(item.id);
+                                              setCardConfirmationPopUp(true);
+                                              setDisableCard(true);
+                                            }
+                                          }}
+                                        />
+                                        <span className="slider round"></span>
+                                      </label>
+                                    </div>
+                                    <div className="ms-3">
+                                      <button
+                                        className="clearButton"
+                                        onClick={() => {
+                                          setCardDelId(item.id);
+                                          setCardDelPopUp(true);
+                                        }}
+                                      >
+                                        <i className="fa-duotone text-danger fa-trash"></i>
+                                      </button>
+                                    </div>
                                   </div>
-                                );
-                              })}
-                          </div>
+                                </div>
+                              );
+                            })}
+                          </div>}
                         </div>
                       </div>
                     </div>
@@ -549,9 +548,8 @@ function CardAndBilling() {
                                   >
                                     <div className="accordion-item">
                                       <h2
-                                        className={`accordion-header addressDrawer ${
-                                          item.default ? "active" : ""
-                                        }`}
+                                        className={`accordion-header addressDrawer ${item.default ? "active" : ""
+                                          }`}
                                       >
                                         <div
                                           className="d-flex flex-wrap align-items-center"
@@ -658,13 +656,12 @@ function CardAndBilling() {
                                                       : item.fullname
                                                   }
                                                   name="name"
-                                                  className={`noinputfield ${
-                                                    errorBilling.name
-                                                      ? "error-border"
-                                                      : editBillId
+                                                  className={`noinputfield ${errorBilling.name
+                                                    ? "error-border"
+                                                    : editBillId
                                                       ? "edit"
                                                       : ""
-                                                  }`}
+                                                    }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -685,13 +682,12 @@ function CardAndBilling() {
                                                   }
                                                   placeholder="Phone number"
                                                   name="phone"
-                                                  className={`noinputfield ${
-                                                    errorBilling.phone
-                                                      ? "error-border"
-                                                      : editBillId
+                                                  className={`noinputfield ${errorBilling.phone
+                                                    ? "error-border"
+                                                    : editBillId
                                                       ? "edit"
                                                       : ""
-                                                  }`}
+                                                    }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -712,13 +708,12 @@ function CardAndBilling() {
                                                   }
                                                   placeholder="Email Address"
                                                   name="email"
-                                                  className={`noinputfield ${
-                                                    errorBilling.email
-                                                      ? "error-border"
-                                                      : editBillId
+                                                  className={`noinputfield ${errorBilling.email
+                                                    ? "error-border"
+                                                    : editBillId
                                                       ? "edit"
                                                       : ""
-                                                  }`}
+                                                    }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -739,13 +734,12 @@ function CardAndBilling() {
                                                   }
                                                   placeholder="Full address"
                                                   name="address"
-                                                  className={`noinputfield ${
-                                                    errorBilling.address
-                                                      ? "error-border"
-                                                      : editBillId
+                                                  className={`noinputfield ${errorBilling.address
+                                                    ? "error-border"
+                                                    : editBillId
                                                       ? "edit"
                                                       : ""
-                                                  }`}
+                                                    }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -766,13 +760,12 @@ function CardAndBilling() {
                                                   }
                                                   placeholder="City"
                                                   name="city"
-                                                  className={`noinputfield ${
-                                                    errorBilling.city
-                                                      ? "error-border"
-                                                      : editBillId
+                                                  className={`noinputfield ${errorBilling.city
+                                                    ? "error-border"
+                                                    : editBillId
                                                       ? "edit"
                                                       : ""
-                                                  }`}
+                                                    }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -793,13 +786,12 @@ function CardAndBilling() {
                                                   }
                                                   placeholder="State"
                                                   name="state"
-                                                  className={`noinputfield ${
-                                                    errorBilling.state
-                                                      ? "error-border"
-                                                      : editBillId
+                                                  className={`noinputfield ${errorBilling.state
+                                                    ? "error-border"
+                                                    : editBillId
                                                       ? "edit"
                                                       : ""
-                                                  }`}
+                                                    }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -820,13 +812,12 @@ function CardAndBilling() {
                                                   }
                                                   placeholder="Zip Code"
                                                   name="zip"
-                                                  className={`noinputfield ${
-                                                    errorBilling.zip
-                                                      ? "error-border"
-                                                      : editBillId
+                                                  className={`noinputfield ${errorBilling.zip
+                                                    ? "error-border"
+                                                    : editBillId
                                                       ? "edit"
                                                       : ""
-                                                  }`}
+                                                    }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -847,13 +838,12 @@ function CardAndBilling() {
                                                   }
                                                   placeholder="Country"
                                                   name="country"
-                                                  className={`noinputfield ${
-                                                    errorBilling.country
-                                                      ? "error-border"
-                                                      : editBillId
+                                                  className={`noinputfield ${errorBilling.country
+                                                    ? "error-border"
+                                                    : editBillId
                                                       ? "edit"
                                                       : ""
-                                                  }`}
+                                                    }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -935,6 +925,7 @@ function CardAndBilling() {
                     <div className="itemWrapper c h-100">
                       <div className="heading">
                         <i className="fa-duotone fa-file-invoice"></i> Invoices
+                        <span className="float-end" style={{ cursor: 'pointer' }} onClick={() => navigate('/card-transaction-list')}><i class="fa-solid fa-eye"></i></span>
                       </div>
                       <ul className="invoiceList">
                         {accountDetails.payments.map((item, key) => {
@@ -952,8 +943,7 @@ function CardAndBilling() {
                                 onClick={() =>
                                   downloadImage(
                                     item.invoice_url,
-                                    `invoice${
-                                      item.transaction_date.split(" ")[0]
+                                    `invoice${item.transaction_date.split(" ")[0]
                                     }`
                                   )
                                 }

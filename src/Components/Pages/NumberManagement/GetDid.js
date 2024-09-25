@@ -231,27 +231,23 @@ function GetDid() {
         <div className="container-fluid">
           <div className="row justify-content-center">
             <Header title="Get DID" />
-            <div className="col-12" id="subPageHeader">
-              <div className="row px-xl-3 col-12">
-                <div className="col-xl-6 my-auto">
-                  {/* <h4 className="my-auto">Get DID</h4> */}
-                </div>
-                <div className="col-xl-6 ps-2">
-                  <div className="d-flex justify-content-end">
-                    <button
-                      effect="ripple"
-                      className="panelButton"
-                      onClick={() => {
-                        navigate(-1);
-                        backToTop();
-                      }}
-                    >
-                      Back
-                    </button>
-                    {/* <button effect="ripple" className="panelButton">
-                      Save
-                    </button> */}
-                  </div>
+            <div
+              className="d-flex flex-wrap justify-content-end px-xl-3 py-2 position-relative"
+              style={{ zIndex: 1 }}
+              id="detailsHeader"
+            >
+              <div className="col-xl-8 pt-3 pt-xl-0">
+                <div className="d-flex justify-content-end">
+                  <button
+                    effect="ripple"
+                    className="panelButton"
+                    onClick={() => {
+                      navigate(-1);
+                      backToTop();
+                    }}
+                  >
+                    Back
+                  </button>
                 </div>
               </div>
             </div>
@@ -268,9 +264,8 @@ function GetDid() {
                       <div className="col-12">
                         <select
                           name="searchType"
-                          className={`formItem ${
-                            errors.searchType ? "error" : ""
-                          }`}
+                          className={`formItem ${errors.searchType ? "error" : ""
+                            }`}
                           {...register("searchType", { ...requiredValidator })}
                         >
                           <option value="tollfree">Toll free</option>
@@ -288,9 +283,8 @@ function GetDid() {
                         <input
                           type="number"
                           name="quantity"
-                          className={`formItem ${
-                            errors.quantity ? "error" : ""
-                          }`}
+                          className={`formItem ${errors.quantity ? "error" : ""
+                            }`}
                           {...register("quantity", {
                             ...requiredValidator,
                             ...lengthValidator(1, 10),

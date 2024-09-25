@@ -333,7 +333,28 @@ function CallCenterQueueAdd() {
               {/* <h4 className="my-auto">Add Call Center Queue</h4> */}
             </div>
             <div className="col-xl-6 ps-2">
-              <div className="d-flex justify-content-end">
+              <div className="d-flex align-items-center justify-content-end">
+                <div className="formRow border-0 p-0 me-2">
+                  <div className="d-flex align-items-center">
+                    <div className="formLabel py-0 me-2">
+                      <label htmlFor="selectFormRow">Enabled</label>
+                    </div>
+                    <div className="my-auto position-relative mx-1">
+                      <label className="switch">
+                        <input
+                          type="checkbox"
+                          checked={watch().status}
+                          {...register("status")}
+                          id="showAllCheck"
+                        />
+                        <span className="slider round" />
+                      </label>
+                    </div>
+                  </div>
+                  <label htmlFor="data" className="formItemDesc mt-0">
+                    Set the status of this call center queue.
+                  </label>
+                </div>
                 <button
                   effect="ripple"
                   className="panelButton"
@@ -489,9 +510,9 @@ function CallCenterQueueAdd() {
                     <option value="sequentially-by-agent-order">
                       Sequentially by agent order
                     </option>
-                   
+
                     <option value="random">Random</option>
-                     <option value="ring-progressively">
+                    <option value="ring-progressively">
                       Ring Progressively
                     </option>
                   </select>
@@ -695,7 +716,7 @@ function CallCenterQueueAdd() {
                   <br />
                 </div>
               </div>
-              <div className="formRow  col-xl-3">
+              {/* <div className="formRow col-xl-3">
                 <div className="d-flex flex-wrap align-items-center">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Enabled</label>
@@ -717,7 +738,7 @@ function CallCenterQueueAdd() {
                 <label htmlFor="data" className="formItemDesc">
                   Set the status of this call center queue.
                 </label>
-              </div>
+              </div> */}
               <div className="formRow col-xl-12 row">
                 {agent &&
                   agent.map((item, index) => {
@@ -935,7 +956,7 @@ function CallCenterQueueAdd() {
                           </div>
                         )}
                         {index === agent.length - 1 &&
-                        index !== (user && user.length - 1) ? (
+                          index !== (user && user.length - 1) ? (
                           <div
                             onClick={addNewAgent}
                             className="col-auto h-100 d-flex align-items-center"
