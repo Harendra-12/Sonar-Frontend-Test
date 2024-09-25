@@ -7,6 +7,8 @@ import {
   generalDeleteFunction,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
+import Select from "react-select";
+import { useForm } from "react-hook-form";
 
 function EFax() {
   const [clickStatus, setClickStatus] = useState("all");
@@ -14,6 +16,8 @@ function EFax() {
   const [deletePopup, setDeletePopup] = useState(false);
   const [deleteFile, setDeleteFile] = useState(null);
   const [contentLoading, setContentLoading] = useState(true);
+  const [dropdownOption, setDropdownOption] = useState([]);
+  const { watch, setValue } = useForm();
 
   useEffect(() => {
     const getData = async () => {
@@ -21,6 +25,12 @@ function EFax() {
       const response = await generalGetFunction("/fax/all");
       if (response.status) {
         setAllFiles(response.data);
+        const newOptions = response.data.map((file) => ({
+          value: file.id,
+          label: file.file_name,
+        }));
+
+        setDropdownOption([...dropdownOption, ...newOptions]);
         setContentLoading(false);
       } else {
         setContentLoading(false);
@@ -29,6 +39,7 @@ function EFax() {
 
     getData();
   }, []);
+  console.log("dropdownoption:", dropdownOption);
 
   const newFileUpload = (file) => {
     setAllFiles([...allFiles, file]);
@@ -70,6 +81,74 @@ function EFax() {
     } else {
       setDeletePopup(false);
     }
+  };
+
+  const selectedUsages = watch("usages", []);
+
+  // Custom styles for react-select
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      // border: '1px solid var(--color4)',
+      border: "1px solid var(--color4)",
+      borderRadius: "5px",
+      outline: "none",
+      fontSize: "14px",
+      width: "100%",
+      minHeight: "32px",
+      height: "auto",
+      boxShadow: state.isFocused ? "none" : provided.boxShadow,
+      "&:hover": {
+        borderColor: "var(--ui-accent)",
+      },
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      height: "auto",
+      padding: "0 6px",
+    }),
+    input: (provided) => ({
+      ...provided,
+      margin: "0",
+    }),
+    indicatorSeparator: (provided) => ({
+      display: "none",
+    }),
+    indicatorsContainer: (provided) => ({
+      ...provided,
+      height: "32px",
+    }),
+    dropdownIndicator: (provided) => ({
+      ...provided,
+      color: "#202020",
+      "&:hover": {
+        color: "#202020",
+      },
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      paddingLeft: "15px",
+      paddingTop: 0,
+      paddingBottom: 0,
+      // backgroundColor: state.isSelected ? "transparent" : "transparent",
+      "&:hover": {
+        backgroundColor: "#0055cc",
+        color: "#fff",
+      },
+      fontSize: "14px",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      margin: 0,
+      padding: 0,
+    }),
+    menuList: (provided) => ({
+      ...provided,
+      padding: 0,
+      margin: 0,
+      maxHeight: "150px",
+      overflowY: "auto",
+    }),
   };
 
   return (
@@ -324,60 +403,61 @@ function EFax() {
                         tabIndex={0}
                       >
                         <div className="newMessageWrapper">
-                          <div className="messageTitle">
-                            <h4>New Fax</h4>
-                          </div>
-                          <div className="messageTo">
-                            <label>To</label>
-                            <div className="d-flex flex-wrap">
-                              {/* Map This in Loop */}
-                              <div className="col-auto">
-                                <div style={{ width: "max-content" }}>
-                                  <button class="receipentButton">
-                                    johndoe@email.com
-                                  </button>
+                          <form>
+                            <div className="messageTitle">
+                              <h4>New Fax</h4>
+                            </div>
+                            <div className="messageTo">
+                              <label>To</label>
+                              <div className="d-flex flex-wrap">
+                                {/* Map This in Loop */}
+                                <div className="col-auto">
+                                  <div style={{ width: "max-content" }}>
+                                    <button class="receipentButton">
+                                      johndoe@email.com
+                                    </button>
+                                  </div>
                                 </div>
-                              </div>
-                              <div className="col-auto">
-                                <div style={{ width: "max-content" }}>
-                                  <button class="receipentButton">
-                                    johndoe@email.com
-                                  </button>
+                                <div className="col-auto">
+                                  <div style={{ width: "max-content" }}>
+                                    <button class="receipentButton">
+                                      johndoe@email.com
+                                    </button>
+                                  </div>
                                 </div>
-                              </div>
-                              <div className="col-auto">
-                                <div style={{ width: "max-content" }}>
-                                  <button class="receipentButton">
-                                    johndoe@email.com
-                                  </button>
+                                <div className="col-auto">
+                                  <div style={{ width: "max-content" }}>
+                                    <button class="receipentButton">
+                                      johndoe@email.com
+                                    </button>
+                                  </div>
                                 </div>
-                              </div>
-                              {/* Map This in Loop */}
-                              <div className="col-auto my-auto">
-                                <input
-                                  type="text"
-                                  placeholder="Recipents"
-                                  className="border-0 mb-0"
-                                />
+                                {/* Map This in Loop */}
+                                <div className="col-auto my-auto">
+                                  <input
+                                    type="text"
+                                    placeholder="Recipents"
+                                    className="border-0 mb-0"
+                                  />
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div className="messageSubject">
-                            <label>Cover Page</label>
-                            <input type="text" placeholder="Subject" />
-                          </div>
-                          <div className="messageBody">
-                            <label>Cover Page Note</label>
-                            <textarea rows={4} />
-                          </div>
-                          <div className="messageBody">
-                            <label>
-                              <i className="fa-regular fa-link"></i> Attach
-                              File(s) (maximum file size is 50 MB)
-                            </label>
-                            <div className="inputFileWrapper">
-                              {/* <input type="file" /> */}
-                              <select>
+                            <div className="messageSubject">
+                              <label>Cover Page</label>
+                              <input type="text" placeholder="Subject" />
+                            </div>
+                            <div className="messageBody">
+                              <label>Cover Page Note</label>
+                              <textarea rows={4} />
+                            </div>
+                            <div className="messageBody">
+                              <label>
+                                <i className="fa-regular fa-link"></i> Attach
+                                File(s) (maximum file size is 50 MB)
+                              </label>
+                              <div className="inputFileWrapper">
+                                {/* <input type="file" /> */}
+                                {/* <select>
                                 <option value="" disabled>
                                   Chose file
                                 </option>
@@ -387,14 +467,36 @@ function EFax() {
                                       {file.file_name}
                                     </option>
                                   ))}
-                              </select>
+                              </select> */}
+                                {dropdownOption && (
+                                  <Select
+                                    closeMenuOnSelect={false}
+                                    isMulti
+                                    options={dropdownOption}
+                                    value={dropdownOption.filter((option) =>
+                                      selectedUsages.includes(option.value)
+                                    )}
+                                    styles={customStyles}
+                                    onChange={(selectedOptions) => {
+                                      const values = selectedOptions
+                                        ? selectedOptions.map(
+                                            (option) => option.value
+                                          )
+                                        : [];
+                                      setValue("usages", values);
+                                    }}
+                                  />
+                                )}
+                              </div>
                             </div>
-                          </div>
-                          <div className="buttonControl">
-                            <button className="panelButtonWhite">Cancel</button>
-                            {/* <button className="panelButton">Send Later</button> */}
-                            <button className="panelButton">Send Now</button>
-                          </div>
+                            <div className="buttonControl">
+                              <button className="panelButtonWhite">
+                                Cancel
+                              </button>
+                              {/* <button className="panelButton">Send Later</button> */}
+                              <button className="panelButton">Send Now</button>
+                            </div>
+                          </form>
                         </div>
                       </div>
                       <div
