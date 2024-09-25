@@ -379,7 +379,7 @@ const sendFileMessage = async (file) => {
                         />
                       </div>
                       <div className="col-auto d-flex">
-                        {/* <button
+                        <button
                           effect="ripple"
                           className="appPanelButtonColor2 ms-auto"
                         >
@@ -397,14 +397,13 @@ const sendFileMessage = async (file) => {
                             }
                           }}
                           onKeyDown={(e) => {
-                            console.log(e);
                             if (e.key === "Enter") {
                               sendFileMessage();
                             }
                           }}
                         />
                           </i>
-                        </button> */}
+                        </button>
                         <button
                           effect="ripple"
                           className="appPanelButtonColor"

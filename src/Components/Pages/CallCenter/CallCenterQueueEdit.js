@@ -118,6 +118,7 @@ function CallCenterQueueEdit() {
                 id: item.id,
                 name: item.agent_name,
                 level: item.tier_level,
+                call_timeout:item.call_timeout,
                 position: item.tier_position,
                 type: item.type,
                 // status: item.status,
@@ -194,6 +195,7 @@ function CallCenterQueueEdit() {
         type: "callback",
         // status: "Logged Out",
         password: "1234",
+        call_timeout:"",
         contact: "",
       },
     ]);
@@ -393,6 +395,7 @@ function CallCenterQueueEdit() {
               return {
                 agent_name: item.name,
                 tier_level: item.level,
+                call_timeout: item.call_timeout===""?null:Number(item.call_timeout),
                 tier_position: item.position,
                 type: item.type,
                 // status: "Logged Out",
@@ -1030,6 +1033,25 @@ function CallCenterQueueEdit() {
                         </div>
                         <div className="col-2 pe-2">
                           <div className="formLabel">
+                            {index === 0 ? (
+                              <label htmlFor="">Call Timeout</label>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                          <div className="position-relative">
+                            <input
+                              type="number"
+                              name="call_timeout"
+                              value={item.call_timeout===null?"":item.call_timeout}
+                              onChange={(e) => handleAgentChange(e, index)}
+                              className="formItem"
+                              placeholder="Call Timeout"
+                            />
+                          </div>
+                        </div>
+                        {/* <div className="col-2 pe-2">
+                          <div className="formLabel">
                             {index === 0 ? <label htmlFor="">Type</label> : ""}
                           </div>
                           <select
@@ -1043,7 +1065,7 @@ function CallCenterQueueEdit() {
                             <option value={"callback"}>Call Back</option>
                             <option value={"uuid-standby"}>UUID Standbu</option>
                           </select>
-                        </div>
+                        </div> */}
                         {/* <div className="col-2 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
