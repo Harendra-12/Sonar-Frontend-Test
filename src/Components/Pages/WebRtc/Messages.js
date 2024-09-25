@@ -36,7 +36,7 @@ function Messages() {
           const time = new Date().toLocaleString();
           setAllMessage((prevState) => [
             ...prevState,
-            { from: extension, body: messageInput,time:time },
+            { from: extension, body: messageInput, time: time },
           ]);
           setMessageInput("");
 
@@ -52,56 +52,56 @@ function Messages() {
     }
   };
 
-const sendFileMessage = async (file) => {
-  if (isSIPReady) {
-    const targetURI = `sip:${recipient}@${account.domain.domain_name}`;
-    const userAgent = sipProvider?.sessionManager?.userAgent;
-  
-    const target = UserAgent.makeURI(targetURI);
-  
-    const convertImageToBase64 = (file) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-        reader.readAsDataURL(file); // This converts to Base64
-      });
-    };
-  
-    if (target && file) {
-      try {
-        // Convert file to Base64 string
-        const fileContent = await convertImageToBase64(file); // Await here!
-  
-        // Create a message with the Base64 content
-        const messager = new Messager(userAgent, target, fileContent, file.type); // Use correct content type
-  
-        // Send the message with proper MIME type and extra headers
-        messager.message({
-          extraHeaders: [
-            `Content-Type: ${file.type}`, // e.g., image/png
-            `Content-Disposition: attachment; filename="${file.name}"`,
-          ],
+  const sendFileMessage = async (file) => {
+    if (isSIPReady) {
+      const targetURI = `sip:${recipient}@${account.domain.domain_name}`;
+      const userAgent = sipProvider?.sessionManager?.userAgent;
+
+      const target = UserAgent.makeURI(targetURI);
+
+      const convertImageToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = (error) => reject(error);
+          reader.readAsDataURL(file); // This converts to Base64
         });
-  
-        // Add a record to the message history (optional)
-        const time = new Date().toLocaleString();
-        setAllMessage((prevState) => [
-          ...prevState,
-          { from: extension, body: `[File sent: ${file.name}]`, time: time },
-        ]);
-  
-        console.log("File sent to:", targetURI);
-      } catch (error) {
-        console.error("Error sending file:", error);
+      };
+
+      if (target && file) {
+        try {
+          // Convert file to Base64 string
+          const fileContent = await convertImageToBase64(file); // Await here!
+
+          // Create a message with the Base64 content
+          const messager = new Messager(userAgent, target, fileContent, file.type); // Use correct content type
+
+          // Send the message with proper MIME type and extra headers
+          messager.message({
+            extraHeaders: [
+              `Content-Type: ${file.type}`, // e.g., image/png
+              `Content-Disposition: attachment; filename="${file.name}"`,
+            ],
+          });
+
+          // Add a record to the message history (optional)
+          const time = new Date().toLocaleString();
+          setAllMessage((prevState) => [
+            ...prevState,
+            { from: extension, body: `[File sent: ${file.name}]`, time: time },
+          ]);
+
+          console.log("File sent to:", targetURI);
+        } catch (error) {
+          console.error("Error sending file:", error);
+        }
+      } else {
+        console.error("Invalid recipient address or file.");
       }
     } else {
-      console.error("Invalid recipient address or file.");
+      console.error("UserAgent or session not ready.");
     }
-  } else {
-    console.error("UserAgent or session not ready.");
-  }
-};
+  };
 
 
   //   useEffect(() => {
@@ -114,26 +114,26 @@ const sendFileMessage = async (file) => {
         const from =
           message?.incomingMessageRequest?.message?.from?.uri?.user.toString();
         const body = message?.incomingMessageRequest?.message?.body;
-  
+
         // Check Content-Type for the incoming message
         const contentType = message?.incomingMessageRequest?.message?.getHeader(
           "Content-Type"
         );
-  
+
         // Get the current time when the message is received
         const time = new Date().toLocaleString(); // Or use .toISOString() for UTC format
-  
+
         // Check if the content is an image
         if (contentType && contentType.startsWith("image/")) {
           // If it's an image, create a URL for the Base64 image to render it in <img>
           const imageUrl = `${body}`;
-  
+
           // Update the state to include the image
           setAllMessage((prevState) => [
             ...prevState,
             { from, body: <img src={imageUrl} alt="Received" />, time },
           ]);
-  
+
           console.log(`Received image from ${from} at ${time}`, message);
         } else {
           // If it's a text message or other type, render as text
@@ -141,13 +141,13 @@ const sendFileMessage = async (file) => {
             ...prevState,
             { from, body, time },
           ]);
-  
+
           console.log(`Received message from ${from}: ${body} at ${time}`, message);
         }
       },
     };
   }
-  
+
 
   useEffect(() => {
     if (messageListRef.current) {
@@ -335,7 +335,7 @@ const sendFileMessage = async (file) => {
                                 </div>
                                 <div className="second">
                                   <h6>
-                                     <span>{item.time.split(" ")[1]}</span>
+                                    <span>{item.time.split(" ")[1]}</span>
                                   </h6>
                                   <div className="messageDetails">
                                     <p>{item.body}</p>
@@ -349,7 +349,7 @@ const sendFileMessage = async (file) => {
                                 </div>
                                 <div className="second">
                                   <h6>
-                                     <span>{item.time.split(" ")[1]}</span>
+                                    <span>{item.time.split(" ")[1]}</span>
                                   </h6>
                                   <div className="messageDetails">
                                     <p>{item.body}</p>
@@ -384,24 +384,22 @@ const sendFileMessage = async (file) => {
                           className="appPanelButtonColor2 ms-auto"
                         >
                           <i className="fa-regular fa-paperclip" >
-                          <input
-                          type="file"
-                          name=""
-                          id=""
-                          placeholder="Please enter your message"
-                          // value={messageInput}
-                          onChange={(e) => {
-                            const file = e.target.files[0];
-                            if (file) {
-                              sendFileMessage(file);
-                            }
-                          }}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                              sendFileMessage();
-                            }
-                          }}
-                        />
+                            <input
+                              type="file"
+                              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0 }}
+                              // value={messageInput}
+                              onChange={(e) => {
+                                const file = e.target.files[0];
+                                if (file) {
+                                  sendFileMessage(file);
+                                }
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                  sendFileMessage();
+                                }
+                              }}
+                            />
                           </i>
                         </button>
                         <button

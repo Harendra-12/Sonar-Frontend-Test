@@ -85,7 +85,7 @@ function CallCenterQueueAdd() {
       // status: "Logged Out",
       password: "1234",
       contact: "",
-      call_timeout:""
+      call_timeout: ""
     },
   ]);
 
@@ -105,7 +105,7 @@ function CallCenterQueueAdd() {
         // status: "Logged Out",
         password: "1234",
         contact: "",
-        call_timeout:""
+        call_timeout: ""
       },
     ]);
   }
@@ -290,7 +290,7 @@ function CallCenterQueueAdd() {
         agents: agent.map((item) => {
           return {
             agent_name: item.name,
-            call_timeout:item.call_timeout===""?null:Number(item.call_timeout),
+            call_timeout: item.call_timeout === "" ? null : Number(item.call_timeout),
             tier_level: item.level,
             tier_position: item.position,
             type: item.type,
@@ -354,9 +354,9 @@ function CallCenterQueueAdd() {
                       </label>
                     </div>
                   </div>
-                  <label htmlFor="data" className="formItemDesc mt-0">
+                  {/* <label htmlFor="data" className="formItemDesc mt-0">
                     Set the status of this call center queue.
-                  </label>
+                  </label> */}
                 </div>
                 <button
                   effect="ripple"

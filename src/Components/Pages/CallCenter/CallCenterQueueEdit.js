@@ -118,7 +118,7 @@ function CallCenterQueueEdit() {
                 id: item.id,
                 name: item.agent_name,
                 level: item.tier_level,
-                call_timeout:item.call_timeout,
+                call_timeout: item.call_timeout,
                 position: item.tier_position,
                 type: item.type,
                 // status: item.status,
@@ -195,7 +195,7 @@ function CallCenterQueueEdit() {
         type: "callback",
         // status: "Logged Out",
         password: "1234",
-        call_timeout:"",
+        call_timeout: "",
         contact: "",
       },
     ]);
@@ -395,7 +395,7 @@ function CallCenterQueueEdit() {
               return {
                 agent_name: item.name,
                 tier_level: item.level,
-                call_timeout: item.call_timeout===""?null:Number(item.call_timeout),
+                call_timeout: item.call_timeout === "" ? null : Number(item.call_timeout),
                 tier_position: item.position,
                 type: item.type,
                 // status: "Logged Out",
@@ -505,9 +505,9 @@ function CallCenterQueueEdit() {
                       </label>
                     </div>
                   </div>
-                  <label htmlFor="data" className="formItemDesc mt-0">
+                  {/* <label htmlFor="data" className="formItemDesc mt-0">
                     Set the status of this call center queue.
-                  </label>
+                  </label> */}
                 </div>
                 <button
                   effect="ripple"
@@ -1064,7 +1064,7 @@ function CallCenterQueueEdit() {
                             <input
                               type="number"
                               name="call_timeout"
-                              value={item.call_timeout===null?"":item.call_timeout}
+                              value={item.call_timeout === null ? "" : item.call_timeout}
                               onChange={(e) => handleAgentChange(e, index)}
                               className="formItem"
                               placeholder="Call Timeout"
