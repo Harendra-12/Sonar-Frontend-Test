@@ -541,9 +541,9 @@ const RingGroupEdit = () => {
                       </label>
                     </div>
                   </div>
-                  <label htmlFor="data" className="formItemDesc mt-0">
+                  {/* <label htmlFor="data" className="formItemDesc mt-0">
                     Set the status of this ring group.
-                  </label>
+                  </label> */}
                 </div>
                 <button
                   onClick={() => {

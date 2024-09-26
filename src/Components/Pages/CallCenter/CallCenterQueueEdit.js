@@ -404,9 +404,9 @@ function CallCenterQueueEdit() {
                       </label>
                     </div>
                   </div>
-                  <label htmlFor="data" className="formItemDesc mt-0">
+                  {/* <label htmlFor="data" className="formItemDesc mt-0">
                     Set the status of this call center queue.
-                  </label>
+                  </label> */}
                 </div>
                 <button
                   effect="ripple"
@@ -963,7 +963,7 @@ function CallCenterQueueEdit() {
                             <input
                               type="number"
                               name="call_timeout"
-                              value={item.call_timeout===null?"":item.call_timeout}
+                              value={item.call_timeout === null ? "" : item.call_timeout}
                               onChange={(e) => handleAgentChange(e, index)}
                               className="formItem"
                               placeholder="Call Timeout"

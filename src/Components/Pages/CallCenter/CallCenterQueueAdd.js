@@ -353,9 +353,9 @@ function CallCenterQueueAdd() {
                       </label>
                     </div>
                   </div>
-                  <label htmlFor="data" className="formItemDesc mt-0">
+                  {/* <label htmlFor="data" className="formItemDesc mt-0">
                     Set the status of this call center queue.
-                  </label>
+                  </label> */}
                 </div>
                 <button
                   effect="ripple"
