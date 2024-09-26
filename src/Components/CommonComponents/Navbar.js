@@ -581,6 +581,16 @@ function Navbar() {
                       <div className="itemTitle">Variable</div>
                     </NavLink>
                   </li>
+                  <li className="dashboard ">
+                    <NavLink
+                      to="/mail-settings"
+                      onClick={backToTop}
+                      type="button"
+                      effect="ripple"
+                    >
+                      <div className="itemTitle">Mail Settings</div>
+                    </NavLink>
+                  </li>
                   {account?.extension || isCustomerAdmin ? (
                     <li className="dashboard ">
                       <a

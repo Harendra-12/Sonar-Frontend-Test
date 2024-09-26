@@ -105,6 +105,8 @@ import WebrtcWrapper from "./Components/Pages/WebRtc/WebrtcWrapper";
 import "react-toastify/dist/ReactToastify.css";
 import Messages from "./Components/Pages/WebRtc/Messages";
 import DidListingAdd from "./Components/Pages/NumberManagement/DidListingAdd";
+import MailSettingsAdd from "./Components/Pages/MailSettings/MailSettingsAdd";
+import MailSettings from "./Components/Pages/MailSettings/MailSettings";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -312,9 +314,13 @@ function App() {
           {/* Billing Pages End */}
 
           {/* Variable Page Start */}
-          <Route path="/variable" element={<Variable />}>
-            {/* Variable Page End  */}
-          </Route>
+          <Route path="/variable" element={<Variable />}></Route>
+          {/* Variable Page End  */}
+
+          {/* Mail Settings Page Start */}
+          <Route path="/mail-settings" element={<MailSettings />} />
+          <Route path="/mail-settings-add" element={<MailSettingsAdd />} />
+          {/* Mail Setting Page End */}
 
           {/* 404 Redirection */}
           <Route path="*" element={<Navigate to="/dashboard" />} />
