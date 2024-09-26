@@ -82,7 +82,8 @@ function CallCenterQueueAdd() {
       password: "1234",
       contact: "",
       call_timeout:"",
-      reject_delay_time:""
+      reject_delay_time:"",
+      max_no_answer:""
     },
   ]);
 
@@ -103,7 +104,8 @@ function CallCenterQueueAdd() {
         password: "1234",
         contact: "",
         call_timeout:"",
-        reject_delay_time:""
+        reject_delay_time:"",
+        max_no_answer:"",
       },
     ]);
   }
@@ -290,6 +292,7 @@ function CallCenterQueueAdd() {
             agent_name: item.name,
             call_timeout:item.call_timeout===""?null:Number(item.call_timeout),
             reject_delay_time:item.reject_delay_time===""?null:Number(item.reject_delay_time),
+            max_no_answer:item.max_no_answer===""?null:Number(item.max_no_answer),
             tier_level: item.level,
             tier_position: item.position,
             type: item.type,
@@ -918,7 +921,7 @@ function CallCenterQueueAdd() {
                             <option value={"uuid-standby"}>UUID Standbu</option>
                           </select>
                         </div> */}
-                        <div className="col-2 pe-2">
+                        <div className="col-1 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Call Timeout</label>
@@ -937,7 +940,7 @@ function CallCenterQueueAdd() {
                             />
                           </div>
                         </div>
-                        <div className="col-2 pe-2">
+                        <div className="col-1 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Reject Delay Time</label>
@@ -956,6 +959,29 @@ function CallCenterQueueAdd() {
                             />
                           </div>
                         </div>
+
+                        <div className="col-2 pe-2">
+                          <div className="formLabel">
+                            {index === 0 ? (
+                              <label htmlFor="">Max No Answer</label>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                          <div className="position-relative">
+                            <input
+                              type="number"
+                              name="max_no_answer"
+                              value={item.max_no_answer}
+                              onChange={(e) => handleAgentChange(e, index)}
+                              className="formItem"
+                              placeholder="Max No Answer"
+                            />
+                          </div>
+                        </div>
+                          
+
+
                         {/* <div className="col-2 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (

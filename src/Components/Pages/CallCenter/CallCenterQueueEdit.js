@@ -112,6 +112,7 @@ function CallCenterQueueEdit() {
                 level: item.tier_level,
                 call_timeout:item.call_timeout,
                 reject_delay_time:item.reject_delay_time,
+                max_no_answer:item.max_no_answer,
                 position: item.tier_position,
                 type: item.type,
                 // status: item.status,
@@ -190,6 +191,7 @@ function CallCenterQueueEdit() {
         password: "1234",
         call_timeout:"",
         reject_delay_time:"",
+        max_no_answer:"",
         contact: "",
       },
     ]);
@@ -951,7 +953,7 @@ function CallCenterQueueEdit() {
                             <option value={9}>9</option>
                           </select>
                         </div>
-                        <div className="col-2 pe-2">
+                        <div className="col-1 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Call Timeout</label>
@@ -971,7 +973,7 @@ function CallCenterQueueEdit() {
                           </div>
                         </div>
 
-                        <div className="col-2 pe-2">
+                        <div className="col-1 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Reject Delay Time</label>
@@ -987,6 +989,26 @@ function CallCenterQueueEdit() {
                               onChange={(e) => handleAgentChange(e, index)}
                               className="formItem"
                               placeholder="Reject Delay Time"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-2 pe-2">
+                          <div className="formLabel">
+                            {index === 0 ? (
+                              <label htmlFor="">Max No Answer</label>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                          <div className="position-relative">
+                            <input
+                              type="number"
+                              name="max_no_answer"
+                              value={item.max_no_answer===null?"":item.max_no_answer}
+                              onChange={(e) => handleAgentChange(e, index)}
+                              className="formItem"
+                              placeholder="Max No Answer"
                             />
                           </div>
                         </div>

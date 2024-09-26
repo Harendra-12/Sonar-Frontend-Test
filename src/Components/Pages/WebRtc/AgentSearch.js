@@ -1,34 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
+import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 
 const AgentSearch = ({
   getDropdownValue,
   value,
 }) => {
-  const dispatch = useDispatch();
+ 
 
   const [user,setUser]=useState([])
  
 
   const [selectedOption, setSelectedOption] = useState(null);
 
-  
-  const allUser = useSelector((state)=>state.allUser)
-  const userRefresh = useSelector((state)=>state.allUserRefresh)
 
-  console.log("allUser",allUser);
   
   useEffect(() => {
-    if (userRefresh > 0) {
-        setUser(allUser?.data?.filter((item)=>item.extension_id !== null));
-      } else {
-        dispatch({
-          type: "SET_ALLUSERREFRESH",
-          allUserRefresh: userRefresh + 1,
-        });
+    async function getData() {
+      const apiData = await generalGetFunction("/user-all");
+      if (apiData.status) {
+        setUser(apiData.data.filter((item) => item.extension_id !== null));
       }
-  }, [ allUser,userRefresh]);
+    }
+    getData();
+   
+  }, []);
 
   useEffect(() => {
     // Set default value if provided
