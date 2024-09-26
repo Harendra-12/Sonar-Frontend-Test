@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   backToTop,
-  generalPostFunction,
+  generalGetFunction,
+  generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useForm } from "react-hook-form";
 import {
@@ -15,9 +16,12 @@ import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 
-const MailSettingsAdd = () => {
+const MailSettingsEdit = () => {
   const navigate = useNavigate();
+  const queryParams = new URLSearchParams(useLocation().search);
+  const value = queryParams.get("id");
   const [loading, setLoading] = useState(false);
+  const [mailSettings, setMailSettings] = useState();
   const {
     register,
     formState: { errors },
@@ -26,15 +30,57 @@ const MailSettingsAdd = () => {
     reset,
   } = useForm();
 
+  // Fetch the mail settings value from the API
+  useEffect(() => {
+    if (value) {
+      setLoading(true);
+      const getData = async () => {
+        const apiData = await generalGetFunction(`/mail-setting/show/${value}`);
+
+        if (apiData.status) {
+          setMailSettings(apiData.data);
+          setLoading(false);
+        } else {
+          setLoading(false);
+          navigate("/");
+        }
+      };
+
+      getData();
+    }
+  }, [value]);
+
+  // set the default values
+  useEffect(() => {
+    if (mailSettings) {
+      reset({
+        mail_driver: mailSettings.mail_driver,
+        mail_host: mailSettings.mail_host,
+        mail_port: mailSettings.mail_port,
+        mail_username: mailSettings.mail_username,
+        mail_password: mailSettings.mail_password,
+        mail_encryption: mailSettings.mail_encryption,
+        mail_from_address: mailSettings.mail_from_address,
+        mail_from_name: mailSettings.mail_from_name,
+      });
+    }
+  }, [mailSettings]);
+
   const handleFormSubmit = handleSubmit(async (data) => {
     const payload = {
-      ...data,
+      mail_driver: data.mail_driver,
+      mail_host: data.mail_host,
       mail_port: Number(data.mail_port),
+      mail_username: data.mail_username,
+      mail_password: data.mail_password,
+      mail_encryption: data.mail_encryption,
+      mail_from_address: data.mail_from_address,
+      mail_from_name: data.mail_from_name,
     };
 
     setLoading(true);
-    const addSettings = await generalPostFunction(
-      "/mail-setting/store",
+    const addSettings = await generalPutFunction(
+      `/mail-setting/update/${mailSettings.id}`,
       payload
     );
     if (addSettings.status) {
@@ -60,10 +106,10 @@ const MailSettingsAdd = () => {
       <main className="mainContent">
         <section id="phonePage">
           <div className="container-fluid px-0">
-            <Header title="Mail Settings Add" />
+            <Header title="Mail Settings Update" />
             <div id="subPageHeader">
               <div className="col-xl-9 my-auto">
-                <p className="p-0 m-0">Add Mail Settings</p>
+                <p className="p-0 m-0">Mail Settings Update</p>
               </div>
               <div className="col-xl-3 ps-2">
                 <div className="d-flex justify-content-end">
@@ -82,7 +128,7 @@ const MailSettingsAdd = () => {
                     className="panelButton"
                     onClick={handleFormSubmit}
                   >
-                    Save
+                    Update
                   </button>
                 </div>
               </div>
@@ -108,9 +154,7 @@ const MailSettingsAdd = () => {
                       <option value="" disabled>
                         Select
                       </option>
-                      <option value="smtp" selected>
-                        SMTP
-                      </option>
+                      <option value="smtp">SMTP</option>
                       <option value="pop3">POP3</option>
                       <option value="imap">IMAP</option>
                       <option value="ews">EWS (Exchange Web Services)</option>
@@ -237,7 +281,7 @@ const MailSettingsAdd = () => {
                       <option value="" disabled>
                         Select
                       </option>
-                      <option value="tls" selected>
+                      <option value="tls">
                         TLS (Transport Layer Security)
                       </option>
                       <option value="ssl">SSL (Secure Sockets Layer)</option>
@@ -321,4 +365,4 @@ const MailSettingsAdd = () => {
   );
 };
 
-export default MailSettingsAdd;
+export default MailSettingsEdit;
