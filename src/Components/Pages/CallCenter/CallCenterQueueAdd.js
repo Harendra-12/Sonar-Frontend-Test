@@ -7,21 +7,18 @@ import {
   generalGetFunction,
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
   nameNumberValidator,
-  nameValidator,
   noSpecialCharactersValidator,
-  numberValidator,
   requiredValidator,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import ActionList from "../../CommonComponents/ActionList";
-import Select from "react-select";
 import Header from "../../CommonComponents/Header";
 
 function CallCenterQueueAdd() {
@@ -48,7 +45,6 @@ function CallCenterQueueAdd() {
     reset,
     setValue,
     watch,
-    control,
   } = useForm();
   useEffect(() => {
     async function getData() {
@@ -85,7 +81,8 @@ function CallCenterQueueAdd() {
       // status: "Logged Out",
       password: "1234",
       contact: "",
-      call_timeout:""
+      call_timeout:"",
+      reject_delay_time:""
     },
   ]);
 
@@ -105,7 +102,8 @@ function CallCenterQueueAdd() {
         // status: "Logged Out",
         password: "1234",
         contact: "",
-        call_timeout:""
+        call_timeout:"",
+        reject_delay_time:""
       },
     ]);
   }
@@ -192,75 +190,75 @@ function CallCenterQueueAdd() {
     return agentValues.length === uniqueValues.length;
   };
 
-  const handleExtensionChange = (selectedOption) => {
-    setValue("extension", selectedOption.value);
-  };
+  // const handleExtensionChange = (selectedOption) => {
+  //   setValue("extension", selectedOption.value);
+  // };
 
   // Custom styles for react-select
-  const customStyles = {
-    control: (provided, state) => ({
-      ...provided,
-      // border: '1px solid var(--color4)',
-      border: "1px solid #ababab",
-      borderRadius: "2px",
-      outline: "none",
-      fontSize: "14px",
-      width: "100%",
-      minHeight: "32px",
-      height: "32px",
-      boxShadow: state.isFocused ? "none" : provided.boxShadow,
-      "&:hover": {
-        borderColor: "none",
-      },
-    }),
-    valueContainer: (provided) => ({
-      ...provided,
-      height: "32px",
-      padding: "0 6px",
-    }),
-    input: (provided) => ({
-      ...provided,
-      margin: "0",
-    }),
-    indicatorSeparator: (provided) => ({
-      display: "none",
-    }),
-    indicatorsContainer: (provided) => ({
-      ...provided,
-      height: "32px",
-    }),
-    dropdownIndicator: (provided) => ({
-      ...provided,
-      color: "#202020",
-      "&:hover": {
-        color: "#202020",
-      },
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      paddingLeft: "15px",
-      paddingTop: 0,
-      paddingBottom: 0,
-      // backgroundColor: state.isSelected ? "transparent" : "transparent",
-      "&:hover": {
-        backgroundColor: "#0055cc",
-        color: "#fff",
-      },
-      fontSize: "14px",
-    }),
-    menu: (provided) => ({
-      ...provided,
-      margin: 0,
-      padding: 0,
-    }),
-    menuList: (provided) => ({
-      ...provided,
-      padding: 0,
-      margin: 0,
-      maxHeight: "150px",
-      overflowY: "auto",
-    }),
-  };
+  // const customStyles = {
+  //   control: (provided, state) => ({
+  //     ...provided,
+  //     // border: '1px solid var(--color4)',
+  //     border: "1px solid #ababab",
+  //     borderRadius: "2px",
+  //     outline: "none",
+  //     fontSize: "14px",
+  //     width: "100%",
+  //     minHeight: "32px",
+  //     height: "32px",
+  //     boxShadow: state.isFocused ? "none" : provided.boxShadow,
+  //     "&:hover": {
+  //       borderColor: "none",
+  //     },
+  //   }),
+  //   valueContainer: (provided) => ({
+  //     ...provided,
+  //     height: "32px",
+  //     padding: "0 6px",
+  //   }),
+  //   input: (provided) => ({
+  //     ...provided,
+  //     margin: "0",
+  //   }),
+  //   indicatorSeparator: (provided) => ({
+  //     display: "none",
+  //   }),
+  //   indicatorsContainer: (provided) => ({
+  //     ...provided,
+  //     height: "32px",
+  //   }),
+  //   dropdownIndicator: (provided) => ({
+  //     ...provided,
+  //     color: "#202020",
+  //     "&:hover": {
+  //       color: "#202020",
+  //     },
+  //   }),
+  //   option: (provided, state) => ({
+  //     ...provided,
+  //     paddingLeft: "15px",
+  //     paddingTop: 0,
+  //     paddingBottom: 0,
+  //     // backgroundColor: state.isSelected ? "transparent" : "transparent",
+  //     "&:hover": {
+  //       backgroundColor: "#0055cc",
+  //       color: "#fff",
+  //     },
+  //     fontSize: "14px",
+  //   }),
+  //   menu: (provided) => ({
+  //     ...provided,
+  //     margin: 0,
+  //     padding: 0,
+  //   }),
+  //   menuList: (provided) => ({
+  //     ...provided,
+  //     padding: 0,
+  //     margin: 0,
+  //     maxHeight: "150px",
+  //     overflowY: "auto",
+  //   }),
+  // };
 
   const handleFormSubmit = handleSubmit(async (data) => {
     setLoading(true);
@@ -273,7 +271,7 @@ function CallCenterQueueAdd() {
       return;
     }
 
-    const { recording_enabled, queue_name, extension, queue_timeout_action } =
+    const { recording_enabled } =
       data;
 
     const payload = {
@@ -291,6 +289,7 @@ function CallCenterQueueAdd() {
           return {
             agent_name: item.name,
             call_timeout:item.call_timeout===""?null:Number(item.call_timeout),
+            reject_delay_time:item.reject_delay_time===""?null:Number(item.reject_delay_time),
             tier_level: item.level,
             tier_position: item.position,
             type: item.type,
@@ -501,9 +500,9 @@ function CallCenterQueueAdd() {
                     <option value="ring-all">Ring All</option>
                     {/* <option value="longest-idle-agent">
                       Longest Idle Agent
-                    </option> */}
-                    {/* <option value="round-robin">Round Robin</option>
-                    <option value="top-down">Top Down</option> */}
+                    </option> */} 
+                    {/* <option value="round-robin">Round Robin</option> */}
+                    <option value="top-down">Top Down</option>
                     {/* <option value="agent-with-least-talk-time">
                       Agent with least talk time
                     </option> */}
@@ -847,7 +846,7 @@ function CallCenterQueueAdd() {
                             />
                           </div>
                         </div>
-                        <div className="col-2 pe-2">
+                        <div className="col-1 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Tier Level</label>
@@ -875,7 +874,7 @@ function CallCenterQueueAdd() {
                             <option value={9}>9</option>
                           </select>
                         </div>
-                        <div className="col-2 pe-2">
+                        <div className="col-1 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Tier Position</label>
@@ -929,12 +928,31 @@ function CallCenterQueueAdd() {
                           </div>
                           <div className="position-relative">
                             <input
-                              type="text"
+                              type="number"
                               name="call_timeout"
                               value={item.call_timeout}
                               onChange={(e) => handleAgentChange(e, index)}
                               className="formItem"
                               placeholder="Call Timeout"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-2 pe-2">
+                          <div className="formLabel">
+                            {index === 0 ? (
+                              <label htmlFor="">Reject Delay Time</label>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                          <div className="position-relative">
+                            <input
+                              type="number"
+                              name="reject_delay_time"
+                              value={item.reject_delay_time}
+                              onChange={(e) => handleAgentChange(e, index)}
+                              className="formItem"
+                              placeholder="Reject Delay Time"
                             />
                           </div>
                         </div>
@@ -971,7 +989,7 @@ function CallCenterQueueAdd() {
                           >
                             <button
                               type="button"
-                              className="clearButton text-danger my-auto"
+                              className="clearButton text-danger mt-auto mb-2"
                             >
                               <i className="fa-duotone fa-trash"></i>
                             </button>

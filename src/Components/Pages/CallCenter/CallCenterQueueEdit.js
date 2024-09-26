@@ -9,16 +9,13 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import ActionList from "../../CommonComponents/ActionList";
-import Select from "react-select";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
   nameNumberValidator,
-  nameValidator,
   noSpecialCharactersValidator,
-  numberValidator,
   requiredValidator,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
@@ -33,15 +30,11 @@ function CallCenterQueueEdit() {
   const queryParams = new URLSearchParams(useLocation().search);
   const value = queryParams.get("id");
   const [loading, setLoading] = useState(false);
-  const [ringGroup, setRingGroup] = useState();
   const [user, setUser] = useState();
   const account = useSelector((state) => state.account);
   // const domain = useSelector((state) => state.domain);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const [prevAgents, setPrevAgents] = useState([]);
-  const [extension, setExtension] = useState([]);
-  const extensionRefresh = useSelector((state) => state.extensionRefresh);
-  const extensionArr = useSelector((state) => state.extension);
   // const { domain_name = "" } = domain;
   const [agent, setAgent] = useState([
     {
@@ -72,7 +65,6 @@ function CallCenterQueueEdit() {
     reset,
     setValue,
     watch,
-    control,
   } = useForm();
 
   useEffect(() => {
@@ -119,6 +111,7 @@ function CallCenterQueueEdit() {
                 name: item.agent_name,
                 level: item.tier_level,
                 call_timeout:item.call_timeout,
+                reject_delay_time:item.reject_delay_time,
                 position: item.tier_position,
                 type: item.type,
                 // status: item.status,
@@ -196,6 +189,7 @@ function CallCenterQueueEdit() {
         // status: "Logged Out",
         password: "1234",
         call_timeout:"",
+        reject_delay_time:"",
         contact: "",
       },
     ]);
@@ -203,34 +197,6 @@ function CallCenterQueueEdit() {
   if (agent.length === 0) {
     addNewAgent();
   }
-  function removeAgenet(id) {
-    const updatedAgent = agent.filter((item) => item.id !== id);
-    if (validateAgents()) {
-      clearErrors("agent");
-    }
-    setAgent(updatedAgent);
-  }
-
-  // const handleAgentChange = (event, index) => {
-  //   const { name, value } = event.target;
-  //   const newAgent = [...agent];
-  //   newAgent[index][name] = value;
-  //   setAgent(newAgent);
-
-  //   if (!validateUniqueAgents()) {
-  //     setErr("agent", {
-  //       type: "manual",
-  //       message: "Same agent can't be selected for two or more fields",
-  //     });
-  //   } else if (validateAgents()) {
-  //     clearErrors("agent");
-  //   } else {
-  //     setErr("agent", {
-  //       type: "manual",
-  //       message: "Agent name and password required in all rows",
-  //     });
-  //   }
-  // };
   const handleAgentChange = (event, index) => {
     const { name, value } = event.target; // Extract name and selected value
 
@@ -281,75 +247,7 @@ function CallCenterQueueEdit() {
     return agentValues.length === uniqueValues.length;
   };
 
-  const handleExtensionChange = (selectedOption) => {
-    setValue("extension", selectedOption.value);
-  };
-
   // Custom styles for react-select
-  const customStyles = {
-    control: (provided, state) => ({
-      ...provided,
-      // border: '1px solid var(--color4)',
-      border: "1px solid #ababab",
-      borderRadius: "2px",
-      outline: "none",
-      fontSize: "14px",
-      width: "100%",
-      minHeight: "32px",
-      height: "32px",
-      boxShadow: state.isFocused ? "none" : provided.boxShadow,
-      "&:hover": {
-        borderColor: "none",
-      },
-    }),
-    valueContainer: (provided) => ({
-      ...provided,
-      height: "32px",
-      padding: "0 6px",
-    }),
-    input: (provided) => ({
-      ...provided,
-      margin: "0",
-    }),
-    indicatorSeparator: (provided) => ({
-      display: "none",
-    }),
-    indicatorsContainer: (provided) => ({
-      ...provided,
-      height: "32px",
-    }),
-    dropdownIndicator: (provided) => ({
-      ...provided,
-      color: "#202020",
-      "&:hover": {
-        color: "#202020",
-      },
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      paddingLeft: "15px",
-      paddingTop: 0,
-      paddingBottom: 0,
-      // backgroundColor: state.isSelected ? "transparent" : "transparent",
-      "&:hover": {
-        backgroundColor: "#0055cc",
-        color: "#fff",
-      },
-      fontSize: "14px",
-    }),
-    menu: (provided) => ({
-      ...provided,
-      margin: 0,
-      padding: 0,
-    }),
-    menuList: (provided) => ({
-      ...provided,
-      padding: 0,
-      margin: 0,
-      maxHeight: "150px",
-      overflowY: "auto",
-    }),
-  };
 
   const handleFormSubmit = handleSubmit(async (data) => {
     if (!validateAgents()) {
@@ -360,7 +258,7 @@ function CallCenterQueueEdit() {
       return;
     }
 
-    const { recording_enabled, queue_name, extension, queue_timeout_action } =
+    const { recording_enabled } =
       data;
     //     const xmlObj = {
     //       xml: `<extension name="${queue_name.trim()}">
@@ -396,6 +294,7 @@ function CallCenterQueueEdit() {
                 agent_name: item.name,
                 tier_level: item.level,
                 call_timeout: item.call_timeout===null?null:Number(item.call_timeout),
+                queue_timeout: item.queue_timeout===null?null:Number(item.queue_timeout),
                 tier_position: item.position,
                 type: item.type,
                 // status: "Logged Out",
@@ -655,9 +554,9 @@ function CallCenterQueueEdit() {
                     {/* <option value="longest-idle-agent">
                       Longest Idle Agent
                     </option> */}
-                    {/* <option value="round-robin">Round Robin</option>
+                    {/* <option value="round-robin">Round Robin</option> */}
                     <option value="top-down">Top Down</option>
-                    <option value="agent-with-least-talk-time">
+                    {/* <option value="agent-with-least-talk-time">
                       Agent with least talk time
                     </option>
                     <option value="agent-with-fewest-calls">
@@ -1071,6 +970,26 @@ function CallCenterQueueEdit() {
                             />
                           </div>
                         </div>
+
+                        <div className="col-2 pe-2">
+                          <div className="formLabel">
+                            {index === 0 ? (
+                              <label htmlFor="">Reject Delay Time</label>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                          <div className="position-relative">
+                            <input
+                              type="number"
+                              name="reject_delay_time"
+                              value={item.reject_delay_time===null?"":item.reject_delay_time}
+                              onChange={(e) => handleAgentChange(e, index)}
+                              className="formItem"
+                              placeholder="Reject Delay Time"
+                            />
+                          </div>
+                        </div>
                         {/* <div className="col-2 pe-2">
                           <div className="formLabel">
                             {index === 0 ? <label htmlFor="">Type</label> : ""}
@@ -1122,7 +1041,7 @@ function CallCenterQueueEdit() {
                           >
                             <button
                               type="button"
-                              className="clearButton text-danger my-auto"
+                              className="clearButton text-danger mt-auto mb-2"
                             >
                               <i className="fa-duotone fa-trash"></i>
                             </button>
