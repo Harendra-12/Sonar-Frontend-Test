@@ -7,7 +7,6 @@ import {
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
-import { Button } from "@mui/material";
 import { toast } from "react-toastify";
 
 const MailSettings = () => {
@@ -35,7 +34,7 @@ const MailSettings = () => {
 
   const handleSettingsDelete = async () => {
     setLoading(true);
-
+    setOpenPopup(false);
     const apiData = await generalDeleteFunction(
       `/mail-setting/destroy/${deleteSettingsId}`
     );
@@ -127,7 +126,11 @@ const MailSettings = () => {
                                   }}
                                   onClick={() =>
                                     navigate(
-                                      `/mail-settings-edit?id=${data.id}`
+                                      // `/mail-settings-edit?id=${data.id}`
+                                      `/mail-settings-edit`,
+                                      {
+                                        state: data.id,
+                                      }
                                     )
                                   }
                                 >

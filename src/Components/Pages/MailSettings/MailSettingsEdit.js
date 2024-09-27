@@ -18,24 +18,25 @@ import CircularLoader from "../../Loader/CircularLoader";
 
 const MailSettingsEdit = () => {
   const navigate = useNavigate();
-  const queryParams = new URLSearchParams(useLocation().search);
-  const value = queryParams.get("id");
+  const location = useLocation();
+  const locationState = location.state;
   const [loading, setLoading] = useState(false);
   const [mailSettings, setMailSettings] = useState();
   const {
     register,
     formState: { errors },
     handleSubmit,
-    watch,
     reset,
   } = useForm();
 
   // Fetch the mail settings value from the API
   useEffect(() => {
-    if (value) {
+    if (locationState) {
       setLoading(true);
       const getData = async () => {
-        const apiData = await generalGetFunction(`/mail-setting/show/${value}`);
+        const apiData = await generalGetFunction(
+          `/mail-setting/show/${locationState}`
+        );
 
         if (apiData.status) {
           setMailSettings(apiData.data);
@@ -47,8 +48,10 @@ const MailSettingsEdit = () => {
       };
 
       getData();
+    } else {
+      navigate("/mail-settings");
     }
-  }, [value]);
+  }, [locationState]);
 
   // set the default values
   useEffect(() => {
