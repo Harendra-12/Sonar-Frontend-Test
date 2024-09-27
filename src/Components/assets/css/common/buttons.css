@@ -89,28 +89,35 @@
 }
 
 .clearColorButton {
-    color: var(--color2);
+    color: #fff;
     text-decoration: none;
+    /* background-color: var(--color2); */
     background-color: #abe4ff46;
     font-size: 16px;
     font-weight: 400;
-    border: 1px solid var(--color2);
+    border: 1px solid #fff;
     border-radius: 50px;
     display: block;
     width: 100%;
     padding: 4px 20px;
     text-decoration: none;
     transition: 0.3s ease-in-out;
+    /* box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06); */
+}
+
+.clearColorButton i {
+    font-weight: 900;
 }
 
 .clearColorButton:hover {
     background-color: var(--color2);
-    color: #fff;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
+    /* color: var(--color2);
+    border: 1px solid var(--color2);
+    box-shadow: none; */
 }
 
 .clearColorButton:hover i {
-    font-weight: 900;
+    font-weight: 400;
 }
 
 .clearColorButton.activation {
