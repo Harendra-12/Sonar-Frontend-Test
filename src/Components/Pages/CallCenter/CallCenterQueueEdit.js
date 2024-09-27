@@ -113,6 +113,7 @@ function CallCenterQueueEdit() {
                 call_timeout:item.call_timeout,
                 reject_delay_time:item.reject_delay_time,
                 max_no_answer:item.max_no_answer,
+                busy_delay_time:item.busy_delay_time,
                 position: item.tier_position,
                 type: item.type,
                 // status: item.status,
@@ -192,6 +193,7 @@ function CallCenterQueueEdit() {
         call_timeout:"",
         reject_delay_time:"",
         max_no_answer:"",
+        busy_delay_time:"",
         contact: "",
       },
     ]);
@@ -993,7 +995,9 @@ function CallCenterQueueEdit() {
                           </div>
                         </div>
 
-                        <div className="col-2 pe-2">
+                       
+
+                        <div className="col-1 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Max No Answer</label>
@@ -1009,6 +1013,26 @@ function CallCenterQueueEdit() {
                               onChange={(e) => handleAgentChange(e, index)}
                               className="formItem"
                               placeholder="Max No Answer"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-1 pe-2">
+                          <div className="formLabel">
+                            {index === 0 ? (
+                              <label htmlFor="">Busy Delay Time</label>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                          <div className="position-relative">
+                            <input
+                              type="number"
+                              name="busy_delay_time"
+                              value={item.busy_delay_time===null?"":item.busy_delay_time}
+                              onChange={(e) => handleAgentChange(e, index)}
+                              className="formItem"
+                              placeholder="Busy Delay Time"
                             />
                           </div>
                         </div>

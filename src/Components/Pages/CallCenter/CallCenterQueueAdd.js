@@ -82,6 +82,7 @@ function CallCenterQueueAdd() {
       password: "1234",
       contact: "",
       call_timeout:"",
+      busy_delay_time:"",
       reject_delay_time:"",
       max_no_answer:""
     },
@@ -106,6 +107,7 @@ function CallCenterQueueAdd() {
         call_timeout:"",
         reject_delay_time:"",
         max_no_answer:"",
+        busy_delay_time:""
       },
     ]);
   }
@@ -293,6 +295,7 @@ function CallCenterQueueAdd() {
             call_timeout:item.call_timeout===""?null:Number(item.call_timeout),
             reject_delay_time:item.reject_delay_time===""?null:Number(item.reject_delay_time),
             max_no_answer:item.max_no_answer===""?null:Number(item.max_no_answer),
+            busy_delay_time:item.busy_delay_time===""?null:Number(item.busy_delay_time),
             tier_level: item.level,
             tier_position: item.position,
             type: item.type,
@@ -960,7 +963,7 @@ function CallCenterQueueAdd() {
                           </div>
                         </div>
 
-                        <div className="col-2 pe-2">
+                        <div className="col-1 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Max No Answer</label>
@@ -976,6 +979,26 @@ function CallCenterQueueAdd() {
                               onChange={(e) => handleAgentChange(e, index)}
                               className="formItem"
                               placeholder="Max No Answer"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-1 pe-2">
+                          <div className="formLabel">
+                            {index === 0 ? (
+                              <label htmlFor="">Busy Delay Time</label>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                          <div className="position-relative">
+                            <input
+                              type="number"
+                              name="busy_delay_time"
+                              value={item.busy_delay_time}
+                              onChange={(e) => handleAgentChange(e, index)}
+                              className="formItem"
+                              placeholder="Busy Delay Time"
                             />
                           </div>
                         </div>
