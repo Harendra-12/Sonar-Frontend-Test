@@ -666,7 +666,7 @@ function CallCenterQueueAdd() {
                 </div>
                 <div className="col-12">
                   <input
-                    type="text"
+                    type="number"
                     name="extension"
                     className="formItem"
                     {...register("tier_rule_wait_second", {
@@ -724,6 +724,26 @@ function CallCenterQueueAdd() {
                     <option value={1}>True</option>
                     <option value={0}>False</option>
                   </select>
+                  <br />
+                </div>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Max Wait Time</label>
+                </div>
+                <div className="col-12">
+                  <input
+                    type="number"
+                    name="extension"
+                    className="formItem"
+                    {...register("max_wait_time", {
+                      ...noSpecialCharactersValidator,
+                    })}
+                  />
+                  {errors.max_wait_time && (
+                    <ErrorMessage text={errors.max_wait_time.message} />
+                  )}
                   <br />
                 </div>
               </div>

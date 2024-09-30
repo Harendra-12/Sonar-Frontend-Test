@@ -217,20 +217,6 @@ function Messages() {
                       >
                         Online
                       </button>
-                      {/* <button
-                        className={"tabLink"}
-                        effect="ripple"
-                        data-category="outgoing"
-                      >
-                        Sent
-                      </button> */}
-                      {/* <button
-                        className={"tabLink"}
-                        effect="ripple"
-                        data-category="missed"
-                      >
-                        Failed
-                      </button> */}
                     </div>
                   </nav>
                   <div className="tab-content">
@@ -270,27 +256,6 @@ function Messages() {
                         </div>
                         )
                       })}
-                    
-                     
-                      {/* <div className="contactListItem">
-                        <div
-                          onClick={() => setRecipient(1000)}
-                          className="row justify-content-between"
-                        >
-                          <div className="col-xl-6 d-flex">
-                            <div className="profileHolder" id="profileOnline">
-                              <i className="fa-light fa-user fs-5"></i>
-                            </div>
-                            <div className="my-auto ms-2 ms-xl-3">
-                              <h4>AUSER XYZ</h4>
-                              <h5>1000</h5>
-                            </div>
-                          </div>
-                          <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                            <h5>12:46pm</h5>
-                          </div>
-                        </div>
-                      </div> */}
                     </div>
                   </div>
                 </div>

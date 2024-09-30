@@ -773,6 +773,26 @@ function CallCenterQueueEdit() {
                   <br />
                 </div>
               </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Max Wait Time</label>
+                </div>
+                <div className="col-12">
+                  <input
+                    type="number"
+                    name="extension"
+                    className="formItem"
+                    {...register("max_wait_time", {
+                      ...noSpecialCharactersValidator,
+                    })}
+                  />
+                  {errors.max_wait_time && (
+                    <ErrorMessage text={errors.max_wait_time.message} />
+                  )}
+                  <br />
+                </div>
+              </div>
               {/* <div className="formRow  col-xl-3">
                 <div className="d-flex flex-wrap align-items-center">
                   <div className="formLabel">
