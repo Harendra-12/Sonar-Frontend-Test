@@ -250,16 +250,14 @@ const RingGroups = () => {
                                     <i className="fa-duotone fa-gear text-success"></i>
                                   </button>
                                 </td>
-                                <td
-                                  onClick={() => {
+                                <td>
+                                  <button className="tableButton delete" onClick={() => {
                                     setPopUp(true);
-
                                     setDeleteId(item.id);
-                                  }}
-                                >
-                                  <label className="tableLabel fail">
-                                    Delete
-                                  </label>
+                                  }}>
+                                    <i className="fa-solid fa-trash"></i>
+                                  </button>
+
                                 </td>
                               </tr>
                             );

@@ -767,21 +767,20 @@ const Dashboard = () => {
                   <div className="wrapper">
                     <DoughnutChart
                       fields={[
-                        "Online Extension",
-                        "Register Extension",
-                        "Available Extension",
+                        "Inbound",
+                        "Outbound",
+                        "Total"
                       ]}
                       percentage={[
-                        registerUser.length,
-                        extensionList,
-                        Number(accountDetails?.package?.number_of_user) -
-                        extensionList,
+                        callCardData.handled.inboundAnswered,
+                        callCardData.handled.outboundAnswered,
+                        callCardData.handled.count
                       ]}
                       centerTitle={`${extensionList}/${Number(
                         accountDetails?.package?.number_of_user
                       )}`}
                       centerDesc="Extensions Details"
-                      colors={["#9999", "#FF6384", "#36A2EB"]}
+                      colors={["#9999", "#FF638470", "#36A2EB70"]}
                     />
                   </div>
                 </div>
@@ -789,21 +788,20 @@ const Dashboard = () => {
                   <div className="wrapper">
                     <DoughnutChart
                       fields={[
-                        "Online Users",
-                        "Registered Users ",
-                        "Available Users ",
+                        "Handled",
+                        "Missed",
+                        "Abandoned",
                       ]}
                       percentage={[
-                        loginUser.length,
-                        userList,
-                        Number(accountDetails?.package?.number_of_user) -
-                        userList,
+                        callCardData.handled.count,
+                        callCardData.missedCalls.count,
+                        callCardData.abandonedCalls.count,
                       ]}
                       centerTitle={`${userList}/${(
                         accountDetails?.package?.number_of_user
                       )}`}
                       centerDesc="Total Users Available"
-                      colors={["#9999", "#FF6384", "#36A2EB"]}
+                      colors={["#36A2EB70", "#f17d0170", "#FF638470"]}
                     />
                   </div>
                   {/* <div className='circularProgressWrapper'>
@@ -829,12 +827,8 @@ const Dashboard = () => {
                     <GraphChart
                       fields={["Available Extension", "Registered Extension"]}
                       percentage={[
-                        ((Number(accountDetails?.package?.number_of_user) -
-                          extensionList) *
-                          100) /
-                        Number(accountDetails?.package?.number_of_user),
-                        (extensionList * 100) /
-                        Number(accountDetails?.package?.number_of_user),
+                        accountDetails?.package?.number_of_user,
+                        extensionList
                       ]}
                       centerTitle={`${extensionList}/${accountDetails?.package?.number_of_user}`}
                       centerDesc="Total Extensions"

@@ -204,6 +204,19 @@ function Navbar() {
                               </div>
                             </NavLink>
                           </li>
+                          <li className="tabItem ">
+                            <NavLink
+                              to="/mail-settings"
+                              onClick={backToTop}
+                              type="button"
+                              effect="ripple"
+                            >
+                              <div className="iconHolder">
+                                <i class="fa-duotone fa-solid fa-envelopes-bulk"></i>
+                              </div>
+                              <div className="itemTitle">Mail Settings</div>
+                            </NavLink>
+                          </li>
                           {userType === "SupreAdmin" ? (
                             <li className="tabItem" effect="ripple">
                               <NavLink
@@ -579,16 +592,6 @@ function Navbar() {
                       effect="ripple"
                     >
                       <div className="itemTitle">Variable</div>
-                    </NavLink>
-                  </li>
-                  <li className="dashboard ">
-                    <NavLink
-                      to="/mail-settings"
-                      onClick={backToTop}
-                      type="button"
-                      effect="ripple"
-                    >
-                      <div className="itemTitle">Mail Settings</div>
                     </NavLink>
                   </li>
                   {account?.extension || isCustomerAdmin ? (

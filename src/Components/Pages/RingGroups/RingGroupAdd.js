@@ -441,7 +441,7 @@ const RingGroupAdd = () => {
           <div id="subPageHeader">
             <div className="col-xl-9 my-auto">
               {/* <h4 className="my-auto">Ring Group Add</h4> */}
-              <p className="pt-2 mt-1 mb-0">
+              <p className="mb-0">
                 A ring group is a set of destinations that can be called with a
                 ring strategy.
               </p>
