@@ -113,6 +113,7 @@ function CallCenterQueueEdit() {
                 call_timeout:item.call_timeout,
                 reject_delay_time:item.reject_delay_time,
                 max_no_answer:item.max_no_answer,
+                no_answer_delay_time:item.no_answer_delay_time,
                 busy_delay_time:item.busy_delay_time,
                 position: item.tier_position,
                 type: item.type,
@@ -193,6 +194,7 @@ function CallCenterQueueEdit() {
         call_timeout:"",
         reject_delay_time:"",
         max_no_answer:"",
+        no_answer_delay_time:"",
         busy_delay_time:"",
         contact: "",
       },
@@ -300,6 +302,7 @@ function CallCenterQueueEdit() {
                 call_timeout: item.call_timeout===null?null:Number(item.call_timeout),
                 reject_delay_time: item.reject_delay_time===null?null:Number(item.reject_delay_time),
                 max_no_answer: item.max_no_answer===null?null:Number(item.max_no_answer),
+                no_answer_delay_time: item.no_answer_delay_time===null?null:Number(item.no_answer_delay_time),
                 busy_delay_time: item.busy_delay_time===null?null:Number(item.busy_delay_time),
                 queue_timeout: item.queue_timeout===null?null:Number(item.queue_timeout),
                 tier_position: item.position,
@@ -1036,6 +1039,26 @@ function CallCenterQueueEdit() {
                               onChange={(e) => handleAgentChange(e, index)}
                               className="formItem"
                               placeholder="Busy Delay Time"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-1 pe-2">
+                          <div className="formLabel">
+                            {index === 0 ? (
+                              <label htmlFor="">no answer delay time</label>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                          <div className="position-relative">
+                            <input
+                              type="number"
+                              name="busy_delay_time"
+                              value={item.no_answer_delay_time===null?"":item.no_answer_delay_time}
+                              onChange={(e) => handleAgentChange(e, index)}
+                              className="formItem"
+                              placeholder="no answer delay time"
                             />
                           </div>
                         </div>

@@ -36,10 +36,10 @@ function Messages() {
           const messager = new Messager(userAgent, target, messageInput);
           messager.message();
           const time = new Date().toLocaleString();
-          setAllMessage((prevState) => [
+          setAllMessage((prevState) => ({
             ...prevState,
-            { from: extension, body: messageInput, time: time },
-          ]);
+            [recipient]: [...(prevState[recipient] || []), { from: extension, body: messageInput, time }],
+          }));
           setMessageInput("");
 
           console.log("Message sent to:", targetURI);
@@ -88,10 +88,10 @@ function Messages() {
 
           // Add a record to the message history (optional)
           const time = new Date().toLocaleString();
-          setAllMessage((prevState) => [
+          setAllMessage((prevState) => ({
             ...prevState,
-            { from: extension, body: `[File sent: ${file.name}]`, time: time },
-          ]);
+            [recipient]: [...(prevState[recipient] || []), { from: extension, body: messageInput, time }],
+          }));
 
           console.log("File sent to:", targetURI);
         } catch (error) {
@@ -131,19 +131,18 @@ function Messages() {
           const imageUrl = `${body}`;
 
           // Update the state to include the image
-          setAllMessage((prevState) => [
+          setAllMessage((prevState) => ({
             ...prevState,
-            { from, body: <img src={imageUrl} alt="Received" />, time },
-          ]);
+            [from]: [...(prevState[from] || []), { from, body, time }],
+          }));
 
           console.log(`Received image from ${from} at ${time}`, message);
         } else {
           // If it's a text message or other type, render as text
-          setAllMessage((prevState) => [
+          setAllMessage((prevState) => ({
             ...prevState,
-            { from, body, time },
-          ]);
-
+            [from]: [...(prevState[from] || []), { from, body, time }],
+          }));
           console.log(`Received message from ${from}: ${body} at ${time}`, message);
         }
       },
@@ -327,17 +326,19 @@ function Messages() {
                   </div>
                   <div className="messageContent">
                     <div className="messageList" ref={messageListRef}>
-                      {allMessage.map((item, index) => {
+                      {allMessage?.[recipient]?.map((item, index) => {
+                        console.log("inside loop",item);
+                        
                         return (
                           <>
                             {item.from == extension ? (
                               <div className="messageItem sender">
-                                <div className="first">
+                                {/* <div className="first">
                                   <div className="profileHolder">US</div>
-                                </div>
+                                </div> */}
                                 <div className="second">
                                   <h6>
-                                    <span>{item.time.split(" ")[1]}</span>
+                                    <span>{item.time.split(" ")[1].slice(0,5)}</span>
                                   </h6>
                                   <div className="messageDetails">
                                     <p>{item.body}</p>
@@ -346,12 +347,12 @@ function Messages() {
                               </div>
                             ) : (
                               <div className="messageItem receiver">
-                                <div className="first">
+                                {/* <div className="first">
                                   <div className="profileHolder">US</div>
-                                </div>
+                                </div> */}
                                 <div className="second">
                                   <h6>
-                                    <span>{item.time.split(" ")[1]}</span>
+                                    <span>{item.time.split(" ")[1].slice(0,5)}</span>
                                   </h6>
                                   <div className="messageDetails">
                                     <p>{item.body}</p>
