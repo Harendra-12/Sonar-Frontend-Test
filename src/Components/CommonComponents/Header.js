@@ -130,6 +130,11 @@ function Header(props) {
           ""
         )}
       </div>
+      <div className="headerBgWave">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path fill="var(--color2)" fill-opacity="1" d="M0,160L120,186.7C240,213,480,267,720,277.3C960,288,1200,256,1320,240L1440,224L1440,0L1320,0C1200,0,960,0,720,0C480,0,240,0,120,0L0,0Z"></path>
+        </svg>
+      </div>
     </div>
   );
 }
