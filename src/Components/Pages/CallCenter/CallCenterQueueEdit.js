@@ -1054,7 +1054,7 @@ function CallCenterQueueEdit() {
                           <div className="position-relative">
                             <input
                               type="number"
-                              name="busy_delay_time"
+                              name="no_answer_delay_time"
                               value={item.no_answer_delay_time===null?"":item.no_answer_delay_time}
                               onChange={(e) => handleAgentChange(e, index)}
                               className="formItem"

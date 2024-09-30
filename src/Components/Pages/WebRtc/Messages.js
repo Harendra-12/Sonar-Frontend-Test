@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Messager, UserAgent } from "sip.js";
 import { useSIPProvider, CONNECT_STATUS } from "react-sipjs";
 import AgentSearch from "./AgentSearch";
+import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 
 function Messages() {
   const messageListRef = useRef(null);
@@ -14,6 +15,17 @@ function Messages() {
   const [messageInput, setMessageInput] = useState("");
   const [isSIPReady, setIsSIPReady] = useState(false); // Track if SIP provider is ready
   const extension = account?.extension?.extension || "";
+  const [contact, setContact] = useState([]);
+
+  useEffect(()=>{
+    async function getData() {
+      const apiData = await generalGetFunction(`/message/contacts`);
+      if (apiData.status) {
+        setContact(apiData.data);
+      }
+    }
+    getData();
+  },[])
 
   useEffect(() => {
     if (sipProvider && sipProvider.connectStatus === CONNECT_STATUS.CONNECTED) {
@@ -232,48 +244,35 @@ function Messages() {
                     </div> */}
                     <AgentSearch getDropdownValue={setRecipient} />
                     <div className="callList">
-                      <div className="text-center callListItem">
+                      {/* <div className="text-center callListItem">
                         <h5 className="fw-semibold">Today</h5>
-                      </div>
-                      <div className="contactListItem">
-                        <div
-                          onClick={() => setRecipient(1009)}
-                          className="row justify-content-between"
-                        >
-                          <div className="col-xl-6 d-flex">
-                            <div className="profileHolder" id="profileOnline">
-                              <i className="fa-light fa-user fs-5"></i>
+                      </div> */}
+                      {contact.map((item)=>{
+                        return(
+                          <div className="contactListItem">
+                          <div
+                            onClick={() => setRecipient(item?.extension)}
+                            className="row justify-content-between"
+                          >
+                            <div className="col-xl-6 d-flex">
+                              <div className="profileHolder" id="profileOnline">
+                                <i className="fa-light fa-user fs-5"></i>
+                              </div>
+                              <div className="my-auto ms-2 ms-xl-3">
+                                <h4>{item?.name}</h4>
+                                <h5>{item?.extension}</h5>
+                              </div>
                             </div>
-                            <div className="my-auto ms-2 ms-xl-3">
-                              <h4>AUSER XYZ</h4>
-                              <h5>1009</h5>
-                            </div>
-                          </div>
-                          <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                            <h5>12:46pm</h5>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="contactListItem">
-                        <div
-                          onClick={() => setRecipient(1001)}
-                          className="row justify-content-between"
-                        >
-                          <div className="col-xl-6 d-flex">
-                            <div className="profileHolder" id="profileOnline">
-                              <i className="fa-light fa-user fs-5"></i>
-                            </div>
-                            <div className="my-auto ms-2 ms-xl-3">
-                              <h4>AUSER XYZ</h4>
-                              <h5>1001</h5>
-                            </div>
-                          </div>
-                          <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                            <h5>12:46pm</h5>
+                            {/* <div className="col-auto text-end d-flex justify-content-center align-items-center">
+                              <h5>12:46pm</h5>
+                            </div> */}
                           </div>
                         </div>
-                      </div>
-                      <div className="contactListItem">
+                        )
+                      })}
+                    
+                     
+                      {/* <div className="contactListItem">
                         <div
                           onClick={() => setRecipient(1000)}
                           className="row justify-content-between"
@@ -291,7 +290,7 @@ function Messages() {
                             <h5>12:46pm</h5>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
