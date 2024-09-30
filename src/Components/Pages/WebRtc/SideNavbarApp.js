@@ -200,7 +200,7 @@ function SideNavbarApp({ setactivePage }) {
         </div>
       </div>
 
-      {popUp ? (
+      {/* {popUp ? (
         <div className="popup">
           <div className="container h-100">
             <div className="row h-100 justify-content-center align-items-center">
@@ -229,7 +229,7 @@ function SideNavbarApp({ setactivePage }) {
         </div>
       ) : (
         ""
-      )}
+      )} */}
     </section>
   );
 }

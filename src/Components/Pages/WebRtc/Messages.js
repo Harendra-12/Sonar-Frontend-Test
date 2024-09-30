@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Messager, UserAgent } from "sip.js";
 import { useSIPProvider, CONNECT_STATUS } from "react-sipjs";
 import AgentSearch from "./AgentSearch";
+import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 
 function Messages() {
   const messageListRef = useRef(null);
@@ -14,6 +15,17 @@ function Messages() {
   const [messageInput, setMessageInput] = useState("");
   const [isSIPReady, setIsSIPReady] = useState(false); // Track if SIP provider is ready
   const extension = account?.extension?.extension || "";
+  const [contact, setContact] = useState([]);
+
+  useEffect(()=>{
+    async function getData() {
+      const apiData = await generalGetFunction(`/message/contacts`);
+      if (apiData.status) {
+        setContact(apiData.data);
+      }
+    }
+    getData();
+  },[])
 
   useEffect(() => {
     if (sipProvider && sipProvider.connectStatus === CONNECT_STATUS.CONNECTED) {
@@ -36,10 +48,10 @@ function Messages() {
           const messager = new Messager(userAgent, target, messageInput);
           messager.message();
           const time = new Date().toLocaleString();
-          setAllMessage((prevState) => [
+          setAllMessage((prevState) => ({
             ...prevState,
-            { from: extension, body: messageInput, time: time },
-          ]);
+            [recipient]: [...(prevState[recipient] || []), { from: extension, body: messageInput, time }],
+          }));
           setMessageInput("");
 
           console.log("Message sent to:", targetURI);
@@ -88,10 +100,10 @@ function Messages() {
 
           // Add a record to the message history (optional)
           const time = new Date().toLocaleString();
-          setAllMessage((prevState) => [
+          setAllMessage((prevState) => ({
             ...prevState,
-            { from: extension, body: `[File sent: ${file.name}]`, time: time },
-          ]);
+            [recipient]: [...(prevState[recipient] || []), { from: extension, body: messageInput, time }],
+          }));
 
           console.log("File sent to:", targetURI);
         } catch (error) {
@@ -131,19 +143,18 @@ function Messages() {
           const imageUrl = `${body}`;
 
           // Update the state to include the image
-          setAllMessage((prevState) => [
+          setAllMessage((prevState) => ({
             ...prevState,
-            { from, body: <img src={imageUrl} alt="Received" />, time },
-          ]);
+            [from]: [...(prevState[from] || []), { from, body, time }],
+          }));
 
           console.log(`Received image from ${from} at ${time}`, message);
         } else {
           // If it's a text message or other type, render as text
-          setAllMessage((prevState) => [
+          setAllMessage((prevState) => ({
             ...prevState,
-            { from, body, time },
-          ]);
-
+            [from]: [...(prevState[from] || []), { from, body, time }],
+          }));
           console.log(`Received message from ${from}: ${body} at ${time}`, message);
         }
       },
@@ -206,20 +217,6 @@ function Messages() {
                       >
                         Online
                       </button>
-                      {/* <button
-                        className={"tabLink"}
-                        effect="ripple"
-                        data-category="outgoing"
-                      >
-                        Sent
-                      </button> */}
-                      {/* <button
-                        className={"tabLink"}
-                        effect="ripple"
-                        data-category="missed"
-                      >
-                        Failed
-                      </button> */}
                     </div>
                   </nav>
                   <div className="tab-content">
@@ -233,66 +230,32 @@ function Messages() {
                     </div> */}
                     <AgentSearch getDropdownValue={setRecipient} />
                     <div className="callList">
-                      <div className="text-center callListItem">
+                      {/* <div className="text-center callListItem">
                         <h5 className="fw-semibold">Today</h5>
-                      </div>
-                      <div className="contactListItem">
-                        <div
-                          onClick={() => setRecipient(1009)}
-                          className="row justify-content-between"
-                        >
-                          <div className="col-xl-6 d-flex">
-                            <div className="profileHolder" id="profileOnline">
-                              <i className="fa-light fa-user fs-5"></i>
+                      </div> */}
+                      {contact.map((item)=>{
+                        return(
+                          <div className="contactListItem">
+                          <div
+                            onClick={() => setRecipient(item?.extension)}
+                            className="row justify-content-between"
+                          >
+                            <div className="col-xl-6 d-flex">
+                              <div className="profileHolder" id="profileOnline">
+                                <i className="fa-light fa-user fs-5"></i>
+                              </div>
+                              <div className="my-auto ms-2 ms-xl-3">
+                                <h4>{item?.name}</h4>
+                                <h5>{item?.extension}</h5>
+                              </div>
                             </div>
-                            <div className="my-auto ms-2 ms-xl-3">
-                              <h4>AUSER XYZ</h4>
-                              <h5>1009</h5>
-                            </div>
-                          </div>
-                          <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                            <h5>12:46pm</h5>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="contactListItem">
-                        <div
-                          onClick={() => setRecipient(1001)}
-                          className="row justify-content-between"
-                        >
-                          <div className="col-xl-6 d-flex">
-                            <div className="profileHolder" id="profileOnline">
-                              <i className="fa-light fa-user fs-5"></i>
-                            </div>
-                            <div className="my-auto ms-2 ms-xl-3">
-                              <h4>AUSER XYZ</h4>
-                              <h5>1001</h5>
-                            </div>
-                          </div>
-                          <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                            <h5>12:46pm</h5>
+                            {/* <div className="col-auto text-end d-flex justify-content-center align-items-center">
+                              <h5>12:46pm</h5>
+                            </div> */}
                           </div>
                         </div>
-                      </div>
-                      <div className="contactListItem">
-                        <div
-                          onClick={() => setRecipient(1000)}
-                          className="row justify-content-between"
-                        >
-                          <div className="col-xl-6 d-flex">
-                            <div className="profileHolder" id="profileOnline">
-                              <i className="fa-light fa-user fs-5"></i>
-                            </div>
-                            <div className="my-auto ms-2 ms-xl-3">
-                              <h4>AUSER XYZ</h4>
-                              <h5>1000</h5>
-                            </div>
-                          </div>
-                          <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                            <h5>12:46pm</h5>
-                          </div>
-                        </div>
-                      </div>
+                        )
+                      })}
                     </div>
                   </div>
                 </div>
@@ -327,17 +290,19 @@ function Messages() {
                   </div>
                   <div className="messageContent">
                     <div className="messageList" ref={messageListRef}>
-                      {allMessage.map((item, index) => {
+                      {allMessage?.[recipient]?.map((item, index) => {
+                        console.log("inside loop",item);
+                        
                         return (
                           <>
                             {item.from == extension ? (
                               <div className="messageItem sender">
-                                <div className="first">
+                                {/* <div className="first">
                                   <div className="profileHolder">US</div>
-                                </div>
+                                </div> */}
                                 <div className="second">
                                   <h6>
-                                    <span>{item.time.split(" ")[1]}</span>
+                                    <span>{item.time.split(" ")[1].slice(0,5)}</span>
                                   </h6>
                                   <div className="messageDetails">
                                     <p>{item.body}</p>
@@ -346,12 +311,12 @@ function Messages() {
                               </div>
                             ) : (
                               <div className="messageItem receiver">
-                                <div className="first">
+                                {/* <div className="first">
                                   <div className="profileHolder">US</div>
-                                </div>
+                                </div> */}
                                 <div className="second">
                                   <h6>
-                                    <span>{item.time.split(" ")[1]}</span>
+                                    <span>{item.time.split(" ")[1].slice(0,5)}</span>
                                   </h6>
                                   <div className="messageDetails">
                                     <p>{item.body}</p>
