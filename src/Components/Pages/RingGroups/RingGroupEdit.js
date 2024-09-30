@@ -515,8 +515,7 @@ const RingGroupEdit = () => {
         <div className="container-fluid px-0">
           <Header title="Ring Group Edit" />
           <div id="subPageHeader">
-            <div className="col-xl-9 my-auto">
-              {/* <h4 className="my-auto">Ring Group Edit</h4> */}
+            <div className="col-xl-9">
               <p className="mb-0">
                 A ring group is a set of destinations that can be called with a
                 ring strategy.
@@ -524,27 +523,24 @@ const RingGroupEdit = () => {
             </div>
             <div className="col-xl-3 ps-2">
               <div className="d-flex align-items-center justify-content-end">
-                <div className="formRow border-0 p-0 me-2">
-                  <div className="d-flex align-items-center">
-                    <div className="formLabel py-0 me-2">
-                      <label htmlFor="selectFormRow">Enabled</label>
-                    </div>
-                    <div className="my-auto position-relative mx-1">
-                      <label className="switch">
-                        <input
-                          type="checkbox"
-                          checked={watch().status}
-                          {...register("status")}
-                          id="showAllCheck"
-                        />
-                        <span className="slider round" />
-                      </label>
-                    </div>
+                {/* <div className="formRow border-0 p-0 me-2"> */}
+                <div className="d-flex align-items-center">
+                  <div className="formLabel py-0 me-2">
+                    <label htmlFor="selectFormRow">Enabled</label>
                   </div>
-                  {/* <label htmlFor="data" className="formItemDesc mt-0">
-                    Set the status of this ring group.
-                  </label> */}
+                  <div className="my-auto position-relative mx-1">
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={watch().status}
+                        {...register("status")}
+                        id="showAllCheck"
+                      />
+                      <span className="slider round" />
+                    </label>
+                  </div>
                 </div>
+                {/* </div> */}
                 <button
                   onClick={() => {
                     navigate(-1);
@@ -582,8 +578,11 @@ const RingGroupEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Name</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Enter a name.
+                  </label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <input
                     type="text"
                     name="extension"
@@ -595,16 +594,17 @@ const RingGroupEdit = () => {
                     })}
                   />
                   {errors.name && <ErrorMessage text={errors.name.message} />}
-                  <label htmlFor="data" className="formItemDesc">
-                    Enter a name.
-                  </label>
+
                 </div>
               </div>
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Extension</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Enter a name.
+                  </label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <input
                     type="text"
                     name="extension"
@@ -615,9 +615,7 @@ const RingGroupEdit = () => {
                   {errors.extension && (
                     <ErrorMessage text={errors.extension.message} />
                   )}
-                  <label htmlFor="data" className="formItemDesc">
-                    Enter a name.
-                  </label>
+
                 </div>
               </div>
               {/* <div className="formRow col-xl-3">
@@ -684,8 +682,11 @@ const RingGroupEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Strategy</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Select the ring strategy.
+                  </label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <select
                     className="formItem"
                     {...register("strategy")}
@@ -697,281 +698,8 @@ const RingGroupEdit = () => {
                     <option value="random">Random</option>
                     <option value="rollover">Rollover</option>
                   </select>
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
-                    Select the ring strategy.
-                  </label>
                 </div>
               </div>
-              <div />
-              <div className="formRow col-xl-10">
-                {destination.map((item, index) => {
-                  return (
-                    <div className="col-12 d-flex justify-content-start">
-                      <div
-                        className="formLabel pe-2"
-                        style={index === 0 ? { marginTop: 36 } : {}}
-                      >
-                        <label>{index + 1}.</label>
-                      </div>
-                      <div className="col-3 pe-2">
-                        {index === 0 ? (
-                          <div className="formLabel">
-                            <label htmlFor="">Destinations</label>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                        {/* <div className="position-relative">
-                          <input
-                            type="text"
-                            name="destination"
-                            className="formItem"
-                            value={item.destination}
-                            onChange={(e) => handleDestinationChange(index, e)}
-                            placeholder="Destination"
-                          />
-                          {destinationList && destinationId === index ? (
-                            <div
-                              ref={divRef}
-                              className="formCustomAutoComplete"
-                            >
-                              <ul>
-                                {filterExtension &&
-                                  filterExtension.map((item) => {
-                                    return (
-                                      <li
-                                        value={item.extension}
-                                        onClick={(e) => {
-                                          handlelistClick(
-                                            index,
-                                            item.extension
-                                          );
-                                          setDestinationList(false);
-                                        }}
-                                      >
-                                        {item.extension}
-                                      </li>
-                                    );
-                                  })}
-                                <Link
-                                  to="/users-add"
-                                  className="text-center border bg-info-subtle fs-6 fw-bold text-info"
-                                >
-                                  Add User
-                                </Link>
-                              </ul>
-                            </div>
-                          ) : (
-                            ""
-                          )}
-                        </div> */}
-                        <div className="position-relative">
-                          <select
-                            type="text"
-                            name="destination"
-                            value={item.destination}
-                            onChange={(e) => {
-                              const selectedValue = e.target.value;
-                              if (selectedValue === "addUser") {
-                                navigate("/users-add");
-                              } else {
-                                handleDestinationChange(index, e);
-                              }
-                            }}
-                            className="formItem"
-                            placeholder="Destination"
-                          >
-                            <option value={""} disabled>
-                              Choose agent
-                            </option>
-                            {/* {user &&
-                              user.map((item) => {
-                                return (
-                                  <option
-                                    value={item.extension?.extension}
-                                    key={item.id}
-                                  >
-                                    {item.username}({item.extension?.extension})
-                                  </option>
-                                );
-                              })} */}
-                            {user &&
-                              user
-                                .filter((item1) => {
-                                  return (
-                                    item1.extension.extension ==
-                                    destination[index]?.destination ||
-                                    !destination.some(
-                                      (destinationItem, destinationIndex) =>
-                                        destinationItem.destination ==
-                                        item1.extension.extension &&
-                                        destinationIndex != index
-                                    )
-                                  );
-                                })
-                                .map((item) => {
-                                  return (
-                                    <option
-                                      value={item.extension?.extension}
-                                      key={item.id}
-                                    >
-                                      {item.username}(
-                                      {item.extension?.extension})
-                                    </option>
-                                  );
-                                })}
-                            <option
-                              value="addUser"
-                              className="text-center border bg-info-subtle fs-6 fw-bold text-info"
-                              style={{ cursor: "pointer" }}
-                            >
-                              Add User
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-3 pe-2">
-                        {index === 0 ? (
-                          <div className="formLabel">
-                            <label htmlFor="">Delay</label>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                        <select
-                          className="formItem me-0"
-                          style={{ width: "100%" }}
-                          name="delay"
-                          id="selectFormRow"
-                          value={item.delay}
-                          onChange={(e) => {
-                            handleDestinationChange(index, e);
-                          }}
-                        >
-                          <option>Delay</option>
-                          {(() => {
-                            const numbers = [];
-                            for (let i = 0; i <= 100; i++) {
-                              if (i % 5 === 0) {
-                                numbers.push(<span key={i}>{i}</span>);
-                              }
-                            }
-                            return numbers.map((item) => {
-                              return <option>{item}</option>;
-                            });
-                          })()}
-                        </select>
-                      </div>
-                      <div className="col-3 pe-2">
-                        {index === 0 ? (
-                          <div className="formLabel">
-                            <label htmlFor="">Timeout</label>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                        <select
-                          className="formItem me-0"
-                          style={{ width: "100%" }}
-                          name="timeOut"
-                          value={item.timeOut}
-                          onChange={(e) => handleDestinationChange(index, e)}
-                          id="selectFormRow"
-                        >
-                          <option>Timeout</option>
-                          {(() => {
-                            const numbers = [];
-                            for (let i = 0; i <= 100; i++) {
-                              if (i % 5 === 0) {
-                                numbers.push(<span key={i}>{i}</span>);
-                              }
-                            }
-                            return numbers.map((item) => {
-                              return <option>{item}</option>;
-                            });
-                          })()}
-                        </select>
-                      </div>
-                      {/* <div className="col-2 pe-2">
-                        {index === 0 ? (
-                          <div className="formLabel">
-                            <label htmlFor="">Prompt</label>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                        <select
-                          className="formItem me-0"
-                          style={{ width: "100%" }}
-                          value={item.prompt}
-                          onChange={(e) => handleDestinationChange(index, e)}
-                          id="selectFormRow"
-                          name="prompt"
-                        >
-                          <option className="status">Prompt</option>
-                          <option value="confirm">Confirm</option>
-                        </select>
-                      </div> */}
-                      <div className="col-3 pe-2">
-                        {index === 0 ? (
-                          <div className="formLabel">
-                            <label htmlFor="">Status</label>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                        <select
-                          className="formItem me-0"
-                          style={{ width: "100%" }}
-                          value={item.status}
-                          onChange={(e) => handleDestinationChange(index, e)}
-                          id="selectFormRow"
-                          name="status"
-                        >
-                          <option className="status" value="active">
-                            True
-                          </option>
-                          <option value="inactive">False</option>
-                        </select>
-                      </div>
-                      {destination.length === 1 ? (
-                        ""
-                      ) : (
-                        <div className="col-auto h-100 my-auto">
-                          <button
-                            type="button"
-                            onClick={() => deleteDestination(item.id)}
-                            className="clearButton text-danger"
-                          >
-                            <i className="fa-duotone fa-trash"></i>
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-                {errors.destinations && (
-                  <ErrorMessage text={errors.destinations.message} />
-                )}
-                <label htmlFor="data" className="formItemDesc">
-                  Add destinations and parameters to the ring group.
-                </label>
-              </div>
-              <div className="formRow col-xl-2">
-                <div className="formLabel d-none d-xl-block">
-                  <label htmlFor=""></label>
-                </div>
-                <button
-                  onClick={() => addNewDestination()}
-                  className="panelButton ms-xl-5 mt-auto"
-                  effect="ripple"
-                  type="button"
-                >
-                  <i className="fa-duotone fa-circle-plus me-2"></i>Add More
-                </button>
-              </div>
-              <div />
               {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Timeout Destination</label>
@@ -1003,18 +731,26 @@ const RingGroupEdit = () => {
                 </div>
               </div> */}
               <div className="formRow col-xl-3">
-                <ActionList
-                  title="Timeout Destination"
-                  label="Select the timeout destination for this ring group."
-                  getDropdownValue={actionListValue}
-                  value={watch().timeout_destination}
-                />
+                <div className="formLabel">
+                  <label htmlFor="">Timeout Destination</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Select the timeout destination for this ring group.
+                  </label>
+                </div>
+                <div className="col-6">
+                  <ActionList
+                    title={null}
+                    label={null}
+                    getDropdownValue={actionListValue}
+                    value={watch().timeout_destination}
+                  />
+                </div>
               </div>
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Call Timeout</label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <input
                     type="text"
                     name="extension"
@@ -1070,8 +806,12 @@ const RingGroupEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Ring Back</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Defines what the caller will hear while the destination is
+                    being called.
+                  </label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <select
                     className="formItem"
                     {...register("ring_back")}
@@ -1090,11 +830,6 @@ const RingGroupEdit = () => {
                         );
                       })}
                   </select>
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
-                    Defines what the caller will hear while the destination is
-                    being called.
-                  </label>
                 </div>
               </div>
               {/* <div className="formRow col-xl-3">
@@ -1250,8 +985,11 @@ const RingGroupEdit = () => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Description</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Enter the description.
+                  </label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <input
                     type="text"
                     name="extension"
@@ -1263,10 +1001,6 @@ const RingGroupEdit = () => {
                   {errors.description && (
                     <ErrorMessage text={errors.description.message} />
                   )}
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
-                    Enter the description.
-                  </label>
                 </div>
               </div>
 
@@ -1292,23 +1026,289 @@ const RingGroupEdit = () => {
                   </label>
                 </div>
               </div> */}
-              <div className="col-2 pe-2">
+              <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Recording</label>
                 </div>
-                <select
-                  className="formItem me-0"
-                  style={{ width: "100%" }}
-                  // value={watch().recording_enabled}
-                  {...register("recording_enabled")}
-                  id="selectFormRow"
-                  name="recording_enabled"
-                >
-                  <option className="status" value="true">
-                    True
-                  </option>
-                  <option value="false">False</option>
-                </select>
+                <div className="col-6">
+                  <select
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                    // value={watch().recording_enabled}
+                    {...register("recording_enabled")}
+                    id="selectFormRow"
+                    name="recording_enabled"
+                  >
+                    <option className="status" value="true">
+                      True
+                    </option>
+                    <option value="false">False</option>
+                  </select>
+                </div>
+              </div>
+              <div className="formRow col-xl-12">
+                {destination.map((item, index) => {
+                  return (
+                    <div className="col-12 d-flex justify-content-start mb-2">
+                      <div
+                        className="formLabel pe-2"
+                        style={index === 0 ? { marginTop: 32, width: 30 } : { width: 30 }}
+                      >
+                        <label>{index + 1}.</label>
+                      </div>
+                      <div className="col-3 pe-2">
+                        {index === 0 ? (
+                          <div className="formLabel">
+                            <label htmlFor="">Destinations</label>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                        {/* <div className="position-relative">
+                          <input
+                            type="text"
+                            name="destination"
+                            className="formItem"
+                            value={item.destination}
+                            onChange={(e) => handleDestinationChange(index, e)}
+                            placeholder="Destination"
+                          />
+                          {destinationList && destinationId === index ? (
+                            <div
+                              ref={divRef}
+                              className="formCustomAutoComplete"
+                            >
+                              <ul>
+                                {filterExtension &&
+                                  filterExtension.map((item) => {
+                                    return (
+                                      <li
+                                        value={item.extension}
+                                        onClick={(e) => {
+                                          handlelistClick(
+                                            index,
+                                            item.extension
+                                          );
+                                          setDestinationList(false);
+                                        }}
+                                      >
+                                        {item.extension}
+                                      </li>
+                                    );
+                                  })}
+                                <Link
+                                  to="/users-add"
+                                  className="text-center border bg-info-subtle fs-6 fw-bold text-info"
+                                >
+                                  Add User
+                                </Link>
+                              </ul>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                        </div> */}
+                        <div className="position-relative">
+                          <select
+                            type="text"
+                            name="destination"
+                            value={item.destination}
+                            onChange={(e) => {
+                              const selectedValue = e.target.value;
+                              if (selectedValue === "addUser") {
+                                navigate("/users-add");
+                              } else {
+                                handleDestinationChange(index, e);
+                              }
+                            }}
+                            className="formItem"
+                            placeholder="Destination"
+                          >
+                            <option value={""} disabled>
+                              Choose agent
+                            </option>
+                            {/* {user &&
+                              user.map((item) => {
+                                return (
+                                  <option
+                                    value={item.extension?.extension}
+                                    key={item.id}
+                                  >
+                                    {item.username}({item.extension?.extension})
+                                  </option>
+                                );
+                              })} */}
+                            {user &&
+                              user
+                                .filter((item1) => {
+                                  return (
+                                    item1.extension.extension ==
+                                    destination[index]?.destination ||
+                                    !destination.some(
+                                      (destinationItem, destinationIndex) =>
+                                        destinationItem.destination ==
+                                        item1.extension.extension &&
+                                        destinationIndex != index
+                                    )
+                                  );
+                                })
+                                .map((item) => {
+                                  return (
+                                    <option
+                                      value={item.extension?.extension}
+                                      key={item.id}
+                                    >
+                                      {item.username}(
+                                      {item.extension?.extension})
+                                    </option>
+                                  );
+                                })}
+                            <option
+                              value="addUser"
+                              className="text-center border bg-info-subtle fs-6 fw-bold text-info"
+                              style={{ cursor: "pointer" }}
+                            >
+                              Add User
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-2 pe-2">
+                        {index === 0 ? (
+                          <div className="formLabel">
+                            <label htmlFor="">Delay</label>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                        <select
+                          className="formItem me-0"
+                          style={{ width: "100%" }}
+                          name="delay"
+                          id="selectFormRow"
+                          value={item.delay}
+                          onChange={(e) => {
+                            handleDestinationChange(index, e);
+                          }}
+                        >
+                          <option>Delay</option>
+                          {(() => {
+                            const numbers = [];
+                            for (let i = 0; i <= 100; i++) {
+                              if (i % 5 === 0) {
+                                numbers.push(<span key={i}>{i}</span>);
+                              }
+                            }
+                            return numbers.map((item) => {
+                              return <option>{item}</option>;
+                            });
+                          })()}
+                        </select>
+                      </div>
+                      <div className="col-2 pe-2">
+                        {index === 0 ? (
+                          <div className="formLabel">
+                            <label htmlFor="">Timeout</label>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                        <select
+                          className="formItem me-0"
+                          style={{ width: "100%" }}
+                          name="timeOut"
+                          value={item.timeOut}
+                          onChange={(e) => handleDestinationChange(index, e)}
+                          id="selectFormRow"
+                        >
+                          <option>Timeout</option>
+                          {(() => {
+                            const numbers = [];
+                            for (let i = 0; i <= 100; i++) {
+                              if (i % 5 === 0) {
+                                numbers.push(<span key={i}>{i}</span>);
+                              }
+                            }
+                            return numbers.map((item) => {
+                              return <option>{item}</option>;
+                            });
+                          })()}
+                        </select>
+                      </div>
+                      {/* <div className="col-2 pe-2">
+                        {index === 0 ? (
+                          <div className="formLabel">
+                            <label htmlFor="">Prompt</label>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                        <select
+                          className="formItem me-0"
+                          style={{ width: "100%" }}
+                          value={item.prompt}
+                          onChange={(e) => handleDestinationChange(index, e)}
+                          id="selectFormRow"
+                          name="prompt"
+                        >
+                          <option className="status">Prompt</option>
+                          <option value="confirm">Confirm</option>
+                        </select>
+                      </div> */}
+                      <div className="col-2 pe-2">
+                        {index === 0 ? (
+                          <div className="formLabel">
+                            <label htmlFor="">Status</label>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                        <select
+                          className="formItem me-0"
+                          style={{ width: "100%" }}
+                          value={item.status}
+                          onChange={(e) => handleDestinationChange(index, e)}
+                          id="selectFormRow"
+                          name="status"
+                        >
+                          <option className="status" value="active">
+                            True
+                          </option>
+                          <option value="inactive">False</option>
+                        </select>
+                      </div>
+                      <div className="mt-auto">
+                        <button
+                          onClick={() => addNewDestination()}
+                          className="panelButton mt-auto"
+                          effect="ripple"
+                          type="button"
+                        >
+                          <i className="fa-duotone fa-circle-plus me-2"></i>Add More
+                        </button>
+                      </div>
+                      {destination.length === 1 ? (
+                        ""
+                      ) : (
+                        <div className="col-auto h-100 mt-auto">
+                          <button
+                            type="button"
+                            onClick={() => deleteDestination(item.id)}
+                            className="clearButton text-danger"
+                          >
+                            <i className="fa-duotone fa-trash"></i>
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+                {errors.destinations && (
+                  <ErrorMessage text={errors.destinations.message} />
+                )}
+                <label htmlFor="data" className="formItemDesc">
+                  Add destinations and parameters to the ring group.
+                </label>
               </div>
               {/* <div className="formRow  col-xl-3">
                 <div className="d-flex flex-wrap align-items-center">

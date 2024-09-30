@@ -150,9 +150,9 @@ const ActionList = ({
 
   return (
     <>
-      <div className="formLabel">
+      {title ? <div className="formLabel">
         <label htmlFor="">{title}</label>
-      </div>
+      </div> : ""}
       <div className="col-12">
         <Select
           // className="formItem"
@@ -166,10 +166,10 @@ const ActionList = ({
           styles={customStyles}
           value={selectedOption}
         />
-        <br />
-        <label htmlFor="data" className="formItemDesc" style={{ margin: 0 }}>
-          {label}
-        </label>
+        {label ?
+          <label htmlFor="data" className="formItemDesc" style={{ margin: 0 }}>
+            {label}
+          </label> : ""}
       </div>
     </>
   );
