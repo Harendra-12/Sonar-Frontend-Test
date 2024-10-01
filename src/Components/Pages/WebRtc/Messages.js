@@ -4,24 +4,29 @@ import { Messager, UserAgent } from "sip.js";
 import { useSIPProvider, CONNECT_STATUS } from "react-sipjs";
 import AgentSearch from "./AgentSearch";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { set } from "date-fns";
 
 function Messages() {
   const messageListRef = useRef(null);
   const sipProvider = useSIPProvider();
   const sessions = useSelector((state) => state.sessions);
-  const [recipient, setRecipient] = useState("1013");
+  const [recipient, setRecipient] = useState([]);
   const account = useSelector((state) => state.account);
   const [allMessage, setAllMessage] = useState([]);
   const [messageInput, setMessageInput] = useState("");
   const [isSIPReady, setIsSIPReady] = useState(false); // Track if SIP provider is ready
   const extension = account?.extension?.extension || "";
   const [contact, setContact] = useState([]);
+  const [chatHistory,setChatHistory] = useState([]);
+  const [loadMore,setLoadMore]=useState(1)
+  const [isFreeSwitchMessage, setIsFreeSwitchMessage] = useState(true);
 
   useEffect(()=>{
     async function getData() {
       const apiData = await generalGetFunction(`/message/contacts`);
       if (apiData.status) {
         setContact(apiData.data);
+        setRecipient([apiData.data[0].extension,apiData.data[0].id]);
       }
     }
     getData();
@@ -36,9 +41,46 @@ function Messages() {
       setIsSIPReady(false);
     }
   }, [sipProvider?.connectStatus]);
+
+  useEffect(()=>{
+    console.log("Inside apiCalling");
+    
+    async function getData(pageNumb) {
+      const apiData = await generalGetFunction(`message/all?receiver_id=${recipient[1]}&page=${pageNumb}`);
+      
+      apiData.data.data.map((item)=>{
+        setAllMessage((prevState) => ({
+          ...prevState,
+          [recipient[0]]: [{ from: item.user_id===recipient[1]?recipient[0]:extension, body: item.message_text, time:item.created_at },...(prevState[recipient[0]] || []) ],
+        }));
+      })
+      if (apiData.status) {
+        const newChatHistory = { ...chatHistory };
+        newChatHistory[recipient[0]] = {
+          total: apiData.data.total,
+          pageNumber: apiData.data.current_page
+        };
+        setChatHistory(newChatHistory);
+      }
+    }
+    if(recipient.length > 0) {
+      if( Object.keys(chatHistory).includes(recipient[0])){
+        if( chatHistory[recipient[0]]?.total && chatHistory[recipient[0]].pageNumber * 40 < chatHistory[recipient[0]].total){
+          getData(chatHistory[recipient[0]].pageNumber+1);
+          setIsFreeSwitchMessage(false);
+        }
+      }else{
+        getData(1);
+        setIsFreeSwitchMessage(true);
+      }     
+    }
+  },[recipient,loadMore])
+
+  console.log("Chat history",chatHistory);
+  
   const sendMessage = () => {
     if (isSIPReady) {
-      const targetURI = `sip:${recipient}@${account.domain.domain_name}`;
+      const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
       const userAgent = sipProvider?.sessionManager?.userAgent;
 
       const target = UserAgent.makeURI(targetURI);
@@ -48,9 +90,10 @@ function Messages() {
           const messager = new Messager(userAgent, target, messageInput);
           messager.message();
           const time = new Date().toLocaleString();
+          setIsFreeSwitchMessage(true);
           setAllMessage((prevState) => ({
             ...prevState,
-            [recipient]: [...(prevState[recipient] || []), { from: extension, body: messageInput, time }],
+            [recipient[0]]: [...(prevState[recipient[0]] || []), { from: extension, body: messageInput, time }],
           }));
           setMessageInput("");
 
@@ -68,7 +111,7 @@ function Messages() {
 
   const sendFileMessage = async (file) => {
     if (isSIPReady) {
-      const targetURI = `sip:${recipient}@${account.domain.domain_name}`;
+      const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
       const userAgent = sipProvider?.sessionManager?.userAgent;
 
       const target = UserAgent.makeURI(targetURI);
@@ -102,7 +145,7 @@ function Messages() {
           const time = new Date().toLocaleString();
           setAllMessage((prevState) => ({
             ...prevState,
-            [recipient]: [...(prevState[recipient] || []), { from: extension, body: messageInput, time }],
+            [recipient[0]]: [...(prevState[recipient[0]] || []), { from: extension, body: messageInput, time }],
           }));
 
           console.log("File sent to:", targetURI);
@@ -128,7 +171,7 @@ function Messages() {
         const from =
           message?.incomingMessageRequest?.message?.from?.uri?.user.toString();
         const body = message?.incomingMessageRequest?.message?.body;
-
+        setIsFreeSwitchMessage(true)
         // Check Content-Type for the incoming message
         const contentType = message?.incomingMessageRequest?.message?.getHeader(
           "Content-Type"
@@ -163,12 +206,40 @@ function Messages() {
 
 
   useEffect(() => {
-    if (messageListRef.current) {
+    if (isFreeSwitchMessage) {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
-    }
+    } 
   }, [allMessage]);
 
   console.log(allMessage);
+
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (messageListRef.current) {
+        const threshold = messageListRef.current.scrollHeight * 0.9;
+        if (messageListRef.current.scrollTop >= threshold) {
+          console.log("User has reached 90% from top", chatHistory);
+          setLoadMore(loadMore + 1);
+        }
+      }
+    };
+  
+    if (messageListRef.current) {
+      messageListRef.current.addEventListener("scroll", handleScroll);
+      return () => {
+        messageListRef.current.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   if (isFreeSwitchMessage) {
+  //     messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+  //   }
+  // }, [isFreeSwitchMessage, messageListRef]);
+
+  
   return (
     <>
       <main
@@ -237,7 +308,7 @@ function Messages() {
                         return(
                           <div className="contactListItem">
                           <div
-                            onClick={() => setRecipient(item?.extension)}
+                            onClick={() => setRecipient([item?.extension,item.id])}
                             className="row justify-content-between"
                           >
                             <div className="col-xl-6 d-flex">
@@ -268,7 +339,7 @@ function Messages() {
                 <div className="messageOverlay">
                   <div className="contactHeader">
                     <div>
-                      <h4>{recipient}</h4>
+                      <h4>{recipient[0]}</h4>
                       <span className="status online">Online</span>
                     </div>
                     <div className="d-flex my-auto">
@@ -290,8 +361,8 @@ function Messages() {
                   </div>
                   <div className="messageContent">
                     <div className="messageList" ref={messageListRef}>
-                      {allMessage?.[recipient]?.map((item, index) => {
-                        console.log("inside loop",item);
+                      {allMessage?.[recipient[0]]?.map((item, index) => {
+                        // console.log("inside loop",item);
                         
                         return (
                           <>
@@ -345,7 +416,7 @@ function Messages() {
                         />
                       </div>
                       <div className="col-auto d-flex">
-                        <button
+                        {/* <button
                           effect="ripple"
                           className="appPanelButtonColor2 ms-auto"
                         >
@@ -367,7 +438,7 @@ function Messages() {
                               }}
                             />
                           </i>
-                        </button>
+                        </button> */}
                         <button
                           effect="ripple"
                           className="appPanelButtonColor"

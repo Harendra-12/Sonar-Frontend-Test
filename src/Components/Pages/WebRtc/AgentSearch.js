@@ -38,7 +38,7 @@ const AgentSearch = ({
     {
       label: "User",
       options: user && user?.map((item) => ({
-        value: item.extension.extension,
+        value: [item.extension.extension, item.id],
         label: `${item.username}(${item.extension.extension})`,
       })),
     }

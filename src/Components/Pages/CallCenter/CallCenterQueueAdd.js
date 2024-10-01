@@ -750,6 +750,26 @@ function CallCenterQueueAdd() {
                   <br />
                 </div>
               </div>
+
+              {/* <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Queue Max Wait Time</label>
+                </div>
+                <div className="col-12">
+                  <input
+                    type="number"
+                    name="extension"
+                    className="formItem"
+                    {...register("queue_max_wait_time", {
+                      ...noSpecialCharactersValidator,
+                    })}
+                  />
+                  {errors.queue_max_wait_time && (
+                    <ErrorMessage text={errors.queue_max_wait_time} />
+                  )}
+                  <br />
+                </div>
+              </div> */}
               {/* <div className="formRow col-xl-3">
                 <div className="d-flex flex-wrap align-items-center">
                   <div className="formLabel">

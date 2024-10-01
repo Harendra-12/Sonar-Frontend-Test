@@ -1216,20 +1216,10 @@ const RingGroupAdd = () => {
                           <option value="inactive">False</option>
                         </select>
                       </div>
-                      <div className="mt-auto">
-                        <button
-                          onClick={() => addNewDestination()}
-                          className="panelButton my-auto"
-                          effect="ripple"
-                          type="button"
-                        >
-                          <i className="fa-duotone fa-circle-plus me-2"></i>Add More
-                        </button>
-                      </div>
                       {destination.length === 1 ? (
                         ""
                       ) : (
-                        <div className="col-1 h-100 mt-auto">
+                        <div className="me-2 h-100 mt-auto">
                           <button
                             type="button"
                             onClick={() => deleteDestination(item.id)}
@@ -1239,6 +1229,18 @@ const RingGroupAdd = () => {
                           </button>
                         </div>
                       )}
+                      {index === 0 ?
+                      <div className="mt-auto">
+                        <button
+                          onClick={() => addNewDestination()}
+                          className="panelButton my-auto"
+                          effect="ripple"
+                          type="button"
+                        >
+                          <i className="fa-duotone fa-circle-plus me-2"></i>Add More
+                        </button>
+                      </div>:""}
+                     
                     </div>
                   );
                 })}
