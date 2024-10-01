@@ -852,7 +852,7 @@ function CallCenterQueueEdit() {
                     type="number"
                     name="extension"
                     className="formItem"
-                    {...register("max_wait_time_with_no_agent_time_reached	", {
+                    {...register("max_wait_time_with_no_agent_time_reached", {
                       ...noSpecialCharactersValidator,
                     })}
                     onKeyDown={restrictToNumbers}
