@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";
 
 function SideNavbarApp({ setactivePage }) {
+  const account = useSelector((state) => state.account);
   const [popUp, setPopUp] = useState(false);
   const { connectStatus } = useSIPProvider();
   console.log(connectStatus);
-  const navigate = useNavigate();
+  const extension = account?.extension?.extension || "";
 
   useEffect(() => {
     if (connectStatus !== "CONNECTED") {
       setPopUp(true);
     }
   }, [connectStatus]);
+
 
   return (
     <section>
@@ -27,9 +29,9 @@ function SideNavbarApp({ setactivePage }) {
             <li>
               <button className="navItem">
                 <div className="profileHolder" id={connectStatus === "CONNECTED" ? "profileOnlineNav" : "profileOfflineNav"}>
-                  NH
+                  {extension}
                 </div>
-                <div className="userTitle">Username</div>
+                <div className="userTitle">{extension}-{account.username}</div>
               </button>
             </li>{" "}
             <div className="text-center">
@@ -198,7 +200,7 @@ function SideNavbarApp({ setactivePage }) {
         </div>
       </div>
 
-      {popUp ? (
+      {/* {popUp ? (
         <div className="popup">
           <div className="container h-100">
             <div className="row h-100 justify-content-center align-items-center">
@@ -227,7 +229,7 @@ function SideNavbarApp({ setactivePage }) {
         </div>
       ) : (
         ""
-      )}
+      )} */}
     </section>
   );
 }

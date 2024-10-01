@@ -101,7 +101,7 @@ table tr th:first-child {
 }
 
 #detailsHeader .profileName {
-    color: #000;
+    color: #fff;
     display: inline-block;
     align-items: center;
     font-size: 16px;

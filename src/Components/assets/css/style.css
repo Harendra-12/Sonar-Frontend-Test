@@ -44,16 +44,16 @@
 @import url('./common/responsive.css');
 
 /* Themes */
-@import url('./common/darkTheme.css');
+/* @import url('./common/darkTheme.css'); */
 
 
 :root {
     /* --bg-color: #e7f8ff; */
     /* --bg-color: #5d6aff0d; */
-    --bg-color: #0098ff0d;
+    --bg-color: #eceff1;
     --bgdark-color: #111525;
     /* Dark Mode */
-    --nav-color: #161b2e;
+    --nav-color: linear-gradient(195deg, #000000, #191919);
     --button-dark: #2d3864;
     /* --nav-color: #0676a9; */
     --div-color: #161c31;
@@ -61,13 +61,17 @@
     --color1: #360568;
     /* Primary Color */
     /* --color2: #5b2a86; */
-    --color2: #27b7ff;
+    --color2: #00a6fb;
+    --color2-trans: #49c2ff30;
     /* Accent Color */
     --ui-accent: #439fdd;
     --ui-icon: #00ffe0;
+    --ui-accent-green: #a5d02a;
+    --ui-accent-green-trans: #b7e92b30;
     /* --ui-accent: #d76394; */
     /* --ui-accent: #d763c9; */
-    --color3: #f18f01;
+    --color3: #f17d01;
+    --color3-trans: #ffc46e30;
     /* Highlight, Notification & Alert Color */
     --color-text: #fff;
     /* Contrast Text Color */

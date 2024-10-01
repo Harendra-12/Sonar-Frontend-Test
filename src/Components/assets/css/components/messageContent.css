@@ -172,6 +172,8 @@
     /* min-width: max-content; */
     display: inline-block;
     max-width: 260px;
+    min-width: 30px;
+    min-height: 30px;
     padding: 5px 10px;
 }
 

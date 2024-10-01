@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import SideNavbarApp from "./SideNavbarApp";
-import ActiveCallSidePanel from "./ActiveCallSidePanel";
 import { Messager, UserAgent } from "sip.js";
-import { SIPProvider, useSIPProvider, CONNECT_STATUS } from "react-sipjs";
+import { useSIPProvider, CONNECT_STATUS } from "react-sipjs";
+import AgentSearch from "./AgentSearch";
+import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 
 function Messages() {
+  const messageListRef = useRef(null);
   const sipProvider = useSIPProvider();
   const sessions = useSelector((state) => state.sessions);
   const [recipient, setRecipient] = useState("1013");
@@ -14,9 +15,22 @@ function Messages() {
   const [messageInput, setMessageInput] = useState("");
   const [isSIPReady, setIsSIPReady] = useState(false); // Track if SIP provider is ready
   const extension = account?.extension?.extension || "";
+  const [contact, setContact] = useState([]);
+
+  useEffect(()=>{
+    async function getData() {
+      const apiData = await generalGetFunction(`/message/contacts`);
+      if (apiData.status) {
+        setContact(apiData.data);
+      }
+    }
+    getData();
+  },[])
 
   useEffect(() => {
     if (sipProvider && sipProvider.connectStatus === CONNECT_STATUS.CONNECTED) {
+      console.log("SIP provider connected",sipProvider.connectStatus);
+      
       setIsSIPReady(true);
     } else {
       setIsSIPReady(false);
@@ -34,10 +48,10 @@ function Messages() {
           const messager = new Messager(userAgent, target, messageInput);
           messager.message();
           const time = new Date().toLocaleString();
-          setAllMessage((prevState) => [
+          setAllMessage((prevState) => ({
             ...prevState,
-            { from: extension, body: messageInput,time:time },
-          ]);
+            [recipient]: [...(prevState[recipient] || []), { from: extension, body: messageInput, time }],
+          }));
           setMessageInput("");
 
           console.log("Message sent to:", targetURI);
@@ -52,6 +66,58 @@ function Messages() {
     }
   };
 
+  const sendFileMessage = async (file) => {
+    if (isSIPReady) {
+      const targetURI = `sip:${recipient}@${account.domain.domain_name}`;
+      const userAgent = sipProvider?.sessionManager?.userAgent;
+
+      const target = UserAgent.makeURI(targetURI);
+
+      const convertImageToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = (error) => reject(error);
+          reader.readAsDataURL(file); // This converts to Base64
+        });
+      };
+
+      if (target && file) {
+        try {
+          // Convert file to Base64 string
+          const fileContent = await convertImageToBase64(file); // Await here!
+
+          // Create a message with the Base64 content
+          const messager = new Messager(userAgent, target, fileContent, file.type); // Use correct content type
+
+          // Send the message with proper MIME type and extra headers
+          messager.message({
+            extraHeaders: [
+              `Content-Type: ${file.type}`, // e.g., image/png
+              `Content-Disposition: attachment; filename="${file.name}"`,
+            ],
+          });
+
+          // Add a record to the message history (optional)
+          const time = new Date().toLocaleString();
+          setAllMessage((prevState) => ({
+            ...prevState,
+            [recipient]: [...(prevState[recipient] || []), { from: extension, body: messageInput, time }],
+          }));
+
+          console.log("File sent to:", targetURI);
+        } catch (error) {
+          console.error("Error sending file:", error);
+        }
+      } else {
+        console.error("Invalid recipient address or file.");
+      }
+    } else {
+      console.error("UserAgent or session not ready.");
+    }
+  };
+
+
   //   useEffect(() => {
   const userAgent = sipProvider?.sessionManager?.userAgent;
 
@@ -63,32 +129,48 @@ function Messages() {
           message?.incomingMessageRequest?.message?.from?.uri?.user.toString();
         const body = message?.incomingMessageRequest?.message?.body;
 
+        // Check Content-Type for the incoming message
+        const contentType = message?.incomingMessageRequest?.message?.getHeader(
+          "Content-Type"
+        );
+
         // Get the current time when the message is received
         const time = new Date().toLocaleString(); // Or use .toISOString() for UTC format
 
-        setAllMessage((prevState) => [
-          ...prevState,
-          { from, body, time },
-        ]);
+        // Check if the content is an image
+        if (contentType && contentType.startsWith("image/")) {
+          // If it's an image, create a URL for the Base64 image to render it in <img>
+          const imageUrl = `${body}`;
 
-        console.log(
-          `Received message from ${from}: ${body} at ${time}`,
-          message
-        );
+          // Update the state to include the image
+          setAllMessage((prevState) => ({
+            ...prevState,
+            [from]: [...(prevState[from] || []), { from, body, time }],
+          }));
+
+          console.log(`Received image from ${from} at ${time}`, message);
+        } else {
+          // If it's a text message or other type, render as text
+          setAllMessage((prevState) => ({
+            ...prevState,
+            [from]: [...(prevState[from] || []), { from, body, time }],
+          }));
+          console.log(`Received message from ${from}: ${body} at ${time}`, message);
+        }
       },
     };
-
-    //   return () => {
-    //     // Cleanup delegate if needed
-    //     userAgent.delegate = null;
-    //   };
   }
-  //   }, [sipProvider]);
+
+
+  useEffect(() => {
+    if (messageListRef.current) {
+      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+    }
+  }, [allMessage]);
 
   console.log(allMessage);
   return (
     <>
-      {/* <SideNavbarApp /> */}
       <main
         className="mainContentApp"
         style={{
@@ -133,112 +215,47 @@ function Messages() {
                         effect="ripple"
                         data-category="incoming"
                       >
-                        Received
-                      </button>
-                      <button
-                        className={"tabLink"}
-                        effect="ripple"
-                        data-category="outgoing"
-                      >
-                        Sent
-                      </button>
-                      <button
-                        className={"tabLink"}
-                        effect="ripple"
-                        data-category="missed"
-                      >
-                        Failed
+                        Online
                       </button>
                     </div>
                   </nav>
                   <div className="tab-content">
-                    <div className="position-relative searchBox d-flex mt-3">
+                    {/* <div className="position-relative searchBox d-flex mt-3">
                       <input
                         type="search"
                         name="Search"
                         id="headerSearch"
                         placeholder="Search"
                       />
-                    </div>
+                    </div> */}
+                    <AgentSearch getDropdownValue={setRecipient} />
                     <div className="callList">
-                      <div className="text-center callListItem">
+                      {/* <div className="text-center callListItem">
                         <h5 className="fw-semibold">Today</h5>
-                      </div>
-                      <div className="contactListItem">
-                        <div
-                          onClick={() => setRecipient(1009)}
-                          className="row justify-content-between"
-                        >
-                          <div className="col-xl-6 d-flex">
-                            <div className="profileHolder" id="profileOnline">
-                              <i className="fa-light fa-user fs-5"></i>
+                      </div> */}
+                      {contact.map((item)=>{
+                        return(
+                          <div className="contactListItem">
+                          <div
+                            onClick={() => setRecipient(item?.extension)}
+                            className="row justify-content-between"
+                          >
+                            <div className="col-xl-6 d-flex">
+                              <div className="profileHolder" id="profileOnline">
+                                <i className="fa-light fa-user fs-5"></i>
+                              </div>
+                              <div className="my-auto ms-2 ms-xl-3">
+                                <h4>{item?.name}</h4>
+                                <h5>{item?.extension}</h5>
+                              </div>
                             </div>
-                            <div className="my-auto ms-2 ms-xl-3">
-                              <h4>AUSER XYZ</h4>
-                              <h5>1009</h5>
-                            </div>
-                          </div>
-                          {/* <div className="col-10 col-xl-4">
-                            <h4>
-                              <span>Received</span>
-                            </h4>
-                            <h5>1 Attachment</h5>
-                          </div> */}
-                          <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                            <h5>12:46pm</h5>
+                            {/* <div className="col-auto text-end d-flex justify-content-center align-items-center">
+                              <h5>12:46pm</h5>
+                            </div> */}
                           </div>
                         </div>
-                      </div>
-                      <div className="contactListItem">
-                        <div
-                          onClick={() => setRecipient(1001)}
-                          className="row justify-content-between"
-                        >
-                          <div className="col-xl-6 d-flex">
-                            <div className="profileHolder" id="profileOnline">
-                              <i className="fa-light fa-user fs-5"></i>
-                            </div>
-                            <div className="my-auto ms-2 ms-xl-3">
-                              <h4>AUSER XYZ</h4>
-                              <h5>1001</h5>
-                            </div>
-                          </div>
-                          {/* <div className="col-10 col-xl-4">
-                            <h4>
-                              <span>Received</span>
-                            </h4>
-                            <h5>1 Attachment</h5>
-                          </div> */}
-                          <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                            <h5>12:46pm</h5>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="contactListItem">
-                        <div
-                          onClick={() => setRecipient(1000)}
-                          className="row justify-content-between"
-                        >
-                          <div className="col-xl-6 d-flex">
-                            <div className="profileHolder" id="profileOnline">
-                              <i className="fa-light fa-user fs-5"></i>
-                            </div>
-                            <div className="my-auto ms-2 ms-xl-3">
-                              <h4>AUSER XYZ</h4>
-                              <h5>1000</h5>
-                            </div>
-                          </div>
-                          {/* <div className="col-10 col-xl-4">
-                            <h4>
-                              <span>Received</span>
-                            </h4>
-                            <h5>1 Attachment</h5>
-                          </div> */}
-                          <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                            <h5>12:46pm</h5>
-                          </div>
-                        </div>
-                      </div>
+                        )
+                      })}
                     </div>
                   </div>
                 </div>
@@ -272,18 +289,20 @@ function Messages() {
                     </div>
                   </div>
                   <div className="messageContent">
-                    <div className="messageList">
-                      {allMessage.map((item, index) => {
+                    <div className="messageList" ref={messageListRef}>
+                      {allMessage?.[recipient]?.map((item, index) => {
+                        console.log("inside loop",item);
+                        
                         return (
                           <>
                             {item.from == extension ? (
                               <div className="messageItem sender">
-                                <div className="first">
+                                {/* <div className="first">
                                   <div className="profileHolder">US</div>
-                                </div>
+                                </div> */}
                                 <div className="second">
                                   <h6>
-                                     <span>{item.time.split(" ")[1]}</span>
+                                    <span>{item.time.split(" ")[1].slice(0,5)}</span>
                                   </h6>
                                   <div className="messageDetails">
                                     <p>{item.body}</p>
@@ -292,12 +311,12 @@ function Messages() {
                               </div>
                             ) : (
                               <div className="messageItem receiver">
-                                <div className="first">
+                                {/* <div className="first">
                                   <div className="profileHolder">US</div>
-                                </div>
+                                </div> */}
                                 <div className="second">
                                   <h6>
-                                     <span>{item.time.split(" ")[1]}</span>
+                                    <span>{item.time.split(" ")[1].slice(0,5)}</span>
                                   </h6>
                                   <div className="messageDetails">
                                     <p>{item.body}</p>
@@ -319,7 +338,6 @@ function Messages() {
                           value={messageInput}
                           onChange={(e) => setMessageInput(e.target.value)}
                           onKeyDown={(e) => {
-                            console.log(e);
                             if (e.key === "Enter") {
                               sendMessage();
                             }
@@ -331,7 +349,24 @@ function Messages() {
                           effect="ripple"
                           className="appPanelButtonColor2 ms-auto"
                         >
-                          <i className="fa-regular fa-paperclip" />
+                          <i className="fa-regular fa-paperclip" >
+                            <input
+                              type="file"
+                              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0 }}
+                              // value={messageInput}
+                              onChange={(e) => {
+                                const file = e.target.files[0];
+                                if (file) {
+                                  sendFileMessage(file);
+                                }
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                  sendFileMessage();
+                                }
+                              }}
+                            />
+                          </i>
                         </button>
                         <button
                           effect="ripple"

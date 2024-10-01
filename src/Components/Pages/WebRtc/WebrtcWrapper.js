@@ -25,35 +25,48 @@ const WebrtcWrapper = () => {
   const extension = account?.extension?.extension || "";
 
   const useWebSocketErrorHandling = (options) => {
-    useEffect(() => {
+    const connectWebSocket = (retryCount = 0) => {
       const webSocket = new WebSocket(options.webSocketServer);
-
+  
+      webSocket.onopen = () => {
+        console.log("WebSocket connected");
+      };
+  
       webSocket.onerror = (event) => {
         console.error("WebSocket error:", event);
-        // Prevent default error handling
-        event.preventDefault();
+        if (retryCount < 3) {
+          setTimeout(() => {
+            connectWebSocket(retryCount + 1); // retry after 2 seconds
+          }, 2000);
+        } else {
+          console.error("Failed to connect to WebSocket after 3 retries");
+        }
       };
-
+  
       webSocket.onclose = (event) => {
-        if (event.code === 1006) {
+        // if (event.code === 1006) {
           console.error(
             `WebSocket closed ${options.webSocketServer} (code: ${event.code})`
           );
-          // Handle the WebSocket close event
+          console.log("Trying to reconnect to WebSocket...");
+          if (retryCount < 3) {
+            setTimeout(() => {
+              connectWebSocket(retryCount + 1); // retry after 2 seconds
+            }, 2000);
+          } else {
+            console.error("Failed to reconnect to WebSocket after 3 retries");
+          }
         }
-      };
-      console.log(global);
-      return () => {
-        webSocket.close();
-      };
+      // };
+    };
+  
+    useEffect(() => {
+      connectWebSocket();
     }, [options.webSocketServer]);
   };
   const options = {
     domain: account.domain.domain_name,
-    webSocketServer: "wss://192.168.2.225:7443"
-    // domain: "192.168.0.91",
-    // domain: "webvio.1.com",
-    // webSocketServer: "ws://192.168.0.91:5066",
+    webSocketServer: "wss://192.168.2.225:7443",
   };
 
   useWebSocketErrorHandling(options);

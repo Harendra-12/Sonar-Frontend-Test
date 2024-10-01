@@ -50,7 +50,17 @@
 }
 
 @media (min-width: 1500px) {
-    .formRow.col-xl-3 {
+
+    /* .formRow.col-xl-3 {
         width: 16.5%;
-    }
+    } */
+
+}
+
+.formRow.col-xl-3 {
+    width: 45%;
+}
+
+form.row {
+    justify-content: space-between;
 }

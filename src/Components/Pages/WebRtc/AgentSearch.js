@@ -1,54 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
+import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 
-const ActionList = ({
+const AgentSearch = ({
   getDropdownValue,
   value,
-  title = "Action",
-  label = "Set the action to perform when the max wait time is reached.",
 }) => {
-  const dispatch = useDispatch();
+ 
 
-  const [ringGroup, setRingGroup] = useState([]);
-  const [extension, setExtension] = useState([]);
-  const [callCenter, setCallCenter] = useState([]);
+  const [user,setUser]=useState([])
+ 
 
   const [selectedOption, setSelectedOption] = useState(null);
 
-  const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
-  const callCenterArr = useSelector((state) => state.callCenter);
-  const extensionRefresh = useSelector((state) => state.extensionRefresh);
-  const extensionArr = useSelector((state) => state.extension);
-  const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
-  const ringGroupArr = useSelector((state) => state.ringGroup);
 
+  
   useEffect(() => {
-    if (extensionRefresh > 0) {
-      setExtension(extensionArr);
-    } else {
-      dispatch({
-        type: "SET_EXTENSIONREFRESH",
-        extensionRefresh: extensionRefresh + 1,
-      });
+    async function getData() {
+      const apiData = await generalGetFunction("/user-all");
+      if (apiData.status) {
+        setUser(apiData.data.filter((item) => item.extension_id !== null));
+      }
     }
-    if (ringGroupRefresh > 0) {
-      setRingGroup(ringGroupArr);
-    } else {
-      dispatch({
-        type: "SET_RINGGROUPREFRESH",
-        ringGroupRefresh: ringGroupRefresh + 1,
-      });
-    }
-    if (callCenterRefresh > 0) {
-      setCallCenter(callCenterArr);
-    } else {
-      dispatch({
-        type: "SET_CALLCENTERREFRESH",
-        callCenterRefresh: callCenterRefresh + 1,
-      });
-    }
-  }, [extensionArr, ringGroupArr, callCenterArr]);
+    getData();
+   
+  }, []);
 
   useEffect(() => {
     // Set default value if provided
@@ -60,27 +36,16 @@ const ActionList = ({
 
   const allOptions = [
     {
-      label: "Extension",
-      options: extension.map((item) => ({
-        value: [item.extension, "extension"],
-        label: item.extension,
+      label: "User",
+      options: user && user?.map((item) => ({
+        value: item.extension.extension,
+        label: `${item.username}(${item.extension.extension})`,
       })),
-    },
-    {
-      label: "Ring Group",
-      options: ringGroup.map((item) => ({
-        value: [item.extension, "ring_group"],
-        label: item.extension,
-      })),
-    },
-    {
-      label: "Call Center",
-      options: callCenter.map((item) => ({
-        value: [item.extension, "call_center"],
-        label: item.extension,
-      })),
-    },
+    }
   ];
+
+  console.log("User list",user);
+  
 
   // Custom styles for react-select
   const customStyles = {
@@ -150,12 +115,13 @@ const ActionList = ({
 
   return (
     <>
-      {title ? <div className="formLabel">
-        <label htmlFor="">{title}</label>
-      </div> : ""}
+      {/* <div className="formLabel">
+        <label htmlFor="">Agent Search</label>
+      </div> */}
       <div className="col-12">
         <Select
           // className="formItem"
+          placeholder="Select agent to start chat"
           id="selectFormRow"
           onChange={(selectedOption) => {
             getDropdownValue(selectedOption.value);
@@ -166,13 +132,13 @@ const ActionList = ({
           styles={customStyles}
           value={selectedOption}
         />
-        {label ?
-          <label htmlFor="data" className="formItemDesc" style={{ margin: 0 }}>
-            {label}
-          </label> : ""}
+        <br />
+        {/* <label htmlFor="data" className="formItemDesc" style={{ margin: 0 }}>
+          Type agent name or extension
+        </label> */}
       </div>
     </>
   );
 };
 
-export default ActionList;
+export default AgentSearch;
