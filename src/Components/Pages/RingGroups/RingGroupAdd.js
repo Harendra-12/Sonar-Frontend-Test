@@ -123,7 +123,7 @@ const RingGroupAdd = () => {
   // Handle destination
   const [destination, setDestination] = useState([
     {
-      id: 1,
+      id: Math.floor(Math.random() * 10000),
       destination: "",
       delay: 0,
       timeOut: "30",
@@ -231,7 +231,8 @@ const RingGroupAdd = () => {
     setDestination([
       ...destination,
       {
-        id: destination.length + 1,
+        // id: destination.length + 1,
+        id: Math.floor(Math.random() * 10000),
         destination: "",
         delay: 0,
         timeOut: "30",
@@ -369,7 +370,8 @@ const RingGroupAdd = () => {
       reset();
       setDestination([
         {
-          id: 1,
+          // id: 1,
+          id: Math.floor(Math.random() * 10000),
           destination: "",
           delay: 0,
           timeOut: "30",
@@ -658,7 +660,7 @@ const RingGroupAdd = () => {
               </div> */}
               <div className="formRow col-xl-3">
                 <div className="formLabel">
-                  <label >Timeout Destination</label>
+                  <label>Timeout Destination</label>
                   <label className="formItemDesc">
                     Select the timeout destination for this ring group.
                   </label>
@@ -691,16 +693,16 @@ const RingGroupAdd = () => {
                           )
                         )),
                     })}
-                  // {...register("call_timeout", {
-                  //   ...requiredValidator,
-                  //   ...noSpecialCharactersValidator,
-                  //   ...minValidator(
-                  //     destination.reduce(
-                  //       (max, obj) => Math.max(max, obj.delay),
-                  //       0
-                  //     )
-                  //   ),
-                  // })}
+                    // {...register("call_timeout", {
+                    //   ...requiredValidator,
+                    //   ...noSpecialCharactersValidator,
+                    //   ...minValidator(
+                    //     destination.reduce(
+                    //       (max, obj) => Math.max(max, obj.delay),
+                    //       0
+                    //     )
+                    //   ),
+                    // })}
                   />
                   {errors.call_timeout && (
                     <ErrorMessage text={errors.call_timeout.message} />
@@ -1001,7 +1003,11 @@ const RingGroupAdd = () => {
                     <div className="col-12 d-flex justify-content-start mb-2">
                       <div
                         className="formLabel pe-2"
-                        style={index === 0 ? { marginTop: 32, width: 30 } : { width: 30 }}
+                        style={
+                          index === 0
+                            ? { marginTop: 32, width: 30 }
+                            : { width: 30 }
+                        }
                       >
                         <label>{index + 1}.</label>
                       </div>
@@ -1082,11 +1088,11 @@ const RingGroupAdd = () => {
                                 .filter((item1) => {
                                   return (
                                     item1.extension.extension ==
-                                    destination[index]?.destination ||
+                                      destination[index]?.destination ||
                                     !destination.some(
                                       (destinationItem, destinationIndex) =>
                                         destinationItem.destination ==
-                                        item1.extension.extension &&
+                                          item1.extension.extension &&
                                         destinationIndex != index
                                     )
                                   );
@@ -1229,18 +1235,21 @@ const RingGroupAdd = () => {
                           </button>
                         </div>
                       )}
-                      {index === 0 ?
-                      <div className="mt-auto">
-                        <button
-                          onClick={() => addNewDestination()}
-                          className="panelButton my-auto"
-                          effect="ripple"
-                          type="button"
-                        >
-                          <i className="fa-duotone fa-circle-plus me-2"></i>Add More
-                        </button>
-                      </div>:""}
-                     
+                      {index === 0 ? (
+                        <div className="mt-auto">
+                          <button
+                            onClick={() => addNewDestination()}
+                            className="panelButton my-auto"
+                            effect="ripple"
+                            type="button"
+                          >
+                            <i className="fa-duotone fa-circle-plus me-2"></i>
+                            Add More
+                          </button>
+                        </div>
+                      ) : (
+                        ""
+                      )}
                     </div>
                   );
                 })}
