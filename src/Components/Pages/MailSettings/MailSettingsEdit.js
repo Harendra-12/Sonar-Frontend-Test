@@ -11,6 +11,8 @@ import {
   emailValidator,
   numberValidator,
   requiredValidator,
+  restrictToAllowedChars,
+  restrictToNumbers,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { toast } from "react-toastify";
@@ -186,6 +188,7 @@ const MailSettingsEdit = () => {
                       {...register("mail_host", {
                         ...requiredValidator,
                       })}
+                      onKeyDown={restrictToAllowedChars}
                     />
                     {errors.mail_host && (
                       <ErrorMessage text={errors.mail_host.message} />
@@ -210,6 +213,7 @@ const MailSettingsEdit = () => {
                         ...requiredValidator,
                         ...numberValidator,
                       })}
+                      onKeyDown={restrictToNumbers}
                     />
                     {errors.mail_port && (
                       <ErrorMessage text={errors.mail_port.message} />
@@ -233,6 +237,7 @@ const MailSettingsEdit = () => {
                       {...register("mail_username", {
                         ...requiredValidator,
                       })}
+                      onKeyDown={restrictToAllowedChars}
                     />
                     {errors.mail_username && (
                       <ErrorMessage text={errors.mail_username.message} />
@@ -318,6 +323,7 @@ const MailSettingsEdit = () => {
                         ...requiredValidator,
                         ...emailValidator,
                       })}
+                      onKeyDown={restrictToAllowedChars}
                     />
                     {errors.mail_from_address && (
                       <ErrorMessage text={errors.mail_from_address.message} />
@@ -341,6 +347,7 @@ const MailSettingsEdit = () => {
                       {...register("mail_from_name", {
                         ...requiredValidator,
                       })}
+                      onKeyDown={restrictToAllowedChars}
                     />
                     {errors.mail_from_name && (
                       <ErrorMessage text={errors.mail_from_name.message} />

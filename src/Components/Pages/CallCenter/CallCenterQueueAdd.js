@@ -16,6 +16,8 @@ import {
   nameNumberValidator,
   noSpecialCharactersValidator,
   requiredValidator,
+  restrictToAllowedChars,
+  restrictToNumbers,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import ActionList from "../../CommonComponents/ActionList";
@@ -81,12 +83,12 @@ function CallCenterQueueAdd() {
       // status: "Logged Out",
       password: "1234",
       contact: "",
-      call_timeout:"",
-      busy_delay_time:"",
-      reject_delay_time:"",
-      max_no_answer:"",
-      no_answer_delay_time:"",
-      wrap_up_time:"",
+      call_timeout: "",
+      busy_delay_time: "",
+      reject_delay_time: "",
+      max_no_answer: "",
+      no_answer_delay_time: "",
+      wrap_up_time: "",
     },
   ]);
 
@@ -106,12 +108,12 @@ function CallCenterQueueAdd() {
         // status: "Logged Out",
         password: "1234",
         contact: "",
-        call_timeout:"",
-        reject_delay_time:"",
-        max_no_answer:"",
-        busy_delay_time:"",
-        no_answer_delay_time:"",
-        wrap_up_time:"",
+        call_timeout: "",
+        reject_delay_time: "",
+        max_no_answer: "",
+        busy_delay_time: "",
+        no_answer_delay_time: "",
+        wrap_up_time: "",
       },
     ]);
   }
@@ -279,8 +281,7 @@ function CallCenterQueueAdd() {
       return;
     }
 
-    const { recording_enabled } =
-      data;
+    const { recording_enabled } = data;
 
     const payload = {
       ...data,
@@ -296,12 +297,22 @@ function CallCenterQueueAdd() {
         agents: agent.map((item) => {
           return {
             agent_name: item.name,
-            call_timeout:item.call_timeout===""?null:Number(item.call_timeout),
-            reject_delay_time:item.reject_delay_time===""?null:Number(item.reject_delay_time),
-            max_no_answer:item.max_no_answer===""?null:Number(item.max_no_answer),
-            no_answer_delay_time:item.no_answer_delay_time===""?null:Number(item.no_answer_delay_time),
-            wrap_up_time:item.wrap_up_time===""?null:Number(item.wrap_up_time),
-            busy_delay_time:item.busy_delay_time===""?null:Number(item.busy_delay_time),
+            call_timeout:
+              item.call_timeout === "" ? null : Number(item.call_timeout),
+            reject_delay_time:
+              item.reject_delay_time === ""
+                ? null
+                : Number(item.reject_delay_time),
+            max_no_answer:
+              item.max_no_answer === "" ? null : Number(item.max_no_answer),
+            no_answer_delay_time:
+              item.no_answer_delay_time === ""
+                ? null
+                : Number(item.no_answer_delay_time),
+            wrap_up_time:
+              item.wrap_up_time === "" ? null : Number(item.wrap_up_time),
+            busy_delay_time:
+              item.busy_delay_time === "" ? null : Number(item.busy_delay_time),
             tier_level: item.level,
             tier_position: item.position,
             type: item.type,
@@ -411,6 +422,7 @@ function CallCenterQueueAdd() {
                       ...nameNumberValidator,
                     })}
                     className="formItem"
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.queue_name && (
                     <ErrorMessage text={errors.queue_name.message} />
@@ -512,7 +524,7 @@ function CallCenterQueueAdd() {
                     <option value="ring-all">Ring All</option>
                     {/* <option value="longest-idle-agent">
                       Longest Idle Agent
-                    </option> */} 
+                    </option> */}
                     {/* <option value="round-robin">Round Robin</option> */}
                     <option value="top-down">Top Down</option>
                     {/* <option value="agent-with-least-talk-time">
@@ -595,6 +607,7 @@ function CallCenterQueueAdd() {
                     {...register("discard_abandoned_after", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.discard_abandoned_after && (
                     <ErrorMessage
@@ -620,6 +633,7 @@ function CallCenterQueueAdd() {
                     {...register("queue_cid_prefix", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.queue_cid_prefix && (
                     <ErrorMessage text={errors.queue_cid_prefix.message} />
@@ -743,6 +757,7 @@ function CallCenterQueueAdd() {
                     {...register("max_wait_time", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToNumbers}
                   />
                   {errors.max_wait_time && (
                     <ErrorMessage text={errors.max_wait_time.message} />
@@ -763,6 +778,7 @@ function CallCenterQueueAdd() {
                     {...register("max_wait_time_with_no_agent", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToNumbers}
                   />
                   {errors.max_wait_time_with_no_agent && (
                     <ErrorMessage text={errors.max_wait_time_with_no_agent} />
@@ -1069,7 +1085,7 @@ function CallCenterQueueAdd() {
                           </div>
                         </div>
 
-                         <div className="col-1 pe-2">
+                        <div className="col-1 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Wrap Up Time</label>
@@ -1088,8 +1104,6 @@ function CallCenterQueueAdd() {
                             />
                           </div>
                         </div>
-                          
-
 
                         {/* <div className="col-2 pe-2">
                           <div className="formLabel">
@@ -1131,7 +1145,7 @@ function CallCenterQueueAdd() {
                           </div>
                         )}
                         {index === agent.length - 1 &&
-                          index !== (user && user.length - 1) ? (
+                        index !== (user && user.length - 1) ? (
                           <div
                             onClick={addNewAgent}
                             className="col-auto h-100 d-flex align-items-center"

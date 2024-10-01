@@ -22,6 +22,8 @@ import {
   noSpecialCharactersValidator,
   numberValidator,
   requiredValidator,
+  restrictToAllowedChars,
+  restrictToNumbers,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
@@ -549,7 +551,7 @@ const RingGroupEdit = () => {
                   type="button"
                   effect="ripple"
                   className="panelButton"
-                // onClick={() => { window.location = "/ring-groups" }}
+                  // onClick={() => { window.location = "/ring-groups" }}
                 >
                   Back
                 </button>
@@ -592,9 +594,9 @@ const RingGroupEdit = () => {
                       ...lengthValidator(3, 25),
                       ...nameNumberValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.name && <ErrorMessage text={errors.name.message} />}
-
                 </div>
               </div>
               <div className="formRow col-xl-3">
@@ -615,7 +617,6 @@ const RingGroupEdit = () => {
                   {errors.extension && (
                     <ErrorMessage text={errors.extension.message} />
                   )}
-
                 </div>
               </div>
               {/* <div className="formRow col-xl-3">
@@ -765,16 +766,17 @@ const RingGroupEdit = () => {
                           )
                         )),
                     })}
-                  // {...register("call_timeout", {
-                  //   ...requiredValidator,
-                  //   ...noSpecialCharactersValidator,
-                  //   ...minValidator(
-                  //     destination.reduce(
-                  //       (max, obj) => Math.max(max, obj.delay),
-                  //       0
-                  //     )
-                  //   ),
-                  // })}
+                    onKeyDown={restrictToNumbers}
+                    // {...register("call_timeout", {
+                    //   ...requiredValidator,
+                    //   ...noSpecialCharactersValidator,
+                    //   ...minValidator(
+                    //     destination.reduce(
+                    //       (max, obj) => Math.max(max, obj.delay),
+                    //       0
+                    //     )
+                    //   ),
+                    // })}
                   />
                   {errors.call_timeout && (
                     <ErrorMessage text={errors.call_timeout.message} />
@@ -997,6 +999,7 @@ const RingGroupEdit = () => {
                     {...register("description", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.description && (
                     <ErrorMessage text={errors.description.message} />
@@ -1052,7 +1055,11 @@ const RingGroupEdit = () => {
                     <div className="col-12 d-flex justify-content-start mb-2">
                       <div
                         className="formLabel pe-2"
-                        style={index === 0 ? { marginTop: 32, width: 30 } : { width: 30 }}
+                        style={
+                          index === 0
+                            ? { marginTop: 32, width: 30 }
+                            : { width: 30 }
+                        }
                       >
                         <label>{index + 1}.</label>
                       </div>
@@ -1143,11 +1150,11 @@ const RingGroupEdit = () => {
                                 .filter((item1) => {
                                   return (
                                     item1.extension.extension ==
-                                    destination[index]?.destination ||
+                                      destination[index]?.destination ||
                                     !destination.some(
                                       (destinationItem, destinationIndex) =>
                                         destinationItem.destination ==
-                                        item1.extension.extension &&
+                                          item1.extension.extension &&
                                         destinationIndex != index
                                     )
                                   );
@@ -1284,7 +1291,8 @@ const RingGroupEdit = () => {
                           effect="ripple"
                           type="button"
                         >
-                          <i className="fa-duotone fa-circle-plus me-2"></i>Add More
+                          <i className="fa-duotone fa-circle-plus me-2"></i>Add
+                          More
                         </button>
                       </div>
                       {destination.length === 1 ? (

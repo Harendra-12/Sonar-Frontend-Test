@@ -15,6 +15,7 @@ import {
   lengthValidator,
   noSpecialCharactersValidator,
   requiredValidator,
+  restrictToAllowedChars,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
@@ -366,6 +367,7 @@ const UsersAdd = () => {
                         ...requiredValidator,
                         ...noSpecialCharactersValidator,
                       })}
+                      onKeyDown={restrictToAllowedChars}
                     />
                     {errors.username && (
                       <ErrorMessage text={errors.username.message} />
@@ -426,6 +428,7 @@ const UsersAdd = () => {
                         ...requiredValidator,
                         ...emailValidator,
                       })}
+                      onKeyDown={restrictToAllowedChars}
                     />
                     {errors.email && (
                       <ErrorMessage text={errors.email.message} />
@@ -446,6 +449,7 @@ const UsersAdd = () => {
                         ...lengthValidator(3, 20),
                         ...noSpecialCharactersValidator,
                       })}
+                      onKeyDown={restrictToAllowedChars}
                     />
                     {errors.firstName && (
                       <ErrorMessage text={errors.firstName.message} />
@@ -464,6 +468,7 @@ const UsersAdd = () => {
                       {...register("lastName", {
                         ...noSpecialCharactersValidator,
                       })}
+                      onKeyDown={restrictToAllowedChars}
                     />
                     {errors.lastName && (
                       <ErrorMessage text={errors.lastName.message} />

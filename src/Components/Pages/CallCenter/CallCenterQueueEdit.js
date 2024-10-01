@@ -17,6 +17,8 @@ import {
   nameNumberValidator,
   noSpecialCharactersValidator,
   requiredValidator,
+  restrictToAllowedChars,
+  restrictToNumbers,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
@@ -110,12 +112,12 @@ function CallCenterQueueEdit() {
                 id: item.id,
                 name: item.agent_name,
                 level: item.tier_level,
-                call_timeout:item.call_timeout,
-                reject_delay_time:item.reject_delay_time,
-                max_no_answer:item.max_no_answer,
-                no_answer_delay_time:item.no_answer_delay_time,
-                wrap_up_time:item.wrap_up_time,
-                busy_delay_time:item.busy_delay_time,
+                call_timeout: item.call_timeout,
+                reject_delay_time: item.reject_delay_time,
+                max_no_answer: item.max_no_answer,
+                no_answer_delay_time: item.no_answer_delay_time,
+                wrap_up_time: item.wrap_up_time,
+                busy_delay_time: item.busy_delay_time,
                 position: item.tier_position,
                 type: item.type,
                 // status: item.status,
@@ -192,12 +194,12 @@ function CallCenterQueueEdit() {
         type: "callback",
         // status: "Logged Out",
         password: "1234",
-        call_timeout:"",
-        reject_delay_time:"",
-        max_no_answer:"",
-        no_answer_delay_time:"",
-        wrap_up_time:"",
-        busy_delay_time:"",
+        call_timeout: "",
+        reject_delay_time: "",
+        max_no_answer: "",
+        no_answer_delay_time: "",
+        wrap_up_time: "",
+        busy_delay_time: "",
         contact: "",
       },
     ]);
@@ -266,8 +268,7 @@ function CallCenterQueueEdit() {
       return;
     }
 
-    const { recording_enabled } =
-      data;
+    const { recording_enabled } = data;
     //     const xmlObj = {
     //       xml: `<extension name="${queue_name.trim()}">
     //         <condition field="destination_number" expression="^(callcenter\+)?${extension}$" >
@@ -301,13 +302,30 @@ function CallCenterQueueEdit() {
               return {
                 agent_name: item.name,
                 tier_level: item.level,
-                call_timeout: item.call_timeout===null?null:Number(item.call_timeout),
-                reject_delay_time: item.reject_delay_time===null?null:Number(item.reject_delay_time),
-                max_no_answer: item.max_no_answer===null?null:Number(item.max_no_answer),
-                no_answer_delay_time: item.no_answer_delay_time===null?null:Number(item.no_answer_delay_time),
-                wrap_up_time: item.wrap_up_time===null?null:Number(item.wrap_up_time),
-                busy_delay_time: item.busy_delay_time===null?null:Number(item.busy_delay_time),
-                queue_timeout: item.queue_timeout===null?null:Number(item.queue_timeout),
+                call_timeout:
+                  item.call_timeout === null ? null : Number(item.call_timeout),
+                reject_delay_time:
+                  item.reject_delay_time === null
+                    ? null
+                    : Number(item.reject_delay_time),
+                max_no_answer:
+                  item.max_no_answer === null
+                    ? null
+                    : Number(item.max_no_answer),
+                no_answer_delay_time:
+                  item.no_answer_delay_time === null
+                    ? null
+                    : Number(item.no_answer_delay_time),
+                wrap_up_time:
+                  item.wrap_up_time === null ? null : Number(item.wrap_up_time),
+                busy_delay_time:
+                  item.busy_delay_time === null
+                    ? null
+                    : Number(item.busy_delay_time),
+                queue_timeout:
+                  item.queue_timeout === null
+                    ? null
+                    : Number(item.queue_timeout),
                 tier_position: item.position,
                 type: item.type,
                 // status: "Logged Out",
@@ -465,6 +483,7 @@ function CallCenterQueueEdit() {
                       ...requiredValidator,
                       ...nameNumberValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                     className="formItem"
                   />
                   {errors.queue_name && (
@@ -626,7 +645,7 @@ function CallCenterQueueEdit() {
                 <ActionList
                   getDropdownValue={actionListValue}
                   value={watch().queue_timeout_action}
-                // value={callCenter.action}
+                  // value={callCenter.action}
                 />
               </div>
               <div className="formRow col-xl-3">
@@ -641,6 +660,7 @@ function CallCenterQueueEdit() {
                     {...register("discard_abandoned_after", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.discard_abandoned_after && (
                     <ErrorMessage
@@ -666,6 +686,7 @@ function CallCenterQueueEdit() {
                     {...register("queue_cid_prefix", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.queue_cid_prefix && (
                     <ErrorMessage text={errors.queue_cid_prefix.message} />
@@ -721,6 +742,7 @@ function CallCenterQueueEdit() {
                     {...register("tier_rule_wait_second", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.tier_rule_wait_second && (
                     <ErrorMessage text={errors.tier_rule_wait_second.message} />
@@ -789,6 +811,7 @@ function CallCenterQueueEdit() {
                     {...register("max_wait_time", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToNumbers}
                   />
                   {errors.max_wait_time && (
                     <ErrorMessage text={errors.max_wait_time.message} />
@@ -796,7 +819,6 @@ function CallCenterQueueEdit() {
                   <br />
                 </div>
               </div>
-
 
               <div className="formRow col-xl-3">
                 <div className="formLabel">
@@ -810,6 +832,7 @@ function CallCenterQueueEdit() {
                     {...register("max_wait_time_with_no_agent", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToNumbers}
                   />
                   {errors.max_wait_time_with_no_agent && (
                     <ErrorMessage text={errors.max_wait_time_with_no_agent} />
@@ -1017,7 +1040,11 @@ function CallCenterQueueEdit() {
                             <input
                               type="number"
                               name="call_timeout"
-                              value={item.call_timeout === null ? "" : item.call_timeout}
+                              value={
+                                item.call_timeout === null
+                                  ? ""
+                                  : item.call_timeout
+                              }
                               onChange={(e) => handleAgentChange(e, index)}
                               className="formItem"
                               placeholder="Call Timeout"
@@ -1037,15 +1064,17 @@ function CallCenterQueueEdit() {
                             <input
                               type="number"
                               name="reject_delay_time"
-                              value={item.reject_delay_time===null?"":item.reject_delay_time}
+                              value={
+                                item.reject_delay_time === null
+                                  ? ""
+                                  : item.reject_delay_time
+                              }
                               onChange={(e) => handleAgentChange(e, index)}
                               className="formItem"
                               placeholder="Reject Delay Time"
                             />
                           </div>
                         </div>
-
-                       
 
                         <div className="col-1 pe-2">
                           <div className="formLabel">
@@ -1059,7 +1088,11 @@ function CallCenterQueueEdit() {
                             <input
                               type="number"
                               name="max_no_answer"
-                              value={item.max_no_answer===null?"":item.max_no_answer}
+                              value={
+                                item.max_no_answer === null
+                                  ? ""
+                                  : item.max_no_answer
+                              }
                               onChange={(e) => handleAgentChange(e, index)}
                               className="formItem"
                               placeholder="Max No Answer"
@@ -1079,7 +1112,11 @@ function CallCenterQueueEdit() {
                             <input
                               type="number"
                               name="busy_delay_time"
-                              value={item.busy_delay_time===null?"":item.busy_delay_time}
+                              value={
+                                item.busy_delay_time === null
+                                  ? ""
+                                  : item.busy_delay_time
+                              }
                               onChange={(e) => handleAgentChange(e, index)}
                               className="formItem"
                               placeholder="Busy Delay Time"
@@ -1099,7 +1136,11 @@ function CallCenterQueueEdit() {
                             <input
                               type="number"
                               name="no_answer_delay_time"
-                              value={item.no_answer_delay_time===null?"":item.no_answer_delay_time}
+                              value={
+                                item.no_answer_delay_time === null
+                                  ? ""
+                                  : item.no_answer_delay_time
+                              }
                               onChange={(e) => handleAgentChange(e, index)}
                               className="formItem"
                               placeholder="no answer delay time"
@@ -1119,7 +1160,11 @@ function CallCenterQueueEdit() {
                             <input
                               type="number"
                               name="wrap_up_time"
-                              value={item.wrap_up_time===null?"":item.wrap_up_time}
+                              value={
+                                item.wrap_up_time === null
+                                  ? ""
+                                  : item.wrap_up_time
+                              }
                               onChange={(e) => handleAgentChange(e, index)}
                               className="formItem"
                               placeholder="Wrap Up Time"
@@ -1184,7 +1229,7 @@ function CallCenterQueueEdit() {
                           </div>
                         )}
                         {index === agent.length - 1 &&
-                          index !== (user && user.length - 1) ? (
+                        index !== (user && user.length - 1) ? (
                           <div
                             onClick={addNewAgent}
                             className="col-auto h-100 d-flex align-items-center"

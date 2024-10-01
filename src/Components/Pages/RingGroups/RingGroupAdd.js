@@ -20,6 +20,8 @@ import {
   noSpecialCharactersValidator,
   numberValidator,
   requiredValidator,
+  restrictToAllowedChars,
+  restrictToNumbers,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import CircularLoader from "../../Loader/CircularLoader";
@@ -514,6 +516,7 @@ const RingGroupAdd = () => {
                       ...lengthValidator(3, 25),
                       ...nameNumberValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.name && <ErrorMessage text={errors.name.message} />}
                 </div>
@@ -658,7 +661,7 @@ const RingGroupAdd = () => {
               </div> */}
               <div className="formRow col-xl-3">
                 <div className="formLabel">
-                  <label >Timeout Destination</label>
+                  <label>Timeout Destination</label>
                   <label className="formItemDesc">
                     Select the timeout destination for this ring group.
                   </label>
@@ -691,16 +694,17 @@ const RingGroupAdd = () => {
                           )
                         )),
                     })}
-                  // {...register("call_timeout", {
-                  //   ...requiredValidator,
-                  //   ...noSpecialCharactersValidator,
-                  //   ...minValidator(
-                  //     destination.reduce(
-                  //       (max, obj) => Math.max(max, obj.delay),
-                  //       0
-                  //     )
-                  //   ),
-                  // })}
+                    onKeyDown={restrictToNumbers}
+                    // {...register("call_timeout", {
+                    //   ...requiredValidator,
+                    //   ...noSpecialCharactersValidator,
+                    //   ...minValidator(
+                    //     destination.reduce(
+                    //       (max, obj) => Math.max(max, obj.delay),
+                    //       0
+                    //     )
+                    //   ),
+                    // })}
                   />
                   {errors.call_timeout && (
                     <ErrorMessage text={errors.call_timeout.message} />
@@ -950,6 +954,7 @@ const RingGroupAdd = () => {
                     {...register("description", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.description && (
                     <ErrorMessage text={errors.description.message} />
@@ -1001,7 +1006,11 @@ const RingGroupAdd = () => {
                     <div className="col-12 d-flex justify-content-start mb-2">
                       <div
                         className="formLabel pe-2"
-                        style={index === 0 ? { marginTop: 32, width: 30 } : { width: 30 }}
+                        style={
+                          index === 0
+                            ? { marginTop: 32, width: 30 }
+                            : { width: 30 }
+                        }
                       >
                         <label>{index + 1}.</label>
                       </div>
@@ -1082,11 +1091,11 @@ const RingGroupAdd = () => {
                                 .filter((item1) => {
                                   return (
                                     item1.extension.extension ==
-                                    destination[index]?.destination ||
+                                      destination[index]?.destination ||
                                     !destination.some(
                                       (destinationItem, destinationIndex) =>
                                         destinationItem.destination ==
-                                        item1.extension.extension &&
+                                          item1.extension.extension &&
                                         destinationIndex != index
                                     )
                                   );
@@ -1229,18 +1238,21 @@ const RingGroupAdd = () => {
                           </button>
                         </div>
                       )}
-                      {index === 0 ?
-                      <div className="mt-auto">
-                        <button
-                          onClick={() => addNewDestination()}
-                          className="panelButton my-auto"
-                          effect="ripple"
-                          type="button"
-                        >
-                          <i className="fa-duotone fa-circle-plus me-2"></i>Add More
-                        </button>
-                      </div>:""}
-                     
+                      {index === 0 ? (
+                        <div className="mt-auto">
+                          <button
+                            onClick={() => addNewDestination()}
+                            className="panelButton my-auto"
+                            effect="ripple"
+                            type="button"
+                          >
+                            <i className="fa-duotone fa-circle-plus me-2"></i>
+                            Add More
+                          </button>
+                        </div>
+                      ) : (
+                        ""
+                      )}
                     </div>
                   );
                 })}
