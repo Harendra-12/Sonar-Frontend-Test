@@ -94,7 +94,7 @@ function ActiveCalls() {
                         <th>Serial no.</th>
                         <th>Profile</th>
                         <th>Created</th>
-                        <th>CID Name</th>
+                        {/* <th>CID Name</th> */}
                         <th>CID Number</th>
                         <th>Destination</th>
                         <th>Burge</th>
@@ -116,8 +116,8 @@ function ActiveCalls() {
                               <tr>
                                 <td>{key + 1}</td>
                                 <td>{item.name.split("/")[1]}</td>
-                                <td>{item.created}</td>
-                                <td>{item.b_cid_name}</td>
+                                <td>{item.created.split(" ")[1]}</td>
+                                {/* <td>{item.b_cid_name}</td> */}
                                 <td>{item.b_cid_num}</td>
                                 <td>{item.dest}</td>
                                 <td>
@@ -127,7 +127,7 @@ function ActiveCalls() {
                                       setId(item.uuid);
                                     }}
                                   >
-                                    <option value="disbale"></option>
+                                    <option value="disbale">Choose action</option>
                                     <option
                                       value="burge"
                                       onClick={() => bargeCall(item.uuid)}

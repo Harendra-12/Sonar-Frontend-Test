@@ -17,67 +17,80 @@ function Messages() {
   const [isSIPReady, setIsSIPReady] = useState(false); // Track if SIP provider is ready
   const extension = account?.extension?.extension || "";
   const [contact, setContact] = useState([]);
-  const [chatHistory,setChatHistory] = useState([]);
-  const [loadMore,setLoadMore]=useState(1)
+  const [chatHistory, setChatHistory] = useState([]);
+  const [loadMore, setLoadMore] = useState(1);
   const [isFreeSwitchMessage, setIsFreeSwitchMessage] = useState(true);
 
-  useEffect(()=>{
+  useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/message/contacts`);
-      if (apiData.status) {
+      if (apiData.status && apiData.data.length > 0) {
         setContact(apiData.data);
-        setRecipient([apiData.data[0].extension,apiData.data[0].id]);
+        setRecipient([apiData.data[0].extension, apiData.data[0].id]);
       }
     }
     getData();
-  },[])
+  }, []);
 
   useEffect(() => {
     if (sipProvider && sipProvider.connectStatus === CONNECT_STATUS.CONNECTED) {
-      console.log("SIP provider connected",sipProvider.connectStatus);
-      
+      console.log("SIP provider connected", sipProvider.connectStatus);
+
       setIsSIPReady(true);
     } else {
       setIsSIPReady(false);
     }
   }, [sipProvider?.connectStatus]);
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log("Inside apiCalling");
-    
+
     async function getData(pageNumb) {
-      const apiData = await generalGetFunction(`message/all?receiver_id=${recipient[1]}&page=${pageNumb}`);
-      
-      apiData.data.data.map((item)=>{
+      const apiData = await generalGetFunction(
+        `message/all?receiver_id=${recipient[1]}&page=${pageNumb}`
+      );
+
+      apiData.data.data.map((item) => {
         setAllMessage((prevState) => ({
           ...prevState,
-          [recipient[0]]: [{ from: item.user_id===recipient[1]?recipient[0]:extension, body: item.message_text, time:item.created_at },...(prevState[recipient[0]] || []) ],
+          [recipient[0]]: [
+            {
+              from: item.user_id === recipient[1] ? recipient[0] : extension,
+              body: item.message_text,
+              time: item.created_at,
+            },
+            ...(prevState[recipient[0]] || []),
+          ],
         }));
-      })
+      });
       if (apiData.status) {
         const newChatHistory = { ...chatHistory };
         newChatHistory[recipient[0]] = {
           total: apiData.data.total,
-          pageNumber: apiData.data.current_page
+          pageNumber: apiData.data.current_page,
         };
         setChatHistory(newChatHistory);
       }
     }
-    if(recipient.length > 0) {
-      if( Object.keys(chatHistory).includes(recipient[0])){
-        if( chatHistory[recipient[0]]?.total && chatHistory[recipient[0]].pageNumber * 40 < chatHistory[recipient[0]].total){
-          getData(chatHistory[recipient[0]].pageNumber+1);
+    if (recipient.length > 0) {
+      if (Object.keys(chatHistory).includes(recipient[0])) {
+        if (
+          chatHistory[recipient[0]]?.total &&
+          chatHistory[recipient[0]].pageNumber * 40 <
+            chatHistory[recipient[0]].total
+        ) {
+          getData(chatHistory[recipient[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
         }
-      }else{
+      } else {
         getData(1);
         setIsFreeSwitchMessage(true);
-      }     
+      }
     }
-  },[recipient,loadMore])
+  }, [recipient, loadMore]);
 
-  console.log("Chat history",chatHistory);
-  
+  console.log("Chat history", chatHistory);
+
   const sendMessage = () => {
     if (isSIPReady) {
       const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
@@ -93,7 +106,10 @@ function Messages() {
           setIsFreeSwitchMessage(true);
           setAllMessage((prevState) => ({
             ...prevState,
-            [recipient[0]]: [...(prevState[recipient[0]] || []), { from: extension, body: messageInput, time }],
+            [recipient[0]]: [
+              ...(prevState[recipient[0]] || []),
+              { from: extension, body: messageInput, time },
+            ],
           }));
           setMessageInput("");
 
@@ -131,7 +147,12 @@ function Messages() {
           const fileContent = await convertImageToBase64(file); // Await here!
 
           // Create a message with the Base64 content
-          const messager = new Messager(userAgent, target, fileContent, file.type); // Use correct content type
+          const messager = new Messager(
+            userAgent,
+            target,
+            fileContent,
+            file.type
+          ); // Use correct content type
 
           // Send the message with proper MIME type and extra headers
           messager.message({
@@ -145,7 +166,10 @@ function Messages() {
           const time = new Date().toLocaleString();
           setAllMessage((prevState) => ({
             ...prevState,
-            [recipient[0]]: [...(prevState[recipient[0]] || []), { from: extension, body: messageInput, time }],
+            [recipient[0]]: [
+              ...(prevState[recipient[0]] || []),
+              { from: extension, body: messageInput, time },
+            ],
           }));
 
           console.log("File sent to:", targetURI);
@@ -160,7 +184,6 @@ function Messages() {
     }
   };
 
-
   //   useEffect(() => {
   const userAgent = sipProvider?.sessionManager?.userAgent;
 
@@ -171,11 +194,10 @@ function Messages() {
         const from =
           message?.incomingMessageRequest?.message?.from?.uri?.user.toString();
         const body = message?.incomingMessageRequest?.message?.body;
-        setIsFreeSwitchMessage(true)
+        setIsFreeSwitchMessage(true);
         // Check Content-Type for the incoming message
-        const contentType = message?.incomingMessageRequest?.message?.getHeader(
-          "Content-Type"
-        );
+        const contentType =
+          message?.incomingMessageRequest?.message?.getHeader("Content-Type");
 
         // Get the current time when the message is received
         const time = new Date().toLocaleString(); // Or use .toISOString() for UTC format
@@ -198,21 +220,22 @@ function Messages() {
             ...prevState,
             [from]: [...(prevState[from] || []), { from, body, time }],
           }));
-          console.log(`Received message from ${from}: ${body} at ${time}`, message);
+          console.log(
+            `Received message from ${from}: ${body} at ${time}`,
+            message
+          );
         }
       },
     };
   }
 
-
   useEffect(() => {
     if (isFreeSwitchMessage) {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
-    } 
+    }
   }, [allMessage]);
 
   console.log(allMessage);
-
 
   useEffect(() => {
     const handleScroll = () => {
@@ -224,12 +247,12 @@ function Messages() {
         }
       }
     };
-  
+
     if (messageListRef.current) {
       messageListRef.current.addEventListener("scroll", handleScroll);
-      return () => {
-        messageListRef.current.removeEventListener("scroll", handleScroll);
-      };
+      // return () => {
+      //   messageListRef.current.removeEventListener("scroll", handleScroll);
+      // };
     }
   }, []);
 
@@ -239,7 +262,6 @@ function Messages() {
   //   }
   // }, [isFreeSwitchMessage, messageListRef]);
 
-  
   return (
     <>
       <main
@@ -304,28 +326,33 @@ function Messages() {
                       {/* <div className="text-center callListItem">
                         <h5 className="fw-semibold">Today</h5>
                       </div> */}
-                      {contact.map((item)=>{
-                        return(
+                      {contact.map((item) => {
+                        return (
                           <div className="contactListItem">
-                          <div
-                            onClick={() => setRecipient([item?.extension,item.id])}
-                            className="row justify-content-between"
-                          >
-                            <div className="col-xl-6 d-flex">
-                              <div className="profileHolder" id="profileOnline">
-                                <i className="fa-light fa-user fs-5"></i>
+                            <div
+                              onClick={() =>
+                                setRecipient([item?.extension, item.id])
+                              }
+                              className="row justify-content-between"
+                            >
+                              <div className="col-xl-6 d-flex">
+                                <div
+                                  className="profileHolder"
+                                  id="profileOnline"
+                                >
+                                  <i className="fa-light fa-user fs-5"></i>
+                                </div>
+                                <div className="my-auto ms-2 ms-xl-3">
+                                  <h4>{item?.name}</h4>
+                                  <h5>{item?.extension}</h5>
+                                </div>
                               </div>
-                              <div className="my-auto ms-2 ms-xl-3">
-                                <h4>{item?.name}</h4>
-                                <h5>{item?.extension}</h5>
-                              </div>
-                            </div>
-                            {/* <div className="col-auto text-end d-flex justify-content-center align-items-center">
+                              {/* <div className="col-auto text-end d-flex justify-content-center align-items-center">
                               <h5>12:46pm</h5>
                             </div> */}
+                            </div>
                           </div>
-                        </div>
-                        )
+                        );
                       })}
                     </div>
                   </div>
@@ -337,33 +364,37 @@ function Messages() {
                 id="callDetails"
               >
                 <div className="messageOverlay">
-                  <div className="contactHeader">
-                    <div>
-                      <h4>{recipient[0]}</h4>
-                      <span className="status online">Online</span>
+                  {recipient[0] ? (
+                    <div className="contactHeader">
+                      <div>
+                        <h4>{recipient[0]}</h4>
+                        {/* <span className="status online">Online</span> */}
+                      </div>
+                      <div className="d-flex my-auto">
+                        <button
+                          className="appPanelButton"
+                          effect="ripple"
+                          onclick="location.href='http://192.168.2.220/ringerappCI/webrtc/user-app-caller'"
+                        >
+                          <i className="fa-light fa-phone" />
+                        </button>
+                        <button
+                          className="appPanelButton"
+                          effect="ripple"
+                          onclick="location.href='http://192.168.2.220/ringerappCI/webrtc/user-app-videocaller'"
+                        >
+                          <i className="fa-light fa-video" />
+                        </button>
+                      </div>
                     </div>
-                    <div className="d-flex my-auto">
-                      <button
-                        className="appPanelButton"
-                        effect="ripple"
-                        onclick="location.href='http://192.168.2.220/ringerappCI/webrtc/user-app-caller'"
-                      >
-                        <i className="fa-light fa-phone" />
-                      </button>
-                      <button
-                        className="appPanelButton"
-                        effect="ripple"
-                        onclick="location.href='http://192.168.2.220/ringerappCI/webrtc/user-app-videocaller'"
-                      >
-                        <i className="fa-light fa-video" />
-                      </button>
-                    </div>
-                  </div>
+                  ) : (
+                    ""
+                  )}
                   <div className="messageContent">
                     <div className="messageList" ref={messageListRef}>
                       {allMessage?.[recipient[0]]?.map((item, index) => {
                         // console.log("inside loop",item);
-                        
+
                         return (
                           <>
                             {item.from == extension ? (
@@ -373,7 +404,9 @@ function Messages() {
                                 </div> */}
                                 <div className="second">
                                   <h6>
-                                    <span>{item.time.split(" ")[1].slice(0,5)}</span>
+                                    <span>
+                                      {item.time.split(" ")[1].split(':').slice(0, 2).join(':')}
+                                    </span>
                                   </h6>
                                   <div className="messageDetails">
                                     <p>{item.body}</p>
@@ -387,7 +420,9 @@ function Messages() {
                                 </div> */}
                                 <div className="second">
                                   <h6>
-                                    <span>{item.time.split(" ")[1].slice(0,5)}</span>
+                                    <span>
+                                      {item.time.split(" ")[1].split(':').slice(0, 2).join(':')}
+                                    </span>
                                   </h6>
                                   <div className="messageDetails">
                                     <p>{item.body}</p>
@@ -398,25 +433,43 @@ function Messages() {
                           </>
                         );
                       })}
+                      {recipient[0] ? (
+                        ""
+                      ) : (
+                        <div className="startAJob">
+                          <div class="text-center mt-3">
+                            <img
+                              src={require("../../assets/images/empty-box.png")}
+                            ></img>
+                            <div>
+                              <h5>
+                                Please select a <b>Agent</b> to start{" "}
+                                <span>a conversation</span>.
+                              </h5>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <div className="messageInput">
-                      <div className="col-10">
-                        <input
-                          type="text"
-                          name=""
-                          id=""
-                          placeholder="Please enter your message"
-                          value={messageInput}
-                          onChange={(e) => setMessageInput(e.target.value)}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                              sendMessage();
-                            }
-                          }}
-                        />
-                      </div>
-                      <div className="col-auto d-flex">
-                        {/* <button
+                    {recipient[0] ? (
+                      <div className="messageInput">
+                        <div className="col-10">
+                          <input
+                            type="text"
+                            name=""
+                            id=""
+                            placeholder="Please enter your message"
+                            value={messageInput}
+                            onChange={(e) => setMessageInput(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                sendMessage();
+                              }
+                            }}
+                          />
+                        </div>
+                        <div className="col-auto d-flex">
+                          {/* <button
                           effect="ripple"
                           className="appPanelButtonColor2 ms-auto"
                         >
@@ -439,15 +492,18 @@ function Messages() {
                             />
                           </i>
                         </button> */}
-                        <button
-                          effect="ripple"
-                          className="appPanelButtonColor"
-                          onClick={() => sendMessage()}
-                        >
-                          <i className="fa-solid fa-paper-plane-top" />
-                        </button>
+                          <button
+                            effect="ripple"
+                            className="appPanelButtonColor"
+                            onClick={() => sendMessage()}
+                          >
+                            <i className="fa-solid fa-paper-plane-top" />
+                          </button>
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
               </div>

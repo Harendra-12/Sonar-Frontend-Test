@@ -321,3 +321,26 @@
     /* justify-content: space-between; */
     align-items: center;
 }
+
+.startAJob{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.startAJob img{
+    width: 150px;
+    height: 150px;
+}
+
+.startAJob h5{
+    color: var(--color-subtext);
+    font-weight: 400;
+    margin-top: 10px;
+}
+
+.startAJob h5 span{
+    color: var(--ui-accent);
+    cursor: pointer;
+}
