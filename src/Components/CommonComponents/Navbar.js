@@ -282,14 +282,14 @@ function Navbar() {
                               <div className="itemTitle">Voice Music</div>
                             </NavLink>
                           </li>
-                          <li className="tabItem " effect="ripple">
+                          {/* <li className="tabItem " effect="ripple">
                             <NavLink to="/active-calls">
                               <div className="iconHolder">
                                 <i class="fa-duotone fa-phone-volume"></i>
                               </div>
                               <div className="itemTitle">Active Calls</div>
                             </NavLink>
-                          </li>
+                          </li> */}
                         </ul>
                       </div>
                     </div>

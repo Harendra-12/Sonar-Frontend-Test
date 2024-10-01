@@ -174,7 +174,7 @@ function App() {
           <Route path="/master" element={<Master />} />
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/phone-dashboard" element={<PhoneDashboard />} />
-          <Route path="/active-calls" element={<ActiveCalls />} />
+          {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
           {/* Ring Groups Path Start */}
           <Route path="/ring-groups" element={<RingGroups />} />

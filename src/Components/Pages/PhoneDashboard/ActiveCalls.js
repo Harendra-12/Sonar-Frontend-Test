@@ -81,11 +81,11 @@ function ActiveCalls() {
 
   return (
     <>
-      <main className="mainContent">
+      {/* <main className="mainContent"> */}
         <section id="phonePage">
           <div className="container-fluid">
             <div className="row">
-              <Header title="Active Calls" />
+              {/* <Header title="Active Calls" /> */}
               <div className="col-12" style={{ overflow: "auto" }}>
                 <div className="tableContainer">
                   <table>
@@ -242,13 +242,13 @@ function ActiveCalls() {
                           </tr>
                         );
                       })} */}
-                      {activeCall && activeCall.length === 0 ? (
+                      {/* {activeCall && activeCall.length === 0 ? (
                         <td colSpan={99}>
                           <EmptyPrompt name="Call" link="call" />
                         </td>
                       ) : (
                         ""
-                      )}
+                      )} */}
                     </tbody>
                   </table>
                 </div>
@@ -256,7 +256,7 @@ function ActiveCalls() {
             </div>
           </div>
         </section>
-      </main>
+      {/* </main> */}
       {loading && <CircularLoader />}
       {/* <ToastContainer
         position="bottom-right"
