@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useForm } from "react-hook-form";
 import Header from "../../CommonComponents/Header";
+import { restrictToAllowedChars } from "../../validations/validation";
 
 const RingGroupSettings = () => {
   const navigate = useNavigate();
@@ -228,6 +229,7 @@ const RingGroupSettings = () => {
                         style={{ width: "100%" }}
                         {...register("description")}
                         id="description"
+                        onKeyDown={restrictToAllowedChars}
                       />
                       <br />
                       <label htmlFor="description" className="formItemDesc">

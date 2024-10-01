@@ -18,6 +18,8 @@ import {
   noSpecialCharactersValidator,
   numberValidator,
   requiredValidator,
+  restrictToAllowedChars,
+  restrictToNumbers,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 
@@ -563,6 +565,7 @@ const ExtensionsEdit = () => {
                     {...register("account_code", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.account_code && (
                     <ErrorMessage text={errors.account_code.message} />
@@ -619,6 +622,7 @@ const ExtensionsEdit = () => {
                     {...register("effectiveCallerIdName", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.effectiveCallerIdName && (
                     <ErrorMessage text={errors.effectiveCallerIdName.message} />
@@ -641,6 +645,7 @@ const ExtensionsEdit = () => {
                     {...register("effectiveCallerIdNumber", {
                       ...numberValidator,
                     })}
+                    onKeyDown={restrictToNumbers}
                   />
                   {errors.effectiveCallerIdNumber && (
                     <ErrorMessage
@@ -665,6 +670,7 @@ const ExtensionsEdit = () => {
                     {...register("outbundCallerIdName", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.outbundCallerIdName && (
                     <ErrorMessage text={errors.outbundCallerIdName.message} />
@@ -687,6 +693,7 @@ const ExtensionsEdit = () => {
                     {...register("outbundCallerIdNumber", {
                       ...numberValidator,
                     })}
+                    onKeyDown={restrictToNumbers}
                   />
                   {errors.outbundCallerIdNumber && (
                     <ErrorMessage text={errors.outbundCallerIdNumber.message} />
@@ -709,6 +716,7 @@ const ExtensionsEdit = () => {
                     {...register("emergencyCallerIdName", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.emergencyCallerIdName && (
                     <ErrorMessage text={errors.emergencyCallerIdName.message} />
@@ -731,6 +739,7 @@ const ExtensionsEdit = () => {
                     {...register("emergencyCallerIdNumber", {
                       ...numberValidator,
                     })}
+                    onKeyDown={restrictToNumbers}
                   />
                   {errors.emergencyCallerIdNumber && (
                     <ErrorMessage
@@ -755,6 +764,7 @@ const ExtensionsEdit = () => {
                     {...register("directoryFullname", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.directoryFullname && (
                     <ErrorMessage text={errors.directoryFullname.message} />
@@ -808,6 +818,7 @@ const ExtensionsEdit = () => {
                     {...register("maxRegistration", {
                       ...numberValidator,
                     })}
+                    onKeyDown={restrictToNumbers}
                   />
                   {errors.maxRegistration && (
                     <ErrorMessage text={errors.maxRegistration.message} />
@@ -830,6 +841,7 @@ const ExtensionsEdit = () => {
                     {...register("limitMax", {
                       ...numberValidator,
                     })}
+                    onKeyDown={restrictToNumbers}
                   />
                   {errors.limitMax && (
                     <ErrorMessage text={errors.limitMax.message} />
@@ -853,6 +865,7 @@ const ExtensionsEdit = () => {
                     {...register("limitDestinations", {
                       ...numberValidator,
                     })}
+                    onKeyDown={restrictToNumbers}
                   />
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -899,6 +912,7 @@ const ExtensionsEdit = () => {
                     {...register("voiceEmailTo", {
                       ...emailValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.voiceEmailTo && (
                     <ErrorMessage text={errors.voiceEmailTo.message} />
@@ -1024,6 +1038,7 @@ const ExtensionsEdit = () => {
                     {...register("tollAllowValue", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.tollAllowValue && (
                     <ErrorMessage text={errors.tollAllowValue.message} />
@@ -1047,6 +1062,7 @@ const ExtensionsEdit = () => {
                     {...register("callTimeOut", {
                       ...numberValidator,
                     })}
+                    onKeyDown={restrictToNumbers}
                   />
                   <br />
                   <label htmlFor="data" className="formItemDesc">
@@ -1067,6 +1083,7 @@ const ExtensionsEdit = () => {
                     {...register("callgroup", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.callgroup && (
                     <ErrorMessage text={errors.callgroup.message} />
@@ -1176,6 +1193,7 @@ const ExtensionsEdit = () => {
                     {...register("description", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.description && (
                     <ErrorMessage text={errors.description.message} />

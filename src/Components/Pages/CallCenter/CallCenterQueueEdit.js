@@ -17,6 +17,8 @@ import {
   nameNumberValidator,
   noSpecialCharactersValidator,
   requiredValidator,
+  restrictToAllowedChars,
+  restrictToNumbers,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
@@ -483,6 +485,7 @@ function CallCenterQueueEdit() {
                       ...requiredValidator,
                       ...nameNumberValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                     className="formItem"
                   />
                   {errors.queue_name && (
@@ -659,6 +662,7 @@ function CallCenterQueueEdit() {
                     {...register("discard_abandoned_after", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.discard_abandoned_after && (
                     <ErrorMessage
@@ -684,6 +688,7 @@ function CallCenterQueueEdit() {
                     {...register("queue_cid_prefix", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.queue_cid_prefix && (
                     <ErrorMessage text={errors.queue_cid_prefix.message} />
@@ -739,6 +744,7 @@ function CallCenterQueueEdit() {
                     {...register("tier_rule_wait_second", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.tier_rule_wait_second && (
                     <ErrorMessage text={errors.tier_rule_wait_second.message} />
@@ -807,6 +813,7 @@ function CallCenterQueueEdit() {
                     {...register("max_wait_time", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToNumbers}
                   />
                   {errors.max_wait_time && (
                     <ErrorMessage text={errors.max_wait_time.message} />
@@ -814,7 +821,6 @@ function CallCenterQueueEdit() {
                   <br />
                 </div>
               </div>
-
 
               <div className="formRow col-xl-3">
                 <div className="formLabel">
@@ -828,6 +834,7 @@ function CallCenterQueueEdit() {
                     {...register("max_wait_time_with_no_agent", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToNumbers}
                   />
                   {errors.max_wait_time_with_no_agent && (
                     <ErrorMessage text={errors.max_wait_time_with_no_agent} />

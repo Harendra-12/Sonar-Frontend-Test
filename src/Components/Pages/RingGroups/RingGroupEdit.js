@@ -22,6 +22,8 @@ import {
   noSpecialCharactersValidator,
   numberValidator,
   requiredValidator,
+  restrictToAllowedChars,
+  restrictToNumbers,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
@@ -594,6 +596,7 @@ const RingGroupEdit = () => {
                       ...lengthValidator(3, 25),
                       ...nameNumberValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.name && <ErrorMessage text={errors.name.message} />}
                 </div>
@@ -765,6 +768,7 @@ const RingGroupEdit = () => {
                           )
                         )),
                     })}
+                    onKeyDown={restrictToNumbers}
                     // {...register("call_timeout", {
                     //   ...requiredValidator,
                     //   ...noSpecialCharactersValidator,
@@ -997,6 +1001,7 @@ const RingGroupEdit = () => {
                     {...register("description", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.description && (
                     <ErrorMessage text={errors.description.message} />
@@ -1281,7 +1286,17 @@ const RingGroupEdit = () => {
                           <option value="inactive">False</option>
                         </select>
                       </div>
-
+                      <div className="mt-auto">
+                        <button
+                          onClick={() => addNewDestination()}
+                          className="panelButton mt-auto"
+                          effect="ripple"
+                          type="button"
+                        >
+                          <i className="fa-duotone fa-circle-plus me-2"></i>Add
+                          More
+                        </button>
+                      </div>
                       {destination.length === 1 ? (
                         ""
                       ) : (

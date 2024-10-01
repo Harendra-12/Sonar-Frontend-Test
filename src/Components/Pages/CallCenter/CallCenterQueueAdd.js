@@ -16,6 +16,8 @@ import {
   nameNumberValidator,
   noSpecialCharactersValidator,
   requiredValidator,
+  restrictToAllowedChars,
+  restrictToNumbers,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import ActionList from "../../CommonComponents/ActionList";
@@ -422,6 +424,7 @@ function CallCenterQueueAdd() {
                       ...nameNumberValidator,
                     })}
                     className="formItem"
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.queue_name && (
                     <ErrorMessage text={errors.queue_name.message} />
@@ -606,6 +609,7 @@ function CallCenterQueueAdd() {
                     {...register("discard_abandoned_after", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.discard_abandoned_after && (
                     <ErrorMessage
@@ -631,6 +635,7 @@ function CallCenterQueueAdd() {
                     {...register("queue_cid_prefix", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.queue_cid_prefix && (
                     <ErrorMessage text={errors.queue_cid_prefix.message} />
@@ -754,6 +759,7 @@ function CallCenterQueueAdd() {
                     {...register("max_wait_time", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToNumbers}
                   />
                   {errors.max_wait_time && (
                     <ErrorMessage text={errors.max_wait_time.message} />
@@ -774,6 +780,7 @@ function CallCenterQueueAdd() {
                     {...register("max_wait_time_with_no_agent", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToNumbers}
                   />
                   {errors.max_wait_time_with_no_agent && (
                     <ErrorMessage text={errors.max_wait_time_with_no_agent} />

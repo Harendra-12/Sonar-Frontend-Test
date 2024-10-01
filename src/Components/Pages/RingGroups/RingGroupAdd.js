@@ -20,6 +20,8 @@ import {
   noSpecialCharactersValidator,
   numberValidator,
   requiredValidator,
+  restrictToAllowedChars,
+  restrictToNumbers,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import CircularLoader from "../../Loader/CircularLoader";
@@ -516,6 +518,7 @@ const RingGroupAdd = () => {
                       ...lengthValidator(3, 25),
                       ...nameNumberValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.name && <ErrorMessage text={errors.name.message} />}
                 </div>
@@ -693,6 +696,7 @@ const RingGroupAdd = () => {
                           )
                         )),
                     })}
+                    onKeyDown={restrictToNumbers}
                     // {...register("call_timeout", {
                     //   ...requiredValidator,
                     //   ...noSpecialCharactersValidator,
@@ -952,6 +956,7 @@ const RingGroupAdd = () => {
                     {...register("description", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.description && (
                     <ErrorMessage text={errors.description.message} />
