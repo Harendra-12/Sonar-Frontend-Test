@@ -29,7 +29,8 @@ function CallCenterQueueAdd() {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState([]);
   // const [users, setUsers] = useState([]); //same as user
-  const [music, setMusic] = useState();
+  const [greetingSound, setGreetingSound] = useState();
+  const [holdSound, setHoldSound] = useState();
   const account = useSelector((state) => state.account);
   // const domain = useSelector((state) => state.domain);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
@@ -51,7 +52,7 @@ function CallCenterQueueAdd() {
   useEffect(() => {
     async function getData() {
       const userData = await generalGetFunction("/user/all");
-      const musicData = await generalGetFunction("/sound/all?type=hold");
+      const musicData = await generalGetFunction("/sound/all");
       if (userData.status) {
         if (userData.data.data.length === 0) {
           toast.error("Please create user first");
@@ -67,7 +68,10 @@ function CallCenterQueueAdd() {
         }
       }
       if (musicData.status) {
-        setMusic(musicData.data);
+        setGreetingSound(
+          musicData.data.filter((item) => item.type === "ringback")
+        );
+        setHoldSound(musicData.data.filter((item) => item.type === "hold"));
       }
     }
     getData();
@@ -513,10 +517,35 @@ function CallCenterQueueAdd() {
                 </div>
                 <div className="col-6">
                   <select {...register("greeting")} className="formItem w-100">
+                    <option></option>
+                    {greetingSound &&
+                      greetingSound.map((item, index) => {
+                        return (
+                          <option key={index} value={item.id}>
+                            {item.name}
+                          </option>
+                        );
+                      })}
+                  </select>
+                  <br />
+                  <label htmlFor="data" className="formItemDesc">
+                    Select the desired Greeting.
+                  </label>
+                </div>
+                {/* <div className="col-12">
+                  <select {...register("greeting")} className="formItem w-100">
                     <option>say</option>
                     <option>tone_stream</option>
                   </select>
+<<<<<<< Updated upstream
                 </div>
+=======
+                  <br />
+                  <label htmlFor="data" className="formItemDesc">
+                    Select the desired Greeting.
+                  </label>
+                </div> */}
+>>>>>>> Stashed changes
               </div>
               <div className="formRow col-xl-3">
                 <div className="formLabel">
@@ -560,8 +589,8 @@ function CallCenterQueueAdd() {
                 <div className="col-6">
                   <select {...register("moh_sound")} className="formItem w-100">
                     <option></option>
-                    {music &&
-                      music.map((item, index) => {
+                    {holdSound &&
+                      holdSound.map((item, index) => {
                         return (
                           <option key={index} value={item.id}>
                             {item.name}
@@ -787,10 +816,11 @@ function CallCenterQueueAdd() {
                 </div>
               </div>
 
-
               <div className="formRow col-xl-3">
                 <div className="formLabel">
-                  <label htmlFor="">Max Wait Time With No Agent Time Reached	</label>
+                  <label htmlFor="">
+                    Max Wait Time With No Agent Time Reached{" "}
+                  </label>
                 </div>
                 <div className="col-6">
                   <input
@@ -803,7 +833,13 @@ function CallCenterQueueAdd() {
                     onKeyDown={restrictToNumbers}
                   />
                   {errors.max_wait_time_with_no_agent_time_reached && (
+<<<<<<< Updated upstream
                     <ErrorMessage text={errors.max_wait_time_with_no_agent_time_reached} />
+=======
+                    <ErrorMessage
+                      text={errors.max_wait_time_with_no_agent_time_reached}
+                    />
+>>>>>>> Stashed changes
                   )}
                 </div>
               </div>
