@@ -994,7 +994,7 @@ function CallCenterQueueAdd() {
                             />
                           </div>
                         </div>
-                        <div className="col-1 ps-0 pe-2">
+                        <div className="col-1 ps-0 pe-2" style={{ width: '6%' }}>
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Tier Level</label>
@@ -1022,7 +1022,7 @@ function CallCenterQueueAdd() {
                             <option value={9}>9</option>
                           </select>
                         </div>
-                        <div className="col-1 ps-0 pe-2">
+                        <div className="col-1 ps-0 pe-2" style={{ width: '6.5%' }}>
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Tier Position</label>
