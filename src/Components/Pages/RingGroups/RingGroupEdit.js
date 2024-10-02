@@ -1286,17 +1286,6 @@ const RingGroupEdit = () => {
                           <option value="inactive">False</option>
                         </select>
                       </div>
-                      <div className="mt-auto">
-                        <button
-                          onClick={() => addNewDestination()}
-                          className="panelButton mt-auto"
-                          effect="ripple"
-                          type="button"
-                        >
-                          <i className="fa-duotone fa-circle-plus me-2"></i>Add
-                          More
-                        </button>
-                      </div>
                       {destination.length === 1 ? (
                         ""
                       ) : (
