@@ -20,6 +20,9 @@ function Messages() {
   const [chatHistory, setChatHistory] = useState([]);
   const [loadMore, setLoadMore] = useState(1);
   const [isFreeSwitchMessage, setIsFreeSwitchMessage] = useState(true);
+  const [agents, setAgents] = useState([]);
+
+  console.log("All agents", agents);
 
   useEffect(() => {
     async function getData() {
@@ -111,6 +114,23 @@ function Messages() {
               { from: extension, body: messageInput, time },
             ],
           }));
+
+          const extensionExists = contact.some(
+            (contact) => contact.extension === recipient[0]
+          );
+          const agentDetails = agents.find(
+            (agent) => agent.extension.extension === recipient[0]
+          );
+  
+          if (!extensionExists) {
+            contact.unshift({
+              name: agentDetails.username,
+              email: agentDetails.email,
+              id: agentDetails.id,
+              extension_id: agentDetails.extension_id,
+              extension: recipient[0],
+            });
+          }
           setMessageInput("");
 
           console.log("Message sent to:", targetURI);
@@ -195,6 +215,27 @@ function Messages() {
           message?.incomingMessageRequest?.message?.from?.uri?.user.toString();
         const body = message?.incomingMessageRequest?.message?.body;
         setIsFreeSwitchMessage(true);
+        const extensionExists = contact.some(
+          (contact) => contact.extension === from
+        );
+        const agentDetails = agents.find(
+          (agent) => agent.extension.extension === from
+        );
+
+        if (!extensionExists) {
+          contact.unshift({
+            name: agentDetails.username,
+            email: agentDetails.email,
+            id: agentDetails.id,
+            extension_id: agentDetails.extension_id,
+            extension: from,
+          });
+        }else {
+          // Move the extension object to the beginning of the array
+          const index = contact.findIndex((contact) => contact.extension === from);
+          const extensionObject = contact.splice(index, 1)[0];
+          contact.unshift(extensionObject);
+        }
         // Check Content-Type for the incoming message
         const contentType =
           message?.incomingMessageRequest?.message?.getHeader("Content-Type");
@@ -321,7 +362,10 @@ function Messages() {
                         placeholder="Search"
                       />
                     </div> */}
-                    <AgentSearch getDropdownValue={setRecipient} />
+                    <AgentSearch
+                      getDropdownValue={setRecipient}
+                      getAllAgents={setAgents}
+                    />
                     <div className="callList">
                       {/* <div className="text-center callListItem">
                         <h5 className="fw-semibold">Today</h5>
@@ -405,7 +449,11 @@ function Messages() {
                                 <div className="second">
                                   <h6>
                                     <span>
-                                      {item.time.split(" ")[1].split(':').slice(0, 2).join(':')}
+                                      {item.time
+                                        .split(" ")[1]
+                                        .split(":")
+                                        .slice(0, 2)
+                                        .join(":")}
                                     </span>
                                   </h6>
                                   <div className="messageDetails">
@@ -421,7 +469,11 @@ function Messages() {
                                 <div className="second">
                                   <h6>
                                     <span>
-                                      {item.time.split(" ")[1].split(':').slice(0, 2).join(':')}
+                                      {item.time
+                                        .split(" ")[1]
+                                        .split(":")
+                                        .slice(0, 2)
+                                        .join(":")}
                                     </span>
                                   </h6>
                                   <div className="messageDetails">

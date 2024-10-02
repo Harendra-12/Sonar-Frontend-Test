@@ -5,6 +5,7 @@ import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 const AgentSearch = ({
   getDropdownValue,
   value,
+  getAllAgents,
 }) => {
  
 
@@ -20,6 +21,7 @@ const AgentSearch = ({
       const apiData = await generalGetFunction("/user-all");
       if (apiData.status) {
         setUser(apiData.data.filter((item) => item.extension_id !== null));
+        getAllAgents(apiData.data.filter((item) => item.extension_id !== null));
       }
     }
     getData();
