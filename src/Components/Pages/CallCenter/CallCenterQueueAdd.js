@@ -299,7 +299,24 @@ function CallCenterQueueAdd() {
         account_id: account.account_id,
         created_by: account.id,
       },
-      // ...xmlObj,
+
+      // set the default values as per freeswitch requirements
+      ...{
+        max_wait_time:
+          data.max_wait_time === "" ? 0 : Number(data.max_wait_time),
+        max_wait_time_with_no_agent:
+          data.max_wait_time_with_no_agent === ""
+            ? 0
+            : Number(data.max_wait_time_with_no_agent),
+        max_wait_time_with_no_agent_time_reached:
+          data.max_wait_time_with_no_agent_time_reached === ""
+            ? 5
+            : Number(data.max_wait_time_with_no_agent_time_reached),
+        ring_progressively_delay:
+          data.ring_progressively_delay === ""
+            ? 10
+            : Number(data.ring_progressively_delay),
+      },
 
       ...{
         agents: agent.map((item) => {
@@ -515,7 +532,7 @@ function CallCenterQueueAdd() {
                     Select the desired Greeting.
                   </label>
                 </div>
-                <div className="col-6">
+                <div className="col-12">
                   <select {...register("greeting")} className="formItem w-100">
                     <option></option>
                     {greetingSound &&
@@ -527,25 +544,15 @@ function CallCenterQueueAdd() {
                         );
                       })}
                   </select>
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
-                    Select the desired Greeting.
-                  </label>
-                </div>
-                {/* <div className="col-12">
-                  <select {...register("greeting")} className="formItem w-100">
+                  {/* <select {...register("greeting")} className="formItem w-100">
                     <option>say</option>
                     <option>tone_stream</option>
-                  </select>
-<<<<<<< Updated upstream
-                </div>
-=======
+                  </select> */}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Select the desired Greeting.
                   </label>
-                </div> */}
->>>>>>> Stashed changes
+                </div>
               </div>
               <div className="formRow col-xl-3">
                 <div className="formLabel">
@@ -833,13 +840,9 @@ function CallCenterQueueAdd() {
                     onKeyDown={restrictToNumbers}
                   />
                   {errors.max_wait_time_with_no_agent_time_reached && (
-<<<<<<< Updated upstream
-                    <ErrorMessage text={errors.max_wait_time_with_no_agent_time_reached} />
-=======
                     <ErrorMessage
                       text={errors.max_wait_time_with_no_agent_time_reached}
                     />
->>>>>>> Stashed changes
                   )}
                 </div>
               </div>
@@ -1243,7 +1246,7 @@ function CallCenterQueueAdd() {
                           </div>
                         )}
                         {index === agent.length - 1 &&
-                          index !== (user && user.length - 1) ? (
+                        index !== (user && user.length - 1) ? (
                           <div
                             onClick={addNewAgent}
                             className="col-auto px-0 mt-auto"
