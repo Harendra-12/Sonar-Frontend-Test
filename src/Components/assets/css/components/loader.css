@@ -421,8 +421,8 @@
 
 .formLabel .loaderSpinner {
     position: absolute;
-    top: 40px;
-    right: 5px;
+    top: 0px;
+    right: -30px;
     width: 25px;
 }
 
