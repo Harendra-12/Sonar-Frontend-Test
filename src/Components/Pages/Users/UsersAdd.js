@@ -334,11 +334,11 @@ const UsersAdd = () => {
           </div>
           <div className="col-xl-12" style={{ overflow: "auto" }}>
             <div className="d-flex flex-wrap">
-              <div className="col-xl-6">
+              <div className={selectedRole ? "col-xl-6" : "col-xl-12"}>
                 <div className="profileView">
                   <div className="profileDetailsHolder position-relative">
                     <form action="#" className="row px-2">
-                      <div className="formRow col-xl-12">
+                      <div className={selectedRole ? "formRow col-xl-12" : "formRow col-xl-3"}>
                         <div className="formLabel">
                           <label htmlFor="" className="me-2">Username</label>
 
@@ -377,7 +377,7 @@ const UsersAdd = () => {
                           )}
                         </div>
                       </div>
-                      <div className="formRow col-xl-12">
+                      <div className={selectedRole ? "formRow col-xl-12" : "formRow col-xl-3"}>
                         <div className="formLabel">
                           <label htmlFor="">Password</label>
                           <label htmlFor="data" className="formItemDesc">
@@ -399,7 +399,7 @@ const UsersAdd = () => {
                           )}
                         </div>
                       </div>
-                      <div className="formRow col-xl-12">
+                      <div className={selectedRole ? "formRow col-xl-12" : "formRow col-xl-3"}>
                         <div className="formLabel">
                           <label htmlFor="">Confirm Password</label>
                           <label htmlFor="data" className="formItemDesc">
@@ -418,7 +418,7 @@ const UsersAdd = () => {
                           )}
                         </div>
                       </div>
-                      <div className="formRow col-xl-12">
+                      <div className={selectedRole ? "formRow col-xl-12" : "formRow col-xl-3"}>
                         <div className="formLabel">
                           <label htmlFor="">Email</label>
                         </div>
@@ -438,7 +438,7 @@ const UsersAdd = () => {
                           )}
                         </div>
                       </div>
-                      <div className="formRow col-xl-12">
+                      <div className={selectedRole ? "formRow col-xl-12" : "formRow col-xl-3"}>
                         <div className="formLabel">
                           <label htmlFor="">First Name</label>
                         </div>
@@ -459,7 +459,7 @@ const UsersAdd = () => {
                           )}
                         </div>
                       </div>
-                      <div className="formRow col-xl-12">
+                      <div className={selectedRole ? "formRow col-xl-12" : "formRow col-xl-3"}>
                         <div className="formLabel">
                           <label htmlFor="">Last Name</label>
                         </div>
@@ -519,7 +519,7 @@ const UsersAdd = () => {
                                             </label>
                                         </div>
                                     </div> */}
-                      <div className="formRow col-xl-12">
+                      <div className={selectedRole ? "formRow col-xl-12" : "formRow col-xl-3"}>
                         <div className="formLabel">
                           <label htmlFor="selectFormRow">Time Zone</label>
                           <label htmlFor="data" className="formItemDesc">
@@ -549,7 +549,7 @@ const UsersAdd = () => {
                           )}
                         </div>
                       </div>
-                      <div className="formRow col-xl-12">
+                      <div className={selectedRole ? "formRow col-xl-12" : "formRow col-xl-3"}>
                         <div className="formLabel">
                           <label htmlFor="selectFormRow">Status</label>
                           <label htmlFor="data" className="formItemDesc">
@@ -629,7 +629,7 @@ const UsersAdd = () => {
                       </label>
                     </div>
                   </div> */}
-                      <div className="formRow col-xl-12">
+                      <div className={selectedRole ? "formRow col-xl-12" : "formRow col-xl-3"}>
                         <div className="formLabel">
                           <label htmlFor="selectFormRow">Role Type</label>
                           <label htmlFor="data" className="formItemDesc">
@@ -681,7 +681,7 @@ const UsersAdd = () => {
                           )}
                         </div>
                       </div>
-                      <div className="formRow col-xl-12">
+                      <div className={selectedRole ? "formRow col-xl-12" : "formRow col-xl-3"}>
                         <div className="formLabel">
                           <label htmlFor="selectFormRow">Select extension</label>
                           <label htmlFor="data" className="formItemDesc">
