@@ -305,7 +305,7 @@ const UsersAdd = () => {
             <Header title="User Add" />
             <div id="subPageHeader">
               <div className="col-xl-9 my-auto">
-                <p className="p-0 m-0">
+                <p className="mb-0">
                   Edit user information and group membership.
                 </p>
               </div>

@@ -335,7 +335,7 @@ const UsersEdit = () => {
             <Header title="User Edit" />
             <div id="subPageHeader">
               <div className="col-6 my-1">
-                <p className="p-0 m-0">
+                <p className="mb-0">
                   Edit user information and group membership.
                 </p>
               </div>

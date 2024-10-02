@@ -272,7 +272,7 @@ const DidConfig = () => {
             <Header title="Destination Config" />
             <div id="subPageHeader">
               <div className="col-xl-9 my-auto">
-                <p className="pt-2 mt-1 mb-0">
+                <p className="mb-0">
                   Inbound destinations are the DID/DDI, DNIS or Alias for
                   inbound calls.
                 </p>
@@ -313,8 +313,11 @@ const DidConfig = () => {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Selected DID</label>
+                    <label htmlFor="data" className="formItemDesc">
+                      Selected DID.
+                    </label>
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <input
                       type="text"
                       name="did_id_view"
@@ -330,15 +333,15 @@ const DidConfig = () => {
                       <ErrorMessage text={errors.did_id.message} />
                     )}
                   </div>
-                  <label htmlFor="data" className="formItemDesc">
-                    Selected DID.
-                  </label>
                 </div>
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Usage</label>
+                    <label htmlFor="data" className="formItemDesc">
+                      Set how the Destination will be used.
+                    </label>
                   </div>
-                  <div className="col-12 d-flex flex-column">
+                  <div className="col-6">
                     <Select
                       closeMenuOnSelect={false}
                       isMulti
@@ -358,28 +361,39 @@ const DidConfig = () => {
                     {errors.usages && (
                       <ErrorMessage text={errors.usages.message} />
                     )}
-                    <label htmlFor="data" className="formItemDesc">
-                      Set how the Destination will be used.
-                    </label>
+
                   </div>
                 </div>
 
                 <div className="formRow col-xl-3">
-                  <ActionList
-                    getDropdownValue={actionListValue}
-                    value={watch().action}
-                    {...register("action", requiredValidator)}
-                  />
-                  {errors.action && (
-                    <ErrorMessage text={errors.action.message} />
-                  )}
+                  <div className="formLabel">
+                    <label htmlFor="">Action</label>
+                    <label htmlFor="data" className="formItemDesc">
+                      Set the action to perform when the max wait time is reached.
+                    </label>
+                  </div>
+                  <div className="col-6">
+                    <ActionList
+                      title={null}
+                      label={null}
+                      getDropdownValue={actionListValue}
+                      value={watch().action}
+                      {...register("action", requiredValidator)}
+                    />
+                    {errors.action && (
+                      <ErrorMessage text={errors.action.message} />
+                    )}
+                  </div>
                 </div>
 
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Forward DID</label>
+                    <label htmlFor="data" className="formItemDesc">
+                      Want to forword DID.
+                    </label>
                   </div>
-                  <div className="col-12 d-flex flex-column">
+                  <div className="col-6">
                     <select
                       className="formItem"
                       name="forward"
@@ -391,17 +405,17 @@ const DidConfig = () => {
                       <option value="pstn">PSTN</option>
                       <option value="direct">Direct</option>
                     </select>
-                    <label htmlFor="data" className="formItemDesc">
-                      Want to forword DID.
-                    </label>
                   </div>
                 </div>
                 {forwardStatus === "pstn" && (
                   <div className="formRow col-xl-3">
                     <div className="formLabel">
                       <label htmlFor="forward_to">Select PSTN</label>
+                      <label htmlFor="data" className="formItemDesc">
+                        Select a PSTN.
+                      </label>
                     </div>
-                    <div className="col-12">
+                    <div className="col-6">
                       <input
                         type="number"
                         name="forward_to"
@@ -424,32 +438,41 @@ const DidConfig = () => {
                         <ErrorMessage text={errors.forward_to.message} />
                       )}
                     </div>
-                    <label htmlFor="data" className="formItemDesc">
-                      Select a PSTN.
-                    </label>
+
                   </div>
                 )}
                 {forwardStatus === "direct" && (
                   <div className="formRow col-xl-3">
-                    <ActionList
-                      getDropdownValue={directListValue}
-                      value={watch().direct_extension}
-                      title="Forward Extension"
-                      label="Select extension."
-                      {...register("direct_extension", {
-                        requiredValidator,
-                      })}
-                    />
-                    {errors.direct_extension && (
-                      <ErrorMessage text={errors.direct_extension.message} />
-                    )}
+                    <div className="formLabel">
+                      <label htmlFor="selectFormRow">Forward Extension</label>
+                      <label htmlFor="data" className="formItemDesc">
+                        Select extension.
+                      </label>
+                    </div>
+                    <div className="col-6">
+                      <ActionList
+                        getDropdownValue={directListValue}
+                        value={watch().direct_extension}
+                        title={null}
+                        label={null}
+                        {...register("direct_extension", {
+                          requiredValidator,
+                        })}
+                      />
+                      {errors.direct_extension && (
+                        <ErrorMessage text={errors.direct_extension.message} />
+                      )}
+                    </div>
                   </div>
                 )}
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Record</label>
+                    <label htmlFor="data" className="formItemDesc">
+                      Save the recording.
+                    </label>
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <select
                       className="formItem"
                       name=""
@@ -462,16 +485,16 @@ const DidConfig = () => {
                       <option value="false">False</option>
                     </select>
                   </div>
-                  <label htmlFor="data" className="formItemDesc">
-                    Save the recording.
-                  </label>
                 </div>
 
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Hold Music</label>
+                    <label htmlFor="data" className="formItemDesc">
+                      Save the recording.
+                    </label>
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <select
                       className="formItem"
                       name=""
@@ -492,16 +515,13 @@ const DidConfig = () => {
                         })}
                     </select>
                   </div>
-                  <label htmlFor="data" className="formItemDesc">
-                    Save the recording.
-                  </label>
                 </div>
 
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Status</label>
                   </div>
-                  <div className="col-12 d-flex flex-column">
+                  <div className="col-6">
                     <select
                       className="formItem"
                       name=""
