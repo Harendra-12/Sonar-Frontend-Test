@@ -118,6 +118,7 @@ function CallCenterQueueEdit() {
                 max_no_answer: item.max_no_answer,
                 no_answer_delay_time: item.no_answer_delay_time,
                 wrap_up_time: item.wrap_up_time,
+                reserve_agents: item.reserve_agents,
                 busy_delay_time: item.busy_delay_time,
                 position: item.tier_position,
                 type: item.type,
@@ -201,6 +202,7 @@ function CallCenterQueueEdit() {
         max_no_answer: "",
         no_answer_delay_time: "",
         wrap_up_time: "",
+        reserve_agents: 0,
         busy_delay_time: "",
         contact: "",
       },
@@ -303,6 +305,7 @@ function CallCenterQueueEdit() {
               // Return the object with or without 'id' based on hasId
               return {
                 agent_name: item.name,
+                reserve_agents: item.reserve_agents,
                 tier_level: item.level,
                 call_timeout:
                   item.call_timeout === null ? null : Number(item.call_timeout),
@@ -334,6 +337,7 @@ function CallCenterQueueEdit() {
                 password: item.password,
                 contact: item.contact,
                 ...(hasId ? { id: item.id } : {}), // Conditionally add 'id' field
+                
               };
             } else {
               return null;
@@ -1214,6 +1218,27 @@ function CallCenterQueueEdit() {
                               placeholder="Wrap Up Time"
                             />
                           </div>
+                        </div>
+
+                        <div className="col-1 pe-2">
+                          <div className="formLabel">
+                            {index === 0 ? (
+                              <label htmlFor="">Reserve Agents</label>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                          <select
+                            className="formItem me-0"
+                            style={{ width: "100%" }}
+                            name="reserve_agents"
+                            value={item.reserve_agents}
+                            onChange={(e) => handleAgentChange(e, index)}
+                            id="selectFormRow"
+                          >
+                            <option value={0}>False</option>
+                            <option value={1}>True</option>
+                          </select>
                         </div>
                         {/* <div className="col-2 pe-2">
                           <div className="formLabel">

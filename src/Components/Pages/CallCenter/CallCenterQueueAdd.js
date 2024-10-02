@@ -90,6 +90,7 @@ function CallCenterQueueAdd() {
       max_no_answer: "",
       no_answer_delay_time: "",
       wrap_up_time: "",
+      reserve_agents: 0,
     },
   ]);
 
@@ -116,6 +117,7 @@ function CallCenterQueueAdd() {
         busy_delay_time: "",
         no_answer_delay_time: "",
         wrap_up_time: "",
+        reserve_agents: 0,
       },
     ]);
   }
@@ -321,6 +323,7 @@ function CallCenterQueueAdd() {
             status: "Logged Out",
             password: item.password,
             contact: item.contact,
+            reserve_agents: item.reserve_agents,
           };
         }),
       },
@@ -1148,6 +1151,27 @@ function CallCenterQueueAdd() {
                               placeholder="Wrap Up Time"
                             />
                           </div>
+                        </div>
+
+                        <div className="col-1 pe-2">
+                          <div className="formLabel">
+                            {index === 0 ? (
+                              <label htmlFor="">Reserve Agents</label>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                          <select
+                            className="formItem me-0"
+                            style={{ width: "100%" }}
+                            name="reserve_agents"
+                            value={item.reserve_agents}
+                            onChange={(e) => handleAgentChange(e, index)}
+                            id="selectFormRow"
+                          >
+                            <option value={0}>False</option>
+                            <option value={1}>True</option>
+                          </select>
                         </div>
 
                         {/* <div className="col-2 pe-2">
