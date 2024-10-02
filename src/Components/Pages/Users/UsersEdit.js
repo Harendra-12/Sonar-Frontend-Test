@@ -666,7 +666,7 @@ const UsersEdit = () => {
                                       handleCheckboxChange(innerItem.id)
                                     }
                                   />
-                                  <label className="formLabel ms-2">
+                                  <label className="formLabel ms-2 text-capitalize">
                                     {innerItem.action}
                                   </label>
                                 </div>

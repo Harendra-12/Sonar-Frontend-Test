@@ -457,7 +457,7 @@ function Roles() {
                                       handleParentCheckboxChange(item)
                                     }
                                   />
-                                  <label className="formLabel py-0">
+                                  <label className="ms-2">
                                     {item}
                                   </label>
                                 </div>
@@ -466,7 +466,7 @@ function Roles() {
                                 {filteredPermission[item].map(
                                   (innerItem, key) => (
                                     <div
-                                      className="formRow col-xl-2 col-md-4 col-6"
+                                      className="col-xl-2 col-md-4 col-6"
                                       key={key}
                                     >
                                       <input
