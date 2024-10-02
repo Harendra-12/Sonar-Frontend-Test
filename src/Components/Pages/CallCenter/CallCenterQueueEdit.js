@@ -661,7 +661,7 @@ function CallCenterQueueEdit() {
                   <select
                     {...register("moh_sound")}
                     className="formItem w-100"
-                    // value={watch().moh_sound}
+                  // value={watch().moh_sound}
                   >
                     <option></option>
                     {holdSound &&
@@ -706,7 +706,7 @@ function CallCenterQueueEdit() {
                     label={null}
                     getDropdownValue={actionListValue}
                     value={watch().queue_timeout_action}
-                    // value={callCenter.action}
+                  // value={callCenter.action}
                   />
                 </div>
               </div>
@@ -1068,7 +1068,7 @@ function CallCenterQueueEdit() {
                             />
                           </div>
                         </div>
-                        <div className="col-1 ps-0 pe-2">
+                        <div className="col-1 ps-0 pe-2" style={{ width: '6%' }}>
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Tier Level</label>
@@ -1096,7 +1096,7 @@ function CallCenterQueueEdit() {
                             <option value={9}>9</option>
                           </select>
                         </div>
-                        <div className="col-1 ps-0 pe-2">
+                        <div className="col-1 ps-0 pe-2" style={{ width: '6.5%' }}>
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Tier Position</label>
@@ -1346,7 +1346,7 @@ function CallCenterQueueEdit() {
                           </div>
                         )}
                         {index === agent.length - 1 &&
-                        index !== (user && user.length - 1) ? (
+                          index !== (user && user.length - 1) ? (
                           <div
                             onClick={addNewAgent}
                             className="col-auto px-0 mt-auto"
