@@ -4,9 +4,9 @@ import { Messager, UserAgent } from "sip.js";
 import { useSIPProvider, CONNECT_STATUS } from "react-sipjs";
 import AgentSearch from "./AgentSearch";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
-import { set } from "date-fns";
 
 function Messages() {
+  const loginUser = useSelector((state) => state.loginUser);
   const messageListRef = useRef(null);
   const sipProvider = useSIPProvider();
   const sessions = useSelector((state) => state.sessions);
@@ -21,6 +21,9 @@ function Messages() {
   const [loadMore, setLoadMore] = useState(1);
   const [isFreeSwitchMessage, setIsFreeSwitchMessage] = useState(true);
   const [agents, setAgents] = useState([]);
+  const [activeTab,setActiveTab]=useState("all")
+  const [onlineUser,setOnlineUser] = useState([])
+  const [unreadMessage,setUnreadMessage] = useState([])
 
   console.log("All agents", agents);
 
@@ -114,6 +117,7 @@ function Messages() {
               { from: extension, body: messageInput, time },
             ],
           }));
+          setActiveTab("all")
 
           const extensionExists = contact.some(
             (contact) => contact.extension === recipient[0]
@@ -191,6 +195,7 @@ function Messages() {
               { from: extension, body: messageInput, time },
             ],
           }));
+          setActiveTab("all")
 
           console.log("File sent to:", targetURI);
         } catch (error) {
@@ -204,7 +209,6 @@ function Messages() {
     }
   };
 
-  //   useEffect(() => {
   const userAgent = sipProvider?.sessionManager?.userAgent;
 
   if (userAgent) {
@@ -221,6 +225,8 @@ function Messages() {
         const agentDetails = agents.find(
           (agent) => agent.extension.extension === from
         );
+
+
 
         if (!extensionExists) {
           contact.unshift({
@@ -254,6 +260,12 @@ function Messages() {
             [from]: [...(prevState[from] || []), { from, body, time }],
           }));
 
+          // Add number of unread messaeg based on extension
+          setUnreadMessage((prevState) => ({
+            ...prevState,
+            [from]: (prevState[from] || 0) + 1,
+          }));
+
           console.log(`Received image from ${from} at ${time}`, message);
         } else {
           // If it's a text message or other type, render as text
@@ -261,6 +273,13 @@ function Messages() {
             ...prevState,
             [from]: [...(prevState[from] || []), { from, body, time }],
           }));
+
+          if(recipient[0]!==from){
+          setUnreadMessage((prevState) => ({
+            ...prevState,
+            [from]: (prevState[from] || 0) + 1,
+          }));
+        }
           console.log(
             `Received message from ${from}: ${body} at ${time}`,
             message
@@ -291,18 +310,26 @@ function Messages() {
 
     if (messageListRef.current) {
       messageListRef.current.addEventListener("scroll", handleScroll);
-      // return () => {
-      //   messageListRef.current.removeEventListener("scroll", handleScroll);
-      // };
     }
   }, []);
+ 
+  useEffect(() => {
+    if (loginUser.length > 0) {
+      const updatedOnlineUsers = loginUser.map((item) => {
+        const findUser = agents.find((agent) => agent.id === item.id);
+        return findUser;
+      }).filter((user) => user !== undefined);
+  
+      setOnlineUser(updatedOnlineUsers);
+    } else {
+      setOnlineUser([]);
+    }
+  }, [loginUser]);
 
-  // useEffect(() => {
-  //   if (isFreeSwitchMessage) {
-  //     messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
-  //   }
-  // }, [isFreeSwitchMessage, messageListRef]);
+  console.log("UnreadMessage",unreadMessage);
+  
 
+  
   return (
     <>
       <main
@@ -326,26 +353,15 @@ function Messages() {
                     Messages
                   </h3>
                 </div>
-                <div className="col-auto d-flex">
-                  <div className="col-auto">
-                    <button className="appPanelButton" effect="ripple">
-                      <i className="fa-solid fa-message-plus"></i>
-                    </button>
-                  </div>
-                  <div className="col-auto">
-                    <button className="appPanelButton" effect="ripple">
-                      <i className="fa-solid fa-gear"></i>
-                    </button>
-                  </div>
-                </div>
                 <div className="col-12">
                   <nav>
                     <div className="nav nav-tabs">
-                      <button className={"tabLink active"} data-category="all">
+                      <button className={activeTab==="all"?"tabLink active":"tabLink"} data-category="all" onClick={() => setActiveTab('all')}>
                         All
                       </button>
                       <button
-                        className={"tabLink"}
+                        onClick={() => setActiveTab('online')}
+                        className={activeTab==="online"?"tabLink active":"tabLink"}
                         effect="ripple"
                         data-category="incoming"
                       >
@@ -353,36 +369,31 @@ function Messages() {
                       </button>
                     </div>
                   </nav>
+                  {activeTab==="all"?
                   <div className="tab-content">
-                    {/* <div className="position-relative searchBox d-flex mt-3">
-                      <input
-                        type="search"
-                        name="Search"
-                        id="headerSearch"
-                        placeholder="Search"
-                      />
-                    </div> */}
                     <AgentSearch
                       getDropdownValue={setRecipient}
                       getAllAgents={setAgents}
                     />
                     <div className="callList">
-                      {/* <div className="text-center callListItem">
-                        <h5 className="fw-semibold">Today</h5>
-                      </div> */}
                       {contact.map((item) => {
                         return (
-                          <div className="contactListItem">
+                          <div  data-bell={unreadMessage[item?.extension]?unreadMessage[item?.extension]:""} className={recipient[0] === item?.extension ? "contactListItem selected" :"contactListItem"}>
                             <div
-                              onClick={() =>
-                                setRecipient([item?.extension, item.id])
+                              onClick={() =>{
+                                setRecipient([item?.extension, item.id]);
+                                setUnreadMessage((prevState) => {
+                                  const { [item?.extension]: _, ...newState } = prevState;
+                                  return newState;
+                                });
+                              }
                               }
                               className="row justify-content-between"
                             >
                               <div className="col-xl-6 d-flex">
                                 <div
                                   className="profileHolder"
-                                  id="profileOnline"
+                                  id={onlineUser.find((user) => user.id === item.id)?"profileOnlineNav":"profileOfflineNav"}
                                 >
                                   <i className="fa-light fa-user fs-5"></i>
                                 </div>
@@ -391,15 +402,61 @@ function Messages() {
                                   <h5>{item?.extension}</h5>
                                 </div>
                               </div>
-                              {/* <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                              <h5>12:46pm</h5>
-                            </div> */}
                             </div>
                           </div>
                         );
                       })}
                     </div>
-                  </div>
+                  </div>: <div className="tab-content">
+                    <AgentSearch
+                      getDropdownValue={setRecipient}
+                      getAllAgents={setAgents}
+                    />
+                    <div className="callList">
+                      {onlineUser.map((item) => {
+                        return (
+                          <div data-bell="" className={recipient[0] === item?.extension.extension ? "contactListItem selected" :"contactListItem"}>
+                            <div
+                              onClick={() =>
+                                setRecipient([item?.extension.extension, item.id])
+                              }
+                              className="row justify-content-between"
+                            >
+                              <div className="col-xl-6 d-flex">
+                                <div
+                                  className="profileHolder"
+                                  id="profileOnlineNav"
+                                >
+                                  <i className="fa-light fa-user fs-5"></i>
+                                </div>
+                                <div className="my-auto ms-2 ms-xl-3">
+                                  <h4>{item?.username}</h4>
+                                  <h5>{item?.extension.extension}</h5>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                      {onlineUser.length===0 && <div className="contactListItem">
+                        <div
+                          className="row justify-content-between"
+                        >
+                          <div className="col-xl-6 d-flex">
+                            <div
+                              className="profileHolder"
+                              id="profileOnline"
+                            >
+                              <i className="fa-light fa-user fs-5"></i>
+                            </div>
+                            <div className="my-auto ms-2 ms-xl-3">
+                              <h4>No online user found</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>}
+                    </div>
+                  </div>}
                 </div>
               </div>
               <div
@@ -443,9 +500,6 @@ function Messages() {
                           <>
                             {item.from == extension ? (
                               <div className="messageItem sender">
-                                {/* <div className="first">
-                                  <div className="profileHolder">US</div>
-                                </div> */}
                                 <div className="second">
                                   <h6>
                                     <span>
@@ -463,9 +517,6 @@ function Messages() {
                               </div>
                             ) : (
                               <div className="messageItem receiver">
-                                {/* <div className="first">
-                                  <div className="profileHolder">US</div>
-                                </div> */}
                                 <div className="second">
                                   <h6>
                                     <span>
@@ -491,7 +542,7 @@ function Messages() {
                         <div className="startAJob">
                           <div class="text-center mt-3">
                             <img
-                              src={require("../../assets/images/empty-box.png")}
+                              src={require("../../assets/images/empty-box.png")} alt="Empty"
                             ></img>
                             <div>
                               <h5>
@@ -521,29 +572,6 @@ function Messages() {
                           />
                         </div>
                         <div className="col-auto d-flex">
-                          {/* <button
-                          effect="ripple"
-                          className="appPanelButtonColor2 ms-auto"
-                        >
-                          <i className="fa-regular fa-paperclip" >
-                            <input
-                              type="file"
-                              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0 }}
-                              // value={messageInput}
-                              onChange={(e) => {
-                                const file = e.target.files[0];
-                                if (file) {
-                                  sendFileMessage(file);
-                                }
-                              }}
-                              onKeyDown={(e) => {
-                                if (e.key === "Enter") {
-                                  sendFileMessage();
-                                }
-                              }}
-                            />
-                          </i>
-                        </button> */}
                           <button
                             effect="ripple"
                             className="appPanelButtonColor"
