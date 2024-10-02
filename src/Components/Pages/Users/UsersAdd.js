@@ -337,7 +337,7 @@ const UsersAdd = () => {
               <form action="#" className="row">
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
-                    <label htmlFor="">Username</label>
+                    <label htmlFor="" className="me-2">Username</label>
 
                     {isUserNameAvailable == true ? (
                       <label className="status success">
@@ -348,7 +348,7 @@ const UsersAdd = () => {
                     ) : (
                       ""
                     )}
-                    {userNameValidationLoader ? (
+                    {true ? (
                       <img
                         className="loaderSpinner"
                         src={require("../../assets/images/loader-gif.webp")}
@@ -358,7 +358,7 @@ const UsersAdd = () => {
                       ""
                     )}
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <input
                       type="text"
                       name="extension"
@@ -377,8 +377,11 @@ const UsersAdd = () => {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Password</label>
+                    <label htmlFor="data" className="formItemDesc">
+                      Required: At least 4 character
+                    </label>
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <input
                       type="password"
                       name="extension"
@@ -391,16 +394,16 @@ const UsersAdd = () => {
                     {errors.password && (
                       <ErrorMessage text={errors.password.message} />
                     )}
-                    <label htmlFor="data" className="formItemDesc">
-                      Required: At least 4 character
-                    </label>
                   </div>
                 </div>
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Confirm Password</label>
+                    <label htmlFor="data" className="formItemDesc">
+                      Green field borders indicate typed passwords match.
+                    </label>
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <input
                       type="password"
                       name="extension"
@@ -410,16 +413,13 @@ const UsersAdd = () => {
                     {errors.cPassword && (
                       <ErrorMessage text={errors.cPassword.message} />
                     )}
-                    <label htmlFor="data" className="formItemDesc">
-                      Green field borders indicate typed passwords match.
-                    </label>
                   </div>
                 </div>
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Email</label>
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <input
                       type="email"
                       name="extension"
@@ -439,7 +439,7 @@ const UsersAdd = () => {
                   <div className="formLabel">
                     <label htmlFor="">First Name</label>
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <input
                       type="text"
                       name="extension"
@@ -460,7 +460,7 @@ const UsersAdd = () => {
                   <div className="formLabel">
                     <label htmlFor="">Last Name</label>
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <input
                       type="text"
                       name="extension"
@@ -519,8 +519,11 @@ const UsersAdd = () => {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Time Zone</label>
+                    <label htmlFor="data" className="formItemDesc">
+                      Select the default time zone.
+                    </label>
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <select
                       className="formItem"
                       name=""
@@ -541,16 +544,16 @@ const UsersAdd = () => {
                     {errors.timezone_id && (
                       <ErrorMessage text={errors.timezone_id.message} />
                     )}
-                    <label htmlFor="data" className="formItemDesc">
-                      Select the default time zone.
-                    </label>
                   </div>
                 </div>
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Status</label>
+                    <label htmlFor="data" className="formItemDesc">
+                      Set the user's presence.
+                    </label>
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <select
                       className="formItem"
                       name=""
@@ -566,9 +569,6 @@ const UsersAdd = () => {
                     {errors.status && (
                       <ErrorMessage text={errors.status.message} />
                     )}
-                    <label htmlFor="data" className="formItemDesc">
-                      Set the user's presence.
-                    </label>
                   </div>
                 </div>
 
@@ -629,8 +629,12 @@ const UsersAdd = () => {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Role Type</label>
+                    <label htmlFor="data" className="formItemDesc">
+                      Select Default to enable login or to disable login select
+                      Virtual.
+                    </label>
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <select
                       className="formItem"
                       name=""
@@ -672,17 +676,16 @@ const UsersAdd = () => {
                     {errors.role_id && (
                       <ErrorMessage text={errors.role_id.message} />
                     )}
-                    <label htmlFor="data" className="formItemDesc">
-                      Select Default to enable login or to disable login select
-                      Virtual.
-                    </label>
                   </div>
                 </div>
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Select extension</label>
+                    <label htmlFor="data" className="formItemDesc">
+                      Assign an extension to the newly created user.
+                    </label>
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <select
                       className="formItem"
                       name="extension_id"
@@ -701,9 +704,6 @@ const UsersAdd = () => {
                           );
                         })}
                     </select>
-                    <label htmlFor="data" className="formItemDesc">
-                      Assign an extension to the newly created user.
-                    </label>
                   </div>
                 </div>
                 {/* <div className="formRow col-xl-3">

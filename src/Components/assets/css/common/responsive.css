@@ -47,6 +47,10 @@
         width: 100vw;
     }
 
+    .formRow.col-xl-3 {
+        width: inherit !important;
+    }
+
 }
 
 @media (min-width: 1500px) {
@@ -54,6 +58,14 @@
     /* .formRow.col-xl-3 {
         width: 16.5%;
     } */
+
+}
+
+@media (max-width: 1366px) {
+
+    .formLabel {
+        font-size: 10px;
+    }
 
 }
 

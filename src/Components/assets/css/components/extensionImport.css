@@ -37,7 +37,8 @@
 .formLabel {
     font-size: 14px;
     /* width: 130px; */
-    width: 50%;
+    width: auto;
+    max-width: 220px;
     padding: 5px 0px;
     font-weight: 500;
     color: #000;

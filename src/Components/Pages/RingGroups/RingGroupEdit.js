@@ -553,7 +553,7 @@ const RingGroupEdit = () => {
                   type="button"
                   effect="ripple"
                   className="panelButton"
-                  // onClick={() => { window.location = "/ring-groups" }}
+                // onClick={() => { window.location = "/ring-groups" }}
                 >
                   Back
                 </button>
@@ -769,16 +769,16 @@ const RingGroupEdit = () => {
                         )),
                     })}
                     onKeyDown={restrictToNumbers}
-                    // {...register("call_timeout", {
-                    //   ...requiredValidator,
-                    //   ...noSpecialCharactersValidator,
-                    //   ...minValidator(
-                    //     destination.reduce(
-                    //       (max, obj) => Math.max(max, obj.delay),
-                    //       0
-                    //     )
-                    //   ),
-                    // })}
+                  // {...register("call_timeout", {
+                  //   ...requiredValidator,
+                  //   ...noSpecialCharactersValidator,
+                  //   ...minValidator(
+                  //     destination.reduce(
+                  //       (max, obj) => Math.max(max, obj.delay),
+                  //       0
+                  //     )
+                  //   ),
+                  // })}
                   />
                   {errors.call_timeout && (
                     <ErrorMessage text={errors.call_timeout.message} />
@@ -1152,11 +1152,11 @@ const RingGroupEdit = () => {
                                 .filter((item1) => {
                                   return (
                                     item1.extension.extension ==
-                                      destination[index]?.destination ||
+                                    destination[index]?.destination ||
                                     !destination.some(
                                       (destinationItem, destinationIndex) =>
                                         destinationItem.destination ==
-                                          item1.extension.extension &&
+                                        item1.extension.extension &&
                                         destinationIndex != index
                                     )
                                   );
@@ -1303,7 +1303,7 @@ const RingGroupEdit = () => {
                         <div className="mt-auto">
                           <button
                             onClick={() => addNewDestination()}
-                            className="panelButton mt-auto"
+                            className="panelButton mb-auto"
                             effect="ripple"
                             type="button"
                           >
