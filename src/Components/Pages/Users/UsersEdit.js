@@ -34,6 +34,12 @@ const UsersEdit = () => {
   const [selectedPermission, setSelectedPermission] = useState([]);
   const queryParams = new URLSearchParams(useLocation().search);
   const value = queryParams.get("id");
+  const [extension, setExtension] = useState();
+  const [user, setUser] = useState();
+  const [filterExtensions, setFilterExtensions] = useState();
+  const allUser = useSelector((state) => state.allUser);
+  const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
+  const extensionAll = useSelector((state) => state.extensionAll);
   const {
     register,
     watch,
@@ -134,7 +140,54 @@ const UsersEdit = () => {
       }
     }
   }, [account, navigate]);
-  console.log(watch());
+
+  useEffect(() => {
+    if (allUserRefresh > 0) {
+      setUser(allUser.data);
+    } else {
+      dispatch({
+        type: "SET_ALLUSERREFRESH",
+        allUserRefresh: allUserRefresh + 1,
+      });
+    }
+    if (extensionAllRefresh > 0) {
+      setExtension(extensionAll.data);
+    } else {
+      dispatch({
+        type: "SET_EXTENSIONALLREFRESH",
+        extensionAllRefresh: extensionAllRefresh + 1,
+      });
+    }
+  }, [allUser, extensionAll]);
+
+  // filter only those extension that are not assign with any user
+  // useEffect(() => {
+  //   if (extension && user) {
+  //     setFilterExtensions(
+  //       extension.filter((item) => {
+  //         return !user.some((userItem) => {
+  //           return userItem.extension_id === item.id;
+  //         });
+  //       })
+  //     );
+  //   }
+  // }, [extension, user]);
+
+  useEffect(() => {
+    if (extension && user && locationState) {
+      setFilterExtensions(
+        extension.filter((item) => {
+          return !user.some((userItem) => {
+            return (
+              userItem.extension_id === item.id &&
+              userItem.extension_id !== locationState.extension_id
+            );
+          });
+        })
+      );
+    }
+  }, [extension, user, locationState]);
+
   const handleFormSubmit = handleSubmit(async (data) => {
     const {
       firstName,
@@ -165,6 +218,7 @@ const UsersEdit = () => {
       role_id,
       account_id: account.account_id,
       permissions: selectedPermission,
+      extension_id: data.extension_id,
     };
     setLoading(true);
     const addUser = await generalPutFunction(
@@ -203,8 +257,6 @@ const UsersEdit = () => {
     return result;
   };
 
-  console.log(defaultPermission);
-
   // Handel permission check box click
   // const handleCheckboxChange = (id) => {
   //   if (selectedPermission.includes(id)) {
@@ -217,7 +269,7 @@ const UsersEdit = () => {
     defaultPermission,
     account.permissions
   );
-  console.log(filteredPermission);
+  // console.log(filteredPermission);
 
   const [parentChecked, setParentChecked] = useState({});
 
@@ -231,7 +283,7 @@ const UsersEdit = () => {
     });
     setParentChecked(initialParentChecked);
   }, [selectedPermission, defaultPermission]);
-  console.log(selectedPermission);
+
   // Handle permission check box click
   const handleCheckboxChange = (id) => {
     const newSelectedPermission = selectedPermission.includes(id)
@@ -249,7 +301,6 @@ const UsersEdit = () => {
     });
     setParentChecked(updatedParentChecked);
   };
-  console.log(parentChecked);
 
   // Handle parent checkbox change
   const handleParentCheckboxChange = (item) => {
@@ -268,7 +319,7 @@ const UsersEdit = () => {
     setSelectedPermission(newSelectedPermission);
     setParentChecked({ ...parentChecked, [item]: newParentChecked });
   };
-  console.log(filteredPermission);
+
   return (
     <>
       <style>
@@ -305,7 +356,7 @@ const UsersEdit = () => {
                     className="panelButton"
                     onClick={handleFormSubmit}
                   >
-                    Save
+                    Update
                   </button>
                 </div>
               </div>
@@ -496,6 +547,34 @@ const UsersEdit = () => {
                     <label htmlFor="data" className="formItemDesc">
                       Select Default to enable login or to disable login select
                       Virtual.
+                    </label>
+                  </div>
+                </div>
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="selectFormRow">Select extension</label>
+                  </div>
+                  <div className="col-12">
+                    <select
+                      className="formItem"
+                      name="extension_id"
+                      value={watch().extension_id}
+                      {...register("extension_id")}
+                    >
+                      <option value="" disabled>
+                        Available Extensions
+                      </option>
+                      {filterExtensions &&
+                        filterExtensions.map((extension, key) => {
+                          return (
+                            <option value={extension.id} key={key}>
+                              {extension.extension}
+                            </option>
+                          );
+                        })}
+                    </select>
+                    <label htmlFor="data" className="formItemDesc">
+                      Assign an extension to the newly created user.
                     </label>
                   </div>
                 </div>
