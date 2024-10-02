@@ -532,7 +532,7 @@ function CallCenterQueueAdd() {
                     Select the desired Greeting.
                   </label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <select {...register("greeting")} className="formItem w-100">
                     <option></option>
                     {greetingSound &&
@@ -1246,7 +1246,7 @@ function CallCenterQueueAdd() {
                           </div>
                         )}
                         {index === agent.length - 1 &&
-                        index !== (user && user.length - 1) ? (
+                          index !== (user && user.length - 1) ? (
                           <div
                             onClick={addNewAgent}
                             className="col-auto px-0 mt-auto"
