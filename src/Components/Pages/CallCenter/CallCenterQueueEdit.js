@@ -37,6 +37,8 @@ function CallCenterQueueEdit() {
   // const domain = useSelector((state) => state.domain);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const [prevAgents, setPrevAgents] = useState([]);
+  const [greetingSound, setGreetingSound] = useState();
+  const [holdSound, setHoldSound] = useState();
   // const { domain_name = "" } = domain;
   const [agent, setAgent] = useState([
     {
@@ -174,6 +176,19 @@ function CallCenterQueueEdit() {
     // }
   }, []);
 
+  useEffect(() => {
+    async function getData() {
+      const musicData = await generalGetFunction("/sound/all");
+      if (musicData.status) {
+        setGreetingSound(
+          musicData.data.filter((item) => item.type === "ringback")
+        );
+        setHoldSound(musicData.data.filter((item) => item.type === "hold"));
+      }
+    }
+    getData();
+  }, [account.account_id]);
+
   const actionListValue = (value) => {
     setValue("queue_timeout_action", value[0]);
   };
@@ -293,7 +308,24 @@ function CallCenterQueueEdit() {
         account_id: account.account_id,
         created_by: account.id,
       },
-      // ...xmlObj,
+
+      // set the default values as per freeswitch requirements
+      ...{
+        max_wait_time:
+          data.max_wait_time === "" ? 0 : Number(data.max_wait_time),
+        max_wait_time_with_no_agent:
+          data.max_wait_time_with_no_agent === ""
+            ? 0
+            : Number(data.max_wait_time_with_no_agent),
+        max_wait_time_with_no_agent_time_reached:
+          data.max_wait_time_with_no_agent_time_reached === ""
+            ? 5
+            : Number(data.max_wait_time_with_no_agent_time_reached),
+        ring_progressively_delay:
+          data.ring_progressively_delay === ""
+            ? 10
+            : Number(data.ring_progressively_delay),
+      },
 
       ...{
         agents: agent
@@ -337,7 +369,6 @@ function CallCenterQueueEdit() {
                 password: item.password,
                 contact: item.contact,
                 ...(hasId ? { id: item.id } : {}), // Conditionally add 'id' field
-
               };
             } else {
               return null;
@@ -576,8 +607,15 @@ function CallCenterQueueEdit() {
                 </div>
                 <div className="col-6">
                   <select {...register("greeting")} className="formItem w-100">
-                    <option>say</option>
-                    <option>tone_stream</option>
+                    <option></option>
+                    {greetingSound &&
+                      greetingSound.map((item, index) => {
+                        return (
+                          <option key={index} value={item.id}>
+                            {item.name}
+                          </option>
+                        );
+                      })}
                   </select>
                 </div>
               </div>
@@ -620,8 +658,20 @@ function CallCenterQueueEdit() {
                   </label>
                 </div>
                 <div className="col-6">
-                  <select {...register("moh_sound")} className="formItem w-100">
-                    <option>test</option>
+                  <select
+                    {...register("moh_sound")}
+                    className="formItem w-100"
+                    // value={watch().moh_sound}
+                  >
+                    <option></option>
+                    {holdSound &&
+                      holdSound.map((item, index) => {
+                        return (
+                          <option key={index} value={item.id}>
+                            {item.name}
+                          </option>
+                        );
+                      })}
                   </select>
                 </div>
               </div>
@@ -656,7 +706,7 @@ function CallCenterQueueEdit() {
                     label={null}
                     getDropdownValue={actionListValue}
                     value={watch().queue_timeout_action}
-                  // value={callCenter.action}
+                    // value={callCenter.action}
                   />
                 </div>
               </div>
@@ -845,7 +895,9 @@ function CallCenterQueueEdit() {
 
               <div className="formRow col-xl-3">
                 <div className="formLabel">
-                  <label htmlFor="">Max Wait Time With No Agent Time Reached	</label>
+                  <label htmlFor="">
+                    Max Wait Time With No Agent Time Reached{" "}
+                  </label>
                 </div>
                 <div className="col-6">
                   <input
@@ -858,7 +910,9 @@ function CallCenterQueueEdit() {
                     onKeyDown={restrictToNumbers}
                   />
                   {errors.max_wait_time_with_no_agent_time_reached && (
-                    <ErrorMessage text={errors.max_wait_time_with_no_agent_time_reached} />
+                    <ErrorMessage
+                      text={errors.max_wait_time_with_no_agent_time_reached}
+                    />
                   )}
                 </div>
               </div>
@@ -1292,7 +1346,7 @@ function CallCenterQueueEdit() {
                           </div>
                         )}
                         {index === agent.length - 1 &&
-                          index !== (user && user.length - 1) ? (
+                        index !== (user && user.length - 1) ? (
                           <div
                             onClick={addNewAgent}
                             className="col-auto px-0 mt-auto"

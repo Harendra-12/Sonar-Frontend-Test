@@ -10,7 +10,7 @@
 .mainContentApp .tab-content .callList {
     overflow: hidden auto;
     /* height: calc(100vh - 205px); */
-    height: calc(100vh - 150px);
+    height: calc(100vh - 180px);
 }
 
 .mainContentApp .tab-content .callDetailsList {
@@ -99,6 +99,27 @@
     /* font-family: Outfit !important; */
     font-weight: 500;
     color: var(--ui-accent);
+}
+
+.mainContentApp .tab-content .contactListItem::after{
+    content: attr(data-bell);
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    background-color: var(--funky-boy1);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.mainContentApp .tab-content .contactListItem[data-bell=""]::after{
+    content: none !important;
 }
 
 .mainContentApp .contactListItem .profileHolder {
