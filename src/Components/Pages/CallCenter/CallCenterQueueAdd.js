@@ -375,7 +375,9 @@ function CallCenterQueueAdd() {
                 </div>
                 <div className="col-6">
                   <select {...register("greeting")} className="formItem w-100">
-                    <option></option>
+                    <option disabled value={""}>
+                      Select Greeting
+                    </option>
                     {greetingSound &&
                       greetingSound.map((item, index) => {
                         return (
@@ -423,7 +425,9 @@ function CallCenterQueueAdd() {
                 </div>
                 <div className="col-6">
                   <select {...register("moh_sound")} className="formItem w-100">
-                    <option></option>
+                    <option value={""} disabled>
+                      Select Hold Music
+                    </option>
                     {holdSound &&
                       holdSound.map((item, index) => {
                         return (
@@ -695,7 +699,6 @@ function CallCenterQueueAdd() {
                 </div>
               </div>
 
-
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Record Template</label>
@@ -905,7 +908,10 @@ function CallCenterQueueAdd() {
                             />
                           </div>
                         </div>
-                        <div className="col-1 ps-0 pe-2" style={{ width: '6%' }}>
+                        <div
+                          className="col-1 ps-0 pe-2"
+                          style={{ width: "6%" }}
+                        >
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Tier Level</label>
@@ -933,7 +939,10 @@ function CallCenterQueueAdd() {
                             <option value={9}>9</option>
                           </select>
                         </div>
-                        <div className="col-1 ps-0 pe-2" style={{ width: '6.5%' }}>
+                        <div
+                          className="col-1 ps-0 pe-2"
+                          style={{ width: "6.5%" }}
+                        >
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Tier Position</label>
@@ -1117,7 +1126,7 @@ function CallCenterQueueAdd() {
                           </div>
                         )}
                         {index === agent.length - 1 &&
-                          index !== (user && user.length - 1) ? (
+                        index !== (user && user.length - 1) ? (
                           <div
                             onClick={addNewAgent}
                             className="col-auto px-0 mt-auto"

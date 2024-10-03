@@ -386,9 +386,6 @@ const Dashboard = () => {
                     role="tab"
                     aria-controls="nav-queue"
                     aria-selected="false"
-                    onClick={() => {
-                      navigate("/cal-center-queue");
-                    }}
                   >
                     Call Queue
                   </button>
@@ -401,9 +398,6 @@ const Dashboard = () => {
                     role="tab"
                     aria-controls="nav-ring"
                     aria-selected="false"
-                    onClick={() => {
-                      navigate("/ring-groups");
-                    }}
                   >
                     Ring Group
                   </button>
@@ -670,7 +664,13 @@ const Dashboard = () => {
                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/extensions'" effect="ripple"><i className="fa-duotone fa-phone-office"></i> View All Extensions</button> */}
                       </div>
                     </div>
-                    <div className="col-xl-3">
+                    <div
+                      className="col-xl-3"
+                      onClick={() => {
+                        navigate("/cal-center-queue");
+                      }}
+                      style={{ cursor: "pointer" }}
+                    >
                       <div className="itemWrapper c">
                         <div className="heading">
                           <i className="fa-duotone fa-circle-pause"></i> Total
@@ -749,7 +749,11 @@ const Dashboard = () => {
                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/extensions'" effect="ripple"><i className="fa-duotone fa-phone-office"></i> View All Extensions</button> */}
                       </div>
                     </div>
-                    <div className="col-xl-3">
+                    <div
+                      className="col-xl-3"
+                      onClick={() => navigate("/ring-groups")}
+                      style={{ cursor: "pointer" }}
+                    >
                       <div className="itemWrapper c">
                         <div className="heading">
                           <i className="fa-duotone fa-circle-pause"></i> Total

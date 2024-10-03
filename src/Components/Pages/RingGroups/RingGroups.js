@@ -191,45 +191,39 @@ const RingGroups = () => {
                             return (
                               <tr key={index}>
                                 <td
-                                  style={{ cursor: "default" }}
-                                  // onClick={() =>
-                                  //   navigate(`/ring-groups-edit?id=${item.id}`)
-                                  // }
+                                  onClick={() =>
+                                    navigate(`/ring-groups-edit?id=${item.id}`)
+                                  }
                                 >
                                   {item.name}
                                 </td>
                                 <td
-                                  style={{ cursor: "default" }}
-                                  // onClick={() =>
-                                  //   navigate(`/ring-groups-edit?id=${item.id}`)
-                                  // }
+                                  onClick={() =>
+                                    navigate(`/ring-groups-edit?id=${item.id}`)
+                                  }
                                 >
                                   {item.extension}
                                 </td>
                                 <td
-                                  style={{ cursor: "default" }}
-                                  // onClick={() =>
-                                  //   navigate(`/ring-groups-edit?id=${item.id}`)
-                                  // }
+                                  onClick={() =>
+                                    navigate(`/ring-groups-edit?id=${item.id}`)
+                                  }
                                 >
                                   {item.strategy}
                                 </td>
                                 <td
-                                  style={{ cursor: "default" }}
-                                  // onClick={() =>
-                                  //   navigate(`/ring-groups-edit?id=${item.id}`)
-                                  // }
+                                  onClick={() =>
+                                    navigate(`/ring-groups-edit?id=${item.id}`)
+                                  }
                                 >
                                   {item.ring_group_destination.length}
                                 </td>
                                 <td
-                                  style={{ cursor: "default" }}
-                                  // onClick={() =>
-                                  //   navigate(`/ring-groups-edit?id=${item.id}`)
-                                  // }
+                                  onClick={() =>
+                                    navigate(`/ring-groups-edit?id=${item.id}`)
+                                  }
                                 >
                                   <label
-                                    style={{ cursor: "default" }}
                                     className={
                                       item.status === "active"
                                         ? "tableLabel success"
@@ -240,16 +234,15 @@ const RingGroups = () => {
                                   </label>
                                 </td>
                                 <td
-                                  style={{ cursor: "default" }}
-                                  // onClick={() =>
-                                  //   navigate(`/ring-groups-edit?id=${item.id}`)
-                                  // }
+                                  onClick={() =>
+                                    navigate(`/ring-groups-edit?id=${item.id}`)
+                                  }
                                   className="ellipsis"
                                   id="detailBox"
                                 >
                                   {item.description}
                                 </td>
-                                <td style={{ cursor: "default" }}>
+                                <td>
                                   <button
                                     onClick={() =>
                                       navigate(
@@ -261,7 +254,7 @@ const RingGroups = () => {
                                     <i className="fa-duotone fa-gear text-success"></i>
                                   </button>
                                 </td>
-                                <td style={{ cursor: "default" }}>
+                                <td>
                                   {" "}
                                   <button
                                     className="tableButton edit"
