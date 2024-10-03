@@ -3,6 +3,7 @@
     --funky-boy2: #4749e6;
     --funky-boy3: #31c07d;
     --funky-boy4: #ff0000;
+    --funky-boy4-trans: #ff999930;
 }
 
 .mainContent .itemWrapper {
@@ -10,11 +11,11 @@
     border-radius: 10px;
     /* box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px; */
     background-color: #fff;
-    padding: 10px;
+    padding: 15px;
     /* margin-top: 20px; */
     text-align: center;
     position: relative;
-    min-height: 188px;
+    /* min-height: 188px; */
     height: 100%;
     /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
@@ -82,9 +83,51 @@
     color: var(--bgdark-color);
 }
 
+.itemWrapper .heading h5 {
+    margin-bottom: 5px;
+    font-size: 18px !important;
+    font-family: 'Open Sans';
+    font-weight: 700;
+}
+
+.itemWrapper .heading p {
+    font-size: 12px;
+    color: var(--color-subtext);
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
 .itemWrapper .heading i {
     margin-right: 5px;
-    font-size: 17px;
+    font-size: 16px;
+    padding: 13px;
+    border-radius: 10px;
+    background-color: var(--color2-trans);
+    float: inline-end;
+}
+
+.itemWrapper .data-number2 {
+    text-align: left;
+    margin-top: 28px;
+}
+
+.itemWrapper .data-number2 h5 {
+    margin-bottom: 5px;
+    font-size: 24px !important;
+    font-weight: 600;
+    font-family: Outfit;
+}
+
+.itemWrapper .data-number2 p {
+    font-size: 12px;
+    color: var(--color-subtext);
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+.itemWrapper .data-number2 img {
+    width: 50px;
+    height: 50px;
 }
 
 .itemWrapper .label {
@@ -146,7 +189,8 @@
 }
 
 .itemWrapper.a .data-number,
-.itemWrapperb.a .data-number {
+.itemWrapperb.a .data-number,
+.itemWrapper.a .data-number2 h5 {
     color: var(--color2);
 }
 
@@ -155,7 +199,12 @@
     color: var(--ui-accent);
 }
 
-.itemWrapper.c .data-number {
+.itemWrapper.b .data-number2 h5 {
+    color: var(--ui-accent-green);
+}
+
+.itemWrapper.c .data-number,
+.itemWrapper.c .data-number2 h5 {
     color: var(--color3);
 }
 
@@ -164,7 +213,8 @@
 }
 
 .itemWrapper.d .data-number,
-.itemWrapperb.d .data-number {
+.itemWrapperb.d .data-number,
+.itemWrapper.d .data-number2 h5 {
     color: var(--funky-boy4);
 }
 
@@ -185,7 +235,8 @@
 }
 
 .itemWrapper.b .heading i {
-    color: var(--ui-accent);
+    color: var(--ui-accent-green);
+    background-color: var(--ui-accent-green-trans);
 }
 
 .itemWrapper.c .heading i,
@@ -193,8 +244,13 @@
     color: var(--color3);
 }
 
+.itemWrapper.c .heading i {
+    background-color: var(--color3-trans);
+}
+
 .itemWrapper.d .heading i {
     color: var(--funky-boy4);
+    background-color: var(--funky-boy4-trans);
 }
 
 .data-number {
@@ -308,17 +364,25 @@
     transition: stroke-dasharray 0.3s linear 0s;
 }
 
+.tangoNavs .nav-tabs {
+    border-color: #ddd;
+}
+
 .tangoNavs .nav-tabs .nav-link {
-    color: #000;
+    color: #fff;
     padding: 10px 25px;
 }
 
 .tangoNavs .nav-tabs .nav-link.active {
     background-color: transparent;
     border: 1px solid transparent;
-    border-bottom: 3px solid var(--ui-accent);
-    color: var(--ui-accent);
+    border-bottom: 3px solid #fff !important;
+    color: #fff;
     font-weight: 600;
+}
+
+.tangoNavs .nav-tabs .nav-link:hover {
+    border-color: transparent;
 }
 
 .chartWrapper .wrapper {

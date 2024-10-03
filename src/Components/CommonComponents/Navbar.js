@@ -204,6 +204,19 @@ function Navbar() {
                               </div>
                             </NavLink>
                           </li>
+                          <li className="tabItem ">
+                            <NavLink
+                              to="/mail-settings"
+                              onClick={backToTop}
+                              type="button"
+                              effect="ripple"
+                            >
+                              <div className="iconHolder">
+                                <i class="fa-duotone fa-solid fa-envelopes-bulk"></i>
+                              </div>
+                              <div className="itemTitle">Mail Settings</div>
+                            </NavLink>
+                          </li>
                           {userType === "SupreAdmin" ? (
                             <li className="tabItem" effect="ripple">
                               <NavLink
@@ -269,14 +282,14 @@ function Navbar() {
                               <div className="itemTitle">Voice Music</div>
                             </NavLink>
                           </li>
-                          <li className="tabItem " effect="ripple">
+                          {/* <li className="tabItem " effect="ripple">
                             <NavLink to="/active-calls">
                               <div className="iconHolder">
                                 <i class="fa-duotone fa-phone-volume"></i>
                               </div>
                               <div className="itemTitle">Active Calls</div>
                             </NavLink>
-                          </li>
+                          </li> */}
                         </ul>
                       </div>
                     </div>

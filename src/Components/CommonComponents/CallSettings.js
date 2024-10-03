@@ -59,14 +59,14 @@ const CallSettings = (props) => {
               apiData.data.voicemailEnabled === "Y"
                 ? "Voicemail"
                 : apiData.data.callforward === 1
-                ? "Forward"
-                : "Disabled",
+                  ? "Forward"
+                  : "Disabled",
             noAnswerForward:
               apiData.data.voicemailEnabled === "Y"
                 ? apiData.data.voiceEmailTo
                 : apiData.data.callforward === 1
-                ? apiData.data.callforwardTo
-                : "",
+                  ? apiData.data.callforwardTo
+                  : "",
             callRecording: apiData.data.record,
             onBusyState: apiData.data.onbusy,
             onBusyForward: apiData.data.onbusyTo,
@@ -77,16 +77,16 @@ const CallSettings = (props) => {
             callTimeOut: apiData.data.callTimeOut,
             callBlocking:
               apiData.data.blockIncomingStatus === 1 &&
-              apiData.data.blockOutGoingStatus === 1
+                apiData.data.blockOutGoingStatus === 1
                 ? "All"
                 : apiData.data.blockIncomingStatus === 0 &&
                   apiData.data.blockOutGoingStatus === 0
-                ? "Disabled"
-                : apiData.data.blockIncomingStatus === 1
-                ? "Incoming"
-                : apiData.data.blockOutGoingStatus === 1
-                ? "Outgoing"
-                : "Disabled",
+                  ? "Disabled"
+                  : apiData.data.blockIncomingStatus === 1
+                    ? "Incoming"
+                    : apiData.data.blockOutGoingStatus === 1
+                      ? "Outgoing"
+                      : "Disabled",
           }));
           if (apiData.data.followmes.length > 0) {
             setCallSetting((prevData) => ({
@@ -215,14 +215,14 @@ const CallSettings = (props) => {
           callSetting.callBlocking === "Incoming"
             ? 1
             : callSetting.callBlocking === "All"
-            ? 1
-            : 0,
+              ? 1
+              : 0,
         blockOutGoingStatus:
           callSetting.callBlocking === "Outgoing"
             ? 1
             : callSetting.callBlocking === "All"
-            ? 1
-            : 0,
+              ? 1
+              : 0,
       };
 
       // Conditionally add the 'data' field if followMe is equal to 1
@@ -313,53 +313,113 @@ const CallSettings = (props) => {
           )}
           <div className="mx-2" id="detailsContent">
             <form className="row">
-              <div className="formRow col-xl-12 ">
-                <div className="col-12 d-flex justify-content-start">
-                  <div className="formLabel pe-2 col-2">
-                    <label className="text-dark">On Busy</label>
-                    <label
-                      htmlFor="data"
-                      className="formItemDesc"
-                      style={{
-                        fontSize: 12,
-                        lineHeight: "18px",
-                        marginTop: 5,
-                      }}
-                    >
-                      If enabled, it overrides the value of voicemail enabling
-                      in extension
-                    </label>
-                  </div>
-                  <div className="col-2 pe-2">
-                    <div className="formLabel">
-                      <label htmlFor="">Status</label>
-                    </div>
+              <div className="formRow col-xl-3 ">
 
-                    <select
-                      className="formItem me-0"
-                      style={{ width: "100%" }}
-                      name="delay"
-                      id="selectFormRow"
-                      value={callSetting.onBusyState}
-                      onChange={(e) => {
-                        setCallSetting((prevState) => ({
-                          ...prevState,
-                          onBusyState: parseInt(e.target.value),
-                        }));
-                      }}
-                    >
-                      <option value={1}>Enabled</option>
-                      <option value={0}>Disabled</option>
-                    </select>
+                <div className="formLabel">
+                  <label className="text-dark">On Busy</label>
+                  <label
+                    htmlFor="data"
+                    className="formItemDesc"
+                  >
+                    If enabled, it overrides the value of voicemail enabling
+                    in extension
+                  </label>
+                </div>
+                <div className={callSetting.onBusyState == 0 ? "col-6" : "col-2 pe-2 ms-auto"}>
+                  <div class="formLabel">
+                    <label>Status</label>
                   </div>
-                  {callSetting.onBusyState == 0 ? (
-                    ""
-                  ) : (
+                  <select
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                    name="delay"
+                    id="selectFormRow"
+                    value={callSetting.onBusyState}
+                    onChange={(e) => {
+                      setCallSetting((prevState) => ({
+                        ...prevState,
+                        onBusyState: parseInt(e.target.value),
+                      }));
+                    }}
+                  >
+                    <option value={1}>Enabled</option>
+                    <option value={0}>Disabled</option>
+                  </select>
+                </div>
+                {callSetting.onBusyState == 0 ? (
+                  ""
+                ) : (
+                  <div className="col-4">
+                    <div className="formLabel">
+                      <label htmlFor="">Destinations</label>
+
+                      {callSetting.onBusyError ? (
+                        <label className="status missing">
+                          field missing
+                        </label>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                    <div className="col-12">
+                      <input
+                        type="text"
+                        name="extension"
+                        className="formItem"
+                        value={callSetting.onBusyForward}
+                        onChange={(e) => {
+                          setCallSetting((prevState) => ({
+                            ...prevState,
+                            onBusyForward: e.target.value,
+                          }));
+                        }}
+                        disabled={callSetting.onBusyState == 0 ? true : false}
+                      />
+                    </div>
+                  </div>
+                )}
+
+              </div>
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label className="text-dark">No Answer</label>
+                  <label
+                    htmlFor="data"
+                    className="formItemDesc"
+                  >
+                    If enabled, it overrides the value of voicemail enabling
+                    in extension
+                  </label>
+                </div>
+                <div className={callSetting.noAnswerStatus === "Forward" ? "col-2 pe-2" : "col-6"}>
+                  <div class="formLabel">
+                    <label>Status</label>
+                  </div>
+                  <select
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                    name="delay"
+                    id="selectFormRow"
+                    value={callSetting.noAnswerStatus}
+                    onChange={(e) => {
+                      setCallSetting((prevState) => ({
+                        ...prevState,
+                        noAnswerStatus: e.target.value,
+                      }));
+                    }}
+                  >
+                    <option>Disabled</option>
+                    <option>Voicemail</option>
+                    <option>Forward</option>
+                  </select>
+                </div>
+                {callSetting.noAnswerStatus === "Forward" ? (
+                  <>
                     <div className="col-3 pe-2">
                       <div className="formLabel">
                         <label htmlFor="">Destinations</label>
 
-                        {callSetting.onBusyError ? (
+                        {callSetting.noAnswerError ? (
                           <label className="status missing">
                             field missing
                           </label>
@@ -372,341 +432,261 @@ const CallSettings = (props) => {
                           type="text"
                           name="extension"
                           className="formItem"
-                          value={callSetting.onBusyForward}
+                          required="required"
+                          value={callSetting.noAnswerForward}
                           onChange={(e) => {
                             setCallSetting((prevState) => ({
                               ...prevState,
-                              onBusyForward: e.target.value,
-                            }));
-                          }}
-                          disabled={callSetting.onBusyState == 0 ? true : false}
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="formRow col-xl-12 ">
-                <div className="col-12 d-flex justify-content-start">
-                  <div className="formLabel pe-2 col-2">
-                    <label className="text-dark">No Answer</label>
-                    <label
-                      htmlFor="data"
-                      className="formItemDesc"
-                      style={{
-                        fontSize: 12,
-                        lineHeight: "18px",
-                        marginTop: 5,
-                      }}
-                    >
-                      If enabled, it overrides the value of voicemail enabling
-                      in extension
-                    </label>
-                  </div>
-                  <div className="col-2 pe-2">
-                    <div className="formLabel">
-                      <label htmlFor="">Status</label>
-                    </div>
-
-                    <select
-                      className="formItem me-0"
-                      style={{ width: "100%" }}
-                      name="delay"
-                      id="selectFormRow"
-                      value={callSetting.noAnswerStatus}
-                      onChange={(e) => {
-                        setCallSetting((prevState) => ({
-                          ...prevState,
-                          noAnswerStatus: e.target.value,
-                        }));
-                      }}
-                    >
-                      <option>Disabled</option>
-                      <option>Voicemail</option>
-                      <option>Forward</option>
-                    </select>
-                  </div>
-                  {callSetting.noAnswerStatus === "Forward" ? (
-                    <>
-                      <div className="col-3 pe-2">
-                        <div className="formLabel">
-                          <label htmlFor="">Destinations</label>
-
-                          {callSetting.noAnswerError ? (
-                            <label className="status missing">
-                              field missing
-                            </label>
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                        <div className="col-12">
-                          <input
-                            type="text"
-                            name="extension"
-                            className="formItem"
-                            required="required"
-                            value={callSetting.noAnswerForward}
-                            onChange={(e) => {
-                              setCallSetting((prevState) => ({
-                                ...prevState,
-                                noAnswerForward: e.target.value,
-                              }));
-                            }}
-                            disabled={
-                              callSetting.noAnswerStatus !== "Disabled"
-                                ? false
-                                : true
-                            }
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-3 pe-2">
-                        <div className="formLabel">
-                          <label htmlFor="">Call TimeOut</label>
-                        </div>
-                        <div className="col-12">
-                          <input
-                            type="text"
-                            name="extension"
-                            className="formItem"
-                            required="required"
-                            placeholder="Enter call timeout value in second"
-                            value={callSetting.callTimeOut}
-                            onChange={(e) => {
-                              setCallSetting((prevState) => ({
-                                ...prevState,
-                                callTimeOut: e.target.value,
-                              }));
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    ""
-                  )}
-                </div>
-              </div>
-              <div className="formRow col-xl-12 ">
-                <div className="col-12 d-flex justify-content-start">
-                  <div className="formLabel pe-2 col-2">
-                    <label className="text-dark">Not Registered</label>
-                    <label
-                      htmlFor="data"
-                      className="formItemDesc"
-                      style={{
-                        fontSize: 12,
-                        lineHeight: "18px",
-                        marginTop: 5,
-                      }}
-                    >
-                      If endpoint is not reachable, forward to this destination
-                      before going to voicemail
-                    </label>
-                  </div>
-                  <div className="col-2 pe-2">
-                    <div className="formLabel">
-                      <label htmlFor="">Status</label>
-                    </div>
-
-                    <select
-                      className="formItem me-0"
-                      style={{ width: "100%" }}
-                      name="delay"
-                      id="selectFormRow"
-                      value={callSetting.notRegisterStatus}
-                      onChange={(e) => {
-                        setCallSetting((prevState) => ({
-                          ...prevState,
-                          notRegisterStatus: parseInt(e.target.value),
-                        }));
-                      }}
-                    >
-                      <option value={1}>Enabled</option>
-                      <option value={0}>Disabled</option>
-                    </select>
-                  </div>
-                  {callSetting.notRegisterStatus == 0 ? (
-                    ""
-                  ) : (
-                    <div className="col-3 pe-2">
-                      <div className="formLabel">
-                        <label htmlFor="">Destinations</label>
-                        {callSetting.notRegisterError ? (
-                          <label className="status missing">
-                            field missing
-                          </label>
-                        ) : (
-                          ""
-                        )}
-                      </div>
-                      <div className="col-12">
-                        <input
-                          type="text"
-                          name="extension"
-                          className="formItem"
-                          value={callSetting.notRegisterForward}
-                          onChange={(e) => {
-                            setCallSetting((prevState) => ({
-                              ...prevState,
-                              notRegisterForward: e.target.value,
+                              noAnswerForward: e.target.value,
                             }));
                           }}
                           disabled={
-                            callSetting.notRegisterStatus == 0 ? true : false
+                            callSetting.noAnswerStatus !== "Disabled"
+                              ? false
+                              : true
                           }
                         />
                       </div>
                     </div>
-                  )}
-                </div>
-              </div>
-              <div className="formRow col-xl-12 ">
-                <div className="col-12 d-flex justify-content-start">
-                  <div className="formLabel pe-2 col-2">
-                    <label className="text-dark">Follow Me</label>
-                  </div>
-                  <div className="col-2 pe-2">
-                    <div className="formLabel">
-                      <label htmlFor="">Status</label>
-                    </div>
 
-                    <select
-                      className="formItem me-0"
-                      style={{ width: "100%" }}
-                      name="delay"
-                      id="selectFormRow"
-                      value={callSetting.followMe}
-                      onChange={(e) => {
-                        setCallSetting((prevState) => ({
-                          ...prevState,
-                          followMe: parseInt(e.target.value),
-                        }));
-                      }}
-                    >
-                      <option value={1}>Enabled</option>
-                      <option value={0}>Disabled</option>
-                    </select>
+                    <div className="col-3 pe-2">
+                      <div className="formLabel">
+                        <label htmlFor="">Call TimeOut</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          name="extension"
+                          className="formItem"
+                          required="required"
+                          placeholder="Enter call timeout in second"
+                          value={callSetting.callTimeOut}
+                          onChange={(e) => {
+                            setCallSetting((prevState) => ({
+                              ...prevState,
+                              callTimeOut: e.target.value,
+                            }));
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  ""
+                )}
+              </div>
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label className="text-dark">Not Registered</label>
+                  <label
+                    htmlFor="data"
+                    className="formItemDesc"
+                  >
+                    If endpoint is not reachable, forward to this destination
+                    before going to voicemail
+                  </label>
+                </div>
+                <div className={callSetting.notRegisterStatus == 0 ? "col-6" : "col-2 pe-2 ms-auto"}>
+                  <div class="formLabel">
+                    <label>Status</label>
                   </div>
+                  <select
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                    name="delay"
+                    id="selectFormRow"
+                    value={callSetting.notRegisterStatus}
+                    onChange={(e) => {
+                      setCallSetting((prevState) => ({
+                        ...prevState,
+                        notRegisterStatus: parseInt(e.target.value),
+                      }));
+                    }}
+                  >
+                    <option value={1}>Enabled</option>
+                    <option value={0}>Disabled</option>
+                  </select>
+                </div>
+                {callSetting.notRegisterStatus == 0 ? (
+                  ""
+                ) : (
+                  <div className="col-4">
+                    <div className="formLabel">
+                      <label htmlFor="">Destinations</label>
+                      {callSetting.notRegisterError ? (
+                        <label className="status missing">
+                          field missing
+                        </label>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                    <div className="col-12">
+                      <input
+                        type="text"
+                        name="extension"
+                        className="formItem"
+                        value={callSetting.notRegisterForward}
+                        onChange={(e) => {
+                          setCallSetting((prevState) => ({
+                            ...prevState,
+                            notRegisterForward: e.target.value,
+                          }));
+                        }}
+                        disabled={
+                          callSetting.notRegisterStatus == 0 ? true : false
+                        }
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label className="text-dark">Follow Me</label>
+                  <label
+                    htmlFor="data"
+                    className="formItemDesc"
+                  >
+                    Select and configure the Follow Me Status
+                  </label>
+                </div>
+                <div className="col-6">
+                  <div class="formLabel">
+                    <label>Status</label>
+                  </div>
+                  <select
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                    name="delay"
+                    id="selectFormRow"
+                    value={callSetting.followMe}
+                    onChange={(e) => {
+                      setCallSetting((prevState) => ({
+                        ...prevState,
+                        followMe: parseInt(e.target.value),
+                      }));
+                    }}
+                  >
+                    <option value={1}>Enabled</option>
+                    <option value={0}>Disabled</option>
+                  </select>
                 </div>
                 {callSetting.followMe == 0 ? (
                   ""
                 ) : (
-                  <div className="formRow col-xl-10 px-0 border-0">
-                    <div className="d-flex justify-content-start">
-                      <div className="col-4 pe-2">
-                        <div className="formLabel">
-                          <label htmlFor="">Destinations</label>
-                          {callSetting.followMeDestinationError ? (
-                            <label className="status missing">
-                              field missing
-                            </label>
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                        <div className="position-relative">
-                          <input
-                            type="text"
-                            name="destination"
-                            className="formItem"
-                            value={callSetting.followMeDestination}
-                            onChange={(e) => {
-                              setCallSetting((prevState) => ({
-                                ...prevState,
-                                followMeDestination: e.target.value,
-                              }));
-                            }}
-                            placeholder="Destination"
-                          />
-                        </div>
+                  <div className="formRow col-xl-12 px-0 border-0">
+                    <div className="col-3 pe-2">
+                      <div className="formLabel">
+                        <label htmlFor="">Destinations</label>
+                        {callSetting.followMeDestinationError ? (
+                          <label className="status missing">
+                            field missing
+                          </label>
+                        ) : (
+                          ""
+                        )}
                       </div>
-                      <div className="col-2 pe-2">
-                        <div className="formLabel">
-                          <label htmlFor="">Delay</label>
-                        </div>
-
-                        <select
-                          className="formItem me-0"
-                          style={{ width: "100%" }}
-                          name="delay"
-                          id="selectFormRow"
-                          value={callSetting.followMeDelay}
+                      <div className="position-relative">
+                        <input
+                          type="text"
+                          name="destination"
+                          className="formItem"
+                          value={callSetting.followMeDestination}
                           onChange={(e) => {
                             setCallSetting((prevState) => ({
                               ...prevState,
-                              followMeDelay: parseInt(e.target.value),
+                              followMeDestination: e.target.value,
                             }));
                           }}
-                        >
-                          {(() => {
-                            const numbers = [];
-                            for (let i = 0; i <= 100; i++) {
-                              if (i % 5 === 0) {
-                                numbers.push(<span key={i}>{i}</span>);
-                              }
-                            }
-                            return numbers.map((item) => {
-                              return <option>{item}</option>;
-                            });
-                          })()}
-                        </select>
+                          placeholder="Destination"
+                        />
                       </div>
-                      <div className="col-2 pe-2">
-                        <div className="formLabel">
-                          <label htmlFor="">Timeout</label>
-                        </div>
-                        <select
-                          className="formItem me-0"
-                          style={{ width: "100%" }}
-                          name="timeOut"
-                          value={callSetting.followMeTimeOut}
-                          onChange={(e) =>
-                            setCallSetting((prevState) => ({
-                              ...prevState,
-                              followMeTimeOut: parseInt(e.target.value),
-                            }))
-                          }
-                          id="selectFormRow"
-                        >
-                          {(() => {
-                            const numbers = [];
-                            for (let i = 0; i <= 100; i++) {
-                              if (i % 5 === 0) {
-                                numbers.push(<span key={i}>{i}</span>);
-                              }
-                            }
-                            return numbers.map((item) => {
-                              return <option>{item}</option>;
-                            });
-                          })()}
-                        </select>
+                    </div>
+                    <div className="col-3 pe-2">
+                      <div className="formLabel">
+                        <label htmlFor="">Delay</label>
                       </div>
-                      <div className="col-2 pe-2">
-                        <div className="formLabel">
-                          <label htmlFor="">Prompt</label>
-                        </div>
 
-                        <select
-                          className="formItem me-0"
-                          style={{ width: "100%" }}
-                          value={callSetting.followMePrompt}
-                          onChange={(e) =>
-                            setCallSetting((prevState) => ({
-                              ...prevState,
-                              followMePrompt: e.target.value,
-                            }))
+                      <select
+                        className="formItem me-0"
+                        style={{ width: "100%" }}
+                        name="delay"
+                        id="selectFormRow"
+                        value={callSetting.followMeDelay}
+                        onChange={(e) => {
+                          setCallSetting((prevState) => ({
+                            ...prevState,
+                            followMeDelay: parseInt(e.target.value),
+                          }));
+                        }}
+                      >
+                        {(() => {
+                          const numbers = [];
+                          for (let i = 0; i <= 100; i++) {
+                            if (i % 5 === 0) {
+                              numbers.push(<span key={i}>{i}</span>);
+                            }
                           }
-                          id="selectFormRow"
-                          name="prompt"
-                        >
-                          <option className="status">Prompt</option>
-                          <option value="confirm">Confirm</option>
-                        </select>
+                          return numbers.map((item) => {
+                            return <option>{item}</option>;
+                          });
+                        })()}
+                      </select>
+                    </div>
+                    <div className="col-3 pe-2">
+                      <div className="formLabel">
+                        <label htmlFor="">Timeout</label>
                       </div>
-                      {/* <div className="col-2 pe-2">
+                      <select
+                        className="formItem me-0"
+                        style={{ width: "100%" }}
+                        name="timeOut"
+                        value={callSetting.followMeTimeOut}
+                        onChange={(e) =>
+                          setCallSetting((prevState) => ({
+                            ...prevState,
+                            followMeTimeOut: parseInt(e.target.value),
+                          }))
+                        }
+                        id="selectFormRow"
+                      >
+                        {(() => {
+                          const numbers = [];
+                          for (let i = 0; i <= 100; i++) {
+                            if (i % 5 === 0) {
+                              numbers.push(<span key={i}>{i}</span>);
+                            }
+                          }
+                          return numbers.map((item) => {
+                            return <option>{item}</option>;
+                          });
+                        })()}
+                      </select>
+                    </div>
+                    <div className="col-3 pe-2">
+                      <div className="formLabel">
+                        <label htmlFor="">Prompt</label>
+                      </div>
+
+                      <select
+                        className="formItem me-0"
+                        style={{ width: "100%" }}
+                        value={callSetting.followMePrompt}
+                        onChange={(e) =>
+                          setCallSetting((prevState) => ({
+                            ...prevState,
+                            followMePrompt: e.target.value,
+                          }))
+                        }
+                        id="selectFormRow"
+                        name="prompt"
+                      >
+                        <option className="status">Prompt</option>
+                        <option value="confirm">Confirm</option>
+                      </select>
+                    </div>
+                    {/* <div className="col-2 pe-2">
                             <div className="formLabel">
                               <label htmlFor="">Status</label>
                             </div>
@@ -730,105 +710,85 @@ const CallSettings = (props) => {
                               <option value="inactive">False</option>
                             </select>
                           </div> */}
-                    </div>
                     <label htmlFor="data" className="formItemDesc">
                       Add destinations and parameters for follow me.
                     </label>
                   </div>
                 )}
               </div>
-              <div className="formRow col-xl-12 ">
-                <div className="col-12 d-flex justify-content-start">
-                  <div className="formLabel pe-2 col-2">
-                    <label className="text-dark">Do Not Disturb</label>
-                  </div>
-                  <div className="col-2 pe-2">
-                    <div className="formLabel">
-                      <label htmlFor="">Status</label>
-                    </div>
-
-                    <select
-                      className="formItem me-0"
-                      style={{ width: "100%" }}
-                      name="delay"
-                      id="selectFormRow"
-                      value={callSetting.dnd}
-                      onChange={(e) => {
-                        setCallSetting((prevState) => ({
-                          ...prevState,
-                          dnd: parseInt(e.target.value),
-                        }));
-                      }}
-                    >
-                      <option value={1}>Enabled</option>
-                      <option value={0}>Disabled</option>
-                    </select>
-                  </div>
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label className="text-dark">Do Not Disturb Status</label>
+                </div>
+                <div className="col-6">
+                  <select
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                    name="delay"
+                    id="selectFormRow"
+                    value={callSetting.dnd}
+                    onChange={(e) => {
+                      setCallSetting((prevState) => ({
+                        ...prevState,
+                        dnd: parseInt(e.target.value),
+                      }));
+                    }}
+                  >
+                    <option value={1}>Enabled</option>
+                    <option value={0}>Disabled</option>
+                  </select>
+                </div>
+              </div>
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label className="text-dark">Call Recording Status</label>
+                </div>
+                <div className="col-6">
+                  <select
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                    name="delay"
+                    id="selectFormRow"
+                    value={callSetting.callRecording}
+                    onChange={(e) => {
+                      setCallSetting((prevState) => ({
+                        ...prevState,
+                        callRecording: e.target.value,
+                      }));
+                    }}
+                  >
+                    <option value="D">Disabled</option>
+                    <option value="A">All</option>
+                    <option value="L">Local</option>
+                    <option value="I">Inbound</option>
+                    <option value="O">Outbound</option>
+                  </select>
                 </div>
               </div>
 
-              <div className="formRow col-xl-12 ">
-                <div className="col-12 d-flex justify-content-start">
-                  <div className="formLabel pe-2 col-2">
-                    <label className="text-dark">Call Recording</label>
-                  </div>
-                  <div className="col-2 pe-2">
-                    <div className="formLabel">
-                      <label htmlFor="">Status</label>
-                    </div>
-
-                    <select
-                      className="formItem me-0"
-                      style={{ width: "100%" }}
-                      name="delay"
-                      id="selectFormRow"
-                      value={callSetting.callRecording}
-                      onChange={(e) => {
-                        setCallSetting((prevState) => ({
-                          ...prevState,
-                          callRecording: e.target.value,
-                        }));
-                      }}
-                    >
-                      <option value="D">Disabled</option>
-                      <option value="A">All</option>
-                      <option value="L">Local</option>
-                      <option value="I">Inbound</option>
-                      <option value="O">Outbound</option>
-                    </select>
-                  </div>
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label className="text-dark">Call Blocking Status</label>
                 </div>
-              </div>
-
-              <div className="formRow col-xl-12 ">
-                <div className="col-12 d-flex justify-content-start">
-                  <div className="formLabel pe-2 col-2">
-                    <label className="text-dark">Call Blocking</label>
-                  </div>
-                  <div className="col-2 pe-2">
-                    <div className="formLabel">
-                      <label htmlFor="">Status</label>
-                    </div>
-
-                    <select
-                      className="formItem me-0"
-                      style={{ width: "100%" }}
-                      name="delay"
-                      id="selectFormRow"
-                      value={callSetting.callBlocking}
-                      onChange={(e) => {
-                        setCallSetting((prevState) => ({
-                          ...prevState,
-                          callBlocking: e.target.value,
-                        }));
-                      }}
-                    >
-                      <option>Disabled</option>
-                      <option>All</option>
-                      <option>Incoming</option>
-                      <option>Outgoing</option>
-                    </select>
-                  </div>
+                <div className="col-6">
+                  <select
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                    name="delay"
+                    id="selectFormRow"
+                    value={callSetting.callBlocking}
+                    onChange={(e) => {
+                      setCallSetting((prevState) => ({
+                        ...prevState,
+                        callBlocking: e.target.value,
+                      }));
+                    }}
+                  >
+                    <option>Disabled</option>
+                    <option>All</option>
+                    <option>Incoming</option>
+                    <option>Outgoing</option>
+                  </select>
                 </div>
               </div>
             </form>

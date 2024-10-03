@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Dialpad from "./Dialpad";
-import { SIPProvider } from "react-sipjs";
-import { SipRegister } from "./SipRegister";
-import ActiveCallSidePanel from "./ActiveCallSidePanel";
-import IncomingCallPopup from "./IncomingCallPopup";
-import SideNavbarApp from "./SideNavbarApp";
 import CallDetails from "./CallDetails";
 import OngoingCall from "./OngoingCall";
 import { useDispatch, useSelector } from "react-redux";
-import IncomingCalls from "./IncomingCalls";
 import AddNewContactPopup from "./AddNewContactPopup";
-import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 

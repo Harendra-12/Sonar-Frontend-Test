@@ -113,3 +113,33 @@ export const minValidator = (min) => {
     // message: `Value must be at least ${min}`,
   };
 };
+
+// Define allowed characters: a-z, A-Z, 0-9, @, ., and -
+export const restrictToAllowedChars = (e) => {
+  const allowedKeys = /^[a-zA-Z0-9@.\-]$/;
+  if (
+    !allowedKeys.test(e.key) &&
+    e.key !== "Backspace" &&
+    e.key !== "Tab" &&
+    e.key !== "ArrowLeft" &&
+    e.key !== "ArrowRight" &&
+    e.key !== "Delete"
+  ) {
+    e.preventDefault();
+  }
+};
+
+// Allow only number keys (0-9) and some special keys
+export const restrictToNumbers = (e) => {
+  const allowedKey = /[0-9]/;
+  if (
+    !allowedKey.test(e.key) &&
+    e.key !== "Backspace" &&
+    e.key !== "Tab" &&
+    e.key !== "ArrowLeft" &&
+    e.key !== "ArrowRight" &&
+    e.key !== "Delete"
+  ) {
+    e.preventDefault();
+  }
+};

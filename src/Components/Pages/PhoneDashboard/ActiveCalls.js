@@ -81,11 +81,11 @@ function ActiveCalls() {
 
   return (
     <>
-      <main className="mainContent">
+      {/* <main className="mainContent"> */}
         <section id="phonePage">
           <div className="container-fluid">
             <div className="row">
-              <Header title="Active Calls" />
+              {/* <Header title="Active Calls" /> */}
               <div className="col-12" style={{ overflow: "auto" }}>
                 <div className="tableContainer">
                   <table>
@@ -94,7 +94,7 @@ function ActiveCalls() {
                         <th>Serial no.</th>
                         <th>Profile</th>
                         <th>Created</th>
-                        <th>CID Name</th>
+                        {/* <th>CID Name</th> */}
                         <th>CID Number</th>
                         <th>Destination</th>
                         <th>Burge</th>
@@ -116,8 +116,8 @@ function ActiveCalls() {
                               <tr>
                                 <td>{key + 1}</td>
                                 <td>{item.name.split("/")[1]}</td>
-                                <td>{item.created}</td>
-                                <td>{item.b_cid_name}</td>
+                                <td>{item.created.split(" ")[1]}</td>
+                                {/* <td>{item.b_cid_name}</td> */}
                                 <td>{item.b_cid_num}</td>
                                 <td>{item.dest}</td>
                                 <td>
@@ -127,7 +127,7 @@ function ActiveCalls() {
                                       setId(item.uuid);
                                     }}
                                   >
-                                    <option value="disbale"></option>
+                                    <option value="disbale">Choose action</option>
                                     <option
                                       value="burge"
                                       onClick={() => bargeCall(item.uuid)}
@@ -242,13 +242,13 @@ function ActiveCalls() {
                           </tr>
                         );
                       })} */}
-                      {activeCall && activeCall.length === 0 ? (
+                      {/* {activeCall && activeCall.length === 0 ? (
                         <td colSpan={99}>
                           <EmptyPrompt name="Call" link="call" />
                         </td>
                       ) : (
                         ""
-                      )}
+                      )} */}
                     </tbody>
                   </table>
                 </div>
@@ -256,7 +256,7 @@ function ActiveCalls() {
             </div>
           </div>
         </section>
-      </main>
+      {/* </main> */}
       {loading && <CircularLoader />}
       {/* <ToastContainer
         position="bottom-right"

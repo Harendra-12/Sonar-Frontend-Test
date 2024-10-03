@@ -11,6 +11,8 @@ import {
   nameValidator,
   numberValidator,
   requiredValidator,
+  restrictToAllowedChars,
+  restrictToNumbers,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { toast } from "react-toastify";
@@ -115,6 +117,7 @@ function PortNumberAdd() {
                           ...requiredValidator,
                           ...nameValidator,
                         })}
+                        onKeyDown={restrictToAllowedChars}
                       />
                       {errors.fullname && (
                         <ErrorMessage text={errors.fullname.message} />
@@ -148,6 +151,7 @@ function PortNumberAdd() {
                           ...requiredValidator,
                           ...nameNumberValidator,
                         })}
+                        onKeyDown={restrictToAllowedChars}
                       />
                       {errors.company_name && (
                         <ErrorMessage text={errors.company_name.message} />
@@ -180,6 +184,7 @@ function PortNumberAdd() {
                         {...register("billing_address", {
                           ...requiredValidator,
                         })}
+                        onKeyDown={restrictToAllowedChars}
                       />
                       {errors.billing_address && (
                         <ErrorMessage text={errors.billing_address.message} />
@@ -243,6 +248,7 @@ function PortNumberAdd() {
                           ...requiredValidator,
                           ...nameNumberValidator,
                         })}
+                        onKeyDown={restrictToNumbers}
                       />
                       {errors.carrier && (
                         <ErrorMessage text={errors.carrier.message} />
@@ -277,6 +283,7 @@ function PortNumberAdd() {
                           ...requiredValidator,
                           ...numberValidator,
                         })}
+                        onKeyDown={restrictToNumbers}
                       />
                       {errors.account_number && (
                         <ErrorMessage text={errors.account_number.message} />
@@ -311,6 +318,7 @@ function PortNumberAdd() {
                           ...numberValidator,
                           ...lengthValidator(10, 13),
                         })}
+                        onKeyDown={restrictToNumbers}
                       />
                       {errors.phone_number && (
                         <ErrorMessage text={errors.phone_number.message} />

@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useForm } from "react-hook-form";
 import Header from "../../CommonComponents/Header";
+import { restrictToAllowedChars } from "../../validations/validation";
 
 const RingGroupSettings = () => {
   const navigate = useNavigate();
@@ -110,10 +111,10 @@ const RingGroupSettings = () => {
       <main className="mainContent">
         <section id="phonePage">
           <div className="container-fluid px-0">
-            <Header title="Ring Group Edit" />
+            <Header title="Ring Group Settings" />
             <div id="subPageHeader">
               <div className="col-xl-9 my-auto">
-                <p className="pt-2 mt-1 mb-0">
+                <p className="mb-0">
                   A ring group is a set of destinations that can be called with
                   a ring strategy.
                 </p>
@@ -146,94 +147,83 @@ const RingGroupSettings = () => {
                 <CircularLoader />
               </div>
             )}
-            <div className="mx-2" style={{ width: "98%", margin: "0 auto" }}>
+            <div className="mx-2" id="detailsContent">
               <form onSubmit={handleFormSubmit} id="ringGroupForm">
-                <div className="formRow col-xl-12 px-xl-4">
-                  <div className="col-12 d-flex justify-content-start">
-                    <div className="formLabel pe-2 col-2">
-                      <label className="text-dark" htmlFor="strategy">
-                        Strategy
-                      </label>
-                    </div>
-                    <div className="col-2 pe-2">
-                      <select
-                        className="formItem me-0"
-                        style={{ width: "100%" }}
-                        {...register("strategy")}
-                        id="strategy"
-                      >
-                        <option value="enterprise">Enterprise</option>
-                        <option value="sequence">Sequence</option>
-                        <option value="simultaneously">Simultaneous</option>
-                        <option value="random">Random</option>
-                        <option value="rollover">Rollover</option>
-                      </select>
-                      <br />
-                      <label htmlFor="strategy" className="formItemDesc">
-                        Select the ring strategy.
-                      </label>
-                    </div>
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label className="text-dark" htmlFor="strategy">
+                      Strategy
+                    </label>
+                    <label htmlFor="strategy" className="formItemDesc">
+                      Select the ring strategy.
+                    </label>
+                  </div>
+                  <div className="col-6">
+                    <select
+                      className="formItem me-0"
+                      style={{ width: "100%" }}
+                      {...register("strategy")}
+                      id="strategy"
+                    >
+                      <option value="enterprise">Enterprise</option>
+                      <option value="sequence">Sequence</option>
+                      <option value="simultaneously">Simultaneous</option>
+                      <option value="random">Random</option>
+                      <option value="rollover">Rollover</option>
+                    </select>
                   </div>
                 </div>
-                <div className="formRow col-xl-12 px-xl-4">
-                  <div className="col-12 d-flex justify-content-start">
-                    <div className="formLabel pe-2 col-2">
-                      <label className="text-dark" htmlFor="ring_back">
-                        Ring Back
-                      </label>
-                    </div>
-                    <div className="col-2 pe-2">
-                      <div className="formLabel">
-                        <label htmlFor="ring_back">Status</label>
-                      </div>
-                      <select
-                        className="formItem me-0"
-                        style={{ width: "100%" }}
-                        {...register("ring_back")}
-                        id="ring_back"
-                      >
-                        <option value="null">None</option>
-                        {/* <option value="us-ring">us-ring</option>
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label className="text-dark" htmlFor="ring_back">
+                      Ring Back Status
+                    </label>
+                    <label htmlFor="ring_back" className="formItemDesc">
+                      Defines what the caller will hear while the destination
+                      is being called.
+                    </label>
+                  </div>
+                  <div className="col-6">
+                    <select
+                      className="formItem me-0"
+                      style={{ width: "100%" }}
+                      {...register("ring_back")}
+                      id="ring_back"
+                    >
+                      <option value="null">None</option>
+                      {/* <option value="us-ring">us-ring</option>
                         <option value="uk-ring">uk-ring</option>
                         <option value="eu-ring">eu-ring</option> */}
-                        {ringBack &&
-                          ringBack.map((ring) => {
-                            return (
-                              <option key={ring.id} value={ring.id}>
-                                {ring.name}
-                              </option>
-                            );
-                          })}
-                      </select>
-                      <br />
-                      <label htmlFor="ring_back" className="formItemDesc">
-                        Defines what the caller will hear while the destination
-                        is being called.
-                      </label>
-                    </div>
+                      {ringBack &&
+                        ringBack.map((ring) => {
+                          return (
+                            <option key={ring.id} value={ring.id}>
+                              {ring.name}
+                            </option>
+                          );
+                        })}
+                    </select>
                   </div>
                 </div>
-                <div className="formRow col-xl-12 px-xl-4">
-                  <div className="col-12 d-flex justify-content-start">
-                    <div className="formLabel pe-2 col-2">
-                      <label className="text-dark" htmlFor="description">
-                        Description
-                      </label>
-                    </div>
-                    <div className="col-2 pe-2">
-                      <input
-                        type="text"
-                        name="extension"
-                        className="formItem me-0"
-                        style={{ width: "100%" }}
-                        {...register("description")}
-                        id="description"
-                      />
-                      <br />
-                      <label htmlFor="description" className="formItemDesc">
-                        Enter the description.
-                      </label>
-                    </div>
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label className="text-dark" htmlFor="description">
+                      Description
+                    </label>
+                    <label htmlFor="description" className="formItemDesc">
+                      Enter the description.
+                    </label>
+                  </div>
+                  <div className="col-6">
+                    <input
+                      type="text"
+                      name="extension"
+                      className="formItem me-0"
+                      style={{ width: "100%" }}
+                      {...register("description")}
+                      id="description"
+                      onKeyDown={restrictToAllowedChars}
+                    />
                   </div>
                 </div>
               </form>

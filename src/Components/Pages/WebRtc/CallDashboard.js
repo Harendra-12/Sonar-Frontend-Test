@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import SideNavbarApp from "./SideNavbarApp";
 import ActiveCallSidePanel from "./ActiveCallSidePanel";
+import ActiveCalls from "../PhoneDashboard/ActiveCalls";
 
 function CallDashboard() {
   const sessions = useSelector((state) => state.sessions);
@@ -83,7 +84,7 @@ function CallDashboard() {
                   className="col-12 callDashboardPrimTable"
                   style={{ overflow: "auto" }}
                 >
-                  <div className="tableContainer allItems">
+                  {/* <div className="tableContainer allItems">
                     <table>
                       <thead>
                         <tr>
@@ -177,7 +178,8 @@ function CallDashboard() {
                         </tr>
                       </tbody>
                     </table>
-                  </div>
+                  </div> */}
+                  <ActiveCalls />
                 </div>
               </div>
               <div

@@ -237,14 +237,14 @@ function CallCenterQueue() {
                                 >
                                   {item.agents.length}
                                 </td>
-                                <td
-                                  onClick={() =>
+                                <td>
+                                  <button className="tableButton" onClick={() =>
                                     navigate(
                                       `/call-center-settings?id=${item.id}`
                                     )
-                                  }
-                                >
-                                  <i className="fa-duotone fa-gear text-success"></i>
+                                  }>
+                                    <i className="fa-duotone fa-gear"></i>
+                                  </button>
                                 </td>
                                 <td
                                   // onClick={() => handleDelete(item.id)}

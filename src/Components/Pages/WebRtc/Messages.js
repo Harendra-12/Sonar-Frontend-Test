@@ -3,28 +3,103 @@ import { useSelector } from "react-redux";
 import { Messager, UserAgent } from "sip.js";
 import { useSIPProvider, CONNECT_STATUS } from "react-sipjs";
 import AgentSearch from "./AgentSearch";
+import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 
 function Messages() {
+  const loginUser = useSelector((state) => state.loginUser);
   const messageListRef = useRef(null);
   const sipProvider = useSIPProvider();
   const sessions = useSelector((state) => state.sessions);
-  const [recipient, setRecipient] = useState("1013");
+  const [recipient, setRecipient] = useState([]);
   const account = useSelector((state) => state.account);
   const [allMessage, setAllMessage] = useState([]);
   const [messageInput, setMessageInput] = useState("");
   const [isSIPReady, setIsSIPReady] = useState(false); // Track if SIP provider is ready
   const extension = account?.extension?.extension || "";
+  const [contact, setContact] = useState([]);
+  const [chatHistory, setChatHistory] = useState([]);
+  const [loadMore, setLoadMore] = useState(1);
+  const [isFreeSwitchMessage, setIsFreeSwitchMessage] = useState(true);
+  const [agents, setAgents] = useState([]);
+  const [activeTab,setActiveTab]=useState("all")
+  const [onlineUser,setOnlineUser] = useState([])
+  const [unreadMessage,setUnreadMessage] = useState([])
+
+  console.log("All agents", agents);
+
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction(`/message/contacts`);
+      if (apiData.status && apiData.data.length > 0) {
+        setContact(apiData.data);
+        setRecipient([apiData.data[0].extension, apiData.data[0].id]);
+      }
+    }
+    getData();
+  }, []);
 
   useEffect(() => {
     if (sipProvider && sipProvider.connectStatus === CONNECT_STATUS.CONNECTED) {
+      console.log("SIP provider connected", sipProvider.connectStatus);
+
       setIsSIPReady(true);
     } else {
       setIsSIPReady(false);
     }
   }, [sipProvider?.connectStatus]);
+
+  useEffect(() => {
+    console.log("Inside apiCalling");
+
+    async function getData(pageNumb) {
+      const apiData = await generalGetFunction(
+        `message/all?receiver_id=${recipient[1]}&page=${pageNumb}`
+      );
+
+      apiData.data.data.map((item) => {
+        setAllMessage((prevState) => ({
+          ...prevState,
+          [recipient[0]]: [
+            {
+              from: item.user_id === recipient[1] ? recipient[0] : extension,
+              body: item.message_text,
+              time: item.created_at,
+            },
+            ...(prevState[recipient[0]] || []),
+          ],
+        }));
+      });
+      if (apiData.status) {
+        const newChatHistory = { ...chatHistory };
+        newChatHistory[recipient[0]] = {
+          total: apiData.data.total,
+          pageNumber: apiData.data.current_page,
+        };
+        setChatHistory(newChatHistory);
+      }
+    }
+    if (recipient.length > 0) {
+      if (Object.keys(chatHistory).includes(recipient[0])) {
+        if (
+          chatHistory[recipient[0]]?.total &&
+          chatHistory[recipient[0]].pageNumber * 40 <
+            chatHistory[recipient[0]].total
+        ) {
+          getData(chatHistory[recipient[0]].pageNumber + 1);
+          setIsFreeSwitchMessage(false);
+        }
+      } else {
+        getData(1);
+        setIsFreeSwitchMessage(true);
+      }
+    }
+  }, [recipient, loadMore]);
+
+  console.log("Chat history", chatHistory);
+
   const sendMessage = () => {
     if (isSIPReady) {
-      const targetURI = `sip:${recipient}@${account.domain.domain_name}`;
+      const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
       const userAgent = sipProvider?.sessionManager?.userAgent;
 
       const target = UserAgent.makeURI(targetURI);
@@ -34,10 +109,32 @@ function Messages() {
           const messager = new Messager(userAgent, target, messageInput);
           messager.message();
           const time = new Date().toLocaleString();
-          setAllMessage((prevState) => [
+          setIsFreeSwitchMessage(true);
+          setAllMessage((prevState) => ({
             ...prevState,
-            { from: extension, body: messageInput,time:time },
-          ]);
+            [recipient[0]]: [
+              ...(prevState[recipient[0]] || []),
+              { from: extension, body: messageInput, time },
+            ],
+          }));
+          setActiveTab("all")
+
+          const extensionExists = contact.some(
+            (contact) => contact.extension === recipient[0]
+          );
+          const agentDetails = agents.find(
+            (agent) => agent.extension.extension === recipient[0]
+          );
+  
+          if (!extensionExists) {
+            contact.unshift({
+              name: agentDetails.username,
+              email: agentDetails.email,
+              id: agentDetails.id,
+              extension_id: agentDetails.extension_id,
+              extension: recipient[0],
+            });
+          }
           setMessageInput("");
 
           console.log("Message sent to:", targetURI);
@@ -52,59 +149,66 @@ function Messages() {
     }
   };
 
-const sendFileMessage = async (file) => {
-  if (isSIPReady) {
-    const targetURI = `sip:${recipient}@${account.domain.domain_name}`;
-    const userAgent = sipProvider?.sessionManager?.userAgent;
-  
-    const target = UserAgent.makeURI(targetURI);
-  
-    const convertImageToBase64 = (file) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-        reader.readAsDataURL(file); // This converts to Base64
-      });
-    };
-  
-    if (target && file) {
-      try {
-        // Convert file to Base64 string
-        const fileContent = await convertImageToBase64(file); // Await here!
-  
-        // Create a message with the Base64 content
-        const messager = new Messager(userAgent, target, fileContent, file.type); // Use correct content type
-  
-        // Send the message with proper MIME type and extra headers
-        messager.message({
-          extraHeaders: [
-            `Content-Type: ${file.type}`, // e.g., image/png
-            `Content-Disposition: attachment; filename="${file.name}"`,
-          ],
+  const sendFileMessage = async (file) => {
+    if (isSIPReady) {
+      const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
+      const userAgent = sipProvider?.sessionManager?.userAgent;
+
+      const target = UserAgent.makeURI(targetURI);
+
+      const convertImageToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = (error) => reject(error);
+          reader.readAsDataURL(file); // This converts to Base64
         });
-  
-        // Add a record to the message history (optional)
-        const time = new Date().toLocaleString();
-        setAllMessage((prevState) => [
-          ...prevState,
-          { from: extension, body: `[File sent: ${file.name}]`, time: time },
-        ]);
-  
-        console.log("File sent to:", targetURI);
-      } catch (error) {
-        console.error("Error sending file:", error);
+      };
+
+      if (target && file) {
+        try {
+          // Convert file to Base64 string
+          const fileContent = await convertImageToBase64(file); // Await here!
+
+          // Create a message with the Base64 content
+          const messager = new Messager(
+            userAgent,
+            target,
+            fileContent,
+            file.type
+          ); // Use correct content type
+
+          // Send the message with proper MIME type and extra headers
+          messager.message({
+            extraHeaders: [
+              `Content-Type: ${file.type}`, // e.g., image/png
+              `Content-Disposition: attachment; filename="${file.name}"`,
+            ],
+          });
+
+          // Add a record to the message history (optional)
+          const time = new Date().toLocaleString();
+          setAllMessage((prevState) => ({
+            ...prevState,
+            [recipient[0]]: [
+              ...(prevState[recipient[0]] || []),
+              { from: extension, body: messageInput, time },
+            ],
+          }));
+          setActiveTab("all")
+
+          console.log("File sent to:", targetURI);
+        } catch (error) {
+          console.error("Error sending file:", error);
+        }
+      } else {
+        console.error("Invalid recipient address or file.");
       }
     } else {
-      console.error("Invalid recipient address or file.");
+      console.error("UserAgent or session not ready.");
     }
-  } else {
-    console.error("UserAgent or session not ready.");
-  }
-};
+  };
 
-
-  //   useEffect(() => {
   const userAgent = sipProvider?.sessionManager?.userAgent;
 
   if (userAgent) {
@@ -114,48 +218,118 @@ const sendFileMessage = async (file) => {
         const from =
           message?.incomingMessageRequest?.message?.from?.uri?.user.toString();
         const body = message?.incomingMessageRequest?.message?.body;
-  
-        // Check Content-Type for the incoming message
-        const contentType = message?.incomingMessageRequest?.message?.getHeader(
-          "Content-Type"
+        setIsFreeSwitchMessage(true);
+        const extensionExists = contact.some(
+          (contact) => contact.extension === from
         );
-  
+        const agentDetails = agents.find(
+          (agent) => agent.extension.extension === from
+        );
+
+
+
+        if (!extensionExists) {
+          contact.unshift({
+            name: agentDetails.username,
+            email: agentDetails.email,
+            id: agentDetails.id,
+            extension_id: agentDetails.extension_id,
+            extension: from,
+          });
+        }else {
+          // Move the extension object to the beginning of the array
+          const index = contact.findIndex((contact) => contact.extension === from);
+          const extensionObject = contact.splice(index, 1)[0];
+          contact.unshift(extensionObject);
+        }
+        // Check Content-Type for the incoming message
+        const contentType =
+          message?.incomingMessageRequest?.message?.getHeader("Content-Type");
+
         // Get the current time when the message is received
         const time = new Date().toLocaleString(); // Or use .toISOString() for UTC format
-  
+
         // Check if the content is an image
         if (contentType && contentType.startsWith("image/")) {
           // If it's an image, create a URL for the Base64 image to render it in <img>
           const imageUrl = `${body}`;
-  
+
           // Update the state to include the image
-          setAllMessage((prevState) => [
+          setAllMessage((prevState) => ({
             ...prevState,
-            { from, body: <img src={imageUrl} alt="Received" />, time },
-          ]);
-  
+            [from]: [...(prevState[from] || []), { from, body, time }],
+          }));
+
+          // Add number of unread messaeg based on extension
+          setUnreadMessage((prevState) => ({
+            ...prevState,
+            [from]: (prevState[from] || 0) + 1,
+          }));
+
           console.log(`Received image from ${from} at ${time}`, message);
         } else {
           // If it's a text message or other type, render as text
-          setAllMessage((prevState) => [
+          setAllMessage((prevState) => ({
             ...prevState,
-            { from, body, time },
-          ]);
-  
-          console.log(`Received message from ${from}: ${body} at ${time}`, message);
+            [from]: [...(prevState[from] || []), { from, body, time }],
+          }));
+
+          if(recipient[0]!==from){
+          setUnreadMessage((prevState) => ({
+            ...prevState,
+            [from]: (prevState[from] || 0) + 1,
+          }));
+        }
+          console.log(
+            `Received message from ${from}: ${body} at ${time}`,
+            message
+          );
         }
       },
     };
   }
-  
 
   useEffect(() => {
-    if (messageListRef.current) {
+    if (isFreeSwitchMessage) {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
     }
   }, [allMessage]);
 
   console.log(allMessage);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (messageListRef.current) {
+        const threshold = messageListRef.current.scrollHeight * 0.9;
+        if (messageListRef.current.scrollTop >= threshold) {
+          console.log("User has reached 90% from top", chatHistory);
+          setLoadMore(loadMore + 1);
+        }
+      }
+    };
+
+    if (messageListRef.current) {
+      messageListRef.current.addEventListener("scroll", handleScroll);
+    }
+  }, []);
+ 
+  useEffect(() => {
+    if (loginUser.length > 0) {
+      const updatedOnlineUsers = loginUser.map((item) => {
+        const findUser = agents.find((agent) => agent.id === item.id);
+        return findUser;
+      }).filter((user) => user !== undefined);
+  
+      setOnlineUser(updatedOnlineUsers);
+    } else {
+      setOnlineUser([]);
+    }
+  }, [loginUser]);
+
+  console.log("UnreadMessage",unreadMessage);
+  
+
+  
   return (
     <>
       <main
@@ -179,120 +353,110 @@ const sendFileMessage = async (file) => {
                     Messages
                   </h3>
                 </div>
-                <div className="col-auto d-flex">
-                  <div className="col-auto">
-                    <button className="appPanelButton" effect="ripple">
-                      <i className="fa-solid fa-message-plus"></i>
-                    </button>
-                  </div>
-                  <div className="col-auto">
-                    <button className="appPanelButton" effect="ripple">
-                      <i className="fa-solid fa-gear"></i>
-                    </button>
-                  </div>
-                </div>
                 <div className="col-12">
                   <nav>
                     <div className="nav nav-tabs">
-                      <button className={"tabLink active"} data-category="all">
+                      <button className={activeTab==="all"?"tabLink active":"tabLink"} data-category="all" onClick={() => setActiveTab('all')}>
                         All
                       </button>
                       <button
-                        className={"tabLink"}
+                        onClick={() => setActiveTab('online')}
+                        className={activeTab==="online"?"tabLink active":"tabLink"}
                         effect="ripple"
                         data-category="incoming"
                       >
                         Online
                       </button>
-                      {/* <button
-                        className={"tabLink"}
-                        effect="ripple"
-                        data-category="outgoing"
-                      >
-                        Sent
-                      </button> */}
-                      {/* <button
-                        className={"tabLink"}
-                        effect="ripple"
-                        data-category="missed"
-                      >
-                        Failed
-                      </button> */}
                     </div>
                   </nav>
+                  {activeTab==="all"?
                   <div className="tab-content">
-                    {/* <div className="position-relative searchBox d-flex mt-3">
-                      <input
-                        type="search"
-                        name="Search"
-                        id="headerSearch"
-                        placeholder="Search"
-                      />
-                    </div> */}
-                    <AgentSearch getDropdownValue={setRecipient} />
+                    <AgentSearch
+                      getDropdownValue={setRecipient}
+                      getAllAgents={setAgents}
+                    />
                     <div className="callList">
-                      <div className="text-center callListItem">
-                        <h5 className="fw-semibold">Today</h5>
-                      </div>
-                      <div className="contactListItem">
-                        <div
-                          onClick={() => setRecipient(1009)}
-                          className="row justify-content-between"
-                        >
-                          <div className="col-xl-6 d-flex">
-                            <div className="profileHolder" id="profileOnline">
-                              <i className="fa-light fa-user fs-5"></i>
-                            </div>
-                            <div className="my-auto ms-2 ms-xl-3">
-                              <h4>AUSER XYZ</h4>
-                              <h5>1009</h5>
-                            </div>
-                          </div>
-                          <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                            <h5>12:46pm</h5>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="contactListItem">
-                        <div
-                          onClick={() => setRecipient(1001)}
-                          className="row justify-content-between"
-                        >
-                          <div className="col-xl-6 d-flex">
-                            <div className="profileHolder" id="profileOnline">
-                              <i className="fa-light fa-user fs-5"></i>
-                            </div>
-                            <div className="my-auto ms-2 ms-xl-3">
-                              <h4>AUSER XYZ</h4>
-                              <h5>1001</h5>
+                      {contact.map((item) => {
+                        return (
+                          <div  data-bell={unreadMessage[item?.extension]?unreadMessage[item?.extension]:""} className={recipient[0] === item?.extension ? "contactListItem selected" :"contactListItem"}>
+                            <div
+                              onClick={() =>{
+                                setRecipient([item?.extension, item.id]);
+                                setUnreadMessage((prevState) => {
+                                  const { [item?.extension]: _, ...newState } = prevState;
+                                  return newState;
+                                });
+                              }
+                              }
+                              className="row justify-content-between"
+                            >
+                              <div className="col-xl-6 d-flex">
+                                <div
+                                  className="profileHolder"
+                                  id={onlineUser.find((user) => user.id === item.id)?"profileOnlineNav":"profileOfflineNav"}
+                                >
+                                  <i className="fa-light fa-user fs-5"></i>
+                                </div>
+                                <div className="my-auto ms-2 ms-xl-3">
+                                  <h4>{item?.name}</h4>
+                                  <h5>{item?.extension}</h5>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                          <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                            <h5>12:46pm</h5>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="contactListItem">
-                        <div
-                          onClick={() => setRecipient(1000)}
-                          className="row justify-content-between"
-                        >
-                          <div className="col-xl-6 d-flex">
-                            <div className="profileHolder" id="profileOnline">
-                              <i className="fa-light fa-user fs-5"></i>
-                            </div>
-                            <div className="my-auto ms-2 ms-xl-3">
-                              <h4>AUSER XYZ</h4>
-                              <h5>1000</h5>
-                            </div>
-                          </div>
-                          <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                            <h5>12:46pm</h5>
-                          </div>
-                        </div>
-                      </div>
+                        );
+                      })}
                     </div>
-                  </div>
+                  </div>: <div className="tab-content">
+                    <AgentSearch
+                      getDropdownValue={setRecipient}
+                      getAllAgents={setAgents}
+                    />
+                    <div className="callList">
+                      {onlineUser.map((item) => {
+                        return (
+                          <div data-bell="" className={recipient[0] === item?.extension.extension ? "contactListItem selected" :"contactListItem"}>
+                            <div
+                              onClick={() =>
+                                setRecipient([item?.extension.extension, item.id])
+                              }
+                              className="row justify-content-between"
+                            >
+                              <div className="col-xl-6 d-flex">
+                                <div
+                                  className="profileHolder"
+                                  id="profileOnlineNav"
+                                >
+                                  <i className="fa-light fa-user fs-5"></i>
+                                </div>
+                                <div className="my-auto ms-2 ms-xl-3">
+                                  <h4>{item?.username}</h4>
+                                  <h5>{item?.extension.extension}</h5>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                      {onlineUser.length===0 && <div className="contactListItem">
+                        <div
+                          className="row justify-content-between"
+                        >
+                          <div className="col-xl-6 d-flex">
+                            <div
+                              className="profileHolder"
+                              id="profileOnline"
+                            >
+                              <i className="fa-light fa-user fs-5"></i>
+                            </div>
+                            <div className="my-auto ms-2 ms-xl-3">
+                              <h4>No online user found</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>}
+                    </div>
+                  </div>}
                 </div>
               </div>
               <div
@@ -301,41 +465,50 @@ const sendFileMessage = async (file) => {
                 id="callDetails"
               >
                 <div className="messageOverlay">
-                  <div className="contactHeader">
-                    <div>
-                      <h4>{recipient}</h4>
-                      <span className="status online">Online</span>
+                  {recipient[0] ? (
+                    <div className="contactHeader">
+                      <div>
+                        <h4>{recipient[0]}</h4>
+                        {/* <span className="status online">Online</span> */}
+                      </div>
+                      <div className="d-flex my-auto">
+                        <button
+                          className="appPanelButton"
+                          effect="ripple"
+                          onclick="location.href='http://192.168.2.220/ringerappCI/webrtc/user-app-caller'"
+                        >
+                          <i className="fa-light fa-phone" />
+                        </button>
+                        <button
+                          className="appPanelButton"
+                          effect="ripple"
+                          onclick="location.href='http://192.168.2.220/ringerappCI/webrtc/user-app-videocaller'"
+                        >
+                          <i className="fa-light fa-video" />
+                        </button>
+                      </div>
                     </div>
-                    <div className="d-flex my-auto">
-                      <button
-                        className="appPanelButton"
-                        effect="ripple"
-                        onclick="location.href='http://192.168.2.220/ringerappCI/webrtc/user-app-caller'"
-                      >
-                        <i className="fa-light fa-phone" />
-                      </button>
-                      <button
-                        className="appPanelButton"
-                        effect="ripple"
-                        onclick="location.href='http://192.168.2.220/ringerappCI/webrtc/user-app-videocaller'"
-                      >
-                        <i className="fa-light fa-video" />
-                      </button>
-                    </div>
-                  </div>
+                  ) : (
+                    ""
+                  )}
                   <div className="messageContent">
                     <div className="messageList" ref={messageListRef}>
-                      {allMessage.map((item, index) => {
+                      {allMessage?.[recipient[0]]?.map((item, index) => {
+                        // console.log("inside loop",item);
+
                         return (
                           <>
                             {item.from == extension ? (
                               <div className="messageItem sender">
-                                <div className="first">
-                                  <div className="profileHolder">US</div>
-                                </div>
                                 <div className="second">
                                   <h6>
-                                     <span>{item.time.split(" ")[1]}</span>
+                                    <span>
+                                      {item.time
+                                        .split(" ")[1]
+                                        .split(":")
+                                        .slice(0, 2)
+                                        .join(":")}
+                                    </span>
                                   </h6>
                                   <div className="messageDetails">
                                     <p>{item.body}</p>
@@ -344,12 +517,15 @@ const sendFileMessage = async (file) => {
                               </div>
                             ) : (
                               <div className="messageItem receiver">
-                                <div className="first">
-                                  <div className="profileHolder">US</div>
-                                </div>
                                 <div className="second">
                                   <h6>
-                                     <span>{item.time.split(" ")[1]}</span>
+                                    <span>
+                                      {item.time
+                                        .split(" ")[1]
+                                        .split(":")
+                                        .slice(0, 2)
+                                        .join(":")}
+                                    </span>
                                   </h6>
                                   <div className="messageDetails">
                                     <p>{item.body}</p>
@@ -360,60 +536,54 @@ const sendFileMessage = async (file) => {
                           </>
                         );
                       })}
+                      {recipient[0] ? (
+                        ""
+                      ) : (
+                        <div className="startAJob">
+                          <div class="text-center mt-3">
+                            <img
+                              src={require("../../assets/images/empty-box.png")} alt="Empty"
+                            ></img>
+                            <div>
+                              <h5>
+                                Please select a <b>Agent</b> to start{" "}
+                                <span>a conversation</span>.
+                              </h5>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <div className="messageInput">
-                      <div className="col-10">
-                        <input
-                          type="text"
-                          name=""
-                          id=""
-                          placeholder="Please enter your message"
-                          value={messageInput}
-                          onChange={(e) => setMessageInput(e.target.value)}
-                          onKeyDown={(e) => {
-                            console.log(e);
-                            if (e.key === "Enter") {
-                              sendMessage();
-                            }
-                          }}
-                        />
-                      </div>
-                      <div className="col-auto d-flex">
-                        {/* <button
-                          effect="ripple"
-                          className="appPanelButtonColor2 ms-auto"
-                        >
-                          <i className="fa-regular fa-paperclip" >
+                    {recipient[0] ? (
+                      <div className="messageInput">
+                        <div className="col-10">
                           <input
-                          type="file"
-                          name=""
-                          id=""
-                          placeholder="Please enter your message"
-                          // value={messageInput}
-                          onChange={(e) => {
-                            const file = e.target.files[0];
-                            if (file) {
-                              sendFileMessage(file);
-                            }
-                          }}
-                          onKeyDown={(e) => {
-                            console.log(e);
-                            if (e.key === "Enter") {
-                              sendFileMessage();
-                            }
-                          }}
-                        />
-                          </i>
-                        </button> */}
-                        <button
-                          effect="ripple"
-                          className="appPanelButtonColor"
-                          onClick={() => sendMessage()}
-                        >
-                          <i className="fa-solid fa-paper-plane-top" />
-                        </button>
+                            type="text"
+                            name=""
+                            id=""
+                            placeholder="Please enter your message"
+                            value={messageInput}
+                            onChange={(e) => setMessageInput(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                sendMessage();
+                              }
+                            }}
+                          />
+                        </div>
+                        <div className="col-auto d-flex">
+                          <button
+                            effect="ripple"
+                            className="appPanelButtonColor"
+                            onClick={() => sendMessage()}
+                          >
+                            <i className="fa-solid fa-paper-plane-top" />
+                          </button>
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
               </div>

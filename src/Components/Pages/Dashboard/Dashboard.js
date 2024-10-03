@@ -344,7 +344,10 @@ const Dashboard = () => {
         <div className="container-fluid">
           <div className="row ">
             <Header title="Dashboard" />
-
+          </div>
+        </div>
+        <div className="container-fluid">
+          <div className="row ">
             <div className="col-12 mt-3 tangoNavs">
               <nav>
                 <div className="nav nav-tabs" id="nav-tab" role="tablist">
@@ -410,23 +413,26 @@ const Dashboard = () => {
                     <div className="col-xl-3">
                       <div className="itemWrapper a">
                         <div className="heading">
-                          <i className="fa-duotone fa-phone-office"></i> Handled
-                          Calls
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>Handled Calls</h5>
+                              <p>27 August - 27 September, 2024</p>
+                            </div>
+                            <div className="col-2">
+                              <i className="fa-duotone fa-phone-office"></i>
+                            </div>
+                          </div>
                         </div>
-                        <div className="data-number">
-                          {callCardData.handled.count}
-                        </div>
-                        <div className="label">
-                          {callCardData.handled.inboundAnswered} Inbound
-                          (Answered)
-                        </div>
-                        {/* <div className="label">
-                          {callCardData.handled.connectedCallbacks} Connected
-                          Callbacks
-                        </div> */}
-                        <div className="label">
-                          {callCardData.handled.outboundAnswered} Outbound
-                          (Connected)
+                        <div className="data-number2">
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>{callCardData.handled.count}</h5>
+                              <p>{callCardData.handled.inboundAnswered} Inbound  / {callCardData.handled.outboundAnswered} Outbound</p>
+                            </div>
+                            <div className="col-2">
+                              <img src={require('../../assets/images/icons/diagram.png')} />
+                            </div>
+                          </div>
                         </div>
                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/user'" effect="ripple"><i className="fa-duotone fa-users"></i> View All Users</button> */}
                       </div>
@@ -434,18 +440,26 @@ const Dashboard = () => {
                     <div className="col-xl-3">
                       <div className="itemWrapper b">
                         <div className="heading">
-                          <i className="fa-duotone fa-clock"></i> Total Minutes
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>Total Minutes</h5>
+                              <p>27 August - 27 September, 2024</p>
+                            </div>
+                            <div className="col-2">
+                              <i className="fa-duotone fa-clock"></i>
+                            </div>
+                          </div>
                         </div>
-                        <div className="data-number">
-                          {callCardData.minutes.count}
-                        </div>
-                        <div className="label">
-                          {callCardData.minutes.inboundAnswered} Inbound
-                          (Answered)
-                        </div>
-                        <div className="label">
-                          {callCardData.minutes.outboundConnected} Outbound
-                          (Connected)
+                        <div className="data-number2">
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>{callCardData.minutes.count}</h5>
+                              <p>{callCardData.minutes.inboundAnswered} Inbound  / {callCardData.minutes.outboundAnswered} Outbound</p>
+                            </div>
+                            <div className="col-2">
+                              <img src={require('../../assets/images/icons/diagram.png')} />
+                            </div>
+                          </div>
                         </div>
                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/extensions'" effect="ripple"><i className="fa-duotone fa-phone-office"></i> View All Extensions</button> */}
                       </div>
@@ -453,18 +467,26 @@ const Dashboard = () => {
                     <div className="col-xl-3">
                       <div className="itemWrapper c">
                         <div className="heading">
-                          <i className="fa-duotone fa-phone-missed"></i> Missed
-                          Calls
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>Missed Calls</h5>
+                              <p>27 August - 27 September, 2024</p>
+                            </div>
+                            <div className="col-2">
+                              <i className="fa-duotone fa-phone-missed"></i>
+                            </div>
+                          </div>
                         </div>
-                        <div className="data-number">
-                          {callCardData.missedCalls.count}
-                        </div>
-                        {/* <div className="label">
-                          {callCardData.missedCalls.voiceMissed} Voicecall
-                          Missed
-                        </div> */}
-                        <div className="label">
-                          {callCardData.missedCalls.callMissed} Calls Missed
+                        <div className="data-number2">
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>{callCardData.missedCalls.count}</h5>
+                              <p>{callCardData.missedCalls.callMissed} Calls Missed</p>
+                            </div>
+                            <div className="col-2">
+                              <img src={require('../../assets/images/icons/diagram.png')} />
+                            </div>
+                          </div>
                         </div>
                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/devices'" effect="ripple"><i className="fa-duotone fa-mobile-retro"></i> View All Devices</button> */}
                       </div>
@@ -472,11 +494,25 @@ const Dashboard = () => {
                     <div className="col-xl-3">
                       <div className="itemWrapper d">
                         <div className="heading">
-                          <i className="fa-duotone fa-phone-xmark"></i>{" "}
-                          Abandoned Calls
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>Abandoned Calls</h5>
+                              <p>27 August - 27 September, 2024</p>
+                            </div>
+                            <div className="col-2">
+                              <i className="fa-duotone fa-phone-xmark"></i>
+                            </div>
+                          </div>
                         </div>
-                        <div className="data-number">
-                          {callCardData.abandonedCalls.count}
+                        <div className="data-number2">
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>{callCardData.abandonedCalls.count}</h5>
+                            </div>
+                            <div className="col-2">
+                              <img src={require('../../assets/images/icons/diagram.png')} />
+                            </div>
+                          </div>
                         </div>
                         {/* <div className="label">0 Internal Call</div>
                         <div className="label">0 External Calls</div> */}
@@ -731,21 +767,20 @@ const Dashboard = () => {
                   <div className="wrapper">
                     <DoughnutChart
                       fields={[
-                        "Online Extension",
-                        "Register Extension",
-                        "Available Extension",
+                        "Inbound",
+                        "Outbound",
+                        "Total"
                       ]}
                       percentage={[
-                        registerUser.length,
-                        extensionList,
-                        Number(accountDetails?.package?.number_of_user) -
-                        extensionList,
+                        callCardData.handled.inboundAnswered,
+                        callCardData.handled.outboundAnswered,
+                        callCardData.handled.count
                       ]}
                       centerTitle={`${extensionList}/${Number(
                         accountDetails?.package?.number_of_user
                       )}`}
                       centerDesc="Extensions Details"
-                      colors={["#9999", "#FF6384", "#36A2EB"]}
+                      colors={["#9999", "#FF638470", "#36A2EB70"]}
                     />
                   </div>
                 </div>
@@ -753,21 +788,20 @@ const Dashboard = () => {
                   <div className="wrapper">
                     <DoughnutChart
                       fields={[
-                        "Online Users",
-                        "Registered Users ",
-                        "Available Users ",
+                        "Handled",
+                        "Missed",
+                        "Abandoned",
                       ]}
                       percentage={[
-                        loginUser.length,
-                        userList,
-                        Number(accountDetails?.package?.number_of_user) -
-                        userList,
+                        callCardData.handled.count,
+                        callCardData.missedCalls.count,
+                        callCardData.abandonedCalls.count,
                       ]}
                       centerTitle={`${userList}/${(
                         accountDetails?.package?.number_of_user
                       )}`}
                       centerDesc="Total Users Available"
-                      colors={["#9999", "#FF6384", "#36A2EB"]}
+                      colors={["#36A2EB70", "#f17d0170", "#FF638470"]}
                     />
                   </div>
                   {/* <div className='circularProgressWrapper'>
@@ -793,12 +827,8 @@ const Dashboard = () => {
                     <GraphChart
                       fields={["Available Extension", "Registered Extension"]}
                       percentage={[
-                        ((Number(accountDetails?.package?.number_of_user) -
-                          extensionList) *
-                          100) /
-                        Number(accountDetails?.package?.number_of_user),
-                        (extensionList * 100) /
-                        Number(accountDetails?.package?.number_of_user),
+                        accountDetails?.package?.number_of_user,
+                        extensionList
                       ]}
                       centerTitle={`${extensionList}/${accountDetails?.package?.number_of_user}`}
                       centerDesc="Total Extensions"

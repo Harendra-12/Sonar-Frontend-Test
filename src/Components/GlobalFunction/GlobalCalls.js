@@ -35,7 +35,7 @@ function GlobalCalls() {
         const apiData = await generalGetFunction(
           `/call-details?account_id=${account?.account_id}`
         );
-        if (apiData.status) {
+        if (apiData?.status) {
           dispatch({
             type: "SET_ALLCALL",
             allCall: apiData.data,
@@ -57,7 +57,7 @@ function GlobalCalls() {
       const apiData = await generalGetFunction(
         `/card/all?account_id=${account?.account_id}`
       );
-      if (apiData.status) {
+      if (apiData?.status) {
         dispatch({
           type: "SET_CARDLIST",
           cardList: apiData.data,
@@ -138,7 +138,7 @@ function GlobalCalls() {
       const apiData = await generalGetFunction(
         `/extension/search?account=${account?.account_id}`
       );
-      if (apiData.status) {
+      if (apiData?.status) {
         dispatch({
           type: "SET_EXTENSION",
           extension: apiData.data,
@@ -210,7 +210,7 @@ function GlobalCalls() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/user/all`);
-      if (apiData.status) {
+      if (apiData?.status) {
         // console.log(apiData);
         dispatch({
           type: "SET_ALLUSER",
@@ -249,7 +249,7 @@ function GlobalCalls() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction("/account-balance");
-      if (apiData.status) {
+      if (apiData?.status) {
         console.log("This is balance", apiData);
 
         dispatch({
@@ -281,7 +281,7 @@ function GlobalCalls() {
   useEffect(() => {
     const getLoginInfo = async () => {
       const profile = await generalGetFunction("/user");
-      if (profile.status) {
+      if (profile?.status) {
         dispatch({
           type: "SET_ACCOUNT",
           account: profile.data,
