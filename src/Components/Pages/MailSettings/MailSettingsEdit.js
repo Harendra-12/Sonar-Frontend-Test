@@ -111,7 +111,7 @@ const MailSettingsEdit = () => {
             <Header title="Mail Settings Update" />
             <div id="subPageHeader">
               <div className="col-xl-9 my-auto">
-                <p className="p-0 m-0">Mail Settings Update</p>
+                <p className="mb-0">Mail Settings Update</p>
               </div>
               <div className="col-xl-3 ps-2">
                 <div className="d-flex justify-content-end">
@@ -143,8 +143,11 @@ const MailSettingsEdit = () => {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Mail Driver</label>
+                    <label htmlFor="mail_driver" className="formItemDesc">
+                      Select Mail Driver Type
+                    </label>
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <select
                       type="dropdown"
                       name="mail_driver"
@@ -169,17 +172,17 @@ const MailSettingsEdit = () => {
                     {errors.mail_driver && (
                       <ErrorMessage text={errors.mail_driver.message} />
                     )}
-                    <label htmlFor="mail_driver" className="formItemDesc">
-                      Select Mail Driver Type
-                    </label>
                   </div>
                 </div>
 
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Host</label>
+                    <label htmlFor="mail_host" className="formItemDesc">
+                      Enter Mail Host
+                    </label>
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <input
                       type="text"
                       name="mail_host"
@@ -193,17 +196,17 @@ const MailSettingsEdit = () => {
                     {errors.mail_host && (
                       <ErrorMessage text={errors.mail_host.message} />
                     )}
-                    <label htmlFor="mail_host" className="formItemDesc">
-                      Enter Mail Host
-                    </label>
                   </div>
                 </div>
 
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Port</label>
+                    <label htmlFor="mail_port" className="formItemDesc">
+                      Enter Mail Port
+                    </label>
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <input
                       type="number"
                       name="mail_port"
@@ -218,17 +221,17 @@ const MailSettingsEdit = () => {
                     {errors.mail_port && (
                       <ErrorMessage text={errors.mail_port.message} />
                     )}
-                    <label htmlFor="mail_port" className="formItemDesc">
-                      Enter Mail Port
-                    </label>
                   </div>
                 </div>
 
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Username</label>
+                    <label htmlFor="mail_username" className="formItemDesc">
+                      Enter Mail Username
+                    </label>
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <input
                       type="text"
                       name="mail_username"
@@ -242,17 +245,17 @@ const MailSettingsEdit = () => {
                     {errors.mail_username && (
                       <ErrorMessage text={errors.mail_username.message} />
                     )}
-                    <label htmlFor="mail_username" className="formItemDesc">
-                      Enter Mail Username
-                    </label>
                   </div>
                 </div>
 
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Password</label>
+                    <label htmlFor="mail_password" className="formItemDesc">
+                      Enter Password
+                    </label>
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <input
                       type="password"
                       name="mail_password"
@@ -264,17 +267,17 @@ const MailSettingsEdit = () => {
                     {errors.mail_password && (
                       <ErrorMessage text={errors.mail_password.message} />
                     )}
-                    <label htmlFor="mail_password" className="formItemDesc">
-                      Enter Password
-                    </label>
                   </div>
                 </div>
 
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Encryption</label>
+                    <label htmlFor="mail_encryption" className="formItemDesc">
+                      Select Encryption Type
+                    </label>
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <select
                       type="dropdown"
                       name="mail_encryption"
@@ -303,17 +306,17 @@ const MailSettingsEdit = () => {
                     {errors.mail_encryption && (
                       <ErrorMessage text={errors.mail_encryption.message} />
                     )}
-                    <label htmlFor="mail_encryption" className="formItemDesc">
-                      Select Encryption Type
-                    </label>
                   </div>
                 </div>
 
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Mail From</label>
+                    <label htmlFor="mail_from_address" className="formItemDesc">
+                      Enter Mail From
+                    </label>
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <input
                       type="text"
                       name="mail_from_address"
@@ -328,17 +331,17 @@ const MailSettingsEdit = () => {
                     {errors.mail_from_address && (
                       <ErrorMessage text={errors.mail_from_address.message} />
                     )}
-                    <label htmlFor="mail_from_address" className="formItemDesc">
-                      Enter Mail From
-                    </label>
                   </div>
                 </div>
 
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Mail From Name</label>
+                    <label htmlFor="mail_from_name" className="formItemDesc">
+                      Enter Mail From Name
+                    </label>
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <input
                       type="text"
                       name="mail_from_name"
@@ -352,9 +355,6 @@ const MailSettingsEdit = () => {
                     {errors.mail_from_name && (
                       <ErrorMessage text={errors.mail_from_name.message} />
                     )}
-                    <label htmlFor="mail_from_name" className="formItemDesc">
-                      Enter Mail From Name
-                    </label>
                   </div>
                 </div>
               </form>
