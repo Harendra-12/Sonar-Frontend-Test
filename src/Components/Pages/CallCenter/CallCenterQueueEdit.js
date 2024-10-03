@@ -35,6 +35,7 @@ function CallCenterQueueEdit() {
   const [prevAgents, setPrevAgents] = useState([]);
   const [greetingSound, setGreetingSound] = useState();
   const [holdSound, setHoldSound] = useState();
+  const [announcmentSound, setAnnouncmentSound] = useState();
   
   // Define the initial state of the form
   const [agent, setAgent] = useState([
@@ -141,6 +142,9 @@ function CallCenterQueueEdit() {
           musicData.data.filter((item) => item.type === "ringback")
         );
         setHoldSound(musicData.data.filter((item) => item.type === "hold"));
+        setAnnouncmentSound(
+          musicData.data.filter((item) => item.type === "announcement")
+        );
       }
     }
     getData();
@@ -878,8 +882,8 @@ function CallCenterQueueEdit() {
                 <div className="col-6">
                   <select {...register("queue_announce_sound")} className="formItem w-100">
                     <option></option>
-                    {greetingSound &&
-                      greetingSound.map((item, index) => {
+                    {announcmentSound &&
+                      announcmentSound.map((item, index) => {
                         return (
                           <option key={index} value={item.id}>
                             {item.name}
