@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";
 import { toast } from "react-toastify";
 
-function Dialpad({ hideDialpad, setSelectedModule }) {
+function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
   const account = useSelector((state) => state.account);
   const globalSession = useSelector((state) => state.sessions);
   const dispatch = useDispatch();
@@ -19,6 +19,11 @@ function Dialpad({ hideDialpad, setSelectedModule }) {
   };
 
   async function onSubmit(e) {
+    if (!isMicOn) {
+      toast.warn("Please turn on microphone");
+      return;
+    }
+
     if (extension == "") {
       toast.error("No extension assigned to your account");
       return;
@@ -33,14 +38,12 @@ function Dialpad({ hideDialpad, setSelectedModule }) {
       const apiData = await sessionManager?.call(
         `sip:${Number(destNumber)}@${account.domain.domain_name}`,
         {
-             
-                // Contact: `<sip:${extension}@${account.domain.domain_name}>`, 
-                // `To: <sip:${Number(destNumber)}@${account.domain.domain_name}>`,
-                // `From: <sip:${extension}@${account.domain.domain_name}>`
-              
-            }
+          // Contact: `<sip:${extension}@${account.domain.domain_name}>`,
+          // `To: <sip:${Number(destNumber)}@${account.domain.domain_name}>`,
+          // `From: <sip:${extension}@${account.domain.domain_name}>`
+        }
       );
-      
+
       setSelectedModule("onGoingCall");
       dispatch({
         type: "SET_SESSIONS",

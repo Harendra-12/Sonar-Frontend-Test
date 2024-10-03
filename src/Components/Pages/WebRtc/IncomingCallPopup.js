@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSessionCall, useSIPProvider } from "react-sipjs";
 import { toast } from "react-toastify";
 import { UserAgent } from "sip.js";
+import ringtone from "../../assets/cellphone-ringing-6475.mp3";
 
 function IncomingCallPopup({
   sessionId,
@@ -10,6 +11,7 @@ function IncomingCallPopup({
   index,
   setSelectedModule,
   setactivePage,
+  isMicOn,
 }) {
   const [isMinimized, setIsMinimized] = useState(false);
   const account = useSelector((state) => state.account);
@@ -20,7 +22,20 @@ function IncomingCallPopup({
   const { sessionManager } = useSIPProvider();
   const [blindTransferNumber, setBlindTransferNumber] = useState("");
   const [attendShow, setAttendShow] = useState(false);
+  const [audio] = useState(new Audio(ringtone)); // Initialize the Audio object
+  console.log(session);
+  useEffect(() => {
+    if (lastIncomingCall && !isMinimized) {
+      audio.loop = true; // Set loop so it keeps playing
+      audio.play(); // Play the ringtone
+    }
 
+    // Cleanup to stop the audio
+    return () => {
+      audio.pause(); // Stop the ringtone
+      audio.currentTime = 0; // Reset the audio to the beginning
+    };
+  }, [lastIncomingCall, isMinimized, audio]);
   useEffect(() => {
     if (!lastIncomingCall) {
       setIsMinimized(true);
@@ -66,6 +81,10 @@ function IncomingCallPopup({
 
   const handleAnswerCall = async (e) => {
     e.preventDefault();
+    if (!isMicOn) {
+      toast.warn("Please turn on microphone");
+      return;
+    }
     answer();
     setSelectedModule("onGoingCall");
     setactivePage("call");
@@ -85,6 +104,11 @@ function IncomingCallPopup({
 
   const handleBlindTransfer = (e) => {
     e.preventDefault();
+
+    if (!isMicOn) {
+      toast.warn("Please turn on microphone");
+      return;
+    }
 
     if (blindTransferNumber.length > 3) {
       if (session.state === "Initial") {

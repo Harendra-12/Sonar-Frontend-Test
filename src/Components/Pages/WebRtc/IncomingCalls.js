@@ -3,7 +3,7 @@ import IncomingCallPopup from "./IncomingCallPopup";
 import { useSIPProvider } from "react-sipjs";
 import { useDispatch, useSelector } from "react-redux";
 
-const IncomingCalls = ({ setSelectedModule, setactivePage }) => {
+const IncomingCalls = ({ setSelectedModule, setactivePage, isMicOn }) => {
   const { sessions: sipSessions } = useSIPProvider();
 
   const incomingSessionsArray = Object.keys(sipSessions).filter(
@@ -23,6 +23,7 @@ const IncomingCalls = ({ setSelectedModule, setactivePage }) => {
             index={index}
             setSelectedModule={setSelectedModule}
             setactivePage={setactivePage}
+            isMicOn={isMicOn}
           />
         );
       })}

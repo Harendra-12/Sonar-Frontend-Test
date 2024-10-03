@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSessionCall } from "react-sipjs";
 import { CallTimer } from "./CallTimer";
@@ -23,6 +23,8 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
   const [attendShow, setAttendShow] = useState(false);
   const [destNumber, setDestNumber] = useState("");
   const [attendedTransferNumber, setattendedTransferNumber] = useState("");
+  const [showParkList, setShowParkList] = useState(false);
+  const [parkingNumber, setParkingNumber] = useState("");
   const callProgressDestination = useSelector(
     (state) => state.callProgressDestination
   );
@@ -40,6 +42,13 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
   } = useSessionCall(callProgressId);
 
   // Handle dialpad press and send DTMF
+
+  useEffect(() => {
+    if (parkingNumber != "") {
+      handleDigitPress(parkingNumber);
+    }
+  }, [parkingNumber]);
+
   const handleDigitPress = (digit) => {
     if (session) {
       const dtmfSender = session.sessionDescriptionHandler.peerConnection
@@ -192,6 +201,42 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
                 <div className="col-12 text-center">
                   <h3>{callProgressDestination}</h3>
                 </div>
+                {showParkList && (
+                  <div>
+                    <select
+                      defaultValue={""}
+                      onChange={(e) => setParkingNumber(e.target.value)}
+                    >
+                      <option className="" disabled value={""}>
+                        Select to Park
+                      </option>
+                      <option className="" value={"*1"}>
+                        HR (*1)
+                      </option>
+                      <option className="" value={"*69"}>
+                        Call-return (*69)
+                      </option>
+                      <option className="" value={"*70"}>
+                        DND (*70)
+                      </option>
+                      <option className="" value={"*870"}>
+                        Redial (*870)
+                      </option>
+                      <option className="" value={"*80"}>
+                        Group Delete (*80)
+                      </option>
+                      <option className="" value={"*81"}>
+                        Insertion (*81)
+                      </option>
+                      <option className="" value={"*4000"}>
+                        Voicemail check (*4000)
+                      </option>
+                      <option className="" value={"*99"}>
+                        Direct Voicemail (*99)
+                      </option>
+                    </select>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -237,7 +282,11 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
             >
               <i className="fa-thin fa-phone-arrow-up-right" />
             </button>
-            <button className="appPanelButtonCaller" effect="ripple">
+            <button
+              className="appPanelButtonCaller"
+              effect="ripple"
+              onClick={() => setShowParkList(!showParkList)}
+            >
               P
             </button>
             <button
@@ -294,8 +343,8 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
                       className="dialerInput"
                       disabled={true}
                       value={destNumber}
-                    // onChange={(e) => setDestNumber(e.target.value)}
-                    // onChange={handleInputChange}
+                      // onChange={(e) => setDestNumber(e.target.value)}
+                      // onChange={handleInputChange}
                     />
                   </div>
 
