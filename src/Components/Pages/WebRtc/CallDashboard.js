@@ -1,11 +1,65 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import SideNavbarApp from "./SideNavbarApp";
 import ActiveCallSidePanel from "./ActiveCallSidePanel";
 import ActiveCalls from "../PhoneDashboard/ActiveCalls";
+import { generalPostFunction } from "../../GlobalFunction/globalFunction";
+import { toast } from "react-toastify";
+import { useSIPProvider } from "react-sipjs";
 
 function CallDashboard() {
   const sessions = useSelector((state) => state.sessions);
+  const { sessionManager } = useSIPProvider();
+  const account = useSelector((state) => state.account);
+  const activeCall = useSelector((state) => state.activeCall);
+  const [allParkedCall, setAllParkedCall] = useState([]);
+
+  const extension = account?.extension?.extension || null;
+
+  useEffect(() => {
+    //dest should start with "set:valet_ticket"
+    setAllParkedCall(
+      activeCall.filter(
+        (call) =>
+          call.dest.includes("set:valet_ticket") || call.dest.includes("*")
+      )
+    );
+  }, [activeCall]);
+
+  function extractLastNumber(inputString) {
+    const regex = /(\d+)\s*$/; // Regular expression to match the last number after a space
+
+    const match = inputString.match(regex);
+
+    if (match) {
+      return match[1]; // Return the matched number
+    } else {
+      console.log("No number found after the last space.");
+      return null;
+    }
+  }
+
+  const handleUnPark = async (parkedNumber) => {
+    if (!parkedNumber) {
+      console.log("invalid number");
+      return;
+    }
+    const payload = {
+      unpark_slot: parkedNumber,
+      user: extension,
+    };
+
+    //call a post api
+    const unparkResponse = await generalPostFunction(
+      "/freeswitch/call-unpark",
+      payload
+    );
+
+    if (unparkResponse) {
+      console.log(unparkResponse);
+      toast.success(unparkResponse.message);
+    }
+  };
   return (
     <>
       {/* <SideNavbarApp /> */}
@@ -218,26 +272,43 @@ function CallDashboard() {
                         <thead>
                           <tr>
                             <th>Called ID</th>
-                            <th>Parked At</th>
                             <th>Parked By</th>
+                            <th>Parked At</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>1000</td>
-                            <td>1212</td>
-                            <td>1000</td>
-                          </tr>
-                          <tr>
-                            <td>1000</td>
-                            <td>1212</td>
-                            <td>1000</td>
-                          </tr>
-                          <tr>
-                            <td>1000</td>
-                            <td>1212</td>
-                            <td>1000</td>
-                          </tr>
+                          {allParkedCall.length > 0 &&
+                            allParkedCall.map((call) => {
+                              return (
+                                <tr>
+                                  <td>{call.cid_num}</td>
+
+                                  <td>{extractLastNumber(call?.parked_by)}</td>
+                                  <td>
+                                    {call?.dest.includes("set:valet_ticket")
+                                      ? extractLastNumber(call?.accountcode)
+                                      : extractLastNumber(call?.dest)}
+                                  </td>
+                                  <td>
+                                    <button
+                                      onClick={() =>
+                                        handleUnPark(
+                                          call?.dest.includes(
+                                            "set:valet_ticket"
+                                          )
+                                            ? extractLastNumber(
+                                                call?.accountcode
+                                              )
+                                            : extractLastNumber(call?.dest)
+                                        )
+                                      }
+                                    >
+                                      Unpark
+                                    </button>
+                                  </td>
+                                </tr>
+                              );
+                            })}
                         </tbody>
                       </table>
                     </div>

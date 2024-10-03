@@ -10,6 +10,7 @@ function CallDetails({
   setCallNow,
   callNow,
   setSelectedModule,
+  isMicOn,
 }) {
   const [callDetails, setCallDetails] = useState();
   const dispatch = useDispatch();
@@ -65,17 +66,27 @@ function CallDetails({
 
   async function onCall(e) {
     // e.preventDefault();
+
+    if (!isMicOn) {
+      toast.warn("Please turn on microphone");
+      return;
+    }
     setCallNow(false);
     if (extension == "") {
       toast.error("No extension assigned to your account");
       return;
     }
-    if (callDetails?.["Caller-Callee-ID-Number"] === extension) {
+    const otherPartyExtension =
+      callDetails?.["Caller-Callee-ID-Number"] == extension
+        ? callDetails?.["Caller-Caller-ID-Number"]
+        : callDetails?.["Caller-Callee-ID-Number"];
+    console.log("otherPartyExtension", otherPartyExtension);
+    if (otherPartyExtension === extension) {
       toast.error("You can't call yourself");
       return;
     }
     const apiData = await sessionManager?.call(
-      `sip:${Number(callDetails?.["Caller-Callee-ID-Number"])}@192.168.2.225`,
+      `sip:${otherPartyExtension}@192.168.2.225`,
       {}
     );
     setSelectedModule("onGoingCall");
@@ -86,7 +97,7 @@ function CallDetails({
         ...globalSession,
         {
           id: apiData._id,
-          destination: Number(callDetails?.["Caller-Callee-ID-Number"]),
+          destination: Number(otherPartyExtension),
           state: "Established",
         },
       ],
@@ -97,7 +108,7 @@ function CallDetails({
     });
     dispatch({
       type: "SET_CALLPROGRESSDESTINATION",
-      callProgressDestination: Number(callDetails?.["Caller-Callee-ID-Number"]),
+      callProgressDestination: Number(otherPartyExtension),
     });
     dispatch({
       type: "SET_CALLPROGRESS",
