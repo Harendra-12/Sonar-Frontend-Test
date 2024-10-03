@@ -636,7 +636,13 @@ const Dashboard = () => {
                   tabIndex="0"
                 >
                   <div className="row">
-                    <div className="col-xl-3">
+                    <div
+                      className="col-xl-3"
+                      onClick={() => {
+                        navigate("/cal-center-queue");
+                      }}
+                      style={{ cursor: "pointer" }}
+                    >
                       <div className="itemWrapper a">
                         <div className="heading">
                           <i className="fa-duotone fa-phone-volume"></i> Total
@@ -664,13 +670,7 @@ const Dashboard = () => {
                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/extensions'" effect="ripple"><i className="fa-duotone fa-phone-office"></i> View All Extensions</button> */}
                       </div>
                     </div>
-                    <div
-                      className="col-xl-3"
-                      onClick={() => {
-                        navigate("/cal-center-queue");
-                      }}
-                      style={{ cursor: "pointer" }}
-                    >
+                    <div className="col-xl-3">
                       <div className="itemWrapper c">
                         <div className="heading">
                           <i className="fa-duotone fa-circle-pause"></i> Total
@@ -708,7 +708,11 @@ const Dashboard = () => {
                   tabIndex="0"
                 >
                   <div className="row">
-                    <div className="col-xl-3">
+                    <div
+                      className="col-xl-3"
+                      onClick={() => navigate("/ring-groups")}
+                      style={{ cursor: "pointer" }}
+                    >
                       <div className="itemWrapper a">
                         <div className="heading">
                           <i className="fa-duotone fa-phone-rotary"></i> Total
@@ -749,11 +753,7 @@ const Dashboard = () => {
                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/extensions'" effect="ripple"><i className="fa-duotone fa-phone-office"></i> View All Extensions</button> */}
                       </div>
                     </div>
-                    <div
-                      className="col-xl-3"
-                      onClick={() => navigate("/ring-groups")}
-                      style={{ cursor: "pointer" }}
-                    >
+                    <div className="col-xl-3">
                       <div className="itemWrapper c">
                         <div className="heading">
                           <i className="fa-duotone fa-circle-pause"></i> Total

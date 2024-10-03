@@ -45,7 +45,6 @@ function CallCenterQueueAdd() {
     watch,
   } = useForm();
   useEffect(() => {
-
     // Calling user and sound api to get user and sound data
     async function getData() {
       const userData = await generalGetFunction("/user/all");
@@ -369,7 +368,7 @@ function CallCenterQueueAdd() {
                   )}
                 </div>
               </div>
-         
+
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Greeting</label>
@@ -379,7 +378,7 @@ function CallCenterQueueAdd() {
                 </div>
                 <div className="col-6">
                   <select {...register("greeting")} className="formItem w-100">
-                    <option disabled value={""}>
+                    <option disabled value="" selected>
                       Select Greeting
                     </option>
                     {greetingSound &&
@@ -391,7 +390,7 @@ function CallCenterQueueAdd() {
                         );
                       })}
                   </select>
-                
+
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Select the desired Greeting.
@@ -429,7 +428,7 @@ function CallCenterQueueAdd() {
                 </div>
                 <div className="col-6">
                   <select {...register("moh_sound")} className="formItem w-100">
-                    <option value={""} disabled>
+                    <option disabled value="" selected>
                       Select Hold Music
                     </option>
                     {holdSound &&
@@ -734,8 +733,13 @@ function CallCenterQueueAdd() {
                   </label>
                 </div>
                 <div className="col-6">
-                  <select {...register("queue_announce_sound")} className="formItem w-100">
-                    <option></option>
+                  <select
+                    {...register("queue_announce_sound")}
+                    className="formItem w-100"
+                  >
+                    <option disabled value="" selected>
+                      Select Queue Announce
+                    </option>
                     {announcmentSound &&
                       announcmentSound.map((item, index) => {
                         return (
@@ -747,7 +751,7 @@ function CallCenterQueueAdd() {
                   </select>
                   <br />
                   <label htmlFor="data" className="formItemDesc">
-                  Select the desired queue announce sound.
+                    Select the desired queue announce sound.
                   </label>
                 </div>
               </div>
@@ -799,7 +803,7 @@ function CallCenterQueueAdd() {
                 <div className="formLabel">
                   <label htmlFor="">Truncate Agents On Load</label>
                   <label htmlFor="data" className="formItemDesc">
-                  Truncate Agents On Load.
+                    Truncate Agents On Load.
                   </label>
                 </div>
                 <div className="col-6">
@@ -818,7 +822,7 @@ function CallCenterQueueAdd() {
                 <div className="formLabel">
                   <label htmlFor="">Truncate Tiers On Load</label>
                   <label htmlFor="data" className="formItemDesc">
-                  Truncate Tiers On Load.
+                    Truncate Tiers On Load.
                   </label>
                 </div>
                 <div className="col-6">
@@ -833,7 +837,6 @@ function CallCenterQueueAdd() {
                 </div>
               </div>
 
-              
               <div className="formRow col-xl-12">
                 {agent &&
                   agent.map((item, index) => {

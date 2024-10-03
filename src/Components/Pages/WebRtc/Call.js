@@ -13,6 +13,7 @@ function Call({
   selectedModule,
   setSelectedModule,
   isCustomerAdmin,
+  isMicOn,
 }) {
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
@@ -588,6 +589,7 @@ function Call({
                         setCallNow={setCallNow}
                         callNow={callNow}
                         setSelectedModule={setSelectedModule}
+                        isMicOn={isMicOn}
                       />
                     )}
               </div>
@@ -629,6 +631,7 @@ function Call({
         <Dialpad
           hideDialpad={handleHideDialpad}
           setSelectedModule={setSelectedModule}
+          isMicOn={isMicOn}
         />
       ) : (
         ""
