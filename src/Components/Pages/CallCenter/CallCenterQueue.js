@@ -167,6 +167,7 @@ function CallCenterQueue() {
                       <th>Prefix</th>
                       <th>Total Agents</th>
                       <th>Settings</th>
+                      <th>Edit</th>
                       <th>Delete</th>
                     </tr>
                   </thead>
@@ -184,69 +185,92 @@ function CallCenterQueue() {
                             return (
                               <tr>
                                 <td
-                                  onClick={() =>
-                                    navigate(
-                                      `/cal-center-queue-edit?id=${item.id}`
-                                    )
-                                  }
+                                  style={{ cursor: "default" }}
+                                  // onClick={() =>
+                                  //   navigate(
+                                  //     `/cal-center-queue-edit?id=${item.id}`
+                                  //   )
+                                  // }
                                 >
                                   {item.queue_name}
                                 </td>
                                 <td
-                                  onClick={() =>
-                                    navigate(
-                                      `/cal-center-queue-edit?id=${item.id}`
-                                    )
-                                  }
+                                  style={{ cursor: "default" }}
+                                  // onClick={() =>
+                                  //   navigate(
+                                  //     `/cal-center-queue-edit?id=${item.id}`
+                                  //   )
+                                  // }
                                 >
                                   {item.extension}
                                 </td>
                                 <td
-                                  onClick={() =>
-                                    navigate(
-                                      `/cal-center-queue-edit?id=${item.id}`
-                                    )
-                                  }
+                                  style={{ cursor: "default" }}
+                                  // onClick={() =>
+                                  //   navigate(
+                                  //     `/cal-center-queue-edit?id=${item.id}`
+                                  //   )
+                                  // }
                                 >
                                   {item.strategy}
                                 </td>
                                 <td
-                                  onClick={() =>
-                                    navigate(
-                                      `/cal-center-queue-edit?id=${item.id}`
-                                    )
-                                  }
+                                  style={{ cursor: "default" }}
+                                  // onClick={() =>
+                                  //   navigate(
+                                  //     `/cal-center-queue-edit?id=${item.id}`
+                                  //   )
+                                  // }
                                 >
                                   {item.queue_timeout_action}
                                 </td>
                                 <td
-                                  onClick={() =>
-                                    navigate(
-                                      `/cal-center-queue-edit?id=${item.id}`
-                                    )
-                                  }
+                                  style={{ cursor: "default" }}
+                                  // onClick={() =>
+                                  //   navigate(
+                                  //     `/cal-center-queue-edit?id=${item.id}`
+                                  //   )
+                                  // }
                                 >
                                   {item.queue_cid_prefix}
                                 </td>
                                 <td
-                                  onClick={() =>
-                                    navigate(
-                                      `/cal-center-queue-edit?id=${item.id}`
-                                    )
-                                  }
+                                  style={{ cursor: "default" }}
+                                  // onClick={() =>
+                                  //   navigate(
+                                  //     `/cal-center-queue-edit?id=${item.id}`
+                                  //   )
+                                  // }
                                 >
                                   {item.agents.length}
                                 </td>
-                                <td>
-                                  <button className="tableButton" onClick={() =>
-                                    navigate(
-                                      `/call-center-settings?id=${item.id}`
-                                    )
-                                  }>
+                                <td style={{ cursor: "default" }}>
+                                  <button
+                                    className="tableButton"
+                                    onClick={() =>
+                                      navigate(
+                                        `/call-center-settings?id=${item.id}`
+                                      )
+                                    }
+                                  >
                                     <i className="fa-duotone fa-gear"></i>
                                   </button>
                                 </td>
+                                <td style={{ cursor: "default" }}>
+                                  {" "}
+                                  <button
+                                    className="tableButton edit"
+                                    onClick={() =>
+                                      navigate(
+                                        `/cal-center-queue-edit?id=${item.id}`
+                                      )
+                                    }
+                                  >
+                                    <i class="fa-solid fa-pencil"></i>
+                                  </button>
+                                </td>
                                 <td
+                                  style={{ cursor: "default" }}
                                   // onClick={() => handleDelete(item.id)}
                                   onClick={() => {
                                     setPopUp(true);

@@ -154,6 +154,7 @@ const Extensions = () => {
                       <th>Description</th>
                       <th>Status</th>
                       <th>Setting</th>
+                      <th>Edit</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -175,9 +176,10 @@ const Extensions = () => {
                         return (
                           <tr key={index}>
                             <td
-                              onClick={() =>
-                                navigate(`/extensions-edit?id=${item.id}`)
-                              }
+                              style={{ cursor: "default" }}
+                              // onClick={() =>
+                              //   navigate(`/extensions-edit?id=${item.id}`)
+                              // }
                             >
                               {item.extension}{" "}
                               {foundUser ? `(${foundUser.name})` : ""}
@@ -190,32 +192,37 @@ const Extensions = () => {
                               {item?.domain?.domain_name}
                             </td> */}
                             <td
-                              onClick={() =>
-                                navigate(`/extensions-edit?id=${item.id}`)
-                              }
+                              style={{ cursor: "default" }}
+                              // onClick={() =>
+                              //   navigate(`/extensions-edit?id=${item.id}`)
+                              // }
                             >
                               {item.effectiveCallerIdName}
                             </td>
                             <td
-                              onClick={() =>
-                                navigate(`/extensions-edit?id=${item.id}`)
-                              }
+                              style={{ cursor: "default" }}
+                              // onClick={() =>
+                              //   navigate(`/extensions-edit?id=${item.id}`)
+                              // }
                             >
                               {item.outbundCallerIdName}
                             </td>
                             <td
-                              onClick={() =>
-                                navigate(`/extensions-edit?id=${item.id}`)
-                              }
+                              style={{ cursor: "default" }}
+                              // onClick={() =>
+                              //   navigate(`/extensions-edit?id=${item.id}`)
+                              // }
                             >
                               {item.callgroup}
                             </td>
                             <td
-                              onClick={() =>
-                                navigate(`/extensions-edit?id=${item.id}`)
-                              }
+                              // onClick={() =>
+                              //   navigate(`/extensions-edit?id=${item.id}`)
+                              // }
+                              style={{ cursor: "default" }}
                             >
                               <label
+                                style={{ cursor: "default" }}
                                 className={
                                   item.callScreen === "Enable"
                                     ? "tableLabel success"
@@ -227,18 +234,20 @@ const Extensions = () => {
                             </td>
                             {/* <td>1001</td> */}
                             <td
-                              onClick={() =>
-                                navigate(`/extensions-edit?id=${item.id}`)
-                              }
+                              style={{ cursor: "default" }}
+                              // onClick={() =>
+                              //   navigate(`/extensions-edit?id=${item.id}`)
+                              // }
                               className="ellipsis"
                               id="detailBox"
                             >
                               {item.description}
                             </td>
                             <td
-                              onClick={() =>
-                                navigate(`/extensions-edit?id=${item.id}`)
-                              }
+                              style={{ cursor: "default" }}
+                              // onClick={() =>
+                              //   navigate(`/extensions-edit?id=${item.id}`)
+                              // }
                             >
                               <span
                                 className={
@@ -248,7 +257,7 @@ const Extensions = () => {
                                 }
                               ></span>
                             </td>
-                            <td>
+                            <td style={{ cursor: "default" }}>
                               <button
                                 class="tableButton"
                                 onClick={() =>
@@ -261,6 +270,17 @@ const Extensions = () => {
                                 }
                               >
                                 <i className="fa-duotone fa-gear"></i>
+                              </button>
+                            </td>
+                            <td style={{ cursor: "default" }}>
+                              {" "}
+                              <button
+                                className="tableButton edit"
+                                onClick={() =>
+                                  navigate(`/extensions-edit?id=${item.id}`)
+                                }
+                              >
+                                <i class="fa-solid fa-pencil"></i>
                               </button>
                             </td>
                           </tr>
