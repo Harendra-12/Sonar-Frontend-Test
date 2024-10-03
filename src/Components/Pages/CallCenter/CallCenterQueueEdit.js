@@ -389,7 +389,7 @@ function CallCenterQueueEdit() {
       },
     };
     setLoading(true);
-    delete payload.record_template;
+    // delete payload.record_template;
     const apiData = await generalPutFunction(
       // `/call-center-queue/update/${locationState.id}`,
       `/call-center-queue/update/${value}`,
@@ -933,6 +933,29 @@ function CallCenterQueueEdit() {
                   />
                   {errors.ring_progressively_delay && (
                     <ErrorMessage text={errors.ring_progressively_delay} />
+                  )}
+                </div>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Record Template</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Define record template.
+                  </label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="record_template"
+                    className="formItem"
+                    {...register("record_template", {
+                      ...noSpecialCharactersValidator,
+                    })}
+                    onKeyDown={restrictToAllowedChars}
+                  />
+                  {errors.record_template && (
+                    <ErrorMessage text={errors.record_template} />
                   )}
                 </div>
               </div>
