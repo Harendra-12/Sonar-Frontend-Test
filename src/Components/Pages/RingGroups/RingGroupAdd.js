@@ -20,6 +20,8 @@ import {
   noSpecialCharactersValidator,
   numberValidator,
   requiredValidator,
+  restrictToAllowedChars,
+  restrictToNumbers,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import CircularLoader from "../../Loader/CircularLoader";
@@ -123,7 +125,7 @@ const RingGroupAdd = () => {
   // Handle destination
   const [destination, setDestination] = useState([
     {
-      id: 1,
+      id: Math.floor(Math.random() * 10000),
       destination: "",
       delay: 0,
       timeOut: "30",
@@ -231,7 +233,8 @@ const RingGroupAdd = () => {
     setDestination([
       ...destination,
       {
-        id: destination.length + 1,
+        // id: destination.length + 1,
+        id: Math.floor(Math.random() * 10000),
         destination: "",
         delay: 0,
         timeOut: "30",
@@ -369,7 +372,8 @@ const RingGroupAdd = () => {
       reset();
       setDestination([
         {
-          id: 1,
+          // id: 1,
+          id: Math.floor(Math.random() * 10000),
           destination: "",
           delay: 0,
           timeOut: "30",
@@ -514,6 +518,7 @@ const RingGroupAdd = () => {
                       ...lengthValidator(3, 25),
                       ...nameNumberValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.name && <ErrorMessage text={errors.name.message} />}
                 </div>
@@ -658,7 +663,7 @@ const RingGroupAdd = () => {
               </div> */}
               <div className="formRow col-xl-3">
                 <div className="formLabel">
-                  <label >Timeout Destination</label>
+                  <label>Timeout Destination</label>
                   <label className="formItemDesc">
                     Select the timeout destination for this ring group.
                   </label>
@@ -691,6 +696,7 @@ const RingGroupAdd = () => {
                           )
                         )),
                     })}
+                    onKeyDown={restrictToNumbers}
                   // {...register("call_timeout", {
                   //   ...requiredValidator,
                   //   ...noSpecialCharactersValidator,
@@ -950,6 +956,7 @@ const RingGroupAdd = () => {
                     {...register("description", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.description && (
                     <ErrorMessage text={errors.description.message} />
@@ -1001,7 +1008,11 @@ const RingGroupAdd = () => {
                     <div className="col-12 d-flex justify-content-start mb-2">
                       <div
                         className="formLabel pe-2"
-                        style={index === 0 ? { marginTop: 32, width: 30 } : { width: 30 }}
+                        style={
+                          index === 0
+                            ? { marginTop: 32, width: 30 }
+                            : { width: 30 }
+                        }
                       >
                         <label>{index + 1}.</label>
                       </div>
@@ -1216,20 +1227,10 @@ const RingGroupAdd = () => {
                           <option value="inactive">False</option>
                         </select>
                       </div>
-                      <div className="mt-auto">
-                        <button
-                          onClick={() => addNewDestination()}
-                          className="panelButton my-auto"
-                          effect="ripple"
-                          type="button"
-                        >
-                          <i className="fa-duotone fa-circle-plus me-2"></i>Add More
-                        </button>
-                      </div>
                       {destination.length === 1 ? (
                         ""
                       ) : (
-                        <div className="col-1 h-100 mt-auto">
+                        <div className="me-2 h-100 mt-auto">
                           <button
                             type="button"
                             onClick={() => deleteDestination(item.id)}
@@ -1238,6 +1239,21 @@ const RingGroupAdd = () => {
                             <i className="fa-duotone fa-trash"></i>
                           </button>
                         </div>
+                      )}
+                      {index === 0 ? (
+                        <div className="mt-auto">
+                          <button
+                            onClick={() => addNewDestination()}
+                            className="panelButton mb-auto"
+                            effect="ripple"
+                            type="button"
+                          >
+                            <i className="fa-duotone fa-circle-plus me-2"></i>
+                            Add More
+                          </button>
+                        </div>
+                      ) : (
+                        ""
                       )}
                     </div>
                   );

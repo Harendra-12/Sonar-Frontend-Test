@@ -16,6 +16,8 @@ import {
   nameNumberValidator,
   noSpecialCharactersValidator,
   requiredValidator,
+  restrictToAllowedChars,
+  restrictToNumbers,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import ActionList from "../../CommonComponents/ActionList";
@@ -27,7 +29,8 @@ function CallCenterQueueAdd() {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState([]);
   // const [users, setUsers] = useState([]); //same as user
-  const [music, setMusic] = useState();
+  const [greetingSound, setGreetingSound] = useState();
+  const [holdSound, setHoldSound] = useState();
   const account = useSelector((state) => state.account);
   // const domain = useSelector((state) => state.domain);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
@@ -49,7 +52,7 @@ function CallCenterQueueAdd() {
   useEffect(() => {
     async function getData() {
       const userData = await generalGetFunction("/user/all");
-      const musicData = await generalGetFunction("/sound/all?type=hold");
+      const musicData = await generalGetFunction("/sound/all");
       if (userData.status) {
         if (userData.data.data.length === 0) {
           toast.error("Please create user first");
@@ -65,7 +68,10 @@ function CallCenterQueueAdd() {
         }
       }
       if (musicData.status) {
-        setMusic(musicData.data);
+        setGreetingSound(
+          musicData.data.filter((item) => item.type === "ringback")
+        );
+        setHoldSound(musicData.data.filter((item) => item.type === "hold"));
       }
     }
     getData();
@@ -73,7 +79,8 @@ function CallCenterQueueAdd() {
 
   const [agent, setAgent] = useState([
     {
-      id: 1,
+      // id: 1,
+      id: Math.floor(Math.random() * 10000),
       name: "",
       level: "0",
       position: "0",
@@ -81,12 +88,13 @@ function CallCenterQueueAdd() {
       // status: "Logged Out",
       password: "1234",
       contact: "",
-      call_timeout:"",
-      busy_delay_time:"",
-      reject_delay_time:"",
-      max_no_answer:"",
-      no_answer_delay_time:"",
-      wrap_up_time:"",
+      call_timeout: "",
+      busy_delay_time: "",
+      reject_delay_time: "",
+      max_no_answer: "",
+      no_answer_delay_time: "",
+      wrap_up_time: "",
+      reserve_agents: 0,
     },
   ]);
 
@@ -98,7 +106,8 @@ function CallCenterQueueAdd() {
     setAgent([
       ...agent,
       {
-        id: agent.length + 1,
+        // id: agent.length + 1,
+        id: Math.floor(Math.random() * 10000),
         name: "",
         level: "0",
         position: "0",
@@ -106,12 +115,13 @@ function CallCenterQueueAdd() {
         // status: "Logged Out",
         password: "1234",
         contact: "",
-        call_timeout:"",
-        reject_delay_time:"",
-        max_no_answer:"",
-        busy_delay_time:"",
-        no_answer_delay_time:"",
-        wrap_up_time:"",
+        call_timeout: "",
+        reject_delay_time: "",
+        max_no_answer: "",
+        busy_delay_time: "",
+        no_answer_delay_time: "",
+        wrap_up_time: "",
+        reserve_agents: 0,
       },
     ]);
   }
@@ -279,8 +289,7 @@ function CallCenterQueueAdd() {
       return;
     }
 
-    const { recording_enabled } =
-      data;
+    const { recording_enabled } = data;
 
     const payload = {
       ...data,
@@ -290,24 +299,52 @@ function CallCenterQueueAdd() {
         account_id: account.account_id,
         created_by: account.id,
       },
-      // ...xmlObj,
+
+      // set the default values as per freeswitch requirements
+      ...{
+        max_wait_time:
+          data.max_wait_time === "" ? 0 : Number(data.max_wait_time),
+        max_wait_time_with_no_agent:
+          data.max_wait_time_with_no_agent === ""
+            ? 0
+            : Number(data.max_wait_time_with_no_agent),
+        max_wait_time_with_no_agent_time_reached:
+          data.max_wait_time_with_no_agent_time_reached === ""
+            ? 5
+            : Number(data.max_wait_time_with_no_agent_time_reached),
+        ring_progressively_delay:
+          data.ring_progressively_delay === ""
+            ? 10
+            : Number(data.ring_progressively_delay),
+      },
 
       ...{
         agents: agent.map((item) => {
           return {
             agent_name: item.name,
-            call_timeout:item.call_timeout===""?null:Number(item.call_timeout),
-            reject_delay_time:item.reject_delay_time===""?null:Number(item.reject_delay_time),
-            max_no_answer:item.max_no_answer===""?null:Number(item.max_no_answer),
-            no_answer_delay_time:item.no_answer_delay_time===""?null:Number(item.no_answer_delay_time),
-            wrap_up_time:item.wrap_up_time===""?null:Number(item.wrap_up_time),
-            busy_delay_time:item.busy_delay_time===""?null:Number(item.busy_delay_time),
+            call_timeout:
+              item.call_timeout === "" ? null : Number(item.call_timeout),
+            reject_delay_time:
+              item.reject_delay_time === ""
+                ? null
+                : Number(item.reject_delay_time),
+            max_no_answer:
+              item.max_no_answer === "" ? null : Number(item.max_no_answer),
+            no_answer_delay_time:
+              item.no_answer_delay_time === ""
+                ? null
+                : Number(item.no_answer_delay_time),
+            wrap_up_time:
+              item.wrap_up_time === "" ? null : Number(item.wrap_up_time),
+            busy_delay_time:
+              item.busy_delay_time === "" ? null : Number(item.busy_delay_time),
             tier_level: item.level,
             tier_position: item.position,
             type: item.type,
             status: "Logged Out",
             password: item.password,
             contact: item.contact,
+            reserve_agents: item.reserve_agents,
           };
         }),
       },
@@ -341,7 +378,7 @@ function CallCenterQueueAdd() {
     <main className="mainContent">
       <section id="phonePage">
         <div className="container-fluid px-0">
-          <Header title="Call Center Queue" />
+          <Header title="Call Center Queue Add" />
           <div id="subPageHeader">
             <div className="col-xl-6 my-auto">
               {/* <h4 className="my-auto">Add Call Center Queue</h4> */}
@@ -401,8 +438,11 @@ function CallCenterQueueAdd() {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Queue Name</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Enter the queue name.
+                  </label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <input
                     type="text"
                     name="extension"
@@ -411,14 +451,11 @@ function CallCenterQueueAdd() {
                       ...nameNumberValidator,
                     })}
                     className="formItem"
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.queue_name && (
                     <ErrorMessage text={errors.queue_name.message} />
                   )}
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
-                    Enter the queue name.
-                  </label>
                 </div>
               </div>
               {/* <div className="formRow col-xl-3">
@@ -491,12 +528,26 @@ function CallCenterQueueAdd() {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Greeting</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Select the desired Greeting.
+                  </label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <select {...register("greeting")} className="formItem w-100">
+                    <option></option>
+                    {greetingSound &&
+                      greetingSound.map((item, index) => {
+                        return (
+                          <option key={index} value={item.id}>
+                            {item.name}
+                          </option>
+                        );
+                      })}
+                  </select>
+                  {/* <select {...register("greeting")} className="formItem w-100">
                     <option>say</option>
                     <option>tone_stream</option>
-                  </select>
+                  </select> */}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Select the desired Greeting.
@@ -506,13 +557,16 @@ function CallCenterQueueAdd() {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Strategy</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Select the queue ring strategy.
+                  </label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <select {...register("strategy")} className="formItem w-100">
                     <option value="ring-all">Ring All</option>
                     {/* <option value="longest-idle-agent">
                       Longest Idle Agent
-                    </option> */} 
+                    </option> */}
                     {/* <option value="round-robin">Round Robin</option> */}
                     <option value="top-down">Top Down</option>
                     {/* <option value="agent-with-least-talk-time">
@@ -530,21 +584,20 @@ function CallCenterQueueAdd() {
                       Ring Progressively
                     </option>
                   </select>
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
-                    Select the queue ring strategy.
-                  </label>
                 </div>
               </div>
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Music on Hold</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Select the desired hold music.
+                  </label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <select {...register("moh_sound")} className="formItem w-100">
                     <option></option>
-                    {music &&
-                      music.map((item, index) => {
+                    {holdSound &&
+                      holdSound.map((item, index) => {
                         return (
                           <option key={index} value={item.id}>
                             {item.name}
@@ -552,17 +605,16 @@ function CallCenterQueueAdd() {
                         );
                       })}
                   </select>
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
-                    Select the desired hold music.
-                  </label>
                 </div>
               </div>
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Record</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Save the recording.
+                  </label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <select
                     {...register("recording_enabled")}
                     className="formItem w-100"
@@ -571,23 +623,33 @@ function CallCenterQueueAdd() {
                     <option value="true">True</option>
                     <option value="false">False</option>
                   </select>
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
-                    Save the recording.
-                  </label>
                 </div>
               </div>
               <div className="formRow col-xl-3">
-                <ActionList
-                  getDropdownValue={actionListValue}
-                  value={watch().queue_timeout_action}
-                />
+                <div className="formLabel">
+                  <label htmlFor="">Action</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Set the action to perform when the max wait time is reached.
+                  </label>
+                </div>
+                <div className="col-6">
+                  <ActionList
+                    title={null}
+                    label={null}
+                    getDropdownValue={actionListValue}
+                    value={watch().queue_timeout_action}
+                  />
+                </div>
               </div>
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Discard Abandoned After</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    The number of seconds before the abandoned call is removed
+                    from the queue.
+                  </label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <input
                     type="text"
                     name="extension"
@@ -595,24 +657,23 @@ function CallCenterQueueAdd() {
                     {...register("discard_abandoned_after", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.discard_abandoned_after && (
                     <ErrorMessage
                       text={errors.discard_abandoned_after.message}
                     />
                   )}
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
-                    The number of seconds before the abandoned call is removed
-                    from the queue.
-                  </label>
                 </div>
               </div>
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Caller ID Name Prefix</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Set a prefix on the caller ID name.
+                  </label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <input
                     type="text"
                     name="extension"
@@ -620,14 +681,11 @@ function CallCenterQueueAdd() {
                     {...register("queue_cid_prefix", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.queue_cid_prefix && (
                     <ErrorMessage text={errors.queue_cid_prefix.message} />
                   )}
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
-                    Set a prefix on the caller ID name.
-                  </label>
                 </div>
               </div>
 
@@ -635,7 +693,7 @@ function CallCenterQueueAdd() {
                 <div className="formLabel">
                   <label htmlFor="">Time Base Score</label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <select
                     {...register("time_base_score")}
                     className="formItem w-100"
@@ -643,7 +701,6 @@ function CallCenterQueueAdd() {
                     <option value="queue">Queue</option>
                     <option value="system">System</option>
                   </select>
-                  <br />
                 </div>
               </div>
 
@@ -651,7 +708,7 @@ function CallCenterQueueAdd() {
                 <div className="formLabel">
                   <label htmlFor="">Tier Rules Apply</label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <select
                     {...register("tier_rules_apply")}
                     className="formItem w-100"
@@ -659,7 +716,6 @@ function CallCenterQueueAdd() {
                     <option value={1}>True</option>
                     <option value={0}>False</option>2{" "}
                   </select>
-                  <br />
                 </div>
               </div>
 
@@ -667,7 +723,7 @@ function CallCenterQueueAdd() {
                 <div className="formLabel">
                   <label htmlFor="">Tier Rule Wait Second</label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <input
                     type="number"
                     name="extension"
@@ -679,7 +735,6 @@ function CallCenterQueueAdd() {
                   {errors.tier_rule_wait_second && (
                     <ErrorMessage text={errors.tier_rule_wait_second.message} />
                   )}
-                  <br />
                 </div>
               </div>
 
@@ -687,7 +742,7 @@ function CallCenterQueueAdd() {
                 <div className="formLabel">
                   <label htmlFor="">Tier Rule Wait Multiply Level</label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <select
                     {...register("tier_rule_wait_multiply_level")}
                     className="formItem w-100"
@@ -695,7 +750,6 @@ function CallCenterQueueAdd() {
                     <option value={1}>True</option>
                     <option value={0}>False</option>
                   </select>
-                  <br />
                 </div>
               </div>
 
@@ -703,7 +757,7 @@ function CallCenterQueueAdd() {
                 <div className="formLabel">
                   <label htmlFor="">Tier Rule No Agent No Wait</label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <select
                     {...register("tier_rule_no_agent_no_wait")}
                     className="formItem w-100"
@@ -711,7 +765,6 @@ function CallCenterQueueAdd() {
                     <option value={1}>True</option>
                     <option value={0}>False</option>
                   </select>
-                  <br />
                 </div>
               </div>
 
@@ -719,7 +772,7 @@ function CallCenterQueueAdd() {
                 <div className="formLabel">
                   <label htmlFor="">Abandoned Resume Allowed</label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <select
                     {...register("abandoned_resume_allowed")}
                     className="formItem w-100"
@@ -727,7 +780,6 @@ function CallCenterQueueAdd() {
                     <option value={1}>True</option>
                     <option value={0}>False</option>
                   </select>
-                  <br />
                 </div>
               </div>
 
@@ -735,7 +787,7 @@ function CallCenterQueueAdd() {
                 <div className="formLabel">
                   <label htmlFor="">Max Wait Time</label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <input
                     type="number"
                     name="extension"
@@ -743,11 +795,75 @@ function CallCenterQueueAdd() {
                     {...register("max_wait_time", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToNumbers}
                   />
                   {errors.max_wait_time && (
                     <ErrorMessage text={errors.max_wait_time.message} />
                   )}
-                  <br />
+                </div>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Max Wait Time with no agent</label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="number"
+                    name="extension"
+                    className="formItem"
+                    {...register("max_wait_time_with_no_agent", {
+                      ...noSpecialCharactersValidator,
+                    })}
+                    onKeyDown={restrictToNumbers}
+                  />
+                  {errors.max_wait_time_with_no_agent && (
+                    <ErrorMessage text={errors.max_wait_time_with_no_agent} />
+                  )}
+                </div>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">
+                    Max Wait Time With No Agent Time Reached{" "}
+                  </label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="number"
+                    name="extension"
+                    className="formItem"
+                    {...register("max_wait_time_with_no_agent_time_reached", {
+                      ...noSpecialCharactersValidator,
+                    })}
+                    onKeyDown={restrictToNumbers}
+                  />
+                  {errors.max_wait_time_with_no_agent_time_reached && (
+                    <ErrorMessage
+                      text={errors.max_wait_time_with_no_agent_time_reached}
+                    />
+                  )}
+                </div>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Ring Progressively Delay</label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="number"
+                    name="extension"
+                    className="formItem"
+                    {...register("ring_progressively_delay", {
+                      ...noSpecialCharactersValidator,
+                    })}
+                    onKeyDown={restrictToNumbers}
+                  />
+                  {errors.ring_progressively_delay && (
+                    <ErrorMessage text={errors.ring_progressively_delay} />
+                  )}
                 </div>
               </div>
               {/* <div className="formRow col-xl-3">
@@ -773,15 +889,15 @@ function CallCenterQueueAdd() {
                   Set the status of this call center queue.
                 </label>
               </div> */}
-              <div className="formRow col-xl-12 row">
+              <div className="formRow col-xl-12">
                 {agent &&
                   agent.map((item, index) => {
                     return (
-                      <div className="d-flex flex-wrap" key={index}>
-                        <div className="formLabel col-auto pe-2 m-0 mt-auto">
+                      <div className="row" key={index}>
+                        <div className="formLabel pe-2 m-0 mt-auto">
                           <label>{index + 1}.</label>
                         </div>
-                        <div className="col-2 pe-1">
+                        <div className="col-1 ps-0 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Agent Name</label>
@@ -859,7 +975,7 @@ function CallCenterQueueAdd() {
                             </select>
                           </div>
                         </div>
-                        <div className="col-2 pe-2">
+                        <div className="col-1 ps-0 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Password</label>
@@ -878,7 +994,7 @@ function CallCenterQueueAdd() {
                             />
                           </div>
                         </div>
-                        <div className="col-1 pe-2">
+                        <div className="col-1 ps-0 pe-2" style={{ width: '6%' }}>
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Tier Level</label>
@@ -906,7 +1022,7 @@ function CallCenterQueueAdd() {
                             <option value={9}>9</option>
                           </select>
                         </div>
-                        <div className="col-1 pe-2">
+                        <div className="col-1 ps-0 pe-2" style={{ width: '6.5%' }}>
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Tier Position</label>
@@ -950,7 +1066,7 @@ function CallCenterQueueAdd() {
                             <option value={"uuid-standby"}>UUID Standbu</option>
                           </select>
                         </div> */}
-                        <div className="col-1 pe-2">
+                        <div className="col-1 ps-0 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Call Timeout</label>
@@ -969,10 +1085,10 @@ function CallCenterQueueAdd() {
                             />
                           </div>
                         </div>
-                        <div className="col-1 pe-2">
+                        <div className="col-1 ps-0 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
-                              <label htmlFor="">Reject Delay Time</label>
+                              <label htmlFor="">Reject Delay</label>
                             ) : (
                               ""
                             )}
@@ -984,12 +1100,12 @@ function CallCenterQueueAdd() {
                               value={item.reject_delay_time}
                               onChange={(e) => handleAgentChange(e, index)}
                               className="formItem"
-                              placeholder="Reject Delay Time"
+                              placeholder="Reject Delay"
                             />
                           </div>
                         </div>
 
-                        <div className="col-1 pe-2">
+                        <div className="col-1 ps-0 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Max No Answer</label>
@@ -1009,10 +1125,10 @@ function CallCenterQueueAdd() {
                           </div>
                         </div>
 
-                        <div className="col-1 pe-2">
+                        <div className="col-1 ps-0 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
-                              <label htmlFor="">Busy Delay Time</label>
+                              <label htmlFor="">Busy Delay</label>
                             ) : (
                               ""
                             )}
@@ -1024,15 +1140,15 @@ function CallCenterQueueAdd() {
                               value={item.busy_delay_time}
                               onChange={(e) => handleAgentChange(e, index)}
                               className="formItem"
-                              placeholder="Busy Delay Time"
+                              placeholder="Busy Delay"
                             />
                           </div>
                         </div>
 
-                        <div className="col-1 pe-2">
+                        <div className="col-1 ps-0 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
-                              <label htmlFor="">nonswer delay time</label>
+                              <label htmlFor="">No Answer Delay</label>
                             ) : (
                               ""
                             )}
@@ -1044,12 +1160,12 @@ function CallCenterQueueAdd() {
                               value={item.no_answer_delay_time}
                               onChange={(e) => handleAgentChange(e, index)}
                               className="formItem"
-                              placeholder="no answer delay time"
+                              placeholder="No Answer Delay"
                             />
                           </div>
                         </div>
 
-                         <div className="col-1 pe-2">
+                        <div className="col-1 ps-0 pe-2">
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Wrap Up Time</label>
@@ -1068,8 +1184,27 @@ function CallCenterQueueAdd() {
                             />
                           </div>
                         </div>
-                          
 
+                        <div className="col-1 ps-0 pe-2">
+                          <div className="formLabel">
+                            {index === 0 ? (
+                              <label htmlFor="">Reserve Agents</label>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                          <select
+                            className="formItem me-0"
+                            style={{ width: "100%" }}
+                            name="reserve_agents"
+                            value={item.reserve_agents}
+                            onChange={(e) => handleAgentChange(e, index)}
+                            id="selectFormRow"
+                          >
+                            <option value={0}>False</option>
+                            <option value={1}>True</option>
+                          </select>
+                        </div>
 
                         {/* <div className="col-2 pe-2">
                           <div className="formLabel">
@@ -1100,11 +1235,11 @@ function CallCenterQueueAdd() {
                         ) : (
                           <div
                             onClick={() => removeAgenet(item.id)}
-                            className="col-auto h-100 d-flex align-items-center"
+                            className="col-auto ps-0 pe-2 mt-auto"
                           >
                             <button
                               type="button"
-                              className="clearButton text-danger mt-auto mb-2"
+                              className="clearButton text-danger"
                             >
                               <i className="fa-duotone fa-trash"></i>
                             </button>
@@ -1114,15 +1249,11 @@ function CallCenterQueueAdd() {
                           index !== (user && user.length - 1) ? (
                           <div
                             onClick={addNewAgent}
-                            className="col-auto h-100 d-flex align-items-center"
+                            className="col-auto px-0 mt-auto"
                           >
                             <button
                               type="button"
-                              className={
-                                index === 0
-                                  ? "panelButton mt-4 mb-0"
-                                  : "panelButton my-auto"
-                              }
+                              className="panelButton my-auto"
                             >
                               Add more
                             </button>

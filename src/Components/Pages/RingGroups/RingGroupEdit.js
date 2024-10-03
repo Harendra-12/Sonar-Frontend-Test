@@ -22,6 +22,8 @@ import {
   noSpecialCharactersValidator,
   numberValidator,
   requiredValidator,
+  restrictToAllowedChars,
+  restrictToNumbers,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
@@ -66,7 +68,8 @@ const RingGroupEdit = () => {
   // Handle destination
   const [destination, setDestination] = useState([
     {
-      id: 1,
+      // id: 1,
+      id: Math.floor(Math.random() * 10000),
       destination: "",
       delay: 0,
       timeOut: "30",
@@ -387,7 +390,8 @@ const RingGroupEdit = () => {
     setDestination([
       ...destination,
       {
-        id: destination.length + 10000,
+        // id: destination.length + 10000,
+        id: Math.floor(Math.random() * 10000),
         destination: "",
         delay: 0,
         timeOut: "30",
@@ -592,9 +596,9 @@ const RingGroupEdit = () => {
                       ...lengthValidator(3, 25),
                       ...nameNumberValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.name && <ErrorMessage text={errors.name.message} />}
-
                 </div>
               </div>
               <div className="formRow col-xl-3">
@@ -615,7 +619,6 @@ const RingGroupEdit = () => {
                   {errors.extension && (
                     <ErrorMessage text={errors.extension.message} />
                   )}
-
                 </div>
               </div>
               {/* <div className="formRow col-xl-3">
@@ -765,6 +768,7 @@ const RingGroupEdit = () => {
                           )
                         )),
                     })}
+                    onKeyDown={restrictToNumbers}
                   // {...register("call_timeout", {
                   //   ...requiredValidator,
                   //   ...noSpecialCharactersValidator,
@@ -997,6 +1001,7 @@ const RingGroupEdit = () => {
                     {...register("description", {
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.description && (
                     <ErrorMessage text={errors.description.message} />
@@ -1052,7 +1057,11 @@ const RingGroupEdit = () => {
                     <div className="col-12 d-flex justify-content-start mb-2">
                       <div
                         className="formLabel pe-2"
-                        style={index === 0 ? { marginTop: 32, width: 30 } : { width: 30 }}
+                        style={
+                          index === 0
+                            ? { marginTop: 32, width: 30 }
+                            : { width: 30 }
+                        }
                       >
                         <label>{index + 1}.</label>
                       </div>
@@ -1277,16 +1286,6 @@ const RingGroupEdit = () => {
                           <option value="inactive">False</option>
                         </select>
                       </div>
-                      <div className="mt-auto">
-                        <button
-                          onClick={() => addNewDestination()}
-                          className="panelButton mt-auto"
-                          effect="ripple"
-                          type="button"
-                        >
-                          <i className="fa-duotone fa-circle-plus me-2"></i>Add More
-                        </button>
-                      </div>
                       {destination.length === 1 ? (
                         ""
                       ) : (
@@ -1299,6 +1298,21 @@ const RingGroupEdit = () => {
                             <i className="fa-duotone fa-trash"></i>
                           </button>
                         </div>
+                      )}
+                      {index === 0 ? (
+                        <div className="mt-auto">
+                          <button
+                            onClick={() => addNewDestination()}
+                            className="panelButton mb-auto"
+                            effect="ripple"
+                            type="button"
+                          >
+                            <i className="fa-duotone fa-circle-plus me-2"></i>
+                            Add More
+                          </button>
+                        </div>
+                      ) : (
+                        ""
                       )}
                     </div>
                   );

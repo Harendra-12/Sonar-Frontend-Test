@@ -11,6 +11,7 @@ import {
   lengthValidator,
   numberValidator,
   requiredValidator,
+  restrictToNumbers,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import CircularLoader from "../../Loader/CircularLoader";
@@ -117,6 +118,7 @@ const DidListingAdd = () => {
                           ...numberValidator,
                           ...lengthValidator(8, 14),
                         })}
+                        onKeyDown={restrictToNumbers}
                       />
 
                       {errors.did && <ErrorMessage text={errors.did.message} />}

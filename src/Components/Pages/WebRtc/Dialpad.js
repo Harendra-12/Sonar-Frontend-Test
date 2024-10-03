@@ -29,7 +29,7 @@ function Dialpad({ hideDialpad, setSelectedModule }) {
     }
     if (destNumber.length > 3) {
       hideDialpad(false);
-      e.preventDefault();
+      // e.preventDefault();
       const apiData = await sessionManager?.call(
         `sip:${Number(destNumber)}@${account.domain.domain_name}`,
         {

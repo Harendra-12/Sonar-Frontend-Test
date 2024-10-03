@@ -109,133 +109,123 @@ const CallCenterSettings = () => {
         <div className="col-xl-12">
           {loading && <CircularLoader />}
           <div className="mx-2" id="detailsContent">
-            <form className="row">
-              <div className="formRow col-xl-12 px-xl-4">
-                <div className="col-12 d-flex justify-content-start">
-                  <div className="formLabel pe-2 col-2">
-                    <label className="text-dark">Greeting</label>
-                  </div>
-                  <div className="col-2 pe-2">
-                    <select
-                      {...register("greeting")}
-                      className="formItem me-0"
-                      style={{ width: "100%" }}
-                    >
-                      <option value="say">Say</option>
-                      <option value="tone_stream">Tone Stream</option>
-                    </select>
-                    <label className="formItemDesc">
-                      Select the desired Greeting.
-                    </label>
-                  </div>
+            <form>
+              <div className="formRow col-xl-3">
+
+                <div className="formLabel">
+                  <label className="text-dark">Greeting</label>
+                  <label className="formItemDesc">
+                    Select the desired Greeting.
+                  </label>
+                </div>
+                <div className="col-6">
+                  <select
+                    {...register("greeting")}
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                  >
+                    <option value="say">Say</option>
+                    <option value="tone_stream">Tone Stream</option>
+                  </select>
+                </div>
+
+              </div>
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label className="text-dark">Strategy</label>
+                  <label className="formItemDesc">
+                    Select the queue ring strategy.
+                  </label>
+                </div>
+                <div className="col-6">
+                  <select
+                    {...register("strategy")}
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                  >
+                    <option value="ring-all">Ring All</option>
+                    <option value="longest-idle-agent">
+                      Longest Idle Agent
+                    </option>
+                    <option value="round-robin">Round Robin</option>
+                    <option value="top-down">Top Down</option>
+                    <option value="agent-with-least-talk-time">
+                      Agent with least talk time
+                    </option>
+                    <option value="agent-with-fewest-calls">
+                      Agent with fewest calls
+                    </option>
+                    <option value="sequentially-by-aget-order">
+                      Sequentially by agent order
+                    </option>
+                    <option value="ring-progressively">
+                      Ring Progressively
+                    </option>
+                    <option value="random">Random</option>
+                  </select>
                 </div>
               </div>
-              <div className="formRow col-xl-12 px-xl-4">
-                <div className="col-12 d-flex justify-content-start">
-                  <div className="formLabel pe-2 col-2">
-                    <label className="text-dark">Strategy</label>
-                  </div>
-                  <div className="col-2 pe-2">
-                    <select
-                      {...register("strategy")}
-                      className="formItem me-0"
-                      style={{ width: "100%" }}
-                    >
-                      <option value="ring-all">Ring All</option>
-                      <option value="longest-idle-agent">
-                        Longest Idle Agent
-                      </option>
-                      <option value="round-robin">Round Robin</option>
-                      <option value="top-down">Top Down</option>
-                      <option value="agent-with-least-talk-time">
-                        Agent with least talk time
-                      </option>
-                      <option value="agent-with-fewest-calls">
-                        Agent with fewest calls
-                      </option>
-                      <option value="sequentially-by-aget-order">
-                        Sequentially by agent order
-                      </option>
-                      <option value="ring-progressively">
-                        Ring Progressively
-                      </option>
-                      <option value="random">Random</option>
-                    </select>
-                    <label className="formItemDesc">
-                      Select the queue ring strategy.
-                    </label>
-                  </div>
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label className="text-dark">Record</label>
+                  <label className="formItemDesc">Save the recording.</label>
+                </div>
+                <div className="col-6">
+                  <select
+                    {...register("record_template")}
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                  >
+                    <option value={true}>True</option>
+                    <option value={false}>False</option>
+                  </select>
                 </div>
               </div>
-              <div className="formRow col-xl-12 px-xl-4">
-                <div className="col-12 d-flex justify-content-start">
-                  <div className="formLabel pe-2 col-2">
-                    <label className="text-dark">Record</label>
-                  </div>
-                  <div className="col-2 pe-2">
-                    <select
-                      {...register("record_template")}
-                      className="formItem me-0"
-                      style={{ width: "100%" }}
-                    >
-                      <option value={true}>True</option>
-                      <option value={false}>False</option>
-                    </select>
-                    <label className="formItemDesc">Save the recording.</label>
-                  </div>
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label className="text-dark">Time Base Score</label>
+                </div>
+                <div className="col-6">
+                  <select
+                    {...register("time_base_score")}
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                  >
+                    <option value="queue">Queue</option>
+                    <option value="system">System</option>
+                  </select>
                 </div>
               </div>
-              <div className="formRow col-xl-12 px-xl-4">
-                <div className="col-12 d-flex justify-content-start">
-                  <div className="formLabel pe-2 col-2">
-                    <label className="text-dark">Time Base Score</label>
-                  </div>
-                  <div className="col-2 pe-2">
-                    <select
-                      {...register("time_base_score")}
-                      className="formItem me-0"
-                      style={{ width: "100%" }}
-                    >
-                      <option value="queue">Queue</option>
-                      <option value="system">System</option>
-                    </select>
-                  </div>
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label className="text-dark">Tier Rules Apply</label>
+                </div>
+                <div className="col-6">
+                  <select
+                    {...register("tier_rules_apply")}
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                  >
+                    <option value={1}>True</option>
+                    <option value={0}>False</option>
+                  </select>
                 </div>
               </div>
-              <div className="formRow col-xl-12 px-xl-4">
-                <div className="col-12 d-flex justify-content-start">
-                  <div className="formLabel pe-2 col-2">
-                    <label className="text-dark">Tier Rules Apply</label>
-                  </div>
-                  <div className="col-2 pe-2">
-                    <select
-                      {...register("tier_rules_apply")}
-                      className="formItem me-0"
-                      style={{ width: "100%" }}
-                    >
-                      <option value={1}>True</option>
-                      <option value={0}>False</option>
-                    </select>
-                  </div>
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label className="text-dark">
+                    Tier Rule Wait Multiply Level
+                  </label>
                 </div>
-              </div>
-              <div className="formRow col-xl-12 px-xl-4">
-                <div className="col-12 d-flex justify-content-start">
-                  <div className="formLabel pe-2 col-2">
-                    <label className="text-dark">
-                      Tier Rule Wait Multiply Level
-                    </label>
-                  </div>
-                  <div className="col-2 pe-2">
-                    <select
-                      {...register("tier_rule_wait_multiply_level")}
-                      className="formItem me-0"
-                      style={{ width: "100%" }}
-                    >
-                      <option value={1}>True</option>
-                      <option value={0}>False</option>
-                    </select>
-                  </div>
+                <div className="col-6">
+                  <select
+                    {...register("tier_rule_wait_multiply_level")}
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                  >
+                    <option value={1}>True</option>
+                    <option value={0}>False</option>
+                  </select>
                 </div>
               </div>
             </form>
