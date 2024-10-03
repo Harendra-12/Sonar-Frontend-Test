@@ -176,10 +176,9 @@ const Extensions = () => {
                         return (
                           <tr key={index}>
                             <td
-                              style={{ cursor: "default" }}
-                              // onClick={() =>
-                              //   navigate(`/extensions-edit?id=${item.id}`)
-                              // }
+                              onClick={() =>
+                                navigate(`/extensions-edit?id=${item.id}`)
+                              }
                             >
                               {item.extension}{" "}
                               {foundUser ? `(${foundUser.name})` : ""}
@@ -192,37 +191,32 @@ const Extensions = () => {
                               {item?.domain?.domain_name}
                             </td> */}
                             <td
-                              style={{ cursor: "default" }}
-                              // onClick={() =>
-                              //   navigate(`/extensions-edit?id=${item.id}`)
-                              // }
+                              onClick={() =>
+                                navigate(`/extensions-edit?id=${item.id}`)
+                              }
                             >
                               {item.effectiveCallerIdName}
                             </td>
                             <td
-                              style={{ cursor: "default" }}
-                              // onClick={() =>
-                              //   navigate(`/extensions-edit?id=${item.id}`)
-                              // }
+                              onClick={() =>
+                                navigate(`/extensions-edit?id=${item.id}`)
+                              }
                             >
                               {item.outbundCallerIdName}
                             </td>
                             <td
-                              style={{ cursor: "default" }}
-                              // onClick={() =>
-                              //   navigate(`/extensions-edit?id=${item.id}`)
-                              // }
+                              onClick={() =>
+                                navigate(`/extensions-edit?id=${item.id}`)
+                              }
                             >
                               {item.callgroup}
                             </td>
                             <td
-                              // onClick={() =>
-                              //   navigate(`/extensions-edit?id=${item.id}`)
-                              // }
-                              style={{ cursor: "default" }}
+                              onClick={() =>
+                                navigate(`/extensions-edit?id=${item.id}`)
+                              }
                             >
                               <label
-                                style={{ cursor: "default" }}
                                 className={
                                   item.callScreen === "Enable"
                                     ? "tableLabel success"
@@ -234,20 +228,18 @@ const Extensions = () => {
                             </td>
                             {/* <td>1001</td> */}
                             <td
-                              style={{ cursor: "default" }}
-                              // onClick={() =>
-                              //   navigate(`/extensions-edit?id=${item.id}`)
-                              // }
+                              onClick={() =>
+                                navigate(`/extensions-edit?id=${item.id}`)
+                              }
                               className="ellipsis"
                               id="detailBox"
                             >
                               {item.description}
                             </td>
                             <td
-                              style={{ cursor: "default" }}
-                              // onClick={() =>
-                              //   navigate(`/extensions-edit?id=${item.id}`)
-                              // }
+                              onClick={() =>
+                                navigate(`/extensions-edit?id=${item.id}`)
+                              }
                             >
                               <span
                                 className={
