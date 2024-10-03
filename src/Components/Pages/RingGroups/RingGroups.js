@@ -173,6 +173,7 @@ const RingGroups = () => {
                       <th>Status</th>
                       <th>Description</th>
                       <th>Setting</th>
+                      <th>Edit</th>
                       <th>Delete</th>
                     </tr>
                   </thead>
@@ -190,39 +191,45 @@ const RingGroups = () => {
                             return (
                               <tr key={index}>
                                 <td
-                                  onClick={() =>
-                                    navigate(`/ring-groups-edit?id=${item.id}`)
-                                  }
+                                  style={{ cursor: "default" }}
+                                  // onClick={() =>
+                                  //   navigate(`/ring-groups-edit?id=${item.id}`)
+                                  // }
                                 >
                                   {item.name}
                                 </td>
                                 <td
-                                  onClick={() =>
-                                    navigate(`/ring-groups-edit?id=${item.id}`)
-                                  }
+                                  style={{ cursor: "default" }}
+                                  // onClick={() =>
+                                  //   navigate(`/ring-groups-edit?id=${item.id}`)
+                                  // }
                                 >
                                   {item.extension}
                                 </td>
                                 <td
-                                  onClick={() =>
-                                    navigate(`/ring-groups-edit?id=${item.id}`)
-                                  }
+                                  style={{ cursor: "default" }}
+                                  // onClick={() =>
+                                  //   navigate(`/ring-groups-edit?id=${item.id}`)
+                                  // }
                                 >
                                   {item.strategy}
                                 </td>
                                 <td
-                                  onClick={() =>
-                                    navigate(`/ring-groups-edit?id=${item.id}`)
-                                  }
+                                  style={{ cursor: "default" }}
+                                  // onClick={() =>
+                                  //   navigate(`/ring-groups-edit?id=${item.id}`)
+                                  // }
                                 >
                                   {item.ring_group_destination.length}
                                 </td>
                                 <td
-                                  onClick={() =>
-                                    navigate(`/ring-groups-edit?id=${item.id}`)
-                                  }
+                                  style={{ cursor: "default" }}
+                                  // onClick={() =>
+                                  //   navigate(`/ring-groups-edit?id=${item.id}`)
+                                  // }
                                 >
                                   <label
+                                    style={{ cursor: "default" }}
                                     className={
                                       item.status === "active"
                                         ? "tableLabel success"
@@ -233,31 +240,54 @@ const RingGroups = () => {
                                   </label>
                                 </td>
                                 <td
-                                  onClick={() =>
-                                    navigate(`/ring-groups-edit?id=${item.id}`)
-                                  }
+                                  style={{ cursor: "default" }}
+                                  // onClick={() =>
+                                  //   navigate(`/ring-groups-edit?id=${item.id}`)
+                                  // }
                                   className="ellipsis"
                                   id="detailBox"
                                 >
                                   {item.description}
                                 </td>
-                                <td>
-                                  <button onClick={() =>
-                                    navigate(
-                                      `/ring-groups-settings?id=${item.id}`
-                                    )
-                                  } className="tableButton">
+                                <td style={{ cursor: "default" }}>
+                                  <button
+                                    onClick={() =>
+                                      navigate(
+                                        `/ring-groups-settings?id=${item.id}`
+                                      )
+                                    }
+                                    className="tableButton"
+                                  >
                                     <i className="fa-duotone fa-gear text-success"></i>
                                   </button>
                                 </td>
+                                <td style={{ cursor: "default" }}>
+                                  {" "}
+                                  <span
+                                    className="panelButton"
+                                    style={{
+                                      background: "green",
+                                      cursor: "pointer",
+                                    }}
+                                    onClick={() =>
+                                      navigate(
+                                        `/ring-groups-edit?id=${item.id}`
+                                      )
+                                    }
+                                  >
+                                    <i class="fa-solid fa-pencil"></i>
+                                  </span>
+                                </td>
                                 <td>
-                                  <button className="tableButton delete" onClick={() => {
-                                    setPopUp(true);
-                                    setDeleteId(item.id);
-                                  }}>
+                                  <button
+                                    className="tableButton delete"
+                                    onClick={() => {
+                                      setPopUp(true);
+                                      setDeleteId(item.id);
+                                    }}
+                                  >
                                     <i className="fa-solid fa-trash"></i>
                                   </button>
-
                                 </td>
                               </tr>
                             );
