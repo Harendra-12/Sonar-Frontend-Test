@@ -263,12 +263,8 @@ const RingGroups = () => {
                                 </td>
                                 <td style={{ cursor: "default" }}>
                                   {" "}
-                                  <span
-                                    className="panelButton"
-                                    style={{
-                                      background: "green",
-                                      cursor: "pointer",
-                                    }}
+                                  <button
+                                    className="tableButton edit"
                                     onClick={() =>
                                       navigate(
                                         `/ring-groups-edit?id=${item.id}`
@@ -276,7 +272,7 @@ const RingGroups = () => {
                                     }
                                   >
                                     <i class="fa-solid fa-pencil"></i>
-                                  </span>
+                                  </button>
                                 </td>
                                 <td>
                                   <button

@@ -258,12 +258,8 @@ function CallCenterQueue() {
                                 </td>
                                 <td style={{ cursor: "default" }}>
                                   {" "}
-                                  <span
-                                    className="panelButton"
-                                    style={{
-                                      background: "green",
-                                      cursor: "pointer",
-                                    }}
+                                  <button
+                                    className="tableButton edit"
                                     onClick={() =>
                                       navigate(
                                         `/cal-center-queue-edit?id=${item.id}`
@@ -271,7 +267,7 @@ function CallCenterQueue() {
                                     }
                                   >
                                     <i class="fa-solid fa-pencil"></i>
-                                  </span>
+                                  </button>
                                 </td>
                                 <td
                                   style={{ cursor: "default" }}
