@@ -967,7 +967,7 @@ function CardAndBilling() {
                     </div>
                   </div>
                   <div className="col-xl-12 mt-3">
-                    <div className="itemWrapper c">
+                    <div className="itemWrapper d">
                       <div className="heading">
                         <div className="d-flex flex-wrap justify-content-between">
                           <div className="col-10">
