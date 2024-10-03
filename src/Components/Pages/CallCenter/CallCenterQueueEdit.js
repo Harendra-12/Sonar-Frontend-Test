@@ -36,7 +36,7 @@ function CallCenterQueueEdit() {
   const [greetingSound, setGreetingSound] = useState();
   const [holdSound, setHoldSound] = useState();
   const [announcmentSound, setAnnouncmentSound] = useState();
-  
+
   // Define the initial state of the form
   const [agent, setAgent] = useState([
     {
@@ -241,7 +241,7 @@ function CallCenterQueueEdit() {
     return agentValues.length === uniqueValues.length;
   };
 
-// Handle form submit and validation
+  // Handle form submit and validation
   const handleFormSubmit = handleSubmit(async (data) => {
     if (!validateAgents()) {
       setErr("agent", {
@@ -504,7 +504,7 @@ function CallCenterQueueEdit() {
                 </div>
                 <div className="col-6">
                   <select {...register("greeting")} className="formItem w-100">
-                    <option disabled value={""}>
+                    <option disabled value="">
                       Select Greeting
                     </option>
                     {greetingSound &&
@@ -547,10 +547,7 @@ function CallCenterQueueEdit() {
                   </label>
                 </div>
                 <div className="col-6">
-                  <select
-                    {...register("moh_sound")}
-                    className="formItem w-100"
-                  >
+                  <select {...register("moh_sound")} className="formItem w-100">
                     <option value={""} disabled>
                       Select Hold Music
                     </option>
@@ -880,8 +877,13 @@ function CallCenterQueueEdit() {
                   </label>
                 </div>
                 <div className="col-6">
-                  <select {...register("queue_announce_sound")} className="formItem w-100">
-                    <option></option>
+                  <select
+                    {...register("queue_announce_sound")}
+                    className="formItem w-100"
+                  >
+                    <option disabled value="" selected>
+                      Select Queue Announce
+                    </option>
                     {announcmentSound &&
                       announcmentSound.map((item, index) => {
                         return (
@@ -893,7 +895,7 @@ function CallCenterQueueEdit() {
                   </select>
                   <br />
                   <label htmlFor="data" className="formItemDesc">
-                  Select the desired queue announce sound.
+                    Select the desired queue announce sound.
                   </label>
                 </div>
               </div>
@@ -945,7 +947,7 @@ function CallCenterQueueEdit() {
                 <div className="formLabel">
                   <label htmlFor="">Truncate Agents On Load</label>
                   <label htmlFor="data" className="formItemDesc">
-                  Truncate Agents On Load.
+                    Truncate Agents On Load.
                   </label>
                 </div>
                 <div className="col-6">
@@ -964,7 +966,7 @@ function CallCenterQueueEdit() {
                 <div className="formLabel">
                   <label htmlFor="">Truncate Tiers On Load</label>
                   <label htmlFor="data" className="formItemDesc">
-                  Truncate Tiers On Load.
+                    Truncate Tiers On Load.
                   </label>
                 </div>
                 <div className="col-6">
