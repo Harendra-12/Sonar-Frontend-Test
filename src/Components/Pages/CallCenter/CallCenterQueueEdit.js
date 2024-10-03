@@ -881,7 +881,9 @@ function CallCenterQueueEdit() {
                     {...register("queue_announce_sound")}
                     className="formItem w-100"
                   >
-                    <option></option>
+                    <option disabled value="" selected>
+                      Select Queue Announce
+                    </option>
                     {announcmentSound &&
                       announcmentSound.map((item, index) => {
                         return (
