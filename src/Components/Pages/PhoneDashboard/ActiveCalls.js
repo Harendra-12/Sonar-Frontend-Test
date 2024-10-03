@@ -118,7 +118,7 @@ function ActiveCalls() {
                                 <td>{item.name.split("/")[1]}</td>
                                 <td>{item.created.split(" ")[1]}</td>
                                 {/* <td>{item.b_cid_name}</td> */}
-                                <td>{item.b_cid_num}</td>
+                                <td>{item.cid_num}</td>
                                 <td>{item.dest}</td>
                                 <td>
                                   <select
