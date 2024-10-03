@@ -108,7 +108,9 @@
 
 .itemWrapper .data-number2 {
     text-align: left;
-    margin-top: 28px;
+    /* margin-top: 28px; */
+    margin-top: 20px;
+
 }
 
 .itemWrapper .data-number2 h5 {
@@ -406,7 +408,7 @@
     padding-left: 0;
     list-style: none;
     text-align: left;
-    padding-top: 10px;
+    padding-top: 15px;
     margin-bottom: 0;
 }
 

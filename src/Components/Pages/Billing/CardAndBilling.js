@@ -373,69 +373,73 @@ function CardAndBilling() {
                     <div className="col-xl-4 pe-0">
                       <div className="itemWrapper b">
                         <div className="heading">
-                          <i className="fa-duotone fa-ballot"></i> Upcoming
-                          Transaction
+                          <div class="d-flex flex-wrap justify-content-between align-items-center">
+                            <div class="col-10">
+                              <h5>Upcoming Transaction</h5>
+                              <p>16-01-2024</p>
+                            </div>
+                            <div class="col-2">
+                              <i className="fa-duotone fa-ballot" style={{ boxShadow: 'rgba(0, 0, 0, 0.15) 0px 3px 5px' }}></i>
+                            </div>
+                          </div>
                         </div>
-                        <div className="data-number">
-                          $ 200.<sub style={{ fontSize: 14 }}>00</sub>
-                        </div>
-                        <div className="label">
-                          Date: <span className="float-end">16-01-2024</span>
-                        </div>
-                        <div className="label">
-                          Package:{" "}
-                          <span className="float-end">Basic Package</span>
-                        </div>
-                        <div className="label">
-                          Tenure:{" "}
-                          <span className="float-end">Yearly Basis</span>
+                        <div className="data-number2">
+                          <div class="d-flex flex-wrap justify-content-between align-items-center">
+                            <div class="col-10">
+                              <h5>$200.<sub style={{ fontSize: "14px" }}>00</sub></h5>
+                              <p>Basic Package / Yearly Basis</p>
+                            </div>
+                            <div class="col-2">
+                              {/* <img
+                                src={require("../../assets/images/icons/diagram.png")}
+                              /> */}
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                     <div className="col-xl-4 pe-0">
                       <div className="itemWrapper a">
                         <div className="heading">
-                          <i className="fa-duotone fa-credit-card"></i> Wallet
-                          Balance
+                          <div className="heading">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                              <div class="col-10">
+                                <h5>Wallet Balance</h5>
+                                <p>{selectedCard?.[0]?.name ? `Card Holder: ${selectedCard?.[0]?.name}` : 'No Card Added'}</p>
+                              </div>
+                              <div class="col-2" style={{ cursor: 'pointer' }} onClick={() => setRechargePopUp(true)}>
+                                <i className="fa-duotone fa-credit-card" style={{ boxShadow: 'rgba(0, 0, 0, 0.15) 0px 3px 5px' }}></i>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                        <div className="data-number">
-                          ${" "}
-                          {accountDetails?.balance?.amount.split(".")[0]
-                            ? accountDetails?.balance?.amount.split(".")[0]
-                            : 0}
-                          .
-                          <sub style={{ fontSize: 14 }}>
-                            {accountDetails?.balance?.amount.split(".")[1]
-                              ? accountDetails?.balance?.amount.split(".")[1]
-                              : "00"}
-                          </sub>
-                        </div>
-                        <div className="label">
-                          Active Card:{" "}
-                          <span className="float-end">
-                            **** **** ****{" "}
-                            {selectedCard?.[0]?.card_number.slice(-4)}
-                          </span>
-                        </div>
-                        <div className="label">
-                          Holder's Name:{" "}
-                          <span
-                            className="float-end"
-                            style={{
-                              maxWidth: 120,
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                              overflow: "hidden",
-                            }}
-                          >
-                            {selectedCard?.[0]?.name}
-                          </span>
-                        </div>
-                        <div
-                          onClick={() => setRechargePopUp(true)}
-                          className="cartButton mt-1"
-                        >
-                          Recharge Now
+                        <div className="data-number2">
+                          <div class="d-flex flex-wrap justify-content-between align-items-center">
+                            <div class="col-10">
+                              <h5>${" "}
+                                {accountDetails?.balance?.amount.split(".")[0]
+                                  ? accountDetails?.balance?.amount.split(".")[0]
+                                  : 0}
+                                .
+                                <sub style={{ fontSize: 14 }}>
+                                  {accountDetails?.balance?.amount.split(".")[1]
+                                    ? accountDetails?.balance?.amount.split(".")[1]
+                                    : "00"}
+                                </sub>
+                              </h5>
+                              <p>{selectedCard?.[0]?.card_number ? `Active Card:{" "}**** **** ****{" "}
+                                ${selectedCard?.[0]?.card_number.slice(-4)}` : 'Please add a card before recharge!'}</p>
+                            </div>
+                            <div class="col-2">
+                              {/* <div
+                                onClick={() => setRechargePopUp(true)}
+                                className="cartButton p-2"
+                                style={{ width: '50px', height: '50px', fontSize: '18px' }}
+                              >
+                                <i class="fa-solid fa-rectangle-history-circle-plus"></i>
+                              </div> */}
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -924,8 +928,14 @@ function CardAndBilling() {
                   <div className="col-xl-12">
                     <div className="itemWrapper c h-100">
                       <div className="heading">
-                        <i className="fa-duotone fa-file-invoice"></i> Invoices
-                        <span className="float-end" style={{ cursor: 'pointer' }} onClick={() => navigate('/card-transaction-list')}><i class="fa-solid fa-eye"></i></span>
+                        <div className="d-flex flex-wrap justify-content-between">
+                          <div className="col-10">
+                            <h5>Invoices</h5>
+                          </div>
+                          <div className="col-2" style={{ cursor: 'pointer' }} onClick={() => navigate('/card-transaction-list')}>
+                            <i class="fa-solid fa-eye" style={{ boxShadow: 'rgba(0, 0, 0, 0.15) 0px 3px 5px' }}></i>
+                          </div>
+                        </div>
                       </div>
                       <ul className="invoiceList">
                         {accountDetails.payments.map((item, key) => {
@@ -959,40 +969,38 @@ function CardAndBilling() {
                   <div className="col-xl-12 mt-3">
                     <div className="itemWrapper c">
                       <div className="heading">
-                        <i className="fa-duotone fa-ballot-check"></i> Last
-                        Transaction
+                        <div className="d-flex flex-wrap justify-content-between">
+                          <div className="col-10">
+                            <h5>Last Transaction</h5>
+                            <p>{accountDetails?.payments[0].transaction_date.split(" ")[0]}</p>
+                          </div>
+                          <div className="col-2" style={{ cursor: 'pointer' }} onClick={() => downloadImage(accountDetails?.payments[0].invoice_url, `invoice${accountDetails?.payments[0].transaction_date.split(" ")[0]}`)}>
+                            <i className="fa-duotone fa-ballot-check" style={{ boxShadow: 'rgba(0, 0, 0, 0.15) 0px 3px 5px' }}></i>
+                          </div>
+                        </div>
                       </div>
-                      <div className="data-number">
-                        ${" "}
-                        {
-                          accountDetails?.payments[0].amount_subtotal.split(
-                            "."
-                          )[0]
-                        }
-                        .
-                        <sub style={{ fontSize: 14 }}>
-                          {
-                            accountDetails?.payments[0].amount_subtotal.split(
-                              "."
-                            )[1]
-                          }
-                        </sub>
-                      </div>
-                      <div className="label">
-                        Date:{" "}
-                        <span className="float-end">
-                          {
-                            accountDetails?.payments[0].transaction_date.split(
-                              " "
-                            )[0]
-                          }
-                        </span>
-                      </div>
-                      <div className="label">
-                        Transaction id:{" "}
-                        <span className="float-end">
-                          {accountDetails?.payments[0].transaction_id}
-                        </span>
+                      <div className="data-number2">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center">
+                          <div class="col-10">
+                            <h5>${" "}
+                              {
+                                accountDetails?.payments[0].amount_subtotal.split(
+                                  "."
+                                )[0]
+                              }
+                              .
+                              <sub style={{ fontSize: 14 }}>
+                                {
+                                  accountDetails?.payments[0].amount_subtotal.split(
+                                    "."
+                                  )[1]
+                                }
+                              </sub>
+                            </h5>
+                            <p>Transaction id:{" "}{accountDetails?.payments[0].transaction_id}</p>
+                          </div>
+                          <div class="col-2"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
