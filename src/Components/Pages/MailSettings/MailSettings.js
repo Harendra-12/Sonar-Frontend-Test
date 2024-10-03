@@ -86,8 +86,8 @@ const MailSettings = () => {
                       <th>Host</th>
                       <th>Mail From</th>
                       <th>Mail From Name</th>
-                      <th>Settings</th>
-                      <th>Action</th>
+                      <th>Edit</th>
+                      <th>Delete</th>
                     </tr>
                   </thead>
                   <tbody>

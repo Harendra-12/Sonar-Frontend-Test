@@ -223,6 +223,7 @@ function Music() {
                             <option value="hold">Hold</option>
                             <option value="busy">Busy</option>
                             <option value="ringback">Ringback</option>
+                            <option value="announcement">Announcement</option>
                           </select>
                         </div>
                         <div className="col-8">
