@@ -119,12 +119,8 @@ const MailSettings = () => {
                               </td>
                               <td style={{ cursor: "default" }}>
                                 {" "}
-                                <span
-                                  className="panelButton"
-                                  style={{
-                                    background: "green",
-                                    cursor: "pointer",
-                                  }}
+                                <button
+                                  className="tableButton edit"
                                   onClick={() =>
                                     navigate(
                                       `/mail-settings-edit?id=${data.id}`
@@ -132,19 +128,18 @@ const MailSettings = () => {
                                   }
                                 >
                                   <i class="fa-solid fa-pencil"></i>
-                                </span>
+                                </button>
                               </td>
                               <td style={{ cursor: "default" }}>
-                                <Link
-                                  effect="ripple"
-                                  className="panelButton"
+                                <button
+                                  className="tableButton delete"
                                   onClick={() => {
                                     setOpenPopup(true);
                                     setDeleteSetingsId(data.id);
                                   }}
                                 >
                                   <i class="fa-solid fa-trash"></i>
-                                </Link>
+                                </button>
                               </td>
                             </tr>
                           ))}

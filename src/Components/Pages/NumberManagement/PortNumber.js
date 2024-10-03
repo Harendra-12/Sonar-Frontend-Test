@@ -191,13 +191,12 @@ function PortNumber() {
                                     {item?.phone_number}
                                   </td>
                                   <td>
-                                    <i
-                                      className="fa-duotone fa-trash text-danger fs-6"
-                                      onClick={() => {
-                                        setPopup(true);
-                                        setDeleteIndex(item.id);
-                                      }}
-                                    ></i>
+                                    <button className="tableButton delete" onClick={() => {
+                                      setPopup(true);
+                                      setDeleteIndex(item.id);
+                                    }}>
+                                      <i className="fa-solid fa-trash"></i>
+                                    </button>
                                   </td>
                                 </tr>
                               );

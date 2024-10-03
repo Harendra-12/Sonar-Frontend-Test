@@ -64,7 +64,7 @@ function ChangePassword() {
           <div id="subPageHeader">
             <div className="col-xl-9 my-auto">
               {/* <h4 className="my-auto">Change Password</h4> */}
-              <p className="pt-2 mt-1 mb-0">Change your account password.</p>
+              <p className="mb-0">Change your account password.</p>
             </div>
             <div className="col-xl-3 ps-2">
               <div className="d-flex justify-content-end">
@@ -89,8 +89,8 @@ function ChangePassword() {
           </div>
         </div>
         <div className="mx-2" id="detailsContent">
-          <form className="row col-6">
-            <div className="formRow col-xl-12">
+          <form>
+            <div className="formRow col-xl-3">
               <div className="formLabel">
                 <div>
                   <label className="text-dark">Current Password</label>
@@ -120,7 +120,7 @@ function ChangePassword() {
                 />
               </div>
             </div>
-            <div className="formRow col-xl-12">
+            <div className="formRow col-xl-3">
               <div className="formLabel">
                 <div>
                   <label className="text-dark">New Password</label>
@@ -152,7 +152,7 @@ function ChangePassword() {
                 />
               </div>
             </div>
-            <div className="formRow col-xl-12">
+            <div className="formRow col-xl-3">
               <div className="formLabel">
                 <div>
                   <label className="text-dark">Confirm Password</label>
