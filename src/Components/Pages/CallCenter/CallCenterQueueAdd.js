@@ -349,7 +349,7 @@ function CallCenterQueueAdd() {
         }),
       },
     };
-    delete payload.record_template;
+    // delete payload.record_template;
     const apiData = await generalPostFunction(
       "/call-center-queue/store",
       payload
@@ -866,6 +866,31 @@ function CallCenterQueueAdd() {
                   )}
                 </div>
               </div>
+
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Record Template</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Define record template.
+                  </label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="record_template"
+                    className="formItem"
+                    {...register("record_template", {
+                      ...noSpecialCharactersValidator,
+                    })}
+                    onKeyDown={restrictToAllowedChars}
+                  />
+                  {errors.record_template && (
+                    <ErrorMessage text={errors.record_template} />
+                  )}
+                </div>
+              </div>
+
               {/* <div className="formRow col-xl-3">
                 <div className="d-flex flex-wrap align-items-center">
                   <div className="formLabel">
