@@ -497,48 +497,33 @@ function CdrReport() {
       <section id="phonePage">
         <div className="container-fluid px-0">
           <Header title="CDR Reports" />
-          <div className="d-flex flex-wrap px-xl-3 py-2" id="detailsHeader">
-            <div className="col-xl-12 pt-3 pt-xl-0 ms-auto">
-              <div className="d-flex justify-content-end">
-                <div className="formRow border-0">
-                  <label className="formLabel text-start mb-0 w-100">
-                    Date Filter
-                  </label>
-                  <select
-                    className="formItem"
-                    value={filterBy}
-                    onChange={(e) => {
-                      setFilterBy(e.target.value);
-                      setStartDateFlag("");
-                      setEndDateFlag("");
-                    }}
-                  >
-                    <option value={"date"}>Only Date</option>
-                    <option value={"date_range"}>Date Range</option>
-                  </select>
-                </div>
-                {filterBy === "date" && (
+        </div>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-12" style={{ overflow: "auto" }}>
+              <div className="tableContainer">
+                <div className="d-flex justify-content-end">
                   <div className="formRow border-0">
                     <label className="formLabel text-start mb-0 w-100">
-                      Choose Date
+                      Date Filter
                     </label>
-                    <input
-                      type="date"
+                    <select
                       className="formItem"
-                      max={new Date().toISOString().split("T")[0]}
-                      value={startDateFlag}
+                      value={filterBy}
                       onChange={(e) => {
-                        setStartDateFlag(e.target.value);
-                        setPageNumber(1);
+                        setFilterBy(e.target.value);
+                        setStartDateFlag("");
+                        setEndDateFlag("");
                       }}
-                    />
+                    >
+                      <option value={"date"}>Only Date</option>
+                      <option value={"date_range"}>Date Range</option>
+                    </select>
                   </div>
-                )}
-                {filterBy === "date_range" && (
-                  <>
+                  {filterBy === "date" && (
                     <div className="formRow border-0">
                       <label className="formLabel text-start mb-0 w-100">
-                        From
+                        Choose Date
                       </label>
                       <input
                         type="date"
@@ -551,23 +536,41 @@ function CdrReport() {
                         }}
                       />
                     </div>
-                    <div className="formRow border-0">
-                      <label className="formLabel text-start mb-0 w-100">To</label>
-                      <input
-                        type="date"
-                        className="formItem"
-                        max={new Date().toISOString().split("T")[0]}
-                        value={endDateFlag}
-                        onChange={(e) => {
-                          setEndDateFlag(e.target.value);
-                          setPageNumber(1);
-                        }}
-                        min={startDateFlag} // Prevent selecting an end date before the start date
-                      />
-                    </div>
-                  </>
-                )}
-                {/* {filterBy === "date_range" && (
+                  )}
+                  {filterBy === "date_range" && (
+                    <>
+                      <div className="formRow border-0">
+                        <label className="formLabel text-start mb-0 w-100">
+                          From
+                        </label>
+                        <input
+                          type="date"
+                          className="formItem"
+                          max={new Date().toISOString().split("T")[0]}
+                          value={startDateFlag}
+                          onChange={(e) => {
+                            setStartDateFlag(e.target.value);
+                            setPageNumber(1);
+                          }}
+                        />
+                      </div>
+                      <div className="formRow border-0">
+                        <label className="formLabel text-start mb-0 w-100">To</label>
+                        <input
+                          type="date"
+                          className="formItem"
+                          max={new Date().toISOString().split("T")[0]}
+                          value={endDateFlag}
+                          onChange={(e) => {
+                            setEndDateFlag(e.target.value);
+                            setPageNumber(1);
+                          }}
+                          min={startDateFlag} // Prevent selecting an end date before the start date
+                        />
+                      </div>
+                    </>
+                  )}
+                  {/* {filterBy === "date_range" && (
                   <div className="formRow border-0  ms-3">
                     <label className="title text-start mb-2 w-100">
                       Date Range Filter
@@ -588,102 +591,102 @@ function CdrReport() {
                     />
                   </div>
                 )} */}
-                <div className="formRow border-0">
-                  <label className="formLabel text-start mb-0 w-100">
-                    Call Origin
-                  </label>
-                  <input
-                    type="text"
-                    className="formItem"
-                    // value={debounceCallOrigin}
-                    value={debounceCallOriginFlag}
-                    // onChange={(e) => {
-                    //   setDebounceCallOrigin(e.target.value);
-                    //   setPageNumber(1);
-                    // }}
-                    // min={100}
-                    // max={99999}
-                    onChange={handleCallOriginChange}
-                  />
-                </div>
-                <div className="formRow border-0">
-                  <label className="formLabel text-start mb-0 w-100">
-                    Call Destination
-                  </label>
-                  <input
-                    type="text"
-                    className="formItem"
-                    value={debounceCallDestinationFlag}
-                    // value={debounceCallDestination}
-                    // onChange={(e) => {
-                    //   setDebounceCallDestination(e.target.value);
-                    //   setPageNumber(1);
-                    // }}
-                    onChange={handleCallDestinationChange}
-                  />
-                </div>
-                <div className="formRow border-0">
-                  <label className="formLabel text-start mb-0 w-100">
-                    Call Direction
-                  </label>
-                  <select
-                    className="formItem"
-                    onChange={(e) => {
-                      setCallDirection(e.target.value);
-                      setPageNumber(1);
-                    }}
-                  // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
-                  >
-                    <option value={""}>All Calls</option>
-                    <option value={"inbound"}>Inbound Calls</option>
-                    <option value={"outbound"}>Outbound Calls</option>
-                    <option value={"local"}>Missed Calls</option>
-                  </select>
-                </div>
-                <div className="formRow border-0">
-                  <label className="formLabel text-start mb-0 w-100">
-                    Call Type
-                  </label>
-                  <select
-                    className="formItem"
-                    onChange={(e) => {
-                      setCallType(e.target.value);
-                      setPageNumber(1);
-                    }}
-                  >
-                    <option value={""}>All Calls</option>
-                    <option value={"extension"}>Extension</option>
-                    <option value={"voicemail"}>Voice Mail</option>
-                    <option value={"callcenter"}>Call Center</option>
-                    <option value={"ringgroup"}>Ring Group</option>
-                  </select>
-                </div>
-                <div className="formRow border-0">
-                  <label className="formLabel text-start mb-0 w-100">
-                    Hangup Cause
-                  </label>
-                  <select
-                    className="formItem"
-                    onChange={(e) => {
-                      setHagupCause(e.target.value);
-                      setPageNumber(1);
-                    }}
-                  >
-                    <option value={""}>All</option>
-                    <option value={"SUCCESS"}>SUCCESS</option>
-                    <option value={"BUSY"}>BUSY</option>
-                    <option value={"NOANSWER"}>NOANSWER</option>
-                    <option value={"NOT CONNECTED"}>NOT CONNECTED</option>
-                    <option value={"USER_NOT_REGISTERED"}>
-                      USER NOT REGISTERED
-                    </option>
-                    <option value={"SUBSCRIBER_ABSENT"}>
-                      SUBSCRIBER_ABSENT
-                    </option>
-                    <option value={"CANCEL"}>CANCEL</option>
-                  </select>
-                </div>
-                {/* <Link
+                  <div className="formRow border-0">
+                    <label className="formLabel text-start mb-0 w-100">
+                      Call Origin
+                    </label>
+                    <input
+                      type="text"
+                      className="formItem"
+                      // value={debounceCallOrigin}
+                      value={debounceCallOriginFlag}
+                      // onChange={(e) => {
+                      //   setDebounceCallOrigin(e.target.value);
+                      //   setPageNumber(1);
+                      // }}
+                      // min={100}
+                      // max={99999}
+                      onChange={handleCallOriginChange}
+                    />
+                  </div>
+                  <div className="formRow border-0">
+                    <label className="formLabel text-start mb-0 w-100">
+                      Call Destination
+                    </label>
+                    <input
+                      type="text"
+                      className="formItem"
+                      value={debounceCallDestinationFlag}
+                      // value={debounceCallDestination}
+                      // onChange={(e) => {
+                      //   setDebounceCallDestination(e.target.value);
+                      //   setPageNumber(1);
+                      // }}
+                      onChange={handleCallDestinationChange}
+                    />
+                  </div>
+                  <div className="formRow border-0">
+                    <label className="formLabel text-start mb-0 w-100">
+                      Call Direction
+                    </label>
+                    <select
+                      className="formItem"
+                      onChange={(e) => {
+                        setCallDirection(e.target.value);
+                        setPageNumber(1);
+                      }}
+                    // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                    >
+                      <option value={""}>All Calls</option>
+                      <option value={"inbound"}>Inbound Calls</option>
+                      <option value={"outbound"}>Outbound Calls</option>
+                      <option value={"local"}>Missed Calls</option>
+                    </select>
+                  </div>
+                  <div className="formRow border-0">
+                    <label className="formLabel text-start mb-0 w-100">
+                      Call Type
+                    </label>
+                    <select
+                      className="formItem"
+                      onChange={(e) => {
+                        setCallType(e.target.value);
+                        setPageNumber(1);
+                      }}
+                    >
+                      <option value={""}>All Calls</option>
+                      <option value={"extension"}>Extension</option>
+                      <option value={"voicemail"}>Voice Mail</option>
+                      <option value={"callcenter"}>Call Center</option>
+                      <option value={"ringgroup"}>Ring Group</option>
+                    </select>
+                  </div>
+                  <div className="formRow border-0">
+                    <label className="formLabel text-start mb-0 w-100">
+                      Hangup Cause
+                    </label>
+                    <select
+                      className="formItem"
+                      onChange={(e) => {
+                        setHagupCause(e.target.value);
+                        setPageNumber(1);
+                      }}
+                    >
+                      <option value={""}>All</option>
+                      <option value={"SUCCESS"}>SUCCESS</option>
+                      <option value={"BUSY"}>BUSY</option>
+                      <option value={"NOANSWER"}>NOANSWER</option>
+                      <option value={"NOT CONNECTED"}>NOT CONNECTED</option>
+                      <option value={"USER_NOT_REGISTERED"}>
+                        USER NOT REGISTERED
+                      </option>
+                      <option value={"SUBSCRIBER_ABSENT"}>
+                        SUBSCRIBER_ABSENT
+                      </option>
+                      <option value={"CANCEL"}>CANCEL</option>
+                    </select>
+                  </div>
+                  {/* <Link
                   to="#"
                   onClick={() => {
                     setAll(!all);
@@ -731,13 +734,8 @@ function CdrReport() {
                 >
                   Ring Group
                 </Link> */}
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-12" style={{ overflow: "auto" }}>
               <div className="tableContainer">
                 <table>
                   <thead>
