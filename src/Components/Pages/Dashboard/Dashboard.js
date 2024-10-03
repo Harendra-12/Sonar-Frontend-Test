@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
 import DoughnutChart from "../../CommonComponents/DoughnutChart";
 import GraphChart from "../../CommonComponents/GraphChart";
+import { useNavigate } from "react-router-dom";
 const Dashboard = () => {
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const accountDetails = useSelector((state) => state.accountDetails);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const extensionList = useSelector((state) => state.extension).length;
@@ -363,7 +365,7 @@ const Dashboard = () => {
                   >
                     Calls
                   </button>
-                  <button
+                  {/* <button
                     className="nav-link"
                     id="nav-profile-tab"
                     data-bs-toggle="tab"
@@ -374,7 +376,7 @@ const Dashboard = () => {
                     aria-selected="false"
                   >
                     Messages
-                  </button>
+                  </button> */}
                   <button
                     className="nav-link"
                     id="nav-contact-tab"
@@ -416,7 +418,14 @@ const Dashboard = () => {
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
                               <h5>Handled Calls</h5>
-                              <p>27 August - 27 September, 2024</p>
+                              {/* <p>27 August - 27 September, 2024</p> */}
+                              <p>
+                                {new Date().getDate()}{" "}
+                                {new Date().toLocaleString("default", {
+                                  month: "long",
+                                })}
+                                , {new Date().getFullYear()}
+                              </p>
                             </div>
                             <div className="col-2">
                               <i className="fa-duotone fa-phone-office"></i>
@@ -427,10 +436,15 @@ const Dashboard = () => {
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
                               <h5>{callCardData.handled.count}</h5>
-                              <p>{callCardData.handled.inboundAnswered} Inbound  / {callCardData.handled.outboundAnswered} Outbound</p>
+                              <p>
+                                {callCardData.handled.inboundAnswered} Inbound /{" "}
+                                {callCardData.handled.outboundAnswered} Outbound
+                              </p>
                             </div>
                             <div className="col-2">
-                              <img src={require('../../assets/images/icons/diagram.png')} />
+                              <img
+                                src={require("../../assets/images/icons/diagram.png")}
+                              />
                             </div>
                           </div>
                         </div>
@@ -443,7 +457,15 @@ const Dashboard = () => {
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
                               <h5>Total Minutes</h5>
-                              <p>27 August - 27 September, 2024</p>
+                              {/* <p>27 August - 27 September, 2024</p> */}
+                              <p>
+                                {" "}
+                                {new Date().getDate()}{" "}
+                                {new Date().toLocaleString("default", {
+                                  month: "long",
+                                })}
+                                , {new Date().getFullYear()}
+                              </p>
                             </div>
                             <div className="col-2">
                               <i className="fa-duotone fa-clock"></i>
@@ -454,10 +476,15 @@ const Dashboard = () => {
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
                               <h5>{callCardData.minutes.count}</h5>
-                              <p>{callCardData.minutes.inboundAnswered} Inbound  / {callCardData.minutes.outboundAnswered} Outbound</p>
+                              <p>
+                                {callCardData.minutes.inboundAnswered} Inbound /{" "}
+                                {callCardData.minutes.outboundAnswered} Outbound
+                              </p>
                             </div>
                             <div className="col-2">
-                              <img src={require('../../assets/images/icons/diagram.png')} />
+                              <img
+                                src={require("../../assets/images/icons/diagram.png")}
+                              />
                             </div>
                           </div>
                         </div>
@@ -470,7 +497,15 @@ const Dashboard = () => {
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
                               <h5>Missed Calls</h5>
-                              <p>27 August - 27 September, 2024</p>
+                              {/* <p>27 August - 27 September, 2024</p> */}
+                              <p>
+                                {" "}
+                                {new Date().getDate()}{" "}
+                                {new Date().toLocaleString("default", {
+                                  month: "long",
+                                })}
+                                , {new Date().getFullYear()}
+                              </p>
                             </div>
                             <div className="col-2">
                               <i className="fa-duotone fa-phone-missed"></i>
@@ -481,10 +516,15 @@ const Dashboard = () => {
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
                               <h5>{callCardData.missedCalls.count}</h5>
-                              <p>{callCardData.missedCalls.callMissed} Calls Missed</p>
+                              <p>
+                                {callCardData.missedCalls.callMissed} Calls
+                                Missed
+                              </p>
                             </div>
                             <div className="col-2">
-                              <img src={require('../../assets/images/icons/diagram.png')} />
+                              <img
+                                src={require("../../assets/images/icons/diagram.png")}
+                              />
                             </div>
                           </div>
                         </div>
@@ -497,7 +537,15 @@ const Dashboard = () => {
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
                               <h5>Abandoned Calls</h5>
-                              <p>27 August - 27 September, 2024</p>
+                              {/* <p>27 August - 27 September, 2024</p> */}
+                              <p>
+                                {" "}
+                                {new Date().getDate()}{" "}
+                                {new Date().toLocaleString("default", {
+                                  month: "long",
+                                })}
+                                , {new Date().getFullYear()}
+                              </p>
                             </div>
                             <div className="col-2">
                               <i className="fa-duotone fa-phone-xmark"></i>
@@ -510,7 +558,9 @@ const Dashboard = () => {
                               <h5>{callCardData.abandonedCalls.count}</h5>
                             </div>
                             <div className="col-2">
-                              <img src={require('../../assets/images/icons/diagram.png')} />
+                              <img
+                                src={require("../../assets/images/icons/diagram.png")}
+                              />
                             </div>
                           </div>
                         </div>
@@ -614,7 +664,13 @@ const Dashboard = () => {
                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/extensions'" effect="ripple"><i className="fa-duotone fa-phone-office"></i> View All Extensions</button> */}
                       </div>
                     </div>
-                    <div className="col-xl-3">
+                    <div
+                      className="col-xl-3"
+                      onClick={() => {
+                        navigate("/cal-center-queue");
+                      }}
+                      style={{ cursor: "pointer" }}
+                    >
                       <div className="itemWrapper c">
                         <div className="heading">
                           <i className="fa-duotone fa-circle-pause"></i> Total
@@ -693,7 +749,11 @@ const Dashboard = () => {
                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/extensions'" effect="ripple"><i className="fa-duotone fa-phone-office"></i> View All Extensions</button> */}
                       </div>
                     </div>
-                    <div className="col-xl-3">
+                    <div
+                      className="col-xl-3"
+                      onClick={() => navigate("/ring-groups")}
+                      style={{ cursor: "pointer" }}
+                    >
                       <div className="itemWrapper c">
                         <div className="heading">
                           <i className="fa-duotone fa-circle-pause"></i> Total
@@ -766,15 +826,11 @@ const Dashboard = () => {
                 <div className="col-xl-3">
                   <div className="wrapper">
                     <DoughnutChart
-                      fields={[
-                        "Inbound",
-                        "Outbound",
-                        "Total"
-                      ]}
+                      fields={["Inbound", "Outbound", "Total"]}
                       percentage={[
                         callCardData.handled.inboundAnswered,
                         callCardData.handled.outboundAnswered,
-                        callCardData.handled.count
+                        callCardData.handled.count,
                       ]}
                       centerTitle={`${extensionList}/${Number(
                         accountDetails?.package?.number_of_user
@@ -787,19 +843,13 @@ const Dashboard = () => {
                 <div className="col-xl-3">
                   <div className="wrapper">
                     <DoughnutChart
-                      fields={[
-                        "Handled",
-                        "Missed",
-                        "Abandoned",
-                      ]}
+                      fields={["Handled", "Missed", "Abandoned"]}
                       percentage={[
                         callCardData.handled.count,
                         callCardData.missedCalls.count,
                         callCardData.abandonedCalls.count,
                       ]}
-                      centerTitle={`${userList}/${(
-                        accountDetails?.package?.number_of_user
-                      )}`}
+                      centerTitle={`${userList}/${accountDetails?.package?.number_of_user}`}
                       centerDesc="Total Users Available"
                       colors={["#36A2EB70", "#f17d0170", "#FF638470"]}
                     />
@@ -828,7 +878,7 @@ const Dashboard = () => {
                       fields={["Available Extension", "Registered Extension"]}
                       percentage={[
                         accountDetails?.package?.number_of_user,
-                        extensionList
+                        extensionList,
                       ]}
                       centerTitle={`${extensionList}/${accountDetails?.package?.number_of_user}`}
                       centerDesc="Total Extensions"

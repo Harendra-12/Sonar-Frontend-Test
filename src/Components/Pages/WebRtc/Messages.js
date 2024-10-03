@@ -21,9 +21,9 @@ function Messages() {
   const [loadMore, setLoadMore] = useState(1);
   const [isFreeSwitchMessage, setIsFreeSwitchMessage] = useState(true);
   const [agents, setAgents] = useState([]);
-  const [activeTab,setActiveTab]=useState("all")
-  const [onlineUser,setOnlineUser] = useState([])
-  const [unreadMessage,setUnreadMessage] = useState([])
+  const [activeTab, setActiveTab] = useState("all");
+  const [onlineUser, setOnlineUser] = useState([]);
+  const [unreadMessage, setUnreadMessage] = useState([]);
 
   console.log("All agents", agents);
 
@@ -117,7 +117,7 @@ function Messages() {
               { from: extension, body: messageInput, time },
             ],
           }));
-          setActiveTab("all")
+          setActiveTab("all");
 
           const extensionExists = contact.some(
             (contact) => contact.extension === recipient[0]
@@ -125,7 +125,7 @@ function Messages() {
           const agentDetails = agents.find(
             (agent) => agent.extension.extension === recipient[0]
           );
-  
+
           if (!extensionExists) {
             contact.unshift({
               name: agentDetails.username,
@@ -195,7 +195,7 @@ function Messages() {
               { from: extension, body: messageInput, time },
             ],
           }));
-          setActiveTab("all")
+          setActiveTab("all");
 
           console.log("File sent to:", targetURI);
         } catch (error) {
@@ -226,8 +226,6 @@ function Messages() {
           (agent) => agent.extension.extension === from
         );
 
-
-
         if (!extensionExists) {
           contact.unshift({
             name: agentDetails.username,
@@ -236,9 +234,11 @@ function Messages() {
             extension_id: agentDetails.extension_id,
             extension: from,
           });
-        }else {
+        } else {
           // Move the extension object to the beginning of the array
-          const index = contact.findIndex((contact) => contact.extension === from);
+          const index = contact.findIndex(
+            (contact) => contact.extension === from
+          );
           const extensionObject = contact.splice(index, 1)[0];
           contact.unshift(extensionObject);
         }
@@ -250,6 +250,8 @@ function Messages() {
         const time = new Date().toLocaleString(); // Or use .toISOString() for UTC format
 
         // Check if the content is an image
+
+        const audio = new Audio(require("../../assets/music/message-notification.mp3"));
         if (contentType && contentType.startsWith("image/")) {
           // If it's an image, create a URL for the Base64 image to render it in <img>
           const imageUrl = `${body}`;
@@ -265,8 +267,6 @@ function Messages() {
             ...prevState,
             [from]: (prevState[from] || 0) + 1,
           }));
-
-          console.log(`Received image from ${from} at ${time}`, message);
         } else {
           // If it's a text message or other type, render as text
           setAllMessage((prevState) => ({
@@ -274,16 +274,17 @@ function Messages() {
             [from]: [...(prevState[from] || []), { from, body, time }],
           }));
 
-          if(recipient[0]!==from){
-          setUnreadMessage((prevState) => ({
-            ...prevState,
-            [from]: (prevState[from] || 0) + 1,
-          }));
-        }
-          console.log(
-            `Received message from ${from}: ${body} at ${time}`,
-            message
-          );
+          // Play music when message is received
+         
+          
+
+          if (recipient[0] !== from) {
+            setUnreadMessage((prevState) => ({
+              ...prevState,
+              [from]: (prevState[from] || 0) + 1,
+            }));
+            audio.play();
+          }
         }
       },
     };
@@ -312,24 +313,24 @@ function Messages() {
       messageListRef.current.addEventListener("scroll", handleScroll);
     }
   }, []);
- 
+
   useEffect(() => {
     if (loginUser.length > 0) {
-      const updatedOnlineUsers = loginUser.map((item) => {
-        const findUser = agents.find((agent) => agent.id === item.id);
-        return findUser;
-      }).filter((user) => user !== undefined);
-  
+      const updatedOnlineUsers = loginUser
+        .map((item) => {
+          const findUser = agents.find((agent) => agent.id === item.id);
+          return findUser;
+        })
+        .filter((user) => user !== undefined);
+
       setOnlineUser(updatedOnlineUsers);
     } else {
       setOnlineUser([]);
     }
   }, [loginUser]);
 
-  console.log("UnreadMessage",unreadMessage);
-  
+  console.log("UnreadMessage", unreadMessage);
 
-  
   return (
     <>
       <main
@@ -356,12 +357,20 @@ function Messages() {
                 <div className="col-12">
                   <nav>
                     <div className="nav nav-tabs">
-                      <button className={activeTab==="all"?"tabLink active":"tabLink"} data-category="all" onClick={() => setActiveTab('all')}>
+                      <button
+                        className={
+                          activeTab === "all" ? "tabLink active" : "tabLink"
+                        }
+                        data-category="all"
+                        onClick={() => setActiveTab("all")}
+                      >
                         All
                       </button>
                       <button
-                        onClick={() => setActiveTab('online')}
-                        className={activeTab==="online"?"tabLink active":"tabLink"}
+                        onClick={() => setActiveTab("online")}
+                        className={
+                          activeTab === "online" ? "tabLink active" : "tabLink"
+                        }
                         effect="ripple"
                         data-category="incoming"
                       >
@@ -369,94 +378,126 @@ function Messages() {
                       </button>
                     </div>
                   </nav>
-                  {activeTab==="all"?
-                  <div className="tab-content">
-                    <AgentSearch
-                      getDropdownValue={setRecipient}
-                      getAllAgents={setAgents}
-                    />
-                    <div className="callList">
-                      {contact.map((item) => {
-                        return (
-                          <div  data-bell={unreadMessage[item?.extension]?unreadMessage[item?.extension]:""} className={recipient[0] === item?.extension ? "contactListItem selected" :"contactListItem"}>
+                  {activeTab === "all" ? (
+                    <div className="tab-content">
+                      <AgentSearch
+                        getDropdownValue={setRecipient}
+                        getAllAgents={setAgents}
+                      />
+                      <div className="callList">
+                        {contact.map((item) => {
+                          return (
                             <div
-                              onClick={() =>{
-                                setRecipient([item?.extension, item.id]);
-                                setUnreadMessage((prevState) => {
-                                  const { [item?.extension]: _, ...newState } = prevState;
-                                  return newState;
-                                });
+                              data-bell={
+                                unreadMessage[item?.extension]
+                                  ? unreadMessage[item?.extension]
+                                  : ""
                               }
+                              className={
+                                recipient[0] === item?.extension
+                                  ? "contactListItem selected"
+                                  : "contactListItem"
                               }
-                              className="row justify-content-between"
                             >
+                              <div
+                                onClick={() => {
+                                  setRecipient([item?.extension, item.id]);
+                                  setUnreadMessage((prevState) => {
+                                    const {
+                                      [item?.extension]: _,
+                                      ...newState
+                                    } = prevState;
+                                    return newState;
+                                  });
+                                }}
+                                className="row justify-content-between"
+                              >
+                                <div className="col-xl-6 d-flex">
+                                  <div
+                                    className="profileHolder"
+                                    id={
+                                      onlineUser.find(
+                                        (user) => user.id === item.id
+                                      )
+                                        ? "profileOnlineNav"
+                                        : "profileOfflineNav"
+                                    }
+                                  >
+                                    <i className="fa-light fa-user fs-5"></i>
+                                  </div>
+                                  <div className="my-auto ms-2 ms-xl-3">
+                                    <h4>{item?.name}</h4>
+                                    <h5>{item?.extension}</h5>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="tab-content">
+                      <AgentSearch
+                        getDropdownValue={setRecipient}
+                        getAllAgents={setAgents}
+                      />
+                      <div className="callList">
+                        {onlineUser.map((item) => {
+                          return (
+                            <div
+                              data-bell=""
+                              className={
+                                recipient[0] === item?.extension.extension
+                                  ? "contactListItem selected"
+                                  : "contactListItem"
+                              }
+                            >
+                              <div
+                                onClick={() =>
+                                  setRecipient([
+                                    item?.extension.extension,
+                                    item.id,
+                                  ])
+                                }
+                                className="row justify-content-between"
+                              >
+                                <div className="col-xl-6 d-flex">
+                                  <div
+                                    className="profileHolder"
+                                    id="profileOnlineNav"
+                                  >
+                                    <i className="fa-light fa-user fs-5"></i>
+                                  </div>
+                                  <div className="my-auto ms-2 ms-xl-3">
+                                    <h4>{item?.username}</h4>
+                                    <h5>{item?.extension.extension}</h5>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                        {onlineUser.length === 0 && (
+                          <div className="contactListItem">
+                            <div className="row justify-content-between">
                               <div className="col-xl-6 d-flex">
                                 <div
                                   className="profileHolder"
-                                  id={onlineUser.find((user) => user.id === item.id)?"profileOnlineNav":"profileOfflineNav"}
+                                  id="profileOnline"
                                 >
                                   <i className="fa-light fa-user fs-5"></i>
                                 </div>
                                 <div className="my-auto ms-2 ms-xl-3">
-                                  <h4>{item?.name}</h4>
-                                  <h5>{item?.extension}</h5>
+                                  <h4>No online user found</h4>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        );
-                      })}
+                        )}
+                      </div>
                     </div>
-                  </div>: <div className="tab-content">
-                    <AgentSearch
-                      getDropdownValue={setRecipient}
-                      getAllAgents={setAgents}
-                    />
-                    <div className="callList">
-                      {onlineUser.map((item) => {
-                        return (
-                          <div data-bell="" className={recipient[0] === item?.extension.extension ? "contactListItem selected" :"contactListItem"}>
-                            <div
-                              onClick={() =>
-                                setRecipient([item?.extension.extension, item.id])
-                              }
-                              className="row justify-content-between"
-                            >
-                              <div className="col-xl-6 d-flex">
-                                <div
-                                  className="profileHolder"
-                                  id="profileOnlineNav"
-                                >
-                                  <i className="fa-light fa-user fs-5"></i>
-                                </div>
-                                <div className="my-auto ms-2 ms-xl-3">
-                                  <h4>{item?.username}</h4>
-                                  <h5>{item?.extension.extension}</h5>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })}
-                      {onlineUser.length===0 && <div className="contactListItem">
-                        <div
-                          className="row justify-content-between"
-                        >
-                          <div className="col-xl-6 d-flex">
-                            <div
-                              className="profileHolder"
-                              id="profileOnline"
-                            >
-                              <i className="fa-light fa-user fs-5"></i>
-                            </div>
-                            <div className="my-auto ms-2 ms-xl-3">
-                              <h4>No online user found</h4>
-                            </div>
-                          </div>
-                        </div>
-                      </div>}
-                    </div>
-                  </div>}
+                  )}
                 </div>
               </div>
               <div
@@ -542,7 +583,8 @@ function Messages() {
                         <div className="startAJob">
                           <div class="text-center mt-3">
                             <img
-                              src={require("../../assets/images/empty-box.png")} alt="Empty"
+                              src={require("../../assets/images/empty-box.png")}
+                              alt="Empty"
                             ></img>
                             <div>
                               <h5>

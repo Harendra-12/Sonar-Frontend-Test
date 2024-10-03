@@ -167,6 +167,7 @@ function CallCenterQueue() {
                       <th>Prefix</th>
                       <th>Total Agents</th>
                       <th>Settings</th>
+                      <th>Edit</th>
                       <th>Delete</th>
                     </tr>
                   </thead>
@@ -238,12 +239,28 @@ function CallCenterQueue() {
                                   {item.agents.length}
                                 </td>
                                 <td>
-                                  <button className="tableButton" onClick={() =>
-                                    navigate(
-                                      `/call-center-settings?id=${item.id}`
-                                    )
-                                  }>
+                                  <button
+                                    className="tableButton"
+                                    onClick={() =>
+                                      navigate(
+                                        `/call-center-settings?id=${item.id}`
+                                      )
+                                    }
+                                  >
                                     <i className="fa-duotone fa-gear"></i>
+                                  </button>
+                                </td>
+                                <td>
+                                  {" "}
+                                  <button
+                                    className="tableButton edit"
+                                    onClick={() =>
+                                      navigate(
+                                        `/cal-center-queue-edit?id=${item.id}`
+                                      )
+                                    }
+                                  >
+                                    <i class="fa-solid fa-pencil"></i>
                                   </button>
                                 </td>
                                 <td

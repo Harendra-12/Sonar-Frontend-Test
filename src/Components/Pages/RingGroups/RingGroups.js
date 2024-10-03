@@ -173,6 +173,7 @@ const RingGroups = () => {
                       <th>Status</th>
                       <th>Description</th>
                       <th>Setting</th>
+                      <th>Edit</th>
                       <th>Delete</th>
                     </tr>
                   </thead>
@@ -242,22 +243,40 @@ const RingGroups = () => {
                                   {item.description}
                                 </td>
                                 <td>
-                                  <button onClick={() =>
-                                    navigate(
-                                      `/ring-groups-settings?id=${item.id}`
-                                    )
-                                  } className="tableButton">
+                                  <button
+                                    onClick={() =>
+                                      navigate(
+                                        `/ring-groups-settings?id=${item.id}`
+                                      )
+                                    }
+                                    className="tableButton"
+                                  >
                                     <i className="fa-duotone fa-gear text-success"></i>
                                   </button>
                                 </td>
                                 <td>
-                                  <button className="tableButton delete" onClick={() => {
-                                    setPopUp(true);
-                                    setDeleteId(item.id);
-                                  }}>
+                                  {" "}
+                                  <button
+                                    className="tableButton edit"
+                                    onClick={() =>
+                                      navigate(
+                                        `/ring-groups-edit?id=${item.id}`
+                                      )
+                                    }
+                                  >
+                                    <i class="fa-solid fa-pencil"></i>
+                                  </button>
+                                </td>
+                                <td>
+                                  <button
+                                    className="tableButton delete"
+                                    onClick={() => {
+                                      setPopUp(true);
+                                      setDeleteId(item.id);
+                                    }}
+                                  >
                                     <i className="fa-solid fa-trash"></i>
                                   </button>
-
                                 </td>
                               </tr>
                             );

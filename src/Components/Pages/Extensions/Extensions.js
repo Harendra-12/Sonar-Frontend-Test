@@ -154,6 +154,7 @@ const Extensions = () => {
                       <th>Description</th>
                       <th>Status</th>
                       <th>Setting</th>
+                      <th>Edit</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -248,7 +249,7 @@ const Extensions = () => {
                                 }
                               ></span>
                             </td>
-                            <td>
+                            <td style={{ cursor: "default" }}>
                               <button
                                 class="tableButton"
                                 onClick={() =>
@@ -261,6 +262,17 @@ const Extensions = () => {
                                 }
                               >
                                 <i className="fa-duotone fa-gear"></i>
+                              </button>
+                            </td>
+                            <td style={{ cursor: "default" }}>
+                              {" "}
+                              <button
+                                className="tableButton edit"
+                                onClick={() =>
+                                  navigate(`/extensions-edit?id=${item.id}`)
+                                }
+                              >
+                                <i class="fa-solid fa-pencil"></i>
                               </button>
                             </td>
                           </tr>

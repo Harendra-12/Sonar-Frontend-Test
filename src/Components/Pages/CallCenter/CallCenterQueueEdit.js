@@ -26,29 +26,25 @@ import Header from "../../CommonComponents/Header";
 function CallCenterQueueEdit() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const location = useLocation();
-
-  // const { state: locationState } = location;
   const queryParams = new URLSearchParams(useLocation().search);
   const value = queryParams.get("id");
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState();
   const account = useSelector((state) => state.account);
-  // const domain = useSelector((state) => state.domain);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const [prevAgents, setPrevAgents] = useState([]);
   const [greetingSound, setGreetingSound] = useState();
   const [holdSound, setHoldSound] = useState();
-  // const { domain_name = "" } = domain;
+  const [announcmentSound, setAnnouncmentSound] = useState();
+  
+  // Define the initial state of the form
   const [agent, setAgent] = useState([
     {
-      // id: 1,
       id: Math.floor(Math.random() * 10000),
       name: "",
       level: "0",
       position: "0",
       type: "callback",
-      // status: "Logged Out",
       password: "1234",
       contact: "",
       time_base_score: "queue",
@@ -56,15 +52,12 @@ function CallCenterQueueEdit() {
       tier_rule_wait_second: null,
       tier_rule_wait_multiply_level: 0,
       tier_rule_no_agent_no_wait: 1,
-      // abandoned_resume_allowed: 0,
     },
   ]);
   const {
     register,
-
     setError: setErr,
     clearErrors,
-
     formState: { errors },
     handleSubmit,
     reset,
@@ -72,6 +65,7 @@ function CallCenterQueueEdit() {
     watch,
   } = useForm();
 
+  // Calling api for getting user data and call center queue data
   useEffect(() => {
     if (account && account.id) {
       async function getData() {
@@ -80,7 +74,6 @@ function CallCenterQueueEdit() {
         const callCenterData = await generalGetFunction(
           `call-center-queue/${value}`
         );
-
         if (userData.status) {
           setLoading(false);
           if (userData.data.data.length === 0) {
@@ -97,14 +90,6 @@ function CallCenterQueueEdit() {
             }
           }
         }
-        // if (apidata.status) {
-        //   setRingGroup(apidata.data);
-        // }
-        // if (extensionData.status) {
-        //   setExtension(extensionData.data);
-        //   setLoading(false);
-        // }
-
         if (callCenterData.status) {
           setLoading(false);
           const { agents, recording_enabled } = callCenterData.data;
@@ -124,7 +109,6 @@ function CallCenterQueueEdit() {
                 busy_delay_time: item.busy_delay_time,
                 position: item.tier_position,
                 type: item.type,
-                // status: item.status,
                 password: item?.password,
                 contact: item.contact,
               };
@@ -147,35 +131,9 @@ function CallCenterQueueEdit() {
     } else {
       setLoading(false);
     }
-    // if (locationState) {
-    //   const { agents, recording_enabled } = locationState;
-    //   setPrevAgents(agents);
-    //   setAgent(
-    //     agents.map((item, index) => {
-    //       return {
-    //         id: item.id,
-    //         name: item.agent_name,
-    //         level: item.tier_level,
-    //         position: item.tier_position,
-    //         type: item.type,
-    //         // status: item.status,
-    //         password: item?.password,
-    //         contact: item.contact,
-    //       };
-    //     })
-    //   );
-
-    //   const destructuredData = {
-    //     ...locationState,
-    //     ...{ recording_enabled: recording_enabled === 1 ? "true" : "false" },
-    //   };
-
-    //   reset(destructuredData);
-    // } else {
-    //   navigate(-1);
-    // }
   }, []);
 
+  // Calling user and sound api to get user and sound data at time of page render
   useEffect(() => {
     async function getData() {
       const musicData = await generalGetFunction("/sound/all");
@@ -184,6 +142,9 @@ function CallCenterQueueEdit() {
           musicData.data.filter((item) => item.type === "ringback")
         );
         setHoldSound(musicData.data.filter((item) => item.type === "hold"));
+        setAnnouncmentSound(
+          musicData.data.filter((item) => item.type === "announcement")
+        );
       }
     }
     getData();
@@ -200,17 +161,17 @@ function CallCenterQueueEdit() {
     if (result.length > 0) return true;
     return false;
   };
+
+  // Add new agent with some default value
   function addNewAgent() {
     setAgent([
       ...agent,
       {
-        // id: agent.length + 100000,
         id: Math.floor(Math.random() * 10000),
         name: "",
         level: "0",
         position: "0",
         type: "callback",
-        // status: "Logged Out",
         password: "1234",
         call_timeout: "",
         reject_delay_time: "",
@@ -226,6 +187,8 @@ function CallCenterQueueEdit() {
   if (agent.length === 0) {
     addNewAgent();
   }
+
+  // Handle agent change
   const handleAgentChange = (event, index) => {
     const { name, value } = event.target; // Extract name and selected value
 
@@ -270,14 +233,15 @@ function CallCenterQueueEdit() {
     );
     return allFieldsFilled;
   };
+
+  // Validate unique agents
   const validateUniqueAgents = () => {
     const agentValues = agent.map((item) => item.name);
     const uniqueValues = [...new Set(agentValues)];
     return agentValues.length === uniqueValues.length;
   };
 
-  // Custom styles for react-select
-
+// Handle form submit and validation
   const handleFormSubmit = handleSubmit(async (data) => {
     if (!validateAgents()) {
       setErr("agent", {
@@ -288,17 +252,6 @@ function CallCenterQueueEdit() {
     }
 
     const { recording_enabled } = data;
-    //     const xmlObj = {
-    //       xml: `<extension name="${queue_name.trim()}">
-    //         <condition field="destination_number" expression="^(callcenter\+)?${extension}$" >
-    //           <action application="answer" data=""/>
-    //           <action application="set" data="hangup_after_bridge=true"/>
-    //           <action application="sleep" data="1000"/>
-    //           <action application="callcenter" data="${extension}@${domain_name}"/>
-    //            <action application="transfer" data="${queue_timeout_action} XML ${domain_name}"/>
-    //         </condition>
-    // </extension>`,
-    //     };
 
     const payload = {
       ...data,
@@ -375,23 +328,11 @@ function CallCenterQueueEdit() {
             }
           })
           .filter((item) => item !== null),
-        // agents: agent.map((item) => {
-        //   return {
-        //     agent_name: item.name,
-        //     tier_level: item.level,
-        //     tier_position: item.position,
-        //     type: item.type,
-        //     status: "Logged Out",
-        //     password: item.password,
-        //     contact: item.contact,
-        //   };
-        // }),
       },
     };
     setLoading(true);
-    delete payload.record_template;
+    // delete payload.record_template;
     const apiData = await generalPutFunction(
-      // `/call-center-queue/update/${locationState.id}`,
       `/call-center-queue/update/${value}`,
       payload
     );
@@ -414,6 +355,7 @@ function CallCenterQueueEdit() {
     }
   });
 
+  // Check if a destination i spreviously exit or not
   const checkPrevDestination = (id) => {
     const result = prevAgents.filter((item, idx) => {
       return item.id == id;
@@ -421,6 +363,8 @@ function CallCenterQueueEdit() {
     if (result.length > 0) return true;
     return false;
   };
+
+  // Delete destination based on previously present or newely added
   async function deleteDestination(id) {
     if (checkPrevDestination(id)) {
       setLoading(true);
@@ -472,9 +416,6 @@ function CallCenterQueueEdit() {
                       </label>
                     </div>
                   </div>
-                  {/* <label htmlFor="data" className="formItemDesc mt-0">
-                    Set the status of this call center queue.
-                  </label> */}
                 </div>
                 <button
                   effect="ripple"
@@ -554,50 +495,6 @@ function CallCenterQueueEdit() {
                   )}
                 </div>
               </div>
-
-              {/* <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Extension</label>
-                </div>
-                <div className="col-12">
-                  <Controller
-                    name="extension"
-                    control={control}
-                    defaultValue=""
-                    rules={{ ...requiredValidator, ...numberValidator }}
-                    render={({ field: { onChange, value, ...field } }) => {
-                      const options = user
-                        ? user.map((item) => ({
-                            value: item.extension.extension,
-                            label: `${item.name} (${item.extension.extension})`,
-                          }))
-                        : [];
-
-                      const selectedOption =
-                        options.find((option) => option.value === value) ||
-                        null;
-                      return (
-                        <Select
-                          {...field}
-                          value={selectedOption}
-                          onChange={(selectedOption) => {
-                            onChange(selectedOption.value);
-                            handleExtensionChange(selectedOption);
-                          }}
-                          options={options}
-                          styles={customStyles}
-                        />
-                      );
-                    }}
-                  />
-                  {errors.extension && (
-                    <ErrorMessage text={errors.extension.message} />
-                  )}
-                  <label htmlFor="data" className="formItemDesc">
-                    Enter the extension number.
-                  </label>
-                </div>
-              </div> */}
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Greeting</label>
@@ -607,7 +504,9 @@ function CallCenterQueueEdit() {
                 </div>
                 <div className="col-6">
                   <select {...register("greeting")} className="formItem w-100">
-                    <option></option>
+                    <option disabled value={""}>
+                      Select Greeting
+                    </option>
                     {greetingSound &&
                       greetingSound.map((item, index) => {
                         return (
@@ -629,17 +528,7 @@ function CallCenterQueueEdit() {
                 <div className="col-6">
                   <select {...register("strategy")} className="formItem w-100">
                     <option value="ring-all">Ring All</option>
-                    {/* <option value="longest-idle-agent">
-                      Longest Idle Agent
-                    </option> */}
-                    {/* <option value="round-robin">Round Robin</option> */}
                     <option value="top-down">Top Down</option>
-                    {/* <option value="agent-with-least-talk-time">
-                      Agent with least talk time
-                    </option>
-                    <option value="agent-with-fewest-calls">
-                      Agent with fewest calls
-                    </option> */}
                     <option value="sequentially-by-agent-order">
                       Sequentially by agent order
                     </option>
@@ -661,9 +550,10 @@ function CallCenterQueueEdit() {
                   <select
                     {...register("moh_sound")}
                     className="formItem w-100"
-                  // value={watch().moh_sound}
                   >
-                    <option></option>
+                    <option value={""} disabled>
+                      Select Hold Music
+                    </option>
                     {holdSound &&
                       holdSound.map((item, index) => {
                         return (
@@ -706,7 +596,6 @@ function CallCenterQueueEdit() {
                     label={null}
                     getDropdownValue={actionListValue}
                     value={watch().queue_timeout_action}
-                  // value={callCenter.action}
                   />
                 </div>
               </div>
@@ -936,29 +825,160 @@ function CallCenterQueueEdit() {
                   )}
                 </div>
               </div>
-              {/* <div className="formRow  col-xl-3">
-                <div className="d-flex flex-wrap align-items-center">
-                  <div className="formLabel">
-                    <label htmlFor="selectFormRow">Enabled</label>
-                  </div>
-                  <div className="col-12">
-                    <div className="my-auto position-relative mx-1">
-                      <label className="switch">
-                        <input
-                          type="checkbox"
-                          checked={watch().status}
-                          {...register("status")}
-                          id="showAllCheck"
-                        />
-                        <span className="slider round" />
-                      </label>
-                    </div>
-                  </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Record Template</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Define record template.
+                  </label>
                 </div>
-                <label htmlFor="data" className="formItemDesc">
-                  Set the status of this call center queue.
-                </label>
-              </div> */}
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="record_template"
+                    className="formItem"
+                    {...register("record_template", {
+                      ...noSpecialCharactersValidator,
+                    })}
+                    onKeyDown={restrictToAllowedChars}
+                  />
+                  {errors.record_template && (
+                    <ErrorMessage text={errors.record_template} />
+                  )}
+                </div>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Record Template</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Define record template.
+                  </label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="record_template"
+                    className="formItem"
+                    {...register("record_template", {
+                      ...noSpecialCharactersValidator,
+                    })}
+                    onKeyDown={restrictToAllowedChars}
+                  />
+                  {errors.record_template && (
+                    <ErrorMessage text={errors.record_template} />
+                  )}
+                </div>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Queue Announce</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Select the desired queue announce sound.
+                  </label>
+                </div>
+                <div className="col-6">
+                  <select {...register("queue_announce_sound")} className="formItem w-100">
+                    <option></option>
+                    {announcmentSound &&
+                      announcmentSound.map((item, index) => {
+                        return (
+                          <option key={index} value={item.id}>
+                            {item.name}
+                          </option>
+                        );
+                      })}
+                  </select>
+                  <br />
+                  <label htmlFor="data" className="formItemDesc">
+                  Select the desired queue announce sound.
+                  </label>
+                </div>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Queue Announce Frequency</label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="number"
+                    name="extension"
+                    className="formItem"
+                    {...register("queue_announce_frequency", {
+                      ...noSpecialCharactersValidator,
+                    })}
+                    onKeyDown={restrictToNumbers}
+                  />
+                  {errors.queue_announce_frequency && (
+                    <ErrorMessage text={errors.queue_announce_frequency} />
+                  )}
+                </div>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Queue Description</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Define queue description.
+                  </label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="queue_description"
+                    className="formItem"
+                    {...register("queue_description", {
+                      ...noSpecialCharactersValidator,
+                    })}
+                    onKeyDown={restrictToAllowedChars}
+                  />
+                  {errors.queue_description && (
+                    <ErrorMessage text={errors.queue_description} />
+                  )}
+                </div>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Truncate Agents On Load</label>
+                  <label htmlFor="data" className="formItemDesc">
+                  Truncate Agents On Load.
+                  </label>
+                </div>
+                <div className="col-6">
+                  <select
+                    {...register("truncate-agents-on-load")}
+                    className="formItem w-100"
+                    name="truncate-agents-on-load"
+                  >
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Truncate Tiers On Load</label>
+                  <label htmlFor="data" className="formItemDesc">
+                  Truncate Tiers On Load.
+                  </label>
+                </div>
+                <div className="col-6">
+                  <select
+                    {...register("truncate-tiers-on-load")}
+                    className="formItem w-100"
+                    name="truncate-tiers-on-load"
+                  >
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                  </select>
+                </div>
+              </div>
+
               <div className="formRow col-xl-12">
                 {agent &&
                   agent.map((item, index) => {
@@ -984,39 +1004,12 @@ function CallCenterQueueEdit() {
                               name="name"
                               value={item.name}
                               onChange={(e) => handleAgentChange(e, index)}
-                              // onChange={(e) => {
-                              //   const selectedValue = e.target.value;
-                              //   // Redirect to the Add User page
-                              //   if (selectedValue === "addUser") {
-                              //     navigate("/users-add");
-                              //   } else {
-                              //     handleAgentChange(e, index);
-                              //     user.map((item) => {
-                              //       if (item.id == e.target.value) {
-                              //         const newAgent = [...agent];
-                              //         newAgent[index][
-                              //           "contact"
-                              //         ] = `user/${item.extension.extension}@${item.domain.domain_name}`;
-                              //         setAgent(agent);
-                              //       }
-                              //     });
-                              //   }
-                              // }}
                               className="formItem"
                               placeholder="Destination"
                             >
                               <option value="" disabled>
                                 Choose agent
                               </option>
-                              {/* {user &&
-                                user.map((item) => {
-                                  return (
-                                    <option value={item.id}>
-                                      {item.username}(
-                                      {item.extension?.extension})
-                                    </option>
-                                  );
-                                })} */}
                               {user &&
                                 user
                                   .filter((userItem) => {
@@ -1068,7 +1061,10 @@ function CallCenterQueueEdit() {
                             />
                           </div>
                         </div>
-                        <div className="col-1 ps-0 pe-2" style={{ width: '6%' }}>
+                        <div
+                          className="col-1 ps-0 pe-2"
+                          style={{ width: "6%" }}
+                        >
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Tier Level</label>
@@ -1096,7 +1092,10 @@ function CallCenterQueueEdit() {
                             <option value={9}>9</option>
                           </select>
                         </div>
-                        <div className="col-1 ps-0 pe-2" style={{ width: '6.5%' }}>
+                        <div
+                          className="col-1 ps-0 pe-2"
+                          style={{ width: "6.5%" }}
+                        >
                           <div className="formLabel">
                             {index === 0 ? (
                               <label htmlFor="">Tier Position</label>
@@ -1288,53 +1287,11 @@ function CallCenterQueueEdit() {
                             <option value={1}>True</option>
                           </select>
                         </div>
-                        {/* <div className="col-2 pe-2">
-                          <div className="formLabel">
-                            {index === 0 ? <label htmlFor="">Type</label> : ""}
-                          </div>
-                          <select
-                            className="formItem me-0"
-                            style={{ width: "100%" }}
-                            name="type"
-                            value={item.type}
-                            onChange={(e) => handleAgentChange(e, index)}
-                            id="selectFormRow"
-                          >
-                            <option value={"callback"}>Call Back</option>
-                            <option value={"uuid-standby"}>UUID Standbu</option>
-                          </select>
-                        </div> */}
-                        {/* <div className="col-2 pe-2">
-                          <div className="formLabel">
-                            {index === 0 ? (
-                              <label htmlFor="">Status</label>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                          <select
-                            className="formItem me-0"
-                            style={{ width: "100%" }}
-                            name="status"
-                            value={item.status}
-                            onChange={(e) => handleAgentChange(e, index)}
-                            id="selectFormRow"
-                          >
-                            <option value={"Logged Out"}>Logged Out</option>
-                            <option value={"Available"}>Available</option>
-                            <option value={"Available (On Demand)"}>
-                              Available (On Demand)
-                            </option>
-                            <option value={"On Break"}>On Break</option>
-                          </select>
-                        </div> */}
-
                         {agent.length === 1 ? (
                           ""
                         ) : (
                           <div
                             onClick={() => deleteDestination(item.id)}
-                            // onClick={() => removeAgenet(item.id)}
                             className="col-auto ps-0 pe-2 mt-auto"
                           >
                             <button
@@ -1346,7 +1303,7 @@ function CallCenterQueueEdit() {
                           </div>
                         )}
                         {index === agent.length - 1 &&
-                          index !== (user && user.length - 1) ? (
+                        index !== (user && user.length - 1) ? (
                           <div
                             onClick={addNewAgent}
                             className="col-auto px-0 mt-auto"
@@ -1370,18 +1327,6 @@ function CallCenterQueueEdit() {
           </div>
         </div>
       </section>
-      {/* <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      /> */}
     </main>
   );
 }
