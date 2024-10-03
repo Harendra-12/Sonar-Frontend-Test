@@ -144,11 +144,11 @@ const Profile = () => {
                     <div className="profileDetailsHolder">
                       <div className="header">Account Details</div>
                       <div className="row" style={{ padding: 5 }}>
-                        <div className="formRow col-xl-4">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label htmlFor="data">Profile Name</label>
                           </div>
-                          <div className="col-12">
+                          <div className="col-6">
                             <input
                               type="text"
                               className="formItem"
@@ -157,11 +157,11 @@ const Profile = () => {
                             />
                           </div>
                         </div>
-                        <div className="formRow col-xl-4">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label htmlFor="data">Email</label>
                           </div>
-                          <div className="col-12">
+                          <div className="col-6">
                             <input
                               type="text"
                               className="formItem"
@@ -198,11 +198,11 @@ const Profile = () => {
                         />
                       </div>
                     </div> */}
-                        <div className="formRow col-xl-4">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label htmlFor="data">Phone Number</label>
                           </div>
-                          <div className="col-12">
+                          <div className="col-6">
                             <input
                               type="text"
                               className="formItem"
