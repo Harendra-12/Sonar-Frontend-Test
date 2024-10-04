@@ -56,7 +56,6 @@ function CallDashboard() {
     );
 
     if (unparkResponse) {
-      console.log(unparkResponse);
       toast.success(unparkResponse.message);
     }
   };

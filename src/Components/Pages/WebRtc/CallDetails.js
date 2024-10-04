@@ -282,7 +282,7 @@ function CallDetails({
             <div className="callDetailsList">
               <table className="mt-3">
                 <tbody>
-                  {callHistory.map((item) => (
+                  {callHistory?.map((item) => (
                     <tr key={item.id}>
                       <td style={{ color: "#444444" }}>
                         {formatDate(item.variable_start_stamp)}

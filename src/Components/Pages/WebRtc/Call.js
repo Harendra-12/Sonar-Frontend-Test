@@ -50,31 +50,6 @@ function Call({
     setDialpadShow(value);
   }
 
-  // const useWebSocketErrorHandling = (options) => {
-  //   useEffect(() => {
-  //     const webSocket = new WebSocket(options.webSocketServer);
-
-  //     webSocket.onerror = (event) => {
-  //       console.error("WebSocket error:", event);
-  //       // Prevent default error handling
-  //       event.preventDefault();
-  //     };
-
-  //     webSocket.onclose = (event) => {
-  //       if (event.code === 1006) {
-  //         console.error(
-  //           `WebSocket closed ${options.webSocketServer} (code: ${event.code})`
-  //         );
-  //         // Handle the WebSocket close event
-  //       }
-  //     };
-  //     console.log(global);
-  //     return () => {
-  //       webSocket.close();
-  //     };
-  //   }, [options.webSocketServer]);
-  // };
-
   // useEffect(() => {
   //   if (allCall && allCall.calls) {
   //     const apiData = allCall;
@@ -130,7 +105,6 @@ function Call({
             .map((item) => [item, item])
         ).values(),
       ];
-      console.log(uniqueArray);
 
       setAllCalls(uniqueArray.reverse());
       setLoading(false);
@@ -372,15 +346,6 @@ function Call({
 
   const groupedCalls = groupCallsByDate(previewCalls);
 
-  // const options = {
-  //   domain: account.domain.domain_name,
-  //   webSocketServer: "ws://192.168.2.225:5066",
-  //   // domain: "192.168.0.91",
-  //   // domain: "webvio.1.com",
-  //   // webSocketServer: "ws://192.168.0.91:5066",
-  // };
-
-  // useWebSocketErrorHandling(options);
   const sortedGroupedCalls = sortKeys(Object.keys(groupedCalls)).reduce(
     (acc, date) => {
       acc[date] = groupedCalls[date].sort(
