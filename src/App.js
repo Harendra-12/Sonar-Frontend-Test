@@ -104,7 +104,6 @@ import MailSettingsAdd from "./Components/Pages/MailSettings/MailSettingsAdd";
 import MailSettings from "./Components/Pages/MailSettings/MailSettings";
 import MailSettingsEdit from "./Components/Pages/MailSettings/MailSettingsEdit";
 import IvrAdd from "./Components/Pages/IVR/IvrAdd";
-import IvrList from "./Components/Pages/IVR/IvrList";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";

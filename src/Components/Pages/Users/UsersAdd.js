@@ -333,7 +333,7 @@ const UsersAdd = () => {
             </div>
           </div>
           <div className="col-xl-12" style={{ overflow: "auto" }}>
-            <div className="d-flex flex-wrap">
+            <div className="d-flex flex-wrap mb-5">
               <div className={selectedRole ? "col-xl-6" : "col-xl-12"}>
                 <div className="profileView">
                   <div className="profileDetailsHolder position-relative">

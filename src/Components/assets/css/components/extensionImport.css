@@ -15,10 +15,11 @@
 }
 
 /* #detailsContent  */
-/* #detailsContent form {
-    display: flex;
-    flex-wrap: wrap;
-} */
+#detailsContent form {
+    /* display: flex;
+    flex-wrap: wrap; */
+    margin-bottom: 45px;
+}
 
 .formRow {
     display: flex;

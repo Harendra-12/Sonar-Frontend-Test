@@ -370,7 +370,7 @@ const UsersEdit = () => {
             ) : (
               ""
             )}
-            <div className="d-flex flex-wrap">
+            <div className="d-flex flex-wrap mb-5">
               <div className="col-xl-6">
                 <div className="profileView">
                   <div className="profileDetailsHolder position-relative">
@@ -535,10 +535,10 @@ const UsersEdit = () => {
                                 e.target.value === ""
                                   ? ""
                                   : role[e.target.value].permissions.map(
-                                      (item) => {
-                                        return item.permission_id;
-                                      }
-                                    )
+                                    (item) => {
+                                      return item.permission_id;
+                                    }
+                                  )
                               );
                             }}
                           >
