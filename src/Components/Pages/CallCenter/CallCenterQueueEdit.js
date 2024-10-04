@@ -111,6 +111,8 @@ function CallCenterQueueEdit() {
                 type: item.type,
                 password: item?.password,
                 contact: item.contact,
+                "truncate-agents-on-load": item["truncate_agents_on_load"],
+                "truncate-tiers-on-load": item["truncate_tiers_on_load"],
               };
             })
           );
@@ -179,6 +181,8 @@ function CallCenterQueueEdit() {
         no_answer_delay_time: "",
         wrap_up_time: "",
         reserve_agents: 0,
+        "truncate-agents-on-load": 0,
+        "truncate-tiers-on-load": 0,
         busy_delay_time: "",
         contact: "",
       },
@@ -291,6 +295,8 @@ function CallCenterQueueEdit() {
               return {
                 agent_name: item.name,
                 reserve_agents: item.reserve_agents,
+                truncate_agents_on_load: item["truncate-agents-on-load"],
+                truncate_tiers_on_load: item["truncate-tiers-on-load"],
                 tier_level: item.level,
                 call_timeout:
                   item.call_timeout === null ? null : Number(item.call_timeout),
@@ -943,7 +949,7 @@ function CallCenterQueueEdit() {
                 </div>
               </div>
 
-              <div className="formRow col-xl-3">
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Truncate Agents On Load</label>
                   <label htmlFor="data" className="formItemDesc">
@@ -960,9 +966,9 @@ function CallCenterQueueEdit() {
                     <option value="false">False</option>
                   </select>
                 </div>
-              </div>
+              </div> */}
 
-              <div className="formRow col-xl-3">
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Truncate Tiers On Load</label>
                   <label htmlFor="data" className="formItemDesc">
@@ -979,7 +985,7 @@ function CallCenterQueueEdit() {
                     <option value="false">False</option>
                   </select>
                 </div>
-              </div>
+              </div> */}
 
               <div className="formRow col-xl-12">
                 {agent &&
@@ -1282,6 +1288,48 @@ function CallCenterQueueEdit() {
                             style={{ width: "100%" }}
                             name="reserve_agents"
                             value={item.reserve_agents}
+                            onChange={(e) => handleAgentChange(e, index)}
+                            id="selectFormRow"
+                          >
+                            <option value={0}>False</option>
+                            <option value={1}>True</option>
+                          </select>
+                        </div>
+
+                        <div className="col-1 ps-0 pe-2">
+                          <div className="formLabel">
+                            {index === 0 ? (
+                              <label htmlFor="">Truncate agents on load</label>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                          <select
+                            className="formItem me-0"
+                            style={{ width: "100%" }}
+                            name="truncate-agents-on-load"
+                            value={item["truncate-agents-on-load"]}
+                            onChange={(e) => handleAgentChange(e, index)}
+                            id="selectFormRow"
+                          >
+                            <option value={0}>False</option>
+                            <option value={1}>True</option>
+                          </select>
+                        </div>
+
+                        <div className="col-1 ps-0 pe-2">
+                          <div className="formLabel">
+                            {index === 0 ? (
+                              <label htmlFor="">Truncate tiers on load</label>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                          <select
+                            className="formItem me-0"
+                            style={{ width: "100%" }}
+                            name="truncate-tiers-on-load"
+                            value={item["truncate-tiers-on-load"]}
                             onChange={(e) => handleAgentChange(e, index)}
                             id="selectFormRow"
                           >

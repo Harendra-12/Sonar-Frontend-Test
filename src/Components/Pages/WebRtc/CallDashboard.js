@@ -90,7 +90,7 @@ function CallDashboard() {
                       Call Dashboard
                     </h3>
                   </div>
-                  <div className="col-auto d-flex">
+                  {/* <div className="col-auto d-flex">
                     <div className="col-auto">
                       <button className="appPanelButton" effect="ripple">
                         <i className="fa-light fa-mobile-retro" />
@@ -101,7 +101,7 @@ function CallDashboard() {
                         <i className="fa-light fa-satellite-dish" />
                       </button>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="col-12">
                     <nav>
                       <div className="nav nav-tabs">
