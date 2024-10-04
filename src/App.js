@@ -104,6 +104,7 @@ import MailSettingsAdd from "./Components/Pages/MailSettings/MailSettingsAdd";
 import MailSettings from "./Components/Pages/MailSettings/MailSettings";
 import MailSettingsEdit from "./Components/Pages/MailSettings/MailSettingsEdit";
 import IvrAdd from "./Components/Pages/IVR/IvrAdd";
+import IvrList from "./Components/Pages/IVR/IvrList";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -322,7 +323,7 @@ function App() {
 
           {/* Ivr Page Start */}
           <Route path="/ivr-add" element={<IvrAdd />} />
-           {/* Ivr Page End */}
+          {/* Ivr Page End */}
 
           {/* 404 Redirection */}
           <Route path="*" element={<Navigate to="/dashboard" />} />

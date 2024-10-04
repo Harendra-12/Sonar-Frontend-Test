@@ -76,7 +76,7 @@ function IvrAdd() {
                 <div className="formLabel">
                   <label htmlFor="">Greet Sound (Long)</label>
                   <label htmlFor="mail_host" className="formItemDesc">
-                    Upload a long greet sound.
+                    Upload a long greet when entering the menu.
                   </label>
                 </div>
                 <div className="col-6">
@@ -88,7 +88,7 @@ function IvrAdd() {
                 <div className="formLabel">
                   <label htmlFor="">Greet Sound (Short)</label>
                   <label htmlFor="mail_host" className="formItemDesc">
-                    Upload a short greet sound.
+                    Upload a short greet when entering the menu.
                   </label>
                 </div>
                 <div className="col-6">
@@ -112,7 +112,7 @@ function IvrAdd() {
                 <div className="formLabel">
                   <label htmlFor="">Exit Sound</label>
                   <label htmlFor="mail_host" className="formItemDesc">
-                    Upload an exit sound.
+                    Select the exit action to be performed if the ivr exists.
                   </label>
                 </div>
                 <div className="col-6">
@@ -204,7 +204,7 @@ function IvrAdd() {
                 <div className="formLabel">
                   <label htmlFor="">Timeout</label>
                   <label htmlFor="mail_port" className="formItemDesc">
-                    Enter timeout in miliseconds
+                    Enter the number of miliseconds to wait after playing the greeting or the confirm macro.
                   </label>
                 </div>
                 <div className="col-6">
