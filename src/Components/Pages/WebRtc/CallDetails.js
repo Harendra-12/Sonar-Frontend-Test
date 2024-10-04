@@ -7,15 +7,16 @@ function CallDetails({
   clickedCall,
   callHistory,
   isCustomerAdmin,
-  setCallNow,
-  callNow,
+  // setCallNow,
+  // callNow,
   setSelectedModule,
   isMicOn,
+  onCall,
 }) {
   const [callDetails, setCallDetails] = useState();
-  const dispatch = useDispatch();
-  const globalSession = useSelector((state) => state.sessions);
-  const { sessionManager } = useSIPProvider();
+  // const dispatch = useDispatch();
+  // const globalSession = useSelector((state) => state.sessions);
+
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
   useEffect(() => {
@@ -58,63 +59,65 @@ function CallDetails({
     );
   };
 
-  useEffect(() => {
-    if (callNow) {
-      onCall();
-    }
-  }, [callNow]);
+  // useEffect(() => {
+  //   if (callNow) {
+  //     setTimeout(() => {
+  //       onCall();
+  //     }, 500);
+  //   }
+  // }, [callNow]);
 
-  async function onCall(e) {
-    // e.preventDefault();
+  // async function onCall(e) {
+  //   // e.preventDefault();
 
-    if (!isMicOn) {
-      toast.warn("Please turn on microphone");
-      return;
-    }
-    setCallNow(false);
-    if (extension == "") {
-      toast.error("No extension assigned to your account");
-      return;
-    }
-    const otherPartyExtension =
-      callDetails?.["Caller-Callee-ID-Number"] == extension
-        ? callDetails?.["Caller-Caller-ID-Number"]
-        : callDetails?.["Caller-Callee-ID-Number"];
-    console.log("otherPartyExtension", otherPartyExtension);
-    if (otherPartyExtension === extension) {
-      toast.error("You can't call yourself");
-      return;
-    }
-    const apiData = await sessionManager?.call(
-      `sip:${otherPartyExtension}@192.168.2.225`,
-      {}
-    );
-    setSelectedModule("onGoingCall");
+  //   if (!isMicOn) {
+  //     toast.warn("Please turn on microphone");
+  //     return;
+  //   }
+  //   setCallNow(false);
+  //   if (extension == "") {
+  //     toast.error("No extension assigned to your account");
+  //     return;
+  //   }
+  //   const otherPartyExtension =
+  //     callDetails?.["Caller-Callee-ID-Number"] == extension
+  //       ? callDetails?.["Caller-Caller-ID-Number"]
+  //       : callDetails?.["Caller-Callee-ID-Number"];
+  //   console.log("otherPartyExtension", otherPartyExtension);
+  //   if (otherPartyExtension === extension) {
+  //     toast.error("You can't call yourself");
+  //     return;
+  //   }
+  //   const apiData = await sessionManager?.call(
+  //     `sip:${otherPartyExtension}@192.168.2.225`,
+  //     {}
+  //   );
+  //   setSelectedModule("onGoingCall");
 
-    dispatch({
-      type: "SET_SESSIONS",
-      sessions: [
-        ...globalSession,
-        {
-          id: apiData._id,
-          destination: Number(otherPartyExtension),
-          state: "Established",
-        },
-      ],
-    });
-    dispatch({
-      type: "SET_CALLPROGRESSID",
-      callProgressId: apiData._id,
-    });
-    dispatch({
-      type: "SET_CALLPROGRESSDESTINATION",
-      callProgressDestination: Number(otherPartyExtension),
-    });
-    dispatch({
-      type: "SET_CALLPROGRESS",
-      callProgress: true,
-    });
-  }
+  //   dispatch({
+  //     type: "SET_SESSIONS",
+  //     sessions: [
+  //       ...globalSession,
+  //       {
+  //         id: apiData._id,
+  //         destination: Number(otherPartyExtension),
+  //         state: "Established",
+  //       },
+  //     ],
+  //   });
+  //   dispatch({
+  //     type: "SET_CALLPROGRESSID",
+  //     callProgressId: apiData._id,
+  //   });
+  //   dispatch({
+  //     type: "SET_CALLPROGRESSDESTINATION",
+  //     callProgressDestination: Number(otherPartyExtension),
+  //   });
+  //   dispatch({
+  //     type: "SET_CALLPROGRESS",
+  //     callProgress: true,
+  //   });
+  // }
 
   return (
     <>
@@ -140,7 +143,7 @@ function CallDetails({
           <button
             className="appPanelButton"
             effect="ripple"
-            onClick={() => onCall()}
+            onClick={() => onCall(callDetails)}
           >
             <i className="fa-light fa-phone" />
           </button>

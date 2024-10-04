@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import AddNewContactPopup from "./AddNewContactPopup";
 import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
+import { toast } from "react-toastify";
+import { useSIPProvider } from "react-sipjs";
 
 function Call({
   setHangupRefresh,
@@ -28,7 +30,7 @@ function Call({
   const [allCalls, setAllCalls] = useState([]);
   const extension = account?.extension?.extension || "";
   // const [hangupRefresh, setHangupRefresh] = useState(0);
-  const [callNow, setCallNow] = useState(false);
+  // const [callNow, setCallNow] = useState(false);
   const [previewCalls, setPreviewCalls] = useState([]);
   const [addContactToggle, setAddContactToggle] = useState(false);
   const [clickedCall, setClickedCall] = useState(null);
@@ -36,10 +38,12 @@ function Call({
   const [loading, setLoading] = useState(true);
   const [allApiData, setAllApiData] = useState([]);
   const [callHistory, setCallHistory] = useState([]);
+  const { sessionManager } = useSIPProvider();
   // const [selectedModule, setSelectedModule] = useState("");
   const callProgressDestination = useSelector(
     (state) => state.callProgressDestination
   );
+  // const globalSession = useSelector((state) => state.sessions);
   const [clickedExtension, setClickedExtension] = useState(null);
 
   function handleHideDialpad(value) {
@@ -244,7 +248,7 @@ function Call({
   };
 
   const handleDoubleClickCall = (item) => {
-    setCallNow(true);
+    onCall(item);
   };
 
   const renderCallItem = (item) => (
@@ -387,6 +391,58 @@ function Call({
     },
     {}
   );
+
+  async function onCall(callDetails) {
+    // e.preventDefault();
+
+    if (!isMicOn) {
+      toast.warn("Please turn on microphone");
+      return;
+    }
+    // setCallNow(false);
+    if (extension == "") {
+      toast.error("No extension assigned to your account");
+      return;
+    }
+    const otherPartyExtension =
+      callDetails?.["Caller-Callee-ID-Number"] == extension
+        ? callDetails?.["Caller-Caller-ID-Number"]
+        : callDetails?.["Caller-Callee-ID-Number"];
+    console.log("otherPartyExtension", otherPartyExtension);
+    if (otherPartyExtension === extension) {
+      toast.error("You can't call yourself");
+      return;
+    }
+    const apiData = await sessionManager?.call(
+      `sip:${otherPartyExtension}@192.168.2.225`,
+      {}
+    );
+    setSelectedModule("onGoingCall");
+
+    dispatch({
+      type: "SET_SESSIONS",
+      sessions: [
+        ...sessions,
+        {
+          id: apiData._id,
+          destination: Number(otherPartyExtension),
+          state: "Established",
+        },
+      ],
+    });
+    dispatch({
+      type: "SET_CALLPROGRESSID",
+      callProgressId: apiData._id,
+    });
+    dispatch({
+      type: "SET_CALLPROGRESSDESTINATION",
+      callProgressDestination: Number(otherPartyExtension),
+    });
+    dispatch({
+      type: "SET_CALLPROGRESS",
+      callProgress: true,
+    });
+  }
   return (
     <div className="browserPhoneWrapper">
       {/* <SideNavbarApp /> */}
@@ -586,10 +642,11 @@ function Call({
                         clickedCall={clickedCall}
                         callHistory={callHistory}
                         isCustomerAdmin={isCustomerAdmin}
-                        setCallNow={setCallNow}
-                        callNow={callNow}
+                        // setCallNow={setCallNow}
+                        // callNow={callNow}
                         setSelectedModule={setSelectedModule}
                         isMicOn={isMicOn}
+                        onCall={onCall}
                       />
                     )}
               </div>
