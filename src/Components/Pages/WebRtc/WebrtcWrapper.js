@@ -67,6 +67,7 @@ const WebrtcWrapper = () => {
   const options = {
     domain: account.domain.domain_name,
     webSocketServer: "wss://192.168.2.225:7443",
+    // webSocketServer: "ws://192.168.2.225:5066",
   };
 
   useWebSocketErrorHandling(options);
@@ -95,7 +96,7 @@ const WebrtcWrapper = () => {
     <>
       <SIPProvider options={options}>
         <SideNavbarApp setactivePage={setactivePage} isMicOn={isMicOn} />
-        <div>{extension && <SipRegister />}</div>
+        <div>{extension && <SipRegister options={options} />}</div>
         {activePage == "call" && (
           <Call
             setHangupRefresh={setHangupRefresh}

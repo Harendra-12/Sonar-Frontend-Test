@@ -95,12 +95,7 @@ import CallCenter from "./Components/Pages/WebRtc/CallCenter";
 import PortNumber from "./Components/Pages/NumberManagement/PortNumber";
 import PortNumberAdd from "./Components/Pages/NumberManagement/PortNumberAdd";
 import PortNumberEdit from "./Components/Pages/NumberManagement/PortNumberEdit";
-import CallPage from "./Components/Pages/WebRtcPages/CallPage";
-import AllContactPage from "./Components/Pages/WebRtcPages/AllContactPage";
-import CallCenterPage from "./Components/Pages/WebRtcPages/CallCenterPage";
-import AllVoiceMailsPage from "./Components/Pages/WebRtcPages/AllVoiceMailsPage";
-import OngoingCallPage from "./Components/Pages/WebRtcPages/OngoingCallPage";
-import CallDashboardPage from "./Components/Pages/WebRtcPages/CallDashboardPage";
+
 import WebrtcWrapper from "./Components/Pages/WebRtc/WebrtcWrapper";
 import "react-toastify/dist/ReactToastify.css";
 import Messages from "./Components/Pages/WebRtc/Messages";

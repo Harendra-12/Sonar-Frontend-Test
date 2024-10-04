@@ -36,7 +36,7 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
       hideDialpad(false);
       // e.preventDefault();
       const apiData = await sessionManager?.call(
-        `sip:${Number(destNumber)}@${account.domain.domain_name}`,
+        `sip:${destNumber}@${account.domain.domain_name}`,
         {
           // Contact: `<sip:${extension}@${account.domain.domain_name}>`,
           // `To: <sip:${Number(destNumber)}@${account.domain.domain_name}>`,
@@ -64,6 +64,8 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
         type: "SET_CALLPROGRESS",
         callProgress: true,
       });
+    } else {
+      toast.error("Please enter a valid number");
     }
   }
 

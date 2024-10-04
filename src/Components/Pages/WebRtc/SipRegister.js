@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 // import { useDispatch } from "react-redux";
 // import { CallSessionItem } from "./CallSessionItem";
 
-export const SipRegister = () => {
+export const SipRegister = ({ options }) => {
   const { connectAndRegister, registerStatus, connectStatus } =
     useSIPProvider();
   const account = useSelector((state) => state.account);
@@ -19,8 +19,7 @@ export const SipRegister = () => {
   //   });
   // }, [connectAndRegister]);
   useEffect(() => {
-    // const wsUrl = "wss://192.168.2.225:7443"; // Your WebSocket URL
-    const wsUrl = "ws://192.168.2.225:5066"; // Your WebSocket URL
+    const wsUrl = options.webSocketServer;
 
     const checkWebSocket = () => {
       return new Promise((resolve, reject) => {
