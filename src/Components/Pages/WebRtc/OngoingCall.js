@@ -283,7 +283,11 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
               <i className="fa-thin fa-phone-arrow-up-right" />
             </button>
             <button
-              className="appPanelButtonCaller"
+              className={` ${
+                showParkList
+                  ? "appPanelButtonCaller active"
+                  : "appPanelButtonCaller"
+              } `}
               effect="ripple"
               onClick={() => setShowParkList(!showParkList)}
             >
