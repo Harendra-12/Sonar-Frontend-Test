@@ -79,6 +79,19 @@ function ActiveCalls() {
     }
   }, [bargeStatus, id]);
 
+
+  function extractLastNumber(inputString) {
+    const regex = /(\d+)\s*$/; // Regular expression to match the last number after a space
+
+    const match = inputString.match(regex);
+
+    if (match) {
+      return match[1]; // Return the matched number
+    } else {
+      console.log("No number found after the last space.");
+      return null;
+    }
+  }
   return (
     <>
       {/* <main className="mainContent"> */}
@@ -119,7 +132,11 @@ function ActiveCalls() {
                                 <td>{item.created.split(" ")[1]}</td>
                                 {/* <td>{item.b_cid_name}</td> */}
                                 <td>{item.cid_num}</td>
-                                <td>{item.dest}</td>
+                                <td>
+                                    {item?.dest.includes("set:valet_ticket")
+                                      ? extractLastNumber(item?.accountcode)
+                                      : extractLastNumber(item?.dest)}
+                                  </td>
                                 <td>
                                   <select
                                     onChange={(e) => {
