@@ -11,7 +11,7 @@ import {
   generalPostFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import CircularLoader from "../../Loader/CircularLoader";
 import { useNavigate } from "react-router-dom";
@@ -371,7 +371,7 @@ function CardAndBilling() {
                       />
                     </div>
                     <div className="col-xl-4 pe-0">
-                      <div className="itemWrapper b">
+                      <div className="itemWrapper c">
                         <div className="heading">
                           <div class="d-flex flex-wrap justify-content-between align-items-center">
                             <div class="col-10">
@@ -926,7 +926,7 @@ function CardAndBilling() {
                 </div>
                 <div className="col-xl-4">
                   <div className="col-xl-12">
-                    <div className="itemWrapper c h-100">
+                    <div className="itemWrapper b h-100">
                       <div className="heading">
                         <div className="d-flex flex-wrap justify-content-between">
                           <div className="col-10">
@@ -949,7 +949,7 @@ function CardAndBilling() {
                                 <p>${item.amount_subtotal}</p>
                               </div>
                               <div
-                                style={{ cursor: "pointer" }}
+                                style={{ cursor: "pointer", fontWeight: '500' }}
                                 onClick={() =>
                                   downloadImage(
                                     item.invoice_url,
@@ -958,7 +958,7 @@ function CardAndBilling() {
                                   )
                                 }
                               >
-                                <i className="fa-duotone fa-files me-1"></i> PDF
+                                <i className="fa-solid fa-download me-1"></i> PDF
                               </div>
                             </li>
                           );
@@ -997,7 +997,7 @@ function CardAndBilling() {
                                 }
                               </sub>
                             </h5>
-                            <p>Transaction id:{" "}{accountDetails?.payments[0].transaction_id}</p>
+                            <p><b>Transaction ID</b>:{" "}#{accountDetails?.payments[0].transaction_id}</p>
                           </div>
                           <div class="col-2"></div>
                         </div>

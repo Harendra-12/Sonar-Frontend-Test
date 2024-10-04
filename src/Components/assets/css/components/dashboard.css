@@ -236,7 +236,8 @@
     color: var(--color2);
 }
 
-.itemWrapper.b .heading i {
+.itemWrapper.b .heading i,
+.itemWrapper.b i {
     color: var(--ui-accent-green);
     background-color: var(--ui-accent-green-trans);
 }
