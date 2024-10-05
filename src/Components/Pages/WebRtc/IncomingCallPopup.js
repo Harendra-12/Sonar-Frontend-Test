@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSessionCall, useSIPProvider } from "react-sipjs";
 import { toast } from "react-toastify";
 import { UserAgent } from "sip.js";
-import ringtone from "../../assets/cellphone-ringing-6475.mp3";
+import ringtone from "../../assets/music/cellphone-ringing-6475.mp3";
 
 function IncomingCallPopup({
   sessionId,

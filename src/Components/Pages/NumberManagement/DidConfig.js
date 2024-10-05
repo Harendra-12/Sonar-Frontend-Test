@@ -42,7 +42,6 @@ const DidConfig = () => {
   useEffect(() => {
     if (locationData.configuration !== null) {
       setDataAvailable(false);
-      console.log("This is configuration", locationData.configuration);
 
       setValue("usages", locationData.configuration.usages || []);
       setValue("did_id_view", locationData.did || "");
@@ -66,7 +65,9 @@ const DidConfig = () => {
         locationData.configuration.status === 0 ? false : true || ""
       );
     } else {
+      setValue("usages", "extension" || []);
       setDataAvailable(true);
+
     }
   }, [locationData]);
   useEffect(() => {
@@ -124,22 +125,16 @@ const DidConfig = () => {
   const directListValue = (value) => {
     setValue("direct_extension", value[0]);
   };
-  const usagesOptions = [
-    { value: "voice", label: "Voice" },
-    { value: "text", label: "Text" },
-    { value: "fax", label: "Fax" },
-    { value: "emergency", label: "Emergency" },
-  ];
-  const selectedUsages = watch("usages", []);
+
   const forwardStatus = watch("forward", "disabled");
 
   const handleFormSubmit = handleSubmit(async (data) => {
     data.record = data.record === true || data.record === "true";
     data.status = data.status === true || data.status === "true";
 
-    if (!Array.isArray(data.usages)) {
-      data.usages = [data.usages];
-    }
+    // if (!Array.isArray(data.usages)) {
+    //   data.usages = [data.usages];
+    // }
 
     if (data.forward === "pstn" && !data.forward_to) {
       setErr("forward_to", {
@@ -334,7 +329,7 @@ const DidConfig = () => {
                     )}
                   </div>
                 </div>
-                <div className="formRow col-xl-3">
+                {/* <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="">Usage</label>
                     <label htmlFor="data" className="formItemDesc">
@@ -363,6 +358,28 @@ const DidConfig = () => {
                     )}
 
                   </div>
+                </div> */}
+
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="">Usage</label>
+                    <label htmlFor="data" className="formItemDesc">
+                      Set how the Destination will be used.
+                    </label>
+                  </div>
+                  <div className="col-6">
+                    <select
+                      className="formItem"
+                      name="forward"
+                      id="selectFormRow"
+                      // onChange={(e) => setForwardEnable(e.target.value)}
+                      {...register("usages")}
+                    >
+                      <option value="extension">Extension</option>
+                      <option value="call center">Call Center</option>
+                      <option value="ring group">Ring Group</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div className="formRow col-xl-3">
@@ -374,6 +391,7 @@ const DidConfig = () => {
                   </div>
                   <div className="col-6">
                     <ActionList
+                      category={watch().usages}
                       title={null}
                       label={null}
                       getDropdownValue={actionListValue}

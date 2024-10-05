@@ -3,11 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 
 const ActionList = ({
+  category,
   getDropdownValue,
   value,
   title = "Action",
   label = "Set the action to perform when the max wait time is reached.",
 }) => {
+  console.log("category", category);
+  
   const dispatch = useDispatch();
 
   const [ringGroup, setRingGroup] = useState([]);
@@ -80,8 +83,7 @@ const ActionList = ({
         label: item.extension,
       })),
     },
-  ];
-
+  ].filter((option) => category === "all" || option.label.toLowerCase() === category.toLowerCase());
   // Custom styles for react-select
   const customStyles = {
     control: (provided, state) => ({
