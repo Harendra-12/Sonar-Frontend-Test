@@ -10,7 +10,7 @@ const ActionList = ({
   label = "Set the action to perform when the max wait time is reached.",
 }) => {
   console.log("category", category);
-  
+
   const dispatch = useDispatch();
 
   const [ringGroup, setRingGroup] = useState([]);
@@ -83,7 +83,11 @@ const ActionList = ({
         label: item.extension,
       })),
     },
-  ].filter((option) => category === "all" || option.label.toLowerCase() === category.toLowerCase());
+  ].filter(
+    (option) =>
+      category === undefined ||
+      option.label.toLowerCase() === category?.toLowerCase()
+  );
   // Custom styles for react-select
   const customStyles = {
     control: (provided, state) => ({
@@ -152,9 +156,13 @@ const ActionList = ({
 
   return (
     <>
-      {title ? <div className="formLabel">
-        <label htmlFor="">{title}</label>
-      </div> : ""}
+      {title ? (
+        <div className="formLabel">
+          <label htmlFor="">{title}</label>
+        </div>
+      ) : (
+        ""
+      )}
       <div className="col-12">
         <Select
           // className="formItem"
@@ -168,10 +176,13 @@ const ActionList = ({
           styles={customStyles}
           value={selectedOption}
         />
-        {label ?
+        {label ? (
           <label htmlFor="data" className="formItemDesc" style={{ margin: 0 }}>
             {label}
-          </label> : ""}
+          </label>
+        ) : (
+          ""
+        )}
       </div>
     </>
   );

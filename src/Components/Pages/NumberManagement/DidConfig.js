@@ -67,7 +67,6 @@ const DidConfig = () => {
     } else {
       setValue("usages", "extension" || []);
       setDataAvailable(true);
-
     }
   }, [locationData]);
   useEffect(() => {
@@ -187,10 +186,9 @@ const DidConfig = () => {
         toast.success(apiData.message);
       } else {
         setLoading(false);
-        toast.error(apiData.message);
+        // toast.error(apiData.message);
       }
     }
-    console.log("payload", payload);
   });
 
   // Custom styles for react-select
@@ -386,7 +384,8 @@ const DidConfig = () => {
                   <div className="formLabel">
                     <label htmlFor="">Action</label>
                     <label htmlFor="data" className="formItemDesc">
-                      Set the action to perform when the max wait time is reached.
+                      Set the action to perform when the max wait time is
+                      reached.
                     </label>
                   </div>
                   <div className="col-6">
@@ -456,7 +455,6 @@ const DidConfig = () => {
                         <ErrorMessage text={errors.forward_to.message} />
                       )}
                     </div>
-
                   </div>
                 )}
                 {forwardStatus === "direct" && (
@@ -520,9 +518,7 @@ const DidConfig = () => {
                       {...register("hold_music")}
                       value={watch().hold_music}
                     >
-                      <option value="default">
-                        default
-                      </option>
+                      <option value="default">default</option>
                       {holdMusic &&
                         holdMusic.map((ring) => {
                           return (

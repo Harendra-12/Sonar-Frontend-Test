@@ -101,8 +101,8 @@ const RingGroupSettings = () => {
       setSuccessMessage(apiData.message);
     } else {
       setLoading(false);
-      const errorMessage = Object.keys(apiData.errors);
-      toast.error(apiData.errors[errorMessage[0]][0]);
+      // const errorMessage = Object.keys(apiData.errors);
+      // toast.error(apiData.errors[errorMessage[0]][0]);
     }
   });
 
@@ -179,8 +179,8 @@ const RingGroupSettings = () => {
                       Ring Back Status
                     </label>
                     <label htmlFor="ring_back" className="formItemDesc">
-                      Defines what the caller will hear while the destination
-                      is being called.
+                      Defines what the caller will hear while the destination is
+                      being called.
                     </label>
                   </div>
                   <div className="col-6">

@@ -125,10 +125,11 @@ function Master() {
         );
         if (apiData.status) {
           toast.success(apiData.message);
-        } else {
-          const errorMessage = Object.keys(apiData.errors);
-          toast.error(apiData.errors[errorMessage[0]][0]);
         }
+        // else {
+        //   const errorMessage = Object.keys(apiData.errors);
+        //   toast.error(apiData.errors[errorMessage[0]][0]);
+        // }
       } else {
         toast.error("Invalid Updated Value");
       }
@@ -143,9 +144,10 @@ function Master() {
         );
         if (apiData.status) {
           toast.success(apiData.message);
-        } else {
-          toast.error(apiData.message);
         }
+        // else {
+        //   toast.error(apiData.message);
+        // }
       } else {
         toast.error("Invalid Updated Value");
       }

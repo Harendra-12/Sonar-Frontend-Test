@@ -27,6 +27,7 @@ function CallCenterQueueAdd() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const loadings = useSelector((state) => state.loading);
   const [user, setUser] = useState([]);
   const [greetingSound, setGreetingSound] = useState();
   const [holdSound, setHoldSound] = useState();
@@ -93,8 +94,8 @@ function CallCenterQueueAdd() {
       no_answer_delay_time: "",
       wrap_up_time: "",
       reserve_agents: 0,
-      "truncate-agents-on-load":0,
-      "truncate-tiers-on-load":0,
+      "truncate-agents-on-load": 0,
+      "truncate-tiers-on-load": 0,
     },
   ]);
 
@@ -121,8 +122,8 @@ function CallCenterQueueAdd() {
         no_answer_delay_time: "",
         wrap_up_time: "",
         reserve_agents: 0,
-        "truncate-agents-on-load":0,
-        "truncate-tiers-on-load":0,
+        "truncate-agents-on-load": 0,
+        "truncate-tiers-on-load": 0,
       },
     ]);
   }
@@ -273,7 +274,7 @@ function CallCenterQueueAdd() {
       "/call-center-queue/store",
       payload
     );
-    if (apiData.status) {
+    if (apiData?.status) {
       setLoading(false);
       toast.success(apiData.message);
       reset();
@@ -284,12 +285,12 @@ function CallCenterQueueAdd() {
       navigate("/cal-center-queue");
     } else {
       setLoading(false);
-      if (apiData.error) {
-        toast.error(apiData.error);
-      } else {
-        const errorMessage = Object.keys(apiData.errors);
-        toast.error(apiData.errors[errorMessage[0]][0]);
-      }
+      // if (apiData.error) {
+      //   toast.error(apiData.error);
+      // } else {
+      //   const errorMessage = Object.keys(apiData.errors);
+      //   toast.error(apiData.errors[errorMessage[0]][0]);
+      // }
     }
   });
 
@@ -344,7 +345,7 @@ function CallCenterQueueAdd() {
           </div>
         </div>
         <div className="col-xl-12">
-          {loading && (
+          {loading && loadings && (
             <div colSpan={99}>
               <CircularLoader />
             </div>
@@ -540,7 +541,8 @@ function CallCenterQueueAdd() {
                     className="formItem w-100"
                   >
                     <option value="queue">Queue</option>
-                    <option value="system">System</option>
+                    {/* <option value="system">System</option> */}
+                    <option value="ldfdkflker">System</option>
                   </select>
                 </div>
               </div>

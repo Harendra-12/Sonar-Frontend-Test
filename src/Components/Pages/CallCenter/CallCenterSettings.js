@@ -74,12 +74,13 @@ const CallCenterSettings = () => {
       `/call-center-queue/update/${id}`,
       payload
     );
-    setLoading(false);
 
     if (apiData.status) {
+      setLoading(false);
       toast.success(apiData.message);
     } else {
-      toast.error(apiData.message);
+      setLoading(false);
+      // toast.error(apiData.message);
     }
   });
 
@@ -111,7 +112,6 @@ const CallCenterSettings = () => {
           <div className="mx-2" id="detailsContent">
             <form>
               <div className="formRow col-xl-3">
-
                 <div className="formLabel">
                   <label className="text-dark">Greeting</label>
                   <label className="formItemDesc">
@@ -128,7 +128,6 @@ const CallCenterSettings = () => {
                     <option value="tone_stream">Tone Stream</option>
                   </select>
                 </div>
-
               </div>
               <div className="formRow col-xl-3">
                 <div className="formLabel">

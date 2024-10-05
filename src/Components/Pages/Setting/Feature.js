@@ -51,7 +51,7 @@ function Feature() {
         toast.success(apiData.message);
       } else {
         setLoading(false);
-        toast.error(apiData.message);
+        // toast.error(apiData.message);
       }
     }
   }

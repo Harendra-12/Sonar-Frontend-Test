@@ -295,8 +295,8 @@ function CardAndBilling() {
         });
       } else {
         setLoading(false);
-        const errorMessage = Object.keys(apiData.errors);
-        toast.error(apiData.errors[errorMessage[0]][0]);
+        // const errorMessage = Object.keys(apiData.errors);
+        // toast.error(apiData.errors[errorMessage[0]][0]);
       }
     }
   }
@@ -357,15 +357,17 @@ function CardAndBilling() {
                       <Cards
                         className="cardWrapper row align-items-center col-12 mx-auto"
                         number={selectedCard?.[0]?.card_number}
-                        expiry={`${selectedCard?.[0]?.exp_month
-                          ? selectedCard?.[0]?.exp_month < 10
-                            ? `0${selectedCard?.[0]?.exp_month}`
-                            : selectedCard?.[0]?.exp_month
-                          : ""
-                          }/${selectedCard?.[0]?.exp_year
+                        expiry={`${
+                          selectedCard?.[0]?.exp_month
+                            ? selectedCard?.[0]?.exp_month < 10
+                              ? `0${selectedCard?.[0]?.exp_month}`
+                              : selectedCard?.[0]?.exp_month
+                            : ""
+                        }/${
+                          selectedCard?.[0]?.exp_year
                             ? selectedCard?.[0]?.exp_year
                             : ""
-                          }`}
+                        }`}
                         cvc={selectedCard?.[0]?.cvc}
                         name={selectedCard?.[0]?.name}
                       />
@@ -379,14 +381,21 @@ function CardAndBilling() {
                               <p>16-01-2024</p>
                             </div>
                             <div class="col-2">
-                              <i className="fa-duotone fa-ballot" style={{ boxShadow: 'rgba(0, 0, 0, 0.15) 0px 3px 5px' }}></i>
+                              <i
+                                className="fa-duotone fa-ballot"
+                                style={{
+                                  boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 5px",
+                                }}
+                              ></i>
                             </div>
                           </div>
                         </div>
                         <div className="data-number2">
                           <div class="d-flex flex-wrap justify-content-between align-items-center">
                             <div class="col-10">
-                              <h5>$200.<sub style={{ fontSize: "14px" }}>00</sub></h5>
+                              <h5>
+                                $200.<sub style={{ fontSize: "14px" }}>00</sub>
+                              </h5>
                               <p>Basic Package / Yearly Basis</p>
                             </div>
                             <div class="col-2">
@@ -405,10 +414,24 @@ function CardAndBilling() {
                             <div class="d-flex flex-wrap justify-content-between align-items-center">
                               <div class="col-10">
                                 <h5>Wallet Balance</h5>
-                                <p>{selectedCard?.[0]?.name ? `Card Holder: ${selectedCard?.[0]?.name}` : 'No Card Added'}</p>
+                                <p>
+                                  {selectedCard?.[0]?.name
+                                    ? `Card Holder: ${selectedCard?.[0]?.name}`
+                                    : "No Card Added"}
+                                </p>
                               </div>
-                              <div class="col-2" style={{ cursor: 'pointer' }} onClick={() => setRechargePopUp(true)}>
-                                <i className="fa-duotone fa-credit-card" style={{ boxShadow: 'rgba(0, 0, 0, 0.15) 0px 3px 5px' }}></i>
+                              <div
+                                class="col-2"
+                                style={{ cursor: "pointer" }}
+                                onClick={() => setRechargePopUp(true)}
+                              >
+                                <i
+                                  className="fa-duotone fa-credit-card"
+                                  style={{
+                                    boxShadow:
+                                      "rgba(0, 0, 0, 0.15) 0px 3px 5px",
+                                  }}
+                                ></i>
                               </div>
                             </div>
                           </div>
@@ -416,19 +439,28 @@ function CardAndBilling() {
                         <div className="data-number2">
                           <div class="d-flex flex-wrap justify-content-between align-items-center">
                             <div class="col-10">
-                              <h5>${" "}
+                              <h5>
+                                ${" "}
                                 {accountDetails?.balance?.amount.split(".")[0]
-                                  ? accountDetails?.balance?.amount.split(".")[0]
+                                  ? accountDetails?.balance?.amount.split(
+                                      "."
+                                    )[0]
                                   : 0}
                                 .
                                 <sub style={{ fontSize: 14 }}>
                                   {accountDetails?.balance?.amount.split(".")[1]
-                                    ? accountDetails?.balance?.amount.split(".")[1]
+                                    ? accountDetails?.balance?.amount.split(
+                                        "."
+                                      )[1]
                                     : "00"}
                                 </sub>
                               </h5>
-                              <p>{selectedCard?.[0]?.card_number ? `Active Card:{" "}**** **** ****{" "}
-                                ${selectedCard?.[0]?.card_number.slice(-4)}` : 'Please add a card before recharge!'}</p>
+                              <p>
+                                {selectedCard?.[0]?.card_number
+                                  ? `Active Card:{" "}**** **** ****{" "}
+                                ${selectedCard?.[0]?.card_number.slice(-4)}`
+                                  : "Please add a card before recharge!"}
+                              </p>
                             </div>
                             <div class="col-2">
                               {/* <div
@@ -460,69 +492,71 @@ function CardAndBilling() {
                               </button>
                             </div>
                           </div>
-                          {cardList && <div className="row px-2 pt-2 gy-3">
-
-                            {cardList.map((item, key) => {
-                              return (
-                                <div className="col-xl-6" key={key}>
-                                  <div
-                                    className={`savedCardWrapper ${item.default ? "active" : ""
+                          {cardList && (
+                            <div className="row px-2 pt-2 gy-3">
+                              {cardList.map((item, key) => {
+                                return (
+                                  <div className="col-xl-6" key={key}>
+                                    <div
+                                      className={`savedCardWrapper ${
+                                        item.default ? "active" : ""
                                       }`}
-                                  >
-                                    <div className="imgWrapper">
-                                      <div className="card-logo-container">
-                                        <Cards
-                                          number={item.card_number}
-                                          name=""
-                                          expiry=""
-                                          cvc=""
-                                          focused=""
-                                        />
+                                    >
+                                      <div className="imgWrapper">
+                                        <div className="card-logo-container">
+                                          <Cards
+                                            number={item.card_number}
+                                            name=""
+                                            expiry=""
+                                            cvc=""
+                                            focused=""
+                                          />
+                                        </div>
+                                      </div>
+                                      <div className="ms-4">
+                                        <label>
+                                          **** **** ****{" "}
+                                          {item.card_number.slice(-4)}
+                                        </label>
+                                      </div>
+                                      <div className="ms-auto">
+                                        <label className="switch">
+                                          <input
+                                            type="checkbox"
+                                            id="showAllCheck"
+                                            checked={item.default}
+                                            onChange={(e) => {
+                                              if (e.target.checked) {
+                                                setSelectedCardId(item.id);
+                                                setCardConfirmationPopUp(true);
+                                                setDisableCard(false);
+                                              } else {
+                                                setSelectedCardId(item.id);
+                                                setCardConfirmationPopUp(true);
+                                                setDisableCard(true);
+                                              }
+                                            }}
+                                          />
+                                          <span className="slider round"></span>
+                                        </label>
+                                      </div>
+                                      <div className="ms-3">
+                                        <button
+                                          className="clearButton"
+                                          onClick={() => {
+                                            setCardDelId(item.id);
+                                            setCardDelPopUp(true);
+                                          }}
+                                        >
+                                          <i className="fa-duotone text-danger fa-trash"></i>
+                                        </button>
                                       </div>
                                     </div>
-                                    <div className="ms-4">
-                                      <label>
-                                        **** **** ****{" "}
-                                        {item.card_number.slice(-4)}
-                                      </label>
-                                    </div>
-                                    <div className="ms-auto">
-                                      <label className="switch">
-                                        <input
-                                          type="checkbox"
-                                          id="showAllCheck"
-                                          checked={item.default}
-                                          onChange={(e) => {
-                                            if (e.target.checked) {
-                                              setSelectedCardId(item.id);
-                                              setCardConfirmationPopUp(true);
-                                              setDisableCard(false);
-                                            } else {
-                                              setSelectedCardId(item.id);
-                                              setCardConfirmationPopUp(true);
-                                              setDisableCard(true);
-                                            }
-                                          }}
-                                        />
-                                        <span className="slider round"></span>
-                                      </label>
-                                    </div>
-                                    <div className="ms-3">
-                                      <button
-                                        className="clearButton"
-                                        onClick={() => {
-                                          setCardDelId(item.id);
-                                          setCardDelPopUp(true);
-                                        }}
-                                      >
-                                        <i className="fa-duotone text-danger fa-trash"></i>
-                                      </button>
-                                    </div>
                                   </div>
-                                </div>
-                              );
-                            })}
-                          </div>}
+                                );
+                              })}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -552,8 +586,9 @@ function CardAndBilling() {
                                   >
                                     <div className="accordion-item">
                                       <h2
-                                        className={`accordion-header addressDrawer ${item.default ? "active" : ""
-                                          }`}
+                                        className={`accordion-header addressDrawer ${
+                                          item.default ? "active" : ""
+                                        }`}
                                       >
                                         <div
                                           className="d-flex flex-wrap align-items-center"
@@ -660,12 +695,13 @@ function CardAndBilling() {
                                                       : item.fullname
                                                   }
                                                   name="name"
-                                                  className={`noinputfield ${errorBilling.name
-                                                    ? "error-border"
-                                                    : editBillId
+                                                  className={`noinputfield ${
+                                                    errorBilling.name
+                                                      ? "error-border"
+                                                      : editBillId
                                                       ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -686,12 +722,13 @@ function CardAndBilling() {
                                                   }
                                                   placeholder="Phone number"
                                                   name="phone"
-                                                  className={`noinputfield ${errorBilling.phone
-                                                    ? "error-border"
-                                                    : editBillId
+                                                  className={`noinputfield ${
+                                                    errorBilling.phone
+                                                      ? "error-border"
+                                                      : editBillId
                                                       ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -712,12 +749,13 @@ function CardAndBilling() {
                                                   }
                                                   placeholder="Email Address"
                                                   name="email"
-                                                  className={`noinputfield ${errorBilling.email
-                                                    ? "error-border"
-                                                    : editBillId
+                                                  className={`noinputfield ${
+                                                    errorBilling.email
+                                                      ? "error-border"
+                                                      : editBillId
                                                       ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -738,12 +776,13 @@ function CardAndBilling() {
                                                   }
                                                   placeholder="Full address"
                                                   name="address"
-                                                  className={`noinputfield ${errorBilling.address
-                                                    ? "error-border"
-                                                    : editBillId
+                                                  className={`noinputfield ${
+                                                    errorBilling.address
+                                                      ? "error-border"
+                                                      : editBillId
                                                       ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -764,12 +803,13 @@ function CardAndBilling() {
                                                   }
                                                   placeholder="City"
                                                   name="city"
-                                                  className={`noinputfield ${errorBilling.city
-                                                    ? "error-border"
-                                                    : editBillId
+                                                  className={`noinputfield ${
+                                                    errorBilling.city
+                                                      ? "error-border"
+                                                      : editBillId
                                                       ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -790,12 +830,13 @@ function CardAndBilling() {
                                                   }
                                                   placeholder="State"
                                                   name="state"
-                                                  className={`noinputfield ${errorBilling.state
-                                                    ? "error-border"
-                                                    : editBillId
+                                                  className={`noinputfield ${
+                                                    errorBilling.state
+                                                      ? "error-border"
+                                                      : editBillId
                                                       ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -816,12 +857,13 @@ function CardAndBilling() {
                                                   }
                                                   placeholder="Zip Code"
                                                   name="zip"
-                                                  className={`noinputfield ${errorBilling.zip
-                                                    ? "error-border"
-                                                    : editBillId
+                                                  className={`noinputfield ${
+                                                    errorBilling.zip
+                                                      ? "error-border"
+                                                      : editBillId
                                                       ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -842,12 +884,13 @@ function CardAndBilling() {
                                                   }
                                                   placeholder="Country"
                                                   name="country"
-                                                  className={`noinputfield ${errorBilling.country
-                                                    ? "error-border"
-                                                    : editBillId
+                                                  className={`noinputfield ${
+                                                    errorBilling.country
+                                                      ? "error-border"
+                                                      : editBillId
                                                       ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -932,8 +975,17 @@ function CardAndBilling() {
                           <div className="col-10">
                             <h5>Invoices</h5>
                           </div>
-                          <div className="col-2" style={{ cursor: 'pointer' }} onClick={() => navigate('/card-transaction-list')}>
-                            <i class="fa-solid fa-eye" style={{ boxShadow: 'rgba(0, 0, 0, 0.15) 0px 3px 5px' }}></i>
+                          <div
+                            className="col-2"
+                            style={{ cursor: "pointer" }}
+                            onClick={() => navigate("/card-transaction-list")}
+                          >
+                            <i
+                              class="fa-solid fa-eye"
+                              style={{
+                                boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 5px",
+                              }}
+                            ></i>
                           </div>
                         </div>
                       </div>
@@ -949,16 +1001,18 @@ function CardAndBilling() {
                                 <p>${item.amount_subtotal}</p>
                               </div>
                               <div
-                                style={{ cursor: "pointer", fontWeight: '500' }}
+                                style={{ cursor: "pointer", fontWeight: "500" }}
                                 onClick={() =>
                                   downloadImage(
                                     item.invoice_url,
-                                    `invoice${item.transaction_date.split(" ")[0]
+                                    `invoice${
+                                      item.transaction_date.split(" ")[0]
                                     }`
                                   )
                                 }
                               >
-                                <i className="fa-solid fa-download me-1"></i> PDF
+                                <i className="fa-solid fa-download me-1"></i>{" "}
+                                PDF
                               </div>
                             </li>
                           );
@@ -972,17 +1026,42 @@ function CardAndBilling() {
                         <div className="d-flex flex-wrap justify-content-between">
                           <div className="col-10">
                             <h5>Last Transaction</h5>
-                            <p>{accountDetails?.payments[0].transaction_date.split(" ")[0]}</p>
+                            <p>
+                              {
+                                accountDetails?.payments[0].transaction_date.split(
+                                  " "
+                                )[0]
+                              }
+                            </p>
                           </div>
-                          <div className="col-2" style={{ cursor: 'pointer' }} onClick={() => downloadImage(accountDetails?.payments[0].invoice_url, `invoice${accountDetails?.payments[0].transaction_date.split(" ")[0]}`)}>
-                            <i className="fa-duotone fa-ballot-check" style={{ boxShadow: 'rgba(0, 0, 0, 0.15) 0px 3px 5px' }}></i>
+                          <div
+                            className="col-2"
+                            style={{ cursor: "pointer" }}
+                            onClick={() =>
+                              downloadImage(
+                                accountDetails?.payments[0].invoice_url,
+                                `invoice${
+                                  accountDetails?.payments[0].transaction_date.split(
+                                    " "
+                                  )[0]
+                                }`
+                              )
+                            }
+                          >
+                            <i
+                              className="fa-duotone fa-ballot-check"
+                              style={{
+                                boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 5px",
+                              }}
+                            ></i>
                           </div>
                         </div>
                       </div>
                       <div className="data-number2">
                         <div class="d-flex flex-wrap justify-content-between align-items-center">
                           <div class="col-10">
-                            <h5>${" "}
+                            <h5>
+                              ${" "}
                               {
                                 accountDetails?.payments[0].amount_subtotal.split(
                                   "."
@@ -997,7 +1076,10 @@ function CardAndBilling() {
                                 }
                               </sub>
                             </h5>
-                            <p><b>Transaction ID</b>:{" "}#{accountDetails?.payments[0].transaction_id}</p>
+                            <p>
+                              <b>Transaction ID</b>: #
+                              {accountDetails?.payments[0].transaction_id}
+                            </p>
                           </div>
                           <div class="col-2"></div>
                         </div>

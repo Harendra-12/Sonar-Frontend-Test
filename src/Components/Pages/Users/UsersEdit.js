@@ -236,8 +236,9 @@ const UsersEdit = () => {
       navigate("/users"); // Navigate back to the previous page
     } else {
       setLoading(false);
-      const errorMessage = Object.keys(addUser.errors);
-      toast.error(addUser.errors[errorMessage[0]][0]);
+      // const errorMessage = Object.keys(addUser.errors);
+      // toast.error(addUser.errors[errorMessage[0]][0]);
+      // console.log("error message:", errorMessage[0][0]);
     }
   });
 

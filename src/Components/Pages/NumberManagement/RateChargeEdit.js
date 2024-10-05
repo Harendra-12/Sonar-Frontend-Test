@@ -54,8 +54,8 @@ function RateChargeEdit() {
         toast.success(apidata.message);
       } else {
         setLoading(false);
-        const errorMessage = Object.keys(apidata.error);
-        toast.error(apidata.error[errorMessage[0]][0]);
+        // const errorMessage = Object.keys(apidata.error);
+        // toast.error(apidata.error[errorMessage[0]][0]);
       }
     }
   }

@@ -113,8 +113,8 @@ function Roles() {
           setEditIndex();
         } else {
           setLoading(false);
-          const errorMessage = Object.keys(apiData.errors);
-          toast.error(apiData.errors[errorMessage[0]][0]);
+          // const errorMessage = Object.keys(apiData.errors);
+          // toast.error(apiData.errors[errorMessage[0]][0]);
         }
       }
     } else {
@@ -457,9 +457,7 @@ function Roles() {
                                       handleParentCheckboxChange(item)
                                     }
                                   />
-                                  <label className="ms-2">
-                                    {item}
-                                  </label>
+                                  <label className="ms-2">{item}</label>
                                 </div>
                               </div>
                               <div className="row px-2 pt-1 border-bottom">

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { handleNavigation, handleDispatch } from "./Navigation";
+import { toast } from "react-toastify";
 // const baseName = "http://127.0.0.1:8000/api"
 const baseName = "https://192.168.1.88/UcaasS-Backend/api";
 
@@ -68,7 +69,8 @@ export async function generalGetFunction(endpoint) {
         handleNavigation("/");
         return err.response.data;
       } else {
-        return null;
+        // return null;
+        return err;
       }
       // console.log("This is error log",err.response.status);
     });
@@ -82,6 +84,15 @@ export async function generalPostFunction(endpoint, data) {
       return res.data;
     })
     .catch((err) => {
+      console.log("post error:", err);
+      if (err.response.status === 500) {
+        toast.error("Something went wrong");
+      } else if (err.response.data.errors) {
+        const errorMessage = Object.keys(err.response.data.errors);
+        toast.error(err.response.data.errors[errorMessage[0]][0]);
+      } else {
+        toast.error(err.response.data.message);
+      }
       if (err.response.status === 401) {
         handleNavigation("/");
         return err.response.data;
@@ -99,6 +110,15 @@ export async function generalPutFunction(endpoint, data) {
       return res.data;
     })
     .catch((err) => {
+      if (err.response.status === 500) {
+        toast.error("Something went wrong");
+      } else if (err.response.data.errors) {
+        // toast.error(err.response.data.errors.callScreen[0]);
+        const errorMessage = Object.keys(err.response.data.errors);
+        toast.error(err.response.data.errors[errorMessage[0]][0]);
+      } else {
+        toast.error(err.response.data.message);
+      }
       if (err.response.status === 401) {
         handleNavigation("/");
         return err.response.data;
@@ -144,12 +164,4 @@ export async function fileUploadFunction(endpoint, data) {
 // Back to top function
 export const backToTop = () => {
   window.scrollTo(0, 0);
-};
-
-// Global error handler function
-export const globalErrorHandler = (error) => {
-  console.log("This is error log", error);
-  // if (error.response?.status === 401) {
-
-  // }
 };

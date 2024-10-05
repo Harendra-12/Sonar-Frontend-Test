@@ -308,10 +308,11 @@ const ExtensionsEdit = () => {
       } else {
         if (apiData.message === "Already assigned to a different user") {
           setPopUp(true);
-        } else {
-          const errorMessage = Object.keys(apiData.errors);
-          toast.error(apiData.errors[errorMessage[0]][0]);
         }
+        //  else {
+        //   const errorMessage = Object.keys(apiData.errors);
+        //   toast.error(apiData.errors[errorMessage[0]][0]);
+        // }
       }
     } catch (error) {
       toast.error("An unexpected error occurred");

@@ -92,7 +92,7 @@ const MailSettingsEdit = () => {
       navigate("/mail-settings");
     } else {
       setLoading(false);
-      toast.error(addSettings.message);
+      // toast.error(addSettings.message);
     }
   });
 
