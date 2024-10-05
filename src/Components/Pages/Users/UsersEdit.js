@@ -236,8 +236,8 @@ const UsersEdit = () => {
       navigate("/users"); // Navigate back to the previous page
     } else {
       setLoading(false);
-      const errorMessage = Object.keys(addUser.error);
-      toast.error(addUser.error[errorMessage[0]][0]);
+      const errorMessage = Object.keys(addUser.errors);
+      toast.error(addUser.errors[errorMessage[0]][0]);
     }
   });
 
@@ -465,7 +465,9 @@ const UsersEdit = () => {
                             className="formItem"
                             name=""
                             value={watch().timezone_id}
-                            {...register("timezone_id", { ...requiredValidator })}
+                            {...register("timezone_id", {
+                              ...requiredValidator,
+                            })}
                           >
                             <option disabled value="">
                               Select Time Zone
@@ -512,8 +514,8 @@ const UsersEdit = () => {
                         <div className="formLabel">
                           <label htmlFor="selectFormRow">Role Type</label>
                           <label htmlFor="data" className="formItemDesc">
-                            Select Default to enable login or to disable login select
-                            Virtual.
+                            Select Default to enable login or to disable login
+                            select Virtual.
                           </label>
                         </div>
                         <div className="col-6">
@@ -525,14 +527,18 @@ const UsersEdit = () => {
                             {...register("role_id", { ...requiredValidator })}
                             onChange={(e) => {
                               setSelectedRole(
-                                e.target.value === "" ? "" : role[e.target.value].name
+                                e.target.value === ""
+                                  ? ""
+                                  : role[e.target.value].name
                               );
                               setSelectedPermission(
                                 e.target.value === ""
                                   ? ""
-                                  : role[e.target.value].permissions.map((item) => {
-                                    return item.permission_id;
-                                  })
+                                  : role[e.target.value].permissions.map(
+                                      (item) => {
+                                        return item.permission_id;
+                                      }
+                                    )
                               );
                             }}
                           >
@@ -555,7 +561,9 @@ const UsersEdit = () => {
                       </div>
                       <div className="formRow col-xl-12">
                         <div className="formLabel">
-                          <label htmlFor="selectFormRow">Select extension</label>
+                          <label htmlFor="selectFormRow">
+                            Select extension
+                          </label>
                           <label htmlFor="data" className="formItemDesc">
                             Assign an extension to the newly created user.
                           </label>
@@ -651,26 +659,28 @@ const UsersEdit = () => {
                               </div>
                             </div>
                             <div className="row px-2 pt-1 border-bottom">
-                              {filteredPermission[item].map((innerItem, key) => (
-                                <div
-                                  className="col-xl-2 col-md-4 col-6"
-                                  key={key}
-                                >
-                                  <input
-                                    type="checkbox"
-                                    id={`permission-${innerItem.id}`}
-                                    checked={selectedPermission.includes(
-                                      innerItem.id
-                                    )}
-                                    onChange={() =>
-                                      handleCheckboxChange(innerItem.id)
-                                    }
-                                  />
-                                  <label className="formLabel ms-2 text-capitalize">
-                                    {innerItem.action}
-                                  </label>
-                                </div>
-                              ))}
+                              {filteredPermission[item].map(
+                                (innerItem, key) => (
+                                  <div
+                                    className="col-xl-2 col-md-4 col-6"
+                                    key={key}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      id={`permission-${innerItem.id}`}
+                                      checked={selectedPermission.includes(
+                                        innerItem.id
+                                      )}
+                                      onChange={() =>
+                                        handleCheckboxChange(innerItem.id)
+                                      }
+                                    />
+                                    <label className="formLabel ms-2 text-capitalize">
+                                      {innerItem.action}
+                                    </label>
+                                  </div>
+                                )
+                              )}
                             </div>
                           </div>
                         ))}
