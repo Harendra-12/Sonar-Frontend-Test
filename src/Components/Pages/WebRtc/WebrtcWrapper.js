@@ -109,7 +109,9 @@ const WebrtcWrapper = () => {
         )}
         {activePage == "all-contacts" && <AllContact />}
         {activePage == "call-center" && <CallCenter />}
-        {activePage == "all-voice-mails" && <AllVoicemails />}
+        {activePage == "all-voice-mails" && (
+          <AllVoicemails isCustomerAdmin={isCustomerAdmin} />
+        )}
         {activePage == "on-going-calls" && <OngoingCall />}
         {activePage == "call-dashboard" && <CallDashboard />}
         {activePage == "e-fax" && <EFax />}

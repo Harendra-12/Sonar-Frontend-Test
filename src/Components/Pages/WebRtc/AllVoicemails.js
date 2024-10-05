@@ -1,15 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import ActiveCallSidePanel from "./ActiveCallSidePanel";
-import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import {
+  generalGetFunction,
+  globalErrorHandler,
+} from "../../GlobalFunction/globalFunction";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import ContentLoader from "../../Loader/ContentLoader";
 
-function AllVoicemails() {
+function AllVoicemails({ isCustomerAdmin }) {
   const sessions = useSelector((state) => state.sessions);
   const [voiceMail, setVoiceMail] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [filteredVoiceMail, setFilteredVoiceMail] = useState([]);
+  const loadings = useSelector((state) => state.loading);
   const [loading, setLoading] = useState(false);
   const [clickedVoiceMail, setClickedVoiceMail] = useState(null);
 
@@ -27,24 +31,33 @@ function AllVoicemails() {
   useEffect(() => {
     setLoading(true);
     async function getData() {
-      const apiData = await generalGetFunction("/voicemails");
-      if (apiData.status) {
+      const apiData = await generalGetFunction(
+        `/voicemails?page=${pageNumber}`
+      );
+      if (apiData?.status) {
         setVoiceMail(apiData.data);
         setLoading(false);
-      } else {
-        setLoading(false);
       }
+      // else {
+      //   globalErrorHandler(apiData);
+      //   console.log("voice_mail_error", apiData);
+      //   setLoading(false);
+      // }
+      console.log("api_data:", apiData);
     }
     getData();
-  }, []);
+  }, [pageNumber]);
 
   useEffect(() => {
     if (voiceMail?.data) {
-      const updatedVoiceMail = voiceMail?.data?.filter((item) => {
-        return item.dest == extension || item.src == extension;
-      });
-      setFilteredVoiceMail(updatedVoiceMail);
-      setClickedVoiceMail(voiceMail.data[0]);
+      // const updatedVoiceMail = voiceMail?.data?.filter((item) => {
+      //   return item.dest == extension || item.src == extension;
+      // });
+      // setFilteredVoiceMail(updatedVoiceMail);
+      setFilteredVoiceMail(voiceMail?.data);
+      // setClickedVoiceMail(voiceMail.data[0]);
+      // setClickedVoiceMail(updatedVoiceMail[0]);
+      setClickedVoiceMail(voiceMail?.data[0]);
     }
   }, [voiceMail]);
 
@@ -96,6 +109,7 @@ function AllVoicemails() {
   };
 
   const groupedVoiceMails = groupVoicemailsByDate(filteredVoiceMail);
+  // const groupedVoiceMails = groupVoicemailsByDate(voiceMail?.data);
 
   const sortedVoiceMails = sortKeys(Object.keys(groupedVoiceMails)).reduce(
     (acc, date) => {
@@ -119,6 +133,15 @@ function AllVoicemails() {
     setClickedVoiceMail(item);
   };
 
+  const handleAudioDownload = (src) => {
+    const link = document.createElement("a");
+    link.href = src;
+    link.download = "audio-file.wav";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const renderCallItem = (item) => (
     <div
       className={`callListItem ${
@@ -129,11 +152,21 @@ function AllVoicemails() {
       <div className="row justify-content-between align-items-center">
         <div className="col-9 d-flex">
           <div className="profileHolder">
-            <i className="fa-light fa-user fs-5" />
+            {/* <i className="fa-light fa-user fs-5" /> */}
+            <i class="fa-solid fa-microphone-lines fs-5"></i>
           </div>
           <div className="my-auto">
-            <h4>{getSourceName(item.src, item.dest)}</h4>
-            <h5>USER XYZ</h5>
+            {isCustomerAdmin ? (
+              <h4>
+                {item.src}
+                ==<i class="fa-solid fa-angles-right"></i>
+                {item.dest}
+              </h4>
+            ) : (
+              <h4>{getSourceName(item.src, item.dest)}</h4>
+            )}
+            <h5>{formatDate(item.created_at)}</h5>
+            {/* <h5>USER XYZ</h5>
             <h6
               style={{
                 display: "flex",
@@ -142,14 +175,14 @@ function AllVoicemails() {
             >
               <i className="fa-solid fa-voicemail text-danger fw-bold me-1" />
               Voicemail, 15 sec
-            </h6>
+            </h6> */}
           </div>
         </div>
         <div className="col-auto text-end">
           <h5>{formatTo12HourTime(item.created_at)}</h5>
         </div>
       </div>
-      <div className="contactPopup">
+      {/* <div className="contactPopup">
         <button>
           <i className="fa-light fa-phone" />
         </button>
@@ -159,7 +192,7 @@ function AllVoicemails() {
         <button>
           <i className="fa-light fa-trash" />
         </button>
-      </div>
+      </div> */}
     </div>
   );
 
@@ -201,10 +234,17 @@ function AllVoicemails() {
   };
 
   const selectedVoiceMailExtensionList = filteredVoiceMail.filter((item) => {
-    return (
-      item.dest == getSourceName(clickedVoiceMail.src, clickedVoiceMail.dest) ||
-      item.src == getSourceName(clickedVoiceMail.src, clickedVoiceMail.dest)
-    );
+    if (!isCustomerAdmin) {
+      return (
+        item.dest ==
+          getSourceName(clickedVoiceMail.src, clickedVoiceMail.dest) ||
+        item.src == getSourceName(clickedVoiceMail.src, clickedVoiceMail.dest)
+      );
+    } else {
+      return (
+        item.src == clickedVoiceMail.src && item.dest == clickedVoiceMail.dest
+      );
+    }
   });
 
   return (
@@ -252,13 +292,13 @@ function AllVoicemails() {
                       >
                         All
                       </button>
-                      <button
+                      {/* <button
                         className="tabLink"
                         effect="ripple"
                         data-category="new"
                       >
                         New
-                      </button>
+                      </button> */}
                     </div>
                   </nav>
                   <div className="tab-content">
@@ -274,7 +314,7 @@ function AllVoicemails() {
                       </button>
                     </div>
                     <div className="callList">
-                      {loading ? (
+                      {loading && loadings ? (
                         <ContentLoader />
                       ) : Object.keys(groupedVoiceMails).length > 0 ? (
                         sortKeys(Object.keys(groupedVoiceMails)).map((date) => (
@@ -305,8 +345,8 @@ function AllVoicemails() {
                       pageNumber={(e) => setPageNumber(e)}
                       totalPage={voiceMail.last_page}
                       from={(pageNumber - 1) * voiceMail.per_page + 1}
-                      to={filteredVoiceMail.length} //change here accordingly
-                      total={filteredVoiceMail.length} //change here accordingly
+                      to={voiceMail.to} //change here accordingly
+                      total={voiceMail.total} //change here accordingly
                     />
                   ) : (
                     ""
@@ -323,13 +363,23 @@ function AllVoicemails() {
                     <div className="profileHolder">
                       <i className="fa-light fa-user fs-3" />
                     </div>
-                    <h4>
+                    {isCustomerAdmin ? (
+                      <h4>{clickedVoiceMail.src}</h4>
+                    ) : (
+                      <h4>
+                        {getSourceName(
+                          clickedVoiceMail.src,
+                          clickedVoiceMail.dest
+                        )}
+                      </h4>
+                    )}
+                    {/* <h4>
                       {getSourceName(
                         clickedVoiceMail?.src,
                         clickedVoiceMail?.dest
                       )}
-                    </h4>
-                    <h5>USER XYZ</h5>
+                    </h4> */}
+                    {/* <h5>USER XYZ</h5> */}
                     <div className="d-flex justify-content-center align-items-center mt-3">
                       <button className="appPanelButton" effect="ripple">
                         <i className="fa-light fa-message-dots" />
@@ -398,30 +448,56 @@ function AllVoicemails() {
                                   </span>
                                 </td>
                                 <td>
+                                  {isCustomerAdmin ? (
+                                    <span>
+                                      {clickedVoiceMail.src}
+                                      ==<i class="fa-solid fa-angles-right"></i>
+                                      {clickedVoiceMail.dest}
+                                    </span>
+                                  ) : (
+                                    <span>
+                                      {getSourceName(
+                                        clickedVoiceMail.src,
+                                        clickedVoiceMail.dest
+                                      )}
+                                    </span>
+                                  )}
+                                </td>
+                                {/* <td>
                                   {getSourceName(
                                     clickedVoiceMail.src,
                                     clickedVoiceMail.dest
                                   )}
-                                </td>
-                                <td style={{ color: "#444444" }}>16 sec</td>
+                                </td> */}
+                                {/* <td style={{ color: "#444444" }}>16 sec</td> */}
                               </tr>
                             </tbody>
                           </table>
                           <div className="audio-container">
                             <audio ref={audioRef} controls={true}>
-                              <source src="" type="audio/ogg" />
+                              {/* <source
+                                src="https://crmdata-test.s3.us-east-2.amazonaws.com/rout.8.webvio.in/2024/Oct/01/b78c0901-4cb1-4c3d-9f5f-2e0c0a61775c.wav"
+                                type="audio/ogg"
+                              /> */}
                               <source
                                 src={clickedVoiceMail.recording_path}
                                 type="audio/mpeg"
                               />
                             </audio>
 
-                            <button className="audioCustomButton">
+                            <button
+                              className="audioCustomButton"
+                              onClick={() =>
+                                handleAudioDownload(
+                                  clickedVoiceMail.recording_path
+                                )
+                              }
+                            >
                               <i className="fa-sharp fa-solid fa-download" />
                             </button>
-                            <button className="audioCustomButton ms-1">
+                            {/* <button className="audioCustomButton ms-1">
                               <i className="fa-sharp fa-solid fa-box-archive" />
-                            </button>
+                            </button> */}
                           </div>
                         </div>
                       </div>
@@ -462,8 +538,23 @@ function AllVoicemails() {
                                             </span>
                                           </td>
                                           <td>
-                                            {getSourceName(item.src, item.dest)}
+                                            {isCustomerAdmin ? (
+                                              <span>
+                                                {item.src}
+                                                ==
+                                                <i class="fa-solid fa-angles-right"></i>
+                                                {item.dest}
+                                              </span>
+                                            ) : (
+                                              <span>
+                                                {getSourceName(
+                                                  item.src,
+                                                  item.dest
+                                                )}
+                                              </span>
+                                            )}
                                           </td>
+                                          {/* <td>{item.dest}</td> */}
                                           <td style={{ color: "#444444" }}>
                                             24 sec
                                           </td>

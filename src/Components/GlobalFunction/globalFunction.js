@@ -1,5 +1,5 @@
 import axios from "axios";
-import { handleNavigation,handleDispatch } from "./Navigation";
+import { handleNavigation, handleDispatch } from "./Navigation";
 // const baseName = "http://127.0.0.1:8000/api"
 const baseName = "https://192.168.1.88/UcaasS-Backend/api";
 
@@ -48,22 +48,22 @@ export async function login(userName, password) {
 export async function generalGetFunction(endpoint) {
   handleDispatch({
     type: "SET_LOADING",
-   loading:true,
-  })
+    loading: true,
+  });
   return axiosInstance
     .get(endpoint)
     .then((res) => {
       handleDispatch({
         type: "SET_LOADING",
-       loading:false,
-      })
+        loading: false,
+      });
       return res.data;
     })
     .catch((err) => {
       handleDispatch({
         type: "SET_LOADING",
-       loading:false,
-      })
+        loading: false,
+      });
       if (err.response?.status === 401) {
         handleNavigation("/");
         return err.response.data;
@@ -144,4 +144,12 @@ export async function fileUploadFunction(endpoint, data) {
 // Back to top function
 export const backToTop = () => {
   window.scrollTo(0, 0);
+};
+
+// Global error handler function
+export const globalErrorHandler = (error) => {
+  console.log("This is error log", error);
+  // if (error.response?.status === 401) {
+
+  // }
 };
