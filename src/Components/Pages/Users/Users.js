@@ -183,7 +183,17 @@ const Users = () => {
                 </div>
               </div>
               <div className="col-xl-8 mt-3 mt-xl-0">
-                <div className="d-flex justify-content-end flex-wrap gap-2">
+                <div className="d-flex justify-content-end flex-wrap">
+                  <button
+                    effect="ripple"
+                    className="panelButton"
+                    onClick={() => {
+                      navigate(-1);
+                      backToTop();
+                    }}
+                  >
+                    Back
+                  </button>
                   <Link
                     // to="/users-add"
                     // onClick={backToTop}
