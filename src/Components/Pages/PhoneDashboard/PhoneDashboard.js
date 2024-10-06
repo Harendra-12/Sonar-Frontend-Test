@@ -246,121 +246,159 @@ function PhoneDashboard() {
                 <div className="col-xl-3">
                   <div className="itemWrapper c">
                     <div className="heading">
-                      <i class="fa-duotone fa-phone-office"></i> Extensions
+                      <div class="d-flex flex-wrap justify-content-between align-items-center">
+                        <div class="col-10">
+                          <h5>Extensions</h5>
+                          <p>7 October, 2024</p>
+                        </div>
+                        <div class="col-2">
+                          <i class="fa-duotone fa-phone-office"></i>
+                        </div>
+                      </div>
                     </div>
-                    {/* <div className="data-number">10</div> */}
-                    <div className="data-number">
-                      {(extension && extension.length) || 0}
+                    <div className="data-number2">
+                      <div className="d-flex flex-wrap justify-content-between align-items-center">
+                        <div className="col-10">
+                          <h5>{(extension && extension.length) || 0}</h5>
+                          <p>{activeCall.length} on Call / {(extension &&
+                            extension.length -
+                            extension.filter((extension) =>
+                              onlineExtension.includes(extension.extension)
+                            ).length) ||
+                            0}{" "}Offline / {(extension &&
+                              extension.filter((extension) =>
+                                onlineExtension.includes(extension.extension)
+                              ).length) ||
+                              0}{" "}Online</p>
+                        </div>
+                        <div className="col-2">
+                          <img
+                            src={require("../../assets/images/icons/diagram.png")}
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div className="label">
-                      {activeCall.length} Extension on Call
-                    </div>
-                    <div className="label">
-                      {(extension &&
-                        extension.length -
-                          extension.filter((extension) =>
-                            onlineExtension.includes(extension.extension)
-                          ).length) ||
-                        0}{" "}
-                      Extension Offline
-                    </div>
-                    <div className="label">
-                      {(extension &&
-                        extension.filter((extension) =>
-                          onlineExtension.includes(extension.extension)
-                        ).length) ||
-                        0}{" "}
-                      Extension Online
-                    </div>
-                    {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/extensions'" effect="ripple"><i className="fa-duotone fa-phone-office"></i> View All Extensions</button> */}
                   </div>
                 </div>
                 <div className="col-xl-3">
                   <div className="itemWrapper b">
                     <div className="heading">
-                      <i class="fa-duotone fa-clock"></i> Call Center Queue
+                      <div class="d-flex flex-wrap justify-content-between align-items-center">
+                        <div class="col-10">
+                          <h5>Call Center Queue</h5>
+                          <p>7 October, 2024</p>
+                        </div>
+                        <div class="col-2">
+                          <i class="fa-duotone fa-clock"></i>
+                        </div>
+                      </div>
                     </div>
-                    <div className="data-number">{callCenter.length}</div>
-                    <div className="label">
-                      {(callCenter &&
-                        callQueue &&
-                        callQueue.filter((data) =>
-                          callCenter.some(
-                            (call) =>
-                              data["Caller-Callee-ID-Number"] ===
-                                call.extension &&
-                              data["variable_DIALSTATUS"] === "SUCCESS"
-                          )
-                        ).length) ||
-                        0}{" "}
-                      Inbound (Answered)
+                    <div className="data-number2">
+                      <div className="d-flex flex-wrap justify-content-between align-items-center">
+                        <div className="col-10">
+                          <h5>{callCenter.length}</h5>
+                          <p>{(callCenter &&
+                            callQueue &&
+                            callQueue.filter((data) =>
+                              callCenter.some(
+                                (call) =>
+                                  data["Caller-Callee-ID-Number"] ===
+                                  call.extension &&
+                                  data["variable_DIALSTATUS"] === "SUCCESS"
+                              )
+                            ).length) ||
+                            0}{" "}
+                            Inbound (Answered)</p>
+                        </div>
+                        <div className="col-2">
+                          <img
+                            src={require("../../assets/images/icons/diagram.png")}
+                          />
+                        </div>
+                      </div>
                     </div>
-                    {/* <div className="label">17 Outbound (Connected)</div> */}
-                    {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/extensions'" effect="ripple"><i className="fa-duotone fa-phone-office"></i> View All Extensions</button> */}
                   </div>
                 </div>
                 <div className="col-xl-3">
                   <div className="itemWrapper d">
                     <div className="heading">
-                      <i class="fa-duotone fa-solid fa-bell-ring"></i> Ring
-                      Group
+                      <div class="d-flex flex-wrap justify-content-between align-items-center">
+                        <div class="col-10">
+                          <h5>Ring Group</h5>
+                          <p>7 October, 2024</p>
+                        </div>
+                        <div class="col-2">
+                          <i class="fa-duotone fa-solid fa-bell-ring"></i>
+                        </div>
+                      </div>
                     </div>
-                    <div className="data-number">{ringGroup.length || 0}</div>
-                    <div className="label">
-                      {activeCall.length} Active Calls
+
+                    <div className="data-number2">
+                      <div className="d-flex flex-wrap justify-content-between align-items-center">
+                        <div className="col-10">
+                          <h5>{ringGroup.length || 0}</h5>
+                          <p>{activeCall.length} Active Calls / {(ringGroupData &&
+                            ringGroupData.filter(
+                              (data) => data["variable_DIALSTATUS"] !== "SUCCESS"
+                            ).length) ||
+                            0}{" "}
+                            Calls Missed</p>
+                        </div>
+                        <div className="col-2">
+                          <img
+                            src={require("../../assets/images/icons/diagram.png")}
+                          />
+                        </div>
+                      </div>
                     </div>
-                    {/* <div className="label">1 Voicecall Missed</div> */}
-                    <div className="label">
-                      {(ringGroupData &&
-                        ringGroupData.filter(
-                          (data) => data["variable_DIALSTATUS"] !== "SUCCESS"
-                        ).length) ||
-                        0}{" "}
-                      Calls Missed
-                    </div>
-                    {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/devices'" effect="ripple"><i className="fa-duotone fa-mobile-retro"></i> View All Devices</button> */}
                   </div>
                 </div>
                 <div className="col-xl-3">
                   <div className="itemWrapper a">
                     <div className="heading">
-                      <i class="fa-duotone fa-users"></i> Users
+                      <div class="d-flex flex-wrap justify-content-between align-items-center">
+                        <div class="col-10">
+                          <h5>Users</h5>
+                          <p>7 October, 2024</p>
+                        </div>
+                        <div class="col-2">
+                          <i class="fa-duotone fa-users"></i>
+                        </div>
+                      </div>
                     </div>
-                    <div className="data-number">
-                      {(allUser.data && allUser.data.length) || 0}
-                    </div>
-                    <div className="label">
-                      {" "}
-                      {(allUser.data &&
-                        allUser.data.filter(
-                          (user) =>
-                            user.extension !== null &&
-                            user.extension.extension !== null &&
-                            onlineUser.includes(user.extension.extension)
-                        ).length) ||
-                        0}
-                      Active Users
-                    </div>
-                    <div className="label">
-                      {(allUser.data &&
-                        allUser.data.length -
-                          allUser.data.filter((user) => {
-                            user.extension !== null &&
-                              user.extension.extension !== null &&
-                              onlineUser.includes(user.extension.extension);
-                          }).length) ||
-                        0}{" "}
-                      Idle Users
-                    </div>
-                    <div className="label">
-                      {(allUser.data &&
-                        allUser.data.filter((user) =>
-                          activeCall.some(
-                            (call) => call.dest === user.extension.extension
-                          )
-                        ).length) ||
-                        0}{" "}
-                      Users On Call
+                    <div className="data-number2">
+                      <div className="d-flex flex-wrap justify-content-between align-items-center">
+                        <div className="col-10">
+                          <h5>{(allUser.data && allUser.data.length) || 0}</h5>
+                          <p>{(allUser.data &&
+                            allUser.data.filter(
+                              (user) =>
+                                user.extension !== null &&
+                                user.extension.extension !== null &&
+                                onlineUser.includes(user.extension.extension)
+                            ).length) ||
+                            0}{" "}Active Users / {(allUser.data &&
+                              allUser.data.length -
+                              allUser.data.filter((user) => {
+                                user.extension !== null &&
+                                  user.extension.extension !== null &&
+                                  onlineUser.includes(user.extension.extension);
+                              }).length) ||
+                              0}{" "}
+                            Idle Users / {(allUser.data &&
+                              allUser.data.filter((user) =>
+                                activeCall.some(
+                                  (call) => call.dest === user.extension.extension
+                                )
+                              ).length) ||
+                              0}{" "}On Call</p>
+                        </div>
+                        <div className="col-2">
+                          <img
+                            src={require("../../assets/images/icons/diagram.png")}
+                          />
+                        </div>
+                      </div>
                     </div>
                     {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/user'" effect="ripple"><i className="fa-duotone fa-users"></i> View All Users</button> */}
                   </div>
@@ -382,7 +420,7 @@ function PhoneDashboard() {
                         registerUser.length,
                         extensionList,
                         Number(accountDetails.package?.number_of_user) -
-                          extensionList,
+                        extensionList,
                       ]}
                       centerTitle={`${extensionList}/${Number(
                         accountDetails.package?.number_of_user
@@ -404,7 +442,7 @@ function PhoneDashboard() {
                         loginUser.length,
                         userList,
                         Number(accountDetails.package?.number_of_user) -
-                          userList,
+                        userList,
                       ]}
                       centerTitle={`${userList}/${Number(
                         accountDetails.package?.number_of_user
@@ -439,9 +477,9 @@ function PhoneDashboard() {
                         ((Number(accountDetails.package?.number_of_user) -
                           extensionList) *
                           100) /
-                          Number(accountDetails.package?.number_of_user),
+                        Number(accountDetails.package?.number_of_user),
                         (extensionList * 100) /
-                          Number(accountDetails.package?.number_of_user),
+                        Number(accountDetails.package?.number_of_user),
                       ]}
                       centerTitle={`${extensionList}/${accountDetails.package?.number_of_user}`}
                       centerDesc="Total Extensions"

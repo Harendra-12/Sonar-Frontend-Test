@@ -25,7 +25,7 @@
     align-items: center;
 }
 
-#subPageHeader .formLabel {
+/* #subPageHeader .formLabel {
     color: #fff;
 }
 
@@ -43,4 +43,4 @@
 
 #subPageHeader input:checked+.slider:before {
     background-color: var(--ui-accent-green);
-}
+} */

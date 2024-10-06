@@ -153,11 +153,11 @@
 }
 
 .tabButton.active {
-  background-color: #439fdd33;
+  background-color: #ffffff33;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-  color: var(--ui-accent);
-  border: 1px solid var(--ui-accent);
+  color: #fff;
+  border: 1px solid #fff;
 }
 
 /* .tabButtonParent:first-child .tabButton {
