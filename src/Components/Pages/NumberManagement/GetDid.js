@@ -256,7 +256,7 @@ function GetDid() {
               {/* {loading ?
                   <div colSpan={99}><CircularLoader /></div> : ""} */}
               <div className="mx-2" id="detailsContent">
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} className="mb-0">
                   <div className="row col-xl-12">
                     <div className="formRow col-xxl-1 col-xl-2">
                       <div className="formLabel">
