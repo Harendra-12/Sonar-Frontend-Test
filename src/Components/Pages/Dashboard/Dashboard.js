@@ -645,57 +645,159 @@ const Dashboard = () => {
                     >
                       <div className="itemWrapper a">
                         <div className="heading">
-                          <i className="fa-duotone fa-phone-volume"></i> Total
-                          Queues
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>Total Queues</h5>
+                              {/* <p>27 August - 27 September, 2024</p> */}
+                              <p>
+                                {" "}
+                                {new Date().getDate()}{" "}
+                                {new Date().toLocaleString("default", {
+                                  month: "long",
+                                })}
+                                , {new Date().getFullYear()}
+                              </p>
+                            </div>
+                            <div className="col-2">
+                              <i className="fa-duotone fa-phone-volume"></i>
+                            </div>
+                          </div>
                         </div>
-                        <div className="data-number">
-                          {" "}
-                          {callCenterQueue.total.count}{" "}
+
+                        <div className="data-number2">
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>{callCenterQueue.total.count}</h5>
+                              {/* <p>
+                              3 Currently Active Queue / 7 Inactive Queue
+                              </p> */}
+                            </div>
+                            <div className="col-2">
+                              <img
+                                src={require("../../assets/images/icons/diagram.png")}
+                              />
+                            </div>
+                          </div>
                         </div>
-                        {/* <div className="label">3 Currently Active Queue</div>
-                        <div className="label">7 Inactive Queue</div> */}
-                        {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/user'" effect="ripple"><i className="fa-duotone fa-users"></i> View All Users</button> */}
                       </div>
                     </div>
                     <div className="col-xl-3">
                       <div className="itemWrapper b">
                         <div className="heading">
-                          <i className="fa-duotone fa-users"></i> Total Agents
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>Total Agents</h5>
+                              {/* <p>27 August - 27 September, 2024</p> */}
+                              <p>
+                                {" "}
+                                {new Date().getDate()}{" "}
+                                {new Date().toLocaleString("default", {
+                                  month: "long",
+                                })}
+                                , {new Date().getFullYear()}
+                              </p>
+                            </div>
+                            <div className="col-2">
+                              <i className="fa-duotone fa-users"></i>
+                            </div>
+                          </div>
                         </div>
-                        <div className="data-number">
-                          {callCenterQueue.totalAgents.count}{" "}
+
+                        <div className="data-number2">
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>{callCenterQueue.totalAgents.count}</h5>
+                              {/* <p>
+                              15 Agents in Queue / 5 Agents Not in Queue
+                              </p> */}
+                            </div>
+                            <div className="col-2">
+                              <img
+                                src={require("../../assets/images/icons/diagram.png")}
+                              />
+                            </div>
+                          </div>
                         </div>
-                        {/* <div className="label">15 Agents in Queue</div>
-                        <div className="label">5 Agents Not in Queue</div> */}
-                        {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/extensions'" effect="ripple"><i className="fa-duotone fa-phone-office"></i> View All Extensions</button> */}
                       </div>
                     </div>
+
                     <div className="col-xl-3">
                       <div className="itemWrapper c">
                         <div className="heading">
-                          <i className="fa-duotone fa-circle-pause"></i> Total
-                          Calls
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>Total Calls</h5>
+                              {/* <p>27 August - 27 September, 2024</p> */}
+                              <p>
+                                {" "}
+                                {new Date().getDate()}{" "}
+                                {new Date().toLocaleString("default", {
+                                  month: "long",
+                                })}
+                                , {new Date().getFullYear()}
+                              </p>
+                            </div>
+                            <div className="col-2">
+                              <i className="fa-duotone fa-circle-pause"></i>
+                            </div>
+                          </div>
                         </div>
-                        <div className="data-number">
-                          {callCenterQueue.totalCalls.count}
+
+                        <div className="data-number2">
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>{callCenterQueue.totalCalls.count}</h5>
+                              {/* <p>
+                              1 Waiting in Queue / 4 Waiting in Queue
+                              </p> */}
+                            </div>
+                            <div className="col-2">
+                              <img
+                                src={require("../../assets/images/icons/diagram.png")}
+                              />
+                            </div>
+                          </div>
                         </div>
-                        {/* <div className="label">1 Waiting in Queue 1</div>
-                        <div className="label">4 Waiting in Queue 2</div> */}
-                        {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/devices'" effect="ripple"><i className="fa-duotone fa-mobile-retro"></i> View All Devices</button> */}
                       </div>
                     </div>
+
                     <div className="col-xl-3">
                       <div className="itemWrapper d">
                         <div className="heading">
-                          <i className="fa-duotone fa-phone-xmark"></i> Missed
-                          Calls
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>Missed Calls</h5>
+                              {/* <p>27 August - 27 September, 2024</p> */}
+                              <p>
+                                {" "}
+                                {new Date().getDate()}{" "}
+                                {new Date().toLocaleString("default", {
+                                  month: "long",
+                                })}
+                                , {new Date().getFullYear()}
+                              </p>
+                            </div>
+                            <div className="col-2">
+                              <i className="fa-duotone fa-phone-xmark"></i>
+                            </div>
+                          </div>
                         </div>
-                        <div className="data-number">
-                          {callCenterQueue.missedCalls.count}
+
+                        <div className="data-number2">
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>{callCenterQueue.missedCalls.count}</h5>
+                              {/* <p>
+                              4 Calls Overflown / 2 Calls Abandoned
+                              </p> */}
+                            </div>
+                            <div className="col-2">
+                              <img
+                                src={require("../../assets/images/icons/diagram.png")}
+                              />
+                            </div>
+                          </div>
                         </div>
-                        {/* <div className="label">4 Calls Overflown</div>
-                        <div className="label">2 Calls Abandoned</div> */}
-                        {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/devices'" effect="ripple"><i className="fa-duotone fa-mobile-retro"></i> View All Devices</button> */}
                       </div>
                     </div>
                   </div>
@@ -715,70 +817,152 @@ const Dashboard = () => {
                     >
                       <div className="itemWrapper a">
                         <div className="heading">
-                          <i className="fa-duotone fa-phone-rotary"></i> Total
-                          Ring Group
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>Total Ring Group</h5>
+                              <p>
+                                {" "}
+                                {new Date().getDate()}{" "}
+                                {new Date().toLocaleString("default", {
+                                  month: "long",
+                                })}
+                                , {new Date().getFullYear()}
+                              </p>
+                            </div>
+                            <div className="col-2">
+                              <i className="fa-duotone fa-phone-rotary"></i>
+                            </div>
+                          </div>
                         </div>
-                        <div className="data-number">
-                          {ringGroupCardData.total.count || 0}
+                        <div className="data-number2">
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>{ringGroupCardData.total.count || 0}</h5>
+                              <p>
+                                {ringGroupCardData.total.inbound || 0} Inbound calls / {ringGroupCardData.total.outbound || 0} Outbound calls
+                              </p>
+                            </div>
+                            <div className="col-2">
+                              <img
+                                src={require("../../assets/images/icons/diagram.png")}
+                              />
+                            </div>
+                          </div>
                         </div>
-                        <div className="label">
-                          {ringGroupCardData.total.inbound || 0} Total inbound
-                          calls
-                        </div>
-                        <div className="label">
-                          {" "}
-                          {ringGroupCardData.total.outbound || 0} Total outbound
-                          calls
-                        </div>
-                        {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/user'" effect="ripple"><i className="fa-duotone fa-users"></i> View All Users</button> */}
                       </div>
                     </div>
+
                     <div className="col-xl-3">
                       <div className="itemWrapper b">
                         <div className="heading">
-                          <i className="fa-duotone fa-phone-volume"></i> Active
-                          Calls{" "}
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>Active Calls</h5>
+                              <p>
+                                {" "}
+                                {new Date().getDate()}{" "}
+                                {new Date().toLocaleString("default", {
+                                  month: "long",
+                                })}
+                                , {new Date().getFullYear()}
+                              </p>
+                            </div>
+                            <div className="col-2">
+                              <i className="fa-duotone fa-phone-volume"></i>
+                            </div>
+                          </div>
                         </div>
-                        <div className="data-number">
-                          {ringGroupCardData.active.count || 0}
+                        <div className="data-number2">
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>{ringGroupCardData.active.count || 0}</h5>
+                              <p>
+                                {ringGroupCardData.active.inbound || 0} Active inbound calls / {ringGroupCardData.active.outbound || 0} Active outbound calls
+                              </p>
+                            </div>
+                            <div className="col-2">
+                              <img
+                                src={require("../../assets/images/icons/diagram.png")}
+                              />
+                            </div>
+                          </div>
                         </div>
-                        <div className="label">
-                          {ringGroupCardData.active.inbound || 0} active inbound
-                          calls
-                        </div>
-                        <div className="label">
-                          {ringGroupCardData.active.outbound || 0} active
-                          outbound calls
-                        </div>
-                        {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/extensions'" effect="ripple"><i className="fa-duotone fa-phone-office"></i> View All Extensions</button> */}
                       </div>
                     </div>
+
                     <div className="col-xl-3">
                       <div className="itemWrapper c">
                         <div className="heading">
-                          <i className="fa-duotone fa-circle-pause"></i> Total
-                          Calls
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>Total Calls</h5>
+                              <p>
+                                {" "}
+                                {new Date().getDate()}{" "}
+                                {new Date().toLocaleString("default", {
+                                  month: "long",
+                                })}
+                                , {new Date().getFullYear()}
+                              </p>
+                            </div>
+                            <div className="col-2">
+                              <i className="fa-duotone fa-circle-pause"></i>
+                            </div>
+                          </div>
                         </div>
-                        <div className="data-number">
-                          {ringGroupCardData.totalCalls.count || 0}
+                        <div className="data-number2">
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>{ringGroupCardData.totalCalls.count || 0}</h5>
+                              {/* <p>
+                                1 Waiting in Queue / 4 Waiting in Queue
+                              </p> */}
+                            </div>
+                            <div className="col-2">
+                              <img
+                                src={require("../../assets/images/icons/diagram.png")}
+                              />
+                            </div>
+                          </div>
                         </div>
-                        {/* <div className="label">1 Waiting in Queue 1</div>
-                        <div className="label">4 Waiting in Queue 2</div> */}
-                        {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/devices'" effect="ripple"><i className="fa-duotone fa-mobile-retro"></i> View All Devices</button> */}
                       </div>
                     </div>
+
                     <div className="col-xl-3">
                       <div className="itemWrapper d">
                         <div className="heading">
-                          <i className="fa-duotone fa-phone-xmark"></i> Missed
-                          Calls
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>Missed Calls</h5>
+                              <p>
+                                {" "}
+                                {new Date().getDate()}{" "}
+                                {new Date().toLocaleString("default", {
+                                  month: "long",
+                                })}
+                                , {new Date().getFullYear()}
+                              </p>
+                            </div>
+                            <div className="col-2">
+                              <i className="fa-duotone fa-circle-pause"></i>
+                            </div>
+                          </div>
                         </div>
-                        <div className="data-number">
-                          {ringGroupCardData.missed.count}
+                        <div className="data-number2">
+                          <div className="d-flex flex-wrap justify-content-between align-items-center">
+                            <div className="col-10">
+                              <h5>{ringGroupCardData.missed.count}</h5>
+                              {/* <p>
+                                4 Calls Overflown / 2 Calls Abandoned
+                              </p> */}
+                            </div>
+                            <div className="col-2">
+                              <img
+                                src={require("../../assets/images/icons/diagram.png")}
+                              />
+                            </div>
+                          </div>
                         </div>
-                        {/* <div className="label">4 Calls Overflown</div>
-                        <div className="label">2 Calls Abandoned</div> */}
-                        {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/devices'" effect="ripple"><i className="fa-duotone fa-mobile-retro"></i> View All Devices</button> */}
                       </div>
                     </div>
                   </div>
