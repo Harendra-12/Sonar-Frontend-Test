@@ -83,10 +83,11 @@ function DestinationAdd() {
     if (apiData.status) {
       reset();
       toast.success(apiData.message);
-    } else {
-      const errorMessage = Object.keys(apiData.errors);
-      toast.error(apiData.errors[errorMessage[0]][0]);
     }
+    // else {
+    //   const errorMessage = Object.keys(apiData.errors);
+    //   toast.error(apiData.errors[errorMessage[0]][0]);
+    // }
   });
 
   return (

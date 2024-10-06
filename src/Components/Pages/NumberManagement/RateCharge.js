@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { backToTop, generalGetFunction } from "../../GlobalFunction/globalFunction";
+import {
+  backToTop,
+  generalGetFunction,
+} from "../../GlobalFunction/globalFunction";
 import ContentLoader from "../../Loader/ContentLoader";
 import { Link, useNavigate } from "react-router-dom";
-
 
 function RateCharge() {
   const [loading, setLoading] = useState(true);
@@ -14,14 +16,15 @@ function RateCharge() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/did/rates`);
-      if (apiData.status) {
+      if (apiData?.status) {
         setLoading(false);
         setRateCard(apiData.data);
+      } else {
+        setLoading(false);
       }
     }
     getData();
   }, []);
-
 
   return (
     <>
@@ -44,8 +47,10 @@ function RateCharge() {
                 <div className="col-xl-8 pt-3 pt-xl-0">
                   <div className="d-flex justify-content-end">
                     <p
-
-                      onClick={() => { backToTop(); navigate(-1) }}
+                      onClick={() => {
+                        backToTop();
+                        navigate(-1);
+                      }}
                       effect="ripple"
                       className="panelButton"
                     >
@@ -87,18 +92,34 @@ function RateCharge() {
                           {rateCard &&
                             rateCard.map((item, index) => {
                               return (
-                                <tr
-                                  key={index}
-                                >
-                                  <td onClick={() =>
-                                    navigate(`/edit-rate-charge`, { state: item })
-                                  } >{item.vendor.vendor_name}</td>
-                                  <td onClick={() =>
-                                    navigate(`/edit-rate-charge`, { state: item })
-                                  } >{item.rate_type}</td>
-                                  <td onClick={() =>
-                                    navigate(`/edit-rate-charge`, { state: item })
-                                  } >{item.rate}</td>
+                                <tr key={index}>
+                                  <td
+                                    onClick={() =>
+                                      navigate(`/edit-rate-charge`, {
+                                        state: item,
+                                      })
+                                    }
+                                  >
+                                    {item.vendor.vendor_name}
+                                  </td>
+                                  <td
+                                    onClick={() =>
+                                      navigate(`/edit-rate-charge`, {
+                                        state: item,
+                                      })
+                                    }
+                                  >
+                                    {item.rate_type}
+                                  </td>
+                                  <td
+                                    onClick={() =>
+                                      navigate(`/edit-rate-charge`, {
+                                        state: item,
+                                      })
+                                    }
+                                  >
+                                    {item.rate}
+                                  </td>
                                 </tr>
                               );
                             })}

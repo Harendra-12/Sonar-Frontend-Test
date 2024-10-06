@@ -22,7 +22,7 @@ function RateChargeEdit() {
     } else {
       async function getVendor() {
         const apiData = await generalGetFunction("/did/vendors");
-        if (apiData.status) {
+        if (apiData?.status) {
           setVendor(apiData.data);
         }
       }
@@ -54,8 +54,8 @@ function RateChargeEdit() {
         toast.success(apidata.message);
       } else {
         setLoading(false);
-        const errorMessage = Object.keys(apidata.error);
-        toast.error(apidata.error[errorMessage[0]][0]);
+        // const errorMessage = Object.keys(apidata.error);
+        // toast.error(apidata.error[errorMessage[0]][0]);
       }
     }
   }

@@ -26,7 +26,7 @@ function CardTransactionsList() {
         const apiData = await generalGetFunction(
           `/payments/all?page=${pageNumber}`
         );
-        if (apiData.status) {
+        if (apiData?.status) {
           setLoading(false);
           setTransaction(apiData.data);
           dispatch({
@@ -44,7 +44,7 @@ function CardTransactionsList() {
         const apiData = await generalGetFunction(
           `/payments/all?page=${pageNumber}`
         );
-        if (apiData.status) {
+        if (apiData?.status) {
           setLoading(false);
           setTransaction(apiData.data);
           dispatch({
@@ -114,16 +114,42 @@ function CardTransactionsList() {
                             <td>{item.payment_details.card_number}</td>
                             <td>{item.transaction_date.split(" ")[0]}</td>
                             <td>{item.transaction_id}</td>
-                            <td><label className={item.transaction_type === "credit" ? "tableLabel success" : "tableLabel fail"}>${item.amount_subtotal}</label></td>
-                            <td>{item.description}</td>
-                            <td><i className={item.transaction_type === "credit" ? "fa-duotone fa-circle-up text-success me-1" : "fa-duotone fa-circle-down text-danger me-1"}></i> {item.transaction_type === "credit" ? "Credit" : "Debit"}</td>
                             <td>
-                              <button className="tableButton" onClick={() =>
-                                downloadImage(
-                                  item.invoice_url,
-                                  `${item.description}invoice`
-                                )
-                              }><i className="fa-duotone fa-download text-success"></i></button>
+                              <label
+                                className={
+                                  item.transaction_type === "credit"
+                                    ? "tableLabel success"
+                                    : "tableLabel fail"
+                                }
+                              >
+                                ${item.amount_subtotal}
+                              </label>
+                            </td>
+                            <td>{item.description}</td>
+                            <td>
+                              <i
+                                className={
+                                  item.transaction_type === "credit"
+                                    ? "fa-duotone fa-circle-up text-success me-1"
+                                    : "fa-duotone fa-circle-down text-danger me-1"
+                                }
+                              ></i>{" "}
+                              {item.transaction_type === "credit"
+                                ? "Credit"
+                                : "Debit"}
+                            </td>
+                            <td>
+                              <button
+                                className="tableButton"
+                                onClick={() =>
+                                  downloadImage(
+                                    item.invoice_url,
+                                    `${item.description}invoice`
+                                  )
+                                }
+                              >
+                                <i className="fa-duotone fa-download text-success"></i>
+                              </button>
                             </td>
                           </tr>
                         );

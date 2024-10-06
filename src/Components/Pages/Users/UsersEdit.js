@@ -72,23 +72,25 @@ const UsersEdit = () => {
         // } else {
         //   navigate("/");
         // }
-        if (timeZ.status) {
+        if (timeZ?.status) {
           setTimeZone(
             timeZ.data.map((item) => {
               return [item.id, item.name];
             })
           );
         }
-        if (apiRole.status) {
+        if (apiRole?.status) {
           if (apiRole.data.length > 0) {
             setRole(apiRole.data);
           } else {
             navigate("/roles");
           }
         }
-        if (permissionData.status) {
+        if (permissionData?.status) {
           setLoading(false);
           setDefaultPermission(permissionData.data);
+        } else {
+          setLoading(false);
         }
       }
       getDomain();
@@ -236,8 +238,9 @@ const UsersEdit = () => {
       navigate("/users"); // Navigate back to the previous page
     } else {
       setLoading(false);
-      const errorMessage = Object.keys(addUser.errors);
-      toast.error(addUser.errors[errorMessage[0]][0]);
+      // const errorMessage = Object.keys(addUser.errors);
+      // toast.error(addUser.errors[errorMessage[0]][0]);
+      // console.log("error message:", errorMessage[0][0]);
     }
   });
 

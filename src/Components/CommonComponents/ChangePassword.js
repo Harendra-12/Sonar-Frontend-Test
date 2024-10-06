@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import CircularLoader from "../Loader/CircularLoader";
 import Header from "./Header";
+import { useSelector } from "react-redux";
 
 function ChangePassword() {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ function ChangePassword() {
   const [confPassword, setConfPassword] = useState("");
   const [errorConfirm, setErrorConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const loadings = useSelector((state) => state.loading);
 
   async function handleSubmit() {
     if (oldPassword === "") {
@@ -45,13 +47,13 @@ function ChangePassword() {
         new_password: newPassword,
       };
       const apiData = await generalPostFunction("/change-password", parsedData);
-      if (apiData.status) {
+      if (apiData?.status) {
         setLoading(false);
         toast.success(apiData.message);
       } else {
         setLoading(false);
-        const errorMessage = Object.keys(apiData.errors);
-        toast.error(apiData.errors[errorMessage[0]][0]);
+        // const errorMessage = Object.keys(apiData.errors);
+        // toast.error(apiData.errors[errorMessage[0]][0]);
       }
     }
   }

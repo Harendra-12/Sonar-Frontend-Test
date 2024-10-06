@@ -126,7 +126,7 @@ function CdrReport() {
       <button className={className} onClick={onClick} ref={ref}>
         {value ? value : "Select Date"}
       </button>
-    ),
+    )
   );
 
   useEffect(() => {
@@ -165,7 +165,7 @@ function CdrReport() {
         //   `/cdr?account=${account.account_id}&page=${pageNumber}`
         // );
         const apiData = await generalGetFunction(finalUrl);
-        if (apiData.status) {
+        if (apiData?.status) {
           setLoading(false);
           setCdr(apiData.data);
 
@@ -555,7 +555,9 @@ function CdrReport() {
                         />
                       </div>
                       <div className="formRow border-0">
-                        <label className="formLabel text-start mb-0 w-100">To</label>
+                        <label className="formLabel text-start mb-0 w-100">
+                          To
+                        </label>
                         <input
                           type="date"
                           className="formItem"
@@ -635,7 +637,7 @@ function CdrReport() {
                         setCallDirection(e.target.value);
                         setPageNumber(1);
                       }}
-                    // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                      // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                     >
                       <option value={""}>All Calls</option>
                       <option value={"inbound"}>Inbound Calls</option>
@@ -802,8 +804,8 @@ function CdrReport() {
                                     ? "NOT CONNECTED"
                                     : item["variable_DIALSTATUS"] ===
                                       "NO_USER_RESPONSE"
-                                      ? "BUSY"
-                                      : item["variable_DIALSTATUS"]}
+                                    ? "BUSY"
+                                    : item["variable_DIALSTATUS"]}
                                 </td>
                                 <td>{item["call_cost"]}</td>
                               </tr>

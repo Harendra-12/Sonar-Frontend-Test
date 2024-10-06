@@ -13,9 +13,11 @@ function PendingDocument() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/accounts?company_status=2`);
-      if (apiData.status) {
+      if (apiData?.status) {
         setLoading(false);
         setAccount(apiData.data);
+      } else {
+        setLoading(false);
       }
     }
     getData();
@@ -46,9 +48,7 @@ function PendingDocument() {
                         <th>Phone Number</th>
                         <th>Address</th>
                         <th>Document Uploaded</th>
-                        <th>
-                          Verification
-                        </th>
+                        <th>Verification</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -75,11 +75,19 @@ function PendingDocument() {
                                   <td>{item.contact_no}</td>
                                   <td>{item.unit}</td>
                                   <td>
-                                    <label className={item.details.length !== 0 ? "tableLabel success" : "tableLabel fail"}>{item.details.length !== 0 ? "True" : "False"}</label>
+                                    <label
+                                      className={
+                                        item.details.length !== 0
+                                          ? "tableLabel success"
+                                          : "tableLabel fail"
+                                      }
+                                    >
+                                      {item.details.length !== 0
+                                        ? "True"
+                                        : "False"}
+                                    </label>
                                   </td>
-                                  <td>
-                                     Pending 
-                                  </td>
+                                  <td>Pending</td>
                                 </tr>
                               );
                             })}

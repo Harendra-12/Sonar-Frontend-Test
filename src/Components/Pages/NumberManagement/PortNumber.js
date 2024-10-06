@@ -26,7 +26,7 @@ function PortNumber() {
       setPortData(portsAll);
       async function getData() {
         const apiData = await generalGetFunction(`/ports/all`);
-        if (apiData.status) {
+        if (apiData?.status) {
           setLoading(false);
           setPortData(apiData.data);
           dispatch({
@@ -42,7 +42,7 @@ function PortNumber() {
     } else {
       async function getData() {
         const apiData = await generalGetFunction(`/ports/all`);
-        if (apiData.status) {
+        if (apiData?.status) {
           setLoading(false);
           setPortData(apiData.data);
           dispatch({
@@ -64,7 +64,7 @@ function PortNumber() {
     const apiData = await generalDeleteFunction(
       `/ports/destroy/${deleteIndex}`
     );
-    if (apiData.status) {
+    if (apiData?.status) {
       const updatedPortData = portData.filter(
         (item) => item.id !== deleteIndex
       );
@@ -73,8 +73,8 @@ function PortNumber() {
       toast.success(apiData.success);
     } else {
       setLoading(false);
-      const errorMessage = Object.keys(apiData.errors);
-      toast.error(apiData.errors[errorMessage[0]][0]);
+      // const errorMessage = Object.keys(apiData.errors);
+      // toast.error(apiData.errors[errorMessage[0]][0]);
     }
   };
 
@@ -143,64 +143,83 @@ function PortNumber() {
                               return (
                                 <tr key={item.id}>
                                   <td
-                                    onClick={() => handleEditPortNumber(item.id)}
+                                    onClick={() =>
+                                      handleEditPortNumber(item.id)
+                                    }
                                     style={{ cursor: "default" }}
                                   >
                                     {item.id}
                                   </td>
                                   <td
-                                    onClick={() => handleEditPortNumber(item.id)}
+                                    onClick={() =>
+                                      handleEditPortNumber(item.id)
+                                    }
                                     style={{ cursor: "default" }}
                                   >
                                     {item.fullname}
                                   </td>
                                   <td
-                                    onClick={() => handleEditPortNumber(item.id)}
+                                    onClick={() =>
+                                      handleEditPortNumber(item.id)
+                                    }
                                     style={{ cursor: "default" }}
                                   >
                                     {item.company_name}
                                   </td>
                                   <td
-                                    onClick={() => handleEditPortNumber(item.id)}
+                                    onClick={() =>
+                                      handleEditPortNumber(item.id)
+                                    }
                                     style={{ cursor: "default" }}
                                   >
                                     {item?.billing_address}
                                   </td>
                                   <td
-                                    onClick={() => handleEditPortNumber(item.id)}
+                                    onClick={() =>
+                                      handleEditPortNumber(item.id)
+                                    }
                                     style={{ cursor: "default" }}
                                   >
                                     {item?.pin}
                                   </td>
                                   <td
-                                    onClick={() => handleEditPortNumber(item.id)}
+                                    onClick={() =>
+                                      handleEditPortNumber(item.id)
+                                    }
                                     style={{ cursor: "default" }}
                                   >
                                     {item?.carrier}
                                   </td>
 
                                   <td
-                                    onClick={() => handleEditPortNumber(item.id)}
+                                    onClick={() =>
+                                      handleEditPortNumber(item.id)
+                                    }
                                     style={{ cursor: "default" }}
                                   >
                                     {item?.account_number}
                                   </td>
                                   <td
-                                    onClick={() => handleEditPortNumber(item.id)}
+                                    onClick={() =>
+                                      handleEditPortNumber(item.id)
+                                    }
                                     style={{ cursor: "default" }}
                                   >
                                     {item?.phone_number}
                                   </td>
-                                  <td>
-                                    <button className="tableButton edit" onClick={() => { handleEditPortNumber(item.id) }}>
+                                  <td >
+                                    <button className="tableButton edit" onClick={() => handleEditPortNumber(item.id)}>
                                       <i class="fa-solid fa-pencil"></i>
                                     </button>
                                   </td>
                                   <td>
-                                    <button className="tableButton delete" onClick={() => {
-                                      setPopup(true);
-                                      setDeleteIndex(item.id);
-                                    }}>
+                                    <button
+                                      className="tableButton delete"
+                                      onClick={() => {
+                                        setPopup(true);
+                                        setDeleteIndex(item.id);
+                                      }}
+                                    >
                                       <i className="fa-solid fa-trash"></i>
                                     </button>
                                   </td>

@@ -10,6 +10,7 @@ import EmptyPrompt from "../../Loader/EmptyPrompt";
 import ContentLoader from "../../Loader/ContentLoader";
 import Header from "../../CommonComponents/Header";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
+import { toast } from "react-toastify";
 
 const Extensions = () => {
   const navigate = useNavigate();
@@ -61,13 +62,12 @@ const Extensions = () => {
           const apiData = await generalGetFunction(
             `/extension/all?account=${account.account_id}&page=${pageNumber}`
           );
-          if (apiData.status) {
+          if (apiData?.status) {
             setExtension(apiData.data);
             dispatch({
               type: "SET_EXTENSIONBYACCOUNT",
               extensionByAccount: apiData.data,
             });
-          } else {
           }
         } else {
           navigate("/");
@@ -81,7 +81,7 @@ const Extensions = () => {
           const apiData = await generalGetFunction(
             `/extension/all?account=${account.account_id}&page=${pageNumber}`
           );
-          if (apiData.status) {
+          if (apiData?.status) {
             setLoading(false);
             setExtension(apiData.data);
             dispatch({
@@ -90,6 +90,7 @@ const Extensions = () => {
             });
           } else {
             setLoading(false);
+            toast.error(apiData.response.data.message);
           }
         } else {
           setLoading(false);
@@ -99,7 +100,6 @@ const Extensions = () => {
       getData();
     }
   }, [account, navigate, pageNumber]);
-  console.log("extension:", extension);
 
   return (
     <main className="mainContent">

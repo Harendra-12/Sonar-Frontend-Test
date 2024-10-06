@@ -74,7 +74,7 @@ function CallCenterQueueEdit() {
         const callCenterData = await generalGetFunction(
           `call-center-queue/${value}`
         );
-        if (userData.status) {
+        if (userData?.status) {
           setLoading(false);
           if (userData.data.data.length === 0) {
             toast.error("Please create user first");
@@ -89,8 +89,10 @@ function CallCenterQueueEdit() {
               toast.error("No user found with assign extension");
             }
           }
+        } else {
+          setLoading(false);
         }
-        if (callCenterData.status) {
+        if (callCenterData?.status) {
           setLoading(false);
           const { agents, recording_enabled } = callCenterData.data;
           setPrevAgents(agents);
@@ -126,6 +128,7 @@ function CallCenterQueueEdit() {
 
           reset(destructuredData);
         } else {
+          setLoading(false);
           navigate(-1);
         }
       }
@@ -139,7 +142,7 @@ function CallCenterQueueEdit() {
   useEffect(() => {
     async function getData() {
       const musicData = await generalGetFunction("/sound/all");
-      if (musicData.status) {
+      if (musicData?.status) {
         setGreetingSound(
           musicData.data.filter((item) => item.type === "ringback")
         );
@@ -352,12 +355,12 @@ function CallCenterQueueEdit() {
       navigate("/cal-center-queue");
     } else {
       setLoading(false);
-      if (apiData.error) {
-        toast.error(apiData.error);
-      } else {
-        const errorMessage = Object.keys(apiData.errors);
-        toast.error(apiData.errors[errorMessage[0]][0]);
-      }
+      // if (apiData.error) {
+      //   toast.error(apiData.error);
+      // } else {
+      //   const errorMessage = Object.keys(apiData.errors);
+      //   toast.error(apiData.errors[errorMessage[0]][0]);
+      // }
     }
   });
 

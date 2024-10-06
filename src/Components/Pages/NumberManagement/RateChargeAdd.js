@@ -18,7 +18,7 @@ function RateChargeAdd() {
   useEffect(() => {
     async function getVendor() {
       const apiData = await generalGetFunction("/did/vendors");
-      if (apiData.status) {
+      if (apiData?.status) {
         setVendor(apiData.data);
       }
     }

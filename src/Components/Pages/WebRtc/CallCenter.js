@@ -173,7 +173,7 @@ const CallCenterListItem = ({ item, index, Id }) => {
       }
     } else {
       setLoading(false);
-      toast.error(apiData.message);
+      // toast.error(apiData.message);
     }
   }
 

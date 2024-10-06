@@ -37,12 +37,9 @@ function AllVoicemails({ isCustomerAdmin }) {
       if (apiData?.status) {
         setVoiceMail(apiData.data);
         setLoading(false);
+      } else {
+        setLoading(false);
       }
-      // else {
-      //   globalErrorHandler(apiData);
-      //   console.log("voice_mail_error", apiData);
-      //   setLoading(false);
-      // }
       console.log("api_data:", apiData);
     }
     getData();

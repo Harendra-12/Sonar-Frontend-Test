@@ -67,7 +67,6 @@ const DidConfig = () => {
     } else {
       setValue("usages", "extension" || []);
       setDataAvailable(true);
-
     }
   }, [locationData]);
   useEffect(() => {
@@ -75,7 +74,7 @@ const DidConfig = () => {
       async function getData() {
         const holdMusic = await generalGetFunction("/sound/all?type=hold");
         setLoading(false);
-        if (holdMusic.status) {
+        if (holdMusic?.status) {
           setHoldMusic(holdMusic.data);
         } else {
           navigate("/");
@@ -168,12 +167,12 @@ const DidConfig = () => {
     if (locationData.configuration === null) {
       setLoading(true);
       const apiData = await generalPostFunction("/did/configure", payload);
-      if (apiData.status) {
+      if (apiData?.status) {
         setLoading(false);
         toast.success(apiData.message);
       } else {
         setLoading(false);
-        toast.error(apiData.message);
+        // toast.error(apiData.message);
       }
     }
     if (locationData.configuration) {
@@ -187,10 +186,9 @@ const DidConfig = () => {
         toast.success(apiData.message);
       } else {
         setLoading(false);
-        toast.error(apiData.message);
+        // toast.error(apiData.message);
       }
     }
-    console.log("payload", payload);
   });
 
   // Custom styles for react-select
@@ -386,7 +384,8 @@ const DidConfig = () => {
                   <div className="formLabel">
                     <label htmlFor="">Action</label>
                     <label htmlFor="data" className="formItemDesc">
-                      Set the action to perform when the max wait time is reached.
+                      Set the action to perform when the max wait time is
+                      reached.
                     </label>
                   </div>
                   <div className="col-6">
@@ -456,7 +455,6 @@ const DidConfig = () => {
                         <ErrorMessage text={errors.forward_to.message} />
                       )}
                     </div>
-
                   </div>
                 )}
                 {forwardStatus === "direct" && (
@@ -520,9 +518,7 @@ const DidConfig = () => {
                       {...register("hold_music")}
                       value={watch().hold_music}
                     >
-                      <option value="default">
-                        default
-                      </option>
+                      <option value="default">default</option>
                       {holdMusic &&
                         holdMusic.map((ring) => {
                           return (

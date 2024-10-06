@@ -32,7 +32,7 @@ function Music() {
       setMusic(musicAll);
       async function getData() {
         const apiData = await generalGetFunction(`/sound/all`);
-        if (apiData.status) {
+        if (apiData?.status) {
           setLoading(false);
           setMusic(apiData.data);
           dispatch({ type: "SET_MUSICALL", musicAll: apiData.data });
@@ -45,7 +45,7 @@ function Music() {
     } else {
       async function getData() {
         const apiData = await generalGetFunction(`/sound/all`);
-        if (apiData.status) {
+        if (apiData?.status) {
           setLoading(false);
           setMusic(apiData.data);
           dispatch({ type: "SET_MUSICALL", musicAll: apiData.data });
@@ -63,7 +63,7 @@ function Music() {
     setDeletePopup(false);
     setLoading(true);
     const apiData = await generalDeleteFunction(`/sound/${id}`);
-    if (apiData.status) {
+    if (apiData?.status) {
       const newArray = music.filter((item) => item.id !== id);
       setMusic(newArray);
       toast.success(apiData.message);
@@ -74,7 +74,7 @@ function Music() {
     } else {
       setLoading(false);
 
-      toast.error(apiData.error);
+      // toast.error(apiData.error);
     }
   };
 

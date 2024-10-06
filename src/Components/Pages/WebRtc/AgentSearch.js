@@ -2,30 +2,20 @@ import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 
-const AgentSearch = ({
-  getDropdownValue,
-  value,
-  getAllAgents,
-}) => {
- 
-
-  const [user,setUser]=useState([])
- 
+const AgentSearch = ({ getDropdownValue, value, getAllAgents }) => {
+  const [user, setUser] = useState([]);
 
   const [selectedOption, setSelectedOption] = useState(null);
 
-
-  
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction("/user-all");
-      if (apiData.status) {
+      if (apiData?.status) {
         setUser(apiData.data.filter((item) => item.extension_id !== null));
         getAllAgents(apiData.data.filter((item) => item.extension_id !== null));
       }
     }
     getData();
-   
   }, []);
 
   useEffect(() => {
@@ -39,15 +29,16 @@ const AgentSearch = ({
   const allOptions = [
     {
       label: "User",
-      options: user && user?.map((item) => ({
-        value: [item.extension.extension, item.id],
-        label: `${item.username}(${item.extension.extension})`,
-      })),
-    }
+      options:
+        user &&
+        user?.map((item) => ({
+          value: [item.extension.extension, item.id],
+          label: `${item.username}(${item.extension.extension})`,
+        })),
+    },
   ];
 
-  console.log("User list",user);
-  
+  console.log("User list", user);
 
   // Custom styles for react-select
   const customStyles = {
