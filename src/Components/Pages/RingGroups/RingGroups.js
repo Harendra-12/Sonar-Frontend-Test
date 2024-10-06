@@ -233,7 +233,7 @@ const RingGroups = () => {
                                         : "tableLabel fail"
                                     }
                                   >
-                                    {item.status}
+                                    {item.status === "active" ? "Active" : "Inactive"}
                                   </label>
                                 </td>
                                 <td
