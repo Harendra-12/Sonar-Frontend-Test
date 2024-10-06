@@ -132,7 +132,7 @@ function DidListing() {
                               {/* <td onClick={()=>navigate(`/did-config?did_id=${item.did}`)}>Configure</td> */}
                               <td style={{ cursor: "default" }}>
                                 <label
-                                  className="tableLabel success"
+                                  className={item.configuration !== null ? "tableLabel success" : "tableLabel pending"}
                                   style={{ cursor: "pointer" }}
                                   onClick={() =>
                                     navigate(`/did-config`, { state: item })

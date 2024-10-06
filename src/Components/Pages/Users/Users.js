@@ -213,6 +213,7 @@ const Users = () => {
                       {/* <th>Domain</th> */}
                       <th>Online</th>
                       <th>On Call</th>
+                      <th>Edit</th>
                       <th>Status</th>
                     </tr>
                   </thead>
@@ -278,6 +279,15 @@ const Users = () => {
                                   }
                                 >
                                   True
+                                </td>
+                                <td>
+                                  <button className="tableButton edit" onClick={() =>
+                                    navigate(`/users-edit`, {
+                                      state: item,
+                                    })
+                                  }>
+                                    <i class="fa-solid fa-pencil"></i>
+                                  </button>
                                 </td>
                                 <td
                                   onClick={() =>

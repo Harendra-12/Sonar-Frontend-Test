@@ -263,17 +263,14 @@ function CallCenterQueue() {
                                     <i class="fa-solid fa-pencil"></i>
                                   </button>
                                 </td>
-                                <td
-                                  // onClick={() => handleDelete(item.id)}
-                                  onClick={() => {
+                                <td>
+                                  <button className="tableButton delete" onClick={() => {
                                     setPopUp(true);
                                     // setDeleteToggle(true);
                                     setDeleteId(item.id);
-                                  }}
-                                >
-                                  <label className="tableLabel fail">
-                                    Delete
-                                  </label>
+                                  }}>
+                                    <i class="fa-solid fa-trash"></i>
+                                  </button>
                                 </td>
                               </tr>
                             );
