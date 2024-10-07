@@ -594,6 +594,16 @@ function Navbar() {
                       <div className="itemTitle">Variable</div>
                     </NavLink>
                   </li>
+                  <li className="dashboard ">
+                    <NavLink
+                      to="/ivr"
+                      onClick={backToTop}
+                      type="button"
+                      effect="ripple"
+                    >
+                      <div className="itemTitle">IVR</div>
+                    </NavLink>
+                  </li>
                   {account?.extension || isCustomerAdmin ? (
                     <li className="dashboard ">
                       <a
