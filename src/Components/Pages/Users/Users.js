@@ -58,7 +58,7 @@ const Users = () => {
         const apiData = await generalGetFunction(
           `/user/all?account=${account.account_id}&page=${pageNumber}`
         );
-        if (apiData.status) {
+        if (apiData?.status) {
           setUser(apiData.data);
           setFilterUser(apiData.data.data);
           dispatch({
@@ -76,7 +76,7 @@ const Users = () => {
         const apiData = await generalGetFunction(
           `/user/all?account=${account.account_id}&page=${pageNumber}`
         );
-        if (apiData.status) {
+        if (apiData?.status) {
           setUser(apiData.data);
           setFilterUser(apiData.data.data);
           dispatch({

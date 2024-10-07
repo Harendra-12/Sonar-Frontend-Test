@@ -16,10 +16,12 @@ import {
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
+import { useSelector } from "react-redux";
 
 const MailSettingsAdd = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const loadings = useSelector((state) => state.loading);
   const {
     register,
     formState: { errors },
@@ -39,14 +41,14 @@ const MailSettingsAdd = () => {
       "/mail-setting/store",
       payload
     );
-    if (addSettings.status) {
+    if (addSettings?.status) {
       setLoading(false);
       reset();
       toast.success(addSettings.message);
       navigate("/mail-settings");
     } else {
       setLoading(false);
-      toast.error(addSettings.message);
+      // toast.error(addSettings.message);
     }
   });
 
@@ -318,7 +320,7 @@ const MailSettingsAdd = () => {
           </div>
         </section>
 
-        {loading && (
+        {loading && loadings && (
           <div colSpan={99}>
             <CircularLoader />
           </div>

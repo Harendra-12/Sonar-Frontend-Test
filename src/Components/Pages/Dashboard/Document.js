@@ -35,7 +35,7 @@ function Document({
   useEffect(() => {
     async function getDocumentList() {
       const apiData = await generalGetFunction("/documents");
-      if (apiData.status) {
+      if (apiData?.status) {
         setDocumentList(apiData.data);
       }
     }
@@ -818,7 +818,12 @@ function Document({
                       <br />
                       <div
                         className="tableButton"
-                        style={{ cursor: "pointer", position: 'absolute', right: '10px', top: '10px' }}
+                        style={{
+                          cursor: "pointer",
+                          position: "absolute",
+                          right: "10px",
+                          top: "10px",
+                        }}
                         onClick={() => setEnlargeImage(true)}
                       >
                         {/* <span style={{ fontSize: 12 }} className="me-1">
@@ -902,8 +907,13 @@ function Document({
                       />
                       <br />
                       <div
-                      className="tableButton"
-                        style={{ cursor: "pointer", position: 'absolute', right: '10px', top: '10px' }}
+                        className="tableButton"
+                        style={{
+                          cursor: "pointer",
+                          position: "absolute",
+                          right: "10px",
+                          top: "10px",
+                        }}
                         onClick={() => setEnlargeImage(true)}
                       >
                         {/* <span style={{ fontSize: 14, fontWeight: 600 }} className="me-1">

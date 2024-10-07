@@ -40,14 +40,14 @@ function PortNumberAdd() {
       ...{ account_id: accountId },
     };
     const apiData = await generalPostFunction("/ports/store", payload);
-    if (apiData.status) {
+    if (apiData?.status) {
       setLoading(false);
       reset();
       toast.success(apiData.message);
     } else {
       setLoading(false);
-      const errorMessage = Object.keys(apiData.errors);
-      toast.error(apiData.errors[errorMessage[0]][0]);
+      // const errorMessage = Object.keys(apiData.errors);
+      // toast.error(apiData.errors[errorMessage[0]][0]);
     }
   });
   return (
@@ -127,10 +127,7 @@ function PortNumberAdd() {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label className="text-dark">Company Name</label>
-                    <label
-                      htmlFor="data"
-                      className="formItemDesc"
-                    >
+                    <label htmlFor="data" className="formItemDesc">
                       The company to whom the number is registered.
                     </label>
                   </div>
@@ -184,10 +181,7 @@ function PortNumberAdd() {
                   <div className="formLabel">
                     <label className="text-dark">PIN or Password</label>
                     <br />
-                    <label
-                      htmlFor="data"
-                      className="formItemDesc"
-                    >
+                    <label htmlFor="data" className="formItemDesc">
                       Some carriers require a PIN for porting.
                     </label>
                   </div>
@@ -206,10 +200,7 @@ function PortNumberAdd() {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label className="text-dark">Carrier</label>
-                    <label
-                      htmlFor="data"
-                      className="formItemDesc"
-                    >
+                    <label htmlFor="data" className="formItemDesc">
                       The current vendor/carrier of the number.
                     </label>
                   </div>
@@ -232,10 +223,7 @@ function PortNumberAdd() {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label className="text-dark">Account Number</label>
-                    <label
-                      htmlFor="data"
-                      className="formItemDesc"
-                    >
+                    <label htmlFor="data" className="formItemDesc">
                       Account Number with Current Provider. This can often be
                       found on
                     </label>
@@ -259,10 +247,7 @@ function PortNumberAdd() {
                 <div className="formRow col-xl-3">
                   <div className="formLabel pe-2 col-2">
                     <label className="text-dark">Phone Number</label>
-                    <label
-                      htmlFor="data"
-                      className="formItemDesc"
-                    >
+                    <label htmlFor="data" className="formItemDesc">
                       The number(s) that need to be ported.
                     </label>
                   </div>

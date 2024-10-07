@@ -42,7 +42,7 @@ const RingGroups = () => {
           const apidata = await generalGetFunction(
             `/ringgroup?account=${account.account_id}`
           );
-          if (apidata.status) {
+          if (apidata?.status) {
             setRingGroup(apidata.data);
           } else {
             navigate("/");
@@ -58,7 +58,7 @@ const RingGroups = () => {
           const apidata = await generalGetFunction(
             `/ringgroup?account=${account.account_id}`
           );
-          if (apidata.status) {
+          if (apidata?.status) {
             setRingGroup(apidata.data);
             setLoading(false);
           } else {
@@ -103,7 +103,7 @@ const RingGroups = () => {
     setPopUp(false);
     setLoading(true);
     const apiData = await generalDeleteFunction(`/ringgroup/${id}`);
-    if (apiData.status) {
+    if (apiData?.status) {
       const newArray = ringGroup.filter((item) => item.id !== id);
       setRingGroup(newArray);
       setLoading(false);
@@ -112,7 +112,7 @@ const RingGroups = () => {
       setDeleteId("");
     } else {
       setLoading(false);
-      toast.error(apiData.error);
+      // toast.error(apiData.error);
       setDeleteId("");
     }
   }

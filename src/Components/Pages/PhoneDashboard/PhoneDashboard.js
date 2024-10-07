@@ -52,7 +52,7 @@ function PhoneDashboard() {
       // if (apiData.status) {
       //   setExtensionList(apiData.data.length);
       // }
-      if (userApi.status) {
+      if (userApi?.status) {
         setUserList(userApi.data.length);
       }
     }

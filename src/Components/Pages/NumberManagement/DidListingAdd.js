@@ -33,7 +33,7 @@ const DidListingAdd = () => {
     async function getData() {
       setLoading(true);
       const vendorDetails = await generalGetFunction("/did/vendors");
-      if (vendorDetails.status) {
+      if (vendorDetails?.status) {
         setLoading(false);
         setVendorData(vendorDetails.data);
       } else {
@@ -49,7 +49,7 @@ const DidListingAdd = () => {
     console.log("Form data:", payload);
 
     const apiData = await generalPostFunction("/did/store", payload);
-    if (apiData.status) {
+    if (apiData?.status) {
       setLoading(false);
       navigate("/did-listing");
     } else {

@@ -30,7 +30,7 @@ function Messages() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/message/contacts`);
-      if (apiData.status && apiData.data.length > 0) {
+      if (apiData?.status && apiData.data.length > 0) {
         setContact(apiData.data);
         setRecipient([apiData.data[0].extension, apiData.data[0].id]);
       }
@@ -69,7 +69,7 @@ function Messages() {
           ],
         }));
       });
-      if (apiData.status) {
+      if (apiData?.status) {
         const newChatHistory = { ...chatHistory };
         newChatHistory[recipient[0]] = {
           total: apiData.data.total,
@@ -251,7 +251,9 @@ function Messages() {
 
         // Check if the content is an image
 
-        const audio = new Audio(require("../../assets/music/message-notification.mp3"));
+        const audio = new Audio(
+          require("../../assets/music/message-notification.mp3")
+        );
         if (contentType && contentType.startsWith("image/")) {
           // If it's an image, create a URL for the Base64 image to render it in <img>
           const imageUrl = `${body}`;
@@ -275,8 +277,6 @@ function Messages() {
           }));
 
           // Play music when message is received
-         
-          
 
           if (recipient[0] !== from) {
             setUnreadMessage((prevState) => ({

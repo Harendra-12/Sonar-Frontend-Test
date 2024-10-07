@@ -151,7 +151,7 @@ function GetDid() {
     };
     const apiData = await generalPostFunction("/searchTfn", parsedData);
     setLoading(false);
-    if (apiData.status) {
+    if (apiData?.status) {
       setDid(apiData.data);
     } else {
       setDid([]);
@@ -265,8 +265,9 @@ function GetDid() {
                       <div className="col-12">
                         <select
                           name="searchType"
-                          className={`formItem ${errors.searchType ? "error" : ""
-                            }`}
+                          className={`formItem ${
+                            errors.searchType ? "error" : ""
+                          }`}
                           {...register("searchType", { ...requiredValidator })}
                         >
                           <option value="tollfree">Toll free</option>
@@ -285,8 +286,9 @@ function GetDid() {
                         <input
                           type="number"
                           name="quantity"
-                          className={`formItem ${errors.quantity ? "error" : ""
-                            }`}
+                          className={`formItem ${
+                            errors.quantity ? "error" : ""
+                          }`}
                           {...register("quantity", {
                             ...requiredValidator,
                             ...lengthValidator(1, 10),

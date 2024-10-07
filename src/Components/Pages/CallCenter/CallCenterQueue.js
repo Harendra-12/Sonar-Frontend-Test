@@ -38,7 +38,7 @@ function CallCenterQueue() {
       setLoading(false);
       async function getData() {
         const apiData = await generalGetFunction("/call-center-queues");
-        if (apiData.status) {
+        if (apiData?.status) {
           setLoading(false);
           setCallCenter(apiData.data);
         } else {
@@ -49,7 +49,7 @@ function CallCenterQueue() {
     } else {
       async function getData() {
         const apiData = await generalGetFunction("/call-center-queues");
-        if (apiData.status) {
+        if (apiData?.status) {
           setLoading(false);
           setCallCenter(apiData.data);
         } else {
@@ -97,7 +97,7 @@ function CallCenterQueue() {
     const apiData = await generalDeleteFunction(
       `/call-center-queue/destroy/${id}`
     );
-    if (apiData.status) {
+    if (apiData?.status) {
       setLoading(false);
       // setRefresh(refresh+1)
       const updatedCallCenter = callCenter.filter((item) => item.id !== id);
@@ -106,7 +106,7 @@ function CallCenterQueue() {
       setDeleteId("");
     } else {
       setLoading(false);
-      toast.error(apiData.error);
+      // toast.error(apiData.error);
       setDeleteId("");
     }
   }

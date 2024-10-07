@@ -17,9 +17,11 @@ function Package() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/packages`);
-      if (apiData.status) {
+      if (apiData?.status) {
         setLoading(false);
         setPackages(apiData.data);
+      } else {
+        setLoading(false);
       }
     }
     getData();
@@ -92,52 +94,75 @@ function Package() {
                                 <tr key={index}>
                                   <td
                                     onClick={() =>
-                                      navigate(`/admin/package-edit?id=${item.id}`)
+                                      navigate(
+                                        `/admin/package-edit?id=${item.id}`
+                                      )
                                     }
                                   >
                                     {item.name}
                                   </td>
                                   <td
                                     onClick={() =>
-                                      navigate(`/admin/package-edit?id=${item.id}`)
+                                      navigate(
+                                        `/admin/package-edit?id=${item.id}`
+                                      )
                                     }
                                   >
                                     {item.number_of_user}
                                   </td>
                                   <td
                                     onClick={() =>
-                                      navigate(`/admin/package-edit?id=${item.id}`)
+                                      navigate(
+                                        `/admin/package-edit?id=${item.id}`
+                                      )
                                     }
                                   >
                                     {item.subscription_type}
                                   </td>
                                   <td
                                     onClick={() =>
-                                      navigate(`/admin/package-edit?id=${item.id}`)
+                                      navigate(
+                                        `/admin/package-edit?id=${item.id}`
+                                      )
                                     }
                                   >
                                     {item.regular_price}
                                   </td>
                                   <td
                                     onClick={() =>
-                                      navigate(`/admin/package-edit?id=${item.id}`)
+                                      navigate(
+                                        `/admin/package-edit?id=${item.id}`
+                                      )
                                     }
                                   >
                                     {item.offer_price}
                                   </td>
                                   <td
                                     onClick={() =>
-                                      navigate(`/admin/package-edit?id=${item.id}`)
+                                      navigate(
+                                        `/admin/package-edit?id=${item.id}`
+                                      )
                                     }
                                   >
                                     {item.description}
                                   </td>
-                                  <td onClick={() =>
-                                    navigate(`/admin/feature`, { state: { name: item.name, price: item.offer_price, feature: item.features, id: item.id } })
-                                  }>
-                                    <button className='clearButton ps-0 fw-bold text-success'><i className="fa-duotone fa-circle-plus me-1"></i>Feature</button>
+                                  <td
+                                    onClick={() =>
+                                      navigate(`/admin/feature`, {
+                                        state: {
+                                          name: item.name,
+                                          price: item.offer_price,
+                                          feature: item.features,
+                                          id: item.id,
+                                        },
+                                      })
+                                    }
+                                  >
+                                    <button className="clearButton ps-0 fw-bold text-success">
+                                      <i className="fa-duotone fa-circle-plus me-1"></i>
+                                      Feature
+                                    </button>
                                   </td>
-
                                 </tr>
                               );
                             })}

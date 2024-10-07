@@ -39,7 +39,7 @@ function PortNumberEdit() {
       async function getData() {
         const apiData = await generalGetFunction(`/ports/show/${value}`);
 
-        if (apiData.status) {
+        if (apiData?.status) {
           const {
             account_number,
             billing_address,
@@ -58,6 +58,8 @@ function PortNumberEdit() {
             phone_number,
             pin,
           });
+          setLoading(false);
+        } else {
           setLoading(false);
         }
       }
@@ -81,8 +83,8 @@ function PortNumberEdit() {
       // setgetportByIdRefresh(getportByIdRefresh + 1);
     } else {
       setLoading(false);
-      const errorMessage = Object.keys(apiData.errors);
-      toast.error(apiData.errors[errorMessage[0]][0]);
+      // const errorMessage = Object.keys(apiData.errors);
+      // toast.error(apiData.errors[errorMessage[0]][0]);
     }
   });
   return (
@@ -131,10 +133,7 @@ function PortNumberEdit() {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label className="text-dark">Full Name</label>
-                    <label
-                      htmlFor="data"
-                      className="formItemDesc"
-                    >
+                    <label htmlFor="data" className="formItemDesc">
                       Full legal name of the current owner.
                     </label>
                   </div>
@@ -156,10 +155,7 @@ function PortNumberEdit() {
                 <div className="formRow col-xl-3">
                   <div className="formLabel pe-2 col-2">
                     <label className="text-dark">Company Name</label>
-                    <label
-                      htmlFor="data"
-                      className="formItemDesc"
-                    >
+                    <label htmlFor="data" className="formItemDesc">
                       The company to whom the number is registered.
                     </label>
                   </div>
@@ -181,10 +177,7 @@ function PortNumberEdit() {
                 <div className="formRow col-xl-3">
                   <div className="formLabel pe-2 col-2">
                     <label className="text-dark">Billing Address</label>
-                    <label
-                      htmlFor="data"
-                      className="formItemDesc"
-                    >
+                    <label htmlFor="data" className="formItemDesc">
                       The address associated with the current number.
                     </label>
                   </div>
@@ -205,10 +198,7 @@ function PortNumberEdit() {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label className="text-dark">PIN or Password</label>
-                    <label
-                      htmlFor="data"
-                      className="formItemDesc"
-                    >
+                    <label htmlFor="data" className="formItemDesc">
                       Some carriers require a PIN for porting.
                     </label>
                   </div>
@@ -227,10 +217,7 @@ function PortNumberEdit() {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label className="text-dark">Carrier</label>
-                    <label
-                      htmlFor="data"
-                      className="formItemDesc"
-                    >
+                    <label htmlFor="data" className="formItemDesc">
                       The current vendor/carrier of the number.
                     </label>
                   </div>
@@ -253,10 +240,7 @@ function PortNumberEdit() {
                   <div className="formLabel">
                     <label className="text-dark">Account Number</label>
                     <br />
-                    <label
-                      htmlFor="data"
-                      className="formItemDesc"
-                    >
+                    <label htmlFor="data" className="formItemDesc">
                       Account Number with Current Provider. This can often be
                       found on
                     </label>
@@ -279,10 +263,7 @@ function PortNumberEdit() {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label className="text-dark">Phone Number</label>
-                    <label
-                      htmlFor="data"
-                      className="formItemDesc"
-                    >
+                    <label htmlFor="data" className="formItemDesc">
                       The number(s) that need to be ported.
                     </label>
                   </div>

@@ -51,7 +51,7 @@ const CallSettings = (props) => {
         const apiData = await generalGetFunction(
           `/extension/${locationData.id}`
         );
-        if (apiData.status) {
+        if (apiData?.status) {
           setLoading(false);
           setCallSetting((prevState) => ({
             ...prevState,
@@ -59,14 +59,14 @@ const CallSettings = (props) => {
               apiData.data.voicemailEnabled === "Y"
                 ? "Voicemail"
                 : apiData.data.callforward === 1
-                  ? "Forward"
-                  : "Disabled",
+                ? "Forward"
+                : "Disabled",
             noAnswerForward:
               apiData.data.voicemailEnabled === "Y"
                 ? apiData.data.voiceEmailTo
                 : apiData.data.callforward === 1
-                  ? apiData.data.callforwardTo
-                  : "",
+                ? apiData.data.callforwardTo
+                : "",
             callRecording: apiData.data.record,
             onBusyState: apiData.data.onbusy,
             onBusyForward: apiData.data.onbusyTo,
@@ -77,16 +77,16 @@ const CallSettings = (props) => {
             callTimeOut: apiData.data.callTimeOut,
             callBlocking:
               apiData.data.blockIncomingStatus === 1 &&
-                apiData.data.blockOutGoingStatus === 1
+              apiData.data.blockOutGoingStatus === 1
                 ? "All"
                 : apiData.data.blockIncomingStatus === 0 &&
                   apiData.data.blockOutGoingStatus === 0
-                  ? "Disabled"
-                  : apiData.data.blockIncomingStatus === 1
-                    ? "Incoming"
-                    : apiData.data.blockOutGoingStatus === 1
-                      ? "Outgoing"
-                      : "Disabled",
+                ? "Disabled"
+                : apiData.data.blockIncomingStatus === 1
+                ? "Incoming"
+                : apiData.data.blockOutGoingStatus === 1
+                ? "Outgoing"
+                : "Disabled",
           }));
           if (apiData.data.followmes.length > 0) {
             setCallSetting((prevData) => ({
@@ -98,6 +98,8 @@ const CallSettings = (props) => {
               followMePrompt: apiData.data.followmes[0].prompt,
             }));
           }
+        } else {
+          setLoading(false);
         }
       }
       getData();
@@ -215,14 +217,14 @@ const CallSettings = (props) => {
           callSetting.callBlocking === "Incoming"
             ? 1
             : callSetting.callBlocking === "All"
-              ? 1
-              : 0,
+            ? 1
+            : 0,
         blockOutGoingStatus:
           callSetting.callBlocking === "Outgoing"
             ? 1
             : callSetting.callBlocking === "All"
-              ? 1
-              : 0,
+            ? 1
+            : 0,
       };
 
       // Conditionally add the 'data' field if followMe is equal to 1
@@ -255,13 +257,13 @@ const CallSettings = (props) => {
         `/extension/details/store`,
         parsedData
       );
-      if (apiData.status) {
+      if (apiData?.status) {
         setLoading(false);
         toast.success(apiData.message);
       } else {
         setLoading(false);
-        const errorMessage = Object.keys(apiData.errors);
-        toast.error(apiData.errors[errorMessage[0]][0]);
+        // const errorMessage = Object.keys(apiData.errors);
+        // toast.error(apiData.errors[errorMessage[0]][0]);
       }
     }
   }
@@ -314,18 +316,20 @@ const CallSettings = (props) => {
           <div className="mx-2" id="detailsContent">
             <form className="row">
               <div className="formRow col-xl-3 ">
-
                 <div className="formLabel">
                   <label className="text-dark">On Busy</label>
-                  <label
-                    htmlFor="data"
-                    className="formItemDesc"
-                  >
-                    If enabled, it overrides the value of voicemail enabling
-                    in extension
+                  <label htmlFor="data" className="formItemDesc">
+                    If enabled, it overrides the value of voicemail enabling in
+                    extension
                   </label>
                 </div>
-                <div className={callSetting.onBusyState == 0 ? "col-6" : "col-2 pe-2 ms-auto"}>
+                <div
+                  className={
+                    callSetting.onBusyState == 0
+                      ? "col-6"
+                      : "col-2 pe-2 ms-auto"
+                  }
+                >
                   <div class="formLabel">
                     <label>Status</label>
                   </div>
@@ -354,9 +358,7 @@ const CallSettings = (props) => {
                       <label htmlFor="">Destinations</label>
 
                       {callSetting.onBusyError ? (
-                        <label className="status missing">
-                          field missing
-                        </label>
+                        <label className="status missing">field missing</label>
                       ) : (
                         ""
                       )}
@@ -378,20 +380,22 @@ const CallSettings = (props) => {
                     </div>
                   </div>
                 )}
-
               </div>
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label className="text-dark">No Answer</label>
-                  <label
-                    htmlFor="data"
-                    className="formItemDesc"
-                  >
-                    If enabled, it overrides the value of voicemail enabling
-                    in extension
+                  <label htmlFor="data" className="formItemDesc">
+                    If enabled, it overrides the value of voicemail enabling in
+                    extension
                   </label>
                 </div>
-                <div className={callSetting.noAnswerStatus === "Forward" ? "col-2 pe-2" : "col-6"}>
+                <div
+                  className={
+                    callSetting.noAnswerStatus === "Forward"
+                      ? "col-2 pe-2"
+                      : "col-6"
+                  }
+                >
                   <div class="formLabel">
                     <label>Status</label>
                   </div>
@@ -478,15 +482,18 @@ const CallSettings = (props) => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label className="text-dark">Not Registered</label>
-                  <label
-                    htmlFor="data"
-                    className="formItemDesc"
-                  >
+                  <label htmlFor="data" className="formItemDesc">
                     If endpoint is not reachable, forward to this destination
                     before going to voicemail
                   </label>
                 </div>
-                <div className={callSetting.notRegisterStatus == 0 ? "col-6" : "col-2 pe-2 ms-auto"}>
+                <div
+                  className={
+                    callSetting.notRegisterStatus == 0
+                      ? "col-6"
+                      : "col-2 pe-2 ms-auto"
+                  }
+                >
                   <div class="formLabel">
                     <label>Status</label>
                   </div>
@@ -514,9 +521,7 @@ const CallSettings = (props) => {
                     <div className="formLabel">
                       <label htmlFor="">Destinations</label>
                       {callSetting.notRegisterError ? (
-                        <label className="status missing">
-                          field missing
-                        </label>
+                        <label className="status missing">field missing</label>
                       ) : (
                         ""
                       )}
@@ -544,10 +549,7 @@ const CallSettings = (props) => {
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label className="text-dark">Follow Me</label>
-                  <label
-                    htmlFor="data"
-                    className="formItemDesc"
-                  >
+                  <label htmlFor="data" className="formItemDesc">
                     Select and configure the Follow Me Status
                   </label>
                 </div>

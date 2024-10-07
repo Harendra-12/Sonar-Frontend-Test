@@ -39,7 +39,7 @@ const MailSettingsEdit = () => {
       const getData = async () => {
         const apiData = await generalGetFunction(`/mail-setting/show/${value}`);
 
-        if (apiData.status) {
+        if (apiData?.status) {
           setMailSettings(apiData.data);
           setLoading(false);
         } else {
@@ -92,7 +92,7 @@ const MailSettingsEdit = () => {
       navigate("/mail-settings");
     } else {
       setLoading(false);
-      toast.error(addSettings.message);
+      // toast.error(addSettings.message);
     }
   });
 

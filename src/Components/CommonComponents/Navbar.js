@@ -19,7 +19,7 @@ function Navbar() {
   async function logOut() {
     const apiData = await generalGetFunction("/logout");
     localStorage.clear();
-    if (apiData.data) {
+    if (apiData?.data) {
       localStorage.clear();
       dispatch({
         action: "SET_ACCOUNT",

@@ -21,12 +21,14 @@ function Vendors() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/did/vendors`);
-      if (apiData.status) {
+      if (apiData?.status) {
         setActiveVendor(
           apiData.data.filter((item) => item.status === "active")
         );
         setLoading(false);
         setVendor(apiData.data);
+      } else {
+        setLoading(false);
       }
     }
     getData();
@@ -49,8 +51,8 @@ function Vendors() {
       toast.success(apiData.message);
     } else {
       setLoading(false);
-      const errorMessage = Object.keys(apiData.errors);
-      toast.error(apiData.errors[errorMessage[0]][0]);
+      // const errorMessage = Object.keys(apiData.errors);
+      // toast.error(apiData.errors[errorMessage[0]][0]);
     }
   }
   return (

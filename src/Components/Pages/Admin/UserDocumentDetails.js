@@ -19,9 +19,11 @@ function UserDocumentDetails() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/account/${value}`);
-      if (apiData.status) {
+      if (apiData?.status) {
         setLoading(false);
         setAccountDetails(apiData.data);
+      } else {
+        setLoading(false);
       }
     }
     getData();

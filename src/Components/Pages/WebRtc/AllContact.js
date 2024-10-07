@@ -15,7 +15,7 @@ function AllContact() {
   useEffect(() => {
     const getContact = async () => {
       const apiData = await generalGetFunction("/contact/all");
-      if (apiData.status) {
+      if (apiData?.status) {
         setContact(apiData.data);
       }
     };

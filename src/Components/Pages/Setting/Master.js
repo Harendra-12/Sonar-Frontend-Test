@@ -43,7 +43,7 @@ function Master() {
           `/domain/search?account=${account.account_id}`
         );
         const groupList = await generalGetFunction(`/groups`);
-        if (domainList.status) {
+        if (domainList?.status) {
           setDomain(
             domainList.data.map((item) => {
               return [item.id, item.domain_name];
@@ -57,7 +57,7 @@ function Master() {
         } else {
           navigate("/");
         }
-        if (groupList.status) {
+        if (groupList?.status) {
           setGroup(
             groupList.data.map((item) => {
               return [item.id, item.group_name];
@@ -125,10 +125,11 @@ function Master() {
         );
         if (apiData.status) {
           toast.success(apiData.message);
-        } else {
-          const errorMessage = Object.keys(apiData.errors);
-          toast.error(apiData.errors[errorMessage[0]][0]);
         }
+        // else {
+        //   const errorMessage = Object.keys(apiData.errors);
+        //   toast.error(apiData.errors[errorMessage[0]][0]);
+        // }
       } else {
         toast.error("Invalid Updated Value");
       }
@@ -143,9 +144,10 @@ function Master() {
         );
         if (apiData.status) {
           toast.success(apiData.message);
-        } else {
-          toast.error(apiData.message);
         }
+        // else {
+        //   toast.error(apiData.message);
+        // }
       } else {
         toast.error("Invalid Updated Value");
       }

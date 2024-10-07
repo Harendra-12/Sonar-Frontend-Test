@@ -116,7 +116,7 @@ function BillingCardSave({ closePopup }) {
       };
       const apiData = await generalPostFunction("/card/add", parsedData);
       if (apiData.status) {
-        toast.success(apiData.message);
+        toast.success(apiData?.message);
         setLoading(false);
         dispatch({
           type: "SET_CARDLISTREFRESH",
@@ -127,8 +127,8 @@ function BillingCardSave({ closePopup }) {
         }, 2000);
       } else {
         setLoading(false);
-        const errorMessage = Object.keys(apiData.errors);
-        toast.error(apiData.errors[errorMessage[0]][0]);
+        // const errorMessage = Object.keys(apiData.errors);
+        // toast.error(apiData.errors[errorMessage[0]][0]);
       }
     }
   }
