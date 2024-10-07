@@ -1,10 +1,41 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../../CommonComponents/Header';
-import { backToTop } from '../../GlobalFunction/globalFunction';
+import { backToTop, generalGetFunction } from '../../GlobalFunction/globalFunction';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from "react-hook-form";
+import {
+  emailValidator,
+  lengthValidator,
+  noSpecialCharactersValidator,
+  requiredValidator,
+  restrictToAllowedChars,
+} from "../../validations/validation";
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
 
 function IvrAdd() {
+  const {
+    register,
+    watch,
+    setError,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [ivrMusic,setIvrMusic] = useState([])
+useEffect(( ) => {
+  async function getData() {
+    const apiData = await generalGetFunction("/sound/all?type=ivr");
+    if (apiData.status) {
+      setIvrMusic(apiData.data);
+    }
+   
+  }
+  getData()
+},[])
+console.log("ivr",ivrMusic);
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -52,7 +83,14 @@ function IvrAdd() {
                     type="text"
                     name="mail_host"
                     className="formItem"
+                    {...register("ivr_name", {
+                      ...requiredValidator,
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                    {errors.ivr_name && (
+                      <ErrorMessage text={errors.ivr_name.message} />
+                    )}
                 </div>
               </div>
 
@@ -64,27 +102,37 @@ function IvrAdd() {
                   </label>
                 </div>
                 <div className="col-6">
-                  <select className="formItem">
-                    <option value="">Select</option>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
+                  <select className="formItem"  {...register("ivr_type", {
+                      ...requiredValidator,
+                    })}>
+                    <option value="1">Master</option>
+                    <option value="0">Child</option>
                   </select>
                 </div>
               </div>
 
               <div className="formRow col-xl-3">
                 <div className="formLabel">
-                  <label htmlFor="">Greet Sound (Long)</label>
+                  <label htmlFor="">Greet Sound </label>
                   <label htmlFor="mail_host" className="formItemDesc">
-                    Upload a long greet when entering the menu.
+                    Upload a greet when entering the menu.
                   </label>
                 </div>
                 <div className="col-6">
-                  <input name="reg" class="formItem" type="file" accept="audio/*"></input>
+                  <select className="formItem"  {...register("greet_long", {
+                      ...requiredValidator,
+                    })}>
+                    <option disabled>Select greet sound</option>
+                    {ivrMusic?.map((item) => {
+                      return (
+                        <option value={item?.id}>{item?.name}</option>
+                      )
+                    })}
+                  </select>
                 </div>
               </div>
 
-              <div className="formRow col-xl-3">
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Greet Sound (Short)</label>
                   <label htmlFor="mail_host" className="formItemDesc">
@@ -92,9 +140,13 @@ function IvrAdd() {
                   </label>
                 </div>
                 <div className="col-6">
-                  <input name="reg" class="formItem" type="file" accept="audio/*"></input>
+                  <select className="formItem">
+                    <option value="">Select</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                  </select>
                 </div>
-              </div>
+              </div> */}
 
               <div className="formRow col-xl-3">
                 <div className="formLabel">
@@ -104,7 +156,16 @@ function IvrAdd() {
                   </label>
                 </div>
                 <div className="col-6">
-                  <input name="reg" class="formItem" type="file" accept="audio/*"></input>
+                  <select className="formItem"  {...register("invalid_sound", {
+                      ...requiredValidator,
+                    })}>
+                    <option disabled>Select invalid sound</option>
+                    {ivrMusic?.map((item) => {
+                      return (
+                        <option value={item?.id}>{item?.name}</option>
+                      )
+                    })}
+                  </select>
                 </div>
               </div>
 
@@ -116,7 +177,16 @@ function IvrAdd() {
                   </label>
                 </div>
                 <div className="col-6">
-                  <input name="reg" class="formItem" type="file" accept="audio/*"></input>
+                  <select className="formItem" {...register("exit_sound", {
+                      ...requiredValidator,
+                    })}>
+                    <option disabled>Select Exit Sound</option>
+                    {ivrMusic?.map((item) => {
+                      return (
+                        <option value={item?.id}>{item?.name}</option>
+                      )
+                    })}
+                  </select>
                 </div>
               </div>
 
@@ -132,7 +202,14 @@ function IvrAdd() {
                     type="text"
                     name="mail_host"
                     className="formItem"
+                    {...register("confirm_macro", {
+                      ...requiredValidator,
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                    {errors.confirm_macro && (
+                      <ErrorMessage text={errors.confirm_macro.message} />
+                    )}
                 </div>
               </div>
 
@@ -148,7 +225,14 @@ function IvrAdd() {
                     type="text"
                     name="mail_host"
                     className="formItem"
+                    {...register("confirm_key", {
+                      ...requiredValidator,
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                    {errors.confirm_key && (
+                      <ErrorMessage text={errors.confirm_key.message} />
+                    )}
                 </div>
               </div>
 
@@ -164,7 +248,14 @@ function IvrAdd() {
                     type="text"
                     name="mail_host"
                     className="formItem"
+                    {...register("confirm_macro", {
+                      ...requiredValidator,
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                    {errors.confirm_macro && (
+                      <ErrorMessage text={errors.confirm_macro.message} />
+                    )}
                 </div>
               </div>
 
@@ -180,7 +271,14 @@ function IvrAdd() {
                     type="text"
                     name="mail_host"
                     className="formItem"
+                    {...register("confirm_macro", {
+                      ...requiredValidator,
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                    {errors.confirm_macro && (
+                      <ErrorMessage text={errors.confirm_macro.message} />
+                    )}
                 </div>
               </div>
 
@@ -196,7 +294,14 @@ function IvrAdd() {
                     type="number"
                     name="mail_host"
                     className="formItem"
+                    {...register("confirm_macro", {
+                      ...requiredValidator,
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                    {errors.confirm_macro && (
+                      <ErrorMessage text={errors.confirm_macro.message} />
+                    )}
                 </div>
               </div>
 
@@ -212,7 +317,14 @@ function IvrAdd() {
                     type="number"
                     name="mail_host"
                     className="formItem"
+                    {...register("confirm_macro", {
+                      ...requiredValidator,
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                    {errors.confirm_macro && (
+                      <ErrorMessage text={errors.confirm_macro.message} />
+                    )}
                 </div>
               </div>
 
@@ -228,7 +340,14 @@ function IvrAdd() {
                     type="number"
                     name="mail_host"
                     className="formItem"
+                    {...register("confirm_macro", {
+                      ...requiredValidator,
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                    {errors.confirm_macro && (
+                      <ErrorMessage text={errors.confirm_macro.message} />
+                    )}
                 </div>
               </div>
 
@@ -244,7 +363,14 @@ function IvrAdd() {
                     type="number"
                     name="mail_host"
                     className="formItem"
+                    {...register("confirm_macro", {
+                      ...requiredValidator,
+                      ...noSpecialCharactersValidator,
+                    })}
                   />
+                    {errors.confirm_macro && (
+                      <ErrorMessage text={errors.confirm_macro.message} />
+                    )}
                 </div>
               </div>
             </form>

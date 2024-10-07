@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import { useNavigate } from "react-router-dom";
 import {
@@ -224,6 +224,7 @@ function Music() {
                             <option value="busy">Busy</option>
                             <option value="ringback">Ringback</option>
                             <option value="announcement">Announcement</option>
+                            <option value="ivr"> IVR</option>
                           </select>
                         </div>
                         <div className="col-8">
@@ -235,13 +236,6 @@ function Music() {
                             onChange={(e) => setNewMusic(e.target.files[0])}
                           />
                         </div>
-                        {/* <input
-                        name="reg"
-                        className="formItem"
-                        type="text"
-                        placeholder="Type here"
-                        onChange={(e) => setNewMusicType(e.target.value)}
-                      /> */}
                       </div>
                       <div className="mt-2">
                         <button
@@ -303,32 +297,8 @@ function Music() {
           ) : (
             ""
           )}
-          {/* {loading ? <ContentLoader /> : ""} */}
-          {/* {music && music.data.length > 0 ? (
-            <PaginationComponent
-              pageNumber={(e) => setPageNumber(e)}
-              totalPage={music.last_page}
-              from={(pageNumber - 1) * music.per_page + 1}
-              to={music.to}
-              total={music.total}
-            />
-          ) : (
-            ""
-          )} */}
         </div>
       </section>
-      {/* <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      /> */}
     </main>
   );
 }

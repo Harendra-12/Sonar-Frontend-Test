@@ -83,7 +83,7 @@ const ActionList = ({
         label: item.extension,
       })),
     },
-  ].filter((option) => category === "all" || option.label.toLowerCase() === category.toLowerCase());
+  ].filter((option) => category === "" || option.label.toLowerCase() === category?.toLowerCase());
   // Custom styles for react-select
   const customStyles = {
     control: (provided, state) => ({
