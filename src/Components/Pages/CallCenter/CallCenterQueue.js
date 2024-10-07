@@ -133,6 +133,16 @@ function CallCenterQueue() {
               </div>
               <div className="col-xl-8 pt-3 pt-xl-0">
                 <div className="d-flex justify-content-end">
+                  <button
+                    effect="ripple"
+                    className="panelButton"
+                    onClick={() => {
+                      navigate(-1);
+                      backToTop();
+                    }}
+                  >
+                    Back
+                  </button>
                   <Link
                     // to="/cal-center-queue-add"
                     // onClick={backToTop}
@@ -263,17 +273,14 @@ function CallCenterQueue() {
                                     <i class="fa-solid fa-pencil"></i>
                                   </button>
                                 </td>
-                                <td
-                                  // onClick={() => handleDelete(item.id)}
-                                  onClick={() => {
+                                <td>
+                                  <button className="tableButton delete" onClick={() => {
                                     setPopUp(true);
                                     // setDeleteToggle(true);
                                     setDeleteId(item.id);
-                                  }}
-                                >
-                                  <label className="tableLabel fail">
-                                    Delete
-                                  </label>
+                                  }}>
+                                    <i class="fa-solid fa-trash"></i>
+                                  </button>
                                 </td>
                               </tr>
                             );

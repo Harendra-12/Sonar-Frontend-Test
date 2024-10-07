@@ -135,13 +135,16 @@ const RingGroups = () => {
               </div>
               <div className="col-xl-8 pt-3 pt-xl-0">
                 <div className="d-flex justify-content-end">
-                  {/* <button
-                    onClick={() => window.location.reload()}
+                  <button
                     effect="ripple"
                     className="panelButton"
+                    onClick={() => {
+                      navigate(-1);
+                      backToTop();
+                    }}
                   >
-                    Refresh
-                  </button> */}
+                    Back
+                  </button>
                   <Link
                     // to="/ring-groups-add"
                     // onClick={backToTop}
@@ -230,7 +233,7 @@ const RingGroups = () => {
                                         : "tableLabel fail"
                                     }
                                   >
-                                    {item.status}
+                                    {item.status === "active" ? "Active" : "Inactive"}
                                   </label>
                                 </td>
                                 <td

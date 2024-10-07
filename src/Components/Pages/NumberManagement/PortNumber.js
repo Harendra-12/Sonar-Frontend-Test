@@ -130,6 +130,7 @@ function PortNumber() {
                             <th>Carrier</th>
                             <th>Account no.</th>
                             <th>Phone no.</th>
+                            <th>Edit</th>
                             <th>Delete</th>
                           </tr>
                         </thead>
@@ -205,6 +206,11 @@ function PortNumber() {
                                     style={{ cursor: "default" }}
                                   >
                                     {item?.phone_number}
+                                  </td>
+                                  <td >
+                                    <button className="tableButton edit" onClick={() => handleEditPortNumber(item.id)}>
+                                      <i class="fa-solid fa-pencil"></i>
+                                    </button>
                                   </td>
                                   <td>
                                     <button

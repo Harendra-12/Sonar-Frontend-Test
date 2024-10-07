@@ -256,18 +256,17 @@ function GetDid() {
               {/* {loading ?
                   <div colSpan={99}><CircularLoader /></div> : ""} */}
               <div className="mx-2" id="detailsContent">
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} className="mb-0">
                   <div className="row col-xl-12">
-                    <div className="formRow col-xl-1">
+                    <div className="formRow col-xxl-1 col-xl-2">
                       <div className="formLabel">
                         <label htmlFor="searchType">Search Type</label>
                       </div>
                       <div className="col-12">
                         <select
                           name="searchType"
-                          className={`formItem ${
-                            errors.searchType ? "error" : ""
-                          }`}
+                          className={`formItem ${errors.searchType ? "error" : ""
+                            }`}
                           {...register("searchType", { ...requiredValidator })}
                         >
                           <option value="tollfree">Toll free</option>
@@ -286,9 +285,8 @@ function GetDid() {
                         <input
                           type="number"
                           name="quantity"
-                          className={`formItem ${
-                            errors.quantity ? "error" : ""
-                          }`}
+                          className={`formItem ${errors.quantity ? "error" : ""
+                            }`}
                           {...register("quantity", {
                             ...requiredValidator,
                             ...lengthValidator(1, 10),

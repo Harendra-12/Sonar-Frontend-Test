@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { useNavigate, Link } from "react-router-dom";
 import {
+  backToTop,
   generalDeleteFunction,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
@@ -89,6 +90,16 @@ function DidListing() {
             >
               <div className="col-xl-8 pt-3 pt-xl-0">
                 <div className="d-flex justify-content-end">
+                  <button
+                    effect="ripple"
+                    className="panelButton"
+                    onClick={() => {
+                      navigate(-1);
+                      backToTop();
+                    }}
+                  >
+                    Back
+                  </button>
                   <Link to="/did-add" effect="ripple" className="panelButton">
                     Add
                   </Link>
@@ -132,7 +143,7 @@ function DidListing() {
                               {/* <td onClick={()=>navigate(`/did-config?did_id=${item.did}`)}>Configure</td> */}
                               <td style={{ cursor: "default" }}>
                                 <label
-                                  className="tableLabel success"
+                                  className={item.configuration !== null ? "tableLabel success" : "tableLabel pending"}
                                   style={{ cursor: "pointer" }}
                                   onClick={() =>
                                     navigate(`/did-config`, { state: item })
