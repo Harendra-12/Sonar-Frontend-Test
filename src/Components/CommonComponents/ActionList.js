@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
+import { generalGetFunction } from "../GlobalFunction/globalFunction";
 
 const ActionList = ({
   category,
   getDropdownValue,
   value,
+  label = "",
   title = "Action",
-  label = "Set the action to perform when the max wait time is reached.",
+  isDisabled = false,
+  // label = "Set the action to perform when the max wait time is reached.",
 }) => {
-  console.log("category", category);
+  // console.log("category", category);
 
   const dispatch = useDispatch();
 
@@ -25,6 +28,7 @@ const ActionList = ({
   const extensionArr = useSelector((state) => state.extension);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
   const ringGroupArr = useSelector((state) => state.ringGroup);
+  const [ivr,setIvr] = useState([]);
 
   useEffect(() => {
     if (extensionRefresh > 0) {
@@ -51,6 +55,13 @@ const ActionList = ({
         callCenterRefresh: callCenterRefresh + 1,
       });
     }
+    async function getData() {
+      const ivrData = await generalGetFunction("/ivr-master/all");
+     if(ivrData.status){
+      setIvr(ivrData.data)
+     }
+    }
+    getData();
   }, [extensionArr, ringGroupArr, callCenterArr]);
 
   useEffect(() => {
@@ -81,6 +92,13 @@ const ActionList = ({
       options: callCenter.map((item) => ({
         value: [item.extension, "call_center"],
         label: item.extension,
+      })),
+    },
+    {
+      label: "IVR",
+      options: ivr.map((item) => ({
+        value: [String(item.id), "ivr"],
+        label: item.ivr_name,
       })),
     },
   ].filter(
@@ -165,7 +183,7 @@ const ActionList = ({
       )}
       <div className="col-12">
         <Select
-          // className="formItem"
+        isDisabled={isDisabled}
           id="selectFormRow"
           onChange={(selectedOption) => {
             getDropdownValue(selectedOption.value);

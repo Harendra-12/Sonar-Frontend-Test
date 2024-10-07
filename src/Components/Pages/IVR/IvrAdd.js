@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../../CommonComponents/Header';
-import { backToTop, generalGetFunction } from '../../GlobalFunction/globalFunction';
+import { backToTop, generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import {
-  emailValidator,
-  lengthValidator,
   noSpecialCharactersValidator,
   requiredValidator,
   restrictToAllowedChars,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import { toast } from 'react-toastify';
+import CircularLoader from '../../Loader/CircularLoader';
 
 function IvrAdd() {
   const {
     register,
-    watch,
-    setError,
     formState: { errors },
     handleSubmit,
     reset,
@@ -35,6 +33,26 @@ useEffect(( ) => {
   getData()
 },[])
 console.log("ivr",ivrMusic);
+
+const handleFormSubmit = handleSubmit(async (data) => {
+  setLoading(true);
+  const apiData = await generalPostFunction("/ivr-master/store", data);
+  if (apiData.status) {
+    setLoading(false);
+    toast.success(apiData.message); 
+    reset();
+    navigate(-1);
+  }else{
+    setLoading(false);
+      if (apiData.error) {
+        toast.error(apiData.error);
+      } else {
+        const errorMessage = Object.keys(apiData.errors);
+        toast.error(apiData.errors[errorMessage[0]][0]);
+      }
+  }
+  
+})
 
   return (
     <main className="mainContent">
@@ -60,6 +78,7 @@ console.log("ivr",ivrMusic);
                 <button
                   effect="ripple"
                   className="panelButton"
+                  onClick={handleFormSubmit}
                 >
                   Save
                 </button>
@@ -87,6 +106,7 @@ console.log("ivr",ivrMusic);
                       ...requiredValidator,
                       ...noSpecialCharactersValidator,
                     })}
+                    onKeyDown={restrictToAllowedChars}
                   />
                     {errors.ivr_name && (
                       <ErrorMessage text={errors.ivr_name.message} />
@@ -122,13 +142,16 @@ console.log("ivr",ivrMusic);
                   <select className="formItem"  {...register("greet_long", {
                       ...requiredValidator,
                     })}>
-                    <option disabled>Select greet sound</option>
+                    <option  value="" >Select greet sound</option>
                     {ivrMusic?.map((item) => {
                       return (
                         <option value={item?.id}>{item?.name}</option>
                       )
                     })}
                   </select>
+                  {errors.greet_long && (
+                      <ErrorMessage text={errors.greet_long.message} />
+                    )}
                 </div>
               </div>
 
@@ -159,13 +182,16 @@ console.log("ivr",ivrMusic);
                   <select className="formItem"  {...register("invalid_sound", {
                       ...requiredValidator,
                     })}>
-                    <option disabled>Select invalid sound</option>
+                    <option value="">Select invalid sound</option>
                     {ivrMusic?.map((item) => {
                       return (
                         <option value={item?.id}>{item?.name}</option>
                       )
                     })}
                   </select>
+                  {errors.invalid_sound && (
+                      <ErrorMessage text={errors.invalid_sound.message} />
+                    )}
                 </div>
               </div>
 
@@ -180,13 +206,16 @@ console.log("ivr",ivrMusic);
                   <select className="formItem" {...register("exit_sound", {
                       ...requiredValidator,
                     })}>
-                    <option disabled>Select Exit Sound</option>
+                    <option value="">Select Exit Sound</option>
                     {ivrMusic?.map((item) => {
                       return (
                         <option value={item?.id}>{item?.name}</option>
                       )
                     })}
                   </select>
+                  {errors.exit_sound && (
+                      <ErrorMessage text={errors.exit_sound.message} />
+                    )}
                 </div>
               </div>
 
@@ -236,12 +265,10 @@ console.log("ivr",ivrMusic);
                 </div>
               </div>
 
-              <div className="formRow col-xl-3">
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">TTS Engine</label>
-                  {/* <label htmlFor="mail_port" className="formItemDesc">
-                    Enter Mail Port
-                  </label> */}
+                 
                 </div>
                 <div className="col-6">
                   <input
@@ -257,14 +284,11 @@ console.log("ivr",ivrMusic);
                       <ErrorMessage text={errors.confirm_macro.message} />
                     )}
                 </div>
-              </div>
+              </div> */}
 
-              <div className="formRow col-xl-3">
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">TTS Voice</label>
-                  {/* <label htmlFor="mail_port" className="formItemDesc">
-                    Enter Mail Port
-                  </label> */}
                 </div>
                 <div className="col-6">
                   <input
@@ -280,7 +304,7 @@ console.log("ivr",ivrMusic);
                       <ErrorMessage text={errors.confirm_macro.message} />
                     )}
                 </div>
-              </div>
+              </div> */}
 
               <div className="formRow col-xl-3">
                 <div className="formLabel">
@@ -294,13 +318,13 @@ console.log("ivr",ivrMusic);
                     type="number"
                     name="mail_host"
                     className="formItem"
-                    {...register("confirm_macro", {
+                    {...register("confirm_attempts", {
                       ...requiredValidator,
                       ...noSpecialCharactersValidator,
                     })}
                   />
                     {errors.confirm_macro && (
-                      <ErrorMessage text={errors.confirm_macro.message} />
+                      <ErrorMessage text={errors.confirm_attempts.message} />
                     )}
                 </div>
               </div>
@@ -317,13 +341,13 @@ console.log("ivr",ivrMusic);
                     type="number"
                     name="mail_host"
                     className="formItem"
-                    {...register("confirm_macro", {
+                    {...register("timeout", {
                       ...requiredValidator,
                       ...noSpecialCharactersValidator,
                     })}
                   />
-                    {errors.confirm_macro && (
-                      <ErrorMessage text={errors.confirm_macro.message} />
+                    {errors.timeout && (
+                      <ErrorMessage text={errors.timeout.message} />
                     )}
                 </div>
               </div>
@@ -340,13 +364,13 @@ console.log("ivr",ivrMusic);
                     type="number"
                     name="mail_host"
                     className="formItem"
-                    {...register("confirm_macro", {
+                    {...register("max_failures", {
                       ...requiredValidator,
                       ...noSpecialCharactersValidator,
                     })}
                   />
-                    {errors.confirm_macro && (
-                      <ErrorMessage text={errors.confirm_macro.message} />
+                    {errors.max_failures && (
+                      <ErrorMessage text={errors.max_failures.message} />
                     )}
                 </div>
               </div>
@@ -363,13 +387,13 @@ console.log("ivr",ivrMusic);
                     type="number"
                     name="mail_host"
                     className="formItem"
-                    {...register("confirm_macro", {
+                    {...register("max_timeouts", {
                       ...requiredValidator,
                       ...noSpecialCharactersValidator,
                     })}
                   />
-                    {errors.confirm_macro && (
-                      <ErrorMessage text={errors.confirm_macro.message} />
+                    {errors.max_timeouts && (
+                      <ErrorMessage text={errors.max_timeouts.message} />
                     )}
                 </div>
               </div>
@@ -377,6 +401,13 @@ console.log("ivr",ivrMusic);
           </div>
         </div>
       </section>
+      {loading ? (
+          <div colSpan={99}>
+            <CircularLoader />
+          </div>
+        ) : (
+          ""
+        )}
     </main>
   )
 }

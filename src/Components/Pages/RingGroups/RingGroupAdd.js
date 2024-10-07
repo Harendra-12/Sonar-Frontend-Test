@@ -1185,26 +1185,6 @@ const RingGroupAdd = () => {
                           })()}
                         </select>
                       </div>
-                      {/* <div className="col-2 pe-2">
-                        {index === 0 ? (
-                          <div className="formLabel">
-                            <label htmlFor="">Prompt</label>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                        <select
-                          className="formItem me-0"
-                          style={{ width: "100%" }}
-                          value={item.prompt}
-                          onChange={(e) => handleDestinationChange(index, e)}
-                          id="selectFormRow"
-                          name="prompt"
-                        >
-                          <option className="status">Prompt</option>
-                          <option value="confirm">Confirm</option>
-                        </select>
-                      </div> */}
                       <div className="col-2 pe-2">
                         {index === 0 ? (
                           <div className="formLabel">
