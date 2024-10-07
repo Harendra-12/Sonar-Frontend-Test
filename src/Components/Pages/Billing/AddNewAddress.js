@@ -106,7 +106,7 @@ function AddNewAddress({ closePopup }) {
       );
       if (apiData.status) {
         setLoading(false);
-        toast.success(apiData.message);
+        toast.success(apiData?.message);
         dispatch({
           type: "SET_BILLINGLISTREFRESH",
           billingListRefresh: billingListRefresh + 1,
@@ -114,6 +114,8 @@ function AddNewAddress({ closePopup }) {
         setTimeout(() => {
           closePopup(false);
         }, 2000);
+      } else {
+        setLoading(false);
       }
     }
   }

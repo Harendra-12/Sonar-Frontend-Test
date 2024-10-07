@@ -84,14 +84,20 @@ export async function generalPostFunction(endpoint, data) {
       return res.data;
     })
     .catch((err) => {
-      console.log("post error:", err);
       if (err.response.status === 500) {
         toast.error("Something went wrong");
       } else if (err.response.data.errors) {
         const errorMessage = Object.keys(err.response.data.errors);
         toast.error(err.response.data.errors[errorMessage[0]][0]);
+      } else if (err.response.data.error) {
+        const errorMessage = Object.keys(err.response.data.error);
+        toast.error(err.response.data.error[errorMessage[0]][0]);
       } else {
-        toast.error(err.response.data.message);
+        toast.error(
+          err.response.data.message
+            ? err.response.data.message
+            : "Something went wrong"
+        );
       }
       if (err.response.status === 401) {
         handleNavigation("/");
@@ -116,6 +122,9 @@ export async function generalPutFunction(endpoint, data) {
         // toast.error(err.response.data.errors.callScreen[0]);
         const errorMessage = Object.keys(err.response.data.errors);
         toast.error(err.response.data.errors[errorMessage[0]][0]);
+      } else if (err.response.data.error) {
+        const errorMessage = Object.keys(err.response.data.error);
+        toast.error(err.response.data.error[errorMessage[0]][0]);
       } else {
         toast.error(err.response.data.message);
       }
@@ -136,6 +145,22 @@ export async function generalDeleteFunction(endpoint) {
       return res.data;
     })
     .catch((err) => {
+      console.log("delete error:", err);
+      if (err.response.status === 500) {
+        toast.error("Something went wrong");
+      } else if (err.response.data.errors) {
+        const errorMessage = Object.keys(err.response.data.errors);
+        toast.error(err.response.data.errors[errorMessage[0]][0]);
+      } else if (err.response.data.error) {
+        const errorMessage = Object.keys(err.response.data.error);
+        toast.error(err.response.data.error);
+      } else {
+        toast.error(
+          err.response.data.message
+            ? err.response.data.message
+            : "Something went wrong"
+        );
+      }
       if (err.response.status === 401) {
         handleNavigation("/");
         return err.response.data;

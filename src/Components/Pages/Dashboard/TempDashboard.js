@@ -27,7 +27,7 @@ function TempDashboard() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/account/${account.id}`);
-      if (apiData.status) {
+      if (apiData?.status) {
         setAccount(apiData.data);
         dispatch({
           type: "SET_TEMPACCOUNT",

@@ -21,12 +21,14 @@ function Vendors() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/did/vendors`);
-      if (apiData.status) {
+      if (apiData?.status) {
         setActiveVendor(
           apiData.data.filter((item) => item.status === "active")
         );
         setLoading(false);
         setVendor(apiData.data);
+      } else {
+        setLoading(false);
       }
     }
     getData();

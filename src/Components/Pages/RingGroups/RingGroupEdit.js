@@ -127,18 +127,18 @@ const RingGroupEdit = () => {
         // } else {
         //   navigate("/");
         // }
-        if (apidataUser.status) {
+        if (apidataUser?.status) {
           setUsers(apidataUser.data);
         } else {
           navigate("/");
         }
-        if (ringBack.status) {
+        if (ringBack?.status) {
           setRingBack(ringBack.data);
         } else {
           navigate("/");
         }
 
-        if (ringData.status) {
+        if (ringData?.status) {
           setLoading(false);
 
           let editData = ringData.data[0];

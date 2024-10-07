@@ -72,23 +72,25 @@ const UsersEdit = () => {
         // } else {
         //   navigate("/");
         // }
-        if (timeZ.status) {
+        if (timeZ?.status) {
           setTimeZone(
             timeZ.data.map((item) => {
               return [item.id, item.name];
             })
           );
         }
-        if (apiRole.status) {
+        if (apiRole?.status) {
           if (apiRole.data.length > 0) {
             setRole(apiRole.data);
           } else {
             navigate("/roles");
           }
         }
-        if (permissionData.status) {
+        if (permissionData?.status) {
           setLoading(false);
           setDefaultPermission(permissionData.data);
+        } else {
+          setLoading(false);
         }
       }
       getDomain();

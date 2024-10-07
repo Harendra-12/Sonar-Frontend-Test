@@ -50,7 +50,7 @@ function CallCenterQueueAdd() {
     async function getData() {
       const userData = await generalGetFunction("/user/all");
       const musicData = await generalGetFunction("/sound/all");
-      if (userData.status) {
+      if (userData?.status) {
         if (userData.data.data.length === 0) {
           toast.error("Please create user first");
         } else {
@@ -64,7 +64,7 @@ function CallCenterQueueAdd() {
           }
         }
       }
-      if (musicData.status) {
+      if (musicData?.status) {
         setGreetingSound(
           musicData.data.filter((item) => item.type === "ringback")
         );
@@ -541,8 +541,7 @@ function CallCenterQueueAdd() {
                     className="formItem w-100"
                   >
                     <option value="queue">Queue</option>
-                    {/* <option value="system">System</option> */}
-                    <option value="ldfdkflker">System</option>
+                    <option value="system">System</option>
                   </select>
                 </div>
               </div>

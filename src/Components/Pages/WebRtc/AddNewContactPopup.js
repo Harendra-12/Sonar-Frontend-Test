@@ -29,7 +29,7 @@ function AddNewContactPopup({ setAddContactToggle }) {
       },
     };
     const apiData = await generalPostFunction("contact/store", payload);
-    if (apiData.status) {
+    if (apiData?.status) {
       setAddContactToggle(false);
       toast.success(apiData.message);
 
@@ -38,9 +38,9 @@ function AddNewContactPopup({ setAddContactToggle }) {
         addContactRefresh: addContactRefresh + 1,
       });
     } else {
-      console.log(apiData);
-      const errorMessage = Object.keys(apiData.errors);
-      toast.error(apiData.errors[errorMessage[0]][0]);
+      setAddContactToggle(false);
+      // const errorMessage = Object.keys(apiData.errors);
+      // toast.error(apiData.errors[errorMessage[0]][0]);
     }
   });
 

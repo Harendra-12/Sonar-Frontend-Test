@@ -39,7 +39,7 @@ function PortNumberEdit() {
       async function getData() {
         const apiData = await generalGetFunction(`/ports/show/${value}`);
 
-        if (apiData.status) {
+        if (apiData?.status) {
           const {
             account_number,
             billing_address,
@@ -58,6 +58,8 @@ function PortNumberEdit() {
             phone_number,
             pin,
           });
+          setLoading(false);
+        } else {
           setLoading(false);
         }
       }

@@ -232,7 +232,7 @@ export function LoginComponent() {
       if (data) {
         if (data.status) {
           const profile = await generalGetFunction("/user");
-          if (profile.status) {
+          if (profile?.status) {
             dispatch({
               type: "SET_ACCOUNT",
               account: profile.data,
@@ -242,7 +242,7 @@ export function LoginComponent() {
             const accountData = await generalGetFunction(
               `/account/${profile.data.account_id}`
             );
-            if (accountData.status) {
+            if (accountData?.status) {
               dispatch({
                 type: "SET_ACCOUNTDETAILS",
                 accountDetails: accountData.data,

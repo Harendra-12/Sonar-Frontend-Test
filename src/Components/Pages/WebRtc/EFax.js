@@ -23,7 +23,7 @@ function EFax() {
     const getData = async () => {
       setContentLoading(true);
       const response = await generalGetFunction("/fax/all");
-      if (response.status) {
+      if (response?.status) {
         setAllFiles(response.data);
         const newOptions = response.data.map((file) => ({
           value: file.id,

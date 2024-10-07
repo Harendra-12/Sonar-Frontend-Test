@@ -85,7 +85,7 @@ function Feature() {
         package_id: location.state.id,
       };
       const apiData = await generalPostFunction(`/feature/store`, parseDdata);
-      if (apiData.status) {
+      if (apiData?.status) {
         const getFeature = await generalGetFunction(
           `/package/details/${location.state.id}`
         );

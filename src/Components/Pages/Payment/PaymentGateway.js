@@ -21,12 +21,14 @@ function PaymentGateway() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/payment-gateways`);
-      if (apiData.status) {
+      if (apiData?.status) {
         setActiveGateway(
           apiData.data.filter((item) => item.status === "active")
         );
         setLoading(false);
         setGateway(apiData.data);
+      } else {
+        setLoading(false);
       }
     }
     getData();

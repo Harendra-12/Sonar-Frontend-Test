@@ -84,7 +84,7 @@ function CardAndBilling() {
           "/card/set-default-card",
           parsedData
         );
-        if (apiData.status) {
+        if (apiData?.status) {
           setCardConfirmationPopUp(false);
           dispatch({
             type: "SET_CARDLISTREFRESH",
@@ -97,8 +97,8 @@ function CardAndBilling() {
         } else {
           setCardConfirmationPopUp(false);
           setLoading(false);
-          const errorMessage = Object.keys(apiData.errors);
-          toast.error(apiData.errors[errorMessage[0]][0]);
+          // const errorMessage = Object.keys(apiData.errors);
+          // toast.error(apiData.errors[errorMessage[0]][0]);
         }
       } else {
         const parsedData = {
@@ -110,7 +110,7 @@ function CardAndBilling() {
           "/card/set-default-card",
           parsedData
         );
-        if (apiData.status) {
+        if (apiData?.status) {
           setCardConfirmationPopUp(false);
           dispatch({
             type: "SET_CARDLISTREFRESH",
@@ -123,8 +123,8 @@ function CardAndBilling() {
         } else {
           setCardConfirmationPopUp(false);
           setLoading(false);
-          const errorMessage = Object.keys(apiData.errors);
-          toast.error(apiData.errors[errorMessage[0]][0]);
+          // const errorMessage = Object.keys(apiData.errors);
+          // toast.error(apiData.errors[errorMessage[0]][0]);
         }
       }
     } else {
@@ -139,7 +139,7 @@ function CardAndBilling() {
           "/billing-address/set-default-address",
           parsedData
         );
-        if (apiData.status) {
+        if (apiData?.status) {
           setBillingConfirmationPopUp(false);
           dispatch({
             type: "SET_BILLINGLISTREFRESH",
@@ -152,8 +152,8 @@ function CardAndBilling() {
         } else {
           setBillingConfirmationPopUp(false);
           setLoading(false);
-          const errorMessage = Object.keys(apiData.errors);
-          toast.error(apiData.errors[errorMessage[0]][0]);
+          // const errorMessage = Object.keys(apiData.errors);
+          // toast.error(apiData.errors[errorMessage[0]][0]);
         }
       } else {
         const parsedData = {
@@ -165,7 +165,7 @@ function CardAndBilling() {
           "/billing-address/set-default-address",
           parsedData
         );
-        if (apiData.status) {
+        if (apiData?.status) {
           console.log("Inside billing set");
           setBillingConfirmationPopUp(false);
           dispatch({
@@ -179,8 +179,8 @@ function CardAndBilling() {
         } else {
           setBillingConfirmationPopUp(false);
           setLoading(false);
-          const errorMessage = Object.keys(apiData.errors);
-          toast.error(apiData.errors[errorMessage[0]][0]);
+          // const errorMessage = Object.keys(apiData.errors);
+          // toast.error(apiData.errors[errorMessage[0]][0]);
         }
       }
     }
@@ -307,7 +307,7 @@ function CardAndBilling() {
     const apiData = await generalDeleteFunction(
       `/billing-address/destroy/${delBillId}`
     );
-    if (apiData.status) {
+    if (apiData?.status) {
       dispatch({
         type: "SET_BILLINGLISTREFRESH",
         billingListRefresh: billingListRefresh + 1,
@@ -316,9 +316,10 @@ function CardAndBilling() {
       setBillDelPopUp(false);
       toast.success(apiData.message);
     } else {
+      setBillDelPopUp(false);
       setLoading(false);
-      const errorMessage = Object.keys(apiData.errors);
-      toast.error(apiData.errors[errorMessage[0]][0]);
+      // const errorMessage = Object.keys(apiData.errors);
+      // toast.error(apiData.errors[errorMessage[0]][0]);
     }
   }
 
@@ -328,7 +329,7 @@ function CardAndBilling() {
   async function handleCardDelete() {
     setLoading(true);
     const apiData = await generalDeleteFunction(`/card/destroy/${cardDelId}`);
-    if (apiData.status) {
+    if (apiData?.status) {
       setLoading(false);
       toast.success(apiData.message);
       dispatch({
@@ -339,8 +340,8 @@ function CardAndBilling() {
     } else {
       setCardDelPopUp(false);
       setLoading(false);
-      const errorMessage = Object.keys(apiData.errors);
-      toast.error(apiData.errors[errorMessage[0]][0]);
+      // const errorMessage = Object.keys(apiData.errors);
+      // toast.error(apiData.errors[errorMessage[0]][0]);
     }
   }
   return (

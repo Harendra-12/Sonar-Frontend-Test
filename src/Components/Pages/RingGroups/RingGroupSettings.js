@@ -43,7 +43,7 @@ const RingGroupSettings = () => {
       async function getData() {
         const ringData = await generalGetFunction(`/ringgroup/${value}`);
         const ringBack = await generalGetFunction("/sound/all?type=ringback");
-        if (ringData.status) {
+        if (ringData?.status) {
           console.log("data:", ringData.data);
           const {
             ring_group_destination,
@@ -68,7 +68,7 @@ const RingGroupSettings = () => {
           setLoading(false);
           navigate("/");
         }
-        if (ringBack.status) {
+        if (ringBack?.status) {
           setRingBack(ringBack.data);
         } else {
           navigate("/");

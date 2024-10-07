@@ -43,7 +43,7 @@ function Master() {
           `/domain/search?account=${account.account_id}`
         );
         const groupList = await generalGetFunction(`/groups`);
-        if (domainList.status) {
+        if (domainList?.status) {
           setDomain(
             domainList.data.map((item) => {
               return [item.id, item.domain_name];
@@ -57,7 +57,7 @@ function Master() {
         } else {
           navigate("/");
         }
-        if (groupList.status) {
+        if (groupList?.status) {
           setGroup(
             groupList.data.map((item) => {
               return [item.id, item.group_name];

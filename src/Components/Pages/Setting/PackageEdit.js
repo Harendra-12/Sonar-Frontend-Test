@@ -32,7 +32,7 @@ function PackageEdit() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/package/details/${value}`);
-      if (apiData.status) {
+      if (apiData?.status) {
         setLoading(false);
         setPackages((prevState) => ({
           ...prevState,
@@ -43,6 +43,8 @@ function PackageEdit() {
           regular_price: apiData.data.regular_price,
           offer_price: apiData.data.offer_price,
         }));
+      } else {
+        setLoading(false);
       }
     }
     getData();

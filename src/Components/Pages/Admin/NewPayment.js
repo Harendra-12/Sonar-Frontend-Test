@@ -8,15 +8,16 @@ function NewPayment() {
   const [loading, setLoading] = useState(true);
   const [account, setAccount] = useState();
 
-
   const navigate = useNavigate();
   // Getting packes value from inital state
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/all-payments`);
-      if (apiData.status) {
+      if (apiData?.status) {
         setLoading(false);
         setAccount(apiData.data);
+      } else {
+        setLoading(false);
       }
     }
     getData();
@@ -47,9 +48,7 @@ function NewPayment() {
                         <th>Phone Number</th>
                         <th>Address</th>
                         <th>Document Uploaded</th>
-                        <th>
-                          Verification
-                        </th>
+                        <th>Verification</th>
                         {/* <th>Description</th>
                         <th>Add Features</th> */}
                       </tr>

@@ -118,7 +118,7 @@ const ExtensionsEdit = () => {
           `/user/search?account=${account.account_id}`
         );
         const musicData = await generalGetFunction("/sound/all?type=hold");
-        if (musicData.status) {
+        if (musicData?.status) {
           setMusic(musicData.data);
         }
         // if (domain.status) {
@@ -131,7 +131,7 @@ const ExtensionsEdit = () => {
         //   navigate("/");
         // }
 
-        if (apidataUser.status) {
+        if (apidataUser?.status) {
           setUsers(apidataUser.data);
         } else {
           navigate("/");
@@ -143,7 +143,7 @@ const ExtensionsEdit = () => {
     if (value) {
       async function getData() {
         const apiData = await generalGetFunction(`/extension/${value}`);
-        if (apiData.status) {
+        if (apiData?.status) {
           setLoading(false);
 
           const resetInfo = {

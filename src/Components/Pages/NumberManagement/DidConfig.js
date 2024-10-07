@@ -74,7 +74,7 @@ const DidConfig = () => {
       async function getData() {
         const holdMusic = await generalGetFunction("/sound/all?type=hold");
         setLoading(false);
-        if (holdMusic.status) {
+        if (holdMusic?.status) {
           setHoldMusic(holdMusic.data);
         } else {
           navigate("/");
@@ -167,12 +167,12 @@ const DidConfig = () => {
     if (locationData.configuration === null) {
       setLoading(true);
       const apiData = await generalPostFunction("/did/configure", payload);
-      if (apiData.status) {
+      if (apiData?.status) {
         setLoading(false);
         toast.success(apiData.message);
       } else {
         setLoading(false);
-        toast.error(apiData.message);
+        // toast.error(apiData.message);
       }
     }
     if (locationData.configuration) {

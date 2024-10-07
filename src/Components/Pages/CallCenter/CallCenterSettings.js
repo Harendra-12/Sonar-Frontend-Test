@@ -28,7 +28,7 @@ const CallCenterSettings = () => {
 
         console.log("API Response:", userData);
 
-        if (userData.status) {
+        if (userData?.status) {
           const data = userData.data;
           setValue("greeting", data.greeting);
           setValue("strategy", data.strategy);

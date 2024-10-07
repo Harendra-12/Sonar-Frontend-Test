@@ -21,7 +21,7 @@ function DidListing() {
       setDid(didAll);
       async function getData() {
         const apiData = await generalGetFunction(`/did/all`);
-        if (apiData.status) {
+        if (apiData?.status) {
           setLoading(false);
           setDid(apiData.data);
           dispatch({
@@ -37,7 +37,7 @@ function DidListing() {
     } else {
       async function getData() {
         const apiData = await generalGetFunction(`/did/all`);
-        if (apiData.status) {
+        if (apiData?.status) {
           setLoading(false);
           setDid(apiData.data);
           dispatch({
@@ -60,9 +60,9 @@ function DidListing() {
       const apiData = await generalDeleteFunction(
         `/did/configure/destroy/${id}`
       );
-      if (apiData.status) {
+      if (apiData?.status) {
         const newData = await generalGetFunction(`/did/all`);
-        if (newData.status) {
+        if (newData?.status) {
           setDid(newData.data);
         } else {
           navigate(-1);

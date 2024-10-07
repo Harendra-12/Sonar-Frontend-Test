@@ -7,15 +7,19 @@ import ContentLoader from "../../Loader/ContentLoader";
 function ApprovedCustomer() {
   const [loading, setLoading] = useState(true);
   const [account, setAccount] = useState();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // Getting packes value from inital state
   useEffect(() => {
     async function getData() {
-      const apiData = await generalGetFunction(`/accounts?company_status=approved`);
-      if (apiData.status) {
+      const apiData = await generalGetFunction(
+        `/accounts?company_status=approved`
+      );
+      if (apiData?.status) {
         setLoading(false);
         setAccount(apiData.data);
+      } else {
+        setLoading(false);
       }
     }
     getData();
@@ -46,9 +50,7 @@ function ApprovedCustomer() {
                         <th>Phone Number</th>
                         <th>Address</th>
                         <th>Document Uploaded</th>
-                        <th>
-                          Balance
-                        </th>
+                        <th>Balance</th>
                         {/* <th>Description</th>
                         <th>Add Features</th> */}
                       </tr>
@@ -77,11 +79,17 @@ function ApprovedCustomer() {
                                   <td>{item.contact_no}</td>
                                   <td>{item.unit}</td>
                                   <td>
-                                    <label className={item.details !== null ? "tableLabel success" : "tableLabel fail"}>{item.details !== null ? "True" : "False"}</label>
+                                    <label
+                                      className={
+                                        item.details !== null
+                                          ? "tableLabel success"
+                                          : "tableLabel fail"
+                                      }
+                                    >
+                                      {item.details !== null ? "True" : "False"}
+                                    </label>
                                   </td>
-                                  <td>
-                                    {item?.balance}
-                                  </td>
+                                  <td>{item?.balance}</td>
                                 </tr>
                               );
                             })}

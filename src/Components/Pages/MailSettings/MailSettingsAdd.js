@@ -41,7 +41,7 @@ const MailSettingsAdd = () => {
       "/mail-setting/store",
       payload
     );
-    if (addSettings.status) {
+    if (addSettings?.status) {
       setLoading(false);
       reset();
       toast.success(addSettings.message);

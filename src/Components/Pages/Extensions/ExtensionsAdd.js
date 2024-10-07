@@ -60,7 +60,7 @@ const ExtensionsAdd = () => {
         // } else {
         //   navigate("/");
         // }
-        if (musicData.status) {
+        if (musicData?.status) {
           setMusic(musicData.data);
         }
       }

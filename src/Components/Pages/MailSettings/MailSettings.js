@@ -21,7 +21,7 @@ const MailSettings = () => {
     const fetchData = async () => {
       setLoading(true);
       const result = await generalGetFunction("/mail-setting/all");
-      if (result.status) {
+      if (result?.status) {
         setMailSettings(result.data);
         setLoading(false);
       } else {
@@ -47,7 +47,7 @@ const MailSettings = () => {
     } else {
       setLoading(false);
       setOpenPopup(false);
-      toast.error(apiData.message);
+      // toast.error(apiData.message);
     }
   };
 
