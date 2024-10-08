@@ -9,6 +9,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import Select from "react-select";
 import { useForm } from "react-hook-form";
+import CircularLoader from "../../Loader/CircularLoader";
 
 function EFax() {
   const [clickStatus, setClickStatus] = useState("all");
@@ -18,6 +19,7 @@ function EFax() {
   const [contentLoading, setContentLoading] = useState(true);
   const [dropdownOption, setDropdownOption] = useState([]);
   const { watch, setValue } = useForm();
+  const [EfaxFileLoading, setEfaxFileLoading] = useState(true);
 
   useEffect(() => {
     const getData = async () => {
@@ -39,7 +41,10 @@ function EFax() {
 
     getData();
   }, []);
-  console.log("dropdownoption:", dropdownOption);
+
+  const eFaxFileLoadingState = (state) => {
+    setEfaxFileLoading(state);
+  };
 
   const newFileUpload = (file) => {
     setAllFiles([...allFiles, file]);
@@ -72,14 +77,18 @@ function EFax() {
   const sessions = useSelector((state) => state.sessions);
 
   const deleteDocument = async () => {
+    setDeletePopup(false);
+    setEfaxFileLoading(true);
     const response = await generalDeleteFunction(
       `/fax/destroy/${deleteFile.id}`
     );
     if (response.status) {
       setDeletePopup(false);
       setAllFiles(allFiles.filter((file) => file.id !== deleteFile.id));
+      setEfaxFileLoading(false);
     } else {
       setDeletePopup(false);
+      setEfaxFileLoading(false);
     }
   };
 
@@ -544,7 +553,15 @@ function EFax() {
                 </div>
               )}
               {clickStatus === "file" && (
-                <EFaxFile newFileUpload={newFileUpload} />
+                <EFaxFile
+                  newFileUpload={newFileUpload}
+                  eFaxFileLoadingState={eFaxFileLoadingState}
+                />
+              )}
+              {clickStatus === "file" && EfaxFileLoading && (
+                <div colSpan={99}>
+                  <CircularLoader />
+                </div>
               )}
             </div>
           </div>

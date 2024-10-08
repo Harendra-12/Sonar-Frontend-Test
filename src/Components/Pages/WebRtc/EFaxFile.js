@@ -1,10 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { fileUploadFunction } from "../../GlobalFunction/globalFunction";
 import Loader from "../../Loader/Loader";
 import CircularLoader from "../../Loader/CircularLoader";
 
-const EFaxFile = ({ newFileUpload }) => {
+const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
   const [uploadPopup, setUploadPopup] = useState(false);
   const [uploadError, setUploadError] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
@@ -14,6 +14,10 @@ const EFaxFile = ({ newFileUpload }) => {
   const [uploadedFile, setUploadedFile] = useState();
   const [openPopup, setOpenPopup] = useState(false);
   const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    eFaxFileLoadingState(loading);
+  }, [loading]);
 
   const handleUploadDoc = (e) => {
     const selectedFile = e.target.files[0];
@@ -71,19 +75,11 @@ const EFaxFile = ({ newFileUpload }) => {
       return;
     }
 
-    // const payload = {
-    //   //   account_id: account.id,
-    //   documents: [
-    //     {
-    //       document_id: documentId,
-    //       file_path: file,
-    //     },
-    //   ],
-    // };
     if (!isValidImageFile(file)) {
       toast.error("Only JPEG, JPG and PNG formats are allowed");
       return;
     }
+    setUploadPopup(false);
     setLoading(true);
     const apiData = await fileUploadFunction("/fax/store", { file_path: file });
     if (apiData.status) {
@@ -91,7 +87,6 @@ const EFaxFile = ({ newFileUpload }) => {
       toast.success(apiData.message);
       setLoading(false);
       setUploadPopup(false);
-      setLoading(false);
       setImagePreview(null);
       newFileUpload(apiData.data);
       //   refreshCallback(refresh + 1);
@@ -109,9 +104,6 @@ const EFaxFile = ({ newFileUpload }) => {
     }
   }
   document.addEventListener("mousedown", handleClickOutside);
-  // return () => {
-  //   document.removeEventListener("mousedown", handleClickOutside);
-  // };
 
   return (
     <div
@@ -125,27 +117,20 @@ const EFaxFile = ({ newFileUpload }) => {
             <div className="col-12">Upload eFax Document</div>
           </div>
           <div className="mt-2">
-            {/* {nonUploadedDocuments.map((item, index) => {
-                  return ( */}
             <div
-              //   className="formRow"
               style={{
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
                 marginBottom: "5px",
               }}
-              //   key={index}
             >
               <div className="">
-                {/* <label htmlFor={`data-${item.id}`}>{item?.name}</label> */}
                 <label>Choose a document to upload</label>
               </div>
               <div
                 onClick={() => {
                   setUploadPopup(true);
-                  //   setuploadId(item.id);
-                  //   // setReUploadId(item.document_id);
                 }}
                 style={{ cursor: "pointer" }}
                 className=" clearButton fw-bold float-end col-auto"
@@ -153,8 +138,6 @@ const EFaxFile = ({ newFileUpload }) => {
                 Upload <i className="fa-duotone fa-upload"></i>
               </div>
             </div>
-            {/* );
-                })} */}
           </div>
         </div>
       </div>
@@ -187,17 +170,6 @@ const EFaxFile = ({ newFileUpload }) => {
                       <i className="fa-solid fa-ellipsis"></i>
                     </div>
                   </div>
-                  {/* <div className="col-12">
-                    <p
-                      style={{
-                        fontSize: 12,
-                        paddingLeft: 20,
-                        color: "#ff2e2e",
-                      }}
-                    >
-                      {uploadedFile?.file_name}
-                    </p>
-                  </div> */}
                   {openPopup && (
                     <div className="buttonPopup">
                       <div style={{ cursor: "pointer" }}>
@@ -258,7 +230,6 @@ const EFaxFile = ({ newFileUpload }) => {
                     type="file"
                     accept="image/*"
                     onChange={(e) => handleUploadDoc(e)}
-                    // onChange={handleChange}
                   />
                   <span style={{ fontSize: 10 }}>
                     Only JPEG/JPG/PNG files are accepted.
@@ -292,9 +263,6 @@ const EFaxFile = ({ newFileUpload }) => {
                         }}
                         onClick={() => setEnlargeImage(true)}
                       >
-                        {/* <span style={{ fontSize: 14, fontWeight: 600 }} className="me-1">
-                          View
-                        </span> */}
                         <i class="fa-solid fa-expand"></i>
                       </div>
                     </div>
@@ -302,14 +270,12 @@ const EFaxFile = ({ newFileUpload }) => {
                   <div className="mt-2">
                     <button
                       className="panelButton m-0"
-                      // onClick={handleSubmit}
                       onClick={handleUploadDocument}
                     >
                       Confirm
                     </button>
                     <button
                       className="panelButtonWhite m-0 float-end"
-                      // onClick={() => setReUploadPopUp(false)}
                       onClick={() => {
                         setUploadPopup(false);
                         setUploadError(false);
