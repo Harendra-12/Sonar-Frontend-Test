@@ -23,6 +23,7 @@ function GlobalCalls() {
   const usersRefresh = useSelector((state) => state.usersRefresh);
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
+  const ivrRefresh = useSelector((state) => state.ivrRefresh);
 
   const rolesAndPermissionRefresh = useSelector(
     (state) => state.rolesAndPermissionRefresh
@@ -224,6 +225,7 @@ function GlobalCalls() {
     }
   }, [allUserRefresh]);
 
+  // Getting roles and permission details
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/role/all`);
@@ -246,6 +248,7 @@ function GlobalCalls() {
     }
   }, [rolesAndPermissionRefresh]);
 
+  // Getting account balance
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction("/account-balance");
@@ -260,6 +263,22 @@ function GlobalCalls() {
     }
     getData();
   }, []);
+
+  // Getting ivr details
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction("/ivr-master/all");
+      if (apiData?.status) {
+        dispatch({
+          type: "SET_IVR",
+          ivr: apiData.data,
+        });
+      }
+    }
+    if (ivrRefresh > 0) {
+      getData();
+    }
+  }, [ivrRefresh]);
 
   // useEffect(() => {
   //   async function getData() {
