@@ -47,6 +47,8 @@ var extensionAll = [];
 var extensionAllRefresh = 0;
 var timeZone = [];
 var timeZoneRefresh = 0;
+var ivr = [];
+var ivrRefresh = 0;
 
 const initialState = {
   account,
@@ -97,6 +99,8 @@ const initialState = {
   extensionAllRefresh,
   timeZone,
   timeZoneRefresh,
+  ivr,
+  ivrRefresh,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -202,6 +206,10 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, timeZone: action.timeZone };
     case "SET_TIMEZONEREFRESH":
       return { ...state, timeZoneRefresh: action.timeZoneRefresh };
+    case "SET_IVR":
+      return { ...state, ivr: action.ivr };
+    case "SET_IVRREFRESH":
+      return { ...state, ivrRefresh: action.ivrRefresh };
     default:
       return state;
   }
