@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import ActionList from '../../CommonComponents/ActionList';
 import Header from '../../CommonComponents/Header';
-import { backToTop, generalDeleteFunction, generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction';
+import { backToTop, generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction } from '../../GlobalFunction/globalFunction';
 import { set } from 'date-fns';
 import { toast } from 'react-toastify';
 import CircularLoader from '../../Loader/CircularLoader';
@@ -81,6 +81,21 @@ function IvrOptions() {
             setLoading(false)
             const newArray = options.filter((item) => item.id !== id)
             setOptions(newArray)
+            toast.success(apiData.message)
+        }
+    }
+
+    async function editOption(id) {
+        setLoading(true)
+        const payLoad = {
+            option_key: editKey,
+            action_name: editAction_name,
+            "action_id": editAction_id[0],
+            "ivr_id": id,
+        }
+        const apiData = await generalPutFunction(`/ivr-option/update/${id}`,payLoad)
+        if (apiData.status) {
+            setLoading(false)
             toast.success(apiData.message)
         }
     }
@@ -217,9 +232,8 @@ function IvrOptions() {
                                         <div className="col-3 pe-2">
                                             <ActionList
                                                 title={index == 0 ? "Action" : null}
-                                                isDisabled={editId === item.id ? false : true}
-                                                // isDisabled={item.action_name === "hangup" || item.action_name === "backtoivr" ? true : false}
-                                                category={editAction_name === "ringgroup" ? "ring group" : editAction_name === "queue" ? "callcenter" : editAction_name}
+                                                isDisabled={editId === item.id ? editAction_name==="hangup" ||editAction_name==="backtoivr"?true:false :  true}
+                                                category={editId === item.id ?editAction_name==="ringgroup"?"ring group":editAction_name==="queue"?"call center":editAction_name:item.action_name==="ringgroup"?"ring group":item.action_name==="queue"?"call center":item.action_name}
                                                 label={null}
                                                 getDropdownValue={setEditAction_id}
                                                 value={editId === item.id ? editAction_id?.[0] : item.action_id}
@@ -237,12 +251,14 @@ function IvrOptions() {
 
                                         <div className="col-auto">
                                             <button
-                                                onClick={() => {
+                                                onClick={() =>{if(editId===item.id){
+                                                    editOption(item.id)
+                                                }else {
                                                     setEditId(item.id);
                                                     setEditAction_id([item.action_id, item.action_name]);
                                                     setEditAction_name(item.action_name);
                                                     setEditKey(item.option_key);
-                                                }}
+                                                }}}
                                                 className="panelButton mb-auto"
                                                 effect="ripple"
                                                 type="button"
