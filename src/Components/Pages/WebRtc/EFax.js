@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import SideNavbarApp from "./SideNavbarApp";
 import { useSelector } from "react-redux";
-import ActiveCallSidePanel from "./ActiveCallSidePanel";
 import EFaxFile from "./EFaxFile";
 import {
   generalDeleteFunction,
@@ -256,7 +254,7 @@ function EFax() {
                         <div className="text-center callListItem">
                           <h5 className="fw-semibold">Today</h5>
                         </div>
-                        <div className="contactListItem">
+                        <div data-bell="" className="contactListItem">
                           <div className="row justify-content-between">
                             <div className="col-xl-6 d-flex">
                               <div className="profileHolder" id="profileOnline">
@@ -285,7 +283,7 @@ function EFax() {
                       allFiles.map((file) => (
                         // <div className="callList">
                         <div style={{ cursor: "unset" }}>
-                          <div className="contactListItem">
+                          <div data-bell="" className="contactListItem">
                             <div className="row justify-content-between">
                               <div className="col-xl-6 d-flex">
                                 <div
@@ -412,7 +410,7 @@ function EFax() {
                         tabIndex={0}
                       >
                         <div className="newMessageWrapper">
-                          <form>
+                          <div>
                             <div className="messageTitle">
                               <h4>New Fax</h4>
                             </div>
@@ -420,27 +418,27 @@ function EFax() {
                               <label>To</label>
                               <div className="d-flex flex-wrap">
                                 {/* Map This in Loop */}
-                                <div className="col-auto">
+                                {/* <div className="col-auto">
                                   <div style={{ width: "max-content" }}>
                                     <button class="receipentButton">
                                       johndoe@email.com
                                     </button>
                                   </div>
-                                </div>
-                                <div className="col-auto">
+                                </div> */}
+                                {/* <div className="col-auto">
                                   <div style={{ width: "max-content" }}>
                                     <button class="receipentButton">
                                       johndoe@email.com
                                     </button>
                                   </div>
-                                </div>
-                                <div className="col-auto">
+                                </div> */}
+                                {/* <div className="col-auto">
                                   <div style={{ width: "max-content" }}>
                                     <button class="receipentButton">
                                       johndoe@email.com
                                     </button>
                                   </div>
-                                </div>
+                                </div> */}
                                 {/* Map This in Loop */}
                                 <div className="col-auto my-auto">
                                   <input
@@ -505,7 +503,7 @@ function EFax() {
                               {/* <button className="panelButton">Send Later</button> */}
                               <button className="panelButton">Send Now</button>
                             </div>
-                          </form>
+                          </div>
                         </div>
                       </div>
                       <div

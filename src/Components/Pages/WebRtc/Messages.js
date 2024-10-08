@@ -479,15 +479,15 @@ function Messages() {
                           );
                         })}
                         {onlineUser.length === 0 && (
-                          <div className="contactListItem">
+                          <div data-bell="" className="contactListItem">
                             <div className="row justify-content-between">
                               <div className="col-xl-6 d-flex">
-                                <div
+                                {/* <div
                                   className="profileHolder"
                                   id="profileOnline"
                                 >
                                   <i className="fa-light fa-user fs-5"></i>
-                                </div>
+                                </div> */}
                                 <div className="my-auto ms-2 ms-xl-3">
                                   <h4>No online user found</h4>
                                 </div>
