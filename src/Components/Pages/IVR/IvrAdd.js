@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import Header from '../../CommonComponents/Header';
-import { backToTop, generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import Header from "../../CommonComponents/Header";
+import {
+  backToTop,
+  generalGetFunction,
+  generalPostFunction,
+} from "../../GlobalFunction/globalFunction";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import {
   noSpecialCharactersValidator,
@@ -9,8 +13,8 @@ import {
   restrictToAllowedChars,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
-import { toast } from 'react-toastify';
-import CircularLoader from '../../Loader/CircularLoader';
+import { toast } from "react-toastify";
+import CircularLoader from "../../Loader/CircularLoader";
 
 function IvrAdd() {
   const {
@@ -21,32 +25,41 @@ function IvrAdd() {
   } = useForm();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [ivrMusic,setIvrMusic] = useState([])
-useEffect(( ) => {
-  async function getData() {
-    const apiData = await generalGetFunction("/sound/all?type=ivr");
-    if (apiData.status) {
-      setIvrMusic(apiData.data);
+  const [ivrMusic, setIvrMusic] = useState([]);
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction("/sound/all?type=ivr");
+      if (apiData.status) {
+        setIvrMusic(apiData.data);
+      }
     }
-   
-  }
-  getData()
-},[])
-console.log("ivr",ivrMusic);
 
-const handleFormSubmit = handleSubmit(async (data) => {
-  setLoading(true);
-  const apiData = await generalPostFunction("/ivr-master/store", data);
-  if (apiData.status) {
-    setLoading(false);
-    toast.success(apiData.message); 
-    reset();
-    navigate(-1);
-  }else{
-    setLoading(false);
-  }
-  
-})
+    // set the predefauls values for selected fields in the form
+    reset({
+      timeout: 10000,
+      inter_digit_timeout: 2000,
+      min_digit: "1",
+      max_digit: "1",
+      max_failures: "3",
+      confirm_macro: "#",
+    });
+
+    getData();
+  }, []);
+  console.log("ivr", ivrMusic);
+
+  const handleFormSubmit = handleSubmit(async (data) => {
+    setLoading(true);
+    const apiData = await generalPostFunction("/ivr-master/store", data);
+    if (apiData.status) {
+      setLoading(false);
+      toast.success(apiData.message);
+      reset();
+      navigate(-1);
+    } else {
+      setLoading(false);
+    }
+  });
 
   return (
     <main className="mainContent">
@@ -102,9 +115,9 @@ const handleFormSubmit = handleSubmit(async (data) => {
                     })}
                     onKeyDown={restrictToAllowedChars}
                   />
-                    {errors.ivr_name && (
-                      <ErrorMessage text={errors.ivr_name.message} />
-                    )}
+                  {errors.ivr_name && (
+                    <ErrorMessage text={errors.ivr_name.message} />
+                  )}
                 </div>
               </div>
 
@@ -116,9 +129,12 @@ const handleFormSubmit = handleSubmit(async (data) => {
                   </label>
                 </div>
                 <div className="col-6">
-                  <select className="formItem"  {...register("ivr_type", {
+                  <select
+                    className="formItem"
+                    {...register("ivr_type", {
                       ...requiredValidator,
-                    })}>
+                    })}
+                  >
                     <option value="1">Master</option>
                     <option value="0">Child</option>
                   </select>
@@ -133,19 +149,20 @@ const handleFormSubmit = handleSubmit(async (data) => {
                   </label>
                 </div>
                 <div className="col-6">
-                  <select className="formItem"  {...register("greet_long", {
+                  <select
+                    className="formItem"
+                    {...register("greet_long", {
                       ...requiredValidator,
-                    })}>
-                    <option  value="" >Select greet sound</option>
+                    })}
+                  >
+                    <option value="">Select greet sound</option>
                     {ivrMusic?.map((item) => {
-                      return (
-                        <option value={item?.id}>{item?.name}</option>
-                      )
+                      return <option value={item?.id}>{item?.name}</option>;
                     })}
                   </select>
                   {errors.greet_long && (
-                      <ErrorMessage text={errors.greet_long.message} />
-                    )}
+                    <ErrorMessage text={errors.greet_long.message} />
+                  )}
                 </div>
               </div>
               <div className="formRow col-xl-3">
@@ -156,19 +173,20 @@ const handleFormSubmit = handleSubmit(async (data) => {
                   </label>
                 </div>
                 <div className="col-6">
-                  <select className="formItem"  {...register("invalid_sound", {
+                  <select
+                    className="formItem"
+                    {...register("invalid_sound", {
                       ...requiredValidator,
-                    })}>
+                    })}
+                  >
                     <option value="">Select invalid sound</option>
                     {ivrMusic?.map((item) => {
-                      return (
-                        <option value={item?.id}>{item?.name}</option>
-                      )
+                      return <option value={item?.id}>{item?.name}</option>;
                     })}
                   </select>
                   {errors.invalid_sound && (
-                      <ErrorMessage text={errors.invalid_sound.message} />
-                    )}
+                    <ErrorMessage text={errors.invalid_sound.message} />
+                  )}
                 </div>
               </div>
 
@@ -180,19 +198,20 @@ const handleFormSubmit = handleSubmit(async (data) => {
                   </label>
                 </div>
                 <div className="col-6">
-                  <select className="formItem" {...register("exit_sound", {
+                  <select
+                    className="formItem"
+                    {...register("exit_sound", {
                       ...requiredValidator,
-                    })}>
+                    })}
+                  >
                     <option value="">Select Exit Sound</option>
                     {ivrMusic?.map((item) => {
-                      return (
-                        <option value={item?.id}>{item?.name}</option>
-                      )
+                      return <option value={item?.id}>{item?.name}</option>;
                     })}
                   </select>
                   {errors.exit_sound && (
-                      <ErrorMessage text={errors.exit_sound.message} />
-                    )}
+                    <ErrorMessage text={errors.exit_sound.message} />
+                  )}
                 </div>
               </div>
 
@@ -207,16 +226,16 @@ const handleFormSubmit = handleSubmit(async (data) => {
                   <input
                     type="text"
                     name="mail_host"
-                    defaultValue="#"
+                    // defaultValue="#"
                     className="formItem"
                     {...register("confirm_macro", {
                       ...requiredValidator,
                       ...noSpecialCharactersValidator,
                     })}
                   />
-                    {errors.confirm_macro && (
-                      <ErrorMessage text={errors.confirm_macro.message} />
-                    )}
+                  {errors.confirm_macro && (
+                    <ErrorMessage text={errors.confirm_macro.message} />
+                  )}
                 </div>
               </div>
               <div className="formRow col-xl-3">
@@ -236,9 +255,9 @@ const handleFormSubmit = handleSubmit(async (data) => {
                       ...noSpecialCharactersValidator,
                     })}
                   />
-                    {errors.confirm_macro && (
-                      <ErrorMessage text={errors.confirm_attempts.message} />
-                    )}
+                  {errors.confirm_attempts && (
+                    <ErrorMessage text={errors.confirm_attempts.message} />
+                  )}
                 </div>
               </div>
 
@@ -246,23 +265,24 @@ const handleFormSubmit = handleSubmit(async (data) => {
                 <div className="formLabel">
                   <label htmlFor="">Timeout</label>
                   <label htmlFor="mail_port" className="formItemDesc">
-                    Enter the number of miliseconds to wait after playing the greeting or the confirm macro.
+                    Enter the number of miliseconds to wait after playing the
+                    greeting or the confirm macro.
                   </label>
                 </div>
                 <div className="col-6">
                   <input
                     type="number"
                     name="mail_host"
-                    defaultValue="10000"
+                    // defaultValue="10000"
                     className="formItem"
                     {...register("timeout", {
                       ...requiredValidator,
                       ...noSpecialCharactersValidator,
                     })}
                   />
-                    {errors.timeout && (
-                      <ErrorMessage text={errors.timeout.message} />
-                    )}
+                  {errors.timeout && (
+                    <ErrorMessage text={errors.timeout.message} />
+                  )}
                 </div>
               </div>
 
@@ -274,14 +294,16 @@ const handleFormSubmit = handleSubmit(async (data) => {
                   </label>
                 </div>
                 <div className="col-6">
-                  <select  type="number"
-                    defaultValue="3"
+                  <select
+                    type="number"
+                    // defaultValue="3"
                     name="mail_host"
                     className="formItem"
                     {...register("max_failures", {
                       ...requiredValidator,
                       ...noSpecialCharactersValidator,
-                    })}>
+                    })}
+                  >
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -302,9 +324,9 @@ const handleFormSubmit = handleSubmit(async (data) => {
                       ...noSpecialCharactersValidator,
                     })}
                   /> */}
-                    {errors.max_failures && (
-                      <ErrorMessage text={errors.max_failures.message} />
-                    )}
+                  {errors.max_failures && (
+                    <ErrorMessage text={errors.max_failures.message} />
+                  )}
                 </div>
               </div>
 
@@ -335,23 +357,24 @@ const handleFormSubmit = handleSubmit(async (data) => {
                 <div className="formLabel">
                   <label htmlFor="">Inter Digit Timeout</label>
                   <label htmlFor="mail_port" className="formItemDesc">
-                  This is the time in milliseconds to wait before playing the prompt again if no input is received.
+                    This is the time in milliseconds to wait before playing the
+                    prompt again if no input is received.
                   </label>
                 </div>
                 <div className="col-6">
                   <input
                     type="number"
                     name="mail_host"
-                    defaultValue="2000"
+                    // defaultValue="2000"
                     className="formItem"
                     {...register("inter_digit_timeout", {
                       ...requiredValidator,
                       ...noSpecialCharactersValidator,
                     })}
                   />
-                    {errors.inter_digit_timeout && (
-                      <ErrorMessage text={errors.inter_digit_timeout} />
-                    )}
+                  {errors.inter_digit_timeout && (
+                    <ErrorMessage text={errors.inter_digit_timeout} />
+                  )}
                 </div>
               </div>
 
@@ -363,14 +386,16 @@ const handleFormSubmit = handleSubmit(async (data) => {
                   </label>
                 </div>
                 <div className="col-6">
-                <select   type="number"
+                  <select
+                    type="number"
                     name="mail_host"
-                    defaultValue="1"
+                    // defaultValue="1"
                     className="formItem"
                     {...register("min_digit", {
                       ...requiredValidator,
                       ...noSpecialCharactersValidator,
-                    })}>
+                    })}
+                  >
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -391,9 +416,7 @@ const handleFormSubmit = handleSubmit(async (data) => {
                       ...noSpecialCharactersValidator,
                     })}
                   /> */}
-                    {errors.min_digit && (
-                      <ErrorMessage text={errors.min_digit} />
-                    )}
+                  {errors.min_digit && <ErrorMessage text={errors.min_digit} />}
                 </div>
               </div>
 
@@ -405,14 +428,16 @@ const handleFormSubmit = handleSubmit(async (data) => {
                   </label>
                 </div>
                 <div className="col-6">
-                <select   defaultValue="1"
+                  <select
+                    // defaultValue="1"
                     type="number"
                     name="mail_host"
                     className="formItem"
                     {...register("max_digit", {
                       ...requiredValidator,
                       ...noSpecialCharactersValidator,
-                    })}>
+                    })}
+                  >
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -433,9 +458,7 @@ const handleFormSubmit = handleSubmit(async (data) => {
                       ...noSpecialCharactersValidator,
                     })}
                   /> */}
-                    {errors.max_digit && (
-                      <ErrorMessage text={errors.max_digit} />
-                    )}
+                  {errors.max_digit && <ErrorMessage text={errors.max_digit} />}
                 </div>
               </div>
             </form>
@@ -443,14 +466,14 @@ const handleFormSubmit = handleSubmit(async (data) => {
         </div>
       </section>
       {loading ? (
-          <div colSpan={99}>
-            <CircularLoader />
-          </div>
-        ) : (
-          ""
-        )}
+        <div colSpan={99}>
+          <CircularLoader />
+        </div>
+      ) : (
+        ""
+      )}
     </main>
-  )
+  );
 }
 
-export default IvrAdd
+export default IvrAdd;
