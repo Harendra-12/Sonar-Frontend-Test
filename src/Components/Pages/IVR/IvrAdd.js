@@ -44,12 +44,6 @@ const handleFormSubmit = handleSubmit(async (data) => {
     navigate(-1);
   }else{
     setLoading(false);
-      if (apiData.error) {
-        toast.error(apiData.error);
-      } else {
-        const errorMessage = Object.keys(apiData.errors);
-        toast.error(apiData.errors[errorMessage[0]][0]);
-      }
   }
   
 })
@@ -154,23 +148,6 @@ const handleFormSubmit = handleSubmit(async (data) => {
                     )}
                 </div>
               </div>
-
-              {/* <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Greet Sound (Short)</label>
-                  <label htmlFor="mail_host" className="formItemDesc">
-                    Upload a short greet when entering the menu.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <select className="formItem">
-                    <option value="">Select</option>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                  </select>
-                </div>
-              </div> */}
-
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Invalid Sound</label>
@@ -230,6 +207,7 @@ const handleFormSubmit = handleSubmit(async (data) => {
                   <input
                     type="text"
                     name="mail_host"
+                    defaultValue="#"
                     className="formItem"
                     {...register("confirm_macro", {
                       ...requiredValidator,
@@ -241,71 +219,6 @@ const handleFormSubmit = handleSubmit(async (data) => {
                     )}
                 </div>
               </div>
-
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Confirm Key</label>
-                  {/* <label htmlFor="mail_port" className="formItemDesc">
-                    Enter Mail Port
-                  </label> */}
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    name="mail_host"
-                    className="formItem"
-                    {...register("confirm_key", {
-                      ...requiredValidator,
-                      ...noSpecialCharactersValidator,
-                    })}
-                  />
-                    {errors.confirm_key && (
-                      <ErrorMessage text={errors.confirm_key.message} />
-                    )}
-                </div>
-              </div>
-
-              {/* <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">TTS Engine</label>
-                 
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    name="mail_host"
-                    className="formItem"
-                    {...register("confirm_macro", {
-                      ...requiredValidator,
-                      ...noSpecialCharactersValidator,
-                    })}
-                  />
-                    {errors.confirm_macro && (
-                      <ErrorMessage text={errors.confirm_macro.message} />
-                    )}
-                </div>
-              </div> */}
-
-              {/* <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">TTS Voice</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    name="mail_host"
-                    className="formItem"
-                    {...register("confirm_macro", {
-                      ...requiredValidator,
-                      ...noSpecialCharactersValidator,
-                    })}
-                  />
-                    {errors.confirm_macro && (
-                      <ErrorMessage text={errors.confirm_macro.message} />
-                    )}
-                </div>
-              </div> */}
-
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Confirm Attempts</label>
@@ -340,6 +253,7 @@ const handleFormSubmit = handleSubmit(async (data) => {
                   <input
                     type="number"
                     name="mail_host"
+                    defaultValue="10000"
                     className="formItem"
                     {...register("timeout", {
                       ...requiredValidator,
@@ -360,22 +274,41 @@ const handleFormSubmit = handleSubmit(async (data) => {
                   </label>
                 </div>
                 <div className="col-6">
-                  <input
+                  <select  type="number"
+                    defaultValue="3"
+                    name="mail_host"
+                    className="formItem"
+                    {...register("max_failures", {
+                      ...requiredValidator,
+                      ...noSpecialCharactersValidator,
+                    })}>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                  </select>
+                  {/* <input
                     type="number"
+                    defaultValue="3"
                     name="mail_host"
                     className="formItem"
                     {...register("max_failures", {
                       ...requiredValidator,
                       ...noSpecialCharactersValidator,
                     })}
-                  />
+                  /> */}
                     {errors.max_failures && (
                       <ErrorMessage text={errors.max_failures.message} />
                     )}
                 </div>
               </div>
 
-              <div className="formRow col-xl-3">
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Max Timeout</label>
                   <label htmlFor="mail_port" className="formItemDesc">
@@ -394,6 +327,114 @@ const handleFormSubmit = handleSubmit(async (data) => {
                   />
                     {errors.max_timeouts && (
                       <ErrorMessage text={errors.max_timeouts.message} />
+                    )}
+                </div>
+              </div> */}
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Inter Digit Timeout</label>
+                  <label htmlFor="mail_port" className="formItemDesc">
+                  This is the time in milliseconds to wait before playing the prompt again if no input is received.
+                  </label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="number"
+                    name="mail_host"
+                    defaultValue="2000"
+                    className="formItem"
+                    {...register("inter_digit_timeout", {
+                      ...requiredValidator,
+                      ...noSpecialCharactersValidator,
+                    })}
+                  />
+                    {errors.inter_digit_timeout && (
+                      <ErrorMessage text={errors.inter_digit_timeout} />
+                    )}
+                </div>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Min Digit</label>
+                  <label htmlFor="mail_port" className="formItemDesc">
+                    Enter minimum number of digit
+                  </label>
+                </div>
+                <div className="col-6">
+                <select   type="number"
+                    name="mail_host"
+                    defaultValue="1"
+                    className="formItem"
+                    {...register("min_digit", {
+                      ...requiredValidator,
+                      ...noSpecialCharactersValidator,
+                    })}>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                  </select>
+                  {/* <input
+                    type="number"
+                    name="mail_host"
+                    defaultValue="1"
+                    className="formItem"
+                    {...register("min_digit", {
+                      ...requiredValidator,
+                      ...noSpecialCharactersValidator,
+                    })}
+                  /> */}
+                    {errors.min_digit && (
+                      <ErrorMessage text={errors.min_digit} />
+                    )}
+                </div>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Max Digit</label>
+                  <label htmlFor="mail_port" className="formItemDesc">
+                    Enter maximum number of digit
+                  </label>
+                </div>
+                <div className="col-6">
+                <select   defaultValue="1"
+                    type="number"
+                    name="mail_host"
+                    className="formItem"
+                    {...register("max_digit", {
+                      ...requiredValidator,
+                      ...noSpecialCharactersValidator,
+                    })}>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                  </select>
+                  {/* <input
+                    defaultValue="1"
+                    type="number"
+                    name="mail_host"
+                    className="formItem"
+                    {...register("max_digit", {
+                      ...requiredValidator,
+                      ...noSpecialCharactersValidator,
+                    })}
+                  /> */}
+                    {errors.max_digit && (
+                      <ErrorMessage text={errors.max_digit} />
                     )}
                 </div>
               </div>

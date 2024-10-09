@@ -189,16 +189,9 @@ function IvrOptions() {
                           placeholder="Destination"
                         >
                           <option value="">Choose Option key</option>
-                          <option value={1}>1</option>
-                          <option value={2}>2</option>
-                          <option value={3}>3</option>
-                          <option value={4}>4</option>
-                          <option value={5}>5</option>
-                          <option value={6}>6</option>
-                          <option value={7}>7</option>
-                          <option value={8}>8</option>
-                          <option value={9}>9</option>
-                          <option value={0}>0</option>
+                          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].filter(option => editId === item.id ? !options.find(opt => opt.option_key == option) : true).map(option => (
+                            <option key={option} value={option}>{option}</option>
+                          ))}
                         </select>
                       </div>
                     </div>
@@ -247,7 +240,7 @@ function IvrOptions() {
                       </select>
                     </div>
                     {item.action_name === "pstn" ||
-                    (editId === item.id && editAction_name === "pstn") ? (
+                      (editId === item.id && editAction_name === "pstn") ? (
                       <div className="col-2 pe-2">
                         <PhoneInput
                           disabled={
@@ -281,13 +274,13 @@ function IvrOptions() {
                               ? editAction_name === "ringgroup"
                                 ? "ring group"
                                 : editAction_name === "queue"
-                                ? "call center"
-                                : editAction_name
+                                  ? "call center"
+                                  : editAction_name
                               : item.action_name === "ringgroup"
-                              ? "ring group"
-                              : item.action_name === "queue"
-                              ? "call center"
-                              : item.action_name
+                                ? "ring group"
+                                : item.action_name === "queue"
+                                  ? "call center"
+                                  : item.action_name
                           }
                           label={null}
                           getDropdownValue={setEditAction_id}
@@ -352,16 +345,10 @@ function IvrOptions() {
                       placeholder="Destination"
                     >
                       <option value="">Choose Option key</option>
-                      <option value={1}>1</option>
-                      <option value={2}>2</option>
-                      <option value={3}>3</option>
-                      <option value={4}>4</option>
-                      <option value={5}>5</option>
-                      <option value={6}>6</option>
-                      <option value={7}>7</option>
-                      <option value={8}>8</option>
-                      <option value={9}>9</option>
-                      <option value={0}>0</option>
+
+                      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].filter(option => !options.find(opt => opt.option_key == option)).map(option => (
+                        <option key={option} value={option}>{option}</option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -417,8 +404,8 @@ function IvrOptions() {
                         action_name === "ringgroup"
                           ? "ring group"
                           : action_name === "queue"
-                          ? "call center"
-                          : action_name
+                            ? "call center"
+                            : action_name
                       }
                       label={null}
                       getDropdownValue={setAction_id}

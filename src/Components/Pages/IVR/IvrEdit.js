@@ -56,12 +56,6 @@ function IvrEdit() {
             navigate(-1);
         } else {
             setLoading(false);
-            if (apiData.error) {
-                toast.error(apiData.error);
-            } else {
-                const errorMessage = Object.keys(apiData.errors);
-                toast.error(apiData.errors[errorMessage[0]][0]);
-            }
         }
 
     })
@@ -105,9 +99,6 @@ function IvrEdit() {
                             <div className="formRow col-xl-3">
                                 <div className="formLabel">
                                     <label htmlFor="">Name</label>
-                                    {/* <label htmlFor="mail_driver" className="formItemDesc">
-                    Select Mail Driver Type
-                  </label> */}
                                 </div>
                                 <div className="col-6">
                                     <input
@@ -166,23 +157,6 @@ function IvrEdit() {
                                     )}
                                 </div>
                             </div>
-
-                            {/* <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Greet Sound (Short)</label>
-                  <label htmlFor="mail_host" className="formItemDesc">
-                    Upload a short greet when entering the menu.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <select className="formItem">
-                    <option value="">Select</option>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                  </select>
-                </div>
-              </div> */}
-
                             <div className="formRow col-xl-3">
                                 <div className="formLabel">
                                     <label htmlFor="">Invalid Sound</label>
@@ -234,9 +208,6 @@ function IvrEdit() {
                             <div className="formRow col-xl-3">
                                 <div className="formLabel">
                                     <label htmlFor="">Confirm Macro</label>
-                                    {/* <label htmlFor="mail_port" className="formItemDesc">
-                    Enter Mail Port
-                  </label> */}
                                 </div>
                                 <div className="col-6">
                                     <input
@@ -253,70 +224,6 @@ function IvrEdit() {
                                     )}
                                 </div>
                             </div>
-
-                            <div className="formRow col-xl-3">
-                                <div className="formLabel">
-                                    <label htmlFor="">Confirm Key</label>
-                                    {/* <label htmlFor="mail_port" className="formItemDesc">
-                    Enter Mail Port
-                  </label> */}
-                                </div>
-                                <div className="col-6">
-                                    <input
-                                        type="text"
-                                        name="mail_host"
-                                        className="formItem"
-                                        {...register("confirm_key", {
-                                            ...requiredValidator,
-                                            ...noSpecialCharactersValidator,
-                                        })}
-                                    />
-                                    {errors.confirm_key && (
-                                        <ErrorMessage text={errors.confirm_key.message} />
-                                    )}
-                                </div>
-                            </div>
-
-                            {/* <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">TTS Engine</label>
-                 
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    name="mail_host"
-                    className="formItem"
-                    {...register("confirm_macro", {
-                      ...requiredValidator,
-                      ...noSpecialCharactersValidator,
-                    })}
-                  />
-                    {errors.confirm_macro && (
-                      <ErrorMessage text={errors.confirm_macro.message} />
-                    )}
-                </div>
-              </div> */}
-
-                            {/* <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">TTS Voice</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    name="mail_host"
-                    className="formItem"
-                    {...register("confirm_macro", {
-                      ...requiredValidator,
-                      ...noSpecialCharactersValidator,
-                    })}
-                  />
-                    {errors.confirm_macro && (
-                      <ErrorMessage text={errors.confirm_macro.message} />
-                    )}
-                </div>
-              </div> */}
 
                             <div className="formRow col-xl-3">
                                 <div className="formLabel">
@@ -383,29 +290,6 @@ function IvrEdit() {
                                     />
                                     {errors.max_failures && (
                                         <ErrorMessage text={errors.max_failures.message} />
-                                    )}
-                                </div>
-                            </div>
-
-                            <div className="formRow col-xl-3">
-                                <div className="formLabel">
-                                    <label htmlFor="">Max Timeout</label>
-                                    <label htmlFor="mail_port" className="formItemDesc">
-                                        Enter max timeout in miliseconds
-                                    </label>
-                                </div>
-                                <div className="col-6">
-                                    <input
-                                        type="number"
-                                        name="mail_host"
-                                        className="formItem"
-                                        {...register("max_timeouts", {
-                                            ...requiredValidator,
-                                            ...noSpecialCharactersValidator,
-                                        })}
-                                    />
-                                    {errors.max_timeouts && (
-                                        <ErrorMessage text={errors.max_timeouts.message} />
                                     )}
                                 </div>
                             </div>
