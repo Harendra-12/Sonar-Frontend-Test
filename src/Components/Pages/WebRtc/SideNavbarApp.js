@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";
 
-function SideNavbarApp({ setactivePage, isMicOn }) {
+function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
   const account = useSelector((state) => state.account);
   const [popUp, setPopUp] = useState(false);
   const { connectStatus } = useSIPProvider();
@@ -25,6 +25,8 @@ function SideNavbarApp({ setactivePage, isMicOn }) {
       setPopUp(false);
     }
   }, [connectStatus, isMicOn]);
+
+  console.log("connectedStatus", connectedStatus);
 
   return (
     <section>
@@ -277,7 +279,9 @@ function SideNavbarApp({ setactivePage, isMicOn }) {
                           <p style={{ fontSize: 12 }}>
                             Error:{" "}
                             <span className="fw-light text-danger">
-                              Not connected with server
+                              {reconnecting === 0
+                                ? "Not connected with server"
+                                : "Reconnecting..."}
                             </span>
                           </p>
                         </>
