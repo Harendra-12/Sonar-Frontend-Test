@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Call from "./Call";
 import AllContact from "./AllContact";
 import CallCenter from "./CallCenter";
@@ -24,19 +24,25 @@ const WebrtcWrapper = () => {
   const isCustomerAdmin = account?.email == accountDetails?.email;
   const extension = account?.extension?.extension || "";
   const [isMicOn, setIsMicOn] = useState(false); // State to track mic status
+  const [reconnecting, setReconnecting] = useState(0);
   const useWebSocketErrorHandling = (options) => {
+    const retryCountRef = useRef(0);
     const connectWebSocket = (retryCount = 0) => {
       const webSocket = new WebSocket(options.webSocketServer);
 
       webSocket.onopen = () => {
         console.log("WebSocket connected");
+        retryCountRef.current = 0;
       };
 
       webSocket.onerror = (event) => {
         console.error("WebSocket error:", event);
-        if (retryCount < 3) {
+        if (retryCountRef.current < 3) {
           setTimeout(() => {
-            connectWebSocket(retryCount + 1); // retry after 2 seconds
+            retryCountRef.current += 1;
+            // connectWebSocket(retryCount + 1); // retry after 2 secondsy
+            connectWebSocket(); // retry after 2 secondsy
+            setReconnecting((prev) => prev + 1);
           }, 2000);
         } else {
           console.error("Failed to connect to WebSocket after 3 retries");
@@ -49,9 +55,12 @@ const WebrtcWrapper = () => {
           `WebSocket closed ${options.webSocketServer} (code: ${event.code})`
         );
         console.log("Trying to reconnect to WebSocket...");
-        if (retryCount < 3) {
+        if (retryCountRef.current < 3) {
           setTimeout(() => {
-            connectWebSocket(retryCount + 1); // retry after 2 seconds
+            retryCountRef.current += 1;
+            // connectWebSocket(retryCount + 1); // retry after 2 seconds
+            connectWebSocket(); // retry after 2 seconds
+            setReconnecting((prev) => prev + 1);
           }, 2000);
         } else {
           console.error("Failed to reconnect to WebSocket after 3 retries");
@@ -95,7 +104,11 @@ const WebrtcWrapper = () => {
   return (
     <>
       <SIPProvider options={options}>
-        <SideNavbarApp setactivePage={setactivePage} isMicOn={isMicOn} />
+        <SideNavbarApp
+          setactivePage={setactivePage}
+          isMicOn={isMicOn}
+          reconnecting={reconnecting}
+        />
         <div>{extension && <SipRegister options={options} />}</div>
         {activePage == "call" && (
           <Call
