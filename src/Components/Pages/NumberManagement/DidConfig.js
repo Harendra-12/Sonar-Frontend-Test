@@ -376,6 +376,7 @@ const DidConfig = () => {
                       <option value="extension">Extension</option>
                       <option value="call center">Call Center</option>
                       <option value="ring group">Ring Group</option>
+                      <option value="ivr">IVR</option>
                     </select>
                   </div>
                 </div>
