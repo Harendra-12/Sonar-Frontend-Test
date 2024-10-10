@@ -76,12 +76,12 @@ const RingGroupAdd = () => {
         // } else {
         //   navigate("/");
         // }
-        if (apidataUser.status) {
+        if (apidataUser?.status) {
           setUsers(apidataUser.data);
         } else {
           navigate("/");
         }
-        if (ringBack.status) {
+        if (ringBack?.status) {
           setRingBack(ringBack.data);
         } else {
           navigate("/");
@@ -367,7 +367,7 @@ const RingGroupAdd = () => {
     };
 
     const apiData = await generalPostFunction("/ringgroup/store", payLoad);
-    if (apiData.status) {
+    if (apiData?.status) {
       setLoading(false);
       reset();
       setDestination([
@@ -389,8 +389,8 @@ const RingGroupAdd = () => {
       navigate("/ring-groups");
     } else {
       setLoading(false);
-      const errorMessage = Object.keys(apiData.errors);
-      toast.error(apiData.errors[errorMessage[0]][0]);
+      // const errorMessage = Object.keys(apiData.errors);
+      // toast.error(apiData.errors[errorMessage[0]][0]);
     }
   });
 
@@ -697,16 +697,16 @@ const RingGroupAdd = () => {
                         )),
                     })}
                     onKeyDown={restrictToNumbers}
-                  // {...register("call_timeout", {
-                  //   ...requiredValidator,
-                  //   ...noSpecialCharactersValidator,
-                  //   ...minValidator(
-                  //     destination.reduce(
-                  //       (max, obj) => Math.max(max, obj.delay),
-                  //       0
-                  //     )
-                  //   ),
-                  // })}
+                    // {...register("call_timeout", {
+                    //   ...requiredValidator,
+                    //   ...noSpecialCharactersValidator,
+                    //   ...minValidator(
+                    //     destination.reduce(
+                    //       (max, obj) => Math.max(max, obj.delay),
+                    //       0
+                    //     )
+                    //   ),
+                    // })}
                   />
                   {errors.call_timeout && (
                     <ErrorMessage text={errors.call_timeout.message} />
@@ -1093,11 +1093,11 @@ const RingGroupAdd = () => {
                                 .filter((item1) => {
                                   return (
                                     item1.extension.extension ==
-                                    destination[index]?.destination ||
+                                      destination[index]?.destination ||
                                     !destination.some(
                                       (destinationItem, destinationIndex) =>
                                         destinationItem.destination ==
-                                        item1.extension.extension &&
+                                          item1.extension.extension &&
                                         destinationIndex != index
                                     )
                                   );
@@ -1185,26 +1185,6 @@ const RingGroupAdd = () => {
                           })()}
                         </select>
                       </div>
-                      {/* <div className="col-2 pe-2">
-                        {index === 0 ? (
-                          <div className="formLabel">
-                            <label htmlFor="">Prompt</label>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                        <select
-                          className="formItem me-0"
-                          style={{ width: "100%" }}
-                          value={item.prompt}
-                          onChange={(e) => handleDestinationChange(index, e)}
-                          id="selectFormRow"
-                          name="prompt"
-                        >
-                          <option className="status">Prompt</option>
-                          <option value="confirm">Confirm</option>
-                        </select>
-                      </div> */}
                       <div className="col-2 pe-2">
                         {index === 0 ? (
                           <div className="formLabel">

@@ -75,7 +75,7 @@ function Roles() {
           // created_by:account.account_id
         };
         const apiData = await generalPostFunction("/role/store", parsedData);
-        if (apiData.status) {
+        if (apiData?.status) {
           setLoading(false);
           // setRefresh(refresh + 1);
           dispatch({
@@ -89,8 +89,8 @@ function Roles() {
           setAddRole(false);
         } else {
           setLoading(false);
-          const errorMessage = Object.keys(apiData.errors);
-          toast.error(apiData.errors[errorMessage[0]][0]);
+          // const errorMessage = Object.keys(apiData.errors);
+          // toast.error(apiData.errors[errorMessage[0]][0]);
         }
       }
     } else if (editClick) {
@@ -113,8 +113,8 @@ function Roles() {
           setEditIndex();
         } else {
           setLoading(false);
-          const errorMessage = Object.keys(apiData.errors);
-          toast.error(apiData.errors[errorMessage[0]][0]);
+          // const errorMessage = Object.keys(apiData.errors);
+          // toast.error(apiData.errors[errorMessage[0]][0]);
         }
       }
     } else {
@@ -122,7 +122,7 @@ function Roles() {
       const apiData = await generalDeleteFunction(
         `/role/${role[deleteIndex].id}`
       );
-      if (apiData.status) {
+      if (apiData?.status) {
         setEditClick(false);
         setDeleteIndex();
         toast.success(apiData.success);
@@ -133,8 +133,8 @@ function Roles() {
         });
       } else {
         setLoading(false);
-        const errorMessage = Object.keys(apiData.errors);
-        toast.error(apiData.errors[errorMessage[0]][0]);
+        // const errorMessage = Object.keys(apiData.errors);
+        // toast.error(apiData.errors[errorMessage[0]][0]);
       }
     }
   }
@@ -159,13 +159,13 @@ function Roles() {
       "/assign-permission-role",
       parsedData
     );
-    if (apiData.status) {
+    if (apiData?.status) {
       setLoading(false);
       toast.success(apiData.message);
     } else {
       setLoading(false);
-      const errorMessage = Object.keys(apiData.errors);
-      toast.error(apiData.errors[errorMessage[0]][0]);
+      // const errorMessage = Object.keys(apiData.errors);
+      // toast.error(apiData.errors[errorMessage[0]][0]);
     }
   }
 
@@ -457,9 +457,7 @@ function Roles() {
                                       handleParentCheckboxChange(item)
                                     }
                                   />
-                                  <label className="ms-2">
-                                    {item}
-                                  </label>
+                                  <label className="ms-2">{item}</label>
                                 </div>
                               </div>
                               <div className="row px-2 pt-1 border-bottom">

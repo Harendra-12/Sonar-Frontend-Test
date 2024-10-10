@@ -151,7 +151,7 @@ function GetDid() {
     };
     const apiData = await generalPostFunction("/searchTfn", parsedData);
     setLoading(false);
-    if (apiData.status) {
+    if (apiData?.status) {
       setDid(apiData.data);
     } else {
       setDid([]);
@@ -256,18 +256,17 @@ function GetDid() {
               {/* {loading ?
                   <div colSpan={99}><CircularLoader /></div> : ""} */}
               <div className="mx-2" id="detailsContent">
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} className="mb-0">
                   <div className="row col-xl-12">
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xxl-1 col-xl-2">
                       <div className="formLabel">
                         <label htmlFor="searchType">Search Type</label>
                       </div>
                       <div className="col-12">
                         <select
                           name="searchType"
-                          className={`formItem ${
-                            errors.searchType ? "error" : ""
-                          }`}
+                          className={`formItem ${errors.searchType ? "error" : ""
+                            }`}
                           {...register("searchType", { ...requiredValidator })}
                         >
                           <option value="tollfree">Toll free</option>
@@ -275,6 +274,7 @@ function GetDid() {
                         {errors.searchType && (
                           <ErrorMessage text={errors.searchType.message} />
                         )}
+                        <label htmlFor="data" className="formItemDesc"></label>
                       </div>
                     </div>
                     <div className="formRow col-xl-2">
@@ -285,9 +285,8 @@ function GetDid() {
                         <input
                           type="number"
                           name="quantity"
-                          className={`formItem ${
-                            errors.quantity ? "error" : ""
-                          }`}
+                          className={`formItem ${errors.quantity ? "error" : ""
+                            }`}
                           {...register("quantity", {
                             ...requiredValidator,
                             ...lengthValidator(1, 10),
@@ -298,6 +297,7 @@ function GetDid() {
                         {errors.quantity && (
                           <ErrorMessage text={errors.quantity.message} />
                         )}
+                        <label htmlFor="data" className="formItemDesc"></label>
                       </div>
                     </div>
                     <div className="formRow col-xl-auto">
@@ -319,7 +319,7 @@ function GetDid() {
                         </label>
                       </div>
                     </div>
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-2">
                       <div className="formLabel">
                         <label htmlFor="npa">NPA</label>
                       </div>
@@ -337,9 +337,10 @@ function GetDid() {
                         {errors.npa && (
                           <ErrorMessage text={errors.npa.message} />
                         )}
+                        <label htmlFor="data" className="formItemDesc"></label>
                       </div>
                     </div>
-                    <div className="formRow col-1">
+                    <div className="formRow col">
                       <div className="col-12">
                         <div className="formLabel">
                           <label htmlFor=""></label>
@@ -351,10 +352,13 @@ function GetDid() {
                         >
                           Search
                         </button>
+                        <label htmlFor="data" className="formItemDesc"></label>
                       </div>
                     </div>
                   </div>
                 </form>
+              </div>
+              <div className="mx-2">
                 <div className="row mt-3 col-xl-12">
                   {did && (
                     <div className="col-xl-5">
@@ -428,7 +432,7 @@ function GetDid() {
                   {selectedDid.length === 0 ? (
                     ""
                   ) : (
-                    <div className="col-xl-3" style={{ marginTop: "-90px" }}>
+                    <div className="col-xl-3">
                       <div className="searchList cart">
                         <div className="heading">
                           <h5>Order Summary</h5>

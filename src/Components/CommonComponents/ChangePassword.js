@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import CircularLoader from "../Loader/CircularLoader";
 import Header from "./Header";
+import { useSelector } from "react-redux";
 
 function ChangePassword() {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ function ChangePassword() {
   const [confPassword, setConfPassword] = useState("");
   const [errorConfirm, setErrorConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const loadings = useSelector((state) => state.loading);
 
   async function handleSubmit() {
     if (oldPassword === "") {
@@ -45,13 +47,13 @@ function ChangePassword() {
         new_password: newPassword,
       };
       const apiData = await generalPostFunction("/change-password", parsedData);
-      if (apiData.status) {
+      if (apiData?.status) {
         setLoading(false);
         toast.success(apiData.message);
       } else {
         setLoading(false);
-        const errorMessage = Object.keys(apiData.errors);
-        toast.error(apiData.errors[errorMessage[0]][0]);
+        // const errorMessage = Object.keys(apiData.errors);
+        // toast.error(apiData.errors[errorMessage[0]][0]);
       }
     }
   }
@@ -64,7 +66,7 @@ function ChangePassword() {
           <div id="subPageHeader">
             <div className="col-xl-9 my-auto">
               {/* <h4 className="my-auto">Change Password</h4> */}
-              <p className="pt-2 mt-1 mb-0">Change your account password.</p>
+              <p className="mb-0">Change your account password.</p>
             </div>
             <div className="col-xl-3 ps-2">
               <div className="d-flex justify-content-end">
@@ -89,118 +91,99 @@ function ChangePassword() {
           </div>
         </div>
         <div className="mx-2" id="detailsContent">
-          <form className="row">
-            <div className="formRow col-xl-12 px-xl-4">
-              <div className="col-12 d-flex justify-content-start">
-                <div className="formLabel pe-2 col-5">
-                  <div>
-                    <label className="text-dark">Current Password</label>
-                    {errorOldPassword ? (
-                      <label className="status missing">Field Missing</label>
-                    ) : (
-                      ""
-                    )}
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="data"
-                      className="formItemDesc"
-                      style={{ fontSize: 12, lineHeight: "18px", marginTop: 5 }}
-                    >
-                      This is your current password.
-                    </label>
-                  </div>
+          <form>
+            <div className="formRow col-xl-3">
+              <div className="formLabel">
+                <div>
+                  <label className="text-dark">Current Password</label>
+                  {errorOldPassword ? (
+                    <label className="status missing">Field Missing</label>
+                  ) : (
+                    ""
+                  )}
                 </div>
-                <div className="col-3 pe-2">
-                  <div className="formLabel"></div>
-                  <div className="col-12">
-                    <input
-                      type="text"
-                      name="extension"
-                      className="formItem"
-                      value={oldPassword}
-                      onChange={(e) => setOldPassword(e.target.value)}
-                    />
-                  </div>
+                <div>
+                  <label
+                    htmlFor="data"
+                    className="formItemDesc"
+                    style={{ fontSize: 12, lineHeight: "18px", marginTop: 5 }}
+                  >
+                    This is your current password.
+                  </label>
                 </div>
               </div>
-            </div>
-            <div className="formRow col-xl-12 px-xl-4">
-              <div className="col-12 d-flex justify-content-start">
-                <div className="formLabel pe-2 col-5">
-                  <div>
-                    <label className="text-dark">New Password</label>
-                    {errorNewPassword ? (
-                      <label className="status missing">
-                        Password must be at least 6 characters
-                      </label>
-                    ) : (
-                      ""
-                    )}
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="data"
-                      className="formItemDesc"
-                      style={{ fontSize: 12, lineHeight: "18px", marginTop: 5 }}
-                    >
-                      Please input your preferred new password.
-                    </label>
-                  </div>
-                </div>
-                <div className="col-3 pe-2">
-                  <div className="formLabel">
-                    {/* <label htmlFor="">Destinations</label> */}
-                  </div>
-                  <div className="col-12">
-                    <input
-                      type="text"
-                      name="extension"
-                      className="formItem"
-                      value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
-                    />
-                  </div>
-                </div>
+              <div className="col-6">
+                <input
+                  type="text"
+                  name="extension"
+                  className="formItem"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                />
               </div>
             </div>
-            <div className="formRow col-xl-12 px-xl-4">
-              <div className="col-12 d-flex justify-content-start">
-                <div className="formLabel pe-2 col-5">
-                  <div>
-                    <label className="text-dark">Confirm Password</label>
-                    {errorConfirm ? (
-                      <label className="status missing">
-                        Password do not matched
-                      </label>
-                    ) : (
-                      ""
-                    )}
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="data"
-                      className="formItemDesc"
-                      style={{ fontSize: 12, lineHeight: "18px", marginTop: 5 }}
-                    >
-                      Please retype your password.
+            <div className="formRow col-xl-3">
+              <div className="formLabel">
+                <div>
+                  <label className="text-dark">New Password</label>
+                  {errorNewPassword ? (
+                    <label className="status missing">
+                      Password must be at least 6 characters
                     </label>
-                  </div>
+                  ) : (
+                    ""
+                  )}
                 </div>
-                <div className="col-3 pe-2">
-                  <div className="formLabel">
-                    {/* <label htmlFor="">Destinations</label> */}
-                  </div>
-                  <div className="col-12">
-                    <input
-                      type="text"
-                      name="extension"
-                      className="formItem"
-                      value={confPassword}
-                      onChange={(e) => setConfPassword(e.target.value)}
-                    />
-                  </div>
+                <div>
+                  <label
+                    htmlFor="data"
+                    className="formItemDesc"
+                    style={{ fontSize: 12, lineHeight: "18px", marginTop: 5 }}
+                  >
+                    Please input your preferred new password.
+                  </label>
                 </div>
+              </div>
+              <div className="col-6">
+                <input
+                  type="text"
+                  name="extension"
+                  className="formItem"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="formRow col-xl-3">
+              <div className="formLabel">
+                <div>
+                  <label className="text-dark">Confirm Password</label>
+                  {errorConfirm ? (
+                    <label className="status missing">
+                      Password do not matched
+                    </label>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div>
+                  <label
+                    htmlFor="data"
+                    className="formItemDesc"
+                    style={{ fontSize: 12, lineHeight: "18px", marginTop: 5 }}
+                  >
+                    Please retype your password.
+                  </label>
+                </div>
+              </div>
+              <div className="col-6">
+                <input
+                  type="text"
+                  name="extension"
+                  className="formItem"
+                  value={confPassword}
+                  onChange={(e) => setConfPassword(e.target.value)}
+                />
               </div>
             </div>
           </form>

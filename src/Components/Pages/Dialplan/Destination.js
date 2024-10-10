@@ -30,6 +30,7 @@ function Destination() {
           setDestination(apiData.data);
           setLoading(false);
         } else {
+          setLoading(false);
           navigate("/");
         }
         // if (domainData.status) {

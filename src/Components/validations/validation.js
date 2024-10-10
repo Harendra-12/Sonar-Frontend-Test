@@ -85,7 +85,7 @@ export const usagesValidator = {
 export const noSpecialCharactersValidator = {
   // Check if the input contains only letters, numbers, spaces, and hyphens
   pattern: {
-    value: /^[A-Za-z0-9\s\-]+$/, // Allows letters, numbers, spaces, and hyphens
+    value: /^[A-Za-z0-9\s\- ]+$/, // Allows letters, numbers, spaces, and hyphens
     message:
       "Input must only contain letters, numbers, spaces, and hyphens, without any other special characters",
   },
@@ -116,7 +116,7 @@ export const minValidator = (min) => {
 
 // Define allowed characters: a-z, A-Z, 0-9, @, ., and -
 export const restrictToAllowedChars = (e) => {
-  const allowedKeys = /^[a-zA-Z0-9@.\-]$/;
+  const allowedKeys = /^[a-zA-Z0-9@.\- ]$/;
   if (
     !allowedKeys.test(e.key) &&
     e.key !== "Backspace" &&

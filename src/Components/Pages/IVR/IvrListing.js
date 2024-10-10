@@ -5,114 +5,45 @@ import {
   generalDeleteFunction,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
-import { useDispatch, useSelector } from "react-redux";
 import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import Header from "../../CommonComponents/Header";
 import { toast } from "react-toastify";
 
-const RingGroups = () => {
-  const [ringGroup, setRingGroup] = useState();
+const IvrListing = () => {
+  const [ivr, setIvr] = useState();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [popUp, setPopUp] = useState(false);
-  const account = useSelector((state) => state.account);
-  const allUser = useSelector((state) => state.allUser);
-  const [error, setError] = useState("");
-  const [redirectRoutes, setRedirectRoutes] = useState("");
-  // const [deleteToggle, setDeleteToggle] = useState(false);
   const [deleteId, setDeleteId] = useState("");
-  const allUserRefresh = useSelector((state) => state.allUserRefresh);
-  const { data: usersData = [] } = allUser;
-  const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
-  const ringGroupState = useSelector((state) => state.ringGroup);
 
-  useEffect(() => {
-    dispatch({
-      type: "SET_ALLUSERREFRESH",
-      allUserRefresh: allUserRefresh + 1,
-    });
-
-    if (ringGroupRefresh > 0) {
+ useEffect(()=>{
+  async function getData() {
+    const apiData = await generalGetFunction("/ivr-master/all");
+    if (apiData.status) {
+      setIvr(apiData.data);
       setLoading(false);
-      setRingGroup(ringGroupState);
-      if (account && account.id) {
-        async function getData() {
-          const apidata = await generalGetFunction(
-            `/ringgroup?account=${account.account_id}`
-          );
-          if (apidata?.status) {
-            setRingGroup(apidata.data);
-          } else {
-            navigate("/");
-          }
-        }
-        getData();
-      } else {
-        navigate("/");
-      }
     } else {
-      if (account && account.id) {
-        async function getData() {
-          const apidata = await generalGetFunction(
-            `/ringgroup?account=${account.account_id}`
-          );
-          if (apidata?.status) {
-            setRingGroup(apidata.data);
-            setLoading(false);
-          } else {
-            navigate("/");
-          }
-        }
-        getData();
-      } else {
-        navigate("/");
-      }
-      dispatch({
-        type: "SET_RINGGROUPREFRESH",
-        ringGroupRefresh: ringGroupRefresh + 1,
-      });
+      setLoading(false);
     }
-  }, []);
-
-  const handleRingGroupAddValidation = (e) => {
-    e.preventDefault();
-
-    if (usersData.length === 0) {
-      setPopUp(true);
-      setError("Please add users to create a queue");
-      setRedirectRoutes("/users");
-      return;
-    }
-
-    const hasExtension = usersData.some((item) => item.extension_id);
-
-    if (!hasExtension) {
-      setPopUp(true);
-      setError("Please add an extension to the users to create a queue");
-      setRedirectRoutes("/extensions");
-      return;
-    }
-
-    navigate("/ring-groups-add");
-    backToTop();
-  };
+  }
+  getData();
+ },[])
 
   async function handleDelete(id) {
     setPopUp(false);
     setLoading(true);
-    const apiData = await generalDeleteFunction(`/ringgroup/${id}`);
-    if (apiData?.status) {
-      const newArray = ringGroup.filter((item) => item.id !== id);
-      setRingGroup(newArray);
+    const apiData = await generalDeleteFunction(`/ivr-master/destroy/${id}`);
+    if (apiData.status) {
+      const newArray = ivr.filter((item) => item.id !== id);
+      setIvr(newArray);
       setLoading(false);
       toast.success(apiData.message);
 
       setDeleteId("");
     } else {
       setLoading(false);
-      // toast.error(apiData.error);
+      toast.error(apiData.error);
       setDeleteId("");
     }
   }
@@ -121,7 +52,7 @@ const RingGroups = () => {
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row">
-            <Header title="Ring Groups" />
+            <Header title="IVR Master" />
             <div className="d-flex flex-wrap px-xl-3 py-2" id="detailsHeader">
               <div className="col-xl-4 my-auto">
                 <div className="position-relative searchBox">
@@ -135,32 +66,14 @@ const RingGroups = () => {
               </div>
               <div className="col-xl-8 pt-3 pt-xl-0">
                 <div className="d-flex justify-content-end">
-                  <button
-                    effect="ripple"
-                    className="panelButton"
-                    onClick={() => {
-                      navigate(-1);
-                      backToTop();
-                    }}
-                  >
-                    Back
-                  </button>
                   <Link
-                    // to="/ring-groups-add"
-                    // onClick={backToTop}
-                    onClick={handleRingGroupAddValidation}
+                    to="/ivr-add"
+                    onClick={backToTop}
                     effect="ripple"
                     className="panelButton"
                   >
                     Add
                   </Link>
-                  {/* <div className="my-auto position-relative mx-3">
-                    <label className="switch">
-                      <input type="checkbox" id="showAllCheck" />
-                      <span className="slider round" />
-                    </label>
-                    <span className="position-relative mx-1">Show All</span>
-                  </div> */}
                 </div>
               </div>
             </div>
@@ -170,12 +83,11 @@ const RingGroups = () => {
                   <thead>
                     <tr>
                       <th>Name</th>
-                      <th>Extension</th>
-                      <th>Strategy</th>
-                      <th>Members</th>
-                      <th>Status</th>
-                      <th>Description</th>
-                      <th>Setting</th>
+                      <th>Type</th>
+                      <th>Confirm Attempts</th>
+                      <th>Timeout</th>
+                      <th>Max Failures</th>
+                      <th>Options</th>
                       <th>Edit</th>
                       <th>Delete</th>
                     </tr>
@@ -189,67 +101,51 @@ const RingGroups = () => {
                       </tr>
                     ) : (
                       <>
-                        {ringGroup &&
-                          ringGroup.map((item, index) => {
+                        {ivr &&
+                          ivr.map((item, index) => {
                             return (
                               <tr key={index}>
                                 <td
                                   onClick={() =>
-                                    navigate(`/ring-groups-edit?id=${item.id}`)
+                                    navigate(`/ivr-edit`,{state:item.id})
                                   }
                                 >
-                                  {item.name}
+                                  {item.ivr_name}
                                 </td>
                                 <td
                                   onClick={() =>
-                                    navigate(`/ring-groups-edit?id=${item.id}`)
+                                    navigate(`/ivr-edit`,{state:item.id})
                                   }
                                 >
-                                  {item.extension}
+                                  {item.ivr_type=="0"?"Child":"Master"}
                                 </td>
                                 <td
                                   onClick={() =>
-                                    navigate(`/ring-groups-edit?id=${item.id}`)
+                                    navigate(`/ivr-edit`,{state:item.id})
                                   }
                                 >
-                                  {item.strategy}
+                                  {item.confirm_attempts}
                                 </td>
                                 <td
                                   onClick={() =>
-                                    navigate(`/ring-groups-edit?id=${item.id}`)
+                                    navigate(`/ivr-edit`,{state:item.id})
                                   }
                                 >
-                                  {item.ring_group_destination.length}
+                                  {item.timeout}
                                 </td>
                                 <td
                                   onClick={() =>
-                                    navigate(`/ring-groups-edit?id=${item.id}`)
+                                    navigate(`/ivr-edit`,{state:item.id})
                                   }
                                 >
-                                  <label
-                                    className={
-                                      item.status === "active"
-                                        ? "tableLabel success"
-                                        : "tableLabel fail"
-                                    }
-                                  >
-                                    {item.status === "active" ? "Active" : "Inactive"}
-                                  </label>
-                                </td>
-                                <td
-                                  onClick={() =>
-                                    navigate(`/ring-groups-edit?id=${item.id}`)
-                                  }
-                                  className="ellipsis"
-                                  id="detailBox"
-                                >
-                                  {item.description}
+                                  {item.max_failures}
                                 </td>
                                 <td>
                                   <button
                                     onClick={() =>
                                       navigate(
-                                        `/ring-groups-settings?id=${item.id}`
+                                        `/ivr-options`,
+                                        {state:{id:item.id,name:item.ivr_name}}
                                       )
                                     }
                                     className="tableButton"
@@ -262,9 +158,7 @@ const RingGroups = () => {
                                   <button
                                     className="tableButton edit"
                                     onClick={() =>
-                                      navigate(
-                                        `/ring-groups-edit?id=${item.id}`
-                                      )
+                                        navigate(`/ivr-edit`,{state:item.id})
                                     }
                                   >
                                     <i class="fa-solid fa-pencil"></i>
@@ -284,11 +178,11 @@ const RingGroups = () => {
                               </tr>
                             );
                           })}
-                        {ringGroup && ringGroup.length === 0 ? (
+                        {ivr && ivr.length === 0 ? (
                           <td colSpan={99}>
                             <EmptyPrompt
-                              name="Ring Group"
-                              link="ring-groups-add"
+                              name="IVR "
+                              link="ivr-add"
                             />
                           </td>
                         ) : (
@@ -316,9 +210,7 @@ const RingGroups = () => {
                 <div className="col-10 ps-0">
                   <h4>Warning!</h4>
                   <p>
-                    {deleteId == ""
-                      ? error
-                      : "Are you sure you want to delete this ring group?"}
+                   Are you sure you want to delete this IVR?
                   </p>
                   {deleteId !== "" ? (
                     <button
@@ -331,9 +223,7 @@ const RingGroups = () => {
                     <button
                       className="panelButton m-0"
                       onClick={() => {
-                        // setForce(true);
                         setPopUp(false);
-                        navigate(`${redirectRoutes}`);
                       }}
                     >
                       Lets Go!
@@ -362,4 +252,4 @@ const RingGroups = () => {
   );
 };
 
-export default RingGroups;
+export default IvrListing;

@@ -15,7 +15,7 @@ function ActiveCalls() {
   async function killCall(id) {
     setLoading(true);
     const apiData = await generalGetFunction(`/freeswitch/call-kill/${id}`);
-    if (apiData.status) {
+    if (apiData?.status) {
       setLoading(false);
       toast.success(apiData.message);
     } else {
@@ -28,7 +28,7 @@ function ActiveCalls() {
     setLoading(true);
     const apiData = await generalGetFunction(`/freeswitch/call-barge/${id}`);
     console.log(apiData);
-    if (apiData.status) {
+    if (apiData?.status) {
       setLoading(false);
       console.log(apiData);
       toast.success(apiData.message);
@@ -44,7 +44,7 @@ function ActiveCalls() {
       `/freeswitch/call-eavesdrop/${id}`
     );
 
-    if (apiData.status) {
+    if (apiData?.status) {
       setLoading(false);
 
       toast.success(apiData.message);
@@ -59,7 +59,7 @@ function ActiveCalls() {
       `/freeswitch/call-intercept/${id}`
     );
 
-    if (apiData.status) {
+    if (apiData?.status) {
       setLoading(false);
 
       toast.success(apiData.message);
@@ -79,76 +79,92 @@ function ActiveCalls() {
     }
   }, [bargeStatus, id]);
 
+  function extractLastNumber(inputString) {
+    const regex = /(\d+)\s*$/; // Regular expression to match the last number after a space
+
+    const match = inputString.match(regex);
+
+    if (match) {
+      return match[1]; // Return the matched number
+    } else {
+      console.log("No number found after the last space.");
+      return null;
+    }
+  }
   return (
     <>
       {/* <main className="mainContent"> */}
-        <section id="phonePage">
-          <div className="container-fluid">
-            <div className="row">
-              {/* <Header title="Active Calls" /> */}
-              <div className="col-12" style={{ overflow: "auto" }}>
-                <div className="tableContainer">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Serial no.</th>
-                        <th>Profile</th>
-                        <th>Created</th>
-                        {/* <th>CID Name</th> */}
-                        <th>CID Number</th>
-                        <th>Destination</th>
-                        <th>Burge</th>
-                        {/* <th>Intercept</th>
+      <section id="phonePage">
+        <div className="container-fluid">
+          <div className="row">
+            {/* <Header title="Active Calls" /> */}
+            <div className="col-12" style={{ overflow: "auto" }}>
+              <div className="tableContainer">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Serial no.</th>
+                      <th>Profile</th>
+                      <th>Created</th>
+                      {/* <th>CID Name</th> */}
+                      <th>CID Number</th>
+                      <th>Destination</th>
+                      <th>Burge</th>
+                      {/* <th>Intercept</th>
                         <th>Eavesdrop</th> */}
-                        <th>Hang Up</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {activeCall &&
-                        activeCall
-                          // .filter(
-                          //   (call) =>
-                          //     call.direction === "inbound" &&
-                          //     call.callstate === "ACTIVE"
-                          // )
-                          .map((item, key) => {
-                            return (
-                              <tr>
-                                <td>{key + 1}</td>
-                                <td>{item.name.split("/")[1]}</td>
-                                <td>{item.created.split(" ")[1]}</td>
-                                {/* <td>{item.b_cid_name}</td> */}
-                                <td>{item.b_cid_num}</td>
-                                <td>{item.dest}</td>
-                                <td>
-                                  <select
-                                    onChange={(e) => {
-                                      setBargeStatus(e.target.value);
-                                      setId(item.uuid);
-                                    }}
+                      <th>Hang Up</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {activeCall &&
+                      activeCall
+                        // .filter(
+                        //   (call) =>
+                        //     call.direction === "inbound" &&
+                        //     call.callstate === "ACTIVE"
+                        // )
+                        .map((item, key) => {
+                          return (
+                            <tr>
+                              <td>{key + 1}</td>
+                              <td>{item.name.split("/")[1]}</td>
+                              <td>{item.created.split(" ")[1]}</td>
+                              {/* <td>{item.b_cid_name}</td> */}
+                              <td>{item.cid_num}</td>
+                              <td>
+                                {item?.dest.includes("set:valet_ticket")
+                                  ? extractLastNumber(item?.accountcode)
+                                  : extractLastNumber(item?.dest)}
+                              </td>
+                              <td>
+                                <select
+                                  onChange={(e) => {
+                                    setBargeStatus(e.target.value);
+                                    setId(item.uuid);
+                                  }}
+                                >
+                                  <option value="disbale">Choose action</option>
+                                  <option
+                                    value="burge"
+                                    onClick={() => bargeCall(item.uuid)}
                                   >
-                                    <option value="disbale">Choose action</option>
-                                    <option
-                                      value="burge"
-                                      onClick={() => bargeCall(item.uuid)}
-                                    >
-                                      Burge
-                                    </option>
-                                    <option
-                                      value="intercept"
-                                      onClick={() => interceptCall(item.uuid)}
-                                    >
-                                      Intercept
-                                    </option>
-                                    <option
-                                      value="eavesdrop"
-                                      onClick={() => eavesdropCall(item.uuid)}
-                                    >
-                                      Eavesdrop
-                                    </option>
-                                  </select>
-                                </td>
-                                {/* <td onClick={() => bargeCall(item.uuid)}>
+                                    Burge
+                                  </option>
+                                  <option
+                                    value="intercept"
+                                    onClick={() => interceptCall(item.uuid)}
+                                  >
+                                    Intercept
+                                  </option>
+                                  <option
+                                    value="eavesdrop"
+                                    onClick={() => eavesdropCall(item.uuid)}
+                                  >
+                                    Eavesdrop
+                                  </option>
+                                </select>
+                              </td>
+                              {/* <td onClick={() => bargeCall(item.uuid)}>
                                 <label
                                   className="tableLabel success"
                                   style={{
@@ -161,7 +177,7 @@ function ActiveCalls() {
                                   Barge
                                 </label>
                               </td> */}
-                                {/* <td onClick={() => interceptCall(item.uuid)}>
+                              {/* <td onClick={() => interceptCall(item.uuid)}>
                                 <label
                                   className="tableLabel success"
                                   style={{
@@ -187,23 +203,23 @@ function ActiveCalls() {
                                   Eavesdrop
                                 </label>
                               </td> */}
-                                <td onClick={() => killCall(item.uuid)}>
-                                  <label
-                                    className="tableLabel fail"
-                                    style={{
-                                      width: "85px",
-                                      padding: "3px 7px",
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <i class="fa-duotone fa-solid fa-phone-slash me-1"></i>{" "}
-                                    Hang Up
-                                  </label>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                      {/* {activeCall &&
+                              <td onClick={() => killCall(item.uuid)}>
+                                <label
+                                  className="tableLabel fail"
+                                  style={{
+                                    width: "85px",
+                                    padding: "3px 7px",
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  <i class="fa-duotone fa-solid fa-phone-slash me-1"></i>{" "}
+                                  Hang Up
+                                </label>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    {/* {activeCall &&
                       Object.values(activeCall).map((item, index) => {
                         return (
                           <tr key={index}>
@@ -242,20 +258,20 @@ function ActiveCalls() {
                           </tr>
                         );
                       })} */}
-                      {/* {activeCall && activeCall.length === 0 ? (
+                    {/* {activeCall && activeCall.length === 0 ? (
                         <td colSpan={99}>
                           <EmptyPrompt name="Call" link="call" />
                         </td>
                       ) : (
                         ""
                       )} */}
-                    </tbody>
-                  </table>
-                </div>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
       {/* </main> */}
       {loading && <CircularLoader />}
       {/* <ToastContainer

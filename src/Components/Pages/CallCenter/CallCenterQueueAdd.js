@@ -27,22 +27,18 @@ function CallCenterQueueAdd() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const loadings = useSelector((state) => state.loading);
   const [user, setUser] = useState([]);
-  // const [users, setUsers] = useState([]); //same as user
   const [greetingSound, setGreetingSound] = useState();
   const [holdSound, setHoldSound] = useState();
+  const [announcmentSound, setAnnouncmentSound] = useState();
   const account = useSelector((state) => state.account);
-  // const domain = useSelector((state) => state.domain);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
-  // const { domain_name = "" } = domain;
-  // const [popUp, setPopUp] = useState(true);
 
   const {
     register,
-
     setError: setErr,
     clearErrors,
-
     formState: { errors },
     handleSubmit,
     reset,
@@ -50,10 +46,11 @@ function CallCenterQueueAdd() {
     watch,
   } = useForm();
   useEffect(() => {
+    // Calling user and sound api to get user and sound data
     async function getData() {
       const userData = await generalGetFunction("/user/all");
       const musicData = await generalGetFunction("/sound/all");
-      if (userData.status) {
+      if (userData?.status) {
         if (userData.data.data.length === 0) {
           toast.error("Please create user first");
         } else {
@@ -67,25 +64,27 @@ function CallCenterQueueAdd() {
           }
         }
       }
-      if (musicData.status) {
+      if (musicData?.status) {
         setGreetingSound(
           musicData.data.filter((item) => item.type === "ringback")
         );
         setHoldSound(musicData.data.filter((item) => item.type === "hold"));
+        setAnnouncmentSound(
+          musicData.data.filter((item) => item.type === "announcement")
+        );
       }
     }
     getData();
   }, [account.account_id]);
 
+  // Define agent with some default values
   const [agent, setAgent] = useState([
     {
-      // id: 1,
       id: Math.floor(Math.random() * 10000),
       name: "",
       level: "0",
       position: "0",
       type: "callback",
-      // status: "Logged Out",
       password: "1234",
       contact: "",
       call_timeout: "",
@@ -95,6 +94,8 @@ function CallCenterQueueAdd() {
       no_answer_delay_time: "",
       wrap_up_time: "",
       reserve_agents: 0,
+      "truncate-agents-on-load": 0,
+      "truncate-tiers-on-load": 0,
     },
   ]);
 
@@ -102,17 +103,16 @@ function CallCenterQueueAdd() {
     setValue("queue_timeout_action", value[0]);
   };
 
+  // This is for new agent add
   function addNewAgent() {
     setAgent([
       ...agent,
       {
-        // id: agent.length + 1,
         id: Math.floor(Math.random() * 10000),
         name: "",
         level: "0",
         position: "0",
         type: "callback",
-        // status: "Logged Out",
         password: "1234",
         contact: "",
         call_timeout: "",
@@ -122,10 +122,13 @@ function CallCenterQueueAdd() {
         no_answer_delay_time: "",
         wrap_up_time: "",
         reserve_agents: 0,
+        "truncate-agents-on-load": 0,
+        "truncate-tiers-on-load": 0,
       },
     ]);
   }
 
+  // Remove agent
   function removeAgenet(id) {
     const updatedAgent = agent.filter((item) => item.id !== id);
     if (validateAgents()) {
@@ -134,26 +137,7 @@ function CallCenterQueueAdd() {
     setAgent(updatedAgent);
   }
 
-  // const handleAgentChange = (event, index) => {
-  //   const { name, value } = event.target;
-  //   const newAgent = [...agent];
-  //   newAgent[index][name] = value;
-  //   setAgent(newAgent);
-
-  //   if (!validateUniqueAgents()) {
-  //     setErr("agent", {
-  //       type: "manual",
-  //       message: "Same agent can't be selected for two or more fields",
-  //     });
-  //   } else if (validateAgents()) {
-  //     clearErrors("agent");
-  //   } else {
-  //     setErr("agent", {
-  //       type: "manual",
-  //       message: "Agent name and password required in all rows",
-  //     });
-  //   }
-  // };
+  // Handle agent change
   const handleAgentChange = (event, index) => {
     const { name, value } = event.target; // Extract name and selected value
 
@@ -196,88 +180,22 @@ function CallCenterQueueAdd() {
     addNewAgent();
   }
 
+  // Validate agents
   const validateAgents = () => {
     const allFieldsFilled = agent.every(
       (item) => item.name.trim() !== "" && item.password.trim() !== ""
     );
     return allFieldsFilled;
   };
+
+  // Validate unique agents
   const validateUniqueAgents = () => {
     const agentValues = agent.map((item) => item.name);
     const uniqueValues = [...new Set(agentValues)];
     return agentValues.length === uniqueValues.length;
   };
 
-  // const handleExtensionChange = (selectedOption) => {
-  //   setValue("extension", selectedOption.value);
-  // };
-
-  // Custom styles for react-select
-  // const customStyles = {
-  //   control: (provided, state) => ({
-  //     ...provided,
-  //     // border: '1px solid var(--color4)',
-  //     border: "1px solid #ababab",
-  //     borderRadius: "2px",
-  //     outline: "none",
-  //     fontSize: "14px",
-  //     width: "100%",
-  //     minHeight: "32px",
-  //     height: "32px",
-  //     boxShadow: state.isFocused ? "none" : provided.boxShadow,
-  //     "&:hover": {
-  //       borderColor: "none",
-  //     },
-  //   }),
-  //   valueContainer: (provided) => ({
-  //     ...provided,
-  //     height: "32px",
-  //     padding: "0 6px",
-  //   }),
-  //   input: (provided) => ({
-  //     ...provided,
-  //     margin: "0",
-  //   }),
-  //   indicatorSeparator: (provided) => ({
-  //     display: "none",
-  //   }),
-  //   indicatorsContainer: (provided) => ({
-  //     ...provided,
-  //     height: "32px",
-  //   }),
-  //   dropdownIndicator: (provided) => ({
-  //     ...provided,
-  //     color: "#202020",
-  //     "&:hover": {
-  //       color: "#202020",
-  //     },
-  //   }),
-  //   option: (provided, state) => ({
-  //     ...provided,
-  //     paddingLeft: "15px",
-  //     paddingTop: 0,
-  //     paddingBottom: 0,
-  //     // backgroundColor: state.isSelected ? "transparent" : "transparent",
-  //     "&:hover": {
-  //       backgroundColor: "#0055cc",
-  //       color: "#fff",
-  //     },
-  //     fontSize: "14px",
-  //   }),
-  //   menu: (provided) => ({
-  //     ...provided,
-  //     margin: 0,
-  //     padding: 0,
-  //   }),
-  //   menuList: (provided) => ({
-  //     ...provided,
-  //     padding: 0,
-  //     margin: 0,
-  //     maxHeight: "150px",
-  //     overflowY: "auto",
-  //   }),
-  // };
-
+  // Handle form submit and validation errors
   const handleFormSubmit = handleSubmit(async (data) => {
     setLoading(true);
     if (!validateAgents()) {
@@ -345,16 +263,18 @@ function CallCenterQueueAdd() {
             password: item.password,
             contact: item.contact,
             reserve_agents: item.reserve_agents,
+            "truncate-agents-on-load": item["truncate-agents-on-load"],
+            "truncate-tiers-on-load": item["truncate-tiers-on-load"],
           };
         }),
       },
     };
-    delete payload.record_template;
+    // delete payload.record_template;
     const apiData = await generalPostFunction(
       "/call-center-queue/store",
       payload
     );
-    if (apiData.status) {
+    if (apiData?.status) {
       setLoading(false);
       toast.success(apiData.message);
       reset();
@@ -365,12 +285,12 @@ function CallCenterQueueAdd() {
       navigate("/cal-center-queue");
     } else {
       setLoading(false);
-      if (apiData.error) {
-        toast.error(apiData.error);
-      } else {
-        const errorMessage = Object.keys(apiData.errors);
-        toast.error(apiData.errors[errorMessage[0]][0]);
-      }
+      // if (apiData.error) {
+      //   toast.error(apiData.error);
+      // } else {
+      //   const errorMessage = Object.keys(apiData.errors);
+      //   toast.error(apiData.errors[errorMessage[0]][0]);
+      // }
     }
   });
 
@@ -385,26 +305,21 @@ function CallCenterQueueAdd() {
             </div>
             <div className="col-xl-6 ps-2">
               <div className="d-flex align-items-center justify-content-end">
-                <div className="formRow border-0 p-0 me-2">
-                  <div className="d-flex align-items-center">
-                    <div className="formLabel py-0 me-2">
-                      <label htmlFor="selectFormRow">Enabled</label>
-                    </div>
-                    <div className="my-auto position-relative mx-1">
-                      <label className="switch">
-                        <input
-                          type="checkbox"
-                          checked={watch().status}
-                          {...register("status")}
-                          id="showAllCheck"
-                        />
-                        <span className="slider round" />
-                      </label>
-                    </div>
+                <div className="d-flex align-items-center">
+                  <div className="formLabel py-0 me-2">
+                    <label htmlFor="selectFormRow">Enabled</label>
                   </div>
-                  {/* <label htmlFor="data" className="formItemDesc mt-0">
-                    Set the status of this call center queue.
-                  </label> */}
+                  <div className="my-auto position-relative mx-1">
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={watch().status}
+                        {...register("status")}
+                        id="showAllCheck"
+                      />
+                      <span className="slider round" />
+                    </label>
+                  </div>
                 </div>
                 <button
                   effect="ripple"
@@ -428,7 +343,7 @@ function CallCenterQueueAdd() {
           </div>
         </div>
         <div className="col-xl-12">
-          {loading && (
+          {loading && loadings && (
             <div colSpan={99}>
               <CircularLoader />
             </div>
@@ -458,73 +373,7 @@ function CallCenterQueueAdd() {
                   )}
                 </div>
               </div>
-              {/* <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Extension</label>
-                </div>
-                <div className="col-12">
-                  <input
-                    type="text"
-                    name="extension"
-                    {...register("extension", {
-                      ...requiredValidator,
-                      // ...nameValidator,
-                    })}
-                    className="formItem"
-                  />
-                  {errors.extension && (
-                    <ErrorMessage text={errors.extension.message} />
-                  )}
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
-                    Enter the extension.
-                  </label>
-                </div>
-              </div> */}
-              {/* <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Extension</label>
-                </div>
-                <div className="col-12">
-                  <Controller
-                    name="extension"
-                    control={control}
-                    defaultValue=""
-                    rules={{ ...requiredValidator, ...numberValidator }}
-                    render={({ field: { onChange, value, ...field } }) => {
-                      const options = user
-                        ? user.map((item) => ({
-                            value: item.extension.extension,
-                            label: `${item.name} (${item.extension.extension})`,
-                          }))
-                        : [];
 
-                      const selectedOption =
-                        options.find((option) => option.value === value) ||
-                        null;
-
-                      return (
-                        <Select
-                          {...field}
-                          value={selectedOption}
-                          onChange={(selectedOption) => {
-                            onChange(selectedOption.value);
-                            handleExtensionChange(selectedOption);
-                          }}
-                          options={options}
-                          styles={customStyles}
-                        />
-                      );
-                    }}
-                  />
-                  {errors.extension && (
-                    <ErrorMessage text={errors.extension.message} />
-                  )}
-                  <label htmlFor="data" className="formItemDesc">
-                    Enter the extension number.
-                  </label>
-                </div>
-              </div> */}
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Greeting</label>
@@ -534,7 +383,9 @@ function CallCenterQueueAdd() {
                 </div>
                 <div className="col-6">
                   <select {...register("greeting")} className="formItem w-100">
-                    <option></option>
+                    <option disabled value="" selected>
+                      Select Greeting
+                    </option>
                     {greetingSound &&
                       greetingSound.map((item, index) => {
                         return (
@@ -544,10 +395,7 @@ function CallCenterQueueAdd() {
                         );
                       })}
                   </select>
-                  {/* <select {...register("greeting")} className="formItem w-100">
-                    <option>say</option>
-                    <option>tone_stream</option>
-                  </select> */}
+
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Select the desired Greeting.
@@ -564,17 +412,7 @@ function CallCenterQueueAdd() {
                 <div className="col-6">
                   <select {...register("strategy")} className="formItem w-100">
                     <option value="ring-all">Ring All</option>
-                    {/* <option value="longest-idle-agent">
-                      Longest Idle Agent
-                    </option> */}
-                    {/* <option value="round-robin">Round Robin</option> */}
                     <option value="top-down">Top Down</option>
-                    {/* <option value="agent-with-least-talk-time">
-                      Agent with least talk time
-                    </option> */}
-                    {/* <option value="agent-with-fewest-calls">
-                      Agent with fewest calls
-                    </option> */}
                     <option value="sequentially-by-agent-order">
                       Sequentially by agent order
                     </option>
@@ -595,7 +433,9 @@ function CallCenterQueueAdd() {
                 </div>
                 <div className="col-6">
                   <select {...register("moh_sound")} className="formItem w-100">
-                    <option></option>
+                    <option disabled value="" selected>
+                      Select Hold Music
+                    </option>
                     {holdSound &&
                       holdSound.map((item, index) => {
                         return (
@@ -866,401 +706,493 @@ function CallCenterQueueAdd() {
                   )}
                 </div>
               </div>
-              {/* <div className="formRow col-xl-3">
-                <div className="d-flex flex-wrap align-items-center">
-                  <div className="formLabel">
-                    <label htmlFor="selectFormRow">Enabled</label>
-                  </div>
-                  <div className="col-12">
-                    <div className="my-auto position-relative mx-1">
-                      <label className="switch">
-                        <input
-                          type="checkbox"
-                          checked={watch().status}
-                          {...register("status")}
-                          id="showAllCheck"
-                        />
-                        <span className="slider round" />
-                      </label>
-                    </div>
-                  </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Record Template</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Define record template.
+                  </label>
                 </div>
-                <label htmlFor="data" className="formItemDesc">
-                  Set the status of this call center queue.
-                </label>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="record_template"
+                    className="formItem"
+                    {...register("record_template", {
+                      ...noSpecialCharactersValidator,
+                    })}
+                    onKeyDown={restrictToAllowedChars}
+                  />
+                  {errors.record_template && (
+                    <ErrorMessage text={errors.record_template} />
+                  )}
+                </div>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Queue Announce</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Select the desired queue announce sound.
+                  </label>
+                </div>
+                <div className="col-6">
+                  <select
+                    {...register("queue_announce_sound")}
+                    className="formItem w-100"
+                  >
+                    <option disabled value="" selected>
+                      Select Queue Announce
+                    </option>
+                    {announcmentSound &&
+                      announcmentSound.map((item, index) => {
+                        return (
+                          <option key={index} value={item.id}>
+                            {item.name}
+                          </option>
+                        );
+                      })}
+                  </select>
+                  <br />
+                  <label htmlFor="data" className="formItemDesc">
+                    Select the desired queue announce sound.
+                  </label>
+                </div>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Queue Announce Frequency</label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="number"
+                    name="extension"
+                    className="formItem"
+                    {...register("queue_announce_frequency", {
+                      ...noSpecialCharactersValidator,
+                    })}
+                    onKeyDown={restrictToNumbers}
+                  />
+                  {errors.queue_announce_frequency && (
+                    <ErrorMessage text={errors.queue_announce_frequency} />
+                  )}
+                </div>
+              </div>
+
+              <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Queue Description</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Define queue description.
+                  </label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="queue_description"
+                    className="formItem"
+                    {...register("queue_description", {
+                      ...noSpecialCharactersValidator,
+                    })}
+                    onKeyDown={restrictToAllowedChars}
+                  />
+                  {errors.queue_description && (
+                    <ErrorMessage text={errors.queue_description} />
+                  )}
+                </div>
+              </div>
+
+              {/* <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Truncate Agents On Load</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Truncate Agents On Load.
+                  </label>
+                </div>
+                <div className="col-6">
+                  <select
+                    {...register("truncate-agents-on-load")}
+                    className="formItem w-100"
+                    name="truncate-agents-on-load"
+                  >
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                  </select>
+                </div>
               </div> */}
-              <div className="formRow col-xl-12">
+
+              {/* <div className="formRow col-xl-3">
+                <div className="formLabel">
+                  <label htmlFor="">Truncate Tiers On Load</label>
+                  <label htmlFor="data" className="formItemDesc">
+                    Truncate Tiers On Load.
+                  </label>
+                </div>
+                <div className="col-6">
+                  <select
+                    {...register("truncate-tiers-on-load")}
+                    className="formItem w-100"
+                    name="truncate-tiers-on-load"
+                  >
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                  </select>
+                </div>
+              </div> */}
+
+              <div className="formRow col-xl-12 border-0">
                 {agent &&
                   agent.map((item, index) => {
                     return (
-                      <div className="row" key={index}>
-                        <div className="formLabel pe-2 m-0 mt-auto">
+                      <div className="row pb-3 pt-2" key={index} style={{ borderBottom: '1px solid #8f8f8f47' }}>
+                        <div className="formLabel pe-2 m-0" style={{ width: "30px" }}>
                           <label>{index + 1}.</label>
                         </div>
-                        <div className="col-1 ps-0 pe-2">
-                          <div className="formLabel">
-                            {index === 0 ? (
-                              <label htmlFor="">Agent Name</label>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                          <div className="position-relative">
-                            <select
-                              type="text"
-                              name="name"
-                              value={item.name}
-                              onChange={(e) => handleAgentChange(e, index)}
-                              // onChange={(e) => {
-                              //   const selectedValue = e.target.value;
-                              //   // Redirect to the Add User page
-                              //   if (selectedValue === "addUser") {
-                              //     navigate("/users-add");
-                              //   } else {
-                              //     handleAgentChange(e, index);
-                              //     user.forEach((item) => {
-                              //       if (item.id == selectedValue) {
-                              //         const newAgent = [...agent];
-                              //         newAgent[index][
-                              //           "contact"
-                              //         ] = `user/${item.extension.extension}@${item.domain.domain_name}`;
-                              //         setAgent(newAgent);
-                              //       }
-                              //     });
-                              //   }
-                              // }}
-                              className="formItem"
-                              placeholder="Destination"
-                            >
-                              <option value="" disabled>
-                                Choose agent
-                              </option>
-                              {/* {user &&
-                                user.map((item) => {
-                                  return (
-                                    <option value={item.id} key={item.id}>
-                                      {item.username}(
-                                      {item.extension?.extension})
-                                    </option>
-                                  );
-                                })} */}
-                              {user &&
-                                user
-                                  .filter((userItem) => {
-                                    return (
-                                      userItem.id == agent[index]?.name ||
-                                      !agent.some(
-                                        (agentItem, agentIndex) =>
-                                          agentItem.name == userItem.id &&
-                                          agentIndex != index
-                                      )
-                                    );
-                                  })
-                                  .map((userItem) => (
-                                    <option
-                                      value={userItem.id}
-                                      key={userItem.id}
-                                    >
-                                      {userItem.username} (
-                                      {userItem.extension?.extension})
-                                    </option>
-                                  ))}
-                              <option
-                                value="addUser"
-                                className="text-center border bg-info-subtle fs-6 fw-bold text-info"
-                                style={{ cursor: "pointer" }}
+                        <div className="row col-11">
+                          <div className="col-2 ps-0 pe-2">
+                            <div className="formLabel">
+                              {index === 0 ? (
+                                <label htmlFor="">Agent Name</label>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                            <div className="position-relative">
+                              <select
+                                type="text"
+                                name="name"
+                                value={item.name}
+                                onChange={(e) => handleAgentChange(e, index)}
+                                className="formItem"
+                                placeholder="Destination"
                               >
-                                Add User
-                              </option>
+                                <option value="" disabled>
+                                  Choose agent
+                                </option>
+                                {user &&
+                                  user
+                                    .filter((userItem) => {
+                                      return (
+                                        userItem.id == agent[index]?.name ||
+                                        !agent.some(
+                                          (agentItem, agentIndex) =>
+                                            agentItem.name == userItem.id &&
+                                            agentIndex != index
+                                        )
+                                      );
+                                    })
+                                    .map((userItem) => (
+                                      <option
+                                        value={userItem.id}
+                                        key={userItem.id}
+                                      >
+                                        {userItem.username} (
+                                        {userItem.extension?.extension})
+                                      </option>
+                                    ))}
+                                <option
+                                  value="addUser"
+                                  className="text-center border bg-info-subtle fs-6 fw-bold text-info"
+                                  style={{ cursor: "pointer" }}
+                                >
+                                  Add User
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className="col-2 ps-0 pe-2">
+                            <div className="formLabel">
+                              {index === 0 ? (
+                                <label htmlFor="">Password</label>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                            <div className="position-relative">
+                              <input
+                                type="text"
+                                name="password"
+                                value={item.password}
+                                onChange={(e) => handleAgentChange(e, index)}
+                                className="formItem"
+                                placeholder="Password"
+                              />
+                            </div>
+                          </div>
+                          <div className="col-1 ps-0 pe-2">
+                            <div className="formLabel">
+                              {index === 0 ? (
+                                <label htmlFor="">Tier Level</label>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                            <select
+                              className="formItem me-0"
+                              style={{ width: "100%" }}
+                              name="level"
+                              value={item.level}
+                              onChange={(e) => handleAgentChange(e, index)}
+                              id="selectFormRow"
+                            >
+                              <option value={0}>0</option>
+                              <option value={1}>1</option>
+                              <option value={2}>2</option>
+                              <option value={3}>3</option>
+                              <option value={4}>4</option>
+                              <option value={5}>5</option>
+                              <option value={6}>6</option>
+                              <option value={7}>7</option>
+                              <option value={8}>8</option>
+                              <option value={9}>9</option>
+                            </select>
+                          </div>
+                          <div className="col-1 ps-0 pe-2">
+                            <div className="formLabel">
+                              {index === 0 ? (
+                                <label htmlFor="">Tier Position</label>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                            <select
+                              className="formItem me-0"
+                              style={{ width: "100%" }}
+                              name="position"
+                              value={item.position}
+                              onChange={(e) => handleAgentChange(e, index)}
+                              id="selectFormRow"
+                            >
+                              <option value={0}>0</option>
+                              <option value={1}>1</option>
+                              <option value={2}>2</option>
+                              <option value={3}>3</option>
+                              <option value={4}>4</option>
+                              <option value={5}>5</option>
+                              <option value={6}>6</option>
+                              <option value={7}>7</option>
+                              <option value={8}>8</option>
+                              <option value={9}>9</option>
+                            </select>
+                          </div>
+                          <div className="col-2 ps-0 pe-2">
+                            <div className="formLabel">
+                              {index === 0 ? (
+                                <label htmlFor="">Call Timeout</label>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                            <div className="position-relative">
+                              <input
+                                type="number"
+                                name="call_timeout"
+                                value={item.call_timeout}
+                                onChange={(e) => handleAgentChange(e, index)}
+                                className="formItem"
+                                placeholder="Call Timeout"
+                              />
+                            </div>
+                          </div>
+                          <div className="col-2 ps-0 pe-2">
+                            <div className="formLabel">
+                              {index === 0 ? (
+                                <label htmlFor="">Reject Delay</label>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                            <div className="position-relative">
+                              <input
+                                type="number"
+                                name="reject_delay_time"
+                                value={item.reject_delay_time}
+                                onChange={(e) => handleAgentChange(e, index)}
+                                className="formItem"
+                                placeholder="Reject Delay"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="col-2 ps-0 pe-2">
+                            <div className="formLabel">
+                              {index === 0 ? (
+                                <label htmlFor="">Max No Answer</label>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                            <div className="position-relative">
+                              <input
+                                type="number"
+                                name="max_no_answer"
+                                value={item.max_no_answer}
+                                onChange={(e) => handleAgentChange(e, index)}
+                                className="formItem"
+                                placeholder="Max No Answer"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="col-2 ps-0 pe-2">
+                            <div className="formLabel">
+                              {index === 0 ? (
+                                <label htmlFor="">Busy Delay</label>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                            <div className="position-relative">
+                              <input
+                                type="number"
+                                name="busy_delay_time"
+                                value={item.busy_delay_time}
+                                onChange={(e) => handleAgentChange(e, index)}
+                                className="formItem"
+                                placeholder="Busy Delay"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="col-2 ps-0 pe-2">
+                            <div className="formLabel">
+                              {index === 0 ? (
+                                <label htmlFor="">No Answer Delay</label>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                            <div className="position-relative">
+                              <input
+                                type="number"
+                                name="no_answer_delay_time"
+                                value={item.no_answer_delay_time}
+                                onChange={(e) => handleAgentChange(e, index)}
+                                className="formItem"
+                                placeholder="No Answer Delay"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="col-2 ps-0 pe-2">
+                            <div className="formLabel">
+                              {index === 0 ? (
+                                <label htmlFor="">Wrap Up Time</label>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                            <div className="position-relative">
+                              <input
+                                type="number"
+                                name="wrap_up_time"
+                                value={item.wrap_up_time}
+                                onChange={(e) => handleAgentChange(e, index)}
+                                className="formItem"
+                                placeholder="Wrap Up Time"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="col-2 ps-0 pe-2">
+                            <div className="formLabel">
+                              {index === 0 ? (
+                                <label htmlFor="">Reserve Agents</label>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                            <select
+                              className="formItem me-0"
+                              style={{ width: "100%" }}
+                              name="reserve_agents"
+                              value={item.reserve_agents}
+                              onChange={(e) => handleAgentChange(e, index)}
+                              id="selectFormRow"
+                            >
+                              <option value={0}>False</option>
+                              <option value={1}>True</option>
+                            </select>
+                          </div>
+
+                          <div className="col-2 ps-0 pe-2">
+                            <div className="formLabel">
+                              {index === 0 ? (
+                                <label htmlFor="">Truncate agents on load</label>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                            <select
+                              className="formItem me-0"
+                              style={{ width: "100%" }}
+                              name="truncate-agents-on-load"
+                              value={item["truncate-agents-on-load"]}
+                              onChange={(e) => handleAgentChange(e, index)}
+                              id="selectFormRow"
+                            >
+                              <option value={0}>False</option>
+                              <option value={1}>True</option>
+                            </select>
+                          </div>
+
+                          <div className="col-2 ps-0 pe-2">
+                            <div className="formLabel">
+                              {index === 0 ? (
+                                <label htmlFor="">Truncate tiers on load</label>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                            <select
+                              className="formItem me-0"
+                              style={{ width: "100%" }}
+                              name="truncate-tiers-on-load"
+                              value={item["truncate-tiers-on-load"]}
+                              onChange={(e) => handleAgentChange(e, index)}
+                              id="selectFormRow"
+                            >
+                              <option value={0}>False</option>
+                              <option value={1}>True</option>
                             </select>
                           </div>
                         </div>
-                        <div className="col-1 ps-0 pe-2">
-                          <div className="formLabel">
-                            {index === 0 ? (
-                              <label htmlFor="">Password</label>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                          <div className="position-relative">
-                            <input
-                              type="text"
-                              name="password"
-                              value={item.password}
-                              onChange={(e) => handleAgentChange(e, index)}
-                              className="formItem"
-                              placeholder="Password"
-                            />
-                          </div>
-                        </div>
-                        <div className="col-1 ps-0 pe-2" style={{ width: '6%' }}>
-                          <div className="formLabel">
-                            {index === 0 ? (
-                              <label htmlFor="">Tier Level</label>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                          <select
-                            className="formItem me-0"
-                            style={{ width: "100%" }}
-                            name="level"
-                            value={item.level}
-                            onChange={(e) => handleAgentChange(e, index)}
-                            id="selectFormRow"
-                          >
-                            <option value={0}>0</option>
-                            <option value={1}>1</option>
-                            <option value={2}>2</option>
-                            <option value={3}>3</option>
-                            <option value={4}>4</option>
-                            <option value={5}>5</option>
-                            <option value={6}>6</option>
-                            <option value={7}>7</option>
-                            <option value={8}>8</option>
-                            <option value={9}>9</option>
-                          </select>
-                        </div>
-                        <div className="col-1 ps-0 pe-2" style={{ width: '6.5%' }}>
-                          <div className="formLabel">
-                            {index === 0 ? (
-                              <label htmlFor="">Tier Position</label>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                          <select
-                            className="formItem me-0"
-                            style={{ width: "100%" }}
-                            name="position"
-                            value={item.position}
-                            onChange={(e) => handleAgentChange(e, index)}
-                            id="selectFormRow"
-                          >
-                            <option value={0}>0</option>
-                            <option value={1}>1</option>
-                            <option value={2}>2</option>
-                            <option value={3}>3</option>
-                            <option value={4}>4</option>
-                            <option value={5}>5</option>
-                            <option value={6}>6</option>
-                            <option value={7}>7</option>
-                            <option value={8}>8</option>
-                            <option value={9}>9</option>
-                          </select>
-                        </div>
-                        {/* <div className="col-2 pe-2">
-                          <div className="formLabel">
-                            {index === 0 ? <label htmlFor="">Type</label> : ""}
-                          </div>
-                          <select
-                            className="formItem me-0"
-                            style={{ width: "100%" }}
-                            name="type"
-                            onChange={(e) => handleAgentChange(e, index)}
-                            id="selectFormRow"
-                            value={item.type}
-                          >
-                            <option value={"callback"}>Call Back</option>
-                            <option value={"uuid-standby"}>UUID Standbu</option>
-                          </select>
-                        </div> */}
-                        <div className="col-1 ps-0 pe-2">
-                          <div className="formLabel">
-                            {index === 0 ? (
-                              <label htmlFor="">Call Timeout</label>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                          <div className="position-relative">
-                            <input
-                              type="number"
-                              name="call_timeout"
-                              value={item.call_timeout}
-                              onChange={(e) => handleAgentChange(e, index)}
-                              className="formItem"
-                              placeholder="Call Timeout"
-                            />
-                          </div>
-                        </div>
-                        <div className="col-1 ps-0 pe-2">
-                          <div className="formLabel">
-                            {index === 0 ? (
-                              <label htmlFor="">Reject Delay</label>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                          <div className="position-relative">
-                            <input
-                              type="number"
-                              name="reject_delay_time"
-                              value={item.reject_delay_time}
-                              onChange={(e) => handleAgentChange(e, index)}
-                              className="formItem"
-                              placeholder="Reject Delay"
-                            />
-                          </div>
-                        </div>
 
-                        <div className="col-1 ps-0 pe-2">
-                          <div className="formLabel">
-                            {index === 0 ? (
-                              <label htmlFor="">Max No Answer</label>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                          <div className="position-relative">
-                            <input
-                              type="number"
-                              name="max_no_answer"
-                              value={item.max_no_answer}
-                              onChange={(e) => handleAgentChange(e, index)}
-                              className="formItem"
-                              placeholder="Max No Answer"
-                            />
-                          </div>
-                        </div>
-
-                        <div className="col-1 ps-0 pe-2">
-                          <div className="formLabel">
-                            {index === 0 ? (
-                              <label htmlFor="">Busy Delay</label>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                          <div className="position-relative">
-                            <input
-                              type="number"
-                              name="busy_delay_time"
-                              value={item.busy_delay_time}
-                              onChange={(e) => handleAgentChange(e, index)}
-                              className="formItem"
-                              placeholder="Busy Delay"
-                            />
-                          </div>
-                        </div>
-
-                        <div className="col-1 ps-0 pe-2">
-                          <div className="formLabel">
-                            {index === 0 ? (
-                              <label htmlFor="">No Answer Delay</label>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                          <div className="position-relative">
-                            <input
-                              type="number"
-                              name="no_answer_delay_time"
-                              value={item.no_answer_delay_time}
-                              onChange={(e) => handleAgentChange(e, index)}
-                              className="formItem"
-                              placeholder="No Answer Delay"
-                            />
-                          </div>
-                        </div>
-
-                        <div className="col-1 ps-0 pe-2">
-                          <div className="formLabel">
-                            {index === 0 ? (
-                              <label htmlFor="">Wrap Up Time</label>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                          <div className="position-relative">
-                            <input
-                              type="number"
-                              name="wrap_up_time"
-                              value={item.wrap_up_time}
-                              onChange={(e) => handleAgentChange(e, index)}
-                              className="formItem"
-                              placeholder="Wrap Up Time"
-                            />
-                          </div>
-                        </div>
-
-                        <div className="col-1 ps-0 pe-2">
-                          <div className="formLabel">
-                            {index === 0 ? (
-                              <label htmlFor="">Reserve Agents</label>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                          <select
-                            className="formItem me-0"
-                            style={{ width: "100%" }}
-                            name="reserve_agents"
-                            value={item.reserve_agents}
-                            onChange={(e) => handleAgentChange(e, index)}
-                            id="selectFormRow"
-                          >
-                            <option value={0}>False</option>
-                            <option value={1}>True</option>
-                          </select>
-                        </div>
-
-                        {/* <div className="col-2 pe-2">
-                          <div className="formLabel">
-                            {index === 0 ? (
-                              <label htmlFor="">Status</label>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                          <select
-                            className="formItem me-0"
-                            style={{ width: "100%" }}
-                            name="status"
-                            onChange={(e) => handleAgentChange(e, index)}
-                            id="selectFormRow"
-                          >
-                            <option value={"Logged Out"}>Logged Out</option>
-                            <option value={"Available"}>Available</option>
-                            <option value={"Available (On Demand)"}>
-                              Available (On Demand)
-                            </option>
-                            <option value={"On Break"}>On Break</option>
-                          </select>
-                        </div> */}
-
-                        {agent.length === 1 ? (
-                          ""
-                        ) : (
-                          <div
-                            onClick={() => removeAgenet(item.id)}
-                            className="col-auto ps-0 pe-2 mt-auto"
-                          >
-                            <button
-                              type="button"
-                              className="clearButton text-danger"
+                        <div className="row col">
+                          {agent.length === 1 ? (
+                            ""
+                          ) : (
+                            <div
+                              onClick={() => removeAgenet(item.id)}
+                              className="col-auto ps-0 pe-2 mt-auto"
                             >
-                              <i className="fa-duotone fa-trash"></i>
-                            </button>
-                          </div>
-                        )}
-                        {index === agent.length - 1 &&
-                          index !== (user && user.length - 1) ? (
-                          <div
-                            onClick={addNewAgent}
-                            className="col-auto px-0 mt-auto"
-                          >
-                            <button
-                              type="button"
-                              className="panelButton my-auto"
+                              <button
+                                type="button"
+                                className="clearButton text-danger"
+                              >
+                                <i className="fa-duotone fa-trash"></i>
+                              </button>
+                            </div>
+                          )}
+                          {index === agent.length - 1 &&
+                            index !== (user && user.length - 1) ? (
+                            <div
+                              onClick={addNewAgent}
+                              className="col-auto px-0 mt-auto"
                             >
-                              Add more
-                            </button>
-                          </div>
-                        ) : (
-                          ""
-                        )}
+                              <button
+                                type="button"
+                                className="panelButton my-auto"
+                              >
+                                Add more
+                              </button>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                        </div>
                       </div>
                     );
                   })}
@@ -1269,45 +1201,6 @@ function CallCenterQueueAdd() {
             </form>
           </div>
         </div>
-        {/* {popUp ? (
-          <div className="popup">
-            <div className="container h-100">
-              <div className="row h-100 justify-content-center align-items-center">
-                <div className="row content col-xl-4">
-                  <div className="col-2 px-0">
-                    <div className="iconWrapper">
-                      <i className="fa-duotone fa-triangle-exclamation"></i>
-                    </div>
-                  </div>
-                  <div className="col-10 ps-0">
-                    <h4>Warning!</h4>
-                    <p>
-                      No Extension is currently asigned! Please add an extension first!
-                    </p>
-                    <button
-                      className="panelButton m-0"
-                      onClick={() => {
-                        // setForce(true);
-                        setPopUp(false);
-                        navigate('/extensions-add')
-                      }}
-                    >
-                      Lets Go!
-                    </button>
-                    <button
-                      className="panelButtonWhite m-0 float-end"
-                      onClick={() => setPopUp(false)}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : (
-          ""
-        )} */}
       </section>
       {loading ? (
         <div colSpan={99}>

@@ -58,7 +58,7 @@ const Users = () => {
         const apiData = await generalGetFunction(
           `/user/all?account=${account.account_id}&page=${pageNumber}`
         );
-        if (apiData.status) {
+        if (apiData?.status) {
           setUser(apiData.data);
           setFilterUser(apiData.data.data);
           dispatch({
@@ -76,7 +76,7 @@ const Users = () => {
         const apiData = await generalGetFunction(
           `/user/all?account=${account.account_id}&page=${pageNumber}`
         );
-        if (apiData.status) {
+        if (apiData?.status) {
           setUser(apiData.data);
           setFilterUser(apiData.data.data);
           dispatch({
@@ -183,7 +183,17 @@ const Users = () => {
                 </div>
               </div>
               <div className="col-xl-8 mt-3 mt-xl-0">
-                <div className="d-flex justify-content-end flex-wrap gap-2">
+                <div className="d-flex justify-content-end flex-wrap">
+                  <button
+                    effect="ripple"
+                    className="panelButton"
+                    onClick={() => {
+                      navigate(-1);
+                      backToTop();
+                    }}
+                  >
+                    Back
+                  </button>
                   <Link
                     // to="/users-add"
                     // onClick={backToTop}
@@ -213,6 +223,7 @@ const Users = () => {
                       {/* <th>Domain</th> */}
                       <th>Online</th>
                       <th>On Call</th>
+                      <th>Edit</th>
                       <th>Status</th>
                     </tr>
                   </thead>
@@ -278,6 +289,15 @@ const Users = () => {
                                   }
                                 >
                                   True
+                                </td>
+                                <td>
+                                  <button className="tableButton edit" onClick={() =>
+                                    navigate(`/users-edit`, {
+                                      state: item,
+                                    })
+                                  }>
+                                    <i class="fa-solid fa-pencil"></i>
+                                  </button>
                                 </td>
                                 <td
                                   onClick={() =>

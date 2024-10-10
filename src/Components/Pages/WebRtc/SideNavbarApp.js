@@ -2,19 +2,31 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";
 
-function SideNavbarApp({ setactivePage }) {
+function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
   const account = useSelector((state) => state.account);
   const [popUp, setPopUp] = useState(false);
   const { connectStatus } = useSIPProvider();
-  console.log(connectStatus);
+  const [loading, setLoading] = useState(true); // Loading state for popup
+
   const extension = account?.extension?.extension || "";
+  const [connectedStatus, setConnectedStatus] = useState("");
 
   useEffect(() => {
+    setConnectedStatus(connectStatus);
     if (connectStatus !== "CONNECTED") {
       setPopUp(true);
+      setLoading(true); // Show loading initially
+      setTimeout(() => setLoading(false), 1000); // Hide loading after 1 second
+    } else if (connectStatus === "CONNECTED" && !isMicOn) {
+      setPopUp(true);
+      setLoading(true); // Show loading initially
+      setTimeout(() => setLoading(false), 1000); // Hide loading after 1 second
+    } else if (connectStatus === "CONNECTED" && isMicOn) {
+      setPopUp(false);
     }
-  }, [connectStatus]);
+  }, [connectStatus, isMicOn]);
 
+  console.log("connectedStatus", connectedStatus);
 
   return (
     <section>
@@ -28,10 +40,19 @@ function SideNavbarApp({ setactivePage }) {
           <ul>
             <li>
               <button className="navItem">
-                <div className="profileHolder" id={connectStatus === "CONNECTED" ? "profileOnlineNav" : "profileOfflineNav"}>
+                <div
+                  className="profileHolder"
+                  id={
+                    connectStatus === "CONNECTED"
+                      ? "profileOnlineNav"
+                      : "profileOfflineNav"
+                  }
+                >
                   {extension}
                 </div>
-                <div className="userTitle">{extension}-{account.username}</div>
+                <div className="userTitle">
+                  {extension}-{account.username}
+                </div>
               </button>
             </li>{" "}
             <div className="text-center">
@@ -230,6 +251,76 @@ function SideNavbarApp({ setactivePage }) {
       ) : (
         ""
       )} */}
+      {popUp ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-3">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-circle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-2">
+                  {loading ? (
+                    <h4>Connecting...</h4> // Show loading indicator
+                  ) : (
+                    <>
+                      <h4>
+                        {connectedStatus !== "CONNECTED"
+                          ? "Network Issue!"
+                          : isMicOn !== true && "Audio Issue!"}
+                      </h4>
+                      {connectedStatus !== "CONNECTED" ? (
+                        <>
+                          <p className="mb-1">
+                            Failed to connect to the server!
+                          </p>
+                          <p style={{ fontSize: 12 }}>
+                            Error:{" "}
+                            <span className="fw-light text-danger">
+                              {reconnecting === 0
+                                ? "Not connected with server"
+                                : "Reconnecting..."}
+                            </span>
+                          </p>
+                        </>
+                      ) : isMicOn !== true ? (
+                        <>
+                          <p className="mb-1">Failed to open microphone!</p>
+                          <p style={{ fontSize: 12 }}>
+                            Error:{" "}
+                            <span className="fw-light text-danger">
+                              WebRTC features disabled! <br />
+                              You can access only messaging.
+                            </span>
+                            <br />
+                            <br />
+                            <span>{`Open settings > Microphone > Allow`}</span>
+                          </p>
+                        </>
+                      ) : (
+                        ""
+                      )}
+                    </>
+                  )}
+
+                  <button
+                    className="panelButton mx-1"
+                    onClick={() => {
+                      setPopUp(false);
+                    }}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </section>
   );
 }

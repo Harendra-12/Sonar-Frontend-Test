@@ -38,7 +38,7 @@ function CallCenterQueue() {
       setLoading(false);
       async function getData() {
         const apiData = await generalGetFunction("/call-center-queues");
-        if (apiData.status) {
+        if (apiData?.status) {
           setLoading(false);
           setCallCenter(apiData.data);
         } else {
@@ -49,7 +49,7 @@ function CallCenterQueue() {
     } else {
       async function getData() {
         const apiData = await generalGetFunction("/call-center-queues");
-        if (apiData.status) {
+        if (apiData?.status) {
           setLoading(false);
           setCallCenter(apiData.data);
         } else {
@@ -97,7 +97,7 @@ function CallCenterQueue() {
     const apiData = await generalDeleteFunction(
       `/call-center-queue/destroy/${id}`
     );
-    if (apiData.status) {
+    if (apiData?.status) {
       setLoading(false);
       // setRefresh(refresh+1)
       const updatedCallCenter = callCenter.filter((item) => item.id !== id);
@@ -106,7 +106,7 @@ function CallCenterQueue() {
       setDeleteId("");
     } else {
       setLoading(false);
-      toast.error(apiData.error);
+      // toast.error(apiData.error);
       setDeleteId("");
     }
   }
@@ -133,6 +133,16 @@ function CallCenterQueue() {
               </div>
               <div className="col-xl-8 pt-3 pt-xl-0">
                 <div className="d-flex justify-content-end">
+                  <button
+                    effect="ripple"
+                    className="panelButton"
+                    onClick={() => {
+                      navigate(-1);
+                      backToTop();
+                    }}
+                  >
+                    Back
+                  </button>
                   <Link
                     // to="/cal-center-queue-add"
                     // onClick={backToTop}
@@ -167,6 +177,7 @@ function CallCenterQueue() {
                       <th>Prefix</th>
                       <th>Total Agents</th>
                       <th>Settings</th>
+                      <th>Edit</th>
                       <th>Delete</th>
                     </tr>
                   </thead>
@@ -238,25 +249,38 @@ function CallCenterQueue() {
                                   {item.agents.length}
                                 </td>
                                 <td>
-                                  <button className="tableButton" onClick={() =>
-                                    navigate(
-                                      `/call-center-settings?id=${item.id}`
-                                    )
-                                  }>
+                                  <button
+                                    className="tableButton"
+                                    onClick={() =>
+                                      navigate(
+                                        `/call-center-settings?id=${item.id}`
+                                      )
+                                    }
+                                  >
                                     <i className="fa-duotone fa-gear"></i>
                                   </button>
                                 </td>
-                                <td
-                                  // onClick={() => handleDelete(item.id)}
-                                  onClick={() => {
+                                <td>
+                                  {" "}
+                                  <button
+                                    className="tableButton edit"
+                                    onClick={() =>
+                                      navigate(
+                                        `/cal-center-queue-edit?id=${item.id}`
+                                      )
+                                    }
+                                  >
+                                    <i class="fa-solid fa-pencil"></i>
+                                  </button>
+                                </td>
+                                <td>
+                                  <button className="tableButton delete" onClick={() => {
                                     setPopUp(true);
                                     // setDeleteToggle(true);
                                     setDeleteId(item.id);
-                                  }}
-                                >
-                                  <label className="tableLabel fail">
-                                    Delete
-                                  </label>
+                                  }}>
+                                    <i class="fa-solid fa-trash"></i>
+                                  </button>
                                 </td>
                               </tr>
                             );

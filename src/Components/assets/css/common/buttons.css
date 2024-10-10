@@ -1,162 +1,163 @@
 .clearButton {
-    background: none;
-    border: 0;
-    /* background-color: var(--color1); */
-    color: var(--ui-accent);
-    text-decoration: none;
+  background: none;
+  border: 0;
+  /* background-color: var(--color1); */
+  color: var(--ui-accent);
+  text-decoration: none;
 }
 
 .panelButton {
-    /* border: 2px solid var(--ui-accent);
+  /* border: 2px solid var(--ui-accent);
     color: var(--ui-accent);
     background: none; */
-    --ripple-background: var(--ui-accent);
-    /* --ripple-opacity: 0.1;
+  --ripple-background: var(--ui-accent);
+  /* --ripple-opacity: 0.1;
     --ripple-duration: 900ms; */
 
-    /* background-color: #0e111e; */
-    /* border: 1px solid #868686; */
-    border: none;
-    /* color: #fff; */
-    padding: 5px 5px;
-    margin: 5px 5px;
-    border-radius: 3px;
-    background: var(--button-dark);
-    font-size: 13px !important;
-    font-weight: 500 !important;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;
-    text-decoration: none;
-    color: #fff;
+  /* background-color: #0e111e; */
+  /* border: 1px solid #868686; */
+  border: none;
+  /* color: #fff; */
+  padding: 5px 5px;
+  margin: 5px 5px;
+  border-radius: 3px;
+  background: var(--button-dark);
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;
+  text-decoration: none;
+  color: #fff;
 }
 
 .toggleButton {
-    border: none;
-    padding: 5px 10px;
-    margin: 5px 5px;
-    border-radius: 3px;
-    font-size: 13px !important;
-    font-weight: 500 !important;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;
-    text-decoration: none;
-    color: var(--button-dark);
-    background-color: #fff;
-    border: 1px solid #868686;
+  border: none;
+  padding: 5px 10px;
+  margin: 5px 5px;
+  border-radius: 3px;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;
+  text-decoration: none;
+  color: var(--button-dark);
+  background-color: #fff;
+  border: 1px solid #868686;
 }
 
 .toggleButton.active {
-    background: var(--button-dark);
-    border: 1px solid var(--button-dark);
-    color: #fff;
+  background: var(--button-dark);
+  border: 1px solid var(--button-dark);
+  color: #fff;
 }
 
 .panelButtonWhite {
-    border: 1px solid #868686;
-    padding: 5px 10px;
-    margin: 5px 5px;
-    border-radius: 3px;
-    background-color: #fff;
-    font-size: 13px;
-    font-weight: 500;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;
-    text-decoration: none;
-    color: #000;
+  border: 1px solid #868686;
+  padding: 5px 10px;
+  margin: 5px 5px;
+  border-radius: 3px;
+  background-color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;
+  text-decoration: none;
+  color: #000;
 }
 
 .formButton {
-    background-color: #0e111e;
-    color: #fff;
-    border-radius: 3px;
-    border: none;
-    padding: 7px 13px;
-    margin: 0 5px;
-    font-size: 16px;
-    font-weight: 500;
-    text-decoration: none;
+  background-color: #0e111e;
+  color: #fff;
+  border-radius: 3px;
+  border: none;
+  padding: 7px 13px;
+  margin: 0 5px;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
 }
 
 .getApp {
-    background-color: var(--nav-color);
-    border: none;
-    color: #fff;
-    padding: 0 15px;
-    height: 36px;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;
-    text-decoration: none;
+  background-color: var(--nav-color);
+  border: none;
+  color: #fff;
+  padding: 0 15px;
+  height: 36px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;
+  text-decoration: none;
 }
 
 .clearColorButton {
-    color: #fff;
-    text-decoration: none;
-    /* background-color: var(--color2); */
-    background-color: #abe4ff46;
-    font-size: 16px;
-    font-weight: 400;
-    border: 1px solid #fff;
-    border-radius: 50px;
-    display: block;
-    width: 100%;
-    padding: 4px 20px;
-    text-decoration: none;
-    transition: 0.3s ease-in-out;
-    /* box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06); */
+  color: #fff;
+  text-decoration: none;
+  /* background-color: var(--color2); */
+  background-color: #abe4ff46;
+  font-size: 16px;
+  font-weight: 400;
+  border: 1px solid #fff;
+  border-radius: 50px;
+  display: block;
+  width: 100%;
+  padding: 4px 20px;
+  text-decoration: none;
+  transition: 0.3s ease-in-out;
+  /* box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06); */
 }
 
 .clearColorButton i {
-    font-weight: 900;
+  font-weight: 900;
 }
 
 .clearColorButton:hover {
-    background-color: var(--color2);
-    /* color: var(--color2);
+  background-color: var(--color2);
+  /* color: var(--color2);
     border: 1px solid var(--color2);
     box-shadow: none; */
 }
 
 .clearColorButton:hover i {
-    font-weight: 400;
+  font-weight: 400;
 }
 
 .clearColorButton.activation {
-    border: 1px solid var(--ui-accent);
-    color: var(--ui-accent);
-    background-color: #439fdd33;
+  border: 1px solid var(--ui-accent);
+  color: var(--ui-accent);
+  background-color: #439fdd33;
 }
 
 .clearColorButton.setup {
-    border: 1px solid var(--color3);
-    color: var(--color3);
-    background-color: #f191012d;
+  border: 1px solid var(--color3);
+  color: var(--color3);
+  background-color: #f191012d;
 }
 
 .clearColorButton i {
-    margin-right: 5px;
+  margin-right: 5px;
 }
 
 .tabButton {
-    border: none;
-    background-color: #fff;
-    border-radius: 50px;
-    /* border: 1px solid #c9c9c970; */
-    /* box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px; */
-    color: #454545;
-    font-weight: 500;
-    width: 100%;
-    padding: 5px 20px;
-    text-decoration: none;
-    /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
-
+  border: none;
+  background-color: #fff;
+  border-radius: 50px;
+  /* border: 1px solid #c9c9c970; */
+  /* box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px; */
+  color: #454545;
+  font-weight: 500;
+  width: 100%;
+  padding: 5px 20px;
+  text-decoration: none;
+  /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .tabButton.active {
-    background-color: #439fdd33;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-    color: var(--ui-accent);
-    border: 1px solid var(--ui-accent);
+  background-color: #ffffff33;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  color: #fff;
+  border: 1px solid #fff;
 }
 
 /* .tabButtonParent:first-child .tabButton {
@@ -170,343 +171,354 @@
 } */
 
 .addToCart {
-    background-color: rgba(0, 159, 255, 1);
-    border: none;
-    padding: 0px 0px;
-    color: #fff;
-    font-size: 13px;
-    border-radius: 5px !important;
-    overflow: hidden;
-    display: flex;
-    text-decoration: none;
+  background-color: rgba(0, 159, 255, 1);
+  border: none;
+  padding: 0px 0px;
+  color: #fff;
+  font-size: 13px;
+  border-radius: 5px !important;
+  overflow: hidden;
+  display: flex;
+  text-decoration: none;
 }
 
 .addToCart .cart {
-    background-color: rgba(0, 159, 255, 1);
-    padding: 5px 20px;
-    width: 100%;
-    height: 100%;
+  background-color: rgba(0, 159, 255, 1);
+  padding: 5px 20px;
+  width: 100%;
+  height: 100%;
 }
 
 .addToCart .cart2 {
-    background-color: rgba(0, 95, 153, 1);
-    padding: 5px 20px;
-    width: 100%;
-    height: 100%;
+  background-color: rgba(0, 95, 153, 1);
+  padding: 5px 20px;
+  width: 100%;
+  height: 100%;
 }
 
 .cartButton {
-    background-color: #2bad8d;
-    border: none;
-    padding: 5px 25px;
-    color: #fff;
-    font-size: 14px;
-    border-radius: 5px !important;
-    text-decoration: none;
-    cursor: pointer;
+  background-color: #2bad8d;
+  border: none;
+  padding: 5px 25px;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 5px !important;
+  text-decoration: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .logoutBtn {
-    background-color: #ff0000;
-    padding: 5px 10px;
-    color: #fff !important;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 14px;
-    width: 100%;
-    margin-top: 7px;
-    text-align: center;
-    font-weight: 500 !important;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color: #ff0000;
+  padding: 5px 10px;
+  color: #fff !important;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 14px;
+  width: 100%;
+  margin-top: 7px;
+  text-align: center;
+  font-weight: 500 !important;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .otherButton {
-    background-color: #0099ff;
-    padding: 5px 10px;
-    color: #fff;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 14px;
+  background-color: #0099ff;
+  padding: 5px 10px;
+  color: #fff;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 14px;
 }
 
 .callButton {
-    background-color: #1ac444;
-    border: none;
-    color: #fff;
-    font-size: 22px;
-    width: 45px;
-    height: 45px;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: auto;
-    margin-left: auto;
+  background-color: #1ac444;
+  border: none;
+  color: #fff;
+  font-size: 22px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .callButton.hangup {
-    background-color: #c41a1a;
+  background-color: #c41a1a;
 }
 
 .appPanelButton {
-    background-color: #0e111e;
-    border: none;
-    color: #fff;
-    width: 35px;
-    height: 35px;
-    margin: 0 3px;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    transition: 0.3s ease-in-out;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background-color: #0e111e;
+  border: none;
+  color: #fff;
+  width: 35px;
+  height: 35px;
+  margin: 0 3px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: 0.3s ease-in-out;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 .appPanelButton:hover {
-    background-color: #00000066;
-    box-shadow: none;
+  background-color: #00000066;
+  box-shadow: none;
 }
 
 .appPanelButton:hover i {
-    color: #fff;
-    font-weight: 900;
+  color: #fff;
+  font-weight: 900;
 }
 
 .appPanelButton2 {
-    background-color: #0e111e;
-    border: none;
-    color: #fff;
-    padding: 5px 10px;
-    margin: 0 3px;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background-color: #0e111e;
+  border: none;
+  color: #fff;
+  padding: 5px 10px;
+  margin: 0 3px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .appPanelButtonColor {
-    background-color: var(--color2);
-    border: none;
-    color: #fff;
-    width: 35px;
-    height: 35px;
-    margin: 0 3px;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background-color: var(--color2);
+  border: none;
+  color: #fff;
+  width: 35px;
+  height: 35px;
+  margin: 0 3px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .appPanelButtonCaller {
-    background-color: #171922;
-    border: none;
-    color: #fff;
-    width: 35px;
-    height: 35px;
-    margin: 0 3px;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background-color: #171922;
+  border: none;
+  color: #fff;
+  width: 35px;
+  height: 35px;
+  margin: 0 3px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .appPanelButtonCaller.active {
-    background-color: #5c5c5c;
+  background-color: #5c5c5c;
 }
 
 .appPanelButtonCaller.active i {
-    font-weight: 900;
+  font-weight: 900;
 }
 
 .appPanelButtonColor2 {
-    background-color: transparent;
-    border: none;
-    color: var(--color2);
-    width: 35px;
-    height: 35px;
-    font-size: 18px;
-    margin: 0 3px;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background-color: transparent;
+  border: none;
+  color: var(--color2);
+  width: 35px;
+  height: 35px;
+  font-size: 18px;
+  margin: 0 3px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tableLabel {
-    color: #fff;
-    padding: 3px 5px;
-    border-radius: 5px;
-    min-width: 70px;
-    text-align: center;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    transition: 0.3s ease-in-out;
-    cursor: pointer;
+  color: #fff;
+  padding: 3px 5px;
+  border-radius: 5px;
+  min-width: 70px;
+  text-align: center;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  transition: 0.3s ease-in-out;
+  cursor: pointer;
 }
 
 .tableLabel:hover {
-    background-color: #252525 !important;
-    box-shadow: none;
+  background-color: #252525 !important;
+  box-shadow: none;
 }
 
-
 .tableLabel.success {
-    background-color: #00ab2b;
+  background-color: #00ab2b;
 }
 
 .tableLabel.fail {
-    background-color: #ff0000;
+  background-color: #ff0000;
 }
 
 .tableLabel.pending {
-    background-color: orange;
+  background-color: orange;
 }
 
 .payNow {
-    width: 100%;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #00892f;
-    border: none;
-    color: white;
-    font-weight: 600;
-    gap: 8px;
-    cursor: pointer;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.103);
-    position: relative;
-    overflow: hidden;
-    transition-duration: .3s;
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #00892f;
+  border: none;
+  color: white;
+  font-weight: 600;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.103);
+  position: relative;
+  overflow: hidden;
+  transition-duration: 0.3s;
 }
 
 .payNow::before {
-    width: 100%;
-    height: 130px;
-    position: absolute;
-    content: "";
-    background-color: #7eecf4;
-    border-radius: 50%;
-    left: -100%;
-    top: 0;
-    transition-duration: .3s;
-    mix-blend-mode: hard-light;
+  width: 100%;
+  height: 130px;
+  position: absolute;
+  content: "";
+  background-color: #7eecf4;
+  border-radius: 50%;
+  left: -100%;
+  top: 0;
+  transition-duration: 0.3s;
+  mix-blend-mode: hard-light;
 }
 
 .payNow:hover::before {
-    transition-duration: .3s;
-    transform: translate(100%, -50%);
-    border-radius: 0;
+  transition-duration: 0.3s;
+  transform: translate(100%, -50%);
+  border-radius: 0;
 }
 
 .payNow:active {
-    transform: translate(5px, 5px);
-    transition-duration: .3s;
+  transform: translate(5px, 5px);
+  transition-duration: 0.3s;
 }
 
 .whiteCircleBtn {
-    background-color: #ffffff;
-    border: none;
-    color: #0a0d16;
-    font-size: 15px;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: auto;
-    margin-left: auto;
+  background-color: #ffffff;
+  border: none;
+  color: #0a0d16;
+  font-size: 15px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .approvalButton {
-    width: 100%;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #00892f;
-    border: none;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.103);
-    position: relative;
-    overflow: hidden;
-    transition-duration: .3s;
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #00892f;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.103);
+  position: relative;
+  overflow: hidden;
+  transition-duration: 0.3s;
 }
 
 .approvalButton.disabled {
-    background-color: #3f3f3f;
-    opacity: 0.7;
-    cursor: not-allowed;
+  background-color: #3f3f3f;
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .approvalButton::before {
-    width: 100%;
-    height: 130px;
-    position: absolute;
-    content: "";
-    background-color: #7eecf4;
-    border-radius: 50%;
-    left: -100%;
-    top: 0;
-    transition-duration: .3s;
-    mix-blend-mode: hard-light;
+  width: 100%;
+  height: 130px;
+  position: absolute;
+  content: "";
+  background-color: #7eecf4;
+  border-radius: 50%;
+  left: -100%;
+  top: 0;
+  transition-duration: 0.3s;
+  mix-blend-mode: hard-light;
 }
 
 .approvalButton:hover::before {
-    transition-duration: .3s;
-    transform: translate(100%, -50%);
-    border-radius: 0;
+  transition-duration: 0.3s;
+  transform: translate(100%, -50%);
+  border-radius: 0;
 }
 
 .approvalButton.disabled::before {
-    content: none;
+  content: none;
 }
 
 .approvalButton:active {
-    transform: translate(5px, 5px);
-    transition-duration: .3s;
+  transform: translate(5px, 5px);
+  transition-duration: 0.3s;
 }
 
 .tableButton {
-    border: none;
-    border-radius: 50%;
-    background-color: var(--ui-accent);
-    color: #fff;
-    width: 25px;
-    height: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 0.3s ease-in-out;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--ui-accent);
+  color: #fff;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s ease-in-out;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .tableButton:hover {
-    background-color: var(--bg-color);
-    box-shadow: none;
+  background-color: var(--bg-color);
+  box-shadow: none;
 }
 
 .tableButton:hover i {
-    color: var(--ui-accent) !important;
+  color: var(--ui-accent) !important;
 }
 
 .tableButton i {
-    font-size: 14px;
-    color: #fff !important;
+  font-size: 14px;
+  color: #fff !important;
 }
 
 .tableButton.delete {
-    background-color: #ff4444;
+  background-color: #ff4444;
 }
 
-.tableButton.delete:hover {
-    background-color: #ff00000d;
+.tableButton.edit {
+  background-color: #00ab2b;
+}
+
+.tableButton.delete:hover,
+.tableButton.edit:hover {
+  background-color: #ff00000d;
 }
 
 .tableButton.delete:hover i {
-    color: #ff4444 !important;
+  color: #ff4444 !important;
+}
+
+.tableButton.edit:hover i {
+  color: #00ab2b !important;
 }

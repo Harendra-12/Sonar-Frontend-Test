@@ -23,6 +23,7 @@ function GlobalCalls() {
   const usersRefresh = useSelector((state) => state.usersRefresh);
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
+  const ivrRefresh = useSelector((state) => state.ivrRefresh);
 
   const rolesAndPermissionRefresh = useSelector(
     (state) => state.rolesAndPermissionRefresh
@@ -77,7 +78,7 @@ function GlobalCalls() {
       const apiData = await generalGetFunction(
         `/billing-address/all?account_id=${account?.account_id}`
       );
-      if (apiData.status) {
+      if (apiData?.status) {
         dispatch({
           type: "SET_BILLINGLIST",
           billingList: apiData.data,
@@ -98,7 +99,7 @@ function GlobalCalls() {
       const accountData = await generalGetFunction(
         `/account/${account?.account_id}`
       );
-      if (accountData.status) {
+      if (accountData?.status) {
         dispatch({
           type: "SET_ACCOUNTDETAILS",
           accountDetails: accountData.data,
@@ -119,7 +120,7 @@ function GlobalCalls() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/call-center-queues`);
-      if (apiData.status) {
+      if (apiData?.status) {
         dispatch({
           type: "SET_CALLCENTER",
           callCenter: apiData.data,
@@ -157,7 +158,7 @@ function GlobalCalls() {
       const apiData = await generalGetFunction(
         `/extension/all?account=${account?.account_id}`
       );
-      if (apiData.status) {
+      if (apiData?.status) {
         dispatch({
           type: "SET_EXTENSIONALL",
           extensionAll: apiData.data,
@@ -174,7 +175,7 @@ function GlobalCalls() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction("/timezones");
-      if (apiData.status) {
+      if (apiData?.status) {
         dispatch({
           type: "SET_TIMEZONE",
           timeZone: apiData.data,
@@ -193,7 +194,7 @@ function GlobalCalls() {
       const apiData = await generalGetFunction(
         `/ringgroup?account=${account?.account_id}`
       );
-      if (apiData.status) {
+      if (apiData?.status) {
         dispatch({
           type: "SET_RINGGROUP",
           ringGroup: apiData.data,
@@ -224,17 +225,18 @@ function GlobalCalls() {
     }
   }, [allUserRefresh]);
 
+  // Getting roles and permission details
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/role/all`);
       const permissionData = await generalGetFunction("/permission");
-      if (apiData.status) {
+      if (apiData?.status) {
         dispatch({
           type: "SET_ROLES",
           roles: apiData.data,
         });
       }
-      if (permissionData.status) {
+      if (permissionData?.status) {
         dispatch({
           type: "SET_PERMISSIONS",
           permissions: permissionData.data,
@@ -246,6 +248,7 @@ function GlobalCalls() {
     }
   }, [rolesAndPermissionRefresh]);
 
+  // Getting account balance
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction("/account-balance");
@@ -260,6 +263,22 @@ function GlobalCalls() {
     }
     getData();
   }, []);
+
+  // Getting ivr details
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction("/ivr-master/all");
+      if (apiData?.status) {
+        dispatch({
+          type: "SET_IVR",
+          ivr: apiData.data,
+        });
+      }
+    }
+    if (ivrRefresh > 0) {
+      getData();
+    }
+  }, [ivrRefresh]);
 
   // useEffect(() => {
   //   async function getData() {

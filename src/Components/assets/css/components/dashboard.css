@@ -66,7 +66,7 @@
     font-family: Open sans !important;
     line-height: 45px !important;
     padding: 0 !important;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .itemWrapperb .label2 {
@@ -108,7 +108,9 @@
 
 .itemWrapper .data-number2 {
     text-align: left;
-    margin-top: 28px;
+    /* margin-top: 28px; */
+    margin-top: 20px;
+
 }
 
 .itemWrapper .data-number2 h5 {
@@ -234,7 +236,8 @@
     color: var(--color2);
 }
 
-.itemWrapper.b .heading i {
+.itemWrapper.b .heading i,
+.itemWrapper.b i {
     color: var(--ui-accent-green);
     background-color: var(--ui-accent-green-trans);
 }
@@ -406,7 +409,7 @@
     padding-left: 0;
     list-style: none;
     text-align: left;
-    padding-top: 10px;
+    padding-top: 15px;
     margin-bottom: 0;
 }
 

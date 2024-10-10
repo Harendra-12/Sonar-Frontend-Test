@@ -10,6 +10,7 @@ import EmptyPrompt from "../../Loader/EmptyPrompt";
 import ContentLoader from "../../Loader/ContentLoader";
 import Header from "../../CommonComponents/Header";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
+import { toast } from "react-toastify";
 
 const Extensions = () => {
   const navigate = useNavigate();
@@ -61,13 +62,12 @@ const Extensions = () => {
           const apiData = await generalGetFunction(
             `/extension/all?account=${account.account_id}&page=${pageNumber}`
           );
-          if (apiData.status) {
+          if (apiData?.status) {
             setExtension(apiData.data);
             dispatch({
               type: "SET_EXTENSIONBYACCOUNT",
               extensionByAccount: apiData.data,
             });
-          } else {
           }
         } else {
           navigate("/");
@@ -81,7 +81,7 @@ const Extensions = () => {
           const apiData = await generalGetFunction(
             `/extension/all?account=${account.account_id}&page=${pageNumber}`
           );
-          if (apiData.status) {
+          if (apiData?.status) {
             setLoading(false);
             setExtension(apiData.data);
             dispatch({
@@ -90,6 +90,7 @@ const Extensions = () => {
             });
           } else {
             setLoading(false);
+            toast.error(apiData.response.data.message);
           }
         } else {
           setLoading(false);
@@ -99,7 +100,6 @@ const Extensions = () => {
       getData();
     }
   }, [account, navigate, pageNumber]);
-  console.log("extension:", extension);
 
   return (
     <main className="mainContent">
@@ -120,6 +120,16 @@ const Extensions = () => {
               </div>
               <div className="col-xl-8 pt-3 pt-xl-0">
                 <div className="d-flex justify-content-end">
+                  <button
+                    effect="ripple"
+                    className="panelButton"
+                    onClick={() => {
+                      navigate(-1);
+                      backToTop();
+                    }}
+                  >
+                    Back
+                  </button>
                   <Link
                     // to="/extensions-add"
                     to="#"
@@ -154,6 +164,7 @@ const Extensions = () => {
                       <th>Description</th>
                       <th>Status</th>
                       <th>Setting</th>
+                      <th>Edit</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -248,7 +259,7 @@ const Extensions = () => {
                                 }
                               ></span>
                             </td>
-                            <td>
+                            <td style={{ cursor: "default" }}>
                               <button
                                 class="tableButton"
                                 onClick={() =>
@@ -261,6 +272,17 @@ const Extensions = () => {
                                 }
                               >
                                 <i className="fa-duotone fa-gear"></i>
+                              </button>
+                            </td>
+                            <td style={{ cursor: "default" }}>
+                              {" "}
+                              <button
+                                className="tableButton edit"
+                                onClick={() =>
+                                  navigate(`/extensions-edit?id=${item.id}`)
+                                }
+                              >
+                                <i class="fa-solid fa-pencil"></i>
                               </button>
                             </td>
                           </tr>

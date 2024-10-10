@@ -1,18 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
+import { generalGetFunction } from "../GlobalFunction/globalFunction";
 
 const ActionList = ({
+  category,
   getDropdownValue,
   value,
+  label = "",
   title = "Action",
-  label = "Set the action to perform when the max wait time is reached.",
+  isDisabled = false,
+  // label = "Set the action to perform when the max wait time is reached.",
 }) => {
   const dispatch = useDispatch();
 
   const [ringGroup, setRingGroup] = useState([]);
   const [extension, setExtension] = useState([]);
   const [callCenter, setCallCenter] = useState([]);
+  const [ivr, setIvr] = useState([]);
 
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -22,6 +27,8 @@ const ActionList = ({
   const extensionArr = useSelector((state) => state.extension);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
   const ringGroupArr = useSelector((state) => state.ringGroup);
+  const ivrRefresh = useSelector((state) => state.ivrRefresh);
+  const ivrArr = useSelector((state) => state.ivr);
 
   useEffect(() => {
     if (extensionRefresh > 0) {
@@ -48,8 +55,24 @@ const ActionList = ({
         callCenterRefresh: callCenterRefresh + 1,
       });
     }
-  }, [extensionArr, ringGroupArr, callCenterArr]);
+    if (ivrRefresh > 0) {
+      setIvr(ivrArr);
+    } else {
+      dispatch({
+        type: "SET_IVRREFRESH",
+        ivrRefresh: ivrRefresh + 1,
+      });
+    }
+    // async function getData() {
+    //   const ivrData = await generalGetFunction("/ivr-master/all");
+    //  if(ivrData.status){
+    //   setIvr(ivrData.data)
+    //  }
+    // }
+    // getData();
+  }, [extensionArr, ringGroupArr, callCenterArr, ivrArr]);
 
+  // Backup for predefault
   useEffect(() => {
     // Set default value if provided
     if (value) {
@@ -80,7 +103,43 @@ const ActionList = ({
         label: item.extension,
       })),
     },
-  ];
+    {
+      label: "IVR",
+      options: ivr.map((item) => ({
+        value: [String(item.id), "ivr"],
+        label: item.ivr_name,
+      })),
+    },
+  ].filter(
+    (option) =>
+      category === undefined ||
+      option.label.toLowerCase() === category?.toLowerCase()
+  );
+
+  const allOptionsRef = useRef(allOptions);
+
+  useEffect(() => {
+    if (value) {
+      const defaultOption = allOptionsRef.current
+        .flatMap((opt) => opt.options)
+        .find((option) => option.value[0] === value);
+      if (defaultOption) setSelectedOption(defaultOption);
+    }
+  }, [value]);
+
+  useEffect(() => {
+    allOptionsRef.current = allOptions;
+  }, [allOptions]);
+
+  // useEffect(() => {
+  //   // Set default value if provided
+  //   if (value && allOptions.length > 0) {
+  //     const defaultOption = allOptions
+  //       .flatMap((opt) => opt.options)
+  //       .find((option) => option.value[0] === value);
+  //     if (defaultOption) setSelectedOption(defaultOption);
+  //   }
+  // }, [value, allOptions]);
 
   // Custom styles for react-select
   const customStyles = {
@@ -150,26 +209,34 @@ const ActionList = ({
 
   return (
     <>
-      {title ? <div className="formLabel">
-        <label htmlFor="">{title}</label>
-      </div> : ""}
+      {title ? (
+        <div className="formLabel">
+          <label htmlFor="">{title}</label>
+        </div>
+      ) : (
+        ""
+      )}
       <div className="col-12">
         <Select
-          // className="formItem"
+          isDisabled={isDisabled}
           id="selectFormRow"
           onChange={(selectedOption) => {
             getDropdownValue(selectedOption.value);
-            setSelectedOption(selectedOption.value[0]);
+            // setSelectedOption(selectedOption.value[0]);
+            setSelectedOption(selectedOption);
           }}
           options={allOptions}
           isSearchable
           styles={customStyles}
           value={selectedOption}
         />
-        {label ?
+        {label ? (
           <label htmlFor="data" className="formItemDesc" style={{ margin: 0 }}>
             {label}
-          </label> : ""}
+          </label>
+        ) : (
+          ""
+        )}
       </div>
     </>
   );

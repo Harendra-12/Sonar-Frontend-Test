@@ -32,7 +32,7 @@ function PackageEdit() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/package/details/${value}`);
-      if (apiData.status) {
+      if (apiData?.status) {
         setLoading(false);
         setPackages((prevState) => ({
           ...prevState,
@@ -43,6 +43,8 @@ function PackageEdit() {
           regular_price: apiData.data.regular_price,
           offer_price: apiData.data.offer_price,
         }));
+      } else {
+        setLoading(false);
       }
     }
     getData();
@@ -129,8 +131,8 @@ function PackageEdit() {
         toast.success(apiData.message);
       } else {
         setLoading(false);
-        const errorMessage = Object.keys(apiData.errors);
-        toast.error(apiData.errors[errorMessage[0]][0]);
+        // const errorMessage = Object.keys(apiData.errors);
+        // toast.error(apiData.errors[errorMessage[0]][0]);
       }
     }
   }

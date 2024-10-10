@@ -73,21 +73,21 @@ const UsersAdd = () => {
         // } else {
         //   navigate("/");
         // }
-        if (timeZ.status) {
+        if (timeZ?.status) {
           setTimeZone(
             timeZ.data.map((item) => {
               return [item.id, item.name];
             })
           );
         }
-        if (apiRole.status) {
+        if (apiRole?.status) {
           if (apiRole.data.length > 0) {
             setRole(apiRole.data);
           } else {
             toast.error("Please add Role first");
           }
         }
-        if (permissionData.status) {
+        if (permissionData?.status) {
           setDefaultPermission(permissionData.data);
         }
       }
@@ -136,7 +136,7 @@ const UsersAdd = () => {
         username: watch().username,
       };
       const userName = await generalPostFunction("/check/username", parsedData);
-      if (userName.status) {
+      if (userName?.status) {
         setIsUserNameAvailable(true);
         setuserNameValidationLoader(false);
       } else {
@@ -191,7 +191,7 @@ const UsersAdd = () => {
     };
     setLoading(true);
     const addUser = await generalPostFunction("/user/create", payload);
-    if (addUser.status) {
+    if (addUser?.status) {
       reset();
       setSelectedPermission([]);
       toast.success(addUser.message);
@@ -207,8 +207,8 @@ const UsersAdd = () => {
       navigate("/users");
     } else {
       setLoading(false);
-      const errorMessage = Object.keys(addUser.errors);
-      toast.error(addUser.errors[errorMessage[0]][0]);
+      // const errorMessage = Object.keys(addUser.errors);
+      // toast.error(addUser.errors[errorMessage[0]][0]);
     }
   });
 
@@ -333,14 +333,22 @@ const UsersAdd = () => {
             </div>
           </div>
           <div className="col-xl-12" style={{ overflow: "auto" }}>
-            <div className="d-flex flex-wrap">
+            <div className="d-flex flex-wrap mb-5">
               <div className={selectedRole ? "col-xl-6" : "col-xl-12"}>
                 <div className="profileView">
                   <div className="profileDetailsHolder position-relative">
                     <form action="#" className="row px-2">
-                      <div className={selectedRole ? "formRow col-xl-12" : "formRow col-xl-3"}>
+                      <div
+                        className={
+                          selectedRole
+                            ? "formRow col-xl-12"
+                            : "formRow col-xl-3"
+                        }
+                      >
                         <div className="formLabel">
-                          <label htmlFor="" className="me-2">Username</label>
+                          <label htmlFor="" className="me-2">
+                            Username
+                          </label>
 
                           {isUserNameAvailable == true ? (
                             <label className="status success">
@@ -377,7 +385,13 @@ const UsersAdd = () => {
                           )}
                         </div>
                       </div>
-                      <div className={selectedRole ? "formRow col-xl-12" : "formRow col-xl-3"}>
+                      <div
+                        className={
+                          selectedRole
+                            ? "formRow col-xl-12"
+                            : "formRow col-xl-3"
+                        }
+                      >
                         <div className="formLabel">
                           <label htmlFor="">Password</label>
                           <label htmlFor="data" className="formItemDesc">
@@ -399,7 +413,13 @@ const UsersAdd = () => {
                           )}
                         </div>
                       </div>
-                      <div className={selectedRole ? "formRow col-xl-12" : "formRow col-xl-3"}>
+                      <div
+                        className={
+                          selectedRole
+                            ? "formRow col-xl-12"
+                            : "formRow col-xl-3"
+                        }
+                      >
                         <div className="formLabel">
                           <label htmlFor="">Confirm Password</label>
                           <label htmlFor="data" className="formItemDesc">
@@ -418,7 +438,13 @@ const UsersAdd = () => {
                           )}
                         </div>
                       </div>
-                      <div className={selectedRole ? "formRow col-xl-12" : "formRow col-xl-3"}>
+                      <div
+                        className={
+                          selectedRole
+                            ? "formRow col-xl-12"
+                            : "formRow col-xl-3"
+                        }
+                      >
                         <div className="formLabel">
                           <label htmlFor="">Email</label>
                         </div>
@@ -438,7 +464,13 @@ const UsersAdd = () => {
                           )}
                         </div>
                       </div>
-                      <div className={selectedRole ? "formRow col-xl-12" : "formRow col-xl-3"}>
+                      <div
+                        className={
+                          selectedRole
+                            ? "formRow col-xl-12"
+                            : "formRow col-xl-3"
+                        }
+                      >
                         <div className="formLabel">
                           <label htmlFor="">First Name</label>
                         </div>
@@ -459,7 +491,13 @@ const UsersAdd = () => {
                           )}
                         </div>
                       </div>
-                      <div className={selectedRole ? "formRow col-xl-12" : "formRow col-xl-3"}>
+                      <div
+                        className={
+                          selectedRole
+                            ? "formRow col-xl-12"
+                            : "formRow col-xl-3"
+                        }
+                      >
                         <div className="formLabel">
                           <label htmlFor="">Last Name</label>
                         </div>
@@ -519,7 +557,13 @@ const UsersAdd = () => {
                                             </label>
                                         </div>
                                     </div> */}
-                      <div className={selectedRole ? "formRow col-xl-12" : "formRow col-xl-3"}>
+                      <div
+                        className={
+                          selectedRole
+                            ? "formRow col-xl-12"
+                            : "formRow col-xl-3"
+                        }
+                      >
                         <div className="formLabel">
                           <label htmlFor="selectFormRow">Time Zone</label>
                           <label htmlFor="data" className="formItemDesc">
@@ -530,7 +574,9 @@ const UsersAdd = () => {
                           <select
                             className="formItem"
                             name=""
-                            {...register("timezone_id", { ...requiredValidator })}
+                            {...register("timezone_id", {
+                              ...requiredValidator,
+                            })}
                           >
                             <option disabled value="">
                               Select Time Zone
@@ -549,7 +595,13 @@ const UsersAdd = () => {
                           )}
                         </div>
                       </div>
-                      <div className={selectedRole ? "formRow col-xl-12" : "formRow col-xl-3"}>
+                      <div
+                        className={
+                          selectedRole
+                            ? "formRow col-xl-12"
+                            : "formRow col-xl-3"
+                        }
+                      >
                         <div className="formLabel">
                           <label htmlFor="selectFormRow">Status</label>
                           <label htmlFor="data" className="formItemDesc">
@@ -629,12 +681,18 @@ const UsersAdd = () => {
                       </label>
                     </div>
                   </div> */}
-                      <div className={selectedRole ? "formRow col-xl-12" : "formRow col-xl-3"}>
+                      <div
+                        className={
+                          selectedRole
+                            ? "formRow col-xl-12"
+                            : "formRow col-xl-3"
+                        }
+                      >
                         <div className="formLabel">
                           <label htmlFor="selectFormRow">Role Type</label>
                           <label htmlFor="data" className="formItemDesc">
-                            Select Default to enable login or to disable login select
-                            Virtual.
+                            Select Default to enable login or to disable login
+                            select Virtual.
                           </label>
                         </div>
                         <div className="col-6">
@@ -681,9 +739,17 @@ const UsersAdd = () => {
                           )}
                         </div>
                       </div>
-                      <div className={selectedRole ? "formRow col-xl-12" : "formRow col-xl-3"}>
+                      <div
+                        className={
+                          selectedRole
+                            ? "formRow col-xl-12"
+                            : "formRow col-xl-3"
+                        }
+                      >
                         <div className="formLabel">
-                          <label htmlFor="selectFormRow">Select extension</label>
+                          <label htmlFor="selectFormRow">
+                            Select extension
+                          </label>
                           <label htmlFor="data" className="formItemDesc">
                             Assign an extension to the newly created user.
                           </label>
@@ -792,26 +858,28 @@ const UsersAdd = () => {
                               </div>
                             </div>
                             <div className="row px-2 pt-1 border-bottom">
-                              {filteredPermission[item].map((innerItem, key) => (
-                                <div
-                                  className="col-xl-2 col-md-4 col-6"
-                                  key={key}
-                                >
-                                  <input
-                                    type="checkbox"
-                                    id={`permission-${innerItem.id}`}
-                                    checked={selectedPermission.includes(
-                                      innerItem.id
-                                    )}
-                                    onChange={() =>
-                                      handleCheckboxChange(innerItem.id)
-                                    }
-                                  />
-                                  <label className="formLabel ms-2 text-capitalize">
-                                    {innerItem.action}
-                                  </label>
-                                </div>
-                              ))}
+                              {filteredPermission[item].map(
+                                (innerItem, key) => (
+                                  <div
+                                    className="col-xl-2 col-md-4 col-6"
+                                    key={key}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      id={`permission-${innerItem.id}`}
+                                      checked={selectedPermission.includes(
+                                        innerItem.id
+                                      )}
+                                      onChange={() =>
+                                        handleCheckboxChange(innerItem.id)
+                                      }
+                                    />
+                                    <label className="formLabel ms-2 text-capitalize">
+                                      {innerItem.action}
+                                    </label>
+                                  </div>
+                                )
+                              )}
                             </div>
                           </div>
                         ))}

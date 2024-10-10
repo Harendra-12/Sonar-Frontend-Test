@@ -95,12 +95,7 @@ import CallCenter from "./Components/Pages/WebRtc/CallCenter";
 import PortNumber from "./Components/Pages/NumberManagement/PortNumber";
 import PortNumberAdd from "./Components/Pages/NumberManagement/PortNumberAdd";
 import PortNumberEdit from "./Components/Pages/NumberManagement/PortNumberEdit";
-import CallPage from "./Components/Pages/WebRtcPages/CallPage";
-import AllContactPage from "./Components/Pages/WebRtcPages/AllContactPage";
-import CallCenterPage from "./Components/Pages/WebRtcPages/CallCenterPage";
-import AllVoiceMailsPage from "./Components/Pages/WebRtcPages/AllVoiceMailsPage";
-import OngoingCallPage from "./Components/Pages/WebRtcPages/OngoingCallPage";
-import CallDashboardPage from "./Components/Pages/WebRtcPages/CallDashboardPage";
+
 import WebrtcWrapper from "./Components/Pages/WebRtc/WebrtcWrapper";
 import "react-toastify/dist/ReactToastify.css";
 import Messages from "./Components/Pages/WebRtc/Messages";
@@ -108,6 +103,10 @@ import DidListingAdd from "./Components/Pages/NumberManagement/DidListingAdd";
 import MailSettingsAdd from "./Components/Pages/MailSettings/MailSettingsAdd";
 import MailSettings from "./Components/Pages/MailSettings/MailSettings";
 import MailSettingsEdit from "./Components/Pages/MailSettings/MailSettingsEdit";
+import IvrAdd from "./Components/Pages/IVR/IvrAdd";
+import IvrListing from "./Components/Pages/IVR/IvrListing";
+import IvrEdit from "./Components/Pages/IVR/IvrEdit";
+import IvrOptions from "./Components/Pages/IVR/IvrOptions";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -323,6 +322,13 @@ function App() {
           <Route path="/mail-settings-add" element={<MailSettingsAdd />} />
           <Route path="/mail-settings-edit" element={<MailSettingsEdit />} />
           {/* Mail Setting Page End */}
+
+          {/* Ivr Page Start */}
+          <Route path="/ivr-add" element={<IvrAdd />} />
+          <Route path="/ivr" element={<IvrListing />} />
+          <Route path="/ivr-edit" element={<IvrEdit />} />
+          <Route path="/ivr-options" element={<IvrOptions />} />
+          {/* Ivr Page End */}
 
           {/* 404 Redirection */}
           <Route path="*" element={<Navigate to="/dashboard" />} />

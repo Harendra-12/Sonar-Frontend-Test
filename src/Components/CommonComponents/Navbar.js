@@ -19,7 +19,7 @@ function Navbar() {
   async function logOut() {
     const apiData = await generalGetFunction("/logout");
     localStorage.clear();
-    if (apiData.data) {
+    if (apiData?.data) {
       localStorage.clear();
       dispatch({
         action: "SET_ACCOUNT",
@@ -592,6 +592,16 @@ function Navbar() {
                       effect="ripple"
                     >
                       <div className="itemTitle">Variable</div>
+                    </NavLink>
+                  </li>
+                  <li className="dashboard ">
+                    <NavLink
+                      to="/ivr"
+                      onClick={backToTop}
+                      type="button"
+                      effect="ripple"
+                    >
+                      <div className="itemTitle">IVR</div>
                     </NavLink>
                   </li>
                   {account?.extension || isCustomerAdmin ? (

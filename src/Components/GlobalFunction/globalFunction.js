@@ -1,5 +1,6 @@
 import axios from "axios";
-import { handleNavigation,handleDispatch } from "./Navigation";
+import { handleNavigation, handleDispatch } from "./Navigation";
+import { toast } from "react-toastify";
 // const baseName = "http://127.0.0.1:8000/api"
 const baseName = "https://192.168.1.88/UcaasS-Backend/api";
 
@@ -48,27 +49,28 @@ export async function login(userName, password) {
 export async function generalGetFunction(endpoint) {
   handleDispatch({
     type: "SET_LOADING",
-   loading:true,
-  })
+    loading: true,
+  });
   return axiosInstance
     .get(endpoint)
     .then((res) => {
       handleDispatch({
         type: "SET_LOADING",
-       loading:false,
-      })
+        loading: false,
+      });
       return res.data;
     })
     .catch((err) => {
       handleDispatch({
         type: "SET_LOADING",
-       loading:false,
-      })
+        loading: false,
+      });
       if (err.response?.status === 401) {
         handleNavigation("/");
         return err.response.data;
       } else {
-        return null;
+        // return null;
+        return err;
       }
       // console.log("This is error log",err.response.status);
     });
@@ -82,6 +84,21 @@ export async function generalPostFunction(endpoint, data) {
       return res.data;
     })
     .catch((err) => {
+      if (err.response.status === 500) {
+        toast.error("Something went wrong");
+      } else if (err.response.data.errors) {
+        const errorMessage = Object.keys(err.response.data.errors);
+        toast.error(err.response.data.errors[errorMessage[0]][0]);
+      } else if (err.response.data.error) {
+        const errorMessage = Object.keys(err.response.data.error);
+        toast.error(err.response.data.error[errorMessage[0]][0]);
+      } else {
+        toast.error(
+          err.response.data.message
+            ? err.response.data.message
+            : "Something went wrong"
+        );
+      }
       if (err.response.status === 401) {
         handleNavigation("/");
         return err.response.data;
@@ -99,6 +116,18 @@ export async function generalPutFunction(endpoint, data) {
       return res.data;
     })
     .catch((err) => {
+      if (err.response.status === 500) {
+        toast.error("Something went wrong");
+      } else if (err.response.data.errors) {
+        // toast.error(err.response.data.errors.callScreen[0]);
+        const errorMessage = Object.keys(err.response.data.errors);
+        toast.error(err.response.data.errors[errorMessage[0]][0]);
+      } else if (err.response.data.error) {
+        const errorMessage = Object.keys(err.response.data.error);
+        toast.error(err.response.data.error[errorMessage[0]][0]);
+      } else {
+        toast.error(err.response.data.message);
+      }
       if (err.response.status === 401) {
         handleNavigation("/");
         return err.response.data;
@@ -116,6 +145,22 @@ export async function generalDeleteFunction(endpoint) {
       return res.data;
     })
     .catch((err) => {
+      console.log("delete error:", err);
+      if (err.response.status === 500) {
+        toast.error("Something went wrong");
+      } else if (err.response.data.errors) {
+        const errorMessage = Object.keys(err.response.data.errors);
+        toast.error(err.response.data.errors[errorMessage[0]][0]);
+      } else if (err.response.data.error) {
+        const errorMessage = Object.keys(err.response.data.error);
+        toast.error(err.response.data.error);
+      } else {
+        toast.error(
+          err.response.data.message
+            ? err.response.data.message
+            : "Something went wrong"
+        );
+      }
       if (err.response.status === 401) {
         handleNavigation("/");
         return err.response.data;

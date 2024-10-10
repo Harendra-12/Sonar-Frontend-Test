@@ -7,7 +7,6 @@ import {
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
-import { Button } from "@mui/material";
 import { toast } from "react-toastify";
 
 const MailSettings = () => {
@@ -21,7 +20,7 @@ const MailSettings = () => {
     const fetchData = async () => {
       setLoading(true);
       const result = await generalGetFunction("/mail-setting/all");
-      if (result.status) {
+      if (result?.status) {
         setMailSettings(result.data);
         setLoading(false);
       } else {
@@ -35,7 +34,7 @@ const MailSettings = () => {
 
   const handleSettingsDelete = async () => {
     setLoading(true);
-
+    setOpenPopup(false);
     const apiData = await generalDeleteFunction(
       `/mail-setting/destroy/${deleteSettingsId}`
     );
@@ -47,7 +46,7 @@ const MailSettings = () => {
     } else {
       setLoading(false);
       setOpenPopup(false);
-      toast.error(apiData.message);
+      // toast.error(apiData.message);
     }
   };
 
@@ -86,8 +85,8 @@ const MailSettings = () => {
                       <th>Host</th>
                       <th>Mail From</th>
                       <th>Mail From Name</th>
-                      <th>Settings</th>
-                      <th>Action</th>
+                      <th>Edit</th>
+                      <th>Delete</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -119,32 +118,31 @@ const MailSettings = () => {
                               </td>
                               <td style={{ cursor: "default" }}>
                                 {" "}
-                                <span
-                                  className="panelButton"
-                                  style={{
-                                    background: "green",
-                                    cursor: "pointer",
-                                  }}
+                                <button
+                                  className="tableButton edit"
                                   onClick={() =>
                                     navigate(
-                                      `/mail-settings-edit?id=${data.id}`
+                                      // `/mail-settings-edit?id=${data.id}`
+                                      `/mail-settings-edit`,
+                                      {
+                                        state: data.id,
+                                      }
                                     )
                                   }
                                 >
                                   <i class="fa-solid fa-pencil"></i>
-                                </span>
+                                </button>
                               </td>
                               <td style={{ cursor: "default" }}>
-                                <Link
-                                  effect="ripple"
-                                  className="panelButton"
+                                <button
+                                  className="tableButton delete"
                                   onClick={() => {
                                     setOpenPopup(true);
                                     setDeleteSetingsId(data.id);
                                   }}
                                 >
                                   <i class="fa-solid fa-trash"></i>
-                                </Link>
+                                </button>
                               </td>
                             </tr>
                           ))}

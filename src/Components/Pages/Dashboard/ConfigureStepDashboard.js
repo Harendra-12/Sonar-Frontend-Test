@@ -85,7 +85,7 @@ function ConfigureStepDashboard({ account2 }) {
       setPurchaseComplete(true);
       await new Promise((resolve) => setTimeout(resolve, 2000));
       const profile = await generalGetFunction("/user");
-      if (profile.status) {
+      if (profile?.status) {
         dispatch({
           type: "SET_ACCOUNT",
           account: profile.data,
@@ -102,7 +102,7 @@ function ConfigureStepDashboard({ account2 }) {
         const accountData = await generalGetFunction(
           `/account/${profile.data.account_id}`
         );
-        if (accountData.status) {
+        if (accountData?.status) {
           dispatch({
             type: "SET_ACCOUNTDETAILS",
             accountDetails: accountData.data,

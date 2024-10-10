@@ -12,8 +12,8 @@ const Variable = () => {
           <div className="container-fluid px-0">
             <Header title="Variable" />
             <div id="subPageHeader">
-              <div className="col-xl-9 my-auto">
-                <p className="pt-2 mt-1 mb-0">
+              <div className="col-xl-9">
+                <p>
                   Inbound variable
                 </p>
               </div>
