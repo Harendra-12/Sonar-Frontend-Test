@@ -11,12 +11,15 @@ import {
   noSpecialCharactersValidator,
   requiredValidator,
   restrictToAllowedChars,
+  restrictToNumbersAndStar,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
+import { useDispatch, useSelector } from "react-redux";
 
 function IvrAdd() {
+  const dispatch = useDispatch();
   const {
     register,
     formState: { errors },
@@ -26,6 +29,7 @@ function IvrAdd() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [ivrMusic, setIvrMusic] = useState([]);
+  const ivrRefresh = useSelector((state) => state.ivrRefresh);
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction("/sound/all?type=ivr");
@@ -46,14 +50,27 @@ function IvrAdd() {
 
     getData();
   }, []);
-  console.log("ivr", ivrMusic);
 
   const handleFormSubmit = handleSubmit(async (data) => {
+    const payload = {
+      ...data,
+      confirm_macro:
+        data.confirm_macro === data.confirm_macro.length < 1
+          ? "#"
+          : data.confirm_macro,
+    };
     setLoading(true);
-    const apiData = await generalPostFunction("/ivr-master/store", data);
+    // const apiData = await generalPostFunction("/ivr-master/store", data);
+    const apiData = await generalPostFunction("/ivr-master/store", payload);
     if (apiData.status) {
       setLoading(false);
       toast.success(apiData.message);
+
+      // after succesfully adding data need to recall the global function to update the global state
+      dispatch({
+        type: "SET_IVRREFRESH",
+        ivrRefresh: ivrRefresh + 1,
+      });
       reset();
       navigate(-1);
     } else {
@@ -230,7 +247,8 @@ function IvrAdd() {
                     className="formItem"
                     {...register("confirm_macro", {
                       ...requiredValidator,
-                      ...noSpecialCharactersValidator,
+                      // ...noSpecialCharactersValidator,
+                      ...restrictToNumbersAndStar,
                     })}
                   />
                   {errors.confirm_macro && (
@@ -246,15 +264,29 @@ function IvrAdd() {
                   </label>
                 </div>
                 <div className="col-6">
-                  <input
+                  <select
                     type="number"
+                    defaultValue=""
                     name="mail_host"
                     className="formItem"
                     {...register("confirm_attempts", {
                       ...requiredValidator,
                       ...noSpecialCharactersValidator,
                     })}
-                  />
+                  >
+                    <option value="" disabled>
+                      Select a option
+                    </option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                  </select>
                   {errors.confirm_attempts && (
                     <ErrorMessage text={errors.confirm_attempts.message} />
                   )}

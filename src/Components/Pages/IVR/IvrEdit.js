@@ -11,12 +11,15 @@ import {
   noSpecialCharactersValidator,
   requiredValidator,
   restrictToAllowedChars,
+  restrictToNumbersAndStar,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
+import { useDispatch, useSelector } from "react-redux";
 
 function IvrEdit() {
+  const dispatch = useDispatch();
   const location = useLocation();
   const id = location.state;
   const {
@@ -28,6 +31,8 @@ function IvrEdit() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [ivrMusic, setIvrMusic] = useState([]);
+  const ivrRefresh = useSelector((state) => state.ivrRefresh);
+
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction("/sound/all?type=ivr");
@@ -46,7 +51,6 @@ function IvrEdit() {
       navigate(-1);
     }
   }, []);
-  console.log("ivr", ivrMusic);
 
   const handleFormSubmit = handleSubmit(async (data) => {
     setLoading(true);
@@ -54,6 +58,12 @@ function IvrEdit() {
     if (apiData.status) {
       setLoading(false);
       toast.success(apiData.message);
+
+      // after succesfully editing data need to recall the global function to update the global state
+      dispatch({
+        type: "SET_IVRREFRESH",
+        ivrRefresh: ivrRefresh + 1,
+      });
       reset();
       navigate(-1);
     } else {
@@ -223,7 +233,8 @@ function IvrEdit() {
                     className="formItem"
                     {...register("confirm_macro", {
                       ...requiredValidator,
-                      ...noSpecialCharactersValidator,
+                      // ...noSpecialCharactersValidator,
+                      ...restrictToNumbersAndStar,
                     })}
                   />
                   {errors.confirm_macro && (
@@ -240,7 +251,7 @@ function IvrEdit() {
                   </label>
                 </div>
                 <div className="col-6">
-                  <input
+                  <select
                     type="number"
                     name="mail_host"
                     className="formItem"
@@ -248,8 +259,18 @@ function IvrEdit() {
                       ...requiredValidator,
                       ...noSpecialCharactersValidator,
                     })}
-                  />
-                  {errors.confirm_macro && (
+                  >
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                  </select>
+                  {errors.confirm_attempts && (
                     <ErrorMessage text={errors.confirm_attempts.message} />
                   )}
                 </div>

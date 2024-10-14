@@ -9,26 +9,42 @@ import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import Header from "../../CommonComponents/Header";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
 
 const IvrListing = () => {
+  const dispatch = useDispatch();
+
   const [ivr, setIvr] = useState();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [popUp, setPopUp] = useState(false);
   const [deleteId, setDeleteId] = useState("");
+  const ivrRefresh = useSelector((state) => state.ivrRefresh);
+  const ivrArr = useSelector((state) => state.ivr);
+  const loadings = useSelector;
 
- useEffect(()=>{
-  async function getData() {
-    const apiData = await generalGetFunction("/ivr-master/all");
-    if (apiData.status) {
-      setIvr(apiData.data);
+  useEffect(() => {
+    // async function getData() {
+    //   const apiData = await generalGetFunction("/ivr-master/all");
+    //   if (apiData.status) {
+    //     setIvr(apiData.data);
+    //     setLoading(false);
+    //   } else {
+    //     setLoading(false);
+    //   }
+    // }
+    // getData();
+    if (ivrRefresh > 0) {
+      setIvr(ivrArr);
       setLoading(false);
     } else {
+      dispatch({
+        type: "SET_IVRREFRESH",
+        ivrRefresh: ivrRefresh + 1,
+      });
       setLoading(false);
     }
-  }
-  getData();
- },[])
+  }, [ivrArr]);
 
   async function handleDelete(id) {
     setPopUp(false);
@@ -41,6 +57,12 @@ const IvrListing = () => {
       toast.success(apiData.message);
 
       setDeleteId("");
+
+      // after succesfully deleting data need to recall the global function to update the global state
+      dispatch({
+        type: "SET_IVRREFRESH",
+        ivrRefresh: ivrRefresh + 1,
+      });
     } else {
       setLoading(false);
       toast.error(apiData.error);
@@ -107,35 +129,35 @@ const IvrListing = () => {
                               <tr key={index}>
                                 <td
                                   onClick={() =>
-                                    navigate(`/ivr-edit`,{state:item.id})
+                                    navigate(`/ivr-edit`, { state: item.id })
                                   }
                                 >
                                   {item.ivr_name}
                                 </td>
                                 <td
                                   onClick={() =>
-                                    navigate(`/ivr-edit`,{state:item.id})
+                                    navigate(`/ivr-edit`, { state: item.id })
                                   }
                                 >
-                                  {item.ivr_type=="0"?"Child":"Master"}
+                                  {item.ivr_type == "0" ? "Child" : "Master"}
                                 </td>
                                 <td
                                   onClick={() =>
-                                    navigate(`/ivr-edit`,{state:item.id})
+                                    navigate(`/ivr-edit`, { state: item.id })
                                   }
                                 >
                                   {item.confirm_attempts}
                                 </td>
                                 <td
                                   onClick={() =>
-                                    navigate(`/ivr-edit`,{state:item.id})
+                                    navigate(`/ivr-edit`, { state: item.id })
                                   }
                                 >
                                   {item.timeout}
                                 </td>
                                 <td
                                   onClick={() =>
-                                    navigate(`/ivr-edit`,{state:item.id})
+                                    navigate(`/ivr-edit`, { state: item.id })
                                   }
                                 >
                                   {item.max_failures}
@@ -143,10 +165,12 @@ const IvrListing = () => {
                                 <td>
                                   <button
                                     onClick={() =>
-                                      navigate(
-                                        `/ivr-options`,
-                                        {state:{id:item.id,name:item.ivr_name}}
-                                      )
+                                      navigate(`/ivr-options`, {
+                                        state: {
+                                          id: item.id,
+                                          name: item.ivr_name,
+                                        },
+                                      })
                                     }
                                     className="tableButton"
                                   >
@@ -158,7 +182,7 @@ const IvrListing = () => {
                                   <button
                                     className="tableButton edit"
                                     onClick={() =>
-                                        navigate(`/ivr-edit`,{state:item.id})
+                                      navigate(`/ivr-edit`, { state: item.id })
                                     }
                                   >
                                     <i class="fa-solid fa-pencil"></i>
@@ -180,10 +204,7 @@ const IvrListing = () => {
                           })}
                         {ivr && ivr.length === 0 ? (
                           <td colSpan={99}>
-                            <EmptyPrompt
-                              name="IVR "
-                              link="ivr-add"
-                            />
+                            <EmptyPrompt name="IVR " link="ivr-add" />
                           </td>
                         ) : (
                           ""
@@ -209,9 +230,7 @@ const IvrListing = () => {
                 </div>
                 <div className="col-10 ps-0">
                   <h4>Warning!</h4>
-                  <p>
-                   Are you sure you want to delete this IVR?
-                  </p>
+                  <p>Are you sure you want to delete this IVR?</p>
                   {deleteId !== "" ? (
                     <button
                       className="panelButton m-0"

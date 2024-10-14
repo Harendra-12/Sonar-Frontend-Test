@@ -70,7 +70,7 @@ const ActionList = ({
     //  }
     // }
     // getData();
-  }, [extensionArr, ringGroupArr, callCenterArr, ivrArr]);
+  }, [extensionArr, ringGroupArr, callCenterArr, ivrArr, ivrRefresh]);
 
   // Backup for predefault
   useEffect(() => {
