@@ -138,14 +138,16 @@ function IvrOptions() {
                     backToTop();
                   }}
                 >
-                  Back
+                  <span className="text">Back</span>
+                  <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                 </button>
                 <button
                   onClick={handleSubmit}
                   effect="ripple"
                   className="panelButton"
                 >
-                  Save
+                  <span className="text">Save</span>
+                  <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                 </button>
               </div>
             </div>
@@ -323,8 +325,8 @@ function IvrOptions() {
                         effect="ripple"
                         type="button"
                       >
-                        <i className="fa-duotone fa-circle-plus me-2"></i>
-                        {editId === item.id ? "Save" : "Update"}
+                        <span className="text">{editId === item.id ? "Save" : "Update"}</span>
+                        <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                       </button>
                     </div>
                   </div>
@@ -422,8 +424,8 @@ function IvrOptions() {
                     effect="ripple"
                     type="button"
                   >
-                    <i className="fa-duotone fa-circle-plus me-2"></i>
-                    Add More
+                    <span className="text">Add</span>
+                    <span className="icon"><i class="fa-solid fa-plus"></i></span>
                   </button>
                 </div>
               </div>
