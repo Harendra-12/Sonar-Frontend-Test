@@ -296,7 +296,7 @@ function IvrOptions() {
                         />
                       </div>
                     )}
-                    <div className="col-auto me-2 h-100">
+                    <div className={index === 0 ? "col-auto mt-auto me-2 h-100" : "col-auto me-2 h-100"}>
                       <button
                         type="button"
                         onClick={() => deleteOption(item.id)}
@@ -306,7 +306,7 @@ function IvrOptions() {
                       </button>
                     </div>
 
-                    <div className="col-auto">
+                    <div className={index === 0 ? "col-auto mt-auto" : "col-auto"}>
                       <button
                         onClick={() => {
                           if (editId === item.id) {
@@ -329,6 +329,7 @@ function IvrOptions() {
                         <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                       </button>
                     </div>
+                    {index === 0 ? <div className="col-12 mb-2"></div> : ""}
                   </div>
                 );
               })}
