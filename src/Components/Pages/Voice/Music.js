@@ -57,7 +57,7 @@ function Music() {
       }
       getData();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh]);
 
   //   Handle delete function
@@ -257,12 +257,13 @@ function Music() {
                           />
                         </div>
                       </div>
-                      <div className="mt-2">
+                      <div className="mt-2 d-flex justify-content-between">
                         <button
                           className="panelButton m-0"
                           onClick={handleNewMusic}
                         >
-                          Confirm
+                          <span className="text">Confirm</span>
+                          <span className="icon"><i class="fa-solid fa-check"></i></span>
                         </button>
                         <button
                           className="panelButtonWhite m-0 float-end"

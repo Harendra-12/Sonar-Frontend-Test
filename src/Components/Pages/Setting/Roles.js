@@ -520,25 +520,28 @@ function Roles() {
                       </p>
                     )}
 
-                    <button
-                      className="panelButton m-0"
-                      onClick={() => {
-                        handleSubmit();
-                      }}
-                    >
-                      Confirm
-                    </button>
-                    <button
-                      className="panelButtonWhite m-0 float-end"
-                      onClick={() => {
-                        setPopup(false);
-                        setSaveClick(false);
-                        setEditClick(false);
-                        setEditIndex("");
-                      }}
-                    >
-                      Cancel
-                    </button>
+                    <div className="d-flex justify-content-between">
+                      <button
+                        className="panelButton m-0"
+                        onClick={() => {
+                          handleSubmit();
+                        }}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon"><i class="fa-solid fa-check"></i></span>
+                      </button>
+                      <button
+                        className="panelButtonWhite m-0 float-end"
+                        onClick={() => {
+                          setPopup(false);
+                          setSaveClick(false);
+                          setEditClick(false);
+                          setEditIndex("");
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -322,36 +322,40 @@ const RingGroups = () => {
                       ? error
                       : "Are you sure you want to delete this ring group?"}
                   </p>
-                  {deleteId !== "" ? (
+                  <div className="d-flex justify-content-between">
+                    {deleteId !== "" ? (
+                      <button
+                        className="panelButton m-0"
+                        onClick={() => handleDelete(deleteId)}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon"><i class="fa-solid fa-check"></i></span>
+                      </button>
+                    ) : (
+                      <button
+                        className="panelButton m-0"
+                        onClick={() => {
+                          // setForce(true);
+                          setPopUp(false);
+                          navigate(`${redirectRoutes}`);
+                        }}
+                      >
+                        <span className="text">Lets Go!</span>
+                        <span className="icon"><i class="fa-solid fa-check"></i></span>
+                      </button>
+                    )}
+
                     <button
-                      className="panelButton m-0"
-                      onClick={() => handleDelete(deleteId)}
-                    >
-                      Confirm
-                    </button>
-                  ) : (
-                    <button
-                      className="panelButton m-0"
+                      className="panelButtonWhite m-0 float-end"
                       onClick={() => {
-                        // setForce(true);
                         setPopUp(false);
-                        navigate(`${redirectRoutes}`);
+                        setDeleteId("");
+                        // setDeleteToggle(false);
                       }}
                     >
-                      Lets Go!
+                      Cancel
                     </button>
-                  )}
-
-                  <button
-                    className="panelButtonWhite m-0 float-end"
-                    onClick={() => {
-                      setPopUp(false);
-                      setDeleteId("");
-                      // setDeleteToggle(false);
-                    }}
-                  >
-                    Cancel
-                  </button>
+                  </div>
                 </div>
               </div>
             </div>
