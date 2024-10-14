@@ -11,11 +11,6 @@ import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import MusicPlayer from "../../CommonComponents/MusicPlayer";
 
-import DatePicker from "react-datepicker";
-
-import "react-datepicker/dist/react-datepicker.css";
-// import 'react-datepicker/dist/react-datepicker-cssmodules.css'
-
 function CdrReport() {
   const [loading, setLoading] = useState(true);
   const [cdr, setCdr] = useState();
@@ -637,7 +632,7 @@ function CdrReport() {
                         setCallDirection(e.target.value);
                         setPageNumber(1);
                       }}
-                      // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                    // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                     >
                       <option value={""}>All Calls</option>
                       <option value={"inbound"}>Inbound Calls</option>
@@ -804,8 +799,8 @@ function CdrReport() {
                                     ? "NOT CONNECTED"
                                     : item["variable_DIALSTATUS"] ===
                                       "NO_USER_RESPONSE"
-                                    ? "BUSY"
-                                    : item["variable_DIALSTATUS"]}
+                                      ? "BUSY"
+                                      : item["variable_DIALSTATUS"]}
                                 </td>
                                 <td>{item["call_cost"]}</td>
                               </tr>

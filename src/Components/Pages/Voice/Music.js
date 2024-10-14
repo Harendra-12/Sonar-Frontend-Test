@@ -132,24 +132,28 @@ function Music() {
                   />
                 </div>
               </div>
-              <div>
-                <button
-                  effect="ripple"
-                  className="panelButton"
-                  onClick={() => {
-                    navigate(-1);
-                    backToTop();
-                  }}
-                >
-                  Back
-                </button>
-                <button
-                  effect="ripple"
-                  className="panelButton"
-                  onClick={() => setNewMusicPopup(!newMusicPopup)}
-                >
-                  Add New Music
-                </button>
+              <div className="col-xl-8 pt-3 pt-xl-0">
+                <div className="d-flex justify-content-end">
+                  <button
+                    effect="ripple"
+                    className="panelButton"
+                    onClick={() => {
+                      navigate(-1);
+                      backToTop();
+                    }}
+                  >
+                    <span className="text">Back</span>
+                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                  </button>
+                  <button
+                    effect="ripple"
+                    className="panelButton"
+                    onClick={() => setNewMusicPopup(!newMusicPopup)}
+                  >
+                    <span className="text">Add</span>
+                    <span className="icon"><i class="fa-solid fa-plus"></i></span>
+                  </button>
+                </div>
               </div>
             </div>
             <div className="col-12" style={{ overflow: "auto" }}>

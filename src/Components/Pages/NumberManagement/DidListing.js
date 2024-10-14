@@ -115,10 +115,12 @@ function DidListing() {
                       backToTop();
                     }}
                   >
-                    Back
+                    <span className="text">Back</span>
+                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                   </button>
                   <Link to="/did-add" effect="ripple" className="panelButton">
-                    Add
+                    <span className="text">Add</span>
+                    <span className="icon"><i class="fa-solid fa-plus"></i></span>
                   </Link>
                 </div>
               </div>
@@ -154,7 +156,15 @@ function DidListing() {
                               </td>
                               <td style={{ cursor: "default" }}>{item?.sms}</td>
                               <td style={{ cursor: "default" }}>
-                                <label
+                                <button
+                                  onClick={() =>
+                                    navigate(`/did-config`, { state: item })
+                                  }
+                                  className={item.configuration !== null ? "tableButton" : "tableButton warning"}
+                                >
+                                  <i className={item.configuration !== null ? "fa-solid fa-gear text-success" : "fa-solid fa-triangle-exclamation"}></i>
+                                </button>
+                                {/* <label
                                   className={item.configuration !== null ? "tableLabel success" : "tableLabel pending"}
                                   style={{ cursor: "pointer" }}
                                   onClick={() =>
@@ -164,7 +174,7 @@ function DidListing() {
                                   {item.configuration !== null
                                     ? "Update"
                                     : "Configure"}
-                                </label>
+                                </label> */}
                               </td>
                               <td style={{ cursor: "default" }}>
                                 {" "}

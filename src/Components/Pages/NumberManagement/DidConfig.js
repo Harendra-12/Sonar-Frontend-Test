@@ -263,14 +263,16 @@ const DidConfig = () => {
                       backToTop();
                     }}
                   >
-                    Back
+                    <span className="text">Back</span>
+                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                   </button>
                   <button
                     effect="ripple"
                     className="panelButton"
                     onClick={handleFormSubmit}
                   >
-                    {locationData.configuration ? "Update" : "Save"}
+                    <span className="text">{locationData.configuration ? "Update" : "Save"}</span>
+                    <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                   </button>
                 </div>
               </div>

@@ -128,7 +128,8 @@ const Extensions = () => {
                       backToTop();
                     }}
                   >
-                    Back
+                    <span className="text">Back</span>
+                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                   </button>
                   <Link
                     // to="/extensions-add"
@@ -137,7 +138,8 @@ const Extensions = () => {
                     effect="ripple"
                     className="panelButton"
                   >
-                    Buy Extension
+                    <span className="text">Buy</span>
+                    <span className="icon"><i class="fa-solid fa-cart-shopping"></i></span>
                   </Link>
                   {/* <div className="my-auto position-relative mx-3">
                     <label className="switch">

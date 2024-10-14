@@ -477,7 +477,8 @@ const RingGroupAdd = () => {
                   effect="ripple"
                   className="panelButton"
                 >
-                  Back
+                  <span className="text">Back</span>
+                  <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                 </button>
                 <button
                   type="button"
@@ -485,7 +486,8 @@ const RingGroupAdd = () => {
                   className="panelButton"
                   onClick={handleFormSubmit}
                 >
-                  Save
+                  <span className="text">Save</span>
+                  <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                 </button>
               </div>
             </div>
@@ -697,16 +699,16 @@ const RingGroupAdd = () => {
                         )),
                     })}
                     onKeyDown={restrictToNumbers}
-                    // {...register("call_timeout", {
-                    //   ...requiredValidator,
-                    //   ...noSpecialCharactersValidator,
-                    //   ...minValidator(
-                    //     destination.reduce(
-                    //       (max, obj) => Math.max(max, obj.delay),
-                    //       0
-                    //     )
-                    //   ),
-                    // })}
+                  // {...register("call_timeout", {
+                  //   ...requiredValidator,
+                  //   ...noSpecialCharactersValidator,
+                  //   ...minValidator(
+                  //     destination.reduce(
+                  //       (max, obj) => Math.max(max, obj.delay),
+                  //       0
+                  //     )
+                  //   ),
+                  // })}
                   />
                   {errors.call_timeout && (
                     <ErrorMessage text={errors.call_timeout.message} />
@@ -1093,11 +1095,11 @@ const RingGroupAdd = () => {
                                 .filter((item1) => {
                                   return (
                                     item1.extension.extension ==
-                                      destination[index]?.destination ||
+                                    destination[index]?.destination ||
                                     !destination.some(
                                       (destinationItem, destinationIndex) =>
                                         destinationItem.destination ==
-                                          item1.extension.extension &&
+                                        item1.extension.extension &&
                                         destinationIndex != index
                                     )
                                   );
@@ -1228,8 +1230,8 @@ const RingGroupAdd = () => {
                             effect="ripple"
                             type="button"
                           >
-                            <i className="fa-duotone fa-circle-plus me-2"></i>
-                            Add More
+                            <span className="text">Add</span>
+                            <span className="icon"><i class="fa-solid fa-plus"></i></span>
                           </button>
                         </div>
                       ) : (

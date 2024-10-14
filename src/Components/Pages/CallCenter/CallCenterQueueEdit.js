@@ -432,14 +432,16 @@ function CallCenterQueueEdit() {
                     navigate(-1);
                   }}
                 >
-                  Back
+                  <span className="text">Back</span>
+                  <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                 </button>
                 <button
                   effect="ripple"
                   className="panelButton"
                   onClick={handleFormSubmit}
                 >
-                  Update
+                  <span className="text">Save</span>
+                  <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                 </button>
               </div>
             </div>
@@ -1369,7 +1371,7 @@ function CallCenterQueueEdit() {
                             </div>
                           )}
                           {index === agent.length - 1 &&
-                          index !== (user && user.length - 1) ? (
+                            index !== (user && user.length - 1) ? (
                             <div
                               onClick={addNewAgent}
                               className="col-auto px-0 mt-auto"

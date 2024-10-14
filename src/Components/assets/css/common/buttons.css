@@ -6,7 +6,7 @@
   text-decoration: none;
 }
 
-.panelButton {
+.panelButtonOLD {
   /* border: 2px solid var(--ui-accent);
     color: var(--ui-accent);
     background: none; */
@@ -27,6 +27,69 @@
   box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;
   text-decoration: none;
   color: #fff;
+}
+
+.panelButton {
+  width: 90px;
+  height: 34px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  background: red;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+  background: #000;
+  padding: 0;
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+.panelButton,
+.panelButton span {
+  transition: 200ms;
+}
+
+.panelButton .text {
+  transform: translateX(10px);
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.panelButton .icon {
+  position: absolute;
+  border-left: 1px solid #585858;
+  transform: translateX(65px);
+  height: 25px;
+  width: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 14px;
+}
+
+.panelButton:hover {
+  background: #ff3636;
+}
+
+.panelButton:hover .text {
+  color: transparent;
+}
+
+.panelButton:hover .icon {
+  width: 90px;
+  border-left: none;
+  transform: translateX(0);
+}
+
+.panelButton:focus {
+  outline: none;
+}
+
+.panelButton:active .icon i {
+  transform: scale(0.8);
 }
 
 .toggleButton {
@@ -140,7 +203,7 @@
   border: none;
   background-color: #fff;
   border-radius: 50px;
-  /* border: 1px solid #c9c9c970; */
+  border: 1px solid #fff;
   /* box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px; */
   color: #454545;
   font-weight: 500;
@@ -153,7 +216,7 @@
 }
 
 .tabButton.active {
-  background-color: #ffffff33;
+  background-color: #00ff1485;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
   color: #fff;
@@ -510,8 +573,13 @@
   background-color: #00ab2b;
 }
 
+.tableButton.warning {
+  background-color: #ffa500;
+}
+
 .tableButton.delete:hover,
-.tableButton.edit:hover {
+.tableButton.edit:hover,
+.tableButton.warning:hover {
   background-color: #ff00000d;
 }
 
@@ -521,4 +589,8 @@
 
 .tableButton.edit:hover i {
   color: #00ab2b !important;
+}
+
+.tableButton.warning:hover i {
+  color: #ffa500 !important;
 }

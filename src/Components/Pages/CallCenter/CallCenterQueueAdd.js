@@ -329,14 +329,16 @@ function CallCenterQueueAdd() {
                     navigate(-1);
                   }}
                 >
-                  Back
+                  <span className="text">Back</span>
+                  <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                 </button>
                 <button
                   effect="ripple"
                   className="panelButton"
                   onClick={handleFormSubmit}
                 >
-                  Save
+                  <span className="text">Save</span>
+                  <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                 </button>
               </div>
             </div>
@@ -1197,7 +1199,7 @@ function CallCenterQueueAdd() {
                             </div>
                           )}
                           {index === agent.length - 1 &&
-                          index !== (user && user.length - 1) ? (
+                            index !== (user && user.length - 1) ? (
                             <div
                               onClick={addNewAgent}
                               className="col-auto px-0 mt-auto"
@@ -1206,7 +1208,8 @@ function CallCenterQueueAdd() {
                                 type="button"
                                 className="panelButton my-auto"
                               >
-                                Add more
+                                <span className="text">Add</span>
+                                <span className="icon"><i class="fa-solid fa-plus"></i></span>
                               </button>
                             </div>
                           ) : (

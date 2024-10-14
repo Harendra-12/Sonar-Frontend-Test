@@ -247,7 +247,8 @@ function GetDid() {
                       backToTop();
                     }}
                   >
-                    Back
+                    <span className="text">Back</span>
+                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                   </button>
                 </div>
               </div>
@@ -350,7 +351,8 @@ function GetDid() {
                           className="panelButton m-0"
                           type="submit"
                         >
-                          Search
+                          <span className="text">Search</span>
+                          <span className="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
                         </button>
                         <label htmlFor="data" className="formItemDesc"></label>
                       </div>

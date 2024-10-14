@@ -192,7 +192,8 @@ const Users = () => {
                       backToTop();
                     }}
                   >
-                    Back
+                    <span className="text">Back</span>
+                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                   </button>
                   <Link
                     // to="/users-add"
@@ -201,7 +202,8 @@ const Users = () => {
                     effect="ripple"
                     className="panelButton"
                   >
-                    Add
+                    <span className="text">Add</span>
+                    <span className="icon"><i class="fa-solid fa-plus"></i></span>
                   </Link>
                   {/* <div className="my-auto position-relative mx-3">
                     <label className="switch">

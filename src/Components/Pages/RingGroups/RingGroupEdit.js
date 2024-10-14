@@ -553,9 +553,10 @@ const RingGroupEdit = () => {
                   type="button"
                   effect="ripple"
                   className="panelButton"
-                  // onClick={() => { window.location = "/ring-groups" }}
+                // onClick={() => { window.location = "/ring-groups" }}
                 >
-                  Back
+                  <span className="text">Back</span>
+                  <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                 </button>
                 <button
                   type="button"
@@ -563,7 +564,8 @@ const RingGroupEdit = () => {
                   className="panelButton"
                   onClick={handleFormSubmit}
                 >
-                  Update
+                  <span className="text">Save</span>
+                  <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                 </button>
               </div>
             </div>
@@ -769,16 +771,16 @@ const RingGroupEdit = () => {
                         )),
                     })}
                     onKeyDown={restrictToNumbers}
-                    // {...register("call_timeout", {
-                    //   ...requiredValidator,
-                    //   ...noSpecialCharactersValidator,
-                    //   ...minValidator(
-                    //     destination.reduce(
-                    //       (max, obj) => Math.max(max, obj.delay),
-                    //       0
-                    //     )
-                    //   ),
-                    // })}
+                  // {...register("call_timeout", {
+                  //   ...requiredValidator,
+                  //   ...noSpecialCharactersValidator,
+                  //   ...minValidator(
+                  //     destination.reduce(
+                  //       (max, obj) => Math.max(max, obj.delay),
+                  //       0
+                  //     )
+                  //   ),
+                  // })}
                   />
                   {errors.call_timeout && (
                     <ErrorMessage text={errors.call_timeout.message} />
@@ -1152,11 +1154,11 @@ const RingGroupEdit = () => {
                                 .filter((item1) => {
                                   return (
                                     item1.extension.extension ==
-                                      destination[index]?.destination ||
+                                    destination[index]?.destination ||
                                     !destination.some(
                                       (destinationItem, destinationIndex) =>
                                         destinationItem.destination ==
-                                          item1.extension.extension &&
+                                        item1.extension.extension &&
                                         destinationIndex != index
                                     )
                                   );
@@ -1307,8 +1309,8 @@ const RingGroupEdit = () => {
                             effect="ripple"
                             type="button"
                           >
-                            <i className="fa-duotone fa-circle-plus me-2"></i>
-                            Add More
+                            <span className="text">Add</span>
+                            <span className="icon"><i class="fa-solid fa-plus"></i></span>
                           </button>
                         </div>
                       ) : (

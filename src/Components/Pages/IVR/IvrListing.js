@@ -94,7 +94,8 @@ const IvrListing = () => {
                     effect="ripple"
                     className="panelButton"
                   >
-                    Add
+                    <span className="text">Add</span>
+                    <span className="icon"><i class="fa-solid fa-plus"></i></span>
                   </Link>
                 </div>
               </div>

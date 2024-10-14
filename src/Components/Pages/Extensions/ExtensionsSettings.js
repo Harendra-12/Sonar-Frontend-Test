@@ -10,7 +10,7 @@ const ExtensionsSettings = () => {
             <section id="phonePage">
                 <div className="container-fluid">
                     <div className="row justify-content-center">
-                    <Header title="Extension Settings" />
+                        <Header title="Extension Settings" />
                         <div className="col-12" id="subPageHeader">
                             <div className="row px-xl-3">
                                 <div className="col-xl-6 my-auto">
@@ -23,14 +23,16 @@ const ExtensionsSettings = () => {
                                             className="panelButton"
                                             onClick={() => { navigate(-1); backToTop() }}
                                         >
-                                            Back
+                                            <span className="text">Back</span>
+                                            <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                                         </button>
                                         <Link to="/extension-settings-edit" onClick={backToTop}
                                             effect="ripple"
                                             className="panelButton"
-                                           
+
                                         >
-                                            Add
+                                            <span className="text">Add</span>
+                                            <span className="icon"><i class="fa-solid fa-plus"></i></span>
                                         </Link>
                                     </div>
                                 </div>

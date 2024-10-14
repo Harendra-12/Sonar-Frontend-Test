@@ -242,7 +242,7 @@ function IvrOptions() {
                     </div>
                     {item.action_name === "pstn" ||
                       (editId === item.id && editAction_name === "pstn") ? (
-                      <div className="col-2 pe-2">
+                      <div className="col-3 pe-2">
                         <PhoneInput
                           disabled={
                             editId === item.id
