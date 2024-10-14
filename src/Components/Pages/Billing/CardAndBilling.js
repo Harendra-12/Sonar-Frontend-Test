@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useState } from "react";
 import Header from "../../CommonComponents/Header";
 import Cards from "react-credit-cards-2";

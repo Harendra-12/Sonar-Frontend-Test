@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useRef, forwardRef } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import {
-  backToTop,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
@@ -17,14 +16,6 @@ function CdrReport() {
   const [pageNumber, setPageNumber] = useState(1);
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
-  const [all, setAll] = useState(true);
-  const [filterData, setFilterData] = useState([]);
-  const [extensions, setExtensions] = useState(false);
-  const [callCenter, setCallCenter] = useState(false);
-  const [ringGroup, setRingGroup] = useState(false);
-  const [inboundCalls, setInboundCalls] = useState(false);
-  const [outboundCalls, setOutboundCalls] = useState(false);
-  const [missedCalls, setMissedCalls] = useState(false);
   const [currentPlaying, setCurrentPlaying] = useState(null); // For tracking the currently playing audio
   const [callDirection, setCallDirection] = useState("");
   const [callType, setCallType] = useState("");
@@ -53,8 +44,6 @@ function CdrReport() {
     ) {
       setStartDate(startDateFlag);
       setEndDate(endDateFlag);
-      // setStartDateFlag("");
-      // setEndDateFlag("");
     }
   }, [startDateFlag, endDateFlag, filterBy]);
 
@@ -114,16 +103,6 @@ function CdrReport() {
     }
   };
 
-  const [dateRange, setDateRange] = useState([null, null]);
-  // const [startDate, endDate] = dateRange;
-  const ExampleCustomInput = forwardRef(
-    ({ value, onClick, className }, ref) => (
-      <button className={className} onClick={onClick} ref={ref}>
-        {value ? value : "Select Date"}
-      </button>
-    )
-  );
-
   useEffect(() => {
     setLoading(true);
     // build a dynamic url which include only the available params to make API call easy
@@ -135,19 +114,15 @@ function CdrReport() {
             `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
         )
         .join("&");
-      // return `${baseApiUrl}?${queryParams}`;
       return queryParams ? `${baseApiUrl}&${queryParams}` : baseApiUrl;
     };
     const finalUrl = buildUrl(
-      // `/cdr?account=${account.account_id}&page=${pageNumber}`,
       `/cdr?account=${account.account_id}&page=${pageNumber}`,
       {
         callDirection,
         application_state: callType,
         origin: callOrigin,
         destination: callDestination,
-        // start_date: formattedStartDate,
-        // end_date: formattedEndDate,
         start_date: startDate,
         end_date: endDate,
         hangupCause,
@@ -156,16 +131,10 @@ function CdrReport() {
 
     async function getData() {
       if (account && account.account_id) {
-        // const apiData = await generalGetFunction(
-        //   `/cdr?account=${account.account_id}&page=${pageNumber}`
-        // );
         const apiData = await generalGetFunction(finalUrl);
         if (apiData?.status) {
           setLoading(false);
           setCdr(apiData.data);
-
-          // setStartDateFlag("");
-          // setEndDateFlag("");
         } else {
           setLoading(false);
         }
@@ -183,309 +152,10 @@ function CdrReport() {
     callType,
     callOrigin,
     callDestination,
-    // formattedStartDate,
-    // formattedEndDate,
     startDate,
     endDate,
     hangupCause,
   ]);
-
-  // useEffect(() => {
-  //   if (cdr) {
-  //     if (all) {
-  //       if (inboundCalls) {
-  //         setFilterData(
-  //           cdr.data.filter((item) => item["Call-Direction"] === "inbound")
-  //         );
-  //       } else if (outboundCalls) {
-  //         setFilterData(
-  //           cdr.data.filter((item) => item["Call-Direction"] === "outbound")
-  //         );
-  //       } else if (missedCalls) {
-  //         setFilterData(
-  //           cdr.data.filter((item) => item["Call-Direction"] === "missed")
-  //         );
-  //       } else {
-  //         setFilterData(cdr.data);
-  //       }
-  //     } else if (extensions && callCenter && ringGroup) {
-  //       if (inboundCalls) {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               (item["application_state"] === "extension" ||
-  //                 item["application_state"] === "callcenter" ||
-  //                 item["application_state"] === "ringgroup") &&
-  //               item["Call-Direction"] === "inbound"
-  //           )
-  //         );
-  //       } else if (outboundCalls) {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               (item["application_state"] === "extension" ||
-  //                 item["application_state"] === "callcenter" ||
-  //                 item["application_state"] === "ringgroup") &&
-  //               item["Call-Direction"] === "outbound"
-  //           )
-  //         );
-  //       } else if (missedCalls) {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               (item["application_state"] === "extension" ||
-  //                 item["application_state"] === "callcenter" ||
-  //                 item["application_state"] === "ringgroup") &&
-  //               item["Call-Direction"] === "missed"
-  //           )
-  //         );
-  //       } else {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               item["application_state"] === "extension" ||
-  //               item["application_state"] === "callcenter" ||
-  //               item["application_state"] === "ringgroup"
-  //           )
-  //         );
-  //       }
-  //     } else if (extensions && callCenter) {
-  //       if (inboundCalls) {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               (item["application_state"] === "extension" ||
-  //                 item["application_state"] === "callcenter") &&
-  //               item["Call-Direction"] === "inbound"
-  //           )
-  //         );
-  //       } else if (outboundCalls) {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               (item["application_state"] === "extension" ||
-  //                 item["application_state"] === "callcenter") &&
-  //               item["Call-Direction"] === "outbound"
-  //           )
-  //         );
-  //       } else if (missedCalls) {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               (item["application_state"] === "extension" ||
-  //                 item["application_state"] === "callcenter") &&
-  //               item["Call-Direction"] === "missed"
-  //           )
-  //         );
-  //       } else {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               item["application_state"] === "extension" ||
-  //               item["application_state"] === "callcenter"
-  //           )
-  //         );
-  //       }
-  //     } else if (extensions && ringGroup) {
-  //       if (inboundCalls) {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               (item["application_state"] === "extension" ||
-  //                 item["application_state"] === "ringgroup") &&
-  //               item["Call-Direction"] === "inbound"
-  //           )
-  //         );
-  //       } else if (outboundCalls) {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               (item["application_state"] === "extension" ||
-  //                 item["application_state"] === "ringgroup") &&
-  //               item["Call-Direction"] === "outbound"
-  //           )
-  //         );
-  //       } else if (missedCalls) {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               (item["application_state"] === "extension" ||
-  //                 item["application_state"] === "ringgroup") &&
-  //               item["Call-Direction"] === "missed"
-  //           )
-  //         );
-  //       } else {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               item["application_state"] === "extension" ||
-  //               item["application_state"] === "ringgroup"
-  //           )
-  //         );
-  //       }
-  //     } else if (callCenter && ringGroup) {
-  //       if (inboundCalls) {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               (item["application_state"] === "callcenter" ||
-  //                 item["application_state"] === "ringgroup") &&
-  //               item["Call-Direction"] === "inbound"
-  //           )
-  //         );
-  //       } else if (outboundCalls) {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               (item["application_state"] === "callcenter" ||
-  //                 item["application_state"] === "ringgroup") &&
-  //               item["Call-Direction"] === "outbound"
-  //           )
-  //         );
-  //       } else if (missedCalls) {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               (item["application_state"] === "callcenter" ||
-  //                 item["application_state"] === "ringgroup") &&
-  //               item["Call-Direction"] === "missed"
-  //           )
-  //         );
-  //       } else {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               item["application_state"] === "callcenter" ||
-  //               item["application_state"] === "ringgroup"
-  //           )
-  //         );
-  //       }
-  //     } else if (extensions) {
-  //       if (inboundCalls) {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               item["application_state"] === "extension" &&
-  //               item["Call-Direction"] === "inbound"
-  //           )
-  //         );
-  //       } else if (outboundCalls) {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               item["application_state"] === "extension" &&
-  //               item["Call-Direction"] === "outbound"
-  //           )
-  //         );
-  //       } else if (missedCalls) {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               item["application_state"] === "extension" &&
-  //               item["Call-Direction"] === "missed"
-  //           )
-  //         );
-  //       } else {
-  //         setFilterData(
-  //           cdr.data.filter((item) => item["application_state"] === "extension")
-  //         );
-  //       }
-  //     } else if (callCenter) {
-  //       if (inboundCalls) {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               item["application_state"] === "callcenter" &&
-  //               item["Call-Direction"] === "inbound"
-  //           )
-  //         );
-  //       } else if (outboundCalls) {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               item["application_state"] === "callcenter" &&
-  //               item["Call-Direction"] === "outbound"
-  //           )
-  //         );
-  //       } else if (missedCalls) {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               item["application_state"] === "callcenter" &&
-  //               item["Call-Direction"] === "missed"
-  //           )
-  //         );
-  //       } else {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) => item["application_state"] === "callcenter"
-  //           )
-  //         );
-  //       }
-  //     } else if (ringGroup) {
-  //       if (inboundCalls) {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               item["application_state"] === "ringgroup" &&
-  //               item["Call-Direction"] === "inbound"
-  //           )
-  //         );
-  //       } else if (outboundCalls) {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               item["application_state"] === "ringgroup" &&
-  //               item["Call-Direction"] === "outbound"
-  //           )
-  //         );
-  //       } else if (missedCalls) {
-  //         setFilterData(
-  //           cdr.data.filter(
-  //             (item) =>
-  //               item["application_state"] === "ringgroup" &&
-  //               item["Call-Direction"] === "missed"
-  //           )
-  //         );
-  //       } else {
-  //         setFilterData(
-  //           cdr.data.filter((item) => item["application_state"] === "ringgroup")
-  //         );
-  //       }
-  //     }
-  //   }
-  // }, [
-  //   all,
-  //   extensions,
-  //   callCenter,
-  //   ringGroup,
-  //   cdr,
-  //   inboundCalls,
-  //   outboundCalls,
-  //   missedCalls,
-  // ]);
-
-  // const handleCallDirectionFilter = (e) => {
-  //   const value = e.target.value;
-  //   if (value === "allCalls") {
-  //     setMissedCalls(false);
-  //     setOutboundCalls(false);
-  //     setInboundCalls(false);
-  //   } else if (value === "inboundCalls") {
-  //     setMissedCalls(false);
-  //     setOutboundCalls(false);
-  //     setInboundCalls(true);
-  //   } else if (value === "outboundCalls") {
-  //     setMissedCalls(false);
-  //     setOutboundCalls(true);
-  //     setInboundCalls(false);
-  //   } else if (value === "missedCalls") {
-  //     setMissedCalls(true);
-  //     setOutboundCalls(false);
-  //     setInboundCalls(false);
-  //   }
-  // };
-  // console.log("This is cdr report", filterData);
 
   return (
     <main className="mainContent">

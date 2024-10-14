@@ -15,6 +15,7 @@ import MusicPlayer from "../../CommonComponents/MusicPlayer";
 
 function Music() {
   const [music, setMusic] = useState();
+  const [currentPlaying, setCurrentPlaying] = useState(null);
   const account = useSelector((state) => state.account);
   const [loading, setLoading] = useState(true);
   const [newMusicPopup, setNewMusicPopup] = useState(false);
@@ -56,6 +57,7 @@ function Music() {
       }
       getData();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh]);
 
   //   Handle delete function
@@ -180,7 +182,16 @@ function Music() {
                               <td>{item.type}</td>
                               <td>{item.created_at.split("T")[0]}</td>
                               <td>
-                                <MusicPlayer audioSrc={item.path} />
+                                <MusicPlayer audioSrc={item.path} isPlaying={
+                                  currentPlaying ===
+                                  item.path
+                                }
+                                  onPlay={() =>
+                                    setCurrentPlaying(
+                                      item.path
+                                    )
+                                  }
+                                  onStop={() => setCurrentPlaying(null)} />
                               </td>
 
                               <td>
@@ -237,7 +248,12 @@ function Music() {
                             className="formItem"
                             type="file"
                             accept="audio/*"
-                            onChange={(e) => setNewMusic(e.target.files[0])}
+                            onChange={(e) => {
+                              const file = e.target.files[0];
+                              const fileName = file.name.replace(/ /g, '-');
+                              const newFile = new File([file], fileName, { type: file.type });
+                              setNewMusic(newFile);
+                            }}
                           />
                         </div>
                       </div>

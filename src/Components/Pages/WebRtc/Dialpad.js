@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";

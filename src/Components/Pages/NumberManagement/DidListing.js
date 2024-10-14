@@ -53,6 +53,7 @@ function DidListing() {
       }
       getData();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClick = async (id) => {

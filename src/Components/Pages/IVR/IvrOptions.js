@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ActionList from "../../CommonComponents/ActionList";
@@ -9,7 +11,6 @@ import {
   generalPostFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
-import { set } from "date-fns";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import "react-phone-number-input/style.css";

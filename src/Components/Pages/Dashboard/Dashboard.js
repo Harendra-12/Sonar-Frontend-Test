@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable eqeqeq */
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
@@ -15,8 +17,6 @@ const Dashboard = () => {
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const extensionList = useSelector((state) => state.extension).length;
   const userList = useSelector((state) => state.allUser?.data?.length) || 0;
-  const registerUser = useSelector((state) => state.registerUser);
-  const loginUser = useSelector((state) => state.loginUser);
   const ringGroup = useSelector((state) => state.ringGroup || []);
   const allCall = useSelector((state) => state.allCall || {});
   const activeCall = useSelector((state) => state.activeCall || []);
@@ -443,6 +443,7 @@ const Dashboard = () => {
                             </div>
                             <div className="col-2">
                               <img
+                              alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
                             </div>
@@ -484,6 +485,7 @@ const Dashboard = () => {
                             </div>
                             <div className="col-2">
                               <img
+                               alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
                             </div>
@@ -524,6 +526,7 @@ const Dashboard = () => {
                             </div>
                             <div className="col-2">
                               <img
+                               alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
                             </div>
@@ -560,6 +563,7 @@ const Dashboard = () => {
                             </div>
                             <div className="col-2">
                               <img
+                               alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
                             </div>
@@ -675,6 +679,7 @@ const Dashboard = () => {
                             </div>
                             <div className="col-2">
                               <img
+                               alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
                             </div>
@@ -714,6 +719,7 @@ const Dashboard = () => {
                             </div>
                             <div className="col-2">
                               <img
+                               alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
                             </div>
@@ -754,6 +760,7 @@ const Dashboard = () => {
                             </div>
                             <div className="col-2">
                               <img
+                               alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
                             </div>
@@ -794,6 +801,7 @@ const Dashboard = () => {
                             </div>
                             <div className="col-2">
                               <img
+                               alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
                             </div>
@@ -847,6 +855,7 @@ const Dashboard = () => {
                             </div>
                             <div className="col-2">
                               <img
+                               alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
                             </div>
@@ -888,6 +897,7 @@ const Dashboard = () => {
                             </div>
                             <div className="col-2">
                               <img
+                               alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
                             </div>
@@ -926,6 +936,7 @@ const Dashboard = () => {
                             </div>
                             <div className="col-2">
                               <img
+                               alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
                             </div>
@@ -964,6 +975,7 @@ const Dashboard = () => {
                             </div>
                             <div className="col-2">
                               <img
+                               alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
                             </div>
