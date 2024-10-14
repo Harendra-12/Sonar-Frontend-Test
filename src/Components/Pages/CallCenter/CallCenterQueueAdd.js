@@ -382,7 +382,10 @@ function CallCenterQueueAdd() {
                   </label>
                 </div>
                 <div className="col-6">
-                  <select {...register("greeting")} className="formItem w-100">
+                  <select
+                    {...register("greeting", { ...requiredValidator })}
+                    className="formItem w-100"
+                  >
                     <option disabled value="" selected>
                       Select Greeting
                     </option>
@@ -395,7 +398,9 @@ function CallCenterQueueAdd() {
                         );
                       })}
                   </select>
-
+                  {errors.greeting && (
+                    <ErrorMessage text={errors.greeting.message} />
+                  )}
                   <br />
                   <label htmlFor="data" className="formItemDesc">
                     Select the desired Greeting.
@@ -432,7 +437,10 @@ function CallCenterQueueAdd() {
                   </label>
                 </div>
                 <div className="col-6">
-                  <select {...register("moh_sound")} className="formItem w-100">
+                  <select
+                    {...register("moh_sound", { ...requiredValidator })}
+                    className="formItem w-100"
+                  >
                     <option disabled value="" selected>
                       Select Hold Music
                     </option>
@@ -445,6 +453,9 @@ function CallCenterQueueAdd() {
                         );
                       })}
                   </select>
+                  {errors.moh_sound && (
+                    <ErrorMessage text={errors.moh_sound.message} />
+                  )}
                 </div>
               </div>
               <div className="formRow col-xl-3">
@@ -846,8 +857,15 @@ function CallCenterQueueAdd() {
                 {agent &&
                   agent.map((item, index) => {
                     return (
-                      <div className="row pb-3 pt-2" key={index} style={{ borderBottom: '1px solid #8f8f8f47' }}>
-                        <div className="formLabel pe-2 m-0" style={{ width: "30px" }}>
+                      <div
+                        className="row pb-3 pt-2"
+                        key={index}
+                        style={{ borderBottom: "1px solid #8f8f8f47" }}
+                      >
+                        <div
+                          className="formLabel pe-2 m-0"
+                          style={{ width: "30px" }}
+                        >
                           <label>{index + 1}.</label>
                         </div>
                         <div className="row col-11">
@@ -1120,7 +1138,9 @@ function CallCenterQueueAdd() {
                           <div className="col-2 ps-0 pe-2">
                             <div className="formLabel">
                               {index === 0 ? (
-                                <label htmlFor="">Truncate agents on load</label>
+                                <label htmlFor="">
+                                  Truncate agents on load
+                                </label>
                               ) : (
                                 ""
                               )}
@@ -1177,7 +1197,7 @@ function CallCenterQueueAdd() {
                             </div>
                           )}
                           {index === agent.length - 1 &&
-                            index !== (user && user.length - 1) ? (
+                          index !== (user && user.length - 1) ? (
                             <div
                               onClick={addNewAgent}
                               className="col-auto px-0 mt-auto"

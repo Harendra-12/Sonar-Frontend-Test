@@ -510,7 +510,10 @@ function CallCenterQueueEdit() {
                   </label>
                 </div>
                 <div className="col-6">
-                  <select {...register("greeting")} className="formItem w-100">
+                  <select
+                    {...register("greeting", { ...requiredValidator })}
+                    className="formItem w-100"
+                  >
                     <option disabled value="">
                       Select Greeting
                     </option>
@@ -523,6 +526,9 @@ function CallCenterQueueEdit() {
                         );
                       })}
                   </select>
+                  {errors.greeting && (
+                    <ErrorMessage text={errors.greeting.message} />
+                  )}
                 </div>
               </div>
               <div className="formRow col-xl-3">
@@ -554,7 +560,10 @@ function CallCenterQueueEdit() {
                   </label>
                 </div>
                 <div className="col-6">
-                  <select {...register("moh_sound")} className="formItem w-100">
+                  <select
+                    {...register("moh_sound", { ...requiredValidator })}
+                    className="formItem w-100"
+                  >
                     <option value={""} disabled>
                       Select Hold Music
                     </option>
@@ -567,6 +576,9 @@ function CallCenterQueueEdit() {
                         );
                       })}
                   </select>
+                  {errors.moh_sound && (
+                    <ErrorMessage text={errors.moh_sound.message} />
+                  )}
                 </div>
               </div>
               <div className="formRow col-xl-3">
@@ -853,7 +865,7 @@ function CallCenterQueueEdit() {
                 </div>
               </div>
 
-              <div className="formRow col-xl-3">
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Record Template</label>
                   <label htmlFor="data" className="formItemDesc">
@@ -874,7 +886,7 @@ function CallCenterQueueEdit() {
                     <ErrorMessage text={errors.record_template} />
                   )}
                 </div>
-              </div>
+              </div> */}
 
               <div className="formRow col-xl-3">
                 <div className="formLabel">
@@ -992,9 +1004,14 @@ function CallCenterQueueEdit() {
                 {agent &&
                   agent.map((item, index) => {
                     return (
-                      <div className="row pb-3 pt-2" key={index} style={{ borderBottom: '1px solid #8f8f8f47' }}>
+                      <div
+                        className="row pb-3 pt-2"
+                        key={index}
+                        style={{ borderBottom: "1px solid #8f8f8f47" }}
+                      >
                         <div
-                          className="formLabel pe-2 m-0" style={{ width: "30px" }}
+                          className="formLabel pe-2 m-0"
+                          style={{ width: "30px" }}
                         >
                           <label>{index + 1}.</label>
                         </div>
@@ -1294,7 +1311,9 @@ function CallCenterQueueEdit() {
                           <div className="col-2 ps-0 pe-2">
                             <div className="formLabel">
                               {index === 0 ? (
-                                <label htmlFor="">Truncate agents on load</label>
+                                <label htmlFor="">
+                                  Truncate agents on load
+                                </label>
                               ) : (
                                 ""
                               )}
@@ -1350,7 +1369,7 @@ function CallCenterQueueEdit() {
                             </div>
                           )}
                           {index === agent.length - 1 &&
-                            index !== (user && user.length - 1) ? (
+                          index !== (user && user.length - 1) ? (
                             <div
                               onClick={addNewAgent}
                               className="col-auto px-0 mt-auto"
