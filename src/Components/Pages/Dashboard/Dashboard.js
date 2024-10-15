@@ -91,7 +91,6 @@ const Dashboard = () => {
       external: 0,
     },
   });
-  console.log("callCardData:", callCardData);
 
   const getExtensionsArr = (type) => {
     if (type == "ring") return new Set(ringGroup.map((ring) => ring.extension));
@@ -103,7 +102,6 @@ const Dashboard = () => {
     if (!allCall || !Array.isArray(allCall.calls)) return null;
 
     const callCenterExtensions = getExtensionsArr("call");
-    console.log("callCenterExtensions", callCenterExtensions);
 
     let totalCalls = 0;
     let inboundAnswered = 0;
