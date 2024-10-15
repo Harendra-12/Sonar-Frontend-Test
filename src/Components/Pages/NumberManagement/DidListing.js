@@ -5,14 +5,15 @@ import {
   backToTop,
   generalDeleteFunction,
   generalGetFunction,
+  generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import ContentLoader from "../../Loader/ContentLoader";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 function DidListing() {
   const [did, setDid] = useState();
   const [loading, setLoading] = useState(true);
-  // const [pageNumber, setPageNumber] = useState(1);
   const navigate = useNavigate();
   const didAll = useSelector((state) => state.didAll);
   const dispatch = useDispatch();
@@ -52,7 +53,6 @@ function DidListing() {
       }
       getData();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClick = async (id) => {
@@ -76,6 +76,23 @@ function DidListing() {
     }
   };
 
+  async function handleClickDefault(id) {
+    setLoading(true);
+    const parsedData = {
+      id: id
+    }
+    const apiData = await generalPostFunction(`/did/set-default`, parsedData);
+    if (apiData?.status) {
+      setLoading(false);
+      toast.success(apiData.message);
+      const newData = await generalGetFunction(`/did/all`);
+      if (newData?.status) {
+        setDid(newData.data);
+      }
+    } else {
+      setLoading(false);
+    }
+  }
   console.log("This is transition details", did);
   return (
     <main className="mainContent">
@@ -115,13 +132,12 @@ function DidListing() {
                     <thead>
                       <tr>
                         <th>DID</th>
-                        {/* <th>Payment Date</th>
-                        <th>Transaction Amount</th> */}
                         <th>E911</th>
                         <th>Cname</th>
                         <th>SMS</th>
                         <th style={{ width: 150 }}>Configure</th>
                         <th style={{ width: 150 }}>Reset Configuration</th>
+                        <th>Set for default calls</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -130,8 +146,6 @@ function DidListing() {
                           return (
                             <tr>
                               <td style={{ cursor: "default" }}>{item.did}</td>
-                              {/* <td style={{ cursor: "default" }}>{item.created_at.split("T")[0]}</td>
-                              <td style={{ cursor: "default" }}>${item.price}</td> */}
                               <td style={{ cursor: "default" }}>
                                 {item?.e911}
                               </td>
@@ -139,8 +153,6 @@ function DidListing() {
                                 {item?.cnam}
                               </td>
                               <td style={{ cursor: "default" }}>{item?.sms}</td>
-                              {/* <td onClick={() => navigate(item.dialplan?"/destination-edit":"/destination-add",{ state: { state: item.dialplan ? item.dialplan : item, did: item.did } })}>Configure</td> */}
-                              {/* <td onClick={()=>navigate(`/did-config?did_id=${item.did}`)}>Configure</td> */}
                               <td style={{ cursor: "default" }}>
                                 <label
                                   className={item.configuration !== null ? "tableLabel success" : "tableLabel pending"}
@@ -168,6 +180,21 @@ function DidListing() {
                                   </button>
                                 )}
                               </td>
+                              <td style={{ cursor: "default" }}>
+                                <label
+                                  className={item.default_outbound === 1 ? "tableLabel success" : "tableLabel pending"}
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => {
+                                    if (item.default_outbound === 0) {
+                                      handleClickDefault(item.id)
+                                    }
+                                  }}
+                                >
+                                  {item.default_outbound === 0
+                                    ? "Make Default"
+                                    : "Default"}
+                                </label>
+                              </td>
                             </tr>
                           );
                         })}
@@ -177,18 +204,6 @@ function DidListing() {
               </div>
             </div>
           </div>
-
-          {/* {did && did.data.length > 0 ? (
-            <PaginationComponent
-              pageNumber={(e) => setPageNumber(e)}
-              totalPage={did.last_page}
-              from={(pageNumber - 1) * did.per_page + 1}
-              to={did.to}
-              total={did.total}
-            />
-          ) : (
-            ""
-          )} */}
         </div>
       </section>
     </main>
