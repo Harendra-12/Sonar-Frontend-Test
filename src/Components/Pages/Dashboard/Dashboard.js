@@ -478,7 +478,8 @@ const Dashboard = () => {
                               <h5>{callCardData.minutes.count}</h5>
                               <p>
                                 {callCardData.minutes.inboundAnswered} Inbound /{" "}
-                                {callCardData.minutes.outboundAnswered} Outbound
+                                {callCardData.minutes.outboundConnected}{" "}
+                                Outbound
                               </p>
                             </div>
                             <div className="col-2">
@@ -839,7 +840,9 @@ const Dashboard = () => {
                             <div className="col-10">
                               <h5>{ringGroupCardData.total.count || 0}</h5>
                               <p>
-                                {ringGroupCardData.total.inbound || 0} Inbound calls / {ringGroupCardData.total.outbound || 0} Outbound calls
+                                {ringGroupCardData.total.inbound || 0} Inbound
+                                calls / {ringGroupCardData.total.outbound || 0}{" "}
+                                Outbound calls
                               </p>
                             </div>
                             <div className="col-2">
@@ -877,7 +880,10 @@ const Dashboard = () => {
                             <div className="col-10">
                               <h5>{ringGroupCardData.active.count || 0}</h5>
                               <p>
-                                {ringGroupCardData.active.inbound || 0} Active inbound calls / {ringGroupCardData.active.outbound || 0} Active outbound calls
+                                {ringGroupCardData.active.inbound || 0} Active
+                                inbound calls /{" "}
+                                {ringGroupCardData.active.outbound || 0} Active
+                                outbound calls
                               </p>
                             </div>
                             <div className="col-2">
