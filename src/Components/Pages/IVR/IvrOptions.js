@@ -192,6 +192,7 @@ function IvrOptions() {
                           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].filter(option => editId === item.id ? !options.find(opt => opt.option_key == option) : true).map(option => (
                             <option key={option} value={option}>{option}</option>
                           ))}
+                          <option value={item.option_key}>{item.option_key}</option>
                         </select>
                       </div>
                     </div>

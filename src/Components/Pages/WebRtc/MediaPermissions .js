@@ -20,6 +20,14 @@ function MediaPermissions() {
       console.error("navigator or navigator.mediaDevices is not defined");
     }
   }
+  function requestSoundPermission() {
+    const audioContext = new AudioContext();
+    audioContext.resume().then(() => {
+      console.log('Sound permission granted');
+    }).catch((error) => {
+      console.log('Sound permission denied');
+    });
+  }
   useEffect(() => {
     if (permission === "request") {
       dispatch({
@@ -27,6 +35,15 @@ function MediaPermissions() {
         microPhonePermission: false,
       });
       getLocalStream();
+      requestSoundPermission();
+      Notification.requestPermission().then((permission) => {
+        if (permission === 'granted') {
+          console.log('Audio auto-play permission granted');
+        } else {
+          console.log('Audio auto-play permission denied');
+          // Provide a fallback, such as displaying an error message or playing a different audio file
+        }
+      });
     } else if (permission === "granted") {
       dispatch({
         type: "SET_MICROPHONEPERMISSION",
