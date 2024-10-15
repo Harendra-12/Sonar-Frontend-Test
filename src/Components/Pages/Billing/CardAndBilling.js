@@ -379,7 +379,18 @@ function CardAndBilling() {
                           <div class="d-flex flex-wrap justify-content-between align-items-center">
                             <div class="col-10">
                               <h5>Upcoming Transaction</h5>
-                              <p>16-01-2024</p>
+                              {/* <p>16-01-2024</p> */}
+                              <p>
+                                {accountDetails.subscription[0]?.end_date
+                                  ? new Date(
+                                      accountDetails.subscription[0].end_date
+                                    ).toLocaleString("en-GB", {
+                                      year: "numeric",
+                                      month: "2-digit",
+                                      day: "2-digit",
+                                    })
+                                  : ""}
+                              </p>
                             </div>
                             <div class="col-2">
                               <i
@@ -394,10 +405,36 @@ function CardAndBilling() {
                         <div className="data-number2">
                           <div class="d-flex flex-wrap justify-content-between align-items-center">
                             <div class="col-10">
-                              <h5>
+                              {/* <h5>
                                 $200.<sub style={{ fontSize: "14px" }}>00</sub>
+                              </h5> */}
+                              <h5>
+                                ${" "}
+                                {accountDetails.package?.offer_price.split(
+                                  "."
+                                )[0]
+                                  ? accountDetails.package?.offer_price.split(
+                                      "."
+                                    )[0]
+                                  : 0}
+                                .
+                                <sub style={{ fontSize: 14 }}>
+                                  {accountDetails.package?.offer_price.split(
+                                    "."
+                                  )[1]
+                                    ? accountDetails.package?.offer_price.split(
+                                        "."
+                                      )[1]
+                                    : "00"}
+                                </sub>
                               </h5>
-                              <p>Basic Package / Yearly Basis</p>
+                              <p>
+                                Basic Package /{" "}
+                                {accountDetails.package?.subscription_type ===
+                                "annually"
+                                  ? "Yearly Basis"
+                                  : "Monthly Basis"}
+                              </p>
                             </div>
                             <div class="col-2">
                               {/* <img
@@ -415,11 +452,11 @@ function CardAndBilling() {
                             <div class="d-flex flex-wrap justify-content-between align-items-center">
                               <div class="col-10">
                                 <h5>Wallet Balance</h5>
-                                <p>
+                                {/* <p>
                                   {selectedCard?.[0]?.name
                                     ? `Card Holder: ${selectedCard?.[0]?.name}`
                                     : "No Card Added"}
-                                </p>
+                                </p> */}
                               </div>
                               <div
                                 class="col-2"
@@ -456,12 +493,12 @@ function CardAndBilling() {
                                     : "00"}
                                 </sub>
                               </h5>
-                              <p>
+                              {/* <p>
                                 {selectedCard?.[0]?.card_number
                                   ? `Active Card:{" "}**** **** ****{" "}
                                 ${selectedCard?.[0]?.card_number.slice(-4)}`
                                   : "Please add a card before recharge!"}
-                              </p>
+                              </p> */}
                             </div>
                             <div class="col-2">
                               {/* <div
