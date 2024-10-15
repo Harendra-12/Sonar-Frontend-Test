@@ -18,9 +18,7 @@ const ActionList = ({
   const [extension, setExtension] = useState([]);
   const [callCenter, setCallCenter] = useState([]);
   const [ivr, setIvr] = useState([]);
-
   const [selectedOption, setSelectedOption] = useState(null);
-
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const callCenterArr = useSelector((state) => state.callCenter);
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
@@ -63,23 +61,22 @@ const ActionList = ({
         ivrRefresh: ivrRefresh + 1,
       });
     }
-    // async function getData() {
-    //   const ivrData = await generalGetFunction("/ivr-master/all");
-    //  if(ivrData.status){
-    //   setIvr(ivrData.data)
-    //  }
-    // }
-    // getData();
   }, [extensionArr, ringGroupArr, callCenterArr, ivrArr, ivrRefresh]);
 
   // Backup for predefault
+  let labelValue = "";
   useEffect(() => {
     // Set default value if provided
     if (value) {
-      const defaultOption = { value: value, label: value };
+      if (category === "ivr") {
+        labelValue = ivrArr.find((item) => item.id == value)?.ivr_name;
+      } else {
+        labelValue = value;
+      }
+      const defaultOption = { value: value, label: labelValue };
       setSelectedOption(defaultOption);
     }
-  }, [value]);
+  }, [value, labelValue, category, ivrArr]);
 
   const allOptions = [
     {
@@ -121,7 +118,8 @@ const ActionList = ({
   useEffect(() => {
     if (value) {
       const defaultOption = allOptionsRef.current
-        .flatMap((opt) => opt.options)
+        // .flatMap((opt) => opt.options)
+        .reduce((acc, opt) => acc.concat(opt.options), [])
         .find((option) => option.value[0] === value);
       if (defaultOption) setSelectedOption(defaultOption);
     }
