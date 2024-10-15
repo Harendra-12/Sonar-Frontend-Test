@@ -8,7 +8,6 @@ import {
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import ActionList from "../../CommonComponents/ActionList";
-import Select from "react-select";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import {
@@ -28,8 +27,6 @@ const DidConfig = () => {
   const account = useSelector((state) => state.account);
   const [holdMusic, setHoldMusic] = useState();
   const [loading, setLoading] = useState(true);
-  // const queryParams = new URLSearchParams(useLocation().search);
-  // const did_id_view = queryParams.get("did_id_view");
   const {
     register,
     setError: setErr,
@@ -46,11 +43,6 @@ const DidConfig = () => {
       setValue("usages", locationData.configuration.usages || []);
       setValue("did_id_view", locationData.did || "");
       setValue("forward", locationData.configuration.forward || "");
-      // if(locationData.configuration.forward === "direct"){
-      // }else if (locationData.configuration.forward === "forward_to"){
-      // }else{
-      //   setValue("forward_to", "");
-      // }
       setValue("direct_extension", locationData.configuration.forward_to || "");
       setValue("forward_to", locationData.configuration.forward_to || "");
       setValue("action", locationData.configuration.action || "");
@@ -101,10 +93,6 @@ const DidConfig = () => {
       ...requiredValidator,
     });
     register("did_id_view", { required: true });
-
-    // if (locationData !== undefined) {
-    //   setValue("did_id_view", locationData.did_id_view);
-    // }
   }, [register, setValue]);
 
   useEffect(() => {
@@ -130,10 +118,6 @@ const DidConfig = () => {
   const handleFormSubmit = handleSubmit(async (data) => {
     data.record = data.record === true || data.record === "true";
     data.status = data.status === true || data.status === "true";
-
-    // if (!Array.isArray(data.usages)) {
-    //   data.usages = [data.usages];
-    // }
 
     if (data.forward === "pstn" && !data.forward_to) {
       setErr("forward_to", {
@@ -236,7 +220,6 @@ const DidConfig = () => {
       paddingLeft: "15px",
       paddingTop: 0,
       paddingBottom: 0,
-      // backgroundColor: state.isSelected ? "transparent" : "transparent",
       "&:hover": {
         backgroundColor: "#0055cc",
         color: "#fff",
@@ -327,36 +310,6 @@ const DidConfig = () => {
                     )}
                   </div>
                 </div>
-                {/* <div className="formRow col-xl-3">
-                  <div className="formLabel">
-                    <label htmlFor="">Usage</label>
-                    <label htmlFor="data" className="formItemDesc">
-                      Set how the Destination will be used.
-                    </label>
-                  </div>
-                  <div className="col-6">
-                    <Select
-                      closeMenuOnSelect={false}
-                      isMulti
-                      options={usagesOptions}
-                      value={usagesOptions.filter((option) =>
-                        selectedUsages.includes(option.value)
-                      )}
-                      styles={customStyles}
-                      onChange={(selectedOptions) => {
-                        const values = selectedOptions
-                          ? selectedOptions.map((option) => option.value)
-                          : [];
-                        setValue("usages", values);
-                      }}
-                    />
-
-                    {errors.usages && (
-                      <ErrorMessage text={errors.usages.message} />
-                    )}
-
-                  </div>
-                </div> */}
 
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
@@ -416,7 +369,6 @@ const DidConfig = () => {
                       className="formItem"
                       name="forward"
                       id="selectFormRow"
-                      // onChange={(e) => setForwardEnable(e.target.value)}
                       {...register("forward")}
                     >
                       <option value="disabled">Disable</option>

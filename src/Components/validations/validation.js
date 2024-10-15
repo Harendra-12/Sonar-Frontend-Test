@@ -143,3 +143,11 @@ export const restrictToNumbers = (e) => {
     e.preventDefault();
   }
 };
+
+// Allow only number keys (0-9), * and # keys
+export const restrictToNumbersAndStar = {
+  pattern: {
+    value: /^[0-9*#]*$/,
+    message: "Only digits and * and # are allowed",
+  },
+};

@@ -33,8 +33,8 @@ const CallCenterSettings = () => {
           setValue("greeting", data.greeting);
           setValue("strategy", data.strategy);
           setValue(
-            "record_template",
-            data.record_template === 1 ? true : false
+            "recording_enabled",
+            data.recording_enabled === 1 ? true : false
           );
           setValue("time_base_score", data.time_base_score);
           setValue("tier_rules_apply", data.tier_rules_apply);
@@ -58,7 +58,7 @@ const CallCenterSettings = () => {
     const payload = {
       greeting: data.greeting,
       strategy: data.strategy,
-      record_template: data.record_template === "true" ? 1 : 0,
+      recording_enabled: data.recording_enabled === "true" ? 1 : 0,
       time_base_score: data.time_base_score,
       tier_rules_apply: data.tier_rules_apply,
       tier_rule_wait_multiply_level: data.tier_rule_wait_multiply_level,
@@ -78,6 +78,7 @@ const CallCenterSettings = () => {
     if (apiData.status) {
       setLoading(false);
       toast.success(apiData.message);
+      navigate(-1);
     } else {
       setLoading(false);
       // toast.error(apiData.message);
@@ -111,7 +112,7 @@ const CallCenterSettings = () => {
           {loading && <CircularLoader />}
           <div className="mx-2" id="detailsContent">
             <form>
-              <div className="formRow col-xl-3">
+              {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label className="text-dark">Greeting</label>
                   <label className="formItemDesc">
@@ -128,7 +129,7 @@ const CallCenterSettings = () => {
                     <option value="tone_stream">Tone Stream</option>
                   </select>
                 </div>
-              </div>
+              </div> */}
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label className="text-dark">Strategy</label>
@@ -171,7 +172,7 @@ const CallCenterSettings = () => {
                 </div>
                 <div className="col-6">
                   <select
-                    {...register("record_template")}
+                    {...register("recording_enabled")}
                     className="formItem me-0"
                     style={{ width: "100%" }}
                   >
