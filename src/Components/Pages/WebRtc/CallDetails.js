@@ -16,6 +16,7 @@ function CallDetails({
   const [callDetails, setCallDetails] = useState();
   // const dispatch = useDispatch();
   // const globalSession = useSelector((state) => state.sessions);
+  const { connectStatus } = useSIPProvider();
 
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
@@ -59,6 +60,13 @@ function CallDetails({
     );
   };
 
+  const handleVoiceCall = () => {
+    if (connectStatus !== "CONNECTED") {
+      toast.error("You are not connected with server");
+      return;
+    }
+    onCall(callDetails);
+  };
   // useEffect(() => {
   //   if (callNow) {
   //     setTimeout(() => {
@@ -143,7 +151,8 @@ function CallDetails({
           <button
             className="appPanelButton"
             effect="ripple"
-            onClick={() => onCall(callDetails)}
+            // onClick={() => onCall(callDetails)}
+            onClick={handleVoiceCall}
           >
             <i className="fa-light fa-phone" />
           </button>
