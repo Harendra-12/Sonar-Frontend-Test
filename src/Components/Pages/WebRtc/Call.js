@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Dialpad from "./Dialpad";
 import CallDetails from "./CallDetails";
@@ -29,8 +31,6 @@ function Call({
   const account = useSelector((state) => state.account);
   const [allCalls, setAllCalls] = useState([]);
   const extension = account?.extension?.extension || "";
-  // const [hangupRefresh, setHangupRefresh] = useState(0);
-  // const [callNow, setCallNow] = useState(false);
   const [previewCalls, setPreviewCalls] = useState([]);
   const [addContactToggle, setAddContactToggle] = useState(false);
   const [clickedCall, setClickedCall] = useState(null);
@@ -39,49 +39,14 @@ function Call({
   const [allApiData, setAllApiData] = useState([]);
   const [callHistory, setCallHistory] = useState([]);
   const { sessionManager, connectStatus } = useSIPProvider();
-  // const [selectedModule, setSelectedModule] = useState("");
   const callProgressDestination = useSelector(
     (state) => state.callProgressDestination
   );
-  // const globalSession = useSelector((state) => state.sessions);
   const [clickedExtension, setClickedExtension] = useState(null);
 
   function handleHideDialpad(value) {
     setDialpadShow(value);
   }
-
-  // useEffect(() => {
-  //   if (allCall && allCall.calls) {
-  //     const apiData = allCall;
-  //     setAllApiData(apiData.calls.reverse());
-
-  //     const uniqueArray = [
-  //       ...new Map(
-  //         apiData.calls
-  //           .filter(
-  //             (item) =>
-  //               item["Caller-Callee-ID-Number"] ===
-  //                 extension ||
-  //               item["Caller-Caller-ID-Number"] ===
-  //                 extension
-  //           )
-  //           .reverse()
-  //           .map((item) => [
-  //             // item["Caller-Callee-ID-Number"],
-  //             //   item["Caller-Caller-ID-Number"],
-  //             // item["Hangup-Cause"] &&
-  //             // item["variable_start_stamp"] &&
-  //             // item["variable_billsec"],
-  //             item,
-  //             item,
-  //           ])
-  //       ).values(),
-  //     ];
-  //     setAllCalls(uniqueArray.reverse());
-
-  //     setLoading(false);
-  //   }
-  // }, [allCall]);
   useEffect(() => {
     if (allCall && allCall.calls) {
       const apiData = allCall;
@@ -109,6 +74,7 @@ function Call({
       setAllCalls(uniqueArray.reverse());
       setLoading(false);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allCall, isCustomerAdmin]);
 
   useEffect(() => {

@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React from "react";
 import "../assets/css/style.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,7 +14,6 @@ function Navbar() {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
-  const tempAccount = useSelector((state) => state.tempAccount);
   const userType = account?.usertype; // "Company"
   const isCustomerAdmin = account?.email == accountDetails?.email || false;
   async function logOut() {
