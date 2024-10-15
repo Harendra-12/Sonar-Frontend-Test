@@ -7,7 +7,7 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
   const account = useSelector((state) => state.account);
   const globalSession = useSelector((state) => state.sessions);
   const dispatch = useDispatch();
-  const { sessionManager } = useSIPProvider();
+  const { sessionManager, connectStatus } = useSIPProvider();
   const [destNumber, setDestNumber] = useState("");
   const extension = account?.extension?.extension || "";
   const handleInputChange = (e) => {
@@ -17,6 +17,8 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
       setDestNumber(value);
     }
   };
+
+  console.log("connectstatus form dialpad", connectStatus);
 
   async function onSubmit(e) {
     if (!isMicOn) {
@@ -32,6 +34,12 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
       toast.error("You cannot call yourself");
       return;
     }
+
+    if (connectStatus !== "CONNECTED") {
+      toast.error("You are not connected with server");
+      return;
+    }
+
     if (destNumber.length > 3) {
       hideDialpad(false);
       // e.preventDefault();

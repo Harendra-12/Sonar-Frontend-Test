@@ -38,7 +38,7 @@ function Call({
   const [loading, setLoading] = useState(true);
   const [allApiData, setAllApiData] = useState([]);
   const [callHistory, setCallHistory] = useState([]);
-  const { sessionManager } = useSIPProvider();
+  const { sessionManager, connectStatus } = useSIPProvider();
   // const [selectedModule, setSelectedModule] = useState("");
   const callProgressDestination = useSelector(
     (state) => state.callProgressDestination
@@ -222,6 +222,10 @@ function Call({
   };
 
   const handleDoubleClickCall = (item) => {
+    if (connectStatus !== "CONNECTED") {
+      toast.error("You are not connected with server");
+      return;
+    }
     onCall(item);
   };
 
