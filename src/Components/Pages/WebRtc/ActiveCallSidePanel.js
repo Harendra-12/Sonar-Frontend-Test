@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSessionCall } from "react-sipjs";
+import connectMusic from "../../assets/music/ring-tone.mp3";
 
 function ActiveCallSidePanel({
   sessionId,
@@ -14,9 +15,40 @@ function ActiveCallSidePanel({
   const globalSession = useSelector((state) => state.sessions);
   const callProgressId = useSelector((state) => state.callProgressId);
   const { session, timer, hold, unhold } = useSessionCall(sessionId);
+  const audioRef = useRef(null);
+  const [playMusic, setPlayMusic] = useState(false);
   console.log(session);
   //Keep track for previous call progress Id
   const [prevCallProgressId, setPrevCallProgressId] = useState(callProgressId);
+  console.log("This is session", session._state);
+  useEffect(() => {
+    if (playMusic) {
+      if (audioRef.current) {
+        audioRef.current.src = connectMusic; // replace with the actual file path
+        audioRef.current.loop = true;
+        setTimeout(() => {
+          audioRef.current.play();
+        }, 2000)
+        audioRef.current.onended = () => {
+          setPlayMusic(false);
+        };
+      }
+    } else {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    }
+  }, [playMusic]);
+
+  useEffect(() => {
+    if (session._state === "Establishing") {
+      setPlayMusic(true);
+    } else {
+      setPlayMusic(false);
+    }
+  }, [session._state]);
+
+
 
   const currentSession = globalSession.find(
     (session) => session.id === sessionId
@@ -121,12 +153,12 @@ function ActiveCallSidePanel({
             <h4>Line {chennel + 1}</h4>
             <h5>
               {destination}
-              {/* <span className='float-end'>02:23
-                                    </span> */}
             </h5>
           </div>
         </div>
       )}
+
+      <audio ref={audioRef}></audio>
 
       {/* <div className='col-12 callItem active'>
                         <div className='profilepicHolder'>
