@@ -39,7 +39,7 @@
   border: none;
   border-radius: 5px;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
-  background: #000;
+  background: var(--nav-color);
   padding: 0;
   text-decoration: none;
   margin-left: 10px;
@@ -71,7 +71,7 @@
 }
 
 .panelButton:hover {
-  background: #ff3636;
+  background: linear-gradient(195deg, #ff3636, #c90000);
 }
 
 .panelButton:hover .text {

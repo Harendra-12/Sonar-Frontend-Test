@@ -313,7 +313,8 @@ function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
                       setPopUp(false);
                     }}
                   >
-                    Close
+                    <span className="text">Close</span>
+                    <span className="icon"><i class="fa-solid fa-xmark"></i></span>
                   </button>
                 </div>
               </div>

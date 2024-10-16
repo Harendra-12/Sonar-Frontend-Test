@@ -1380,7 +1380,8 @@ function CallCenterQueueEdit() {
                                 type="button"
                                 className="panelButton my-auto"
                               >
-                                Add more
+                                <span className="text">Add</span>
+                                <span className="icon"><i class="fa-solid fa-plus"></i></span>
                               </button>
                             </div>
                           ) : (
