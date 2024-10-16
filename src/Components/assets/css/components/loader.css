@@ -487,6 +487,7 @@
     backdrop-filter: blur(2px);
     position: fixed;
     top: 0;
+    right: 0;
     width: calc(100vw - 175px);
     z-index: 9999;
 }
