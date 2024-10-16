@@ -349,7 +349,10 @@ function CallCenterQueue() {
                           navigate(`${redirectRoutes}`);
                         }}
                       >
-                        Lets Go!
+                        <span className="text">Confirm</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-check"></i>
+                        </span>
                       </button>
                     ) : (
                       <button
