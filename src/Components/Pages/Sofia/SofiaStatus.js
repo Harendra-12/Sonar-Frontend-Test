@@ -77,7 +77,7 @@ function SofiaStatus() {
         <>
           <div className="mainContent d-flex justify-content-between">
             <button
-              className="panelButton"
+              className="panelButtonOLD"
               onClick={() => {
                 setClickValue("status");
                 statusReload();
@@ -86,7 +86,7 @@ function SofiaStatus() {
               Status
             </button>
             <button
-              className="panelButton"
+              className="panelButtonOLD"
               onClick={() => {
                 setClickValue("sofiastatus");
                 sofiaReload();
@@ -95,7 +95,7 @@ function SofiaStatus() {
               Sofia status
             </button>
             <button
-              className="panelButton"
+              className="panelButtonOLD"
               onClick={() => {
                 setClickValue("reg");
                 regReload();
@@ -104,7 +104,7 @@ function SofiaStatus() {
               Show Registration
             </button>
             <button
-              className="panelButton"
+              className="panelButtonOLD"
               onClick={() => {
                 setClickValue("xml");
                 xmlReload();
@@ -113,7 +113,7 @@ function SofiaStatus() {
               Reload xml
             </button>
             <button
-              className="panelButton"
+              className="panelButtonOLD"
               onClick={() => {
                 setClickValue("acl");
                 aclReload();
@@ -122,7 +122,7 @@ function SofiaStatus() {
               Reload Acl
             </button>
             <button
-              className="panelButton"
+              className="panelButtonOLD"
               onClick={() => {
                 setClickValue("shutdown");
                 shutDownReload();
