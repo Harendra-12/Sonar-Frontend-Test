@@ -299,10 +299,10 @@ function Document({
       <div className="col-xl-8">
         {checkDocumentStatus(account.details) != null && (
           <div className="statusMessage">
-            <div className="statusWrapper pending">
+            <div className="statusWrapper success">
               <div className="mx-2">
                 <h5>
-                  <i className="fa-solid fa-triangle-exclamation text-white me-1"></i>{" "}
+                  <i className="fa-solid fa-check text-white me-1"></i>{" "}
                   {checkDocumentStatus(account.details)}
                 </h5>
               </div>
@@ -313,7 +313,7 @@ function Document({
           rejectDocument.length !== uploadApprove.length ? (
           <>
             <div className="statusMessage">
-              <div className="statusWrapper">
+              <div className={uploadDocument.every((value) => value === true) ? "statusWrapper pending" : "statusWrapper"}>
                 <h5>
                   <i className="fa-solid fa-triangle-exclamation text-white me-1"></i>{" "}
                   {uploadDocument.every((value) => value === true)

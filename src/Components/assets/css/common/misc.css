@@ -469,6 +469,11 @@ input.noinputfield.edit {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
+.statusWrapper.success {
+    border: 2px solid #04ff00;
+    background-color: #4ffc8282;
+}
+
 .statusWrapper.pending {
     border: 2px solid #ff7300;
     background-color: #fc9d4f;
