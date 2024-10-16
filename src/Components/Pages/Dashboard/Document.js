@@ -308,7 +308,7 @@ function Document({
           </div>
         )}
         {rejectDocument.length !== 0 &&
-        rejectDocument.length !== uploadApprove.length ? (
+          rejectDocument.length !== uploadApprove.length ? (
           <>
             <div className="statusMessage">
               <div className="statusWrapper">
@@ -833,9 +833,12 @@ function Document({
                       </div>
                     </div>
                   )}
-                  <div className="mt-2">
+                  <div className="mt-2 d-flex justify-content-between">
                     <button className="panelButton m-0" onClick={handleSubmit}>
-                      Confirm
+                      <span className="text">Confirm</span>
+                      <span className="icon">
+                        <i class="fa-solid fa-check"></i>
+                      </span>
                     </button>
                     <button
                       className="panelButtonWhite m-0 float-end"
@@ -882,7 +885,7 @@ function Document({
                     type="file"
                     accept="image/*"
                     onChange={(e) => handleUploadDoc(e)}
-                    // onChange={handleChange}
+                  // onChange={handleChange}
                   />
                   <span style={{ fontSize: 10 }}>
                     Only JPEG/JPG/PNG files are accepted.
@@ -923,13 +926,16 @@ function Document({
                       </div>
                     </div>
                   )}
-                  <div className="mt-2">
+                  <div className="mt-2 d-flex justify-content-between">
                     <button
                       className="panelButton m-0"
                       // onClick={handleSubmit}
                       onClick={() => handleUploadDocument(uploadId)}
                     >
-                      Confirm
+                      <span className="text">Confirm</span>
+                      <span className="icon">
+                        <i class="fa-solid fa-check"></i>
+                      </span>
                     </button>
                     <button
                       className="panelButtonWhite m-0 float-end"
