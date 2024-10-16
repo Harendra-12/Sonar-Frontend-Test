@@ -194,7 +194,7 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                 >
                   <div className="col-12">
                     {cardList &&
-                      cardList.map((item, key) => {
+                      cardList?.map((item, key) => {
                         return (
                           <div className="col-xl-12 mb-2" key={key}>
                             <div
@@ -275,7 +275,7 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                   style={{ padding: "5px", maxHeight: 189, overflowY: "auto" }}
                 >
                   {billingList &&
-                    billingList.map((item, key) => {
+                    billingList?.map((item, key) => {
                       return (
                         <div
                           key={key}
