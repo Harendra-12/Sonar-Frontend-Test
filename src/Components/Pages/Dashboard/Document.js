@@ -315,7 +315,7 @@ function Document({
             <div className="statusMessage">
               <div className="statusWrapper">
                 <h5>
-                  <i className="fa-solid fa-triangle-exclamation text-danger me-1"></i>{" "}
+                  <i className="fa-solid fa-triangle-exclamation text-white me-1"></i>{" "}
                   {uploadDocument.every((value) => value === true)
                     ? "Documents are under review. We will get back to you soon!"
                     : "We have faced an issue while validating your document(s)!"}

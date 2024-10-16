@@ -462,7 +462,7 @@ input.noinputfield.edit {
 
 .statusWrapper {
     /* background-color: #ff800030; */
-    background-color: #f101012d;
+    background-color: #ff5f5f;
     padding: 10px;
     border-radius: 10px;
     border: 2px solid #dc3545;
@@ -475,7 +475,7 @@ input.noinputfield.edit {
 }
 
 .statusWrapper h5 {
-    /* color: #ff8100; */
+    color: #fff;
     margin-bottom: 0;
     font-weight: 500;
 }
