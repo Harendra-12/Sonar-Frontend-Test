@@ -299,11 +299,13 @@ function Document({
       <div className="col-xl-8">
         {checkDocumentStatus(account.details) != null && (
           <div className="statusMessage">
-            <div className="mx-2">
-              <h5>
-                <i className="fa-solid fa-triangle-exclamation text-success me-1"></i>{" "}
-                {checkDocumentStatus(account.details)}
-              </h5>
+            <div className="statusWrapper pending">
+              <div className="mx-2">
+                <h5>
+                  <i className="fa-solid fa-triangle-exclamation text-white me-1"></i>{" "}
+                  {checkDocumentStatus(account.details)}
+                </h5>
+              </div>
             </div>
           </div>
         )}
