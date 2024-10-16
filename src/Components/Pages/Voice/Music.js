@@ -294,22 +294,25 @@ function Music() {
                       <h4>Warning!</h4>
                       <p>Are you sure you want to delete this music ?</p>
 
-                      <button
-                        className="panelButton m-0"
-                        onClick={() => {
-                          handleDelete(deleteId);
-                        }}
-                      >
-                        Confirm
-                      </button>
-                      <button
-                        className="panelButtonWhite m-0 float-end"
-                        onClick={() => {
-                          setDeletePopup(false);
-                        }}
-                      >
-                        Cancel
-                      </button>
+                      <div className="d-flex justify-content-between">
+                        <button
+                          className="panelButton m-0"
+                          onClick={() => {
+                            handleDelete(deleteId);
+                          }}
+                        >
+                          <span className="text">Confirm</span>
+                          <span className="icon"><i class="fa-solid fa-check"></i></span>
+                        </button>
+                        <button
+                          className="panelButtonWhite m-0 float-end"
+                          onClick={() => {
+                            setDeletePopup(false);
+                          }}
+                        >
+                          Cancel
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
