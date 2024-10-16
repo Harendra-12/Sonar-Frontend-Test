@@ -22,28 +22,44 @@ function ActiveCallSidePanel({
   const [prevCallProgressId, setPrevCallProgressId] = useState(callProgressId);
   console.log("This is session", session._state);
   useEffect(() => {
-    if (playMusic) {
-      if (audioRef.current) {
-        audioRef.current.src = connectMusic; // replace with the actual file path
-        audioRef.current.loop = true;
-        setTimeout(() => {
-          audioRef.current.play();
-        }, 2000)
-        audioRef.current.onended = () => {
-          setPlayMusic(false);
-        };
-      }
-    } else {
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
+    const audioElement = audioRef.current;
+    console.log('Current playMusic value:', playMusic); // Log the state
+    console.log('Current audio state:', audioElement?.paused);
+  
+    if (playMusic && audioElement) {
+      console.log("Starting music...");
+      audioElement.src = connectMusic; // Set the audio source
+      audioElement.loop = false; // Ensure looping is disabled
+      setTimeout(() => {
+        audioElement.play().catch(error => {
+          console.error('Error playing the audio:', error);
+        });
+      }, 2000); // Play after 2 seconds
+    } else if (!playMusic && audioElement) {
+      console.log("Stopping music...");
+      audioElement.pause();
+      audioElement.currentTime = 0; // Reset to the start
+      audioElement.src = ""; // Clear the source for extra safety
     }
-  }, [playMusic]);
+  
+    // Cleanup when component unmounts
+    return () => {
+      if (audioElement) {
+        console.log("Cleaning up audio...");
+        audioElement.pause();
+        audioElement.currentTime = 0;
+        audioElement.src = ""; // Clear source to avoid dangling audio
+      }
+    };
+  }, [playMusic, connectMusic]); // Dependencies: playMusic, connectMusic
+  
 
   useEffect(() => {
     if (session._state === "Establishing") {
       setPlayMusic(true);
     } else {
+      
+      
       setPlayMusic(false);
     }
   }, [session._state]);

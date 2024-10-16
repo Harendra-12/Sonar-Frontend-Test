@@ -87,12 +87,12 @@ function NewCardPaymentMethod({
 
   // Filter out the default billing address
   useEffect(() => {
-    billingList.map((item) => {
+    billingList?.map((item) => {
       if (item.default) {
         setSelectedBillId(item.id);
       }
     });
-    if (billingList.length === 0) {
+    if (billingList?.length === 0) {
       setNewBilling(true);
     }
   }, [billingList]);
@@ -118,7 +118,7 @@ function NewCardPaymentMethod({
 
   // Validate card number
   useEffect(() => {
-    if (cardDetails.cardNumber.length > 0) {
+    if (cardDetails.cardNumber?.length > 0) {
       if (cardValidator.number(cardDetails.cardNumber).isValid) {
         setErrorCard((prevData) => ({
           ...prevData,
@@ -141,7 +141,7 @@ function NewCardPaymentMethod({
         cardNumber: true,
       }));
     }
-    if (cardDetails.cvv.length < 3 || cardDetails.cvv.length > 6) {
+    if (cardDetails.cvv?.length < 3 || cardDetails.cvv?.length > 6) {
       setErrorCard((prevData) => ({
         ...prevData,
         cvv: true,
@@ -166,15 +166,15 @@ function NewCardPaymentMethod({
       }));
     }
     if (newBilling) {
-      Object.keys(billing).map((item) => {
+      Object.keys(billing)?.map((item) => {
         if (billing[item] === "") {
           setErrorBilling((prevData) => ({
             ...prevData,
             [item]: true,
           }));
         } else if (item === "phone") {
-          // console.log(billing[item].length,"This is loop",item);
-          if (billing[item].length > 15 || billing[item].length < 8) {
+          // console.log(billing[item]?.length,"This is loop",item);
+          if (billing[item]?.length > 15 || billing[item]?.length < 8) {
             setErrorBilling((prevData) => ({
               ...prevData,
               phone: true,
@@ -196,14 +196,13 @@ function NewCardPaymentMethod({
         !(cardDetails.cardName === "") &&
         !(rechargeType !== "buyDid" && cardDetails.amount === "") &&
         !(cardDetails.expiryDate === "") &&
-        !(cardDetails.cvv.length < 3 || cardDetails.cvv.length > 6) &&
+        !(cardDetails.cvv?.length < 3 || cardDetails.cvv?.length > 6) &&
         cardValidator.number(cardDetails.cardNumber).isValid &&
-        !Object.keys(billing)
-          .map((item) => {
+        !Object.keys(billing)?.map((item) => {
             if (billing[item] === "") {
               return true;
             } else if (item === "phone") {
-              if (billing[item].length > 15 || billing[item].length < 8) {
+              if (billing[item]?.length > 15 || billing[item]?.length < 8) {
                 return true;
               }
             } else if (item === "email") {
@@ -243,16 +242,16 @@ function NewCardPaymentMethod({
             state: billing.state,
             country: billing.country,
             accountId: selectedDid[0].vendorAccountId,
-            dids: selectedDid.map((item) => {
+            dids: selectedDid?.map((item) => {
               return {
                 dids: item.id,
               };
             }),
             vendorId: selectedDid[0].vendorId,
-            didQty: selectedDid.length,
+            didQty: selectedDid?.length,
             companyId: account.account_id,
             didType: "random",
-            rate: Number(selectedDid[0].price) * selectedDid.length,
+            rate: Number(selectedDid[0].price) * selectedDid?.length,
           };
 
           const apiData = await generalPostFunction("/purchaseTfn", parsedData);
@@ -330,7 +329,7 @@ function NewCardPaymentMethod({
         !(cardDetails.cardName === "") &&
         !(rechargeType !== "buyDid" && cardDetails.amount === "") &&
         !(cardDetails.expiryDate === "") &&
-        !(cardDetails.cvv.length < 3 || cardDetails.cvv.length > 6) &&
+        !(cardDetails.cvv?.length < 3 || cardDetails.cvv?.length > 6) &&
         cardValidator.number(cardDetails.cardNumber).isValid
       ) {
         console.log("This is card number", cardDetails.cardNumber);
@@ -351,15 +350,15 @@ function NewCardPaymentMethod({
                 String(cardDetails.expiryDate.split("/")[1])
             ),
             cvc: cardDetails.cvv,
-            rate: Number(selectedDid[0].price) * selectedDid.length,
+            rate: Number(selectedDid[0].price) * selectedDid?.length,
             accountId: selectedDid[0].vendorAccountId,
-            dids: selectedDid.map((item) => {
+            dids: selectedDid?.map((item) => {
               return {
                 dids: item.id,
               };
             }),
             vendorId: selectedDid[0].vendorId,
-            didQty: selectedDid.length,
+            didQty: selectedDid?.length,
             companyId: account.account_id,
             didType: "random",
           };
@@ -592,7 +591,7 @@ function NewCardPaymentMethod({
               ) : (
                 <>
                   {billingList &&
-                    billingList.map((item, key) => {
+                    billingList?.map((item, key) => {
                       return (
                         <div
                           key={key}
@@ -794,7 +793,7 @@ function NewCardPaymentMethod({
                   Credit Card Information
                   <span
                     onClick={() => {
-                      if (billingList.length === 0 && cardList.length === 0) {
+                      if (billingList?.length === 0 && cardList?.length === 0) {
                         mainPopUpClose(false);
                       } else {
                         closePopUp2(false);

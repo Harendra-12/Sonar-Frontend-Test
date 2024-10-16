@@ -313,7 +313,7 @@ function CallDashboard() {
                     </div>
                   </div>
                 </div>
-                <div
+                {/* <div
                   className="mt-3 pt-3"
                   style={{ borderTop: "1px solid rgb(222, 226, 230)" }}
                 >
@@ -384,7 +384,7 @@ function CallDashboard() {
                       </table>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
