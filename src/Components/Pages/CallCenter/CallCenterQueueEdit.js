@@ -1007,7 +1007,7 @@ function CallCenterQueueEdit() {
                   agent.map((item, index) => {
                     return (
                       <div
-                        className="row pb-3 pt-2"
+                        className="row pb-3 pt-2 ps-3"
                         key={index}
                         style={{ borderBottom: "1px solid #8f8f8f47" }}
                       >

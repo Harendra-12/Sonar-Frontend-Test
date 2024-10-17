@@ -18,7 +18,7 @@
 }
 
 .messagesWrapper {
-    height: 73.5%;
+    height: calc(100vh - 112px);
 }
 
 
@@ -113,4 +113,5 @@
     color: #fff;
     padding: 10px;
     outline: none;
+    height: 65px;
 }

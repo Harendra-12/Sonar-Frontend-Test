@@ -246,7 +246,7 @@ function VideoCall() {
                                     <textarea
                                         cols={30}
                                         rows={2}
-                                        defaultValue={"Type your message here"}
+                                        placeholder={"Type your message here"}
                                     />
                                 </div>
                             </div>
@@ -514,16 +514,14 @@ function VideoCall() {
                                     <button
                                         className="appPanelButtonCaller"
                                         effect="ripple"
-                                        onClick={() => setToggleMic(!toggleMic)}
-                                        data-tippy-content="Use Microphone"
+                                        onClick={() => setToggleMic(true)}
                                     >
                                         <i className="fa-thin fa-microphone" />
                                     </button>
                                     <button
                                         className="appPanelButtonCaller"
                                         effect="ripple"
-                                        onClick={() => setToggleCam(!toggleCam)}
-                                        data-tippy-content="Use Webcam"
+                                        onClick={() => setToggleCam(true)}
                                     >
                                         <i className="fa-thin fa-video" />
                                     </button>
