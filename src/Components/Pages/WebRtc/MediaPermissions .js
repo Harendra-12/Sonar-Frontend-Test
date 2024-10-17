@@ -7,7 +7,7 @@ function MediaPermissions() {
   function getLocalStream() {
     if (navigator && navigator.mediaDevices) {
       navigator.mediaDevices
-        .getUserMedia({ video: false, audio: true })
+        .getUserMedia({ video: true, audio: true })
         .then((stream) => {
           setPermission("granted");
           // rest of the code

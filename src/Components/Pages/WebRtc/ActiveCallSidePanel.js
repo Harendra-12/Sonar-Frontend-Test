@@ -103,6 +103,10 @@ function ActiveCallSidePanel({
         callProgressId: "",
       });
       dispatch({
+        type:"SET_VIDEOCALL",
+        videoCall:false
+      })
+      dispatch({
         type: "SET_CALLPROGRESSDESTINATION",
         callProgressDestination: "",
       });

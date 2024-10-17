@@ -47,12 +47,28 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
       // e.preventDefault();
       const apiData = await sessionManager?.call(
         `sip:${destNumber}@${account.domain.domain_name}`,{
+          sessionDescriptionHandlerOptions: {
+            constraints: {
+              audio: true,
+              video: true
+            }
+          }
+        },
+        {
           media: {
             audio: true,
-            video: videoCall,
-          }
+            video: {
+              mandatory: {
+                minWidth: 1280,
+                minHeight: 720,
+                minFrameRate: 30,
+              },
+              optional: [{ facingMode: "user" }],
+            },
+          },
         }
       );
+      console.log("apiData",apiData);
 
       setSelectedModule("onGoingCall");
       dispatch({
