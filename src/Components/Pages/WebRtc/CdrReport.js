@@ -4,7 +4,7 @@ import {
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
@@ -166,7 +166,7 @@ function CdrReport() {
         <div className="container-fluid">
           <div className="row">
             <div className="col-12" style={{ overflow: "auto" }}>
-              <div className="tableContainer">
+              <div className="tableContainer" style={{ minHeight: 'auto' }}>
                 <div className="d-flex justify-content-end">
                   <div className="formRow border-0">
                     <label className="formLabel text-start mb-0 w-100">

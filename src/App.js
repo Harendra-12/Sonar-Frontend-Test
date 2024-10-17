@@ -99,6 +99,7 @@ import IvrAdd from "./Components/Pages/IVR/IvrAdd";
 import IvrListing from "./Components/Pages/IVR/IvrListing";
 import IvrEdit from "./Components/Pages/IVR/IvrEdit";
 import IvrOptions from "./Components/Pages/IVR/IvrOptions";
+import VideoCall from "./Components/Pages/WebRtc/VideoCall";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -229,6 +230,7 @@ function App() {
           <Route path="/cdr-report" element={<CdrReport />} />
           {/* <Route path="/efax" element={<EFax />} />
           <Route path="/call-dashboard" element={<CallDashboardPage />} /> */}
+          <Route path="/video-call" element={<VideoCall />} />
           {/* WebRtc path end */}
 
           {/* Admin Packages path start */}

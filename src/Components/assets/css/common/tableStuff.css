@@ -21,10 +21,11 @@ table thead tr {
 table tbody tr {
     background-color: #fff;
     transition: 0.1s ease-in;
+    border-bottom: 1px solid var(--border-color);
 }
 
 table tbody tr:not(:last-child) {
-    border-bottom: 1px solid var(--border-color);
+    /* border-bottom: 1px solid var(--border-color); */
 }
 
 table tbody tr td {
@@ -77,6 +78,7 @@ table tr th:first-child {
     margin-bottom: 20px;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 5px;
     background-color: #fff;
+    min-height: 271px;
 }
 
 #detailsHeader .profileHolder {

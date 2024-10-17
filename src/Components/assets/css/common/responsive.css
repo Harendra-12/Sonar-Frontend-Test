@@ -51,6 +51,9 @@
         width: inherit !important;
     }
 
+    .callerContent .user .userProfileContainer {
+        margin: 0;
+    }
 }
 
 @media (min-width: 1500px) {

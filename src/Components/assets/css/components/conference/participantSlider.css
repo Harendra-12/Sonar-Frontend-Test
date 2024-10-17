@@ -1,0 +1,116 @@
+.mainContentApp .tabLink.active {
+    font-weight: 500;
+}
+
+.participants-slider,
+.messages-slider {
+    width: 0px;
+    height: 100%;
+    background-color: #353e62;
+    position: absolute;
+    left: var(--sideNavApp-width);
+    overflow: hidden;
+    transition: 0.3s ease-in-out;
+}
+
+.messages-slider {
+    z-index: 10;
+}
+
+.messagesWrapper {
+    height: 73.5%;
+}
+
+
+.messagesWrapper .sender {
+    border-radius: 0 15px 15px;
+}
+
+.messagesWrapper .receiver {
+    border-radius: 15px 15px 0px;
+}
+
+
+.messagesWrapper .sender,
+.messagesWrapper .receiver {
+    background-color: var(--div-color);
+    color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.participants-slider .back,
+.messages-slider .back {
+    position: absolute;
+    top: 40%;
+    right: 5px;
+    font-size: 22px;
+    color: #afafaf;
+}
+
+.participants-slider .tabLink {
+    color: #fff;
+}
+
+.participantsList h5 {
+    color: #fff;
+    font-family: Roboto;
+    font-weight: 500;
+    font-size: 14px !important;
+    padding: 20px 20px 5px 20px;
+}
+
+.participantsList ul {
+    list-style: none;
+    padding-left: 18px;
+}
+
+.participantsList ul li {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.participantsList ul li div {
+    width: 35px;
+    height: 35px;
+    background-color: var(--div-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 400;
+    font-size: 14px;
+    overflow: hidden;
+}
+
+.participantsList ul li div img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.participantsList ul li label {
+    color: var(--ui-accent);
+    font-weight: 500;
+    font-family: Outfit;
+    margin: 0 10px;
+}
+
+.messages-slider .messagesChat {
+
+    width: 100%;
+    height: 20px;
+    border-radius: 10px;
+}
+
+.messages-slider .messagesChat textarea {
+    width: 100%;
+    background: var(--nav-color);
+    border: none;
+    color: #fff;
+    padding: 10px;
+    outline: none;
+}

@@ -39,6 +39,9 @@
 @import url('./common/browserPhoneForm.css');
 @import url('./components/contactView.css');
 @import url('./components/messageContent.css');
+@import url('./components/conference/conferenceCaller.css');
+@import url('./components/conference/conferenceSettings.css');
+@import url('./components/conference/participantSlider.css');
 
 /* Responsive CSS */
 @import url('./common/responsive.css');
