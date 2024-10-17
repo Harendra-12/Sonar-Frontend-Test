@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 import { toast } from "react-toastify";
 import { useSIPProvider } from "react-sipjs";
+import VideoCall from "./VideoCall";
 
 function Call({
   setHangupRefresh,
@@ -26,6 +27,7 @@ function Call({
   const [dialpadShow, setDialpadShow] = useState(false);
   const [clickStatus, setClickStatus] = useState("all");
   const callProgress = useSelector((state) => state.callProgress);
+  const videoCall = useSelector((state) => state.videoCall);
   const callProgressId = useSelector((state) => state.callProgressId);
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
@@ -378,6 +380,9 @@ function Call({
       callProgress: true,
     });
   }
+
+  console.log("call status",callProgress,videoCall);
+  
   return (
     <div className="browserPhoneWrapper">
       {/* <SideNavbarApp /> */}
@@ -562,7 +567,7 @@ function Call({
                 id="callDetails"
               >
                 {selectedModule == "onGoingCall"
-                  ? callProgress && (
+                  ? (callProgress ? (
                       <OngoingCall
                         key={callProgressId}
                         id={callProgressId}
@@ -571,7 +576,16 @@ function Call({
                         hangupRefresh={hangupRefresh}
                         setSelectedModule={setSelectedModule}
                       />
-                    )
+                    ):videoCall && (
+                      <VideoCall
+                      key={callProgressId}
+                      id={callProgressId}
+                      destination={callProgressDestination}
+                      setHangupRefresh={setHangupRefresh}
+                      hangupRefresh={hangupRefresh}
+                      setSelectedModule={setSelectedModule}
+                      />
+                    ))
                   : clickedCall && (
                       <CallDetails
                         clickedCall={clickedCall}
@@ -583,7 +597,8 @@ function Call({
                         isMicOn={isMicOn}
                         onCall={onCall}
                       />
-                    )}
+                    )
+                  }
               </div>
             </div>
           </div>

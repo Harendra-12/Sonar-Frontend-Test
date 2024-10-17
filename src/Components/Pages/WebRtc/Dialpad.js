@@ -10,6 +10,7 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
   const dispatch = useDispatch();
   const { sessionManager, connectStatus } = useSIPProvider();
   const [destNumber, setDestNumber] = useState("");
+  const [videoCall,setVideoCall]=useState(true);
   const extension = account?.extension?.extension || "";
   const handleInputChange = (e) => {
     const { value } = e.target;
@@ -45,11 +46,11 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
       hideDialpad(false);
       // e.preventDefault();
       const apiData = await sessionManager?.call(
-        `sip:${destNumber}@${account.domain.domain_name}`,
-        {
-          // Contact: `<sip:${extension}@${account.domain.domain_name}>`,
-          // `To: <sip:${Number(destNumber)}@${account.domain.domain_name}>`,
-          // `From: <sip:${extension}@${account.domain.domain_name}>`
+        `sip:${destNumber}@${account.domain.domain_name}`,{
+          media: {
+            audio: true,
+            video: videoCall,
+          }
         }
       );
 
@@ -62,6 +63,10 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
         ],
       });
       dispatch({
+        type:"SET_VIDEOCALL",
+        videoCall:videoCall
+      })
+      dispatch({
         type: "SET_CALLPROGRESSID",
         callProgressId: apiData._id,
       });
@@ -71,7 +76,7 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
       });
       dispatch({
         type: "SET_CALLPROGRESS",
-        callProgress: true,
+        callProgress: !videoCall,
       });
     } else {
       toast.error("Please enter a valid number");

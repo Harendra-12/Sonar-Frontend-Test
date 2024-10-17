@@ -13,6 +13,7 @@ import IncomingCalls from "./IncomingCalls";
 import { SipRegister } from "./SipRegister";
 import SideNavbarApp from "./SideNavbarApp";
 import Messages from "./Messages";
+import VideoCall from "./VideoCall";
 
 const WebrtcWrapper = () => {
   const sessions = useSelector((state) => state.sessions);
@@ -129,6 +130,7 @@ const WebrtcWrapper = () => {
         {activePage == "call-dashboard" && <CallDashboard />}
         {activePage == "e-fax" && <EFax />}
         {activePage == "messages" && <Messages />}
+        {activePage == "videocall" && <VideoCall />}
 
         <IncomingCalls
           setSelectedModule={setSelectedModule}
