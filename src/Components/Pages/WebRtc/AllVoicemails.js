@@ -141,9 +141,8 @@ function AllVoicemails({ isCustomerAdmin }) {
 
   const renderCallItem = (item) => (
     <div
-      className={`callListItem ${
-        clickedVoiceMail?.id === item?.id ? "selected" : ""
-      }`}
+      className={`callListItem ${clickedVoiceMail?.id === item?.id ? "selected" : ""
+        }`}
       onClick={() => handleVoiceMailClick(item)}
     >
       <div className="row justify-content-between align-items-center">
@@ -234,7 +233,7 @@ function AllVoicemails({ isCustomerAdmin }) {
     if (!isCustomerAdmin) {
       return (
         item.dest ==
-          getSourceName(clickedVoiceMail.src, clickedVoiceMail.dest) ||
+        getSourceName(clickedVoiceMail.src, clickedVoiceMail.dest) ||
         item.src == getSourceName(clickedVoiceMail.src, clickedVoiceMail.dest)
       );
     } else {
@@ -264,7 +263,7 @@ function AllVoicemails({ isCustomerAdmin }) {
               >
                 <div className="col-auto">
                   <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
-                    Voicemails
+                    Voicemails <button class="clearButton"><i class="fa-regular fa-arrows-rotate fs-5" style={{ color: 'rgb(148, 148, 148)' }}></i></button>
                   </h3>
                 </div>
                 <div className="col-auto d-flex">

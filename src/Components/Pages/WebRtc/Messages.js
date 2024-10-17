@@ -83,7 +83,7 @@ function Messages() {
         if (
           chatHistory[recipient[0]]?.total &&
           chatHistory[recipient[0]].pageNumber * 40 <
-            chatHistory[recipient[0]].total
+          chatHistory[recipient[0]].total
         ) {
           getData(chatHistory[recipient[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
@@ -351,7 +351,7 @@ function Messages() {
               >
                 <div className="col-auto">
                   <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
-                    Messages
+                    Messages <button class="clearButton"><i class="fa-regular fa-arrows-rotate fs-5" style={{ color: 'rgb(148, 148, 148)' }}></i></button>
                   </h3>
                 </div>
                 <div className="col-12">

@@ -56,7 +56,7 @@ const CallCenter = () => {
           <div className="d-felx flex-column pt-2">
             <div>
               <h3 style={{ fontFamily: "Outfit", color: "rgb(68, 68, 68)" }}>
-                Call Center
+                Call Center <button class="clearButton"><i class="fa-regular fa-arrows-rotate fs-5" style={{ color: 'rgb(148, 148, 148)' }}></i></button>
               </h3>
             </div>
             <div className="mt-4">

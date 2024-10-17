@@ -179,7 +179,7 @@ function EFax() {
               >
                 <div className="col-auto">
                   <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
-                    eFax
+                    eFax <button class="clearButton"><i class="fa-regular fa-arrows-rotate fs-5" style={{ color: 'rgb(148, 148, 148)' }}></i></button>
                   </h3>
                 </div>
                 <div className="col-auto d-flex">
@@ -487,8 +487,8 @@ function EFax() {
                                     onChange={(selectedOptions) => {
                                       const values = selectedOptions
                                         ? selectedOptions.map(
-                                            (option) => option.value
-                                          )
+                                          (option) => option.value
+                                        )
                                         : [];
                                       setValue("usages", values);
                                     }}

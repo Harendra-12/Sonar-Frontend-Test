@@ -86,7 +86,7 @@ function CallDashboard() {
                     <h3
                       style={{ fontFamily: "Outfit", color: "rgb(68, 68, 68)" }}
                     >
-                      Call Dashboard
+                      Call Dashboard <button class="clearButton"><i class="fa-regular fa-arrows-rotate fs-5" style={{ color: 'rgb(148, 148, 148)' }}></i></button>
                     </h3>
                   </div>
                   {/* <div className="col-auto d-flex">
@@ -296,8 +296,8 @@ function CallDashboard() {
                                             "set:valet_ticket"
                                           )
                                             ? extractLastNumber(
-                                                call?.accountcode
-                                              )
+                                              call?.accountcode
+                                            )
                                             : extractLastNumber(call?.dest)
                                         )
                                       }
