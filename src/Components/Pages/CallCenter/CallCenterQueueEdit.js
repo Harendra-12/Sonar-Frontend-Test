@@ -1002,6 +1002,12 @@ function CallCenterQueueEdit() {
                 </div>
               </div> */}
 
+
+            </form>
+          </div>
+
+          <div class="mx-2" id="detailsContent">
+            <form className="row">
               <div className="formRow col-xl-12 border-0">
                 {agent &&
                   agent.map((item, index) => {
