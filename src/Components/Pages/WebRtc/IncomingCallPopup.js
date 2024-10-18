@@ -13,6 +13,7 @@ function IncomingCallPopup({
   setactivePage,
   isMicOn,
 }) {
+  
   const [isMinimized, setIsMinimized] = useState(false);
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
@@ -36,6 +37,7 @@ function IncomingCallPopup({
       audio.currentTime = 0; // Reset the audio to the beginning
     };
   }, [lastIncomingCall, isMinimized, audio]);
+  console.log('answer:', answer);
   useEffect(() => {
     if (!lastIncomingCall) {
       setIsMinimized(true);
@@ -85,27 +87,15 @@ function IncomingCallPopup({
       toast.warn("Please turn on microphone");
       return;
     }
-    answer({
+    session.accept({
       sessionDescriptionHandlerOptions: {
         constraints: {
           audio: true,
           video: true
         }
       }
-    },
-    {
-      media: {
-        audio: true,
-        video: {
-          mandatory: {
-            minWidth: 1280,
-            minHeight: 720,
-            minFrameRate: 30,
-          },
-          optional: [{ facingMode: "user" }],
-        },
-      },
     });
+
     setSelectedModule("onGoingCall");
     setactivePage("call");
     dispatch({
@@ -113,8 +103,8 @@ function IncomingCallPopup({
       callProgressId: sessionId,
     });
     dispatch({
-      type:"SET_VIDEOCALL",
-      videoCall:true
+      type: "SET_VIDEOCALL",
+      videoCall: true
     })
     dispatch({
       type: "SET_CALLPROGRESSDESTINATION",
