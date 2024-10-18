@@ -457,7 +457,7 @@ function CallCenterQueueEdit() {
           )}
 
           <div className="mx-2" id="detailsContent">
-            <form action="#" className="row">
+            <form action="#" className="row mb-0">
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Queue Name</label>
@@ -473,8 +473,8 @@ function CallCenterQueueEdit() {
                       ...requiredValidator,
                       ...nameNumberValidator,
                     })}
-                    onKeyDown={restrictToAllowedChars}
                     className="formItem"
+                    onKeyDown={restrictToAllowedChars}
                   />
                   {errors.queue_name && (
                     <ErrorMessage text={errors.queue_name.message} />
@@ -482,28 +482,6 @@ function CallCenterQueueEdit() {
                 </div>
               </div>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Extension</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Enter the extension.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    name="extension"
-                    {...register("extension", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    disabled
-                    className="formItem"
-                  />
-                  {errors.extension && (
-                    <ErrorMessage text={errors.extension.message} />
-                  )}
-                </div>
-              </div>
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Greeting</label>
@@ -516,7 +494,7 @@ function CallCenterQueueEdit() {
                     {...register("greeting", { ...requiredValidator })}
                     className="formItem w-100"
                   >
-                    <option disabled value="">
+                    <option disabled value="" selected>
                       Select Greeting
                     </option>
                     {greetingSound &&
@@ -531,6 +509,10 @@ function CallCenterQueueEdit() {
                   {errors.greeting && (
                     <ErrorMessage text={errors.greeting.message} />
                   )}
+                  <br />
+                  <label htmlFor="data" className="formItemDesc">
+                    Select the desired Greeting.
+                  </label>
                 </div>
               </div>
               <div className="formRow col-xl-3">
@@ -547,6 +529,7 @@ function CallCenterQueueEdit() {
                     <option value="sequentially-by-agent-order">
                       Sequentially by agent order
                     </option>
+
                     <option value="random">Random</option>
                     <option value="ring-progressively">
                       Ring Progressively
@@ -566,7 +549,7 @@ function CallCenterQueueEdit() {
                     {...register("moh_sound", { ...requiredValidator })}
                     className="formItem w-100"
                   >
-                    <option value={""} disabled>
+                    <option disabled value="" selected>
                       Select Hold Music
                     </option>
                     {holdSound &&
@@ -665,304 +648,367 @@ function CallCenterQueueEdit() {
                 </div>
               </div>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Time Base Score</label>
-                </div>
-                <div className="col-6">
-                  <select
-                    {...register("time_base_score")}
-                    className="formItem w-100"
-                  >
-                    <option value="queue">Queue</option>
-                    <option value="system">System</option>
-                  </select>
-                </div>
-              </div>
+              <div className="d-flex justify-content-between p-0">
+                <div style={{ width: '45%', padding: 0 }}>
+                  <div className="col-12"></div>
+                  <div className="formRow col-xl-12">
+                    <div className="formLabel">
+                      <label >Tier Rules</label>
+                    </div>
+                    <div className="col-6">
+                      <button className="panelButton ms-0" type="button" data-bs-toggle="collapse" data-bs-target="#timeCollapse" aria-expanded="false">
+                        <span className="text">
+                          Expand
+                        </span>
+                        <span className="icon">
+                          <i class="fa-solid fa-caret-down"></i>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="col-12"></div>
+                  <div className="collapse col-12" id="timeCollapse" style={{ padding: 0, }}>
+                    <div className="formRow col-xl-12">
+                      <div className="formLabel">
+                        <label htmlFor="">Tier Rules Apply</label>
+                      </div>
+                      <div className="col-6">
+                        <select
+                          {...register("tier_rules_apply")}
+                          className="formItem w-100"
+                        >
+                          <option value={1}>True</option>
+                          <option value={0}>False</option>2{" "}
+                        </select>
+                      </div>
+                    </div>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Tier Rules Apply</label>
-                </div>
-                <div className="col-6">
-                  <select
-                    {...register("tier_rules_apply")}
-                    className="formItem w-100"
-                  >
-                    <option value={1}>True</option>
-                    <option value={0}>False</option>
-                  </select>
-                </div>
-              </div>
+                    <div className="formRow col-xl-12">
+                      <div className="formLabel">
+                        <label htmlFor="">Tier Rule Wait Second</label>
+                      </div>
+                      <div className="col-6">
+                        <input
+                          type="number"
+                          name="extension"
+                          className="formItem"
+                          {...register("tier_rule_wait_second", {
+                            ...noSpecialCharactersValidator,
+                          })}
+                        />
+                        {errors.tier_rule_wait_second && (
+                          <ErrorMessage text={errors.tier_rule_wait_second.message} />
+                        )}
+                      </div>
+                    </div>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Tier Rule Wait Second</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    name="extension"
-                    className="formItem"
-                    {...register("tier_rule_wait_second", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToAllowedChars}
-                  />
-                  {errors.tier_rule_wait_second && (
-                    <ErrorMessage text={errors.tier_rule_wait_second.message} />
-                  )}
-                </div>
-              </div>
+                    <div className="formRow col-xl-12">
+                      <div className="formLabel">
+                        <label htmlFor="">Tier Rule Wait Multiply Level</label>
+                      </div>
+                      <div className="col-6">
+                        <select
+                          {...register("tier_rule_wait_multiply_level")}
+                          className="formItem w-100"
+                        >
+                          <option value={1}>True</option>
+                          <option value={0}>False</option>
+                        </select>
+                      </div>
+                    </div>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Tier Rule Wait Multiply Level</label>
-                </div>
-                <div className="col-6">
-                  <select
-                    {...register("tier_rule_wait_multiply_level")}
-                    className="formItem w-100"
-                  >
-                    <option value={1}>True</option>
-                    <option value={0}>False</option>
-                  </select>
-                </div>
-              </div>
+                    <div className="formRow col-xl-12" style={{ borderBottom: '2px solid #00a9ff' }}>
+                      <div className="formLabel">
+                        <label htmlFor="">Tier Rule No Agent No Wait</label>
+                      </div>
+                      <div className="col-6">
+                        <select
+                          {...register("tier_rule_no_agent_no_wait")}
+                          className="formItem w-100"
+                        >
+                          <option value={1}>True</option>
+                          <option value={0}>False</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-12"></div>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Tier Rule No Agent No Wait</label>
-                </div>
-                <div className="col-6">
-                  <select
-                    {...register("tier_rule_no_agent_no_wait")}
-                    className="formItem w-100"
-                  >
-                    <option value={1}>True</option>
-                    <option value={0}>False</option>
-                  </select>
-                </div>
-              </div>
+                  <div className="col-12"></div>
+                  <div className="formRow col-xl-12">
+                    <div className="formLabel">
+                      <label >Max Wait Time Rules</label>
+                    </div>
+                    <div className="col-6">
+                      <button className="panelButton ms-0" type="button" data-bs-toggle="collapse" data-bs-target="#maxWaitCollapse" aria-expanded="false">
+                        <span className="text">
+                          Expand
+                        </span>
+                        <span className="icon">
+                          <i class="fa-solid fa-caret-down"></i>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="col-12"></div>
+                  <div className="collapse" style={{ padding: 0 }} id="maxWaitCollapse">
+                    <div className="formRow col-xl-12">
+                      <div className="formLabel">
+                        <label htmlFor="">Max Wait Time</label>
+                      </div>
+                      <div className="col-6">
+                        <input
+                          type="number"
+                          name="extension"
+                          className="formItem"
+                          {...register("max_wait_time", {
+                            ...noSpecialCharactersValidator,
+                          })}
+                          onKeyDown={restrictToNumbers}
+                        />
+                        {errors.max_wait_time && (
+                          <ErrorMessage text={errors.max_wait_time.message} />
+                        )}
+                      </div>
+                    </div>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Abandoned Resume Allowed</label>
-                </div>
-                <div className="col-6">
-                  <select
-                    {...register("abandoned_resume_allowed")}
-                    className="formItem w-100"
-                  >
-                    <option value={1}>True</option>
-                    <option value={0}>False</option>
-                  </select>
-                </div>
-              </div>
+                    <div className="formRow col-xl-12">
+                      <div className="formLabel">
+                        <label htmlFor="">Max Wait Time with no agent</label>
+                      </div>
+                      <div className="col-6">
+                        <input
+                          type="number"
+                          name="extension"
+                          className="formItem"
+                          {...register("max_wait_time_with_no_agent", {
+                            ...noSpecialCharactersValidator,
+                          })}
+                          onKeyDown={restrictToNumbers}
+                        />
+                        {errors.max_wait_time_with_no_agent && (
+                          <ErrorMessage text={errors.max_wait_time_with_no_agent} />
+                        )}
+                      </div>
+                    </div>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Max Wait Time</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="number"
-                    name="extension"
-                    className="formItem"
-                    {...register("max_wait_time", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToNumbers}
-                  />
-                  {errors.max_wait_time && (
-                    <ErrorMessage text={errors.max_wait_time.message} />
-                  )}
-                </div>
-              </div>
+                    <div className="formRow col-xl-12" style={{ borderBottom: '2px solid #00a9ff' }}>
+                      <div className="formLabel">
+                        <label htmlFor="">
+                          Max Wait Time With No Agent Time Reached{" "}
+                        </label>
+                      </div>
+                      <div className="col-6">
+                        <input
+                          type="number"
+                          name="extension"
+                          className="formItem"
+                          {...register("max_wait_time_with_no_agent_time_reached", {
+                            ...noSpecialCharactersValidator,
+                          })}
+                          onKeyDown={restrictToNumbers}
+                        />
+                        {errors.max_wait_time_with_no_agent_time_reached && (
+                          <ErrorMessage
+                            text={errors.max_wait_time_with_no_agent_time_reached}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-12"></div>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Max Wait Time with no agent</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="number"
-                    name="extension"
-                    className="formItem"
-                    {...register("max_wait_time_with_no_agent", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToNumbers}
-                  />
-                  {errors.max_wait_time_with_no_agent && (
-                    <ErrorMessage text={errors.max_wait_time_with_no_agent} />
-                  )}
-                </div>
-              </div>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">
-                    Max Wait Time With No Agent Time Reached{" "}
-                  </label>
                 </div>
-                <div className="col-6">
-                  <input
-                    type="number"
-                    name="extension"
-                    className="formItem"
-                    {...register("max_wait_time_with_no_agent_time_reached", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToNumbers}
-                  />
-                  {errors.max_wait_time_with_no_agent_time_reached && (
-                    <ErrorMessage
-                      text={errors.max_wait_time_with_no_agent_time_reached}
-                    />
-                  )}
-                </div>
-              </div>
-
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Ring Progressively Delay</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="number"
-                    name="extension"
-                    className="formItem"
-                    {...register("ring_progressively_delay", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToNumbers}
-                  />
-                  {errors.ring_progressively_delay && (
-                    <ErrorMessage text={errors.ring_progressively_delay} />
-                  )}
-                </div>
-              </div>
-
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Record Template</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Define record template.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    name="record_template"
-                    className="formItem"
-                    {...register("record_template", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToAllowedChars}
-                  />
-                  {errors.record_template && (
-                    <ErrorMessage text={errors.record_template} />
-                  )}
-                </div>
-              </div>
-
-              {/* <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Record Template</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Define record template.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    name="record_template"
-                    className="formItem"
-                    {...register("record_template", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToAllowedChars}
-                  />
-                  {errors.record_template && (
-                    <ErrorMessage text={errors.record_template} />
-                  )}
-                </div>
-              </div> */}
-
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Queue Announce</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Select the desired queue announce sound.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <select
-                    {...register("queue_announce_sound")}
-                    className="formItem w-100"
-                  >
-                    <option disabled value="" selected>
-                      Select Queue Announce
-                    </option>
-                    {announcmentSound &&
-                      announcmentSound.map((item, index) => {
-                        return (
-                          <option key={index} value={item.id}>
-                            {item.name}
+                <div style={{ width: '45%' }}>
+                  <div className="col-12"></div>
+                  <div className="formRow col-xl-12">
+                    <div className="formLabel">
+                      <label >Queue Rules</label>
+                    </div>
+                    <div className="col-6">
+                      <button className="panelButton ms-0" type="button" data-bs-toggle="collapse" data-bs-target="#queueCollapse" aria-expanded="false">
+                        <span className="text">
+                          Expand
+                        </span>
+                        <span className="icon">
+                          <i class="fa-solid fa-caret-down"></i>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="col-12"></div>
+                  <div style={{ padding: "0px" }} class="col-12 collapse" id="queueCollapse">
+                    <div className="formRow col-xl-12">
+                      <div className="formLabel">
+                        <label htmlFor="">Queue Announce</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Select the desired queue announce sound.
+                        </label>
+                      </div>
+                      <div className="col-6">
+                        <select
+                          {...register("queue_announce_sound")}
+                          className="formItem w-100"
+                        >
+                          <option disabled value="" selected>
+                            Select Queue Announce
                           </option>
-                        );
-                      })}
-                  </select>
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
-                    Select the desired queue announce sound.
-                  </label>
+                          {announcmentSound &&
+                            announcmentSound.map((item, index) => {
+                              return (
+                                <option key={index} value={item.id}>
+                                  {item.name}
+                                </option>
+                              );
+                            })}
+                        </select>
+                        <br />
+                        <label htmlFor="data" className="formItemDesc">
+                          Select the desired queue announce sound.
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="formRow col-xl-12">
+                      <div className="formLabel">
+                        <label htmlFor="">Queue Announce Frequency</label>
+                      </div>
+                      <div className="col-6">
+                        <input
+                          type="number"
+                          name="extension"
+                          className="formItem"
+                          {...register("queue_announce_frequency", {
+                            ...noSpecialCharactersValidator,
+                          })}
+                          onKeyDown={restrictToNumbers}
+                        />
+                        {errors.queue_announce_frequency && (
+                          <ErrorMessage text={errors.queue_announce_frequency} />
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="formRow col-xl-12" style={{ borderBottom: '2px solid #00a9ff' }}>
+                      <div className="formLabel">
+                        <label htmlFor="">Queue Description</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Define queue description.
+                        </label>
+                      </div>
+                      <div className="col-6">
+                        <input
+                          type="text"
+                          name="queue_description"
+                          className="formItem"
+                          {...register("queue_description", {
+                            ...noSpecialCharactersValidator,
+                          })}
+                          onKeyDown={restrictToAllowedChars}
+                        />
+                        {errors.queue_description && (
+                          <ErrorMessage text={errors.queue_description} />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-12"></div>
+
+                  <div className="col-12"></div>
+                  <div className="formRow col-xl-12">
+                    <div className="formLabel">
+                      <label >Advance Options</label>
+                    </div>
+                    <div className="col-6">
+                      <button className="panelButton ms-0" type="button" data-bs-toggle="collapse" data-bs-target="#advCollapse" aria-expanded="false">
+                        <span className="text">
+                          Expand
+                        </span>
+                        <span className="icon">
+                          <i class="fa-solid fa-caret-down"></i>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="col-12"></div>
+                  <div style={{ padding: "0px" }} class="col-12 collapse" id="advCollapse">
+                    <div className="formRow col-xl-12">
+                      <div className="formLabel">
+                        <label htmlFor="">Ring Progressively Delay</label>
+                      </div>
+                      <div className="col-6">
+                        <input
+                          type="number"
+                          name="extension"
+                          className="formItem"
+                          {...register("ring_progressively_delay", {
+                            ...noSpecialCharactersValidator,
+                          })}
+                          onKeyDown={restrictToNumbers}
+                        />
+                        {errors.ring_progressively_delay && (
+                          <ErrorMessage text={errors.ring_progressively_delay} />
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="formRow col-xl-12">
+                      <div className="formLabel">
+                        <label htmlFor="">Record Template</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Define record template.
+                        </label>
+                      </div>
+                      <div className="col-6">
+                        <input
+                          type="text"
+                          name="record_template"
+                          className="formItem"
+                          {...register("record_template", {
+                            ...noSpecialCharactersValidator,
+                          })}
+                          onKeyDown={restrictToAllowedChars}
+                        />
+                        {errors.record_template && (
+                          <ErrorMessage text={errors.record_template} />
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="formRow col-xl-12">
+                      <div className="formLabel">
+                        <label htmlFor="">Time Base Score</label>
+                      </div>
+                      <div className="col-6">
+                        <select
+                          {...register("time_base_score")}
+                          className="formItem w-100"
+                        >
+                          <option value="queue">Queue</option>
+                          <option value="system">System</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-12" style={{ borderBottom: '2px solid #00a9ff' }}>
+                      <div className="formLabel">
+                        <label htmlFor="">Abandoned Resume Allowed</label>
+                      </div>
+                      <div className="col-6">
+                        <select
+                          {...register("abandoned_resume_allowed")}
+                          className="formItem w-100"
+                        >
+                          <option value={1}>True</option>
+                          <option value={0}>False</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-12"></div>
                 </div>
               </div>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Queue Announce Frequency</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="number"
-                    name="extension"
-                    className="formItem"
-                    {...register("queue_announce_frequency", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToNumbers}
-                  />
-                  {errors.queue_announce_frequency && (
-                    <ErrorMessage text={errors.queue_announce_frequency} />
-                  )}
-                </div>
-              </div>
-
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Queue Description</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Define queue description.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    name="queue_description"
-                    className="formItem"
-                    {...register("queue_description", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToAllowedChars}
-                  />
-                  {errors.queue_description && (
-                    <ErrorMessage text={errors.queue_description} />
-                  )}
-                </div>
-              </div>
 
               {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
