@@ -580,7 +580,7 @@ const RingGroupEdit = () => {
             ""
           )}
           <div className="mx-2" id="detailsContent">
-            <form className="row">
+            <form className="row mb-0">
               <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Name</label>
@@ -1053,6 +1053,33 @@ const RingGroupEdit = () => {
                   </select>
                 </div>
               </div>
+              {/* <div className="formRow  col-xl-3">
+                <div className="d-flex flex-wrap align-items-center">
+                  <div className="formLabel">
+                    <label htmlFor="selectFormRow">Enabled</label>
+                  </div>
+                  <div className="col-12">
+                    <div className="my-auto position-relative mx-1">
+                      <label className="switch">
+                        <input
+                          type="checkbox"
+                          checked={watch().status}
+                          {...register("status")}
+                          id="showAllCheck"
+                        />
+                        <span className="slider round" />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <label htmlFor="data" className="formItemDesc">
+                  Set the status of this ring group.
+                </label>
+              </div> */}
+            </form>
+          </div>
+          <div className="mx-2" id="detailsContent">
+            <form className="row">
               <div className="formRow col-xl-12">
                 {destination.map((item, index) => {
                   return (
@@ -1326,29 +1353,6 @@ const RingGroupEdit = () => {
                   Add destinations and parameters to the ring group.
                 </label>
               </div>
-              {/* <div className="formRow  col-xl-3">
-                <div className="d-flex flex-wrap align-items-center">
-                  <div className="formLabel">
-                    <label htmlFor="selectFormRow">Enabled</label>
-                  </div>
-                  <div className="col-12">
-                    <div className="my-auto position-relative mx-1">
-                      <label className="switch">
-                        <input
-                          type="checkbox"
-                          checked={watch().status}
-                          {...register("status")}
-                          id="showAllCheck"
-                        />
-                        <span className="slider round" />
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <label htmlFor="data" className="formItemDesc">
-                  Set the status of this ring group.
-                </label>
-              </div> */}
             </form>
           </div>
         </div>
