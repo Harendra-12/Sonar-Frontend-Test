@@ -355,7 +355,7 @@ function Messages() {
                   </h3>
                 </div>
                 <div className="col-12">
-                  <nav>
+                  <nav className="mb-3">
                     <div className="nav nav-tabs">
                       <button
                         className={

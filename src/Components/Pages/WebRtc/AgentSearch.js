@@ -45,13 +45,14 @@ const AgentSearch = ({ getDropdownValue, value, getAllAgents }) => {
     control: (provided, state) => ({
       ...provided,
       // border: '1px solid var(--color4)',
-      border: "1px solid var(--color4);",
-      borderRadius: "5px",
+      border: "1px solid #ddd",
+      borderRadius: "50px",
       outline: "none",
       fontSize: "14px",
       width: "100%",
       minHeight: "32px",
-      height: "32px",
+      padding: "0px 20px",
+      background: `var(--bg-color) url(${require('../../assets/images/search_b.png')}) no-repeat 7px center / 17px 17px`,
       boxShadow: state.isFocused ? "none" : provided.boxShadow,
       "&:hover": {
         borderColor: "var(--ui-accent)",

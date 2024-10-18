@@ -501,7 +501,7 @@ function EFax() {
                                 Cancel
                               </button>
                               {/* <button className="panelButton">Send Later</button> */}
-                              <button className="panelButton">Send Now</button>
+                              <button className="panelButton"><span className="text">Send</span><span className="icon"><i class="fa-solid fa-paper-plane-top"></i></span></button>
                             </div>
                           </div>
                         </div>
@@ -582,12 +582,13 @@ function EFax() {
                   <br />
                   <p>{deleteFile.file_name}</p>
                   <br />
-                  <div className="mt-2">
+                  <div className="mt-2 d-flex justify-content-between">
                     <button
                       className="panelButton m-0"
                       onClick={deleteDocument}
                     >
-                      Confirm
+                      <span className="text">Confirm</span>
+                      <span className="icon"><i class="fa-solid fa-check"></i></span>
                     </button>
                     <button
                       className="panelButtonWhite m-0 float-end"

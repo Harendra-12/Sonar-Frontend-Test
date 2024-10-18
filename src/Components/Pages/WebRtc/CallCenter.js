@@ -61,7 +61,7 @@ const CallCenter = () => {
             </div>
             <div className="mt-4">
               <div
-                className="col-12 callDashboardPrimTable"
+                className="col-12 callDashboardPrimTable px-1"
                 style={{ overflow: "auto" }}
               >
                 <div className="tableContainer allItems">

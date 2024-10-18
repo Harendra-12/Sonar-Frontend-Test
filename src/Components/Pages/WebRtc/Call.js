@@ -200,16 +200,16 @@ function Call({
       onClick={() => handleCallItemClick(item)}
       onDoubleClick={() => handleDoubleClickCall(item)}
       className={`callListItem ${item["Caller-Callee-ID-Number"] === extension &&
-          item["variable_billsec"] > 0
-          ? "incoming"
-          : item["Caller-Caller-ID-Number"] === extension
-            ? "outgoing"
-            : item["Caller-Callee-ID-Number"] === extension &&
-              item["variable_billsec"] === 0
-              ? "missed"
-              : item["Call-Direction"] === "voicemail"
-                ? "voicemail"
-                : ""
+        item["variable_billsec"] > 0
+        ? "incoming"
+        : item["Caller-Caller-ID-Number"] === extension
+          ? "outgoing"
+          : item["Caller-Callee-ID-Number"] === extension &&
+            item["variable_billsec"] === 0
+            ? "missed"
+            : item["Call-Direction"] === "voicemail"
+              ? "voicemail"
+              : ""
         } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
     >
       <div className="row justify-content-between">
@@ -401,18 +401,18 @@ function Call({
                       Calls <button class="clearButton"><i class="fa-regular fa-arrows-rotate fs-5" style={{ color: 'rgb(148, 148, 148)' }}></i></button>
                     </h3>
                   </div>
-                  <div className="col-5">
-                    <h5
-                      style={{
-                        fontFamily: "Outfit",
-                        color: "#444444",
-                        marginBottom: "0",
-                      }}
-                    >
-                      Extension - {account && extension}
-                    </h5>
-                  </div>
-                  <div className="col-5 d-flex justify-content-end">
+                  <div className="col-10 d-flex justify-content-end align-items-center">
+                    <div className="col-auto  me-3">
+                      <h5
+                        style={{
+                          fontFamily: "Outfit",
+                          color: "#444444",
+                          marginBottom: "0",
+                        }}
+                      >
+                        {account && extension ? <span className='text-success'>Extension - {account && extension}</span> : <span className='text-danger'>No Extension Assigned</span>}
+                      </h5>
+                    </div>
                     <div className="col-auto">
                       <button
                         className="appPanelButton"

@@ -267,12 +267,13 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
                       </div>
                     </div>
                   )}
-                  <div className="mt-2">
+                  <div className="mt-2 d-flex justify-content-between">
                     <button
                       className="panelButton m-0"
                       onClick={handleUploadDocument}
                     >
-                      Confirm
+                      <span className="text">Confirm</span>
+                      <span className="icon"><i class="fa-solid fa-check"></i></span>
                     </button>
                     <button
                       className="panelButtonWhite m-0 float-end"

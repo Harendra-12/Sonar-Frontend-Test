@@ -98,7 +98,7 @@ function ActiveCalls() {
         <div className="container-fluid">
           <div className="row">
             {/* <Header title="Active Calls" /> */}
-            <div className="col-12" style={{ overflow: "auto" }}>
+            <div className="col-12 px-1" style={{ overflow: "auto" }}>
               <div className="tableContainer">
                 <table>
                   <thead>
