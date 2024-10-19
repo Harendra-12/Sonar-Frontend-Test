@@ -54,29 +54,7 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
         }
     };
 
-    // const muteCall = (type) => {
-    //     if (canMute) {
-    //         if (type === "mute") {
-    //             mute();
-    //             dispatch({
-    //               type: "SET_SESSIONS",
-    //               sessions: globalSession.map((item) =>
-    //                 item.id === session.id ? { ...item, state: "Mute" } : item
-    //               ),
-    //             });
-    //         } else if (type === "unmute") {
-    //             unmute();
-    //             dispatch({
-    //               type: "SET_SESSIONS",
-    //               sessions: globalSession.map((item) =>
-    //                 item.id === session.id ? { ...item, state: "Established" } : item
-    //               ),
-    //             });
-    //         }
-    //     } else {
-    //           toast.warn("Call has not been established");
-    //     }
-    // };
+
     const getLocalStream = async () => {
         try {
             const localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });

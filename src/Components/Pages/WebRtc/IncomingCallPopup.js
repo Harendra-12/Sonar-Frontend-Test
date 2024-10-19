@@ -24,7 +24,7 @@ function IncomingCallPopup({
   const [blindTransferNumber, setBlindTransferNumber] = useState("");
   const [attendShow, setAttendShow] = useState(false);
   const [audio] = useState(new Audio(ringtone)); // Initialize the Audio object
-  console.log(session);
+  console.log("aaaa",session);
   useEffect(() => {
     if (lastIncomingCall && !isMinimized) {
       audio.loop = true; // Set loop so it keeps playing
@@ -55,7 +55,7 @@ function IncomingCallPopup({
         type: "SET_SESSIONS",
         sessions: [
           ...globalSession,
-          { id: sessionId, destination: callerExtension },
+          { id: sessionId, destination: callerExtension,mode:"audio" },
         ],
       });
     }
@@ -64,7 +64,7 @@ function IncomingCallPopup({
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "Enter" && lastIncomingCall) {
-        handleAnswerCall(event);
+        handleAnswerCall("audio");
       }
     };
 
@@ -81,8 +81,8 @@ function IncomingCallPopup({
 
   const topPosition = 10 + index * 75;
 
-  const handleAnswerCall = async (e) => {
-    e.preventDefault();
+  const handleAnswerCall = async (mode) => {
+    // e.preventDefault();
     if (!isMicOn) {
       toast.warn("Please turn on microphone");
       return;
@@ -91,10 +91,26 @@ function IncomingCallPopup({
       sessionDescriptionHandlerOptions: {
         constraints: {
           audio: true,
-          video: true
+          video: mode === "video" ? true : false,
         }
       }
     });
+
+    // if mode is video then set_session mode changed to video in extesting session
+
+    if (mode === "video") {
+      const updatedSession = globalSession.find((session) => session.id === sessionId);
+      if (updatedSession) {
+        updatedSession.mode = "video";
+        dispatch({
+          type: "SET_SESSIONS",
+          sessions: [...globalSession.filter((session) => session.id !== sessionId), updatedSession],
+        });
+      }
+    }
+     
+   
+   
 
     setSelectedModule("onGoingCall");
     setactivePage("call");
@@ -104,7 +120,7 @@ function IncomingCallPopup({
     });
     dispatch({
       type: "SET_VIDEOCALL",
-      videoCall: true
+      videoCall: mode === "video" ? true : false,
     })
     dispatch({
       type: "SET_CALLPROGRESSDESTINATION",
@@ -112,7 +128,7 @@ function IncomingCallPopup({
     });
     dispatch({
       type: "SET_CALLPROGRESS",
-      callProgress: false,
+      callProgress: mode === "audio" ? true : false,
     });
   };
 
@@ -193,8 +209,11 @@ function IncomingCallPopup({
               </div>
             </div>
             <div className="controls">
-              <button class="callButton" onClick={handleAnswerCall}>
+              <button class="callButton" onClick={()=>handleAnswerCall("audio")}>
                 <i class="fa-duotone fa-phone"></i>
+              </button>
+              <button class="callButton" onClick={()=>handleAnswerCall("video")}>
+                <i class="fa-duotone fa-video"></i>
               </button>
               <button class="callButton hangup" onClick={decline}>
                 <i class="fa-duotone fa-phone-hangup"></i>
@@ -243,7 +262,7 @@ function IncomingCallPopup({
               <h5>{callerExtension}</h5>
             </div>
             <div className="controls m-0">
-              <button class="callButton me-0" onClick={handleAnswerCall}>
+              <button class="callButton me-0" onClick={()=>handleAnswerCall("audio")}>
                 <i class="fa-duotone fa-phone"></i>
               </button>
               <button class="callButton hangup me-0" onClick={decline}>

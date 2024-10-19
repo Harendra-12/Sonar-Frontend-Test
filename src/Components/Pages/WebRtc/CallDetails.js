@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";
 import { toast } from "react-toastify";
 
@@ -9,11 +9,11 @@ function CallDetails({
   isCustomerAdmin,
   setSelectedModule,
   isMicOn,
+  isVideoOn,
   onCall,
 }) {
   const [callDetails, setCallDetails] = useState();
   const { connectStatus } = useSIPProvider();
-
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
   useEffect(() => {
@@ -50,18 +50,26 @@ function CallDetails({
     const min = Math.floor((duration / 60) % 60);
     const hour = Math.floor(duration / 3600);
     return (
-      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""}${
-        sec ? sec + " sec" : ""
+      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""}${sec ? sec + " sec" : ""
       }` || "0 sec"
     );
   };
 
-  const handleVoiceCall = () => {
+  const handleVoiceCall = (mode) => {
     if (connectStatus !== "CONNECTED") {
       toast.error("You are not connected with server");
       return;
     }
-    onCall(callDetails);
+    if (!isMicOn) {
+      toast.warn("Please turn on microphone");
+    }
+    if (mode === "video") {
+      if (!isVideoOn) {
+        toast.warn("Please turn on camera");
+        return;
+      }
+    }
+    onCall(callDetails, mode);
   };
   return (
     <>
@@ -88,13 +96,16 @@ function CallDetails({
             className="appPanelButton"
             effect="ripple"
             // onClick={() => onCall(callDetails)}
-            onClick={handleVoiceCall}
+            onClick={() => handleVoiceCall("audio")}
           >
             <i className="fa-light fa-phone" />
           </button>
-          <button className="appPanelButton" effect="ripple">
-            <i className="fa-light fa-video" />
-          </button>
+          {isVideoOn && (
+            <button className="appPanelButton" effect="ripple" onClick={() => handleVoiceCall("video")}>
+              <i className="fa-light fa-video" />
+            </button>
+          )}
+
         </div>
       </div>
       <div className="mt-2">
@@ -152,49 +163,47 @@ function CallDetails({
                     </td>
                     {!isCustomerAdmin ? (
                       <td
-                        className={`${
-                          callDetails?.["Caller-Callee-ID-Number"] ===
+                        className={`${callDetails?.["Caller-Callee-ID-Number"] ===
                             extension && callDetails?.["variable_billsec"] > 0
                             ? "incoming"
                             : callDetails?.["Caller-Caller-ID-Number"] ===
                               extension
-                            ? "outgoing"
-                            : callDetails?.["Caller-Callee-ID-Number"] ===
+                              ? "outgoing"
+                              : callDetails?.["Caller-Callee-ID-Number"] ===
                                 extension &&
-                              callDetails?.["variable_billsec"] === 0
-                            ? "missed"
-                            : callDetails?.["Call-Direction"] === "voicemail"
-                            ? "voicemail"
-                            : ""
-                        }`}
+                                callDetails?.["variable_billsec"] === 0
+                                ? "missed"
+                                : callDetails?.["Call-Direction"] === "voicemail"
+                                  ? "voicemail"
+                                  : ""
+                          }`}
                       >
                         <span>
                           {callDetails &&
-                          callDetails?.["Caller-Callee-ID-Number"] ===
+                            callDetails?.["Caller-Callee-ID-Number"] ===
                             extension &&
-                          callDetails?.["variable_billsec"] > 0
+                            callDetails?.["variable_billsec"] > 0
                             ? "Incoming"
                             : callDetails?.["Caller-Caller-ID-Number"] ===
                               extension
-                            ? "Outgoing"
-                            : callDetails?.["Caller-Callee-ID-Number"] ===
+                              ? "Outgoing"
+                              : callDetails?.["Caller-Callee-ID-Number"] ===
                                 extension &&
-                              callDetails?.["variable_billsec"] === 0
-                            ? "Missed"
-                            : callDetails?.["Call-Direction"] === "voicemail"
-                            ? "voicemail"
-                            : ""}
+                                callDetails?.["variable_billsec"] === 0
+                                ? "Missed"
+                                : callDetails?.["Call-Direction"] === "voicemail"
+                                  ? "voicemail"
+                                  : ""}
                         </span>
                       </td>
                     ) : (
                       <td
-                        className={`${
-                          callDetails?.["variable_billsec"] === 0
+                        className={`${callDetails?.["variable_billsec"] === 0
                             ? "missed"
                             : callDetails?.["Call-Direction"] === "voicemail"
-                            ? "voicemail"
-                            : ""
-                        }`}
+                              ? "voicemail"
+                              : ""
+                          }`}
                       >
                         <span>
                           {callDetails?.["Caller-Callee-ID-Number"]}==
@@ -265,44 +274,42 @@ function CallDetails({
                       </td> */}
                       {!isCustomerAdmin ? (
                         <td
-                          className={`${
-                            item?.["Caller-Callee-ID-Number"] === extension &&
-                            item?.["variable_billsec"] > 0
+                          className={`${item?.["Caller-Callee-ID-Number"] === extension &&
+                              item?.["variable_billsec"] > 0
                               ? "incoming"
                               : item?.["Caller-Caller-ID-Number"] === extension
-                              ? "outgoing"
-                              : item?.["Caller-Callee-ID-Number"] ===
+                                ? "outgoing"
+                                : item?.["Caller-Callee-ID-Number"] ===
                                   extension && item?.["variable_billsec"] === 0
-                              ? "missed"
-                              : item?.["Call-Direction"] === "voicemail"
-                              ? "voicemail"
-                              : ""
-                          }`}
+                                  ? "missed"
+                                  : item?.["Call-Direction"] === "voicemail"
+                                    ? "voicemail"
+                                    : ""
+                            }`}
                         >
                           <span>
                             {item &&
-                            item?.["Caller-Callee-ID-Number"] === extension &&
-                            item?.["variable_billsec"] > 0
+                              item?.["Caller-Callee-ID-Number"] === extension &&
+                              item?.["variable_billsec"] > 0
                               ? "Incoming"
                               : item?.["Caller-Caller-ID-Number"] === extension
-                              ? "Outgoing"
-                              : item?.["Caller-Callee-ID-Number"] ===
+                                ? "Outgoing"
+                                : item?.["Caller-Callee-ID-Number"] ===
                                   extension && item?.["variable_billsec"] === 0
-                              ? "Missed"
-                              : item?.["Call-Direction"] === "voicemail"
-                              ? "voicemail"
-                              : ""}
+                                  ? "Missed"
+                                  : item?.["Call-Direction"] === "voicemail"
+                                    ? "voicemail"
+                                    : ""}
                           </span>
                         </td>
                       ) : (
                         <td
-                          className={`${
-                            item?.["variable_billsec"] === 0
+                          className={`${item?.["variable_billsec"] === 0
                               ? "missed"
                               : item?.["Call-Direction"] === "voicemail"
-                              ? "voicemail"
-                              : ""
-                          }`}
+                                ? "voicemail"
+                                : ""
+                            }`}
                         >
                           <span>
                             {item?.["Caller-Callee-ID-Number"]}==

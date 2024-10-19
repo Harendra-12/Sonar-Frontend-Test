@@ -4,13 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";
 import { toast } from "react-toastify";
 
-function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
+function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
   const account = useSelector((state) => state.account);
   const globalSession = useSelector((state) => state.sessions);
   const dispatch = useDispatch();
   const { sessionManager, connectStatus } = useSIPProvider();
   const [destNumber, setDestNumber] = useState("");
-  const [videoCall,setVideoCall]=useState(true);
   const extension = account?.extension?.extension || "";
   const handleInputChange = (e) => {
     const { value } = e.target;
@@ -22,10 +21,16 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
 
   console.log("connectstatus form dialpad", connectStatus);
 
-  async function onSubmit(e) {
+  async function onSubmit(mode) {
     if (!isMicOn) {
       toast.warn("Please turn on microphone");
       return;
+    }
+    if(mode==="video"){
+      if (!isVideoOn) {
+        toast.warn("Please turn on camera");
+        return;
+      }
     }
 
     if (extension == "") {
@@ -50,14 +55,14 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
           sessionDescriptionHandlerOptions: {
             constraints: {
               audio: true,
-              video: true
+              video:mode === "video"? true : false
             }
           }
         },
         {
           media: {
             audio: true,
-            video: {
+            video: mode === "audio" ? true :{
               mandatory: {
                 minWidth: 1280,
                 minHeight: 720,
@@ -75,12 +80,12 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
         type: "SET_SESSIONS",
         sessions: [
           ...globalSession,
-          { id: apiData._id, destination: destNumber, state: "Established" },
+          { id: apiData._id, destination: destNumber, state: "Established",mode:mode },
         ],
       });
       dispatch({
         type:"SET_VIDEOCALL",
-        videoCall:videoCall
+        videoCall:mode==="video"?true:false
       })
       dispatch({
         type: "SET_CALLPROGRESSID",
@@ -92,7 +97,7 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
       });
       dispatch({
         type: "SET_CALLPROGRESS",
-        callProgress: !videoCall,
+        callProgress: mode === "video" ? false : true
       });
     } else {
       toast.error("Please enter a valid number");
@@ -132,7 +137,7 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
                   onChange={handleInputChange}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      onSubmit();
+                      onSubmit("audio");
                     }
                   }}
                 />
@@ -225,10 +230,18 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
                   </h4>
                 </div>
               </div>
-              <div onClick={onSubmit}>
+              <div className="d-flex justify-content-center">
+              <div onClick={()=>onSubmit("audio")}>
                 <button className="callButton">
                   <i className="fa-thin fa-phone" />
                 </button>
+              </div>
+              {isVideoOn ?
+              <div onClick={()=>onSubmit("video")}>
+                <button className="callButton">
+                  <i className="fa-thin fa-video" />
+                </button>
+              </div> :""}
               </div>
             </div>
           </div>

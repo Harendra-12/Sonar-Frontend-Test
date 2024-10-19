@@ -6,6 +6,7 @@ import connectMusic from "../../assets/music/ring-tone.mp3";
 function ActiveCallSidePanel({
   sessionId,
   chennel,
+  mode,
   destination,
   setHangupRefresh,
   hangupRefresh,
@@ -80,8 +81,9 @@ function ActiveCallSidePanel({
       );
 
       //Hold previous call
-      if (prevSession && session._state == "Established") {
+      if (prevSession && session._state == "Established" && prevSession.mode!== "video") {
         hold(prevSession.id);
+        console.log("hold hit")
         dispatch({
           type: "SET_SESSIONS",
           sessions: globalSession.map((item) =>
@@ -135,8 +137,12 @@ function ActiveCallSidePanel({
     });
     dispatch({
       type: "SET_CALLPROGRESS",
-      callProgress: true,
+      callProgress: mode === "audio" ? true : false,
     });
+    dispatch({
+      type:"SET_VIDEOCALL",
+      videoCall:mode==="video"?true:false
+    })
   }
 
   return (
