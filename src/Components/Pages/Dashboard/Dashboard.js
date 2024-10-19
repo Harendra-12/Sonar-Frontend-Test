@@ -1,11 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
 import React, { useEffect, useMemo, useState } from "react";
+import Clock from 'react-clock';
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
 import DoughnutChart from "../../CommonComponents/DoughnutChart";
 import GraphChart from "../../CommonComponents/GraphChart";
 import { useNavigate } from "react-router-dom";
+import 'react-clock/dist/Clock.css';
 const Dashboard = () => {
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
@@ -22,6 +24,16 @@ const Dashboard = () => {
   const activeCall = useSelector((state) => state.activeCall || []);
   const callCenter = useSelector((state) => state.callCenter || []);
   const extension = useSelector((state) => state.extension || []);
+
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => setCurrentTime(new Date()), 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   const [ringGroupCardData, setringGroupCardData] = useState({
     total: {
@@ -355,6 +367,18 @@ const Dashboard = () => {
                 <div className="nav nav-tabs" id="nav-tab" role="tablist">
                   <button
                     className="nav-link active"
+                    id="nav-sys-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#nav-sys"
+                    type="button"
+                    role="tab"
+                    aria-controls="nav-sys"
+                    aria-selected="true"
+                  >
+                    System
+                  </button>
+                  <button
+                    className="nav-link "
                     id="nav-home-tab"
                     data-bs-toggle="tab"
                     data-bs-target="#nav-calls"
@@ -381,31 +405,260 @@ const Dashboard = () => {
                     className="nav-link"
                     id="nav-contact-tab"
                     data-bs-toggle="tab"
-                    data-bs-target="#nav-queue"
+                    data-bs-target="#nav-billing"
                     type="button"
                     role="tab"
-                    aria-controls="nav-queue"
+                    aria-controls="nav-billing"
                     aria-selected="false"
                   >
-                    Call Queue
-                  </button>
-                  <button
-                    className="nav-link"
-                    id="nav-contact-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#nav-ring"
-                    type="button"
-                    role="tab"
-                    aria-controls="nav-ring"
-                    aria-selected="false"
-                  >
-                    Ring Group
+                    Billing
                   </button>
                 </div>
               </nav>
               <div className="tab-content mt-3" id="nav-tabContent">
+                <div className="tab-pane fade show active" id="nav-sys" role="tabpanel"
+                  aria-labelledby="nav-sys-tab" tabIndex="0">
+                  <div className="row">
+                    <div className="col-xl-12">
+                      <div className="row">
+                        <div className="col-xl-3">
+                          <div className="itemWrapper c">
+                            <div className="heading">
+                              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                                <div className="col-10">
+                                  <h5>Current Time</h5>
+                                  <p>
+                                    {new Date().getDate()}{" "}
+                                    {new Date().toLocaleString("default", {
+                                      month: "long",
+                                    })}
+                                    , {new Date().getFullYear()}
+                                  </p>
+                                </div>
+                                <div className="col-2">
+                                  <i class="fa-solid fa-clock"></i>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="data-number2">
+                              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                                <div className="col-10">
+                                  <h5>{new Date().toLocaleTimeString("en-US", {
+                                    hour: "numeric",
+                                    minute: "numeric",
+                                    hour12: true,
+                                  })}</h5>
+                                  <p>
+                                    Timezone - {Intl.DateTimeFormat().resolvedOptions().timeZone}
+                                  </p>
+                                </div>
+                                <div className="col-2">
+                                  <Clock value={currentTime} size={50} secondHandWidth={1} renderMinuteMarks={false} hourMarksWidth={1} hourMarksLength={15} hourHandWidth={2} minuteHandWidth={1} />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-xl-3">
+                          <div className="itemWrapper b">
+                            <div className="heading">
+                              <div className="d-flex flex-wrap justify-content-between">
+                                <div className="col-10">
+                                  <h5>Network Info</h5>
+                                </div>
+                                <div className="col-2">
+                                  <i class="fa-solid fa-wifi"></i>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="data-number2">
+                              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                                <div className="col-10">
+                                  <h5 className="text-success">Online</h5>
+                                  <p>Hostname - www.hostname.com</p>
+                                  <p>IP Address  - 0.0.0.0</p>
+                                </div>
+                                <div className="col-2">
+                                  <img
+                                    alt="dashboard"
+                                    src={require("../../assets/images/icons/local-area-network.png")}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-xl-3">
+                          <div className="itemWrapper a">
+                            <div className="heading">
+                              <div className="d-flex flex-wrap justify-content-between">
+                                <div className="col-10">
+                                  <h5>Traffic</h5>
+                                  <p>0.0.0.0</p>
+                                </div>
+                                <div className="col-2">
+                                  <i class="fa-solid fa-chart-line"></i>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="data-number2">
+                              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                                <div className="col-10">
+                                  <h5>pbx.domain.com</h5>
+                                  <p>Send - 90 Kbps</p>
+                                  <p>Receive  - 1.5 Mbps</p>
+                                </div>
+                                <div className="col-2">
+                                  <img
+                                    alt="dashboard"
+                                    src={require("../../assets/images/icons/web-traffic.png")}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-xl-3">
+                          <div className="itemWrapper d">
+                            <div className="heading">
+                              <div className="d-flex flex-wrap justify-content-detween">
+                                <div className="col-10">
+                                  <h5>SIP Devices</h5>
+                                </div>
+                                <div className="col-2">
+                                  <i class="fa-solid fa-phone-office"></i>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="data-number2">
+                              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                                <div className="col-10">
+                                  <h5>0</h5>
+                                  <p>0 Registered / 0 Unregistered</p>
+                                </div>
+                                <div className="col-2">
+                                  <img
+                                    alt="dashboard"
+                                    src={require("../../assets/images/icons/call.png")}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xl-12 mt-4">
+                      <div className="row">
+                        <div className="col-xl-4 chartWrapper">
+                          <div className="wrapper itemWrapper b">
+                            <div class="heading">
+                              <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                <div class="col-10">
+                                  <h5>System Usage</h5>
+                                  <p>19 October, 2024</p>
+                                </div>
+                                <div class="col-2">
+                                  <i class="fa-solid fa-gauge-simple-high"></i>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                              <div className="col-9">
+                                <GraphChart
+                                  chartType="multiple"
+                                  labels={["CPU Usage", "Memory Usage"]}
+                                  fields={["0s", "10s", "20s", "30s", "40s", "50s", "60s"]}
+                                  percentage={[
+                                    [10, 12, 14, 16, 24, 14, 16],  // CPU Usage
+                                    [8, 15, 20, 18, 25, 10, 12]    // Memory Usage
+                                  ]}
+                                  colors={["#f18f01", "#36A2EB"]}
+                                />
+                              </div>
+                              <div className="col-3 text-end">
+                                <p className="mb-2  text-secondary">CPU Usage</p>
+                                <h3 className="mb-3  text-secondary">14.89%</h3>
+                                <p className="mb-2  text-secondary">Memory Usage</p>
+                                <h3 className="mb-0 text-secondary">28.51%</h3>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-xl-4 ">
+                          <div className="itemWrapper a">
+                            <div className="heading">
+                              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                                <div className="col-10">
+                                  <h5>Hardware Info</h5>
+                                  <p>
+                                    {new Date().getDate()}{" "}
+                                    {new Date().toLocaleString("default", {
+                                      month: "long",
+                                    })}
+                                    , {new Date().getFullYear()}
+                                  </p>
+                                </div>
+                                <div className="col-2">
+                                  <i class="fa-solid fa-microchip"></i>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="data-number2">
+                              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                                <div className="col-12">
+                                  <ul>
+                                    <li>Virtualization <span className="float-end">Microsoft</span></li>
+                                    <li>CPU Model <span className="float-end">Intel Xeon Processor (Cascadelake)</span></li>
+                                    <li>CPU Cores <span className="float-end">1</span></li>
+                                    <li>RAM <span className="float-end">2GB / 2GB</span></li>
+                                    <li>Disk Usage <span className="float-end">20.8 GB Used / 29.1 GB Used</span></li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-xl-4 ">
+                          <div className="itemWrapper d">
+                            <div className="heading">
+                              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                                <div className="col-10">
+                                  <h5>System Info</h5>
+                                  <p>
+                                    {new Date().getDate()}{" "}
+                                    {new Date().toLocaleString("default", {
+                                      month: "long",
+                                    })}
+                                    , {new Date().getFullYear()}
+                                  </p>
+                                </div>
+                                <div className="col-2">
+                                  <i class="fa-solid fa-desktop"></i>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="data-number2">
+                              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                                <div className="col-12">
+                                  <ul>
+                                    <li>Distro <span className="float-end">Debian GNU, Linux 11</span></li>
+                                    <li>Kernel <span className="float-end">5.10.0-21-amd64</span></li>
+                                    <li>Asterisk <span className="float-end">18.16.0</span></li>
+                                    <li>VitalPBX <span className="float-end">4.0.2-1</span></li>
+                                    <li>PHP Version <span className="float-end">8.1.11</span></li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div
-                  className="tab-pane fade show active"
+                  className="tab-pane fade"
                   id="nav-calls"
                   role="tabpanel"
                   aria-labelledby="nav-home-tab"
@@ -443,7 +696,7 @@ const Dashboard = () => {
                             </div>
                             <div className="col-2">
                               <img
-                              alt="dashboard"
+                                alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
                             </div>
@@ -485,7 +738,7 @@ const Dashboard = () => {
                             </div>
                             <div className="col-2">
                               <img
-                               alt="dashboard"
+                                alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
                             </div>
@@ -526,7 +779,7 @@ const Dashboard = () => {
                             </div>
                             <div className="col-2">
                               <img
-                               alt="dashboard"
+                                alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
                             </div>
@@ -563,7 +816,7 @@ const Dashboard = () => {
                             </div>
                             <div className="col-2">
                               <img
-                               alt="dashboard"
+                                alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
                             </div>
@@ -572,6 +825,73 @@ const Dashboard = () => {
                         {/* <div className="label">0 Internal Call</div>
                         <div className="label">0 External Calls</div> */}
                         {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/devices'" effect="ripple"><i className="fa-duotone fa-mobile-retro"></i> View All Devices</button> */}
+                      </div>
+                    </div>
+                    <div className="col-12 mt-4 mb-2 chartWrapper">
+                      <div className="row">
+                        <div className="col-xl-3">
+                          <div className="wrapper">
+                            <DoughnutChart
+                              fields={["Inbound", "Outbound", "Total"]}
+                              percentage={[
+                                callCardData.handled.inboundAnswered,
+                                callCardData.handled.outboundAnswered,
+                                callCardData.handled.count,
+                              ]}
+                              centerTitle={`${extensionList}/${Number(
+                                accountDetails?.package?.number_of_user
+                              )}`}
+                              centerDesc="Extensions Details"
+                              colors={["#9999", "#FF638470", "#36A2EB70"]}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xl-3">
+                          <div className="wrapper">
+                            <DoughnutChart
+                              fields={["Handled", "Missed", "Abandoned"]}
+                              percentage={[
+                                callCardData.handled.count,
+                                callCardData.missedCalls.count,
+                                callCardData.abandonedCalls.count,
+                              ]}
+                              centerTitle={`${userList}/${accountDetails?.package?.number_of_user}`}
+                              centerDesc="Total Users Available"
+                              colors={["#36A2EB70", "#f17d0170", "#FF638470"]}
+                            />
+                          </div>
+                          {/* <div className='circularProgressWrapper'>
+                                        <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `50` }}>
+                                            <circle className="bg"
+                                                cx="125" cy="125" r="115" fill="none" stroke="#f18f0130" stroke-width="20"
+                                            ></circle>
+                                            <circle className="fg"
+                                                cx="125" cy="125" r="115" fill="none" stroke="#f18f01" stroke-width="20"
+                                                stroke-dasharray="361.25 361.25"
+                                            ></circle>
+                                        </svg>
+                                        <div className='circularProgressContent'>
+                                            <div className="data-number">
+                                                <label style={{ color: '#f18f01' }}>{userList}</label> <span>/ 69</span>
+                                            </div>
+                                            <p>Total Users Created</p>
+                                        </div>
+                                    </div> */}
+                        </div>
+                        <div className="col-xl-6">
+                          <div className="wrapper">
+                            <GraphChart
+                              fields={["Available Extension", "Registered Extension"]}
+                              percentage={[
+                                accountDetails?.package?.number_of_user,
+                                extensionList,
+                              ]}
+                              centerTitle={`${extensionList}/${accountDetails?.package?.number_of_user}`}
+                              centerDesc="Total Extensions"
+                              colors={["#f18f01", "#36A2EB"]}
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -635,25 +955,20 @@ const Dashboard = () => {
                 </div>
                 <div
                   className="tab-pane fade"
-                  id="nav-queue"
+                  id="nav-billing"
                   role="tabpanel"
-                  aria-labelledby="nav-contact-tab"
+                  aria-labelledby="nav-billing-tab"
                   tabIndex="0"
                 >
                   <div className="row">
-                    <div
-                      className="col-xl-3"
-                      onClick={() => {
-                        navigate("/cal-center-queue");
-                      }}
+                    <div className="col-xl-3"
                       style={{ cursor: "pointer" }}
                     >
                       <div className="itemWrapper a">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
-                              <h5>Total Queues</h5>
-                              {/* <p>27 August - 27 September, 2024</p> */}
+                              <h5>Package Information</h5>
                               <p>
                                 {" "}
                                 {new Date().getDate()}{" "}
@@ -672,14 +987,13 @@ const Dashboard = () => {
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
-                              <h5>{callCenterQueue.total.count}</h5>
-                              {/* <p>
-                              3 Currently Active Queue / 7 Inactive Queue
-                              </p> */}
+                              <h5>Starter</h5>
+                              <p>$170.00 / Year</p>
+                              <p>25 Purchased Extensions / 2 DIDs</p>
                             </div>
                             <div className="col-2">
                               <img
-                               alt="dashboard"
+                                alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
                             </div>
@@ -692,8 +1006,7 @@ const Dashboard = () => {
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
-                              <h5>Total Agents</h5>
-                              {/* <p>27 August - 27 September, 2024</p> */}
+                              <h5>Upcoming Transaction</h5>
                               <p>
                                 {" "}
                                 {new Date().getDate()}{" "}
@@ -712,14 +1025,14 @@ const Dashboard = () => {
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
-                              <h5>{callCenterQueue.totalAgents.count}</h5>
-                              {/* <p>
-                              15 Agents in Queue / 5 Agents Not in Queue
-                              </p> */}
+                              <h5>$15,000.00</h5>
+                              <p>
+                                Yearly Basis
+                              </p>
                             </div>
                             <div className="col-2">
                               <img
-                               alt="dashboard"
+                                alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
                             </div>
@@ -727,25 +1040,18 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-
                     <div className="col-xl-3">
                       <div className="itemWrapper c">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
-                              <h5>Total Calls</h5>
-                              {/* <p>27 August - 27 September, 2024</p> */}
+                              <h5>Last Transaction</h5>
                               <p>
-                                {" "}
-                                {new Date().getDate()}{" "}
-                                {new Date().toLocaleString("default", {
-                                  month: "long",
-                                })}
-                                , {new Date().getFullYear()}
+                                Transaction Date
                               </p>
                             </div>
                             <div className="col-2">
-                              <i className="fa-duotone fa-circle-pause"></i>
+                              <i class="fa-solid fa-dollar-sign"></i>
                             </div>
                           </div>
                         </div>
@@ -753,14 +1059,12 @@ const Dashboard = () => {
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
-                              <h5>{callCenterQueue.totalCalls.count}</h5>
-                              {/* <p>
-                              1 Waiting in Queue / 4 Waiting in Queue
-                              </p> */}
+                              <h5>$450.00</h5>
+                              <p>Transaction ID: 123456789</p>
                             </div>
                             <div className="col-2">
                               <img
-                               alt="dashboard"
+                                alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
                             </div>
@@ -774,7 +1078,7 @@ const Dashboard = () => {
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
-                              <h5>Missed Calls</h5>
+                              <h5>Lorem Ipsum</h5>
                               {/* <p>27 August - 27 September, 2024</p> */}
                               <p>
                                 {" "}
@@ -794,14 +1098,14 @@ const Dashboard = () => {
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
-                              <h5>{callCenterQueue.missedCalls.count}</h5>
-                              {/* <p>
-                              4 Calls Overflown / 2 Calls Abandoned
-                              </p> */}
+                              <h5>$000.00</h5>
+                              <p>
+                                Lorem Ipsum / Lorem Ipsum
+                              </p>
                             </div>
                             <div className="col-2">
                               <img
-                               alt="dashboard"
+                                alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
                             </div>
@@ -809,175 +1113,122 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div
-                  className="tab-pane fade"
-                  id="nav-ring"
-                  role="tabpanel"
-                  aria-labelledby="nav-contact-tab"
-                  tabIndex="0"
-                >
-                  <div className="row">
-                    <div
-                      className="col-xl-3"
-                      onClick={() => navigate("/ring-groups")}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <div className="itemWrapper a">
-                        <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
-                              <h5>Total Ring Group</h5>
-                              <p>
-                                {" "}
-                                {new Date().getDate()}{" "}
-                                {new Date().toLocaleString("default", {
-                                  month: "long",
-                                })}
-                                , {new Date().getFullYear()}
-                              </p>
+                    <div className="col-xl-12 mt-4">
+                      <div className="row">
+                        <div className="col-xl-4 ">
+                          <div className="itemWrapper c">
+                            <div className="heading">
+                              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                                <div className="col-10">
+                                  <h5>Invoices</h5>
+                                  <p>Last 5 invoices</p>
+                                </div>
+                                <div className="col-2">
+                                  <i class="fa-solid fa-file-invoice"></i>
+                                </div>
+                              </div>
                             </div>
-                            <div className="col-2">
-                              <i className="fa-duotone fa-phone-rotary"></i>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="data-number2">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
-                              <h5>{ringGroupCardData.total.count || 0}</h5>
-                              <p>
-                                {ringGroupCardData.total.inbound || 0} Inbound
-                                calls / {ringGroupCardData.total.outbound || 0}{" "}
-                                Outbound calls
-                              </p>
-                            </div>
-                            <div className="col-2">
-                              <img
-                               alt="dashboard"
-                                src={require("../../assets/images/icons/diagram.png")}
-                              />
+                            <div className="data-number2">
+                              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                                <div className="col-12">
+                                  <ul>
+                                    <li>2024-10-16 11:02:05
+                                      <span className="float-end fw-bold"><i class="fa-solid fa-download text-warning"></i> $123.00 </span>
+                                    </li>
+                                    <li>2024-10-16 11:02:05
+                                      <span className="float-end fw-bold"><i class="fa-solid fa-download text-warning"></i> $123.00 </span>
+                                    </li>
+                                    <li>2024-10-16 11:02:05
+                                      <span className="float-end fw-bold"><i class="fa-solid fa-download text-warning"></i> $123.00 </span>
+                                    </li>
+                                    <li>2024-10-16 11:02:05
+                                      <span className="float-end fw-bold"><i class="fa-solid fa-download text-warning"></i> $123.00 </span>
+                                    </li>
+                                    <li>2024-10-16 11:02:05
+                                      <span className="float-end fw-bold"><i class="fa-solid fa-download text-warning"></i> $123.00 </span>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-
-                    <div className="col-xl-3">
-                      <div className="itemWrapper b">
-                        <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
-                              <h5>Active Calls</h5>
-                              <p>
-                                {" "}
-                                {new Date().getDate()}{" "}
-                                {new Date().toLocaleString("default", {
-                                  month: "long",
-                                })}
-                                , {new Date().getFullYear()}
-                              </p>
+                        <div className="col-xl-4 ">
+                          <div className="itemWrapper d">
+                            <div className="heading">
+                              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                                <div className="col-10">
+                                  <h5>Billing Address</h5>
+                                  <p>Click the icon to change it</p>
+                                </div>
+                                <div className="col-2">
+                                  <i class="fa-solid fa-wallet"></i>
+                                </div>
+                              </div>
                             </div>
-                            <div className="col-2">
-                              <i className="fa-duotone fa-phone-volume"></i>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="data-number2">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
-                              <h5>{ringGroupCardData.active.count || 0}</h5>
-                              <p>
-                                {ringGroupCardData.active.inbound || 0} Active
-                                inbound calls /{" "}
-                                {ringGroupCardData.active.outbound || 0} Active
-                                outbound calls
-                              </p>
-                            </div>
-                            <div className="col-2">
-                              <img
-                               alt="dashboard"
-                                src={require("../../assets/images/icons/diagram.png")}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="col-xl-3">
-                      <div className="itemWrapper c">
-                        <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
-                              <h5>Total Calls</h5>
-                              <p>
-                                {" "}
-                                {new Date().getDate()}{" "}
-                                {new Date().toLocaleString("default", {
-                                  month: "long",
-                                })}
-                                , {new Date().getFullYear()}
-                              </p>
-                            </div>
-                            <div className="col-2">
-                              <i className="fa-duotone fa-circle-pause"></i>
+                            <div className="data-number2">
+                              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                                <div className="col-12">
+                                  <ul>
+                                    <li>
+                                      Full Name <span className="float-end">John Doe</span>
+                                    </li>
+                                    <li>
+                                      Phone <span className="float-end">0000000000</span>
+                                    </li>
+                                    <li>
+                                      Email Address <span className="float-end">john.doe@website.com</span>
+                                    </li>
+                                    <li>
+                                      Address <span className="float-end">122, test address, dummy lane</span>
+                                    </li>
+                                    <li>
+                                      City, State<span className="float-end">CA, NV</span>
+                                    </li>
+                                    <li>
+                                      Zip Code <span className="float-end">000000</span>
+                                    </li>
+                                    <li>
+                                      Country <span className="float-end">US</span>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
-                        <div className="data-number2">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
-                              <h5>{ringGroupCardData.totalCalls.count || 0}</h5>
-                              {/* <p>
-                                1 Waiting in Queue / 4 Waiting in Queue
-                              </p> */}
+                        <div className="col-xl-4 chartWrapper">
+                          <div className="wrapper itemWrapper b">
+                            <div class="heading">
+                              <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                <div class="col-10">
+                                  <h5>Dummy Data</h5>
+                                  <p>19 October, 2024</p>
+                                </div>
+                                <div class="col-2">
+                                  <i class="fa-solid fa-gauge-simple-high"></i>
+                                </div>
+                              </div>
                             </div>
-                            <div className="col-2">
-                              <img
-                               alt="dashboard"
-                                src={require("../../assets/images/icons/diagram.png")}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="col-xl-3">
-                      <div className="itemWrapper d">
-                        <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
-                              <h5>Missed Calls</h5>
-                              <p>
-                                {" "}
-                                {new Date().getDate()}{" "}
-                                {new Date().toLocaleString("default", {
-                                  month: "long",
-                                })}
-                                , {new Date().getFullYear()}
-                              </p>
-                            </div>
-                            <div className="col-2">
-                              <i className="fa-duotone fa-circle-pause"></i>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="data-number2">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
-                              <h5>{ringGroupCardData.missed.count}</h5>
-                              {/* <p>
-                                4 Calls Overflown / 2 Calls Abandoned
-                              </p> */}
-                            </div>
-                            <div className="col-2">
-                              <img
-                               alt="dashboard"
-                                src={require("../../assets/images/icons/diagram.png")}
-                              />
+                            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                              <div className="col-9">
+                                <GraphChart
+                                  chartType="multiple"
+                                  labels={["Field 1", "Field 2"]}
+                                  fields={["0s", "10s", "20s", "30s", "40s", "50s", "60s"]}
+                                  percentage={[
+                                    [10, 12, 14, 16, 24, 14, 16],  // CPU Usage
+                                    [8, 15, 20, 18, 25, 10, 12]    // Memory Usage
+                                  ]}
+                                  colors={["#f18f01", "#36A2EB"]}
+                                />
+                              </div>
+                              <div className="col-3 text-end">
+                                <p className="mb-2  text-secondary">Field 1</p>
+                                <h3 className="mb-3  text-secondary">14.89%</h3>
+                                <p className="mb-2  text-secondary">Field 2</p>
+                                <h3 className="mb-0 text-secondary">28.51%</h3>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -1022,74 +1273,6 @@ const Dashboard = () => {
                         {calls ? <AllCalls /> : ""}
                         {group ? <RingGroup /> : ""}
                         {queue ? <CallQueueDetails /> : ""} */}
-
-            <div className="col-12 mt-4 mb-2 chartWrapper">
-              <div className="row">
-                <div className="col-xl-3">
-                  <div className="wrapper">
-                    <DoughnutChart
-                      fields={["Inbound", "Outbound", "Total"]}
-                      percentage={[
-                        callCardData.handled.inboundAnswered,
-                        callCardData.handled.outboundAnswered,
-                        callCardData.handled.count,
-                      ]}
-                      centerTitle={`${extensionList}/${Number(
-                        accountDetails?.package?.number_of_user
-                      )}`}
-                      centerDesc="Extensions Details"
-                      colors={["#9999", "#FF638470", "#36A2EB70"]}
-                    />
-                  </div>
-                </div>
-                <div className="col-xl-3">
-                  <div className="wrapper">
-                    <DoughnutChart
-                      fields={["Handled", "Missed", "Abandoned"]}
-                      percentage={[
-                        callCardData.handled.count,
-                        callCardData.missedCalls.count,
-                        callCardData.abandonedCalls.count,
-                      ]}
-                      centerTitle={`${userList}/${accountDetails?.package?.number_of_user}`}
-                      centerDesc="Total Users Available"
-                      colors={["#36A2EB70", "#f17d0170", "#FF638470"]}
-                    />
-                  </div>
-                  {/* <div className='circularProgressWrapper'>
-                                        <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `50` }}>
-                                            <circle className="bg"
-                                                cx="125" cy="125" r="115" fill="none" stroke="#f18f0130" stroke-width="20"
-                                            ></circle>
-                                            <circle className="fg"
-                                                cx="125" cy="125" r="115" fill="none" stroke="#f18f01" stroke-width="20"
-                                                stroke-dasharray="361.25 361.25"
-                                            ></circle>
-                                        </svg>
-                                        <div className='circularProgressContent'>
-                                            <div className="data-number">
-                                                <label style={{ color: '#f18f01' }}>{userList}</label> <span>/ 69</span>
-                                            </div>
-                                            <p>Total Users Created</p>
-                                        </div>
-                                    </div> */}
-                </div>
-                <div className="col-xl-6">
-                  <div className="wrapper">
-                    <GraphChart
-                      fields={["Available Extension", "Registered Extension"]}
-                      percentage={[
-                        accountDetails?.package?.number_of_user,
-                        extensionList,
-                      ]}
-                      centerTitle={`${extensionList}/${accountDetails?.package?.number_of_user}`}
-                      centerDesc="Total Extensions"
-                      colors={["#f18f01", "#36A2EB"]}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
