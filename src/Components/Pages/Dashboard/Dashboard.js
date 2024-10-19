@@ -978,8 +978,8 @@ const Dashboard = () => {
                                 , {new Date().getFullYear()}
                               </p>
                             </div>
-                            <div className="col-2">
-                              <i className="fa-duotone fa-phone-volume"></i>
+                            <div className="col-2" onClick={() => navigate('/card-details')}>
+                              <i className="fa-duotone fa-phone-volume" style={{ boxShadow: 'rgba(0, 0, 0, 0.15) 0px 3px 5px' }}></i>
                             </div>
                           </div>
                         </div>
@@ -1016,8 +1016,8 @@ const Dashboard = () => {
                                 , {new Date().getFullYear()}
                               </p>
                             </div>
-                            <div className="col-2">
-                              <i className="fa-duotone fa-users"></i>
+                            <div className="col-2" onClick={() => { navigate('/card-details') }}>
+                              <i className="fa-duotone fa-users" style={{ boxShadow: 'rgba(0, 0, 0, 0.15) 0px 3px 5px' }}></i>
                             </div>
                           </div>
                         </div>
@@ -1050,8 +1050,8 @@ const Dashboard = () => {
                                 Transaction Date
                               </p>
                             </div>
-                            <div className="col-2">
-                              <i class="fa-solid fa-dollar-sign"></i>
+                            <div className="col-2" onClick={() => navigate('/card-transaction-list')}>
+                              <i class="fa-solid fa-dollar-sign" style={{ boxShadow: 'rgba(0, 0, 0, 0.15) 0px 3px 5px' }}></i>
                             </div>
                           </div>
                         </div>
@@ -1089,8 +1089,8 @@ const Dashboard = () => {
                                 , {new Date().getFullYear()}
                               </p>
                             </div>
-                            <div className="col-2">
-                              <i className="fa-duotone fa-phone-xmark"></i>
+                            <div className="col-2" onClick={() => navigate('/card-details')}>
+                              <i className="fa-duotone fa-phone-xmark" style={{ boxShadow: 'rgba(0, 0, 0, 0.15) 0px 3px 5px' }}></i>
                             </div>
                           </div>
                         </div>
@@ -1123,8 +1123,8 @@ const Dashboard = () => {
                                   <h5>Invoices</h5>
                                   <p>Last 5 invoices</p>
                                 </div>
-                                <div className="col-2">
-                                  <i class="fa-solid fa-file-invoice"></i>
+                                <div className="col-2" onClick={() => navigate('/card-transaction-list')}>
+                                  <i class="fa-solid fa-file-invoice" style={{ boxShadow: 'rgba(0, 0, 0, 0.15) 0px 3px 5px' }}></i>
                                 </div>
                               </div>
                             </div>
@@ -1161,8 +1161,8 @@ const Dashboard = () => {
                                   <h5>Billing Address</h5>
                                   <p>Click the icon to change it</p>
                                 </div>
-                                <div className="col-2">
-                                  <i class="fa-solid fa-wallet"></i>
+                                <div className="col-2" onClick={() => navigate('/card-details')}>
+                                  <i class="fa-solid fa-wallet" style={{ boxShadow: 'rgba(0, 0, 0, 0.15) 0px 3px 5px' }}></i>
                                 </div>
                               </div>
                             </div>
@@ -1205,8 +1205,8 @@ const Dashboard = () => {
                                   <h5>Dummy Data</h5>
                                   <p>19 October, 2024</p>
                                 </div>
-                                <div class="col-2">
-                                  <i class="fa-solid fa-gauge-simple-high"></i>
+                                <div class="col-2" onClick={() => navigate('/card-details')}>
+                                  <i class="fa-solid fa-gauge-simple-high" style={{ boxShadow: 'rgba(0, 0, 0, 0.15) 0px 3px 5px' }}></i>
                                 </div>
                               </div>
                             </div>
