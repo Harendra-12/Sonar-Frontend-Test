@@ -365,7 +365,7 @@ const Dashboard = () => {
             <div className="col-12 mt-3 tangoNavs">
               <nav>
                 <div className="nav nav-tabs" id="nav-tab" role="tablist">
-                  <button
+                  {/* <button
                     className="nav-link active"
                     id="nav-sys-tab"
                     data-bs-toggle="tab"
@@ -376,9 +376,9 @@ const Dashboard = () => {
                     aria-selected="true"
                   >
                     System
-                  </button>
+                  </button> */}
                   <button
-                    className="nav-link "
+                    className="nav-link active"
                     id="nav-home-tab"
                     data-bs-toggle="tab"
                     data-bs-target="#nav-calls"
@@ -416,7 +416,7 @@ const Dashboard = () => {
                 </div>
               </nav>
               <div className="tab-content mt-3" id="nav-tabContent">
-                <div className="tab-pane fade show active" id="nav-sys" role="tabpanel"
+                {/* <div className="tab-pane fade show active" id="nav-sys" role="tabpanel"
                   aria-labelledby="nav-sys-tab" tabIndex="0">
                   <div className="row">
                     <div className="col-xl-12">
@@ -656,9 +656,9 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <div
-                  className="tab-pane fade"
+                  className="tab-pane fade show active"
                   id="nav-calls"
                   role="tabpanel"
                   aria-labelledby="nav-home-tab"
@@ -1211,24 +1211,16 @@ const Dashboard = () => {
                               </div>
                             </div>
                             <div class="d-flex flex-wrap justify-content-between align-items-center">
-                              <div className="col-9">
-                                <GraphChart
-                                  chartType="multiple"
-                                  labels={["Field 1", "Field 2"]}
-                                  fields={["0s", "10s", "20s", "30s", "40s", "50s", "60s"]}
-                                  percentage={[
-                                    [10, 12, 14, 16, 24, 14, 16],  // CPU Usage
-                                    [8, 15, 20, 18, 25, 10, 12]    // Memory Usage
-                                  ]}
-                                  colors={["#f18f01", "#36A2EB"]}
-                                />
-                              </div>
-                              <div className="col-3 text-end">
-                                <p className="mb-2  text-secondary">Field 1</p>
-                                <h3 className="mb-3  text-secondary">14.89%</h3>
-                                <p className="mb-2  text-secondary">Field 2</p>
-                                <h3 className="mb-0 text-secondary">28.51%</h3>
-                              </div>
+                              <GraphChart
+                                chartType="multiple"
+                                labels={["Field 1", "Field 2"]}
+                                fields={["0s", "10s", "20s", "30s", "40s", "50s", "60s"]}
+                                percentage={[
+                                  [10, 12, 14, 16, 24, 14, 16],  // CPU Usage
+                                  [8, 15, 20, 18, 25, 10, 12]    // Memory Usage
+                                ]}
+                                colors={["#f18f01", "#36A2EB"]}
+                              />
                             </div>
                           </div>
                         </div>
