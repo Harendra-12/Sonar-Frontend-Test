@@ -20,6 +20,7 @@ function Call({
   isCustomerAdmin,
   isMicOn,
   isVideoOn,
+  activePage,
 }) {
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
@@ -600,6 +601,16 @@ function Call({
                 style={{ height: "100vh" }}
                 id="callDetails"
               >
+                {/* <div className="hide" style={{ display: "none" }}>
+                  {sessions.find((item)=>item.mode==="video")?<VideoCall
+                      key={callProgressId}
+                      id={callProgressId}
+                      destination={callProgressDestination}
+                      setHangupRefresh={setHangupRefresh}
+                      hangupRefresh={hangupRefresh}
+                      setSelectedModule={setSelectedModule}
+                      activePage={activePage}
+                      />:""} </div> */}
                 {selectedModule == "onGoingCall"
                   ? (callProgress ? (
                       <OngoingCall
@@ -618,6 +629,7 @@ function Call({
                       setHangupRefresh={setHangupRefresh}
                       hangupRefresh={hangupRefresh}
                       setSelectedModule={setSelectedModule}
+                      activePage={activePage}
                       />
                     ))
                   : clickedCall && (

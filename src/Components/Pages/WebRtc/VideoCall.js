@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { useDispatch,useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useSessionCall } from 'react-sipjs';
 import { toast } from "react-toastify";
 import {
@@ -35,22 +35,22 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
             if (type === "hold") {
                 hold();
                 dispatch({
-                  type: "SET_SESSIONS",
-                  sessions: globalSession.map((item) =>
-                    item.id === session.id ? { ...item, state: "OnHold" } : item
-                  ),
+                    type: "SET_SESSIONS",
+                    sessions: globalSession.map((item) =>
+                        item.id === session.id ? { ...item, state: "OnHold" } : item
+                    ),
                 });
             } else if (type === "unhold") {
                 unhold();
                 dispatch({
-                  type: "SET_SESSIONS",
-                  sessions: globalSession.map((item) =>
-                    item.id === session.id ? { ...item, state: "Established" } : item
-                  ),
+                    type: "SET_SESSIONS",
+                    sessions: globalSession.map((item) =>
+                        item.id === session.id ? { ...item, state: "Established" } : item
+                    ),
                 });
             }
         } else {
-              toast.warn("Call has not been established");
+            toast.warn("Call has not been established");
         }
     };
 
@@ -67,35 +67,16 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
         }
     };
 
-    const applyBandwidthLimits = () => {
-        const pc = session.sessionDescriptionHandler.peerConnection;
-        if (MaxVideoBandwidth > -1) {
-            pc.getSenders().forEach((sender) => {
-                if (sender.track && sender.track.kind === "video") {
-                    const parameters = sender.getParameters();
-                    if (!parameters.encodings) parameters.encodings = [{}];
-                    parameters.encodings[0].maxBitrate = MaxVideoBandwidth * 1000;
-
-                    console.log("Applying limit for Bandwidth to:", MaxVideoBandwidth + " kbps");
-
-                    sender.setParameters(parameters).catch((e) => {
-                        console.warn("Cannot apply Bandwidth Limits", e);
-                    });
-                }
-            });
-        }
-    };
-
     useEffect(() => {
+        let isMounted = true; // Track whether the component is mounted
+
         if (session) {
             getLocalStream().then((localStream) => {
                 if (localStream) {
-                    // Add audio and video tracks to the peer connection
                     localStream.getTracks().forEach((track) => {
                         session.sessionDescriptionHandler.peerConnection.addTrack(track, localStream);
                     });
 
-                    // Preview local stream
                     if (includeVideo) {
                         const localVideoStream = new MediaStream();
                         const pc = session.sessionDescriptionHandler.peerConnection;
@@ -113,39 +94,34 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
                             };
                         }
                     }
-
-                    // Apply Bandwidth Limits
-                    applyBandwidthLimits();
                 }
             });
 
-            // Handle remote tracks when they're added (for incoming calls)
             session.sessionDescriptionHandler.peerConnection.ontrack = (event) => {
-                console.log("Remote track received:", event.track);
+                if (!isMounted) return; // Check if the component is still mounted
 
                 const remoteStream = remoteVideoRef.current.srcObject || new MediaStream();
-                remoteStream.addTrack(event.track); // Add the received track to the remote stream
+                remoteStream.addTrack(event.track);
 
                 if (event.track.kind === 'video') {
                     remoteVideoRef.current.srcObject = remoteStream;
                     remoteVideoRef.current.onloadedmetadata = () => {
                         remoteVideoRef.current.play();
-                        console.log("Remote video stream set.");
                     };
                 } else if (event.track.kind === 'audio') {
                     const audioElement = new Audio();
-                    audioElement.srcObject = remoteStream; // Set the stream containing the audio
+                    audioElement.srcObject = remoteStream;
                     audioElement.play().catch((error) => {
                         console.error("Error playing audio:", error);
                     });
                 }
             };
 
-            // Log the SDP for debugging
             const remoteDescription = session.sessionDescriptionHandler.peerConnection.currentRemoteDescription;
             console.log("Remote SDP:", remoteDescription);
 
             return () => {
+                isMounted = false; // Mark component as unmounted
                 if (localVideoRef.current) {
                     localVideoRef.current.srcObject = null;
                 }
@@ -155,6 +131,7 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
             };
         }
     }, [session]);
+
 
     const toggleVideo = () => {
         const localStream = localVideoRef.current.srcObject;
@@ -195,12 +172,12 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
                 >
                     <i className="fa-thin fa-microphone-slash" />
                 </button> */}
-                 <button onClick={toggleAudio} className="appPanelButtonCaller">
+                <button onClick={toggleAudio} className="appPanelButtonCaller">
                     {!isAudioMuted ? (
-                          <i className="fa-thin fa-microphone-slash" />
+                        <i className="fa-thin fa-microphone-slash" />
                     ) : (
                         <i className="fa-thin fa-microphone" />
-                       
+
                     )}
                 </button>
                 <button onClick={toggleVideo} className="appPanelButtonCaller">

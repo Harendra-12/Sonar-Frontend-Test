@@ -17,6 +17,7 @@ import VideoCall from "./VideoCall";
 
 const WebrtcWrapper = () => {
   const sessions = useSelector((state) => state.sessions);
+  const videoCall = useSelector((state) => state.videoCall);
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
   const [hangupRefresh, setHangupRefresh] = useState(0);
@@ -117,7 +118,13 @@ const WebrtcWrapper = () => {
     checkMicrophoneStatus(); // Check mic status when component mounts
     checkVideoStatus();
   }, []);
-
+useEffect(() => {
+  if(selectedModule!=="onGoingCall" && sessions.find((session) => session.mode === "video")){
+    console.log("aaaaa small video",sessions.find((session) => session.mode === "video"),videoCall,selectedModule);
+  }else{
+    console.log("aaaaa full video",sessions.find((session) => session.mode === "video"),videoCall,selectedModule);
+  }
+},[videoCall,selectedModule,sessions])
   return (
     <>
       <SIPProvider options={options}>
@@ -137,6 +144,7 @@ const WebrtcWrapper = () => {
             isCustomerAdmin={isCustomerAdmin}
             isMicOn={isMicOn}
             isVideoOn={isVideoOn}
+            activePage={activePage}
           />
         )}
         {activePage == "all-contacts" && <AllContact />}
@@ -148,7 +156,7 @@ const WebrtcWrapper = () => {
         {activePage == "call-dashboard" && <CallDashboard />}
         {activePage == "e-fax" && <EFax />}
         {activePage == "messages" && <Messages />}
-        {activePage == "videocall" && <VideoCall />}
+        {/* {activePage == "videocall" && <VideoCall />} */}
 
         <IncomingCalls
           setSelectedModule={setSelectedModule}
@@ -188,6 +196,11 @@ const WebrtcWrapper = () => {
         ) : (
           ""
         )}
+        {/* {(activePage==="call") ?videoCall && sessions.find((session) => session.mode === "video")?<div
+                className="col-12 callDetails col-xl-6"
+                style={{ height: "100vh" }}
+                id="callDetails"
+              >  <VideoCall setHangupRefresh={setHangupRefresh} hangupRefresh={hangupRefresh} setSelectedModule={setSelectedModule} activePage={activePage} /> </div>:"":sessions.find((session) => session.mode === "video") ? <VideoCall setHangupRefresh={setHangupRefresh} hangupRefresh={hangupRefresh} setSelectedModule={setSelectedModule} activePage={activePage} />:""} */}
       </SIPProvider>
     </>
   );

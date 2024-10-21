@@ -83,7 +83,7 @@ function ActiveCallSidePanel({
       //Hold previous call
       if (prevSession && session._state == "Established" && prevSession.mode!== "video") {
         hold(prevSession.id);
-        console.log("hold hit")
+        console.log("hold hit",prevSession)
         dispatch({
           type: "SET_SESSIONS",
           sessions: globalSession.map((item) =>
