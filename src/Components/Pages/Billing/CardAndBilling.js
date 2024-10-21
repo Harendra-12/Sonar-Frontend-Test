@@ -451,11 +451,7 @@ function CardAndBilling() {
                             <div class="d-flex flex-wrap justify-content-between align-items-center">
                               <div class="col-10">
                                 <h5>Wallet Balance</h5>
-                                {/* <p>
-                                  {selectedCard?.[0]?.name
-                                    ? `Card Holder: ${selectedCard?.[0]?.name}`
-                                    : "No Card Added"}
-                                </p> */}
+                                <p>Created On: {accountDetails?.balance?.created_at.split("T")[0]},{" "}{accountDetails?.balance?.created_at.split("T")[1].split(".")[0]}</p>
                               </div>
                               <div
                                 class="col-2"
@@ -492,12 +488,13 @@ function CardAndBilling() {
                                     : "00"}
                                 </sub>
                               </h5>
-                              {/* <p>
+                              <p>Min Balance: ${accountDetails?.balance?.min_amount}</p>
+                              <p>
                                 {selectedCard?.[0]?.card_number
                                   ? `Active Card:{" "}**** **** ****{" "}
                                 ${selectedCard?.[0]?.card_number.slice(-4)}`
                                   : "Please add a card before recharge!"}
-                              </p> */}
+                              </p>
                             </div>
                             <div class="col-2">
                               {/* <div
