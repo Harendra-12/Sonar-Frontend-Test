@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 import { toast } from "react-toastify";
 import { useSIPProvider } from "react-sipjs";
+import VideoCall from "./VideoCall";
 
 function Call({
   setHangupRefresh,
@@ -18,6 +19,7 @@ function Call({
   setSelectedModule,
   isCustomerAdmin,
   isMicOn,
+  isVideoOn,
 }) {
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
@@ -26,6 +28,7 @@ function Call({
   const [dialpadShow, setDialpadShow] = useState(false);
   const [clickStatus, setClickStatus] = useState("all");
   const callProgress = useSelector((state) => state.callProgress);
+  const videoCall = useSelector((state) => state.videoCall);
   const callProgressId = useSelector((state) => state.callProgressId);
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
@@ -37,6 +40,7 @@ function Call({
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [allApiData, setAllApiData] = useState([]);
+  const [mode, setMode] = useState("audio");
   const [callHistory, setCallHistory] = useState([]);
   const { sessionManager, connectStatus } = useSIPProvider();
   const callProgressDestination = useSelector(
@@ -187,11 +191,12 @@ function Call({
   };
 
   const handleDoubleClickCall = (item) => {
+    setMode("audio");
     if (connectStatus !== "CONNECTED") {
       toast.error("You are not connected with server");
       return;
     }
-    onCall(item);
+    onCall(item,mode);
   };
 
   const renderCallItem = (item) => (
@@ -325,12 +330,18 @@ function Call({
     {}
   );
 
-  async function onCall(callDetails) {
+  async function onCall(callDetails,mode) {
     // e.preventDefault();
 
     if (!isMicOn) {
       toast.warn("Please turn on microphone");
       return;
+    }
+    if(mode === "video"){
+      if (!isVideoOn) {
+        toast.warn("Please turn on video");
+        return;
+      }
     }
     // setCallNow(false);
     if (extension == "") {
@@ -348,7 +359,27 @@ function Call({
     }
     const apiData = await sessionManager?.call(
       `sip:${otherPartyExtension}@192.168.2.225`,
-      {}
+      {
+        sessionDescriptionHandlerOptions: {
+          constraints: {
+            audio: true,
+            video:mode === "video"? true : false
+          }
+        }
+      },
+      {
+        media: {
+          audio: true,
+          video: mode === "audio" ? true :{
+            mandatory: {
+              minWidth: 1280,
+              minHeight: 720,
+              minFrameRate: 30,
+            },
+            optional: [{ facingMode: "user" }],
+          },
+        },
+      }
     );
     setSelectedModule("onGoingCall");
 
@@ -360,9 +391,14 @@ function Call({
           id: apiData._id,
           destination: Number(otherPartyExtension),
           state: "Established",
+          mode:mode,
         },
       ],
     });
+    dispatch({
+      type:"SET_VIDEOCALL",
+      videoCall:mode==="video"?true:false
+    })
     dispatch({
       type: "SET_CALLPROGRESSID",
       callProgressId: apiData._id,
@@ -373,9 +409,12 @@ function Call({
     });
     dispatch({
       type: "SET_CALLPROGRESS",
-      callProgress: true,
+      callProgress: mode === "video" ? false : true
     });
   }
+
+  console.log("call status",callProgress,videoCall);
+  
   return (
     <div className="browserPhoneWrapper">
       {/* <SideNavbarApp /> */}
@@ -560,28 +599,37 @@ function Call({
                 id="callDetails"
               >
                 {selectedModule == "onGoingCall"
-                  ? callProgress && (
-                    <OngoingCall
+                  ? (callProgress ? (
+                      <OngoingCall
+                        key={callProgressId}
+                        id={callProgressId}
+                        destination={callProgressDestination}
+                        setHangupRefresh={setHangupRefresh}
+                        hangupRefresh={hangupRefresh}
+                        setSelectedModule={setSelectedModule}
+                      />
+                    ):videoCall && (
+                      <VideoCall
                       key={callProgressId}
                       id={callProgressId}
                       destination={callProgressDestination}
                       setHangupRefresh={setHangupRefresh}
                       hangupRefresh={hangupRefresh}
                       setSelectedModule={setSelectedModule}
-                    />
-                  )
+                      />
+                    ))
                   : clickedCall && (
-                    <CallDetails
-                      clickedCall={clickedCall}
-                      callHistory={callHistory}
-                      isCustomerAdmin={isCustomerAdmin}
-                      // setCallNow={setCallNow}
-                      // callNow={callNow}
-                      setSelectedModule={setSelectedModule}
-                      isMicOn={isMicOn}
-                      onCall={onCall}
-                    />
-                  )}
+                      <CallDetails
+                        clickedCall={clickedCall}
+                        callHistory={callHistory}
+                        isCustomerAdmin={isCustomerAdmin}
+                        setSelectedModule={setSelectedModule}
+                        isMicOn={isMicOn}
+                        isVideoOn={isVideoOn}
+                        onCall={onCall}
+                      />
+                    )
+                  }
               </div>
             </div>
           </div>
@@ -622,6 +670,7 @@ function Call({
           hideDialpad={handleHideDialpad}
           setSelectedModule={setSelectedModule}
           isMicOn={isMicOn}
+          isVideoOn={isVideoOn}
         />
       ) : (
         ""

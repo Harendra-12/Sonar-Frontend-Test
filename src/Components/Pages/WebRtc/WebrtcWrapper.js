@@ -13,6 +13,7 @@ import IncomingCalls from "./IncomingCalls";
 import { SipRegister } from "./SipRegister";
 import SideNavbarApp from "./SideNavbarApp";
 import Messages from "./Messages";
+import VideoCall from "./VideoCall";
 
 const WebrtcWrapper = () => {
   const sessions = useSelector((state) => state.sessions);
@@ -24,6 +25,7 @@ const WebrtcWrapper = () => {
   const isCustomerAdmin = account?.email == accountDetails?.email;
   const extension = account?.extension?.extension || "";
   const [isMicOn, setIsMicOn] = useState(false); // State to track mic status
+  const [isVideoOn, setIsVideoOn] = useState(false); // State to track video status
   const [reconnecting, setReconnecting] = useState(0);
   const useWebSocketErrorHandling = (options) => {
     const retryCountRef = useRef(0);
@@ -97,8 +99,23 @@ const WebrtcWrapper = () => {
       });
   };
 
+  const checkVideoStatus = () => {
+    navigator.mediaDevices
+      .getUserMedia({ video: true })
+      .then((stream) => {
+        // Microphone access granted
+        setIsVideoOn(true);
+        // Stop the stream after the check
+      })
+      .catch((err) => {
+        // Microphone access denied or error occurred
+        console.error("Microphone access denied or error:", err);
+        setIsVideoOn(false);
+      });
+  };
   useEffect(() => {
     checkMicrophoneStatus(); // Check mic status when component mounts
+    checkVideoStatus();
   }, []);
 
   return (
@@ -107,6 +124,7 @@ const WebrtcWrapper = () => {
         <SideNavbarApp
           setactivePage={setactivePage}
           isMicOn={isMicOn}
+          isVideoOn={isVideoOn}
           reconnecting={reconnecting}
         />
         <div>{extension && <SipRegister options={options} />}</div>
@@ -118,6 +136,7 @@ const WebrtcWrapper = () => {
             setSelectedModule={setSelectedModule}
             isCustomerAdmin={isCustomerAdmin}
             isMicOn={isMicOn}
+            isVideoOn={isVideoOn}
           />
         )}
         {activePage == "all-contacts" && <AllContact />}
@@ -129,11 +148,13 @@ const WebrtcWrapper = () => {
         {activePage == "call-dashboard" && <CallDashboard />}
         {activePage == "e-fax" && <EFax />}
         {activePage == "messages" && <Messages />}
+        {activePage == "videocall" && <VideoCall />}
 
         <IncomingCalls
           setSelectedModule={setSelectedModule}
           setactivePage={setactivePage}
           isMicOn={isMicOn}
+          isVideoOn={isVideoOn}
         />
 
         {sessions.length > 0 && Object.keys(sessions).length > 0 ? (
@@ -151,6 +172,7 @@ const WebrtcWrapper = () => {
                     sessions.map((session, chennel) => (
                       <ActiveCallSidePanel
                         key={chennel}
+                        mode={session.mode}
                         sessionId={session.id}
                         destination={session.destination}
                         chennel={chennel}
