@@ -97,7 +97,7 @@
     position: relative;
 }
 
-.callerContent .user .primaryUserWindow {
+.callerContent .user .primaryUserWindow, .caller .primaryUserWindow {
     width: 160px;
     height: 200px;
     position: absolute;
@@ -145,12 +145,14 @@
     backdrop-filter: blur(5px);
 }
 
-
-
-
-
-
-
+.caller .userProfileContainer{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
 
 
 

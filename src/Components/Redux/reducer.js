@@ -25,6 +25,7 @@ var allUser = [];
 var allUserRefresh = 0;
 var microPhonePermission = false;
 var callProgress = false;
+var videoCall = false;
 var sessions = [];
 var callProgressId = "";
 var callProgressDestination = "";
@@ -77,6 +78,7 @@ const initialState = {
   allUser,
   allUserRefresh,
   callProgress,
+  videoCall,
   sessions,
   callProgressId,
   callProgressDestination,
@@ -164,6 +166,8 @@ const counterReducer = (state = initialState, action) => {
         ...state,
         callProgressDestination: action.callProgressDestination,
       };
+    case "SET_VIDEOCALL":
+      return { ...state, videoCall: action.videoCall };
     case "SET_ADDCONTACTREFRESH":
       return { ...state, addContactRefresh: action.addContactRefresh };
     case "SET_ROLES":
