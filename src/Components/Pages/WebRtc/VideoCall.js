@@ -152,7 +152,7 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
     };
 
     return (
-        <main className="mainContentA">
+        <main className="mainContentA videoCall">
             <div className='caller'>
                 <div className='container-fluid'>
                     <video ref={remoteVideoRef} autoPlay className="userProfileContainer" />

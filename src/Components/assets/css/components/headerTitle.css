@@ -147,9 +147,14 @@
 
 #detailsHeader .headerBgWave {
     width: 100%;
-    height: 220px;
+    height: 270px;
     position: absolute;
     top: 0;
     left: 0;
     z-index: -1;
+    background-color: var(--color2);
+}
+
+#detailsHeader .headerBgWave svg {
+    display: none;
 }

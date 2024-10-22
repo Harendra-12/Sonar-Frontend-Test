@@ -6,8 +6,15 @@
     background-color: var(--caller-color);
     padding: 50px;
     margin: 10px 0;
-    border-radius: 20px;
+    /* border-radius: 20px; */
     position: relative;
+}
+
+.videoCall .caller {
+    position: absolute;
+    top: 0;
+    left: var(--sideNavApp-width);
+    width: calc(100% - var(--sideNavApp-width));
 }
 
 .caller .header h5 {
