@@ -193,7 +193,9 @@ const Users = () => {
                     }}
                   >
                     <span className="text">Back</span>
-                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                    <span className="icon">
+                      <i class="fa-solid fa-caret-left"></i>
+                    </span>
                   </button>
                   <Link
                     // to="/users-add"
@@ -203,7 +205,9 @@ const Users = () => {
                     className="panelButton"
                   >
                     <span className="text">Add</span>
-                    <span className="icon"><i class="fa-solid fa-plus"></i></span>
+                    <span className="icon">
+                      <i class="fa-solid fa-plus"></i>
+                    </span>
                   </Link>
                   {/* <div className="my-auto position-relative mx-3">
                     <label className="switch">
@@ -293,20 +297,24 @@ const Users = () => {
                                   True
                                 </td>
                                 <td>
-                                  <button className="tableButton edit" onClick={() =>
-                                    navigate(`/users-edit`, {
-                                      state: item,
-                                    })
-                                  }>
+                                  <button
+                                    className="tableButton edit"
+                                    onClick={() =>
+                                      navigate(`/users-edit`, {
+                                        state: item,
+                                      })
+                                    }
+                                  >
                                     <i class="fa-solid fa-pencil"></i>
                                   </button>
                                 </td>
                                 <td
-                                  onClick={() =>
-                                    handleStatusChange(item.id, item.status)
-                                  }
+                                // onClick={() =>
+                                //   handleStatusChange(item.id, item.status)
+                                // }
                                 >
                                   <label
+                                    style={{ cursor: "default" }}
                                     className={
                                       item.status === "E"
                                         ? "tableLabel success"

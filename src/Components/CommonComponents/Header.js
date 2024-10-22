@@ -78,7 +78,7 @@ function Header(props) {
                   className="clearColorButton"
                 >
                   <i className="fa-regular fa-wallet" />{" "}
-                  <span className="d-none d-xl-inline-block">${balance}</span>
+                  <span className="d-none d-xl-inline-block">${balance.balance}</span>
                 </div>
               </Tippy>
             </div>

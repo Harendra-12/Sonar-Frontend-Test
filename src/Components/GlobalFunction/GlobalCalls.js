@@ -56,7 +56,8 @@ function GlobalCalls() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(
-        `/card/all?account_id=${account?.account_id}`
+        // `/card/all?account_id=${account?.account_id}`
+        `/card/all`
       );
       if (apiData?.status) {
         dispatch({
@@ -76,7 +77,8 @@ function GlobalCalls() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(
-        `/billing-address/all?account_id=${account?.account_id}`
+        // `/billing-address/all?account_id=${account?.account_id}`
+        `/billing-address/all`
       );
       if (apiData?.status) {
         dispatch({
@@ -257,7 +259,7 @@ function GlobalCalls() {
 
         dispatch({
           type: "SET_BALANCE",
-          balance: apiData.data,
+          balance: apiData,
         });
       }
     }
