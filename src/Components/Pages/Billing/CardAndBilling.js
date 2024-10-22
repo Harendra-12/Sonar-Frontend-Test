@@ -428,12 +428,12 @@ function CardAndBilling() {
                                 </sub>
                               </h5>
                               <p>
-                                Basic Package /{" "}
-                                {accountDetails.package?.subscription_type ===
-                                  "annually"
-                                  ? "Yearly Basis"
-                                  : "Monthly Basis"}
+                                Package Name: {accountDetails.package?.name}
                               </p>
+                              <p>Type: {accountDetails.package?.subscription_type ===
+                                "annually"
+                                ? "Yearly Basis"
+                                : "Monthly Basis"}</p>
                             </div>
                             <div class="col-2">
                               {/* <img
@@ -490,10 +490,7 @@ function CardAndBilling() {
                               </h5>
                               <p>Min Balance: ${accountDetails?.balance?.min_amount}</p>
                               <p>
-                                {selectedCard?.[0]?.card_number
-                                  ? `Active Card:{" "}**** **** ****{" "}
-                                ${selectedCard?.[0]?.card_number.slice(-4)}`
-                                  : "Please add a card before recharge!"}
+                                {!selectedCard?.[0]?.card_number ? <span className="text-danger">Please add a card before recharge!</span> : <span className="text-success">Active Card: *** *** *** {selectedCard?.[0]?.card_number.slice(-4)}</span>}
                               </p>
                             </div>
                             <div class="col-2">

@@ -354,10 +354,6 @@ const Dashboard = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log(accountDetails);
-  }, [])
-
   const downloadImage = async (imageUrl, fileName) => {
     try {
       const response = await fetch(imageUrl);
@@ -430,18 +426,6 @@ const Dashboard = () => {
                   >
                     Calls
                   </button>
-                  {/* <button
-                    className="nav-link"
-                    id="nav-profile-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#nav-messages"
-                    type="button"
-                    role="tab"
-                    aria-controls="nav-messages"
-                    aria-selected="false"
-                  >
-                    Messages
-                  </button> */}
                   <button
                     className="nav-link"
                     id="nav-contact-tab"
@@ -783,11 +767,11 @@ const Dashboard = () => {
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
-                              <h5>Package Type</h5>
+                              <h5>Package Information</h5>
                               <p>Click to view details</p>
                             </div>
-                            <div className="col-2">
-                              <i className="fa-duotone fa-cube" ></i>
+                            <div className="col-2" onClick={() => navigate('/card-details')}>
+                              <i className="fa-duotone fa-file" ></i>
                             </div>
                           </div>
                         </div>
@@ -795,12 +779,9 @@ const Dashboard = () => {
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
-                              <h5>{accountDetails?.package.name}</h5>
-                              <p>Price: ${accountDetails?.package?.regular_price}</p>
-                              <p>Type: {accountDetails?.package?.subscription_type ===
-                                "annually"
-                                ? "Yearly Basis"
-                                : "Monthly Basis"}</p>
+                              <h5>{accountDetails?.package?.name}</h5>
+                              <p>{accountDetails?.package?.regular_price} / Year</p>
+                              <p>{accountDetails?.extensions?.length} Purchased Extensions / {accountDetails?.dids?.length} DIDs</p>
                             </div>
                             <div className="col-2">
                               <img
@@ -1201,11 +1182,11 @@ const Dashboard = () => {
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
-                              <h5>Package Information</h5>
+                              <h5>Package Type</h5>
                               <p>Click to view details</p>
                             </div>
-                            <div className="col-2" onClick={() => navigate('/card-details')}>
-                              <i className="fa-duotone fa-file" ></i>
+                            <div className="col-2">
+                              <i className="fa-duotone fa-cube" ></i>
                             </div>
                           </div>
                         </div>
@@ -1213,9 +1194,9 @@ const Dashboard = () => {
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
-                              <h5>{accountDetails?.package?.name}</h5>
-                              <p>{accountDetails?.package?.regular_price} / Year</p>
-                              <p>{accountDetails?.extensions?.length} Purchased Extensions / {accountDetails?.dids?.length} DIDs</p>
+                              <h5>{accountDetails?.package.name}</h5>
+                              <p>Price: ${accountDetails?.package?.regular_price} / {accountDetails?.package?.subscription_type === "annually" ? "Anually" : "Monthly"}</p>
+                              <p>Started On: {accountDetails?.subscription?.[0]?.created_at.split("T")[0]}</p>
                             </div>
                             <div className="col-2">
                               <img
@@ -1353,23 +1334,6 @@ const Dashboard = () => {
                                         </li>
                                       ))}
                                   </ul>
-                                  {/* <ul>
-                                    <li>2024-10-16 11:02:05
-                                      <span className="float-end fw-bold"><i class="fa-solid fa-download text-warning"></i> $123.00 </span>
-                                    </li>
-                                    <li>2024-10-16 11:02:05
-                                      <span className="float-end fw-bold"><i class="fa-solid fa-download text-warning"></i> $123.00 </span>
-                                    </li>
-                                    <li>2024-10-16 11:02:05
-                                      <span className="float-end fw-bold"><i class="fa-solid fa-download text-warning"></i> $123.00 </span>
-                                    </li>
-                                    <li>2024-10-16 11:02:05
-                                      <span className="float-end fw-bold"><i class="fa-solid fa-download text-warning"></i> $123.00 </span>
-                                    </li>
-                                    <li>2024-10-16 11:02:05
-                                      <span className="float-end fw-bold"><i class="fa-solid fa-download text-warning"></i> $123.00 </span>
-                                    </li>
-                                  </ul> */}
                                 </div>
                               </div>
                             </div>
