@@ -100,6 +100,9 @@ import IvrListing from "./Components/Pages/IVR/IvrListing";
 import IvrEdit from "./Components/Pages/IVR/IvrEdit";
 import IvrOptions from "./Components/Pages/IVR/IvrOptions";
 import VideoCall from "./Components/Pages/WebRtc/VideoCall";
+import DeviceProvisioningAdd from "./Components/Pages/DeviceProvisioning/DeviceProvisioningAdd";
+import DeviceProvisioning from "./Components/Pages/DeviceProvisioning/DeviceProvisioning";
+import DeviceProvisioningEdit from "./Components/Pages/DeviceProvisioning/DeviceProvisioningEdit";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -323,6 +326,18 @@ function App() {
           <Route path="/ivr-edit" element={<IvrEdit />} />
           <Route path="/ivr-options" element={<IvrOptions />} />
           {/* Ivr Page End */}
+
+          {/* Device Provisioning Start */}
+          <Route path="/device-provisioning" element={<DeviceProvisioning />} />
+          <Route
+            path="/device-provisioning-add"
+            element={<DeviceProvisioningAdd />}
+          />
+          <Route
+            path="/device-provisioning-edit"
+            element={<DeviceProvisioningEdit />}
+          />
+          {/* Device Profisioning End  */}
 
           {/* 404 Redirection */}
           <Route path="*" element={<Navigate to="/dashboard" />} />

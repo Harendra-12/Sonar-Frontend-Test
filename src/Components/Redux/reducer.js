@@ -50,6 +50,8 @@ var timeZone = [];
 var timeZoneRefresh = 0;
 var ivr = [];
 var ivrRefresh = 0;
+var deviceProvisioning = [];
+var deviceProvisioningRefresh = 0;
 
 const initialState = {
   account,
@@ -103,6 +105,8 @@ const initialState = {
   timeZoneRefresh,
   ivr,
   ivrRefresh,
+  deviceProvisioning,
+  deviceProvisioningRefresh,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -214,6 +218,13 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, ivr: action.ivr };
     case "SET_IVRREFRESH":
       return { ...state, ivrRefresh: action.ivrRefresh };
+    case "SET_DEVICE_PROVISIONING":
+      return { ...state, deviceProvisioning: action.deviceProvisioning };
+    case "SET_DEVICE_PROVISIONINGREFRESH":
+      return {
+        ...state,
+        deviceProvisioningRefresh: action.deviceProvisioningRefresh,
+      };
     default:
       return state;
   }
