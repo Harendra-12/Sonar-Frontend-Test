@@ -60,7 +60,7 @@ function Roles() {
   useEffect(() => {
     setRole(roles);
     setDefaultPermission(permissions);
-  }, [roles, permissions]);
+  }, [roles, permissions, rolesAndPermissionRefresh]);
 
   // Handle Role pop up confirm click
   async function handleSubmit() {
@@ -162,6 +162,10 @@ function Roles() {
     if (apiData?.status) {
       setLoading(false);
       toast.success(apiData.message);
+      dispatch({
+        type: "SET_ROLES_PERMISSIONREFRESH",
+        rolesAndPermissionRefresh: rolesAndPermissionRefresh + 1,
+      });
     } else {
       setLoading(false);
       // const errorMessage = Object.keys(apiData.errors);
