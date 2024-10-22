@@ -171,10 +171,10 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
         setSelectedModule("callDetails");
         hangup();
     }
-console.log("minimize",minimize)
+    console.log("minimize", minimize)
     return (
         <main className="mainContentA videoCall">
-            <div className={minimize ? "caller-small" : 'caller'}>
+            <div className={minimize ? "caller minimize" : 'caller'}>
                 <div className='container-fluid'>
                     {minimize ? <div onClick={handleMaximize}></div> : ""}
                     <video ref={remoteVideoRef} autoPlay className="userProfileContainer" />
