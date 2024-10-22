@@ -24,6 +24,9 @@ function GlobalCalls() {
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
   const ivrRefresh = useSelector((state) => state.ivrRefresh);
+  const deviceProvisioningRefresh = useSelector(
+    (state) => state.deviceProvisioningRefresh
+  );
 
   const rolesAndPermissionRefresh = useSelector(
     (state) => state.rolesAndPermissionRefresh
@@ -279,6 +282,22 @@ function GlobalCalls() {
       getData();
     }
   }, [ivrRefresh]);
+
+  // Getting device provisioning details
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction("/provision/all");
+      if (apiData?.status) {
+        dispatch({
+          type: "SET_DEVICE_PROVISIONING",
+          deviceProvisioning: apiData.data,
+        });
+      }
+    }
+    if (deviceProvisioningRefresh > 0) {
+      getData();
+    }
+  }, [deviceProvisioningRefresh]);
 
   // useEffect(() => {
   //   async function getData() {
