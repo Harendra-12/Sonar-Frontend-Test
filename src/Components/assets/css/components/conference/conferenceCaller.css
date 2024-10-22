@@ -163,11 +163,30 @@
 
 .videoCall .caller.minimize {
     position: fixed;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height:  1px;
+    border-radius: 10px;
+    background: transparent;
+}
+
+.videoCall .caller.minimize .userProfileContainer{
+    width: 200px;
+    height: 250px;
+    position: absolute;
     bottom: 0;
     right: 0;
-    width: 150px;
-    height: 200px;
-    border-radius: 10px;
+    z-index: 9;
+}
+
+.videoCall .caller.minimize .primaryUserWindow{
+    width: 100px;
+    height: 150px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 10;
 }
 
 .videoCall .caller.minimize .footer {

@@ -97,6 +97,10 @@ function ActiveCallSidePanel({
   }, [callProgressId]);
 
   if (session["_state"] === "Terminated") {
+    dispatch({
+      type:"SET_VIDEOCALL",
+      videoCall:false
+    })
     setHangupRefresh(hangupRefresh + 1);
     setSelectedModule("callDetails");
     if (callProgressId === session._id) {
@@ -104,10 +108,7 @@ function ActiveCallSidePanel({
         type: "SET_CALLPROGRESSID",
         callProgressId: "",
       });
-      dispatch({
-        type:"SET_VIDEOCALL",
-        videoCall:false
-      })
+     
       dispatch({
         type: "SET_CALLPROGRESSDESTINATION",
         callProgressDestination: "",

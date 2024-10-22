@@ -48,6 +48,10 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
     }
 
     if (destNumber.length > 3) {
+      dispatch({
+        type:"SET_MINIMIZE",
+        minimize:false
+      })
       hideDialpad(false);
       // e.preventDefault();
       const apiData = await sessionManager?.call(

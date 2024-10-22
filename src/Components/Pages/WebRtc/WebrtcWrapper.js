@@ -6,7 +6,7 @@ import AllVoicemails from "./AllVoicemails";
 import OngoingCall from "./OngoingCall";
 import CallDashboard from "./CallDashboard";
 import EFax from "./EFax";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import ActiveCallSidePanel from "./ActiveCallSidePanel";
 import { SIPProvider } from "react-sipjs";
 import IncomingCalls from "./IncomingCalls";
@@ -16,7 +16,9 @@ import Messages from "./Messages";
 import VideoCall from "./VideoCall";
 
 const WebrtcWrapper = () => {
+  const dispatch = useDispatch()
   const sessions = useSelector((state) => state.sessions);
+  const callProgressId = useSelector((state)=>state.callProgressId)
   const videoCall = useSelector((state) => state.videoCall);
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
@@ -125,6 +127,13 @@ useEffect(() => {
     console.log("aaaaa full video",sessions.find((session) => session.mode === "video"),videoCall,selectedModule);
   }
 },[videoCall,selectedModule,sessions])
+
+useEffect(()=>{
+  dispatch({
+    type:"SET_MINIMIZE",
+    minimize:true
+  })
+},[activePage])
   return (
     <>
       <SIPProvider options={options}>
@@ -196,11 +205,7 @@ useEffect(() => {
         ) : (
           ""
         )}
-        {/* {(activePage==="call") ?videoCall && sessions.find((session) => session.mode === "video")?<div
-                className="col-12 callDetails col-xl-6"
-                style={{ height: "100vh" }}
-                id="callDetails"
-              >  <VideoCall setHangupRefresh={setHangupRefresh} hangupRefresh={hangupRefresh} setSelectedModule={setSelectedModule} activePage={activePage} /> </div>:"":sessions.find((session) => session.mode === "video") ? <VideoCall setHangupRefresh={setHangupRefresh} hangupRefresh={hangupRefresh} setSelectedModule={setSelectedModule} activePage={activePage} />:""} */}
+        {callProgressId!=="" && videoCall && sessions.find((session) => session.mode === "video")? <VideoCall setHangupRefresh={setHangupRefresh} hangupRefresh={hangupRefresh} setSelectedModule={setSelectedModule} activePage={activePage} /> :""}
       </SIPProvider>
     </>
   );

@@ -99,6 +99,10 @@ function IncomingCallPopup({
     // if mode is video then set_session mode changed to video in extesting session
 
     if (mode === "video") {
+      dispatch({
+        type:"SET_MINIMIZE",
+        minimize:false
+      })
       const updatedSession = globalSession.find((session) => session.id === sessionId);
       if (updatedSession) {
         updatedSession.mode = "video";

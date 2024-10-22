@@ -415,6 +415,28 @@ function Call({
   }
 
   console.log("call status",callProgress,videoCall);
+
+  useEffect(()=>{
+    if(selectedModule==="onGoingCall"){
+      if(videoCall){
+        dispatch({
+          type:"SET_MINIMIZE",
+          minimize:false
+        })
+      }else{
+        dispatch({
+          type:"SET_MINIMIZE",
+          minimize:true
+        })
+      }
+    }else{
+      dispatch({
+        type:"SET_MINIMIZE",
+        minimize:true
+      })
+    }
+   
+  },[selectedModule,videoCall])
   
   return (
     <div className="browserPhoneWrapper">
@@ -553,17 +575,6 @@ function Call({
                         <i className="fa-light fa-user-plus" />
                       </button>
                     </div>
-                    {/* <div className="callList">
-                        <div className="text-center callListItem">
-                          <h5 className="fw-semibold">Today</h5>
-                          {previewCalls.length > 0 ? (
-                            previewCalls.map(renderCallItem)
-                          ) : (
-                            <h3>No {clickStatus} calls</h3>
-                          )}
-                        </div>
-                      </div> */}
-
                     <div
                       className="callList"
                       onClick={() => setSelectedModule("callDetails")}
@@ -599,18 +610,8 @@ function Call({
                 style={{ height: "100vh" }}
                 id="callDetails"
               >
-                {/* <div className="hide" style={{ display: "none" }}>
-                  {sessions.find((item)=>item.mode==="video")?<VideoCall
-                      key={callProgressId}
-                      id={callProgressId}
-                      destination={callProgressDestination}
-                      setHangupRefresh={setHangupRefresh}
-                      hangupRefresh={hangupRefresh}
-                      setSelectedModule={setSelectedModule}
-                      activePage={activePage}
-                      />:""} </div> */}
                 {selectedModule == "onGoingCall"
-                  ? (callProgress ? (
+                  ? callProgress && (
                       <OngoingCall
                         key={callProgressId}
                         id={callProgressId}
@@ -619,18 +620,7 @@ function Call({
                         hangupRefresh={hangupRefresh}
                         setSelectedModule={setSelectedModule}
                       />
-                    ):videoCall && (
-                      <VideoCall
-                      key={callProgressId}
-                      id={callProgressId}
-                      destination={callProgressDestination}
-                      setHangupRefresh={setHangupRefresh}
-                      hangupRefresh={hangupRefresh}
-                      setSelectedModule={setSelectedModule}
-                      activePage={activePage}
-                      />
-                    ))
-                  : clickedCall && (
+                    ): clickedCall && (
                       <CallDetails
                         clickedCall={clickedCall}
                         callHistory={callHistory}

@@ -14,6 +14,7 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
     const [isAudioMuted, setIsAudioMuted] = useState(true);
     const [isVideoMuted, setIsVideoMuted] = useState(true);
     const localVideoRef = useRef(null);
+    const minimize = useSelector((state) => state.minimize);
     const remoteVideoRef = useRef(null);
     const {
         isHeld,
@@ -151,69 +152,74 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
         setIsAudioMuted((prev) => !prev); // Update state
     };
 
+    function handleMaximize() {
+        dispatch({
+            type: "SET_MINIMIZE",
+            minimize: false
+        })
+    }
+
+    function handleHangup() {
+        const updatedSession = globalSession.filter(
+            (item) => item.id !== callProgressId
+        );
+        dispatch({
+            type: "SET_SESSIONS",
+            sessions: updatedSession,
+        });
+        setHangupRefresh(hangupRefresh + 1);
+        setSelectedModule("callDetails");
+        hangup();
+    }
+console.log("minimize",minimize)
     return (
         <main className="mainContentA videoCall">
-            <div className='caller'>
+            <div className={minimize ? "caller-small" : 'caller'}>
                 <div className='container-fluid'>
+                    {minimize ? <div onClick={handleMaximize}></div> : ""}
                     <video ref={remoteVideoRef} autoPlay className="userProfileContainer" />
                     <video ref={localVideoRef} autoPlay muted className="primaryUserWindow" />
-                    <div className="row footer">
-                        {/* <button
+                </div>
+            </div>
+            <div className="row footer">
+                <button onClick={toggleAudio} className="appPanelButtonCaller">
+                    {!isAudioMuted ? (
+                        <i className="fa-thin fa-microphone-slash" />
+                    ) : (
+                        <i className="fa-thin fa-microphone" />
+
+                    )}
+                </button>
+                <button onClick={toggleVideo} className="appPanelButtonCaller">
+                    {!isVideoMuted ? (
+                        <i className="fa-thin fa-video-slash" />
+                    ) : (
+                        <i className="fa-thin fa-video" />
+                    )}
+                </button>
+                <button className="appPanelButtonCaller" effect="ripple">
+                    <i className="fa-thin fa-user-plus" />
+                </button>
+
+                <button
                     onClick={
-                        isMuted ? () => muteCall("unmute") : () => muteCall("mute")
+                        isHeld ? () => holdCall("unhold") : () => holdCall("hold")
                     }
                     className={
-                        isMuted ? "appPanelButtonCaller active" : "appPanelButtonCaller"
+                        isHeld ? "appPanelButtonCaller active" : "appPanelButtonCaller"
                     }
                     effect="ripple"
                 >
-                    <i className="fa-thin fa-microphone-slash" />
-                </button> */}
-                        <button onClick={toggleAudio} className="appPanelButtonCaller">
-                            {!isAudioMuted ? (
-                                <i className="fa-thin fa-microphone-slash" />
-                            ) : (
-                                <i className="fa-thin fa-microphone" />
-
-                            )}
-                        </button>
-                        <button onClick={toggleVideo} className="appPanelButtonCaller">
-                            {!isVideoMuted ? (
-                                <i className="fa-thin fa-video-slash" />
-                            ) : (
-                                <i className="fa-thin fa-video" />
-                            )}
-                        </button>
-                        <button className="appPanelButtonCaller" effect="ripple">
-                            <i className="fa-thin fa-user-plus" />
-                        </button>
-
-                        <button
-                            onClick={
-                                isHeld ? () => holdCall("unhold") : () => holdCall("hold")
-                            }
-                            className={
-                                isHeld ? "appPanelButtonCaller active" : "appPanelButtonCaller"
-                            }
-                            effect="ripple"
-                        >
-                            <i className="fa-thin fa-pause" />
-                        </button>
-                        <button
-                            onClick={() => {
-                                hangup();
-                                setHangupRefresh(hangupRefresh + 1);
-                                setSelectedModule("callDetails");
-                            }}
-                            className="appPanelButtonCaller bg-danger"
-                            effect="ripple"
-                        >
-                            <i className="fa-thin fa-phone-hangup" />
-                        </button>
-                    </div>
-                </div>
+                    <i className="fa-thin fa-pause" />
+                </button>
+                <button
+                    onClick={handleHangup}
+                    className="appPanelButtonCaller bg-danger"
+                    effect="ripple"
+                >
+                    <i className="fa-thin fa-phone-hangup" />
+                </button>
             </div>
-
         </main>
     );
 }
