@@ -97,7 +97,8 @@
     position: relative;
 }
 
-.callerContent .user .primaryUserWindow, .caller .primaryUserWindow {
+.callerContent .user .primaryUserWindow,
+.caller .primaryUserWindow {
     width: 160px;
     height: 200px;
     position: absolute;
@@ -145,7 +146,7 @@
     backdrop-filter: blur(5px);
 }
 
-.caller .userProfileContainer{
+.caller .userProfileContainer {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -157,5 +158,18 @@
 
 
 .mobileConferenceCallerHack {
+    display: none;
+}
+
+.videoCall .caller.minimize {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 150px;
+    height: 200px;
+    border-radius: 10px;
+}
+
+.videoCall .caller.minimize .footer {
     display: none;
 }

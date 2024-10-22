@@ -17,6 +17,15 @@
     width: calc(100% - var(--sideNavApp-width));
     height: 100%;
     border-radius: 0;
+    z-index: 1;
+}
+
+.videoCall .caller .footer {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(0, -50%);
+    z-index: 9;
 }
 
 .caller .header h5 {

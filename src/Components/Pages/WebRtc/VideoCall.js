@@ -157,11 +157,8 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
                 <div className='container-fluid'>
                     <video ref={remoteVideoRef} autoPlay className="userProfileContainer" />
                     <video ref={localVideoRef} autoPlay muted className="primaryUserWindow" />
-
-                </div>
-            </div>
-            <div className="row footer">
-                {/* <button
+                    <div className="row footer">
+                        {/* <button
                     onClick={
                         isMuted ? () => muteCall("unmute") : () => muteCall("mute")
                     }
@@ -172,48 +169,51 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
                 >
                     <i className="fa-thin fa-microphone-slash" />
                 </button> */}
-                <button onClick={toggleAudio} className="appPanelButtonCaller">
-                    {!isAudioMuted ? (
-                        <i className="fa-thin fa-microphone-slash" />
-                    ) : (
-                        <i className="fa-thin fa-microphone" />
+                        <button onClick={toggleAudio} className="appPanelButtonCaller">
+                            {!isAudioMuted ? (
+                                <i className="fa-thin fa-microphone-slash" />
+                            ) : (
+                                <i className="fa-thin fa-microphone" />
 
-                    )}
-                </button>
-                <button onClick={toggleVideo} className="appPanelButtonCaller">
-                    {!isVideoMuted ? (
-                        <i className="fa-thin fa-video-slash" />
-                    ) : (
-                        <i className="fa-thin fa-video" />
-                    )}
-                </button>
-                <button className="appPanelButtonCaller" effect="ripple">
-                    <i className="fa-thin fa-user-plus" />
-                </button>
+                            )}
+                        </button>
+                        <button onClick={toggleVideo} className="appPanelButtonCaller">
+                            {!isVideoMuted ? (
+                                <i className="fa-thin fa-video-slash" />
+                            ) : (
+                                <i className="fa-thin fa-video" />
+                            )}
+                        </button>
+                        <button className="appPanelButtonCaller" effect="ripple">
+                            <i className="fa-thin fa-user-plus" />
+                        </button>
 
-                <button
-                    onClick={
-                        isHeld ? () => holdCall("unhold") : () => holdCall("hold")
-                    }
-                    className={
-                        isHeld ? "appPanelButtonCaller active" : "appPanelButtonCaller"
-                    }
-                    effect="ripple"
-                >
-                    <i className="fa-thin fa-pause" />
-                </button>
-                <button
-                    onClick={() => {
-                        hangup();
-                        setHangupRefresh(hangupRefresh + 1);
-                        setSelectedModule("callDetails");
-                    }}
-                    className="appPanelButtonCaller bg-danger"
-                    effect="ripple"
-                >
-                    <i className="fa-thin fa-phone-hangup" />
-                </button>
+                        <button
+                            onClick={
+                                isHeld ? () => holdCall("unhold") : () => holdCall("hold")
+                            }
+                            className={
+                                isHeld ? "appPanelButtonCaller active" : "appPanelButtonCaller"
+                            }
+                            effect="ripple"
+                        >
+                            <i className="fa-thin fa-pause" />
+                        </button>
+                        <button
+                            onClick={() => {
+                                hangup();
+                                setHangupRefresh(hangupRefresh + 1);
+                                setSelectedModule("callDetails");
+                            }}
+                            className="appPanelButtonCaller bg-danger"
+                            effect="ripple"
+                        >
+                            <i className="fa-thin fa-phone-hangup" />
+                        </button>
+                    </div>
+                </div>
             </div>
+
         </main>
     );
 }
