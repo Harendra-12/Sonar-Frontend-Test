@@ -197,7 +197,7 @@ function Call({
       toast.error("You are not connected with server");
       return;
     }
-    onCall(item,mode);
+    onCall(item, mode);
   };
 
   const renderCallItem = (item) => (
@@ -331,14 +331,14 @@ function Call({
     {}
   );
 
-  async function onCall(callDetails,mode) {
+  async function onCall(callDetails, mode) {
     // e.preventDefault();
 
     if (!isMicOn) {
       toast.warn("Please turn on microphone");
       return;
     }
-    if(mode === "video"){
+    if (mode === "video") {
       if (!isVideoOn) {
         toast.warn("Please turn on video");
         return;
@@ -364,14 +364,14 @@ function Call({
         sessionDescriptionHandlerOptions: {
           constraints: {
             audio: true,
-            video:mode === "video"? true : false
+            video: mode === "video" ? true : false
           }
         }
       },
       {
         media: {
           audio: true,
-          video: mode === "audio" ? true :{
+          video: mode === "audio" ? true : {
             mandatory: {
               minWidth: 1280,
               minHeight: 720,
@@ -392,13 +392,13 @@ function Call({
           id: apiData._id,
           destination: Number(otherPartyExtension),
           state: "Established",
-          mode:mode,
+          mode: mode,
         },
       ],
     });
     dispatch({
-      type:"SET_VIDEOCALL",
-      videoCall:mode==="video"?true:false
+      type: "SET_VIDEOCALL",
+      videoCall: mode === "video" ? true : false
     })
     dispatch({
       type: "SET_CALLPROGRESSID",
@@ -414,30 +414,30 @@ function Call({
     });
   }
 
-  console.log("call status",callProgress,videoCall);
+  console.log("call status", callProgress, videoCall);
 
-  useEffect(()=>{
-    if(selectedModule==="onGoingCall"){
-      if(videoCall){
+  useEffect(() => {
+    if (selectedModule === "onGoingCall") {
+      if (videoCall) {
         dispatch({
-          type:"SET_MINIMIZE",
-          minimize:false
+          type: "SET_MINIMIZE",
+          minimize: false
         })
-      }else{
+      } else {
         dispatch({
-          type:"SET_MINIMIZE",
-          minimize:true
+          type: "SET_MINIMIZE",
+          minimize: true
         })
       }
-    }else{
+    } else {
       dispatch({
-        type:"SET_MINIMIZE",
-        minimize:true
+        type: "SET_MINIMIZE",
+        minimize: true
       })
     }
-   
-  },[selectedModule,videoCall])
-  
+
+  }, [selectedModule, videoCall])
+
   return (
     <div className="browserPhoneWrapper">
       {/* <SideNavbarApp /> */}
@@ -611,27 +611,35 @@ function Call({
                 id="callDetails"
               >
                 {selectedModule == "onGoingCall"
-                  ? callProgress && (
-                      <OngoingCall
-                        key={callProgressId}
-                        id={callProgressId}
-                        destination={callProgressDestination}
-                        setHangupRefresh={setHangupRefresh}
-                        hangupRefresh={hangupRefresh}
-                        setSelectedModule={setSelectedModule}
-                      />
-                    ): clickedCall && (
-                      <CallDetails
-                        clickedCall={clickedCall}
-                        callHistory={callHistory}
-                        isCustomerAdmin={isCustomerAdmin}
-                        setSelectedModule={setSelectedModule}
-                        isMicOn={isMicOn}
-                        isVideoOn={isVideoOn}
-                        onCall={onCall}
-                      />
-                    )
-                  }
+                  ? callProgress ? (
+                    <OngoingCall
+                      key={callProgressId}
+                      id={callProgressId}
+                      destination={callProgressDestination}
+                      setHangupRefresh={setHangupRefresh}
+                      hangupRefresh={hangupRefresh}
+                      setSelectedModule={setSelectedModule}
+                    />
+                  ) : <CallDetails
+                    clickedCall={clickedCall}
+                    callHistory={callHistory}
+                    isCustomerAdmin={isCustomerAdmin}
+                    setSelectedModule={setSelectedModule}
+                    isMicOn={isMicOn}
+                    isVideoOn={isVideoOn}
+                    onCall={onCall}
+                  /> : clickedCall && (
+                    <CallDetails
+                      clickedCall={clickedCall}
+                      callHistory={callHistory}
+                      isCustomerAdmin={isCustomerAdmin}
+                      setSelectedModule={setSelectedModule}
+                      isMicOn={isMicOn}
+                      isVideoOn={isVideoOn}
+                      onCall={onCall}
+                    />
+                  )
+                }
               </div>
             </div>
           </div>

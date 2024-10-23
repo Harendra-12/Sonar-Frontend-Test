@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import {
-  generalGetFunction,
-} from "../../GlobalFunction/globalFunction";
+import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
@@ -166,7 +164,7 @@ function CdrReport() {
         <div className="container-fluid">
           <div className="row">
             <div className="col-12" style={{ overflow: "auto" }}>
-              <div className="tableContainer" style={{ minHeight: 'auto' }}>
+              <div className="tableContainer" style={{ minHeight: "auto" }}>
                 <div className="d-flex justify-content-end">
                   <div className="formRow border-0">
                     <label className="formLabel text-start mb-0 w-100">
@@ -302,12 +300,13 @@ function CdrReport() {
                         setCallDirection(e.target.value);
                         setPageNumber(1);
                       }}
-                    // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                      // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                     >
                       <option value={""}>All Calls</option>
                       <option value={"inbound"}>Inbound Calls</option>
                       <option value={"outbound"}>Outbound Calls</option>
                       <option value={"local"}>Missed Calls</option>
+                      <option value={"internal"}>Internal Calls</option>
                     </select>
                   </div>
                   <div className="formRow border-0">
@@ -469,8 +468,8 @@ function CdrReport() {
                                     ? "NOT CONNECTED"
                                     : item["variable_DIALSTATUS"] ===
                                       "NO_USER_RESPONSE"
-                                      ? "BUSY"
-                                      : item["variable_DIALSTATUS"]}
+                                    ? "BUSY"
+                                    : item["variable_DIALSTATUS"]}
                                 </td>
                                 <td>{item["call_cost"]}</td>
                               </tr>

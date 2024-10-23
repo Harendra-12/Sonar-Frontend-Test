@@ -81,6 +81,9 @@ const WebrtcWrapper = () => {
   const options = {
     domain: account.domain.domain_name,
     webSocketServer: "wss://192.168.2.225:7443",
+    registererOptions: {
+      extraHeaders: ['Contact: <sip:1000@192.168.2.225>'],
+    },
     // webSocketServer: "ws://192.168.2.225:5066",
   };
 
@@ -201,11 +204,12 @@ useEffect(()=>{
                 </div>
               </div>
             </section>
+            {sessions.find((session) => session.mode === "video")? <VideoCall setHangupRefresh={setHangupRefresh} hangupRefresh={hangupRefresh} setSelectedModule={setSelectedModule} activePage={activePage} /> :""}
           </>
         ) : (
           ""
         )}
-        {callProgressId!=="" && videoCall && sessions.find((session) => session.mode === "video")? <VideoCall setHangupRefresh={setHangupRefresh} hangupRefresh={hangupRefresh} setSelectedModule={setSelectedModule} activePage={activePage} /> :""}
+      
       </SIPProvider>
     </>
   );
