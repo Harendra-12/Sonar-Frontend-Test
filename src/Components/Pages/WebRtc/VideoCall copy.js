@@ -4,14 +4,14 @@ import { useSessionCall } from 'react-sipjs';
 import { toast } from "react-toastify";
 import { SessionState } from "sip.js";
 
-function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule,setCloseVideoCall }) {
+function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
     const dispatch = useDispatch();
     const [hideDialpad, setHideDialpad] = useState(false);
     const [destNumber, setDestNumber] = useState("");
     const globalSession = useSelector((state) => state.sessions || []); // Safeguard
     const callProgressId = useSelector((state) => state.callProgressId || ""); // Safeguard
     const sessionCallData = useSessionCall(callProgressId) || {}; // Safeguard
-    const { session } = sessionCallData || {}; // Safe destructuring
+    const { session } = sessionCallData; // Safe destructuring
     const [isAudioMuted, setIsAudioMuted] = useState(true);
     const [isVideoMuted, setIsVideoMuted] = useState(true);
     const localVideoRef = useRef(null);
@@ -205,14 +205,6 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule,setClose
         }
     };
 
-    useEffect(() => {
-        if(callProgressId===""){
-            // handleHangup()
-            console.log("callProgressId is empty")
-            setCloseVideoCall(true)
-        }
-    },[callProgressId])
-    
     const handleDigitPress = (digit) => {
         if (session) {
             const dtmfSender = session.sessionDescriptionHandler.peerConnection
@@ -227,8 +219,6 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule,setClose
             console.error("No active session found");
         }
     };
-
-    console.log("sessionsss", session);
     return (
         <main className="mainContentA videoCall">
             <div className={minimize ? "caller minimize" : 'caller'}>

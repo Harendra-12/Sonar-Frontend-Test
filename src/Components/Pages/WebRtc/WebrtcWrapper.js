@@ -30,6 +30,7 @@ const WebrtcWrapper = () => {
   const [isMicOn, setIsMicOn] = useState(false); // State to track mic status
   const [isVideoOn, setIsVideoOn] = useState(false); // State to track video status
   const [reconnecting, setReconnecting] = useState(0);
+  const [closeVideoCall, setCloseVideoCall] = useState(false);
   const useWebSocketErrorHandling = (options) => {
     const retryCountRef = useRef(0);
     const connectWebSocket = (retryCount = 0) => {
@@ -204,7 +205,7 @@ useEffect(()=>{
                 </div>
               </div>
             </section>
-            {sessions.find((session) => session.mode === "video")? <VideoCall setHangupRefresh={setHangupRefresh} hangupRefresh={hangupRefresh} setSelectedModule={setSelectedModule} activePage={activePage} /> :""}
+            {!closeVideoCall && sessions.find((session) => session.mode === "video")? <VideoCall setHangupRefresh={setHangupRefresh} hangupRefresh={hangupRefresh} setSelectedModule={setSelectedModule} activePage={activePage} setCloseVideoCall={setCloseVideoCall} /> :""}
           </>
         ) : (
           ""

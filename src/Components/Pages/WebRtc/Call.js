@@ -693,3 +693,9 @@ function Call({
 }
 
 export default Call;
+
+
+// 1. Add option to share screen when user is on video call
+// 2. Ask userpermission to shear different screen like entire screen, any specific tab of browser, or any specific window
+// 3. During screen shearing add option to toggle between screen shearing and video shearing
+// 4. Add DTMF options on video call page 

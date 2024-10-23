@@ -21,7 +21,7 @@ function ActiveCallSidePanel({
   console.log(session);
   //Keep track for previous call progress Id
   const [prevCallProgressId, setPrevCallProgressId] = useState(callProgressId);
-  console.log("This is session", session._state);
+  console.log("This is session", session?._state);
   useEffect(() => {
     const audioElement = audioRef.current;
     console.log('Current playMusic value:', playMusic); // Log the state
@@ -56,14 +56,14 @@ function ActiveCallSidePanel({
   
 
   useEffect(() => {
-    if (session._state === "Establishing") {
+    if (session?._state === "Establishing") {
       setPlayMusic(true);
     } else {
       
       
       setPlayMusic(false);
     }
-  }, [session._state]);
+  }, [session?._state]);
 
 
 
@@ -81,7 +81,7 @@ function ActiveCallSidePanel({
       );
 
       //Hold previous call
-      if (prevSession && session._state == "Established" && prevSession.mode!== "video") {
+      if (prevSession && session?._state == "Established" && prevSession.mode!== "video") {
         hold(prevSession.id);
         console.log("hold hit",prevSession)
         dispatch({
@@ -97,10 +97,17 @@ function ActiveCallSidePanel({
   }, [callProgressId]);
 
   if (session["_state"] === "Terminated") {
+    // dispatch({
+    //   type:"SET_VIDEOCALL",
+    //   videoCall:false
+    // })
+    const updatedSession = globalSession.filter(
+      (item) => item.id !== session._id
+    );
     dispatch({
-      type:"SET_VIDEOCALL",
-      videoCall:false
-    })
+      type: "SET_SESSIONS",
+      sessions: updatedSession,
+    });
     setHangupRefresh(hangupRefresh + 1);
     setSelectedModule("callDetails");
     if (callProgressId === session._id) {
@@ -118,13 +125,7 @@ function ActiveCallSidePanel({
         callProgress: false,
       });
     }
-    const updatedSession = globalSession.filter(
-      (item) => item.id !== session._id
-    );
-    dispatch({
-      type: "SET_SESSIONS",
-      sessions: updatedSession,
-    });
+  
   }
 
   function handleActiveCall(id, dest) {
@@ -159,7 +160,7 @@ function ActiveCallSidePanel({
             <h5>{destination}</h5>
           </div>
         </div>
-      ) : session._state === "Initial" ? (
+      ) : session?._state === "Initial" ? (
         <div
           onClick={() => handleActiveCall(session._id, destination)}
           className="col-12 callItem ringing"
