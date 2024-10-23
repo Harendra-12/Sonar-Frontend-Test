@@ -377,6 +377,9 @@ const Dashboard = () => {
     }
   };
 
+  console.log(account);
+
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -746,9 +749,9 @@ const Dashboard = () => {
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
-                              <h5>{accountDetails?.admin_name}</h5>
-                              <p>Ph No: {accountDetails?.contact_no}</p>
-                              <p>Email: {accountDetails?.email}</p>
+                              <h5>{account?.name}</h5>
+                              <p>Username: {account?.username}</p>
+                              <p>Email: {account?.email}</p>
                             </div>
                             <div className="col-2">
                               <img
