@@ -201,11 +201,12 @@ useEffect(()=>{
                 </div>
               </div>
             </section>
+            {sessions.find((session) => session.mode === "video")? <VideoCall setHangupRefresh={setHangupRefresh} hangupRefresh={hangupRefresh} setSelectedModule={setSelectedModule} activePage={activePage} /> :""}
           </>
         ) : (
           ""
         )}
-        {callProgressId!=="" && videoCall && sessions.find((session) => session.mode === "video")? <VideoCall setHangupRefresh={setHangupRefresh} hangupRefresh={hangupRefresh} setSelectedModule={setSelectedModule} activePage={activePage} /> :""}
+      
       </SIPProvider>
     </>
   );

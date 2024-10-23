@@ -160,26 +160,31 @@
 }
 
 .videoCall .caller.minimize {
-    width: 0;
-    height: 0;
+    width: 250px;
+    height:200px;
     left: inherit;
     top: inherit;
     bottom: 0;
-    right: 0;
+    right: 20px;
+    z-index: 9;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.videoCall .caller.minimize .appPanelButtonCaller{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 999;
 }
 
 .videoCall .caller.minimize .userProfileContainer {
-    width: 200px;
-    height: 250px;
-    position: absolute;
-    bottom: 0;
-    right: 0;
     z-index: 9;
 }
 
 .videoCall .caller.minimize .primaryUserWindow {
-    width: 100px;
-    height: 150px;
+    width: 50px;
+    height: 70px;
     position: absolute;
     bottom: 0;
     right: 0;

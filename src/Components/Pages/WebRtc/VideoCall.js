@@ -2,35 +2,34 @@ import React, { useRef, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSessionCall } from 'react-sipjs';
 import { toast } from "react-toastify";
-import {
-    SessionState,
-} from "sip.js";
+import { SessionState } from "sip.js";
 
 function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
     const dispatch = useDispatch();
-    const globalSession = useSelector((state) => state.sessions);
-    const callProgressId = useSelector((state) => state.callProgressId);
-    const { session } = useSessionCall(callProgressId);
+    const globalSession = useSelector((state) => state.sessions || []); // Safeguard
+    const callProgressId = useSelector((state) => state.callProgressId || ""); // Safeguard
+
+    const sessionCallData = useSessionCall(callProgressId) || {}; // Safeguard
+    const { session } = sessionCallData; // Safe destructuring
+
     const [isAudioMuted, setIsAudioMuted] = useState(true);
     const [isVideoMuted, setIsVideoMuted] = useState(true);
     const localVideoRef = useRef(null);
-    const minimize = useSelector((state) => state.minimize);
+    const minimize = useSelector((state) => state.minimize || false); // Safeguard
     const remoteVideoRef = useRef(null);
-    const {
-        isHeld,
-        isMuted,
-        hangup,
-        hold,
-        mute,
-        unhold,
-        unmute,
-        timer,
-    } = useSessionCall(callProgressId);
 
-    const includeVideo = true; // Include video in the call
-    const MaxVideoBandwidth = 500; // Max bandwidth in kbps
+    // Safeguard for sessionCallData properties
+    const {
+        isHeld = false,
+        isMuted = false,
+        hangup = () => {},
+        hold = () => {},
+        unhold = () => {},
+    } = sessionCallData;
+
+    const includeVideo = true; 
     const canHold = session && session._state === SessionState.Established;
-    const canMute = session && session._state === SessionState.Established;
+
     const holdCall = (type) => {
         if (canHold) {
             if (type === "hold") {
@@ -55,11 +54,9 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
         }
     };
 
-
     const getLocalStream = async () => {
         try {
             const localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-            console.log("Local stream obtained:", localStream);
             localVideoRef.current.srcObject = localStream;
             return localStream;
         } catch (error) {
@@ -69,7 +66,7 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
     };
 
     useEffect(() => {
-        let isMounted = true; // Track whether the component is mounted
+        let isMounted = true;
 
         if (session) {
             getLocalStream().then((localStream) => {
@@ -99,7 +96,7 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
             });
 
             session.sessionDescriptionHandler.peerConnection.ontrack = (event) => {
-                if (!isMounted) return; // Check if the component is still mounted
+                if (!isMounted) return;
 
                 const remoteStream = remoteVideoRef.current.srcObject || new MediaStream();
                 remoteStream.addTrack(event.track);
@@ -118,11 +115,8 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
                 }
             };
 
-            const remoteDescription = session.sessionDescriptionHandler.peerConnection.currentRemoteDescription;
-            console.log("Remote SDP:", remoteDescription);
-
             return () => {
-                isMounted = false; // Mark component as unmounted
+                isMounted = false;
                 if (localVideoRef.current) {
                     localVideoRef.current.srcObject = null;
                 }
@@ -130,95 +124,103 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
                     remoteVideoRef.current.srcObject = null;
                 }
             };
+        } else {
+            console.warn("Session is closed or null");
         }
     }, [session]);
 
-
     const toggleVideo = () => {
-        const localStream = localVideoRef.current.srcObject;
-        const videoTracks = localStream.getVideoTracks();
-        videoTracks.forEach((track) => {
-            track.enabled = !isVideoMuted; // Toggle video track
-        });
-        setIsVideoMuted((prev) => !prev); // Update state
+        if (localVideoRef.current) {
+            const localStream = localVideoRef.current.srcObject;
+            const videoTracks = localStream.getVideoTracks();
+            videoTracks.forEach((track) => {
+                track.enabled = !isVideoMuted;
+            });
+            setIsVideoMuted((prev) => !prev);
+        }
     };
 
     const toggleAudio = () => {
-        const localStream = localVideoRef.current.srcObject;
-        const audioTracks = localStream.getAudioTracks();
-        audioTracks.forEach((track) => {
-            track.enabled = !isAudioMuted; // Toggle audio track
-        });
-        setIsAudioMuted((prev) => !prev); // Update state
+        if (localVideoRef.current) {
+            const localStream = localVideoRef.current.srcObject;
+            const audioTracks = localStream.getAudioTracks();
+            audioTracks.forEach((track) => {
+                track.enabled = !isAudioMuted;
+            });
+            setIsAudioMuted((prev) => !prev);
+        }
     };
 
-    function handleMaximize() {
+    const handleMaximize = () => {
         dispatch({
             type: "SET_MINIMIZE",
             minimize: false
-        })
-    }
-
-    function handleHangup() {
-        const updatedSession = globalSession.filter(
-            (item) => item.id !== callProgressId
-        );
-        dispatch({
-            type: "SET_SESSIONS",
-            sessions: updatedSession,
         });
-        setHangupRefresh(hangupRefresh + 1);
-        setSelectedModule("callDetails");
-        hangup();
-    }
-    console.log("minimize", minimize)
+    };
+
+    const handleHangup = () => {
+        if (session) {
+            hangup();
+            const updatedSession = globalSession.filter(
+                (item) => item.id !== callProgressId
+            );
+            dispatch({
+                type: "SET_SESSIONS",
+                sessions: updatedSession,
+            });
+            setHangupRefresh(hangupRefresh + 1);
+            setSelectedModule("callDetails");
+        } else {
+            console.warn("Attempted to hang up, but session is invalid");
+        }
+    };
+
     return (
         <main className="mainContentA videoCall">
             <div className={minimize ? "caller minimize" : 'caller'}>
                 <div className='container-fluid'>
-                    {minimize ? <div onClick={handleMaximize}></div> : ""}
+                    {minimize ? <div onClick={handleMaximize} className="appPanelButtonCaller"><i className="fa-thin fa-expand" /></div> : ""}
                     <video ref={remoteVideoRef} autoPlay className="userProfileContainer" />
                     <video ref={localVideoRef} autoPlay muted className="primaryUserWindow" />
                 </div>
-            </div>
-            <div className="row footer">
-                <button onClick={toggleAudio} className="appPanelButtonCaller">
-                    {!isAudioMuted ? (
-                        <i className="fa-thin fa-microphone-slash" />
-                    ) : (
-                        <i className="fa-thin fa-microphone" />
+                <div className="row footer">
+                    <button onClick={toggleAudio} className="appPanelButtonCaller">
+                        {!isAudioMuted ? (
+                            <i className="fa-thin fa-microphone-slash" />
+                        ) : (
+                            <i className="fa-thin fa-microphone" />
+                        )}
+                    </button>
+                    <button onClick={toggleVideo} className="appPanelButtonCaller">
+                        {!isVideoMuted ? (
+                            <i className="fa-thin fa-video-slash" />
+                        ) : (
+                            <i className="fa-thin fa-video" />
+                        )}
+                    </button>
+                    <button className="appPanelButtonCaller" effect="ripple">
+                        <i className="fa-thin fa-user-plus" />
+                    </button>
 
-                    )}
-                </button>
-                <button onClick={toggleVideo} className="appPanelButtonCaller">
-                    {!isVideoMuted ? (
-                        <i className="fa-thin fa-video-slash" />
-                    ) : (
-                        <i className="fa-thin fa-video" />
-                    )}
-                </button>
-                <button className="appPanelButtonCaller" effect="ripple">
-                    <i className="fa-thin fa-user-plus" />
-                </button>
-
-                <button
-                    onClick={
-                        isHeld ? () => holdCall("unhold") : () => holdCall("hold")
-                    }
-                    className={
-                        isHeld ? "appPanelButtonCaller active" : "appPanelButtonCaller"
-                    }
-                    effect="ripple"
-                >
-                    <i className="fa-thin fa-pause" />
-                </button>
-                <button
-                    onClick={handleHangup}
-                    className="appPanelButtonCaller bg-danger"
-                    effect="ripple"
-                >
-                    <i className="fa-thin fa-phone-hangup" />
-                </button>
+                    <button
+                        onClick={
+                            isHeld ? () => holdCall("unhold") : () => holdCall("hold")
+                        }
+                        className={
+                            isHeld ? "appPanelButtonCaller active" : "appPanelButtonCaller"
+                        }
+                        effect="ripple"
+                    >
+                        <i className="fa-thin fa-pause" />
+                    </button>
+                    <button
+                        onClick={handleHangup}
+                        className="appPanelButtonCaller bg-danger"
+                        effect="ripple"
+                    >
+                        <i className="fa-thin fa-phone-hangup" />
+                    </button>
+                </div>
             </div>
         </main>
     );

@@ -412,7 +412,7 @@ function Messages() {
                                 }}
                                 className="row justify-content-between"
                               >
-                                <div className="col-xl-6 d-flex">
+                                <div className="col-xl-12 d-flex">
                                   <div
                                     className="profileHolder"
                                     id={
@@ -462,7 +462,7 @@ function Messages() {
                                 }
                                 className="row justify-content-between"
                               >
-                                <div className="col-xl-6 d-flex">
+                                <div className="col-xl-12 d-flex">
                                   <div
                                     className="profileHolder"
                                     id="profileOnlineNav"
@@ -481,7 +481,7 @@ function Messages() {
                         {onlineUser.length === 0 && (
                           <div data-bell="" className="contactListItem">
                             <div className="row justify-content-between">
-                              <div className="col-xl-6 d-flex">
+                              <div className="col-xl-12 d-flex">
                                 {/* <div
                                   className="profileHolder"
                                   id="profileOnline"
