@@ -733,7 +733,7 @@ const Dashboard = () => {
                     <div className="col-xl-3"
                       style={{ cursor: "pointer" }}
                     >
-                      <div className="itemWrapper b">
+                      <div className="itemWrapper a">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-10">
@@ -766,7 +766,7 @@ const Dashboard = () => {
                     <div className="col-xl-3"
                       style={{ cursor: "pointer" }}
                     >
-                      <div className="itemWrapper c">
+                      <div className="itemWrapper a">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
@@ -799,7 +799,7 @@ const Dashboard = () => {
                     <div className="col-xl-3"
                       style={{ cursor: "pointer" }}
                     >
-                      <div className="itemWrapper d">
+                      <div className="itemWrapper a">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-10">
@@ -830,8 +830,8 @@ const Dashboard = () => {
 
                     <div className="col-xl-12 mt-4">
                       <div className="row">
-                        <div className="col-xl-4 ">
-                          <div className="itemWrapper c">
+                        <div className="col-xl-4">
+                          <div className="itemWrapper a">
                             <div className="heading">
                               <div className="d-flex flex-wrap justify-content-between align-items-center">
                                 <div className="col-10">
@@ -865,8 +865,8 @@ const Dashboard = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="col-xl-4 ">
-                          <div className="itemWrapper d">
+                        <div className="col-xl-4">
+                          <div className="itemWrapper a">
                             <div className="heading">
                               <div className="d-flex flex-wrap justify-content-between align-items-center">
                                 <div className="col-10">
@@ -897,7 +897,7 @@ const Dashboard = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="col-xl-4 ">
+                        <div className="col-xl-4">
                           <div className="itemWrapper a">
                             <div className="heading">
                               <div className="d-flex flex-wrap justify-content-between align-items-center">
@@ -980,7 +980,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-xl-3">
-                      <div className="itemWrapper b">
+                      <div className="itemWrapper a">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
@@ -1022,7 +1022,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-xl-3">
-                      <div className="itemWrapper c">
+                      <div className="itemWrapper a">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
@@ -1063,7 +1063,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-xl-3">
-                      <div className="itemWrapper d">
+                      <div className="itemWrapper a">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
@@ -1212,7 +1212,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-xl-3">
-                      <div className="itemWrapper b">
+                      <div className="itemWrapper a">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
@@ -1247,7 +1247,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-xl-3">
-                      <div className="itemWrapper c">
+                      <div className="itemWrapper a">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
@@ -1280,7 +1280,7 @@ const Dashboard = () => {
                     </div>
 
                     <div className="col-xl-3">
-                      <div className="itemWrapper d">
+                      <div className="itemWrapper a">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
@@ -1314,7 +1314,7 @@ const Dashboard = () => {
                     <div className="col-xl-12 mt-4">
                       <div className="row">
                         <div className="col-xl-4 ">
-                          <div className="itemWrapper c">
+                          <div className="itemWrapper a">
                             <div className="heading">
                               <div className="d-flex flex-wrap justify-content-between align-items-center">
                                 <div className="col-10">
@@ -1343,7 +1343,7 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <div className="col-xl-4 ">
-                          <div className="itemWrapper d">
+                          <div className="itemWrapper a">
                             <div className="heading">
                               <div className="d-flex flex-wrap justify-content-between align-items-center">
                                 <div className="col-10">
@@ -1387,7 +1387,7 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <div className="col-xl-4 chartWrapper">
-                          <div className="wrapper itemWrapper b">
+                          <div className="wrapper itemWrapper a">
                             <div class="heading">
                               <div class="d-flex flex-wrap justify-content-between align-items-center">
                                 <div class="col-10">

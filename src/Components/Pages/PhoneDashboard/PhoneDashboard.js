@@ -11,7 +11,7 @@ import DoughnutChart from "../../CommonComponents/DoughnutChart";
 import GraphChart from "../../CommonComponents/GraphChart";
 
 function PhoneDashboard() {
-  const [calls, setCalls] = useState(true);
+  const [calls, setCalls] = useState(false);
   const [group, setGroup] = useState(false);
   const [queue, setQueue] = useState(false);
   const navigate = useNavigate();
@@ -422,11 +422,7 @@ function PhoneDashboard() {
                         Number(accountDetails.package?.number_of_user) -
                         extensionList,
                       ]}
-                      centerTitle={`${extensionList}/${Number(
-                        accountDetails.package?.number_of_user
-                      )}`}
-                      centerDesc="Extensions Details"
-                      colors={["#9999", "#FF6384", "#36A2EB"]}
+                      colors={["#9999", "#FF638470", "#36A2EB70"]}
                     />
                   </div>
                 </div>
@@ -434,12 +430,10 @@ function PhoneDashboard() {
                   <div className="wrapper">
                     <DoughnutChart
                       fields={[
-                        "Online Users",
-                        "Registered Users ",
-                        "Available Users ",
+                        "Registered Users",
+                        "Available Users",
                       ]}
                       percentage={[
-                        loginUser.length,
                         userList,
                         Number(accountDetails.package?.number_of_user) -
                         userList,
@@ -448,7 +442,7 @@ function PhoneDashboard() {
                         accountDetails.package?.number_of_user
                       )}`}
                       centerDesc="Total Users Available"
-                      colors={["#9999", "#FF6384", "#36A2EB"]}
+                      colors={["#36A2EB70", "#f17d0170", "#FF638470"]}
                     />
                   </div>
                   {/* <div className='circularProgressWrapper'>
