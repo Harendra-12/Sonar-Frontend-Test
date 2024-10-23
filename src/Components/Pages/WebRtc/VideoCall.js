@@ -17,6 +17,8 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
     const localVideoRef = useRef(null);
     const minimize = useSelector((state) => state.minimize || false); // Safeguard
     const remoteVideoRef = useRef(null);
+    const [isScreenSharing, setIsScreenSharing] = useState(false);
+    const screenShareRef = useRef(null);
 
     // Safeguard for sessionCallData properties
     const {
@@ -158,6 +160,34 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
         });
     };
 
+    const toggleScreenShare = async () => {
+        if (isScreenSharing) {
+            const localStream = await getLocalStream();
+            session.sessionDescriptionHandler.peerConnection.getSenders().forEach((sender) => {
+                if (sender.track.kind === 'video') {
+                    sender.replaceTrack(localStream.getVideoTracks()[0]);
+                }
+            });
+            setIsScreenSharing(false);
+        } else {
+            try {
+                const screenStream = await navigator.mediaDevices.getDisplayMedia({
+                    video: true,
+                    audio: true,
+                });
+
+                session.sessionDescriptionHandler.peerConnection.getSenders().forEach((sender) => {
+                    if (sender.track.kind === 'video') {
+                        sender.replaceTrack(screenStream.getVideoTracks()[0]);
+                    }
+                });
+                setIsScreenSharing(true);
+            } catch (error) {
+                console.error("Error sharing screen: ", error);
+                toast.error("Unable to share screen.");
+            }
+        }
+    };
     const handleHangup = () => {
         if (session) {
             hangup();
@@ -196,6 +226,13 @@ function VideoCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
                             <i className="fa-thin fa-video-slash" />
                         ) : (
                             <i className="fa-thin fa-video" />
+                        )}
+                    </button>
+                    <button onClick={toggleScreenShare} className="appPanelButtonCaller">
+                        {isScreenSharing ? (
+                            <i className="fa-thin fa-desktop-slash" />
+                        ) : (
+                            <i className="fa-thin fa-desktop" />
                         )}
                     </button>
                     <button className="appPanelButtonCaller" effect="ripple">
