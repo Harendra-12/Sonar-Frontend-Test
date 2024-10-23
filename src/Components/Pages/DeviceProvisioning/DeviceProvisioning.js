@@ -148,7 +148,7 @@ const DeviceProvisioning = () => {
                                 })
                               }
                             >
-                              {provisioningData.serial_id}
+                              {provisioningData.serial_number}
                             </td>
                             <td
                               onClick={() =>
