@@ -221,16 +221,16 @@ const DeviceProvisioningAdd = () => {
                 <div className="col-6">
                   <input
                     type="text"
-                    name="serial_id"
+                    name="serial_number"
                     className="formItem"
                     placeholder="124abc"
-                    {...register("serial_id", {
+                    {...register("serial_number", {
                       ...requiredValidator,
                     })}
                     onKeyDown={restrictToMacAddress}
                   />
-                  {errors.serial_id && (
-                    <ErrorMessage text={errors.serial_id.message} />
+                  {errors.serial_number && (
+                    <ErrorMessage text={errors.serial_number.message} />
                   )}
                 </div>
               </div>
