@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
@@ -30,7 +31,8 @@ function CdrReport() {
   const [startDate, setStartDate] = useState("");
   const [endDateFlag, setEndDateFlag] = useState("");
   const [endDate, setEndDate] = useState("");
-
+  const [contentLoader,setContentLoader]=useState(false)
+  const [refresh,setRefrehsh]=useState(1)
   useEffect(() => {
     if (filterBy === "date" && startDateFlag !== "") {
       setStartDate(startDateFlag);
@@ -102,7 +104,8 @@ function CdrReport() {
   };
 
   useEffect(() => {
-    setLoading(true);
+
+    setLoading(!contentLoader);
     // build a dynamic url which include only the available params to make API call easy
     const buildUrl = (baseApiUrl, params) => {
       const queryParams = Object.entries(params)
@@ -132,12 +135,15 @@ function CdrReport() {
         const apiData = await generalGetFunction(finalUrl);
         if (apiData?.status) {
           setLoading(false);
+          setContentLoader(false);
           setCdr(apiData.data);
         } else {
           setLoading(false);
+          setContentLoader(false);
         }
       } else {
         setLoading(false);
+        setContentLoader(false);
         navigate("/");
       }
     }
@@ -153,13 +159,19 @@ function CdrReport() {
     startDate,
     endDate,
     hangupCause,
+    refresh,
   ]);
 
+  function refreshCallData(){
+    setContentLoader(true)
+    setRefrehsh(refresh+1)
+  }
   return (
     <main className="mainContent">
       <section id="phonePage">
         <div className="container-fluid px-0">
           <Header title="CDR Reports" />
+          <button onClick={refreshCallData} class="clearButton refresh"><i class={contentLoader?"fa-regular fa-arrows-rotate fs-5 fa-spin":"fa-regular fa-arrows-rotate fs-5 "} style={{ color: 'rgb(148, 148, 148)' }}></i></button>
         </div>
         <div className="container-fluid">
           <div className="row">

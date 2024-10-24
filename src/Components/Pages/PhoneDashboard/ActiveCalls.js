@@ -70,7 +70,7 @@ function ActiveCalls() {
   }
 
   useEffect(() => {
-    if (bargeStatus === "burge") {
+    if (bargeStatus === "barge") {
       bargeCall(id);
     } else if (bargeStatus === "intercept") {
       interceptCall(id);
@@ -109,7 +109,7 @@ function ActiveCalls() {
                       {/* <th>CID Name</th> */}
                       <th>CID Number</th>
                       <th>Destination</th>
-                      <th>Burge</th>
+                      <th>Barge</th>
                       {/* <th>Intercept</th>
                         <th>Eavesdrop</th> */}
                       <th>Hang Up</th>
@@ -145,10 +145,10 @@ function ActiveCalls() {
                                 >
                                   <option value="disbale">Choose action</option>
                                   <option
-                                    value="burge"
+                                    value="barge"
                                     onClick={() => bargeCall(item.uuid)}
                                   >
-                                    Burge
+                                    Barge
                                   </option>
                                   <option
                                     value="intercept"

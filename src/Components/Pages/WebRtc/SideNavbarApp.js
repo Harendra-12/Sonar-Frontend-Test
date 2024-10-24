@@ -7,7 +7,9 @@ function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
   const [popUp, setPopUp] = useState(false);
   const { connectStatus } = useSIPProvider();
   const [loading, setLoading] = useState(true); // Loading state for popup
-
+  // const callState = useSelector((state) => state.callState);
+  // console.log("callStatesss", callState);
+  
   const extension = account?.extension?.extension || "";
   const [connectedStatus, setConnectedStatus] = useState("");
 

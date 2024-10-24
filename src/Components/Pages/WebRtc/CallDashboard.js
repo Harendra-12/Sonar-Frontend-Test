@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import SideNavbarApp from "./SideNavbarApp";
-import ActiveCallSidePanel from "./ActiveCallSidePanel";
 import ActiveCalls from "../PhoneDashboard/ActiveCalls";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
-import { useSIPProvider } from "react-sipjs";
 
 function CallDashboard() {
   const sessions = useSelector((state) => state.sessions);
-  const { sessionManager } = useSIPProvider();
   const account = useSelector((state) => state.account);
   const activeCall = useSelector((state) => state.activeCall);
   const [allParkedCall, setAllParkedCall] = useState([]);
-
   const extension = account?.extension?.extension || null;
+  const callState = useSelector((state) => state.callState);
+  console.log("callStatesss", callState);
 
   useEffect(() => {
     //dest should start with "set:valet_ticket"
@@ -89,18 +86,6 @@ function CallDashboard() {
                       Call Dashboard <button class="clearButton"><i class="fa-regular fa-arrows-rotate fs-5" style={{ color: 'rgb(148, 148, 148)' }}></i></button>
                     </h3>
                   </div>
-                  {/* <div className="col-auto d-flex">
-                    <div className="col-auto">
-                      <button className="appPanelButton" effect="ripple">
-                        <i className="fa-light fa-mobile-retro" />
-                      </button>
-                    </div>
-                    <div className="col-auto">
-                      <button className="appPanelButton" effect="ripple">
-                        <i className="fa-light fa-satellite-dish" />
-                      </button>
-                    </div>
-                  </div> */}
                   <div className="col-12">
                     <nav>
                       <div className="nav nav-tabs">
@@ -137,101 +122,6 @@ function CallDashboard() {
                   className="col-12 callDashboardPrimTable"
                   style={{ overflow: "auto" }}
                 >
-                  {/* <div className="tableContainer allItems">
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Status</th>
-                          <th>Extension</th>
-                          <th>Name</th>
-                          <th>On Call With</th>
-                          <th>Call Status</th>
-                          <th>Duration</th>
-                          <th>Options</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td className="extensionStatusWithName">
-                            <span className="extensionStatus online" />
-                          </td>
-                          <td>1000</td>
-                          <td>John Doe</td>
-                          <td></td>
-                          <td>
-                            <label className="tableLabel success">Active</label>
-                          </td>
-                          <td>10:10</td>
-                          <td className="ps-1">
-                            <button className="clearButton">
-                              <i
-                                className="fa-duotone fa-ear-deaf"
-                                style={{ color: "#ff9921" }}
-                              />
-                            </button>
-                            <button className="clearButton">
-                              <i class="fa-solid fa-headphones text-info"></i>
-                            </button>
-                            <button className="clearButton">
-                              <i className="fa-solid fa-phone-slash text-danger" />
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="extensionStatusWithName">
-                            <span className="extensionStatus onCall" />
-                          </td>
-                          <td>1001</td>
-                          <td>John Doe</td>
-                          <td>1 999 999 9999</td>
-                          <td>
-                            <label className="tableLabel success">Active</label>
-                          </td>
-                          <td>10:10</td>
-                          <td className="ps-1">
-                            <button className="clearButton">
-                              <i
-                                className="fa-duotone fa-ear-deaf"
-                                style={{ color: "#ff9921" }}
-                              />
-                            </button>
-                            <button className="clearButton">
-                              <i class="fa-solid fa-headphones text-info"></i>
-                            </button>
-                            <button className="clearButton">
-                              <i className="fa-solid fa-phone-slash text-danger" />
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="extensionStatusWithName">
-                            <span className="extensionStatus" />
-                          </td>
-                          <td>1002</td>
-                          <td>John Doe</td>
-                          <td></td>
-                          <td>
-                            <label className="tableLabel fail">Disable</label>
-                          </td>
-                          <td>10:10</td>
-                          <td className="ps-1">
-                            <button className="clearButton">
-                              <i
-                                className="fa-duotone fa-ear-deaf"
-                                style={{ color: "#ff9921" }}
-                              />
-                            </button>
-                            <button className="clearButton">
-                              <i class="fa-solid fa-headphones text-info"></i>
-                            </button>
-                            <button className="clearButton">
-                              <i className="fa-solid fa-phone-slash text-danger" />
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div> */}
                   <ActiveCalls />
                 </div>
               </div>
@@ -313,7 +203,7 @@ function CallDashboard() {
                     </div>
                   </div>
                 </div>
-                {/* <div
+                <div
                   className="mt-3 pt-3"
                   style={{ borderTop: "1px solid rgb(222, 226, 230)" }}
                 >
@@ -325,7 +215,7 @@ function CallDashboard() {
                           color: "rgb(68, 68, 68)",
                         }}
                       >
-                        Active Queues
+                        Ringinig State
                       </h3>
                     </div>
                     <div className="col-12">
@@ -347,69 +237,34 @@ function CallDashboard() {
                       <table>
                         <thead>
                           <tr>
-                            <th>Name</th>
-                            <th>Extension</th>
-                            <th>On Call</th>
-                            <th>Waiting</th>
-                            <th>Logged In</th>
-                            <th>Avg. Wait Time</th>
+                            <th>Sl no.</th>
+                            <th>From </th>
+                            <th>To</th>
                           </tr>
                         </thead>
-                        <tbody>
-                          <tr>
-                            <td>1000</td>
-                            <td>1212</td>
-                            <td>1000</td>
-                            <td>1000</td>
-                            <td>1212</td>
-                            <td>1000</td>
-                          </tr>
-                          <tr>
-                            <td>1000</td>
-                            <td>1212</td>
-                            <td>1000</td>
-                            <td>1000</td>
-                            <td>1212</td>
-                            <td>1000</td>
-                          </tr>
-                          <tr>
-                            <td>1000</td>
-                            <td>1212</td>
-                            <td>1000</td>
-                            <td>1000</td>
-                            <td>1212</td>
-                            <td>1000</td>
-                          </tr>
-                        </tbody>
+                        {/* <tbody>
+                          {
+                            callState && callState.map((item,key) => {
+                              return (
+                                <tr>
+                                  <td>{key+1}</td>
+                                  <td>{item.origin}</td>
+                                  <td>{item.destination}</td>
+                                </tr>
+                              )
+                            })
+                          }
+
+                        </tbody> */}
                       </table>
                     </div>
                   </div>
-                </div> */}
+                </div>
               </div>
             </div>
           </div>
         </section>
       </main>
-      {/* {sessions.length > 0 && Object.keys(sessions).length > 0 ? (
-        <>
-          <section className="activeCallsSidePanel">
-            <div className="container">
-              <div className="row">
-                {sessions.length > 0 &&
-                  sessions.map((session, chennel) => (
-                    <ActiveCallSidePanel
-                      sessionId={session.id}
-                      destination={session.destination}
-                      chennel={chennel}
-                    />
-                  ))}
-              </div>
-            </div>
-          </section>
-        </>
-      ) : (
-        ""
-      )} */}
     </>
   );
 }
