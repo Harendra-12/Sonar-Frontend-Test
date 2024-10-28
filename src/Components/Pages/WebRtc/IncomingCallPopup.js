@@ -12,8 +12,9 @@ function IncomingCallPopup({
   setSelectedModule,
   setactivePage,
   isMicOn,
+  isVideoOn,
 }) {
-  
+
   const [isMinimized, setIsMinimized] = useState(false);
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
@@ -24,7 +25,7 @@ function IncomingCallPopup({
   const [blindTransferNumber, setBlindTransferNumber] = useState("");
   const [attendShow, setAttendShow] = useState(false);
   const [audio] = useState(new Audio(ringtone)); // Initialize the Audio object
-  console.log("aaaa",session);
+  console.log("aaaa", session);
   useEffect(() => {
     if (lastIncomingCall && !isMinimized) {
       audio.loop = true; // Set loop so it keeps playing
@@ -55,7 +56,7 @@ function IncomingCallPopup({
         type: "SET_SESSIONS",
         sessions: [
           ...globalSession,
-          { id: sessionId, destination: callerExtension,mode:"audio" },
+          { id: sessionId, destination: callerExtension, mode: "audio" },
         ],
       });
     }
@@ -100,8 +101,8 @@ function IncomingCallPopup({
 
     if (mode === "video") {
       dispatch({
-        type:"SET_MINIMIZE",
-        minimize:false
+        type: "SET_MINIMIZE",
+        minimize: false
       })
       const updatedSession = globalSession.find((session) => session.id === sessionId);
       if (updatedSession) {
@@ -112,9 +113,9 @@ function IncomingCallPopup({
         });
       }
     }
-     
-   
-   
+
+
+
 
     setSelectedModule("onGoingCall");
     setactivePage("call");
@@ -213,12 +214,14 @@ function IncomingCallPopup({
               </div>
             </div>
             <div className="controls">
-              <button class="callButton" onClick={()=>handleAnswerCall("audio")}>
+              <button class="callButton" onClick={() => handleAnswerCall("audio")}>
                 <i class="fa-duotone fa-phone"></i>
               </button>
-              <button class="callButton" onClick={()=>handleAnswerCall("video")}>
-                <i class="fa-duotone fa-video"></i>
-              </button>
+              {isVideoOn &&
+                <button class="callButton" onClick={() => handleAnswerCall("video")}>
+                  <i class="fa-duotone fa-video"></i>
+                </button>
+              }
               <button class="callButton hangup" onClick={decline}>
                 <i class="fa-duotone fa-phone-hangup"></i>
               </button>
@@ -266,7 +269,7 @@ function IncomingCallPopup({
               <h5>{callerExtension}</h5>
             </div>
             <div className="controls m-0">
-              <button class="callButton me-0" onClick={()=>handleAnswerCall("audio")}>
+              <button class="callButton me-0" onClick={() => handleAnswerCall("audio")}>
                 <i class="fa-duotone fa-phone"></i>
               </button>
               <button class="callButton hangup me-0" onClick={decline}>
