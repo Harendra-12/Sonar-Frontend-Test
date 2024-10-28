@@ -244,3 +244,16 @@ input::-webkit-inner-spin-button {
 #detailsContent .vtablerow select {
     height: 24px;
 }
+
+form.tangoNavs .nav-tabs .nav-link.active {
+    border-bottom: 3px solid var(--ui-accent) !important;
+    color: var(--ui-accent);
+}
+
+form.tangoNavs .nav-tabs .nav-link {
+    color: #333;
+}
+
+form.tangoNavs .nav-tabs {
+    margin-bottom: 10px;
+}

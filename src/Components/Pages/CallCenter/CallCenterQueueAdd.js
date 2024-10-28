@@ -351,222 +351,212 @@ function CallCenterQueueAdd() {
             </div>
           )}
           <div className="mx-2" id="detailsContent">
-            <form action="#" className="row mb-0">
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Queue Name</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Enter the queue name.
-                  </label>
+            <form action="#" className="tangoNavs mb-0">
+              <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                  <button class="nav-link active" id="nav-gen-tab" data-bs-toggle="tab" data-bs-target="#nav-gen" type="button" role="tab" aria-controls="nav-gen" aria-selected="true">General</button>
+                  <button class="nav-link" id="nav-tier-tab" data-bs-toggle="tab" data-bs-target="#nav-tier" type="button" role="tab" aria-controls="nav-tier" aria-selected="false">Tier Rules</button>
+                  <button class="nav-link" id="nav-max-tab" data-bs-toggle="tab" data-bs-target="#nav-max" type="button" role="tab" aria-controls="nav-max" aria-selected="false">Max Wait Time</button>
+                  <button class="nav-link" id="nav-queue-tab" data-bs-toggle="tab" data-bs-target="#nav-queue" type="button" role="tab" aria-controls="nav-queue" aria-selected="false">Queue Rules</button>
+                  <button class="nav-link" id="nav-adv-tab" data-bs-toggle="tab" data-bs-target="#nav-adv" type="button" role="tab" aria-controls="nav-adv" aria-selected="false">Advanced</button>
                 </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    name="extension"
-                    {...register("queue_name", {
-                      ...requiredValidator,
-                      ...nameNumberValidator,
-                    })}
-                    className="formItem"
-                    onKeyDown={restrictToAllowedChars}
-                  />
-                  {errors.queue_name && (
-                    <ErrorMessage text={errors.queue_name.message} />
-                  )}
-                </div>
-              </div>
-
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Greeting</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Select the desired Greeting.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <select
-                    {...register("greeting", { ...requiredValidator })}
-                    className="formItem w-100"
-                  >
-                    <option disabled value="" selected>
-                      Select Greeting
-                    </option>
-                    {greetingSound &&
-                      greetingSound.map((item, index) => {
-                        return (
-                          <option key={index} value={item.id}>
-                            {item.name}
-                          </option>
-                        );
-                      })}
-                  </select>
-                  {errors.greeting && (
-                    <ErrorMessage text={errors.greeting.message} />
-                  )}
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
-                    Select the desired Greeting.
-                  </label>
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Strategy</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Select the queue ring strategy.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <select {...register("strategy")} className="formItem w-100">
-                    <option value="ring-all">Ring All</option>
-                    <option value="top-down">Top Down</option>
-                    <option value="sequentially-by-agent-order">
-                      Sequentially by agent order
-                    </option>
-
-                    <option value="random">Random</option>
-                    <option value="ring-progressively">
-                      Ring Progressively
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Music on Hold</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Select the desired hold music.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <select
-                    {...register("moh_sound", { ...requiredValidator })}
-                    className="formItem w-100"
-                  >
-                    <option disabled value="" selected>
-                      Select Hold Music
-                    </option>
-                    {holdSound &&
-                      holdSound.map((item, index) => {
-                        return (
-                          <option key={index} value={item.id}>
-                            {item.name}
-                          </option>
-                        );
-                      })}
-                  </select>
-                  {errors.moh_sound && (
-                    <ErrorMessage text={errors.moh_sound.message} />
-                  )}
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Record</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Save the recording.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <select
-                    {...register("recording_enabled")}
-                    className="formItem w-100"
-                    name="recording_enabled"
-                  >
-                    <option value="true">True</option>
-                    <option value="false">False</option>
-                  </select>
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Action</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Set the action to perform when the max wait time is reached.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <ActionList
-                    title={null}
-                    label={null}
-                    getDropdownValue={actionListValue}
-                    value={watch().queue_timeout_action}
-                  />
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Discard Abandoned After</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    The number of seconds before the abandoned call is removed
-                    from the queue.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    name="extension"
-                    className="formItem"
-                    {...register("discard_abandoned_after", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToAllowedChars}
-                  />
-                  {errors.discard_abandoned_after && (
-                    <ErrorMessage
-                      text={errors.discard_abandoned_after.message}
-                    />
-                  )}
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Caller ID Name Prefix</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Set a prefix on the caller ID name.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    name="extension"
-                    className="formItem"
-                    {...register("queue_cid_prefix", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToAllowedChars}
-                  />
-                  {errors.queue_cid_prefix && (
-                    <ErrorMessage text={errors.queue_cid_prefix.message} />
-                  )}
-                </div>
-              </div>
-
-              <div className="d-flex justify-content-between p-0">
-                <div style={{ width: '45%', padding: 0 }}>
-                  <div className="col-12"></div>
-                  <div className="formRow col-xl-12">
-                    <div className="formLabel">
-                      <label >Tier Rules</label>
+              </nav>
+              <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-gen" role="tabpanel" aria-labelledby="nav-gen-tab" tabindex="0">
+                  <form className="row col-12 mx-auto mb-0">
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="">Queue Name</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Enter the queue name.
+                        </label>
+                      </div>
+                      <div className="col-xl-6 col-12">
+                        <input
+                          type="text"
+                          name="extension"
+                          {...register("queue_name", {
+                            ...requiredValidator,
+                            ...nameNumberValidator,
+                          })}
+                          className="formItem"
+                          onKeyDown={restrictToAllowedChars}
+                        />
+                        {errors.queue_name && (
+                          <ErrorMessage text={errors.queue_name.message} />
+                        )}
+                      </div>
                     </div>
-                    <div className="col-6">
-                      <button className="panelButton ms-0" type="button" data-bs-toggle="collapse" data-bs-target="#timeCollapse" aria-expanded="false">
-                        <span className="text">
-                          Expand
-                        </span>
-                        <span className="icon">
-                          <i class="fa-solid fa-caret-down"></i>
-                        </span>
-                      </button>
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="">Greeting</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Select the desired Greeting.
+                        </label>
+                      </div>
+                      <div className="col-xl-6 col-12">
+                        <select
+                          {...register("greeting", { ...requiredValidator })}
+                          className="formItem w-100"
+                        >
+                          <option disabled value="" selected>
+                            Select Greeting
+                          </option>
+                          {greetingSound &&
+                            greetingSound.map((item, index) => {
+                              return (
+                                <option key={index} value={item.id}>
+                                  {item.name}
+                                </option>
+                              );
+                            })}
+                        </select>
+                        {errors.greeting && (
+                          <ErrorMessage text={errors.greeting.message} />
+                        )}
+                      </div>
                     </div>
-                  </div>
-                  <div className="col-12"></div>
-                  <div className="collapse col-12" id="timeCollapse" style={{ padding: 0, }}>
-                    <div className="formRow col-xl-12">
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="">Strategy</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Select the queue ring strategy.
+                        </label>
+                      </div>
+                      <div className="col-xl-6 col-12">
+                        <select {...register("strategy")} className="formItem w-100">
+                          <option value="ring-all">Ring All</option>
+                          <option value="top-down">Top Down</option>
+                          <option value="sequentially-by-agent-order">
+                            Sequentially by agent order
+                          </option>
+
+                          <option value="random">Random</option>
+                          <option value="ring-progressively">
+                            Ring Progressively
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="">Music on Hold</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Select the desired hold music.
+                        </label>
+                      </div>
+                      <div className="col-xl-6 col-12">
+                        <select
+                          {...register("moh_sound", { ...requiredValidator })}
+                          className="formItem w-100"
+                        >
+                          <option disabled value="" selected>
+                            Select Hold Music
+                          </option>
+                          {holdSound &&
+                            holdSound.map((item, index) => {
+                              return (
+                                <option key={index} value={item.id}>
+                                  {item.name}
+                                </option>
+                              );
+                            })}
+                        </select>
+                        {errors.moh_sound && (
+                          <ErrorMessage text={errors.moh_sound.message} />
+                        )}
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="">Record</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Save the recording.
+                        </label>
+                      </div>
+                      <div className="col-xl-6 col-12">
+                        <select
+                          {...register("recording_enabled")}
+                          className="formItem w-100"
+                          name="recording_enabled"
+                        >
+                          <option value="true">True</option>
+                          <option value="false">False</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="">Action</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Set the action to perform when the max wait time is reached.
+                        </label>
+                      </div>
+                      <div className="col-xl-6 col-12">
+                        <ActionList
+                          title={null}
+                          label={null}
+                          getDropdownValue={actionListValue}
+                          value={watch().queue_timeout_action}
+                        />
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="">Discard Abandoned After</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          The number of seconds before the abandoned call is removed
+                          from the queue.
+                        </label>
+                      </div>
+                      <div className="col-xl-6 col-12">
+                        <input
+                          type="text"
+                          name="extension"
+                          className="formItem"
+                          {...register("discard_abandoned_after", {
+                            ...noSpecialCharactersValidator,
+                          })}
+                          onKeyDown={restrictToAllowedChars}
+                        />
+                        {errors.discard_abandoned_after && (
+                          <ErrorMessage
+                            text={errors.discard_abandoned_after.message}
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="">Caller ID Name Prefix</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Set a prefix on the caller ID name.
+                        </label>
+                      </div>
+                      <div className="col-xl-6 col-12">
+                        <input
+                          type="text"
+                          name="extension"
+                          className="formItem"
+                          {...register("queue_cid_prefix", {
+                            ...noSpecialCharactersValidator,
+                          })}
+                          onKeyDown={restrictToAllowedChars}
+                        />
+                        {errors.queue_cid_prefix && (
+                          <ErrorMessage text={errors.queue_cid_prefix.message} />
+                        )}
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="tab-pane fade" id="nav-tier" role="tabpanel" aria-labelledby="nav-tier-tab" tabindex="0">
+                  <form className="row col-12 mx-auto mb-0">
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Tier Rules Apply</label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xl-6 col-12">
                         <select
                           {...register("tier_rules_apply")}
                           className="formItem w-100"
@@ -577,11 +567,11 @@ function CallCenterQueueAdd() {
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-12">
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Tier Rule Wait Second</label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xl-6 col-12">
                         <input
                           type="number"
                           name="extension"
@@ -596,11 +586,11 @@ function CallCenterQueueAdd() {
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-12">
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Tier Rule Wait Multiply Level</label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xl-6 col-12">
                         <select
                           {...register("tier_rule_wait_multiply_level")}
                           className="formItem w-100"
@@ -611,11 +601,11 @@ function CallCenterQueueAdd() {
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-12" style={{ borderBottom: '2px solid #00a9ff' }}>
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Tier Rule No Agent No Wait</label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xl-6 col-12">
                         <select
                           {...register("tier_rule_no_agent_no_wait")}
                           className="formItem w-100"
@@ -625,32 +615,15 @@ function CallCenterQueueAdd() {
                         </select>
                       </div>
                     </div>
-                  </div>
-                  <div className="col-12"></div>
-
-                  <div className="col-12"></div>
-                  <div className="formRow col-xl-12">
-                    <div className="formLabel">
-                      <label >Max Wait Time Rules</label>
-                    </div>
-                    <div className="col-6">
-                      <button className="panelButton ms-0" type="button" data-bs-toggle="collapse" data-bs-target="#maxWaitCollapse" aria-expanded="false">
-                        <span className="text">
-                          Expand
-                        </span>
-                        <span className="icon">
-                          <i class="fa-solid fa-caret-down"></i>
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                  <div className="col-12"></div>
-                  <div className="collapse" style={{ padding: 0 }} id="maxWaitCollapse">
-                    <div className="formRow col-xl-12">
+                  </form>
+                </div>
+                <div class="tab-pane fade" id="nav-max" role="tabpanel" aria-labelledby="nav-max-tab" tabindex="0">
+                  <form className="row col-12 mx-auto mb-0">
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Max Wait Time</label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xl-6 col-12">
                         <input
                           type="number"
                           name="extension"
@@ -666,11 +639,11 @@ function CallCenterQueueAdd() {
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-12">
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Max Wait Time with no agent</label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xl-6 col-12">
                         <input
                           type="number"
                           name="extension"
@@ -686,13 +659,13 @@ function CallCenterQueueAdd() {
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-12" style={{ borderBottom: '2px solid #00a9ff' }}>
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">
                           Max Wait Time With No Agent Time Reached{" "}
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xl-6 col-12">
                         <input
                           type="number"
                           name="extension"
@@ -709,38 +682,18 @@ function CallCenterQueueAdd() {
                         )}
                       </div>
                     </div>
-                  </div>
-                  <div className="col-12"></div>
-
-
+                  </form>
                 </div>
-                <div style={{ width: '45%' }}>
-                  <div className="col-12"></div>
-                  <div className="formRow col-xl-12">
-                    <div className="formLabel">
-                      <label >Queue Rules</label>
-                    </div>
-                    <div className="col-6">
-                      <button className="panelButton ms-0" type="button" data-bs-toggle="collapse" data-bs-target="#queueCollapse" aria-expanded="false">
-                        <span className="text">
-                          Expand
-                        </span>
-                        <span className="icon">
-                          <i class="fa-solid fa-caret-down"></i>
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                  <div className="col-12"></div>
-                  <div style={{ padding: "0px" }} class="col-12 collapse" id="queueCollapse">
-                    <div className="formRow col-xl-12">
+                <div class="tab-pane fade" id="nav-queue" role="tabpanel" aria-labelledby="nav-queue-tab" tabindex="0">
+                  <form className="row col-12 mx-auto mb-0">
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Queue Announce</label>
                         <label htmlFor="data" className="formItemDesc">
                           Select the desired queue announce sound.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xl-6 col-12">
                         <select
                           {...register("queue_announce_sound")}
                           className="formItem w-100"
@@ -757,18 +710,14 @@ function CallCenterQueueAdd() {
                               );
                             })}
                         </select>
-                        <br />
-                        <label htmlFor="data" className="formItemDesc">
-                          Select the desired queue announce sound.
-                        </label>
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-12">
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Queue Announce Frequency</label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xl-6 col-12">
                         <input
                           type="number"
                           name="extension"
@@ -784,14 +733,14 @@ function CallCenterQueueAdd() {
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-12" style={{ borderBottom: '2px solid #00a9ff' }}>
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Queue Description</label>
                         <label htmlFor="data" className="formItemDesc">
                           Define queue description.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xl-6 col-12">
                         <input
                           type="text"
                           name="queue_description"
@@ -806,32 +755,15 @@ function CallCenterQueueAdd() {
                         )}
                       </div>
                     </div>
-                  </div>
-                  <div className="col-12"></div>
-
-                  <div className="col-12"></div>
-                  <div className="formRow col-xl-12">
-                    <div className="formLabel">
-                      <label >Advance Options</label>
-                    </div>
-                    <div className="col-6">
-                      <button className="panelButton ms-0" type="button" data-bs-toggle="collapse" data-bs-target="#advCollapse" aria-expanded="false">
-                        <span className="text">
-                          Expand
-                        </span>
-                        <span className="icon">
-                          <i class="fa-solid fa-caret-down"></i>
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                  <div className="col-12"></div>
-                  <div style={{ padding: "0px" }} class="col-12 collapse" id="advCollapse">
-                    <div className="formRow col-xl-12">
+                  </form>
+                </div>
+                <div class="tab-pane fade" id="nav-adv" role="tabpanel" aria-labelledby="nav-adv-tab" tabindex="0">
+                  <form className="row col-12 mx-auto mb-0">
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Ring Progressively Delay</label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xl-6 col-12">
                         <input
                           type="number"
                           name="extension"
@@ -847,14 +779,14 @@ function CallCenterQueueAdd() {
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-12">
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Record Template</label>
                         <label htmlFor="data" className="formItemDesc">
                           Define record template.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xl-6 col-12">
                         <input
                           type="text"
                           name="record_template"
@@ -870,11 +802,11 @@ function CallCenterQueueAdd() {
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-12">
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Time Base Score</label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xl-6 col-12">
                         <select
                           {...register("time_base_score")}
                           className="formItem w-100"
@@ -884,11 +816,11 @@ function CallCenterQueueAdd() {
                         </select>
                       </div>
                     </div>
-                    <div className="formRow col-xl-12" style={{ borderBottom: '2px solid #00a9ff' }}>
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Abandoned Resume Allowed</label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xl-6 col-12">
                         <select
                           {...register("abandoned_resume_allowed")}
                           className="formItem w-100"
@@ -898,11 +830,9 @@ function CallCenterQueueAdd() {
                         </select>
                       </div>
                     </div>
-                  </div>
-                  <div className="col-12"></div>
+                  </form>
                 </div>
               </div>
-
 
               {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
@@ -911,7 +841,7 @@ function CallCenterQueueAdd() {
                     Truncate Agents On Load.
                   </label>
                 </div>
-                <div className="col-6">
+                <div className="col-xl-6 col-12">
                   <select
                     {...register("truncate-agents-on-load")}
                     className="formItem w-100"
@@ -930,7 +860,7 @@ function CallCenterQueueAdd() {
                     Truncate Tiers On Load.
                   </label>
                 </div>
-                <div className="col-6">
+                <div className="col-xl-6 col-12">
                   <select
                     {...register("truncate-tiers-on-load")}
                     className="formItem w-100"
@@ -941,8 +871,6 @@ function CallCenterQueueAdd() {
                   </select>
                 </div>
               </div> */}
-
-
             </form>
           </div>
           <div class="mx-2" id="detailsContent">

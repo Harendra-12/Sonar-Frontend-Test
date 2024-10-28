@@ -918,7 +918,7 @@ const Dashboard = () => {
                                       (item, index) => (
                                         <li key={index} onClick={() => navigate(`/extensions-edit?id=${item?.id}`)}>
                                           {item?.extension}
-                                          <span className={item?.sofia_status === 0 ? "float-end extensionStatus" : "extensionStatus online"}></span>
+                                          <span className={item?.sofia_status === 0 ? "float-end extensionStatus" : "float-end extensionStatus online"}></span>
                                         </li>
                                       ))}
                                   </ul>

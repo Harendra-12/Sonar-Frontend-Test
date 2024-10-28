@@ -228,15 +228,7 @@ const RingGroups = () => {
                                     navigate(`/ring-groups-edit?id=${item.id}`)
                                   }
                                 >
-                                  <label
-                                    className={
-                                      item.status === "active"
-                                        ? "tableLabel success"
-                                        : "tableLabel fail"
-                                    }
-                                  >
-                                    {item.status === "active" ? "Active" : "Inactive"}
-                                  </label>
+                                  {item.status === "active" ? "Active" : "Inactive"}
                                 </td>
                                 <td
                                   onClick={() =>

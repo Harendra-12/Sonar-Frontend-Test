@@ -313,18 +313,9 @@ const Users = () => {
                                 //   handleStatusChange(item.id, item.status)
                                 // }
                                 >
-                                  <label
-                                    style={{ cursor: "default" }}
-                                    className={
-                                      item.status === "E"
-                                        ? "tableLabel success"
-                                        : "tableLabel fail"
-                                    }
-                                  >
-                                    {item.status === "E"
-                                      ? "Enabled"
-                                      : "Disabled"}
-                                  </label>
+                                  {item.status === "E"
+                                    ? "Enabled"
+                                    : "Disabled"}
                                 </td>
                               </tr>
                             );

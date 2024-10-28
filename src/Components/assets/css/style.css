@@ -68,7 +68,8 @@
     --color2-trans: #49c2ff30;
     /* Accent Color */
     --ui-accent: #439fdd;
-    --ui-icon: #00ffe0;
+    /* --ui-icon: #00ffe0; */
+    --ui-icon: #00a6fb;
     --ui-accent-green: #a5d02a;
     --ui-accent-green-trans: #b7e92b30;
     /* --ui-accent: #d76394; */

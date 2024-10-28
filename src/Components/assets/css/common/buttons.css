@@ -217,7 +217,7 @@
 }
 
 .tabButton.active {
-  background-color: #00ff1485;
+  background-color: #00699185;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
   color: #fff;
@@ -543,8 +543,8 @@
   border-radius: 50%;
   background-color: var(--ui-accent);
   color: #fff;
-  width: 25px;
-  height: 25px;
+  width: 28px;
+  height: 28px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -576,6 +576,15 @@
 
 .tableButton.warning {
   background-color: #ffa500;
+}
+
+.tableButton.empty {
+  background-color: transparent;
+  border: 1px solid var(--ui-accent);
+}
+
+.tableButton.empty i {
+  color: var(--ui-accent) !important;
 }
 
 .tableButton.delete:hover,
