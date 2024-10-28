@@ -10,6 +10,7 @@ import {
 import ContentLoader from "../../Loader/ContentLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import Tippy from "@tippyjs/react";
 
 function DidListing() {
   const [did, setDid] = useState();
@@ -53,7 +54,7 @@ function DidListing() {
       }
       getData();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClick = async (id) => {
@@ -140,7 +141,7 @@ function DidListing() {
                         <th>SMS</th>
                         <th style={{ width: 150 }}>Configure</th>
                         <th style={{ width: 150 }}>Reset Configuration</th>
-                        <th>Set for default calls</th>
+                        <th>Set as default</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -157,14 +158,16 @@ function DidListing() {
                               </td>
                               <td style={{ cursor: "default" }}>{item?.sms}</td>
                               <td style={{ cursor: "default" }}>
-                                <button
-                                  onClick={() =>
-                                    navigate(`/did-config`, { state: item })
-                                  }
-                                  className={item.configuration !== null ? "tableButton" : "tableButton warning"}
-                                >
-                                  <i className={item.configuration !== null ? "fa-solid fa-gear text-success" : "fa-solid fa-triangle-exclamation"}></i>
-                                </button>
+                                <Tippy content={item.configuration !== null ? "Update the configuration" : "Not Configured! Click to configure"}>
+                                  <button
+                                    onClick={() =>
+                                      navigate(`/did-config`, { state: item })
+                                    }
+                                    className={item.configuration !== null ? "tableButton" : "tableButton warning"}
+                                  >
+                                    <i className={item.configuration !== null ? "fa-solid fa-gear text-success" : "fa-solid fa-triangle-exclamation"}></i>
+                                  </button>
+                                </Tippy>
                                 {/* <label
                                   className={item.configuration !== null ? "tableLabel success" : "tableLabel pending"}
                                   style={{ cursor: "pointer" }}
@@ -180,31 +183,33 @@ function DidListing() {
                               <td style={{ cursor: "default" }}>
                                 {" "}
                                 {item.configuration !== null && (
-                                  <button
-                                    className="tableButton delete"
-                                    style={{ cursor: "pointer" }}
-                                    onClick={() =>
-                                      handleClick(item.configuration.id)
-                                    }
-                                  >
-                                    <i class="fa-solid fa-arrows-rotate"></i>
-                                  </button>
+                                  <Tippy content="Reset configuration of this DID">
+                                    <button
+                                      className="tableButton delete"
+                                      style={{ cursor: "pointer" }}
+                                      onClick={() =>
+                                        handleClick(item.configuration.id)
+                                      }
+                                    >
+                                      <i class="fa-solid fa-arrows-rotate"></i>
+                                    </button>
+                                  </Tippy>
                                 )}
                               </td>
                               <td style={{ cursor: "default" }}>
-                                <label
-                                  className={item.default_outbound === 1 ? "tableLabel success" : "tableLabel pending"}
-                                  style={{ cursor: "pointer" }}
-                                  onClick={() => {
-                                    if (item.default_outbound === 0) {
-                                      handleClickDefault(item.id)
-                                    }
-                                  }}
-                                >
-                                  {item.default_outbound === 0
-                                    ? "Make Default"
-                                    : "Default"}
-                                </label>
+                                <Tippy content={item.default_outbound === 1 ? "This DID is set as default" : "Set this DID default"}>
+                                  <button
+                                    className={item.default_outbound === 1 ? "tableButton" : "tableButton empty"}
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => {
+                                      if (item.default_outbound === 0) {
+                                        handleClickDefault(item.id)
+                                      }
+                                    }}
+                                  >
+                                    <i class="fa-solid fa-headset"></i>
+                                  </button>
+                                </Tippy>
                               </td>
                             </tr>
                           );

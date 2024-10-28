@@ -543,8 +543,8 @@
   border-radius: 50%;
   background-color: var(--ui-accent);
   color: #fff;
-  width: 25px;
-  height: 25px;
+  width: 28px;
+  height: 28px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -576,6 +576,15 @@
 
 .tableButton.warning {
   background-color: #ffa500;
+}
+
+.tableButton.empty {
+  background-color: transparent;
+  border: 1px solid var(--ui-accent);
+}
+
+.tableButton.empty i {
+  color: var(--ui-accent) !important;
 }
 
 .tableButton.delete:hover,

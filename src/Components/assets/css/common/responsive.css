@@ -54,6 +54,10 @@
     .callerContent .user .userProfileContainer {
         margin: 0;
     }
+
+    .formLabel {
+        max-width: 100%;
+    }
 }
 
 @media (min-width: 1500px) {

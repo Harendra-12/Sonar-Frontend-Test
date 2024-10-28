@@ -228,15 +228,7 @@ const Extensions = () => {
                                 navigate(`/extensions-edit?id=${item.id}`)
                               }
                             >
-                              <label
-                                className={
-                                  item.callScreen === "Enable"
-                                    ? "tableLabel success"
-                                    : "tableLabel fail"
-                                }
-                              >
-                                {item.callScreen}
-                              </label>
+                              {item.callScreen}
                             </td>
                             {/* <td>1001</td> */}
                             <td
