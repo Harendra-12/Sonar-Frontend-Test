@@ -463,7 +463,7 @@ function EFax() {
                                 File(s) (maximum file size is 50 MB)
                               </label>
                               <div className="inputFileWrapper">
-                                {/* <input type="file" /> */}
+                                <input type="file" />
                                 {/* <select>
                                 <option value="" disabled>
                                   Chose file
@@ -475,7 +475,8 @@ function EFax() {
                                     </option>
                                   ))}
                               </select> */}
-                                {dropdownOption && (
+                              
+                                {/* {dropdownOption && (
                                   <Select
                                     closeMenuOnSelect={false}
                                     isMulti
@@ -493,7 +494,7 @@ function EFax() {
                                       setValue("usages", values);
                                     }}
                                   />
-                                )}
+                                )} */}
                               </div>
                             </div>
                             <div className="buttonControl">

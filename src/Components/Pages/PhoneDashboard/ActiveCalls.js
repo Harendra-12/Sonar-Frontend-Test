@@ -120,7 +120,7 @@ function ActiveCalls() {
                       activeCall
                         .filter(
                           (call) =>
-                            call.callstate === "ACTIVE"
+                            call.callstate === "ACTIVE" || call.b_callee_direction==="ACTIVE"
                         ).map
                         ((item, key) => {
                           return (
