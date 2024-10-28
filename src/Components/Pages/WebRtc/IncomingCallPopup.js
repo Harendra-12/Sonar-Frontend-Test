@@ -14,7 +14,6 @@ function IncomingCallPopup({
   isMicOn,
   isVideoOn,
 }) {
-
   const [isMinimized, setIsMinimized] = useState(false);
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
@@ -38,7 +37,7 @@ function IncomingCallPopup({
       audio.currentTime = 0; // Reset the audio to the beginning
     };
   }, [lastIncomingCall, isMinimized, audio]);
-  console.log('answer:', answer);
+  console.log("answer:", answer);
   useEffect(() => {
     if (!lastIncomingCall) {
       setIsMinimized(true);
@@ -88,13 +87,24 @@ function IncomingCallPopup({
       toast.warn("Please turn on microphone");
       return;
     }
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    const hasVideoInput = devices.some(
+      (device) => device.kind === "videoinput"
+    );
+
+    if (mode === "video" && !hasVideoInput) {
+      //need to check here if webcam is available or not ,
+      //otherwise it will send 480-temporarily unavailable
+      toast.warn("No webcam detected. Answering as audio call.");
+      mode = "audio"; // Fallback to audio if no webcam is available
+    }
     session.accept({
       sessionDescriptionHandlerOptions: {
         constraints: {
           audio: true,
           video: mode === "video" ? true : false,
-        }
-      }
+        },
+      },
     });
 
     // if mode is video then set_session mode changed to video in extesting session
@@ -102,20 +112,22 @@ function IncomingCallPopup({
     if (mode === "video") {
       dispatch({
         type: "SET_MINIMIZE",
-        minimize: false
-      })
-      const updatedSession = globalSession.find((session) => session.id === sessionId);
+        minimize: false,
+      });
+      const updatedSession = globalSession.find(
+        (session) => session.id === sessionId
+      );
       if (updatedSession) {
         updatedSession.mode = "video";
         dispatch({
           type: "SET_SESSIONS",
-          sessions: [...globalSession.filter((session) => session.id !== sessionId), updatedSession],
+          sessions: [
+            ...globalSession.filter((session) => session.id !== sessionId),
+            updatedSession,
+          ],
         });
       }
     }
-
-
-
 
     setSelectedModule("onGoingCall");
     setactivePage("call");
@@ -126,7 +138,7 @@ function IncomingCallPopup({
     dispatch({
       type: "SET_VIDEOCALL",
       videoCall: mode === "video" ? true : false,
-    })
+    });
     dispatch({
       type: "SET_CALLPROGRESSDESTINATION",
       callProgressDestination: callerExtension,
