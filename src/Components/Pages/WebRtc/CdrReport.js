@@ -449,7 +449,7 @@ function CdrReport() {
                                 <td>{item["Call-Direction"]}</td>
                                 <td>{item["application_state"]}</td>
                                 <td>{item["variable_sip_from_user"]}</td>
-                                <td>{item["variable_sip_to_user"]}</td>
+                                <td>{item["application_state"]==="intercept"||item["application_state"]==="eavesdrop"?item["other_leg_destination_number"]:item["variable_sip_to_user"]}</td>
                                 <td>{item["application_state_to_ext"]}</td>
                                 <td>
                                   {item["variable_start_stamp"].split(" ")[0]}
