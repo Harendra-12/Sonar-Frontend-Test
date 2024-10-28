@@ -83,7 +83,7 @@ function CallDashboard() {
                     <h3
                       style={{ fontFamily: "Outfit", color: "rgb(68, 68, 68)" }}
                     >
-                      Call Dashboard <button class="clearButton"><i class="fa-regular fa-arrows-rotate fs-5" style={{ color: 'rgb(148, 148, 148)' }}></i></button>
+                      Call Dashboard 
                     </h3>
                   </div>
                   <div className="col-12">
@@ -96,16 +96,16 @@ function CallDashboard() {
                         >
                           All
                         </button>
-                        <button
+                        {/* <button
                           className="tabLink"
                           effect="ripple"
                           data-category="new"
                         >
                           New
-                        </button>
+                        </button> */}
                       </div>
                     </nav>
-                    <div className="position-relative searchBox d-flex mt-3">
+                    {/* <div className="position-relative searchBox d-flex mt-3">
                       <input
                         type="search"
                         name="Search"
@@ -115,7 +115,7 @@ function CallDashboard() {
                       <button className="ms-2 appPanelButton" effect="ripple">
                         <i className="fa-light fa-calendar-plus" />
                       </button>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
                 <div
@@ -141,7 +141,7 @@ function CallDashboard() {
                         Parked Calls
                       </h3>
                     </div>
-                    <div className="col-12">
+                    {/* <div className="col-12">
                       <div className="position-relative searchBox d-flex mt-3">
                         <input
                           type="search"
@@ -153,7 +153,7 @@ function CallDashboard() {
                           <i className="fa-light fa-calendar-plus" />
                         </button>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="col-12 px-1" style={{ overflow: "auto" }}>
                     <div className="tableContainer">
@@ -219,17 +219,7 @@ function CallDashboard() {
                       </h3>
                     </div>
                     <div className="col-12">
-                      <div className="position-relative searchBox d-flex mt-3">
-                        <input
-                          type="search"
-                          name="Search"
-                          id="headerSearch"
-                          placeholder="Search"
-                        />
-                        <button className="ms-2 appPanelButton" effect="ripple">
-                          <i className="fa-light fa-calendar-plus" />
-                        </button>
-                      </div>
+                     
                     </div>
                   </div>
                   <div className="col-12" style={{ overflow: "auto" }}>
@@ -240,22 +230,25 @@ function CallDashboard() {
                             <th>Sl no.</th>
                             <th>From </th>
                             <th>To</th>
+                            <th>Call at</th>
                           </tr>
                         </thead>
-                        {/* <tbody>
+
+                        <tbody>
                           {
-                            callState && callState.map((item,key) => {
+                            activeCall && activeCall.filter((item) => item.callstate === "RINGING").map((item,key) => {
                               return (
                                 <tr>
                                   <td>{key+1}</td>
-                                  <td>{item.origin}</td>
-                                  <td>{item.destination}</td>
+                                  <td>{item.cid_name}</td>
+                                  <td>{item.presence_id.split("@")[0]}</td>
+                                  <td>{item.created.split(" ")[1]}</td>
                                 </tr>
                               )
                             })
                           }
 
-                        </tbody> */}
+                        </tbody>
                       </table>
                     </div>
                   </div>

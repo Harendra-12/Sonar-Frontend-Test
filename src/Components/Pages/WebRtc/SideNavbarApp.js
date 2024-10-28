@@ -95,18 +95,6 @@ function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
             </li>
             <li effect="ripple">
               <div
-                // to="/call"
-                onClick={() => setactivePage("videocall")}
-                className="navItem"
-              >
-                <div className="iconHolder">
-                  <i className="fa-solid fa-phone" />
-                </div>
-                <div className="itemTitle">Video call</div>
-              </div>
-            </li>
-            <li effect="ripple">
-              <div
                 // to="/efax"
                 onClick={() => setactivePage("e-fax")}
                 className="navItem"

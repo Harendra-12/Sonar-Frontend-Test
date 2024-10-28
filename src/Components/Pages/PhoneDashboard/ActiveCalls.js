@@ -118,12 +118,11 @@ function ActiveCalls() {
                   <tbody>
                     {activeCall &&
                       activeCall
-                        // .filter(
-                        //   (call) =>
-                        //     call.direction === "inbound" &&
-                        //     call.callstate === "ACTIVE"
-                        // )
-                        .map((item, key) => {
+                        .filter(
+                          (call) =>
+                            call.callstate === "ACTIVE"
+                        ).map
+                        ((item, key) => {
                           return (
                             <tr>
                               <td>{key + 1}</td>
