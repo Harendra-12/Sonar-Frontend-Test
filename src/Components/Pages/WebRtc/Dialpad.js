@@ -26,7 +26,7 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
       toast.warn("Please turn on microphone");
       return;
     }
-    if (mode === "video") {
+    if(mode==="video"){
       if (!isVideoOn) {
         toast.warn("Please turn on camera");
         return;
@@ -49,57 +49,48 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
 
     if (destNumber.length > 3) {
       dispatch({
-        type: "SET_MINIMIZE",
-        minimize: false,
-      });
+        type:"SET_MINIMIZE",
+        minimize:false
+      })
       hideDialpad(false);
       // e.preventDefault();
       const apiData = await sessionManager?.call(
-        `sip:${destNumber}@${account.domain.domain_name}`,
-        {
+        `sip:${destNumber}@${account.domain.domain_name}`,{
           sessionDescriptionHandlerOptions: {
             constraints: {
               audio: true,
-              video: mode === "video" ? true : false,
-            },
-          },
+              video:mode === "video"? true : false
+            }
+          }
         },
         {
           media: {
             audio: true,
-            video:
-              mode === "audio"
-                ? true
-                : {
-                    mandatory: {
-                      minWidth: 1280,
-                      minHeight: 720,
-                      minFrameRate: 30,
-                    },
-                    optional: [{ facingMode: "user" }],
-                  },
+            video: mode === "audio" ? true :{
+              mandatory: {
+                minWidth: 1280,
+                minHeight: 720,
+                minFrameRate: 30,
+              },
+              optional: [{ facingMode: "user" }],
+            },
           },
         }
       );
-      console.log("apiData", apiData);
+      console.log("apiData",apiData);
 
       setSelectedModule("onGoingCall");
       dispatch({
         type: "SET_SESSIONS",
         sessions: [
           ...globalSession,
-          {
-            id: apiData._id,
-            destination: destNumber,
-            state: "Established",
-            mode: mode,
-          },
+          { id: apiData._id, destination: destNumber, state: "Established",mode:mode },
         ],
       });
       dispatch({
-        type: "SET_VIDEOCALL",
-        videoCall: mode === "video" ? true : false,
-      });
+        type:"SET_VIDEOCALL",
+        videoCall:mode==="video"?true:false
+      })
       dispatch({
         type: "SET_CALLPROGRESSID",
         callProgressId: apiData._id,
@@ -110,7 +101,7 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
       });
       dispatch({
         type: "SET_CALLPROGRESS",
-        callProgress: mode === "video" ? false : true,
+        callProgress: mode === "video" ? false : true
       });
     } else {
       toast.error("Please enter a valid number");
@@ -244,20 +235,17 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
                 </div>
               </div>
               <div className="d-flex justify-content-center">
-                <div onClick={() => onSubmit("audio")}>
-                  <button className="callButton">
-                    <i className="fa-thin fa-phone" />
-                  </button>
-                </div>
-                {isVideoOn ? (
-                  <div onClick={() => onSubmit("video")}>
-                    <button className="callButton">
-                      <i className="fa-thin fa-video" />
-                    </button>
-                  </div>
-                ) : (
-                  ""
-                )}
+              <div onClick={()=>onSubmit("audio")}>
+                <button className="callButton">
+                  <i className="fa-thin fa-phone" />
+                </button>
+              </div>
+              {isVideoOn ?
+              <div onClick={()=>onSubmit("video")}>
+                <button className="callButton">
+                  <i className="fa-thin fa-video" />
+                </button>
+              </div> :""}
               </div>
             </div>
           </div>

@@ -158,17 +158,17 @@ function Call({
 
     setCallHistory(
       filteredCalls[0] &&
-        allApiData.filter((item) => {
-          if (!isCustomerAdmin) {
-            return (
-              (item["Caller-Callee-ID-Number"] === extension &&
-                item["Caller-Caller-ID-Number"] === clickedExtension) ||
-              (item["Caller-Caller-ID-Number"] === extension &&
-                item["Caller-Callee-ID-Number"] === clickedExtension)
-            );
-          }
-          return true;
-        })
+      allApiData.filter((item) => {
+        if (!isCustomerAdmin) {
+          return (
+            (item["Caller-Callee-ID-Number"] === extension &&
+              item["Caller-Caller-ID-Number"] === clickedExtension) ||
+            (item["Caller-Caller-ID-Number"] === extension &&
+              item["Caller-Callee-ID-Number"] === clickedExtension)
+          );
+        }
+        return true;
+      })
     );
   }, [allCalls, clickStatus, searchQuery]);
 
@@ -177,8 +177,7 @@ function Call({
     const min = Math.floor((duration / 60) % 60);
     const hour = Math.floor(duration / 3600);
     return (
-      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""}${
-        sec ? sec + " sec" : ""
+      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""}${sec ? sec + " sec" : ""
       }` || "0 sec"
     );
   };
@@ -206,19 +205,18 @@ function Call({
       key={item.id}
       onClick={() => handleCallItemClick(item)}
       onDoubleClick={() => handleDoubleClickCall(item)}
-      className={`callListItem ${
-        item["Caller-Callee-ID-Number"] === extension &&
+      className={`callListItem ${item["Caller-Callee-ID-Number"] === extension &&
         item["variable_billsec"] > 0
-          ? "incoming"
-          : item["Caller-Caller-ID-Number"] === extension
+        ? "incoming"
+        : item["Caller-Caller-ID-Number"] === extension
           ? "outgoing"
           : item["Caller-Callee-ID-Number"] === extension &&
             item["variable_billsec"] === 0
-          ? "missed"
-          : item["Call-Direction"] === "voicemail"
-          ? "voicemail"
-          : ""
-      } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
+            ? "missed"
+            : item["Call-Direction"] === "voicemail"
+              ? "voicemail"
+              : ""
+        } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
     >
       <div className="row justify-content-between">
         {!isCustomerAdmin ? (
@@ -366,24 +364,21 @@ function Call({
         sessionDescriptionHandlerOptions: {
           constraints: {
             audio: true,
-            video: mode === "video" ? true : false,
-          },
-        },
+            video: mode === "video" ? true : false
+          }
+        }
       },
       {
         media: {
           audio: true,
-          video:
-            mode === "audio"
-              ? true
-              : {
-                  mandatory: {
-                    minWidth: 1280,
-                    minHeight: 720,
-                    minFrameRate: 30,
-                  },
-                  optional: [{ facingMode: "user" }],
-                },
+          video: mode === "audio" ? true : {
+            mandatory: {
+              minWidth: 1280,
+              minHeight: 720,
+              minFrameRate: 30,
+            },
+            optional: [{ facingMode: "user" }],
+          },
         },
       }
     );
@@ -403,8 +398,8 @@ function Call({
     });
     dispatch({
       type: "SET_VIDEOCALL",
-      videoCall: mode === "video" ? true : false,
-    });
+      videoCall: mode === "video" ? true : false
+    })
     dispatch({
       type: "SET_CALLPROGRESSID",
       callProgressId: apiData._id,
@@ -415,7 +410,7 @@ function Call({
     });
     dispatch({
       type: "SET_CALLPROGRESS",
-      callProgress: mode === "video" ? false : true,
+      callProgress: mode === "video" ? false : true
     });
   }
 
@@ -426,21 +421,22 @@ function Call({
       if (videoCall) {
         dispatch({
           type: "SET_MINIMIZE",
-          minimize: false,
-        });
+          minimize: false
+        })
       } else {
         dispatch({
           type: "SET_MINIMIZE",
-          minimize: true,
-        });
+          minimize: true
+        })
       }
     } else {
       dispatch({
         type: "SET_MINIMIZE",
-        minimize: true,
-      });
+        minimize: true
+      })
     }
-  }, [selectedModule, videoCall]);
+
+  }, [selectedModule, videoCall])
 
   return (
     <div className="browserPhoneWrapper">
@@ -459,18 +455,12 @@ function Call({
             <div className="row">
               <div
                 className="col-12 col-xl-6 allCallHistory"
-                // style={{ height: "100%" }}
+              // style={{ height: "100%" }}
               >
                 <div className="col-12 webRtcHeading">
                   <div className="col-2">
                     <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
-                      Calls{" "}
-                      <button class="clearButton">
-                        <i
-                          class="fa-regular fa-arrows-rotate fs-5"
-                          style={{ color: "rgb(148, 148, 148)" }}
-                        ></i>
-                      </button>
+                      Calls <button class="clearButton"><i class="fa-regular fa-arrows-rotate fs-5" style={{ color: 'rgb(148, 148, 148)' }}></i></button>
                     </h3>
                   </div>
                   <div className="col-10 d-flex justify-content-end align-items-center">
@@ -482,15 +472,7 @@ function Call({
                           marginBottom: "0",
                         }}
                       >
-                        {account && extension ? (
-                          <span className="text-success">
-                            Extension - {account && extension}
-                          </span>
-                        ) : (
-                          <span className="text-danger">
-                            No Extension Assigned
-                          </span>
-                        )}
+                        {account && extension ? <span className='text-success'>Extension - {account && extension}</span> : <span className='text-danger'>No Extension Assigned</span>}
                       </h5>
                     </div>
                     <div className="col-auto">
@@ -598,9 +580,9 @@ function Call({
                       onClick={() => setSelectedModule("callDetails")}
                     >
                       {loading &&
-                      (callDetailsRefresh == 0 ||
-                        callDetailsRefresh == 1 ||
-                        callDetailsRefresh == 2) ? (
+                        (callDetailsRefresh == 0 ||
+                          callDetailsRefresh == 1 ||
+                          callDetailsRefresh == 2) ? (
                         <ContentLoader />
                       ) : Object.keys(groupedCalls).length > 0 ? (
                         sortKeys(Object.keys(groupedCalls)).map((date) => (
@@ -628,8 +610,8 @@ function Call({
                 style={{ height: "100vh" }}
                 id="callDetails"
               >
-                {selectedModule == "onGoingCall" ? (
-                  callProgress ? (
+                {selectedModule == "onGoingCall"
+                  ? callProgress ? (
                     <OngoingCall
                       key={callProgressId}
                       id={callProgressId}
@@ -638,7 +620,15 @@ function Call({
                       hangupRefresh={hangupRefresh}
                       setSelectedModule={setSelectedModule}
                     />
-                  ) : (
+                  ) : <CallDetails
+                    clickedCall={clickedCall}
+                    callHistory={callHistory}
+                    isCustomerAdmin={isCustomerAdmin}
+                    setSelectedModule={setSelectedModule}
+                    isMicOn={isMicOn}
+                    isVideoOn={isVideoOn}
+                    onCall={onCall}
+                  /> : clickedCall && (
                     <CallDetails
                       clickedCall={clickedCall}
                       callHistory={callHistory}
@@ -649,19 +639,7 @@ function Call({
                       onCall={onCall}
                     />
                   )
-                ) : (
-                  clickedCall && (
-                    <CallDetails
-                      clickedCall={clickedCall}
-                      callHistory={callHistory}
-                      isCustomerAdmin={isCustomerAdmin}
-                      setSelectedModule={setSelectedModule}
-                      isMicOn={isMicOn}
-                      isVideoOn={isVideoOn}
-                      onCall={onCall}
-                    />
-                  )
-                )}
+                }
               </div>
             </div>
           </div>
@@ -715,8 +693,3 @@ function Call({
 }
 
 export default Call;
-
-// 1. Add option to share screen when user is on video call
-// 2. Ask userpermission to shear different screen like entire screen, any specific tab of browser, or any specific window
-// 3. During screen shearing add option to toggle between screen shearing and video shearing
-// 4. Add DTMF options on video call page

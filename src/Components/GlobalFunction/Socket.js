@@ -12,7 +12,7 @@ const Socket = () => {
   useEffect(() => {
     var reconnectValue = 0;
     const connectWebSocket = () => {
-      const socket = new WebSocket(`ws://${ip}:${port}?token=${token}`);
+      const socket = new WebSocket(`wss://${ip}:${port}?token=${token}`);
 
       socket.onopen = () => {
         console.log("WebSocket connection successful.");

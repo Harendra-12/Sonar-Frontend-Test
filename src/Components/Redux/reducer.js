@@ -52,7 +52,7 @@ var ivr = [];
 var ivrRefresh = 0;
 var deviceProvisioning = [];
 var deviceProvisioningRefresh = 0;
-var minimize = false;
+var minimize = false
 
 const initialState = {
   account,
@@ -227,11 +227,11 @@ const counterReducer = (state = initialState, action) => {
         ...state,
         deviceProvisioningRefresh: action.deviceProvisioningRefresh,
       };
-    case "SET_MINIMIZE":
-      return {
-        ...state,
-        minimize: action.minimize,
-      };
+      case "SET_MINIMIZE":
+        return {
+          ...state,
+          minimize: action.minimize,
+        };
     default:
       return state;
   }
