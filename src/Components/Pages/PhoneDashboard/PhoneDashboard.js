@@ -244,7 +244,7 @@ function PhoneDashboard() {
               {queue ? <CallQueueDetails /> : ""}
               <div className="row mt-3">
                 <div className="col-xl-3">
-                  <div className="itemWrapper c">
+                  <div className="itemWrapper a">
                     <div className="heading">
                       <div class="d-flex flex-wrap justify-content-between align-items-center">
                         <div class="col-10">
@@ -281,7 +281,7 @@ function PhoneDashboard() {
                   </div>
                 </div>
                 <div className="col-xl-3">
-                  <div className="itemWrapper b">
+                  <div className="itemWrapper a">
                     <div className="heading">
                       <div class="d-flex flex-wrap justify-content-between align-items-center">
                         <div class="col-10">
@@ -320,7 +320,7 @@ function PhoneDashboard() {
                   </div>
                 </div>
                 <div className="col-xl-3">
-                  <div className="itemWrapper d">
+                  <div className="itemWrapper a">
                     <div className="heading">
                       <div class="d-flex flex-wrap justify-content-between align-items-center">
                         <div class="col-10">
