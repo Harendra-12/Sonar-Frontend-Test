@@ -373,7 +373,7 @@ function CardAndBilling() {
                       />
                     </div>
                     <div className="col-xl-4 pe-0">
-                      <div className="itemWrapper c">
+                      <div className="itemWrapper a">
                         <div className="heading">
                           <div class="d-flex flex-wrap justify-content-between align-items-center">
                             <div class="col-10">
@@ -994,7 +994,7 @@ function CardAndBilling() {
                 </div>
                 <div className="col-xl-4">
                   <div className="col-xl-12">
-                    <div className="itemWrapper b h-100">
+                    <div className="itemWrapper a h-100">
                       <div className="heading">
                         <div className="d-flex flex-wrap justify-content-between">
                           <div className="col-10">
@@ -1035,7 +1035,7 @@ function CardAndBilling() {
                                   )
                                 }
                               >
-                                <i className="fa-solid fa-download me-1"></i>{" "}
+                                <i className="fa-solid fa-download me-1 text-warning"></i>{" "}
                                 PDF
                               </div>
                             </li>
@@ -1045,7 +1045,7 @@ function CardAndBilling() {
                     </div>
                   </div>
                   <div className="col-xl-12 mt-3">
-                    <div className="itemWrapper d">
+                    <div className="itemWrapper a">
                       <div className="heading">
                         <div className="d-flex flex-wrap justify-content-between">
                           <div className="col-10">
