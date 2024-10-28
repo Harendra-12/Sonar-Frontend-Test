@@ -639,14 +639,15 @@ function Call({
                       setSelectedModule={setSelectedModule}
                     />
                   ) : (
-                    videoCall && (
-                      <VideoCall
-                        setHangupRefresh={setHangupRefresh}
-                        hangupRefresh={hangupRefresh}
-                        setSelectedModule={setSelectedModule}
-                        activePage={activePage}
-                      />
-                    )
+                    <CallDetails
+                      clickedCall={clickedCall}
+                      callHistory={callHistory}
+                      isCustomerAdmin={isCustomerAdmin}
+                      setSelectedModule={setSelectedModule}
+                      isMicOn={isMicOn}
+                      isVideoOn={isVideoOn}
+                      onCall={onCall}
+                    />
                   )
                 ) : (
                   clickedCall && (

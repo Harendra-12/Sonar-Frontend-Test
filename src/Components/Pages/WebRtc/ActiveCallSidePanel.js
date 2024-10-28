@@ -23,7 +23,7 @@ function ActiveCallSidePanel({
   //Keep track for previous call progress Id
   const [prevCallProgressId, setPrevCallProgressId] = useState(callProgressId);
   console.log("This is session", session?._state);
- 
+
   useEffect(() => {
     const audioElement = audioRef.current;
     console.log("Current playMusic value:", playMusic); // Log the state
@@ -97,24 +97,37 @@ function ActiveCallSidePanel({
     setPrevCallProgressId(callProgressId);
   }, [callProgressId]);
 
-
-  if (session["_state"] === SessionState.Terminated) {
+  if (session["_state"] === "Terminated") {
     // dispatch({
     //   type:"SET_VIDEOCALL",
     //   videoCall:false
     // })
+    const updatedVideoCallMode = globalSession.find(
+      (item) => item.id === callProgressId
+    );
+
+    if (updatedVideoCallMode?.mode === "video") {
+      dispatch({
+        type: "SET_VIDEOCALL",
+        videoCall: false,
+      });
+    }
     const updatedSession = globalSession.filter(
       (item) => item.id !== session._id
     );
-
+    dispatch({
+      type: "SET_SESSIONS",
+      sessions: updatedSession,
+    });
     setHangupRefresh(hangupRefresh + 1);
     setSelectedModule("callDetails");
     if (callProgressId === session._id) {
+      //check callprogressId in globalsession and if mode = video, change videocallState
+
       dispatch({
         type: "SET_CALLPROGRESSID",
         callProgressId: "",
       });
-
       dispatch({
         type: "SET_CALLPROGRESSDESTINATION",
         callProgressDestination: "",
@@ -122,10 +135,6 @@ function ActiveCallSidePanel({
       dispatch({
         type: "SET_CALLPROGRESS",
         callProgress: false,
-      });
-      dispatch({
-        type: "SET_SESSIONS",
-        sessions: updatedSession,
       });
     }
   }

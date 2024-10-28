@@ -9,12 +9,13 @@ function VideoCall({
   hangupRefresh,
   setSelectedModule,
   setCloseVideoCall,
+  callProgressId,
 }) {
   const dispatch = useDispatch();
   const [hideDialpad, setHideDialpad] = useState(false);
   const [destNumber, setDestNumber] = useState("");
   const globalSession = useSelector((state) => state.sessions || []); // Safeguard
-  const callProgressId = useSelector((state) => state.callProgressId || ""); // Safeguard
+  // const callProgressId = useSelector((state) => state.callProgressId || ""); // Safeguard
   const sessionCallData = useSessionCall(callProgressId) || {}; // Safeguard
   const { session } = sessionCallData || {}; // Safe destructuring
   const [isAudioMuted, setIsAudioMuted] = useState(true);
@@ -153,7 +154,7 @@ function VideoCall({
       };
     }
   }, [session]);
-
+  console.log(remoteVideoRef.current);
   const toggleVideo = () => {
     if (localVideoRef.current) {
       const localStream = localVideoRef.current.srcObject;
@@ -232,13 +233,13 @@ function VideoCall({
     }
   };
 
-  // useEffect(() => {
-  //     if(callProgressId===""){
-  //         // handleHangup()
-  //         console.log("callProgressId is empty")
-  //         setCloseVideoCall(true)
-  //     }
-  // },[callProgressId])
+  useEffect(() => {
+    if (callProgressId === "") {
+      // handleHangup()
+      console.log("callProgressId is empty");
+      setCloseVideoCall(true);
+    }
+  }, [callProgressId]);
 
   const handleDigitPress = (digit) => {
     if (session) {
@@ -255,7 +256,7 @@ function VideoCall({
     }
   };
 
-  console.log("sessionsss", session);
+  // console.log("sessionssss", session);
   return (
     <main className="mainContentA videoCall">
       <div className={minimize ? "caller minimize" : "caller"}>
@@ -292,9 +293,7 @@ function VideoCall({
                       <i className="fa-regular fa-xmark fs-5 text-white" />
                     </div>
                   </div>
-                  <div className="mb-2">
-                    {/* <span>Outbound ID: (999) 999-9999</span> */}
-                  </div>
+                  <div className="mb-2"></div>
                   <div>
                     <input
                       type="text"

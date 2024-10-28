@@ -30,6 +30,8 @@ const WebrtcWrapper = () => {
   const [isMicOn, setIsMicOn] = useState(false); // State to track mic status
   const [isVideoOn, setIsVideoOn] = useState(false); // State to track video status
   const [reconnecting, setReconnecting] = useState(0);
+  const callProgress = useSelector((state) => state.callProgress);
+
   const [closeVideoCall, setCloseVideoCall] = useState(false);
   const useWebSocketErrorHandling = (options) => {
     const retryCountRef = useRef(0);
@@ -151,6 +153,10 @@ const WebrtcWrapper = () => {
       minimize: true,
     });
   }, [activePage]);
+  console.log(
+    "videocheck",
+    sessions.find((session) => session.mode === "video")
+  );
   return (
     <>
       <SIPProvider options={options}>
@@ -218,7 +224,17 @@ const WebrtcWrapper = () => {
                 </div>
               </div>
             </section>
-            {/* {sessions.find((session) => session.mode === "video")? <VideoCall setHangupRefresh={setHangupRefresh} hangupRefresh={hangupRefresh} setSelectedModule={setSelectedModule} activePage={activePage} setCloseVideoCall={setCloseVideoCall} /> :""} */}
+            {sessions.find((session) => session.mode === "video") &&
+            callProgressId ? (
+              <VideoCall
+                setHangupRefresh={setHangupRefresh}
+                hangupRefresh={hangupRefresh}
+                setSelectedModule={setSelectedModule}
+                activePage={activePage}
+                setCloseVideoCall={setCloseVideoCall}
+                callProgressId={callProgressId}
+              />
+            ) : null}
           </>
         ) : (
           ""
