@@ -6,7 +6,7 @@ import AllVoicemails from "./AllVoicemails";
 import OngoingCall from "./OngoingCall";
 import CallDashboard from "./CallDashboard";
 import EFax from "./EFax";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ActiveCallSidePanel from "./ActiveCallSidePanel";
 import { SIPProvider } from "react-sipjs";
 import IncomingCalls from "./IncomingCalls";
@@ -16,9 +16,9 @@ import Messages from "./Messages";
 import VideoCall from "./VideoCall";
 
 const WebrtcWrapper = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
-  const callProgressId = useSelector((state)=>state.callProgressId)
+  const callProgressId = useSelector((state) => state.callProgressId);
   const videoCall = useSelector((state) => state.videoCall);
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
@@ -83,7 +83,7 @@ const WebrtcWrapper = () => {
     domain: account.domain.domain_name,
     webSocketServer: "wss://192.168.2.225:7443",
     registererOptions: {
-      extraHeaders: ['Contact: <sip:1000@192.168.2.225>'],
+      extraHeaders: ["Contact: <sip:1000@192.168.2.225>"],
     },
     // webSocketServer: "ws://192.168.2.225:5066",
   };
@@ -124,20 +124,33 @@ const WebrtcWrapper = () => {
     checkMicrophoneStatus(); // Check mic status when component mounts
     checkVideoStatus();
   }, []);
-useEffect(() => {
-  if(selectedModule!=="onGoingCall" && sessions.find((session) => session.mode === "video")){
-    console.log("aaaaa small video",sessions.find((session) => session.mode === "video"),videoCall,selectedModule);
-  }else{
-    console.log("aaaaa full video",sessions.find((session) => session.mode === "video"),videoCall,selectedModule);
-  }
-},[videoCall,selectedModule,sessions])
+  useEffect(() => {
+    if (
+      selectedModule !== "onGoingCall" &&
+      sessions.find((session) => session.mode === "video")
+    ) {
+      console.log(
+        "aaaaa small video",
+        sessions.find((session) => session.mode === "video"),
+        videoCall,
+        selectedModule
+      );
+    } else {
+      console.log(
+        "aaaaa full video",
+        sessions.find((session) => session.mode === "video"),
+        videoCall,
+        selectedModule
+      );
+    }
+  }, [videoCall, selectedModule, sessions]);
 
-useEffect(()=>{
-  dispatch({
-    type:"SET_MINIMIZE",
-    minimize:true
-  })
-},[activePage])
+  useEffect(() => {
+    dispatch({
+      type: "SET_MINIMIZE",
+      minimize: true,
+    });
+  }, [activePage]);
   return (
     <>
       <SIPProvider options={options}>
@@ -205,12 +218,11 @@ useEffect(()=>{
                 </div>
               </div>
             </section>
-            {!closeVideoCall && sessions.find((session) => session.mode === "video")? <VideoCall setHangupRefresh={setHangupRefresh} hangupRefresh={hangupRefresh} setSelectedModule={setSelectedModule} activePage={activePage} setCloseVideoCall={setCloseVideoCall} /> :""}
+            {/* {sessions.find((session) => session.mode === "video")? <VideoCall setHangupRefresh={setHangupRefresh} hangupRefresh={hangupRefresh} setSelectedModule={setSelectedModule} activePage={activePage} setCloseVideoCall={setCloseVideoCall} /> :""} */}
           </>
         ) : (
           ""
         )}
-      
       </SIPProvider>
     </>
   );
