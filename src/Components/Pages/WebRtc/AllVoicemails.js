@@ -16,6 +16,7 @@ function AllVoicemails({ isCustomerAdmin }) {
   const loadings = useSelector((state) => state.loading);
   const [loading, setLoading] = useState(false);
   const [clickedVoiceMail, setClickedVoiceMail] = useState(null);
+  const [voiceMailRefresh,setVoiceMailRefresh] = useState(0);
 
   const audioRef = useRef(null);
 
@@ -43,7 +44,7 @@ function AllVoicemails({ isCustomerAdmin }) {
       console.log("api_data:", apiData);
     }
     getData();
-  }, [pageNumber]);
+  }, [pageNumber,voiceMailRefresh]);
 
   useEffect(() => {
     if (voiceMail?.data) {
@@ -263,7 +264,7 @@ function AllVoicemails({ isCustomerAdmin }) {
               >
                 <div className="col-auto">
                   <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
-                    Voicemails <button class="clearButton"><i class="fa-regular fa-arrows-rotate fs-5" style={{ color: 'rgb(148, 148, 148)' }}></i></button>
+                    Voicemails <button onClick={()=>setVoiceMailRefresh(voiceMailRefresh+1)} class="clearButton"><i class={loading?"fa-regular fa-arrows-rotate fs-5 fa-spin":"fa-regular fa-arrows-rotate fs-5"} style={{ color: 'rgb(148, 148, 148)' }}></i></button>
                   </h3>
                 </div>
                 <div className="col-auto d-flex">

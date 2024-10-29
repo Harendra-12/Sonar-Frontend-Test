@@ -13,6 +13,8 @@ const CallCenter = () => {
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const account = useSelector((state) => state.account) || {};
   const [assignerCallcenter, setAssignerCallcenter] = useState([]);
+  const [refreshCenter, setRefreshCenter] = useState(0);
+  const [loading,setLoading] = useState(true);
 
   const Id = account?.id || "";
 
@@ -21,17 +23,21 @@ const CallCenter = () => {
       type: "SET_CALLCENTERREFRESH",
       callCenterRefresh: callCenterRefresh + 1,
     });
-  }, []);
+  }, [refreshCenter]);
 
   useEffect(() => {
     if (callCenter.length > 0) {
+      setLoading(false)
       const AssignedCallcenter = [...callCenter].filter((queue) =>
         queue.agents.some((agent) => Number(agent.agent_name) == Id)
       );
-
       setAssignerCallcenter(AssignedCallcenter);
     }
   }, [Id, callCenter]);
+
+  useEffect(()=>{
+
+  },[refreshCenter,callCenterRefresh])
 
   return (
     <>
@@ -56,7 +62,7 @@ const CallCenter = () => {
           <div className="d-felx flex-column pt-2">
             <div>
               <h3 style={{ fontFamily: "Outfit", color: "rgb(68, 68, 68)" }}>
-                Call Center <button class="clearButton"><i class="fa-regular fa-arrows-rotate fs-5" style={{ color: 'rgb(148, 148, 148)' }}></i></button>
+                Call Center <button onClick={() => setRefreshCenter(refreshCenter + 1)} class="clearButton"><i class={loading ? "fa-solid fa-spinner fa-pulse fs-5 fa-spin" : "fa-regular fa-arrows-rotate fs-5"} style={{ color: 'rgb(148, 148, 148)' }}></i></button>
               </h3>
             </div>
             <div className="mt-4">
