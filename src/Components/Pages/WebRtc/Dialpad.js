@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";
 import { toast } from "react-toastify";
@@ -11,6 +11,7 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
   const { sessionManager, connectStatus } = useSIPProvider();
   const [destNumber, setDestNumber] = useState("");
   const extension = account?.extension?.extension || "";
+  const dialpadRef = useRef();
   const handleInputChange = (e) => {
     const { value } = e.target;
     const regex = /^[0-9*#]*$/;
@@ -71,13 +72,13 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
               mode === "audio"
                 ? true
                 : {
-                    mandatory: {
-                      minWidth: 1280,
-                      minHeight: 720,
-                      minFrameRate: 30,
-                    },
-                    optional: [{ facingMode: "user" }],
+                  mandatory: {
+                    minWidth: 1280,
+                    minHeight: 720,
+                    minFrameRate: 30,
                   },
+                  optional: [{ facingMode: "user" }],
+                },
           },
         }
       );
@@ -117,6 +118,11 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
     }
   }
 
+  // Dialpad Input Field will remain focused when this component mounts.
+  useEffect(() => {
+    dialpadRef.current.focus();
+  }, [])
+
   return (
     <>
       <div id="dialPad">
@@ -145,6 +151,7 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
                   type="text"
                   placeholder="Dial"
                   className="dialerInput"
+                  ref={dialpadRef}
                   value={destNumber}
                   // onChange={(e) => setDestNumber(e.target.value)}
                   onChange={handleInputChange}
