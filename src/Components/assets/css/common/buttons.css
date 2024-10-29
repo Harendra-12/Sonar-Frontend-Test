@@ -221,7 +221,7 @@
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
   color: #fff;
-  border: 1px solid #fff;
+  border: 1px solid #ffffff00;
 }
 
 /* .tabButtonParent:first-child .tabButton {
