@@ -83,11 +83,11 @@ const WebrtcWrapper = () => {
   };
   const options = {
     domain: account.domain.domain_name,
-    // webSocketServer: "wss://192.168.2.225:7443",
+    webSocketServer: "wss://192.168.2.225:7443",
     registererOptions: {
       extraHeaders: ["Contact: <sip:1000@192.168.2.225>"],
     },
-    webSocketServer: "ws://192.168.2.225:5066",
+    // webSocketServer: "ws://192.168.2.225:5066",
   };
 
   useWebSocketErrorHandling(options);
