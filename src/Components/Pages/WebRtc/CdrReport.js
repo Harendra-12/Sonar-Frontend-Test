@@ -31,8 +31,8 @@ function CdrReport() {
   const [startDate, setStartDate] = useState("");
   const [endDateFlag, setEndDateFlag] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [contentLoader,setContentLoader]=useState(false)
-  const [refresh,setRefrehsh]=useState(1)
+  const [contentLoader, setContentLoader] = useState(false)
+  const [refresh, setRefrehsh] = useState(1)
   useEffect(() => {
     if (filterBy === "date" && startDateFlag !== "") {
       setStartDate(startDateFlag);
@@ -162,16 +162,16 @@ function CdrReport() {
     refresh,
   ]);
 
-  function refreshCallData(){
+  function refreshCallData() {
     setContentLoader(true)
-    setRefrehsh(refresh+1)
+    setRefrehsh(refresh + 1)
   }
   return (
     <main className="mainContent">
       <section id="phonePage">
-        <div className="container-fluid px-0">
+        <div className="container-fluid px-0 position-relative">
           <Header title="CDR Reports" />
-          <button onClick={refreshCallData} class="clearButton refresh"><i class={contentLoader?"fa-regular fa-arrows-rotate fs-5 fa-spin":"fa-regular fa-arrows-rotate fs-5 "} style={{ color: 'rgb(148, 148, 148)' }}></i></button>
+          <button onClick={refreshCallData} class="clearButton refresh position-absolute" style={{ top: '55%', left: '150px', transform: 'translateY(-50%)' }}><i class={contentLoader ? "fa-regular fa-arrows-rotate fs-5 fa-spin text-white" : "fa-regular fa-arrows-rotate fs-5 text-white"}></i></button>
         </div>
         <div className="container-fluid">
           <div className="row">
@@ -312,7 +312,7 @@ function CdrReport() {
                         setCallDirection(e.target.value);
                         setPageNumber(1);
                       }}
-                      // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                    // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                     >
                       <option value={""}>All Calls</option>
                       <option value={"inbound"}>Inbound Calls</option>
@@ -449,7 +449,7 @@ function CdrReport() {
                                 <td>{item["Call-Direction"]}</td>
                                 <td>{item["application_state"]}</td>
                                 <td>{item["variable_sip_from_user"]}</td>
-                                <td>{item["application_state"]==="intercept"||item["application_state"]==="eavesdrop"?item["other_leg_destination_number"]:item["variable_sip_to_user"]}</td>
+                                <td>{item["application_state"] === "intercept" || item["application_state"] === "eavesdrop" ? item["other_leg_destination_number"] : item["variable_sip_to_user"]}</td>
                                 <td>{item["application_state_to_ext"]}</td>
                                 <td>
                                   {item["variable_start_stamp"].split(" ")[0]}
@@ -480,8 +480,8 @@ function CdrReport() {
                                     ? "NOT CONNECTED"
                                     : item["variable_DIALSTATUS"] ===
                                       "NO_USER_RESPONSE"
-                                    ? "BUSY"
-                                    : item["variable_DIALSTATUS"]}
+                                      ? "BUSY"
+                                      : item["variable_DIALSTATUS"]}
                                 </td>
                                 <td>{item["call_cost"]}</td>
                               </tr>

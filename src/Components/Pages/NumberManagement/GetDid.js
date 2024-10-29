@@ -232,7 +232,7 @@ function GetDid() {
         <div className="container-fluid">
           <div className="row justify-content-center">
             <Header title="Get DID" />
-            <div
+            {/* <div
               className="d-flex flex-wrap justify-content-end px-xl-3 py-2 position-relative"
               style={{ zIndex: 1 }}
               id="detailsHeader"
@@ -252,7 +252,7 @@ function GetDid() {
                   </button>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="col-xl-12 px-0">
               {/* {loading ?
                   <div colSpan={99}><CircularLoader /></div> : ""} */}
@@ -275,12 +275,15 @@ function GetDid() {
                         {errors.searchType && (
                           <ErrorMessage text={errors.searchType.message} />
                         )}
-                        <label htmlFor="data" className="formItemDesc"></label>
+                        <label htmlFor="data" className="formItemDesc">Select the type of DID</label>
                       </div>
                     </div>
                     <div className="formRow col-xl-2">
-                      <div className="formLabel">
+                      <div className="formLabel d-flex justify-content-between" style={{ width: '100%' }}>
                         <label htmlFor="quantity">Quantity</label>
+                        {errors.quantity && (
+                          <ErrorMessage text={errors.quantity.message} />
+                        )}
                       </div>
                       <div className="col-12">
                         <input
@@ -295,10 +298,8 @@ function GetDid() {
                           })}
                           onKeyDown={restrictToNumbers}
                         />
-                        {errors.quantity && (
-                          <ErrorMessage text={errors.quantity.message} />
-                        )}
-                        <label htmlFor="data" className="formItemDesc"></label>
+
+                        <label htmlFor="data" className="formItemDesc">Input the quantity</label>
                       </div>
                     </div>
                     <div className="formRow col-xl-auto">
@@ -316,13 +317,16 @@ function GetDid() {
                           placeholder="Select usage..."
                         />
                         <label htmlFor="data" className="formItemDesc">
-                          Set how the Destination will be used.
+                          Set how the Destination will be used
                         </label>
                       </div>
                     </div>
                     <div className="formRow col-xl-2">
-                      <div className="formLabel">
+                      <div className="formLabel d-flex justify-content-between" style={{ width: '100%' }}>
                         <label htmlFor="npa">NPA</label>
+                        {errors.npa && (
+                          <ErrorMessage text={errors.npa.message} />
+                        )}
                       </div>
                       <div className="col-12">
                         <input
@@ -335,10 +339,8 @@ function GetDid() {
                             ...noSpecialCharactersValidator,
                           })}
                         />
-                        {errors.npa && (
-                          <ErrorMessage text={errors.npa.message} />
-                        )}
-                        <label htmlFor="data" className="formItemDesc"></label>
+
+                        <label htmlFor="data" className="formItemDesc">Input the NPA for the DID</label>
                       </div>
                     </div>
                     <div className="formRow col">

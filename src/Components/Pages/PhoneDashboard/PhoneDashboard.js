@@ -168,45 +168,55 @@ function PhoneDashboard() {
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row ">
-            <Header title="Phone Dashboard" />
+            <Header title="Phone Dashboard" style={{ boxShadow: "none" }} />
+            <div id="detailsHeader" className="p-0">
+              <div className="headerBgWave">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                  <path
+                    fill="var(--color2)"
+                    fill-opacity="1"
+                    d="M0,160L120,186.7C240,213,480,267,720,277.3C960,288,1200,256,1320,240L1440,224L1440,0L1320,0C1200,0,960,0,720,0C480,0,240,0,120,0L0,0Z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
             {/* <div
-                                className="row pt-3 justify-content-between"
-                                style={{}}
-                            >
-                                <div className="col-xl-4 col-6 my-auto">
-                                    <div className="position-relative searchBox">
-                                        <input
-                                            type="search"
-                                            name="Search"
-                                            id="headerSearch"
-                                            placeholder="Looking for an option?"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="col-xl-8 col-6">
-                                    <div className="d-flex justify-content-end">
-                                        <button
-                                            effect="ripple"
-                                            className="appPanelButton"
-                                        >
-                                            <i className="fa-duotone fa-pen" />
-                                        </button>
-                                        <button
-                                            effect="ripple"
-                                            className="appPanelButton"
-                                        >
-                                            <i className="fa-duotone fa-message" />
-                                        </button>
-                                        <button
-                                            effect="ripple"
-                                            className="appPanelButton"
-                                        >
-                                            <i className="fa-duotone fa-gear" />
-                                        </button>
-                                    </div>
-                                </div>
-                            </div> */}
-
+                  className="row pt-3 justify-content-between"
+                  style={{}}
+                >
+                  <div className="col-xl-4 col-6 my-auto">
+                      <div className="position-relative searchBox">
+                          <input
+                              type="search"
+                              name="Search"
+                              id="headerSearch"
+                              placeholder="Looking for an option?"
+                          />
+                      </div>
+                  </div>
+                  <div className="col-xl-8 col-6">
+                      <div className="d-flex justify-content-end">
+                          <button
+                              effect="ripple"
+                              className="appPanelButton"
+                          >
+                              <i className="fa-duotone fa-pen" />
+                          </button>
+                          <button
+                              effect="ripple"
+                              className="appPanelButton"
+                          >
+                              <i className="fa-duotone fa-message" />
+                          </button>
+                          <button
+                              effect="ripple"
+                              className="appPanelButton"
+                          >
+                              <i className="fa-duotone fa-gear" />
+                          </button>
+                      </div>
+                  </div>
+              </div> */}
             <div className="col-12 mt-3 tangoNavs">
               <div className="col-12 mt-3">
                 <div className="row">

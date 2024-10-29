@@ -663,11 +663,11 @@ const UsersEdit = () => {
                                 <label class="ms-2">{item}</label>
                               </div>
                             </div>
-                            <div className="row px-2 pt-1 border-bottom">
+                            <div className="row col-12 mx-auto pt-1 border-bottom">
                               {filteredPermission[item].map(
                                 (innerItem, key) => (
                                   <div
-                                    className="col-xl-2 col-md-4 col-6"
+                                    className="col-xl-2 col-md-4 col-6" style={{ paddingLeft: 7 }}
                                     key={key}
                                   >
                                     <input
