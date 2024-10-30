@@ -44,6 +44,7 @@ function Call({
   const [mode, setMode] = useState("audio");
   const [callHistory, setCallHistory] = useState([]);
   const { sessionManager, connectStatus } = useSIPProvider();
+  const [refreshCalls,setRefreshCalls] = useState(0);
   const callProgressDestination = useSelector(
     (state) => state.callProgressDestination
   );
@@ -80,7 +81,7 @@ function Call({
       setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allCall, isCustomerAdmin]);
+  }, [allCall, isCustomerAdmin,refreshCalls]);
 
   useEffect(() => {
     console.log("This is account", account && account.account_id);
@@ -94,7 +95,7 @@ function Call({
     } else {
       navigate("/");
     }
-  }, [account, navigate, hangupRefresh]);
+  }, [account, navigate, hangupRefresh,refreshCalls]);
 
   // user data filter based on the extension
   useEffect(() => {
@@ -465,9 +466,9 @@ function Call({
                   <div className="col-2">
                     <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
                       Calls{" "}
-                      <button class="clearButton">
+                      <button class="clearButton" onClick={()=>setRefreshCalls(refreshCalls+1)}>
                         <i
-                          class="fa-regular fa-arrows-rotate fs-5"
+                          class={loading?"fa-regular fa-arrows-rotate fs-5 fa-spin":"fa-regular fa-arrows-rotate fs-5 "}
                           style={{ color: "rgb(148, 148, 148)" }}
                         ></i>
                       </button>

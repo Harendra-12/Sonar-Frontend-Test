@@ -40,6 +40,7 @@ const UsersEdit = () => {
   const allUser = useSelector((state) => state.allUser);
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const extensionAll = useSelector((state) => state.extensionAll);
+  const [password, setPassword] = useState("");
   const {
     register,
     watch,
@@ -191,6 +192,10 @@ const UsersEdit = () => {
   }, [extension, user, locationState]);
 
   const handleFormSubmit = handleSubmit(async (data) => {
+    if (password!=="" && password.length < 6) {
+      toast.error("Password must be at least 5 characters");
+      return
+    }
     const {
       firstName,
       lastName,
@@ -204,7 +209,7 @@ const UsersEdit = () => {
     let updatedData = {
       ...data,
       ...{
-        name: `${firstName} ${lastName}`,
+        name: `${firstName} ${lastName}`
       },
     };
 
@@ -221,6 +226,7 @@ const UsersEdit = () => {
       account_id: account.account_id,
       permissions: selectedPermission,
       extension_id: data.extension_id,
+      ...(password && password.length > 5 && { password }),
     };
     setLoading(true);
     const addUser = await generalPutFunction(
@@ -592,6 +598,23 @@ const UsersEdit = () => {
                                 );
                               })}
                           </select>
+                        </div>
+                      </div>
+                      <div className="formRow col-xl-12">
+                        <div className="formLabel">
+                          <label htmlFor="selectFormRow">New Password</label>
+                          <label htmlFor="data" className="formItemDesc">
+                            Set new password to user.
+                          </label>
+                        </div>
+                        <div className="col-6">
+                          <input
+                            type="text"
+                            className="formItem"
+                            name=""
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                          />
                         </div>
                       </div>
                       {/* <div className="formRow col-xl-12">
