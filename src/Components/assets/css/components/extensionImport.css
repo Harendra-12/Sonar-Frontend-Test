@@ -42,11 +42,11 @@
     max-width: 220px;
     padding: 5px 0px;
     font-weight: 400;
-    color: #000;
+    color: #595959;
     /* margin-top: auto; */
     /* margin-bottom: auto; */
     position: relative;
-    font-family: Inter;
+    font-family: Noto sans;
     -webkit-font-smoothing: antialiased;
 }
 

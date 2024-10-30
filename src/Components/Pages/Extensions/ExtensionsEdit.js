@@ -856,9 +856,10 @@ const ExtensionsEdit = () => {
                   <form className="row col-12 mx-auto">
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <Tippy content="Enter the first name followed by the last name.">
-                          <label htmlFor="">Directory Full Name</label>
-                        </Tippy>
+                        <label htmlFor="">Directory Full Name</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Enter the first name followed by the last name.
+                        </label>
                       </div>
                       <div className="col-xl-6 col-12">
                         <input
@@ -877,11 +878,13 @@ const ExtensionsEdit = () => {
                     </div>
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <Tippy content="Select whether announce the extension when calling the directory.">
-                          <label htmlFor="selectFormRow">
-                            Directory Extension Visible
-                          </label>
-                        </Tippy>
+                        <label htmlFor="selectFormRow">
+                          Directory Extension Visible
+                        </label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Select whether announce the extension when calling the
+                          directory.
+                        </label>
                       </div>
                       <div className="col-xl-6 col-12">
                         <select
@@ -905,9 +908,10 @@ const ExtensionsEdit = () => {
                     </div>
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <Tippy content="Enter the maximum concurrent registrations allowed.">
-                          <label htmlFor="selectFormRow">Max Registrations</label>
-                        </Tippy>
+                        <label htmlFor="selectFormRow">Max Registrations</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Enter the maximum concurrent registrations allowed.
+                        </label>
                       </div>
                       <div className="col-xl-6 col-12">
                         <input
@@ -926,9 +930,11 @@ const ExtensionsEdit = () => {
                     </div>
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <Tippy content="Enter the maximum number of concurrent outbound calls allowed.">
-                          <label htmlFor="selectFormRow">Limit Max</label>
-                        </Tippy>
+                        <label htmlFor="selectFormRow">Limit Max</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Enter the maximum number of concurrent outbound calls
+                          allowed.
+                        </label>
                       </div>
                       <div className="col-xl-6 col-12">
                         <input
@@ -947,9 +953,11 @@ const ExtensionsEdit = () => {
                     </div>
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <Tippy content="Enter the destination to send the calls when the max number of outgoing calls has been reached.">
-                          <label htmlFor="selectFormRow">Limit Destination</label>
-                        </Tippy>
+                        <label htmlFor="selectFormRow">Limit Destination</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Enter the destination to send the calls when the max number
+                          of outgoing calls has been reached.
+                        </label>
                       </div>
                       <div className="col-xl-6 col-12">
                         <input
@@ -965,9 +973,11 @@ const ExtensionsEdit = () => {
                     </div>
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <Tippy content="Select the notification type, and enter the appropriate destination.">
-                          <label htmlFor="selectFormRow">Missed Call</label>
-                        </Tippy>
+                        <label htmlFor="selectFormRow">Missed Call</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Select the notification type, and enter the appropriate
+                          destination.
+                        </label>
                       </div>
                       <div className="col-xl-6 col-12">
                         <select
@@ -989,9 +999,11 @@ const ExtensionsEdit = () => {
                     </div>
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <Tippy content="Enter the toll allow value here. (Examples: domestic,international,local).">
-                          <label htmlFor="selectFormRow">Toll Allow</label>
-                        </Tippy>
+                        <label htmlFor="selectFormRow">Toll Allow</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Enter the toll allow value here. (Examples:
+                          domestic,international,local).
+                        </label>
                       </div>
                       <div className="col-xl-6 col-12">
                         <input
@@ -1010,9 +1022,11 @@ const ExtensionsEdit = () => {
                     </div>
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <Tippy content="Enter the ring time (delay in seconds) before sending a call to voicemail.">
-                          <label htmlFor="selectFormRow">Call Timeout</label>
-                        </Tippy>
+                        <label htmlFor="selectFormRow">Call Timeout</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Enter the ring time (delay in seconds) before sending a call
+                          to voicemail.
+                        </label>
                       </div>
                       <div className="col-xl-6 col-12">
                         <input
