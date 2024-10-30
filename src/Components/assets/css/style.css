@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
 /* CSS Modules */
 @import url('./components/headerTitle.css');
@@ -84,7 +85,7 @@
     /* Light Mode */
     --color4: #abababa6;
     /* UI Items Color */
-    --color-subtext: #7c7c7c;
+    --color-subtext: #767676;
     /* Contrast Subtext Color */
     --sideNav-width: 250px;
     --sideNavApp-width: 160px;

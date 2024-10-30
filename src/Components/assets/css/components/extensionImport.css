@@ -28,10 +28,10 @@
     align-items: center;
     /* margin-bottom: 5px; */
     padding-bottom: 10px;
-    border-bottom: 1px solid #8f8f8f47;
+    /* border-bottom: 1px solid #8f8f8f47; */
     /* width: 25%; */
     padding: 7px 10px;
-    min-height: 65px;
+    min-height: 50px;
 }
 
 /* #detailsContent .formRow   */
@@ -41,11 +41,13 @@
     width: auto;
     max-width: 220px;
     padding: 5px 0px;
-    font-weight: 500;
+    font-weight: 400;
     color: #000;
     /* margin-top: auto; */
     /* margin-bottom: auto; */
     position: relative;
+    font-family: Inter;
+    -webkit-font-smoothing: antialiased;
 }
 
 .formLabel .status {
@@ -108,14 +110,16 @@
     background-color: #fff;
     border: 1px solid var(--color4);
     /* color: #fff; */
-    padding: 5px 5px;
-    border-radius: 5px;
+    padding: 5px 10px;
+    border-radius: 3px;
     outline: none;
     font-size: 14px;
     width: 100%;
     /* margin: 0px 5px 5px 0px; */
-    height: 32px;
+    height: 34px;
     transition: all 0.3s ease-in-out;
+    color: #555;
+    font-weight: 700;
 }
 
 .formItem:not([type="file"]):focus,
@@ -205,10 +209,12 @@ input[type="file"]::file-selector-button {
 
 .formRow .formItemDesc {
     font-size: 11px;
-    line-height: 15px;
-    margin-top: 8px;
+    line-height: 14px;
+    margin-top: 5px;
+    font-weight: 400;
     width: 100%;
     color: var(--color-subtext);
+    font-family: Raleway;
 }
 
 #detailsContent .listRow .listItemDesc {
