@@ -30,8 +30,8 @@
 }
 
 .panelButton {
-  width: 90px;
-  height: 34px;
+  width: 100px;
+  height: 37px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -39,10 +39,15 @@
   border: none;
   border-radius: 5px;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
-  background: var(--nav-color);
+  /* background: var(--nav-color); */
+  background: var(--color2);
   padding: 0;
   text-decoration: none;
   margin-left: 10px;
+}
+
+.panelButton.gray {
+  background-color: #6c757d;
 }
 
 .panelButton,
@@ -51,7 +56,7 @@
 }
 
 .panelButton .text {
-  transform: translateX(10px);
+  transform: translateX(15px);
   color: white;
   font-weight: 500;
   font-size: 14px;
@@ -59,19 +64,20 @@
 
 .panelButton .icon {
   position: absolute;
-  border-left: 1px solid #585858;
+  border-left: 1px solid #ffffff75;
   transform: translateX(65px);
-  height: 25px;
-  width: 25px;
+  height: 35px;
+  width: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .panelButton:hover {
-  background: linear-gradient(195deg, #ff3636, #c90000);
+  /* background: linear-gradient(195deg, #ff3636, #c90000); */
+  background: #474747;
 }
 
 .panelButton:hover .text {
@@ -79,7 +85,7 @@
 }
 
 .panelButton:hover .icon {
-  width: 90px;
+  width: 100px;
   border-left: none;
   transform: translateX(0);
 }

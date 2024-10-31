@@ -54,7 +54,7 @@
 :root {
     /* --bg-color: #e7f8ff; */
     /* --bg-color: #5d6aff0d; */
-    --bg-color: #eceff1;
+    --bg-color: #fafafa;
     --bgdark-color: #111525;
     /* Dark Mode */
     --nav-color: linear-gradient(195deg, #000000, #191919);
@@ -65,7 +65,8 @@
     --color1: #360568;
     /* Primary Color */
     /* --color2: #5b2a86; */
-    --color2: #00a6fb;
+    /* --color2: #00a6fb; */
+    --color2: #3e8ef7;
     --color2-trans: #49c2ff30;
     /* Accent Color */
     --ui-accent: #439fdd;
@@ -80,7 +81,8 @@
     /* Highlight, Notification & Alert Color */
     --color-text: #fff;
     /* Contrast Text Color */
-    --border-color: #1196ba63;
+    /* --border-color: #1196ba63; */
+    --border-color: #ddd;
 
     /* Light Mode */
     --color4: #abababa6;
