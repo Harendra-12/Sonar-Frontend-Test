@@ -192,7 +192,7 @@ const UsersEdit = () => {
   }, [extension, user, locationState]);
 
   const handleFormSubmit = handleSubmit(async (data) => {
-    if (password!=="" && password.length < 6) {
+    if (password !== "" && password.length < 6) {
       toast.error("Password must be at least 5 characters");
       return
     }
@@ -342,7 +342,7 @@ const UsersEdit = () => {
         <section id="phonePage">
           <div className="container-fluid px-0">
             <Header title="User Edit" />
-            <div id="subPageHeader">
+            {/* <div id="subPageHeader">
               <div className="col-6 my-1">
                 <p className="mb-0">
                   Edit user information and group membership.
@@ -371,8 +371,10 @@ const UsersEdit = () => {
                   </button>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
+
+
           <div className="col-xl-12" style={{ overflow: "auto" }}>
             {loading ? (
               <div colSpan={99}>
@@ -381,243 +383,280 @@ const UsersEdit = () => {
             ) : (
               ""
             )}
-            <div className="d-flex flex-wrap mb-5">
-              <div className="col-xl-6">
-                <div className="profileView">
-                  <div className="profileDetailsHolder position-relative">
-                    <form action="#" className="row px-2">
-                      <div className="formRow col-xl-12">
-                        <div className="formLabel">
-                          <label htmlFor="">Username</label>
-                        </div>
-                        <div className="col-6">
-                          <input
-                            type="text"
-                            name="extension"
-                            className="formItem"
-                            {...register("username", { ...requiredValidator })}
-                            disabled
-                            onKeyDown={restrictToAllowedChars}
-                          />
-                          {errors.username && (
-                            <ErrorMessage text={errors.username.message} />
-                          )}
-                        </div>
+            <div className="overviewTableWrapper">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap">
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content">
+                        <h4>User Edit</h4>
+                        <p>Edit user information and group membership.</p>
                       </div>
-                      <div className="formRow col-xl-12">
-                        <div className="formLabel">
-                          <label htmlFor="">Email</label>
-                        </div>
-                        <div className="col-6">
-                          <input
-                            type="email"
-                            name="extension"
-                            className="formItem"
-                            {...register("email", {
-                              ...requiredValidator,
-                              ...emailValidator,
-                            })}
-                            onKeyDown={restrictToAllowedChars}
-                          />
-                          {errors.email && (
-                            <ErrorMessage text={errors.email.message} />
-                          )}
-                        </div>
+                      <div className="buttonGroup">
+                        <button
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
+                          type="button"
+                          effect="ripple"
+                          className="panelButton gray"
+                        >
+                          <span className="text">Back</span>
+                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                        </button>
+                        <button
+                          type="button"
+                          effect="ripple"
+                          className="panelButton"
+                          onClick={handleFormSubmit}
+                        >
+                          <span className="text">Save</span>
+                          <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                        </button>
                       </div>
-                      <div className="formRow col-xl-12">
-                        <div className="formLabel">
-                          <label htmlFor="">First Name</label>
-                        </div>
-                        <div className="col-6">
-                          <input
-                            type="text"
-                            name="extension"
-                            className="formItem"
-                            {...register("firstName", {
-                              ...requiredValidator,
-                              ...nameValidator,
-                              ...noSpecialCharactersValidator,
-                            })}
-                            onKeyDown={restrictToAllowedChars}
-                          />
-                          {errors.firstName && (
-                            <ErrorMessage text={errors.firstName.message} />
-                          )}
-                        </div>
-                      </div>
-                      <div className="formRow col-xl-12">
-                        <div className="formLabel">
-                          <label htmlFor="">Last Name</label>
-                        </div>
-                        <div className="col-6">
-                          <input
-                            type="text"
-                            name="extension"
-                            className="formItem"
-                            {...register("lastName", {
-                              ...noSpecialCharactersValidator,
-                            })}
-                            onKeyDown={restrictToAllowedChars}
-                          />
-                          {errors.lastName && (
-                            <ErrorMessage text={errors.lastName.message} />
-                          )}
-                        </div>
-                      </div>
-                      <div className="formRow col-xl-12">
-                        <div className="formLabel">
-                          <label htmlFor="selectFormRow">Time Zone</label>
-                          <label htmlFor="data" className="formItemDesc">
-                            Select the default time zone.
-                          </label>
-                        </div>
-                        <div className="col-6">
-                          <select
-                            className="formItem"
-                            name=""
-                            value={watch().timezone_id}
-                            {...register("timezone_id", {
-                              ...requiredValidator,
-                            })}
-                          >
-                            <option disabled value="">
-                              Select Time Zone
-                            </option>
-                            {timeZone &&
-                              timeZone.map((item, key) => {
-                                return (
-                                  <option value={item[0]} key={key}>
-                                    {item[1]}
-                                  </option>
-                                );
-                              })}
-                          </select>
-                          {errors.timezone_id && (
-                            <ErrorMessage text={errors.timezone_id.message} />
-                          )}
-                        </div>
-                      </div>
-                      <div className="formRow col-xl-12">
-                        <div className="formLabel">
-                          <label htmlFor="selectFormRow">Status</label>
-                          <label htmlFor="data" className="formItemDesc">
-                            Set the user's presence.
-                          </label>
-                        </div>
-                        <div className="col-6">
-                          <select
-                            className="formItem"
-                            name=""
-                            {...register("status", { ...requiredValidator })}
-                          >
-                            <option disabled value="">
-                              Choose Status
-                            </option>
-                            <option value="E">Enable</option>
-                            <option value="D">Disable</option>
-                          </select>
-                          {errors.status && (
-                            <ErrorMessage text={errors.status.message} />
-                          )}
-                        </div>
-                      </div>
-                      <div className="formRow col-xl-12">
-                        <div className="formLabel">
-                          <label htmlFor="selectFormRow">Role Type</label>
-                          <label htmlFor="data" className="formItemDesc">
-                            Select Default to enable login or to disable login
-                            select Virtual.
-                          </label>
-                        </div>
-                        <div className="col-6">
-                          {/* {console.log(watch())} */}
-                          <select
-                            className="formItem"
-                            name=""
-                            value={watch().role_id}
-                            {...register("role_id", { ...requiredValidator })}
-                            onChange={(e) => {
-                              setSelectedRole(
-                                e.target.value === ""
-                                  ? ""
-                                  : role[e.target.value].name
-                              );
-                              setSelectedPermission(
-                                e.target.value === ""
-                                  ? ""
-                                  : role[e.target.value].permissions.map(
-                                    (item) => {
-                                      return item.permission_id;
-                                    }
-                                  )
-                              );
-                            }}
-                          >
-                            <option value="" disabled>
-                              Choose Type
-                            </option>
+                    </div>
+                  </div>
+                </div>
 
-                            {role.map((item, key) => {
-                              return (
-                                <option value={item.id} key={key}>
-                                  {item.name}
-                                </option>
-                              );
-                            })}
-                          </select>
-                          {errors.role_id && (
-                            <ErrorMessage text={errors.role_id.message} />
-                          )}
-                        </div>
-                      </div>
-                      <div className="formRow col-xl-12">
-                        <div className="formLabel">
-                          <label htmlFor="selectFormRow">
-                            Select extension
-                          </label>
-                          <label htmlFor="data" className="formItemDesc">
-                            Assign an extension to the newly created user.
-                          </label>
-                        </div>
-                        <div className="col-6">
-                          <select
-                            className="formItem"
-                            name="extension_id"
-                            value={watch().extension_id}
-                            {...register("extension_id")}
-                          >
-                            <option value="" disabled>
-                              Available Extensions
-                            </option>
-                            {filterExtensions &&
-                              filterExtensions.map((extension, key) => {
-                                return (
-                                  <option value={extension.id} key={key}>
-                                    {extension.extension}
+                <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
+                  <div className="row gx-5">
+                    <div className="col-xl-6">
+                      <div className="profileView p-0">
+                        <div className="profileDetailsHolder position-relative p-0 shadow-none">
+                          <form action="#" className="row px-2">
+                            <div className="formRow col-xl-12">
+                              <div className="formLabel">
+                                <label htmlFor="">Username</label>
+                              </div>
+                              <div className="col-6">
+                                <input
+                                  type="text"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("username", { ...requiredValidator })}
+                                  disabled
+                                  onKeyDown={restrictToAllowedChars}
+                                />
+                                {errors.username && (
+                                  <ErrorMessage text={errors.username.message} />
+                                )}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-12">
+                              <div className="formLabel">
+                                <label htmlFor="">Email</label>
+                              </div>
+                              <div className="col-6">
+                                <input
+                                  type="email"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("email", {
+                                    ...requiredValidator,
+                                    ...emailValidator,
+                                  })}
+                                  onKeyDown={restrictToAllowedChars}
+                                />
+                                {errors.email && (
+                                  <ErrorMessage text={errors.email.message} />
+                                )}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-12">
+                              <div className="formLabel">
+                                <label htmlFor="">First Name</label>
+                              </div>
+                              <div className="col-6">
+                                <input
+                                  type="text"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("firstName", {
+                                    ...requiredValidator,
+                                    ...nameValidator,
+                                    ...noSpecialCharactersValidator,
+                                  })}
+                                  onKeyDown={restrictToAllowedChars}
+                                />
+                                {errors.firstName && (
+                                  <ErrorMessage text={errors.firstName.message} />
+                                )}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-12">
+                              <div className="formLabel">
+                                <label htmlFor="">Last Name</label>
+                              </div>
+                              <div className="col-6">
+                                <input
+                                  type="text"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("lastName", {
+                                    ...noSpecialCharactersValidator,
+                                  })}
+                                  onKeyDown={restrictToAllowedChars}
+                                />
+                                {errors.lastName && (
+                                  <ErrorMessage text={errors.lastName.message} />
+                                )}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-12">
+                              <div className="formLabel">
+                                <label htmlFor="selectFormRow">Time Zone</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Select the default time zone.
+                                </label>
+                              </div>
+                              <div className="col-6">
+                                <select
+                                  className="formItem"
+                                  name=""
+                                  value={watch().timezone_id}
+                                  {...register("timezone_id", {
+                                    ...requiredValidator,
+                                  })}
+                                >
+                                  <option disabled value="">
+                                    Select Time Zone
                                   </option>
-                                );
-                              })}
-                          </select>
-                        </div>
-                      </div>
-                      <div className="formRow col-xl-12">
-                        <div className="formLabel">
-                          <label htmlFor="selectFormRow">New Password</label>
-                          <label htmlFor="data" className="formItemDesc">
-                            Set new password to user.
-                          </label>
-                        </div>
-                        <div className="col-6">
-                          <input
-                            type="text"
-                            className="formItem"
-                            name=""
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                          />
-                        </div>
-                      </div>
-                      {/* <div className="formRow col-xl-12">
+                                  {timeZone &&
+                                    timeZone.map((item, key) => {
+                                      return (
+                                        <option value={item[0]} key={key}>
+                                          {item[1]}
+                                        </option>
+                                      );
+                                    })}
+                                </select>
+                                {errors.timezone_id && (
+                                  <ErrorMessage text={errors.timezone_id.message} />
+                                )}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-12">
+                              <div className="formLabel">
+                                <label htmlFor="selectFormRow">Status</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Set the user's presence.
+                                </label>
+                              </div>
+                              <div className="col-6">
+                                <select
+                                  className="formItem"
+                                  name=""
+                                  {...register("status", { ...requiredValidator })}
+                                >
+                                  <option disabled value="">
+                                    Choose Status
+                                  </option>
+                                  <option value="E">Enable</option>
+                                  <option value="D">Disable</option>
+                                </select>
+                                {errors.status && (
+                                  <ErrorMessage text={errors.status.message} />
+                                )}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-12">
+                              <div className="formLabel">
+                                <label htmlFor="selectFormRow">Role Type</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Select Default to enable login or to disable login
+                                  select Virtual.
+                                </label>
+                              </div>
+                              <div className="col-6">
+                                {/* {console.log(watch())} */}
+                                <select
+                                  className="formItem"
+                                  name=""
+                                  value={watch().role_id}
+                                  {...register("role_id", { ...requiredValidator })}
+                                  onChange={(e) => {
+                                    setSelectedRole(
+                                      e.target.value === ""
+                                        ? ""
+                                        : role[e.target.value].name
+                                    );
+                                    setSelectedPermission(
+                                      e.target.value === ""
+                                        ? ""
+                                        : role[e.target.value].permissions.map(
+                                          (item) => {
+                                            return item.permission_id;
+                                          }
+                                        )
+                                    );
+                                  }}
+                                >
+                                  <option value="" disabled>
+                                    Choose Type
+                                  </option>
+
+                                  {role.map((item, key) => {
+                                    return (
+                                      <option value={item.id} key={key}>
+                                        {item.name}
+                                      </option>
+                                    );
+                                  })}
+                                </select>
+                                {errors.role_id && (
+                                  <ErrorMessage text={errors.role_id.message} />
+                                )}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-12">
+                              <div className="formLabel">
+                                <label htmlFor="selectFormRow">
+                                  Select extension
+                                </label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Assign an extension to the newly created user.
+                                </label>
+                              </div>
+                              <div className="col-6">
+                                <select
+                                  className="formItem"
+                                  name="extension_id"
+                                  value={watch().extension_id}
+                                  {...register("extension_id")}
+                                >
+                                  <option value="" disabled>
+                                    Available Extensions
+                                  </option>
+                                  {filterExtensions &&
+                                    filterExtensions.map((extension, key) => {
+                                      return (
+                                        <option value={extension.id} key={key}>
+                                          {extension.extension}
+                                        </option>
+                                      );
+                                    })}
+                                </select>
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-12">
+                              <div className="formLabel">
+                                <label htmlFor="selectFormRow">New Password</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Set new password to user.
+                                </label>
+                              </div>
+                              <div className="col-6">
+                                <input
+                                  type="text"
+                                  className="formItem"
+                                  name=""
+                                  value={password}
+                                  onChange={(e) => setPassword(e.target.value)}
+                                />
+                              </div>
+                            </div>
+                            {/* <div className="formRow col-xl-12">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Domain</label>
                   </div>
@@ -647,75 +686,78 @@ const UsersEdit = () => {
                     </label>
                   </div>
                 </div> */}
-                    </form>
-                  </div>
-                </div>
-              </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
 
-              {selectedRole && (
-                <div className="col-xl-6">
-                  <div className="profileView">
-                    <div className="profileDetailsHolder position-relative">
-                      <div className="col-xl-12">
-                        <div className="headerCommon d-flex align-items-center">
-                          <div className="col-5">
-                            Permissions for Role{" "}
-                            <span
-                              style={{
-                                color: "var(--ui-accent)",
-                                fontWeight: 600,
-                              }}
-                            >
-                              {selectedRole}
-                            </span>
+                    {selectedRole && (
+                      <div className="col-xl-6" style={{ borderLeft: "1px solid var(--border-color)" }}>
+                        <div className="profileView p-0">
+                          <div className="profileDetailsHolder position-relative p-0 shadow-none">
+                            <div className="col-xl-12">
+                              <div className="headerCommon d-flex align-items-center">
+                                <div className="col-5">
+                                  Permissions for Role{" "}
+                                  <span
+                                    style={{
+                                      color: "var(--ui-accent)",
+                                      fontWeight: 600,
+                                    }}
+                                  >
+                                    {selectedRole}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            {filteredPermission &&
+                              Object.keys(filteredPermission).map((item, key) => (
+                                <div className="permissionListWrapper" key={key}>
+                                  <div className="header d-flex align-items-center">
+                                    <div className="col-5">
+                                      <input
+                                        type="checkbox"
+                                        checked={parentChecked[item]}
+                                        onChange={() =>
+                                          handleParentCheckboxChange(item)
+                                        }
+                                      />
+                                      <label class="ms-2">{item}</label>
+                                    </div>
+                                  </div>
+                                  <div className="row col-12 mx-auto pt-1 border-bottom">
+                                    {filteredPermission[item].map(
+                                      (innerItem, key) => (
+                                        <div
+                                          className="col-xl-2 col-md-4 col-6" style={{ paddingLeft: 7 }}
+                                          key={key}
+                                        >
+                                          <input
+                                            type="checkbox"
+                                            id={`permission-${innerItem.id}`}
+                                            checked={selectedPermission.includes(
+                                              innerItem.id
+                                            )}
+                                            onChange={() =>
+                                              handleCheckboxChange(innerItem.id)
+                                            }
+                                          />
+                                          <label className="formLabel ms-2 text-capitalize">
+                                            {innerItem.action}
+                                          </label>
+                                        </div>
+                                      )
+                                    )}
+                                  </div>
+                                </div>
+                              ))}
                           </div>
                         </div>
                       </div>
-                      {filteredPermission &&
-                        Object.keys(filteredPermission).map((item, key) => (
-                          <div className="permissionListWrapper" key={key}>
-                            <div className="header d-flex align-items-center">
-                              <div className="col-5">
-                                <input
-                                  type="checkbox"
-                                  checked={parentChecked[item]}
-                                  onChange={() =>
-                                    handleParentCheckboxChange(item)
-                                  }
-                                />
-                                <label class="ms-2">{item}</label>
-                              </div>
-                            </div>
-                            <div className="row col-12 mx-auto pt-1 border-bottom">
-                              {filteredPermission[item].map(
-                                (innerItem, key) => (
-                                  <div
-                                    className="col-xl-2 col-md-4 col-6" style={{ paddingLeft: 7 }}
-                                    key={key}
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      id={`permission-${innerItem.id}`}
-                                      checked={selectedPermission.includes(
-                                        innerItem.id
-                                      )}
-                                      onChange={() =>
-                                        handleCheckboxChange(innerItem.id)
-                                      }
-                                    />
-                                    <label className="formLabel ms-2 text-capitalize">
-                                      {innerItem.action}
-                                    </label>
-                                  </div>
-                                )
-                              )}
-                            </div>
-                          </div>
-                        ))}
-                    </div>
+                    )}
                   </div>
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </section>

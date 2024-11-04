@@ -518,7 +518,7 @@ const RingGroupEdit = () => {
       <section id="phonePage">
         <div className="container-fluid px-0">
           <Header title="Ring Group Edit" />
-          <div id="subPageHeader" className="d-none">
+          {/* <div id="subPageHeader">
             <div className="col-xl-9">
               <p className="mb-0">
                 A ring group is a set of destinations that can be called with a
@@ -527,7 +527,6 @@ const RingGroupEdit = () => {
             </div>
             <div className="col-xl-3 ps-2">
               <div className="d-flex align-items-center justify-content-end">
-                {/* <div className="formRow border-0 p-0 me-2"> */}
                 <div className="d-flex align-items-center">
                   <div className="formLabel py-0 me-2">
                     <label htmlFor="selectFormRow">Enabled</label>
@@ -544,7 +543,6 @@ const RingGroupEdit = () => {
                     </label>
                   </div>
                 </div>
-                {/* </div> */}
                 <button
                   onClick={() => {
                     navigate(-1);
@@ -553,7 +551,6 @@ const RingGroupEdit = () => {
                   type="button"
                   effect="ripple"
                   className="panelButton gray"
-                // onClick={() => { window.location = "/ring-groups" }}
                 >
                   <span className="text">Back</span>
                   <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
@@ -569,7 +566,7 @@ const RingGroupEdit = () => {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="col-xl-12" style={{ overflow: "auto" }}>
           {loading ? (
@@ -605,7 +602,6 @@ const RingGroupEdit = () => {
                           </label>
                         </div>
                       </div>
-                      {/* </div> */}
                       <button
                         onClick={() => {
                           navigate(-1);
@@ -614,7 +610,6 @@ const RingGroupEdit = () => {
                         type="button"
                         effect="ripple"
                         className="panelButton gray"
-                      // onClick={() => { window.location = "/ring-groups" }}
                       >
                         <span className="text">Back</span>
                         <span className="icon"><i class="fa-solid fa-caret-left"></i></span>

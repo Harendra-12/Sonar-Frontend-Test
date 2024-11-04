@@ -54,7 +54,7 @@
 .pagination_slider {
     display: flex;
     justify-content: center;
-    margin: 25px 0px 0px 0px;
+    /* margin: 25px 0px 0px 0px; */
 }
 
 .css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {

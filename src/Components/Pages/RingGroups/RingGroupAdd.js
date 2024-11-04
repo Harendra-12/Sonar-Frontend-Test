@@ -442,9 +442,8 @@ const RingGroupAdd = () => {
       <section id="phonePage">
         <div className="container-fluid px-0">
           <Header title="Ring Group Add" />
-          <div id="subPageHeader" className="d-none">
+          {/* <div id="subPageHeader">
             <div className="col-xl-9">
-              {/* <h4 className="my-auto">Ring Group Add</h4> */}
               <p className="mb-0">
                 A ring group is a set of destinations that can be called with a
                 ring strategy.
@@ -475,7 +474,7 @@ const RingGroupAdd = () => {
                   }}
                   type="button"
                   effect="ripple"
-                  className="panelButton"
+                  className="panelButton gray"
                 >
                   <span className="text">Back</span>
                   <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
@@ -491,7 +490,7 @@ const RingGroupAdd = () => {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="col-xl-12" style={{ overflow: "auto" }}>
           {loading ? (

@@ -77,7 +77,7 @@ table tr th:first-child {
     overflow-x: auto;
     /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
     border-radius: 5px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     /* box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 5px; */
     background-color: #fff;
     min-height: 271px;
@@ -218,14 +218,17 @@ table td.incoming::after {
 
 .secretSelect {
     position: absolute;
-    right: 10px;
+    right: 0px;
     top: 0;
     border: none;
     outline: none;
     height: 35px;
-    background-color: var(--bg-color);
-    border-left: 1px solid var(--bg-color);
+    background-color: transparent;
+    border-left: 1px solid #ddd;
     border-radius: 0 50px 50px 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #555;
 }
 
 .searchBox {
