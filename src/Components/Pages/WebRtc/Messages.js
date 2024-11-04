@@ -346,7 +346,7 @@ function Messages() {
           <div className="container-fluid">
             <div className="row">
               <div
-                className="col-12 col-xl-6 d-flex flex-wrap justify-content-between py-3 border-end"
+                className="col-12 col-xl-3 d-flex flex-wrap justify-content-between py-3 border-end"
                 style={{ height: "100%" }}
               >
                 <div className="col-auto">
@@ -501,7 +501,7 @@ function Messages() {
                 </div>
               </div>
               <div
-                className="col-12 col-xl-6 callDetails eFaxCompose"
+                className="col-12 col-xl-9 callDetails eFaxCompose"
                 style={{ height: "100%" }}
                 id="callDetails"
               >
@@ -535,14 +535,13 @@ function Messages() {
                   <div className="messageContent">
                     <div className="messageList" ref={messageListRef}>
                       {allMessage?.[recipient[0]]?.map((item, index) => {
-                        // console.log("inside loop",item);
-
+                        // console.log("inside loop", item);
                         return (
                           <>
                             {item.from == extension ? (
                               <div className="messageItem sender">
                                 <div className="second">
-                                  <h6>
+                                  <h6>{item.from},
                                     <span>
                                       {item.time
                                         .split(" ")[1]
@@ -560,6 +559,7 @@ function Messages() {
                               <div className="messageItem receiver">
                                 <div className="second">
                                   <h6>
+                                    {item.from},
                                     <span>
                                       {item.time
                                         .split(" ")[1]

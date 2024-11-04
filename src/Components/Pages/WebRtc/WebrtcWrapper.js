@@ -166,7 +166,7 @@ const WebrtcWrapper = () => {
           isVideoOn={isVideoOn}
           reconnecting={reconnecting}
         />
-        <div>{extension && <SipRegister options={options} />}</div>
+        <div className="d-none">{extension && <SipRegister options={options} />}</div>
         {activePage == "call" && (
           <Call
             setHangupRefresh={setHangupRefresh}
@@ -225,7 +225,7 @@ const WebrtcWrapper = () => {
               </div>
             </section>
             {sessions.find((session) => session.mode === "video") &&
-            callProgressId ? (
+              callProgressId ? (
               <VideoCall
                 setHangupRefresh={setHangupRefresh}
                 hangupRefresh={hangupRefresh}

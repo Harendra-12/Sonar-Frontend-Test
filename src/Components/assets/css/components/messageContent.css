@@ -120,13 +120,14 @@
 }
 
 .messageItem.receiver .messageDetails {
-    background-color: #d6d6d6;
+    background-color: #fff;
     border-radius: 0px 10px 10px 10px;
 }
 
 .messageItem.sender .messageDetails {
-    background-color: #a9ddff;
+    background-color: #f4f7f9;
     border-radius: 10px 10px 0px 10px;
+    border: none;
 }
 
 .messageItem.sender {
@@ -142,7 +143,7 @@
 }
 
 .messageItem.sender .second h6 {
-    visibility: hidden;
+    /* visibility: hidden; */
     text-align: end;
 }
 
@@ -174,18 +175,22 @@
     max-width: 260px;
     min-width: 30px;
     min-height: 30px;
-    padding: 5px 10px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
 }
 
 .messageList .messageItem h6 {
     font-size: 12px;
     margin-bottom: 2px;
+    font-weight: 700;
+    color: var(--color-subtext);
 }
 
 .messageList .messageItem h6 span {
     font-size: 11px;
     color: #757575;
     margin-left: 6px;
+    font-weight: 400;
 }
 
 .messageList .messageDetails p {
