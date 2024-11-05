@@ -260,6 +260,7 @@
     background: #f5f5f5;
     padding: 10px 10px;
     border: 1px solid #ddd;
+    border-radius: 10px 10px 0 0;
 }
 
 .chatHeading h5 {
@@ -277,4 +278,5 @@
 .callList .collapse {
     background-color: #f5f5f5;
     padding-top: 5px;
+    border-radius: 0 0 10px 10px;
 }
