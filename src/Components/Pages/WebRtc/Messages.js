@@ -390,7 +390,7 @@ function Messages() {
                         getDropdownValue={setRecipient}
                         getAllAgents={setAgents}
                       /> */}
-                      <div className="callList" style={{ height: 'calc(100vh - 200px)' }}>
+                      <div className="callList" style={{ height: 'calc(100vh - 210px)' }}>
                         <div className="chatHeading" data-bell={""}>
                           <h5 data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1">Pinned <i class="fa-solid fa-caret-down"></i></h5>
                         </div>
@@ -538,7 +538,6 @@ function Messages() {
                     <div className="contactHeader">
                       <div>
                         <h4>{recipient[0]}</h4>
-                        {console.log('test', recipient[0])}
                         {/* <span className="status online">Online</span> */}
                       </div>
                       <div className="d-flex my-auto">
