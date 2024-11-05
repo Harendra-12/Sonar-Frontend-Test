@@ -262,6 +262,10 @@
     border: 1px solid #ddd;
 }
 
+.chatHeading h5 {
+    margin-bottom: 0;
+}
+
 .chatHeading i {
     float: inline-end;
 }

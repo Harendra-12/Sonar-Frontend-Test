@@ -60,7 +60,7 @@ const AgentSearch = ({ getDropdownValue, value, getAllAgents }) => {
     }),
     valueContainer: (provided) => ({
       ...provided,
-      height: "32px",
+      height: "35px",
       padding: "0 6px",
     }),
     input: (provided) => ({

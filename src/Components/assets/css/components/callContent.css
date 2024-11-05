@@ -335,6 +335,7 @@
     background-color: #439fdd25;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.20) 0px 1px 5px;
+    margin-top: 10px;
 }
 
 .mainContentApp .tab-content .callListItem:hover,

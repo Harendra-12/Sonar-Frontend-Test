@@ -392,9 +392,9 @@ function Messages() {
                       /> */}
                       <div className="callList" style={{ height: 'calc(100vh - 200px)' }}>
                         <div className="chatHeading" data-bell={""}>
-                          <h5 data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Pinned <i class="fa-solid fa-caret-down"></i></h5>
+                          <h5 data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1">Pinned <i class="fa-solid fa-caret-down"></i></h5>
                         </div>
-                        <div class="collapse" id="collapseExample" style={{ borderBottom: '1px solid #ddd', marginBottom: 12 }}>
+                        <div class="collapse show" id="collapse1" style={{ borderBottom: '1px solid #ddd', marginBottom: 12 }}>
                           <div className="contactListItem" data-bell={""}>
                             <div className="row justify-content-between">
                               <div className="col-xl-12 d-flex">
