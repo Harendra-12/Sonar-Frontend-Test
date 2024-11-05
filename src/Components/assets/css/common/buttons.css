@@ -6,6 +6,34 @@
   text-decoration: none;
 }
 
+.clearButton2 {
+  background: none;
+  border: 0;
+  /* background-color: var(--color1); */
+  color: #858585;
+  text-decoration: none;
+  font-size: 17px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s ease-in-out;
+  padding: 0;
+}
+
+.clearButton2:hover {
+  background-color: #e7e7e7;
+  color: #000;
+}
+
+.xl {
+  width: 40px;
+  height: 40px;
+  font-size: 19px;
+}
+
 .panelButtonOLD {
   /* border: 2px solid var(--ui-accent);
     color: var(--ui-accent);
@@ -145,7 +173,7 @@
 }
 
 .getApp {
-  background-color: var(--nav-color);
+  background: var(--nav-color);
   border: none;
   color: #fff;
   padding: 0 15px;
@@ -176,7 +204,7 @@
 }
 
 .clearColorButton i {
-  font-weight: 900;
+  font-weight: 400;
 }
 
 .clearColorButton:hover {
@@ -186,8 +214,18 @@
     box-shadow: none; */
 }
 
+.clearColorButton.dark {
+  background-color: var(--color2);
+  padding: 6px 13px;
+  font-size: 14px;
+}
+
+.clearColorButton.dark i {
+  margin-left: 5px;
+}
+
 .clearColorButton:hover i {
-  font-weight: 400;
+  font-weight: 900;
 }
 
 .clearColorButton.activation {

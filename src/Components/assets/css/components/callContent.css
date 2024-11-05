@@ -83,6 +83,11 @@
     font-family: Outfit;
     font-weight: 500;
     color: #505050;
+
+    width: 290px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .mainContentApp .tab-content .contactListItem h6 {
@@ -101,7 +106,7 @@
     color: var(--ui-accent);
 }
 
-.mainContentApp .tab-content .contactListItem::after{
+.mainContentApp .tab-content .contactListItem::after {
     content: attr(data-bell);
     position: absolute;
     bottom: 10px;
@@ -118,7 +123,7 @@
     color: #fff;
 }
 
-.mainContentApp .tab-content .contactListItem[data-bell=""]::after{
+.mainContentApp .tab-content .contactListItem[data-bell=""]::after {
     content: none !important;
 }
 
@@ -343,25 +348,25 @@
     align-items: center;
 }
 
-.startAJob{
+.startAJob {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
 }
 
-.startAJob img{
+.startAJob img {
     width: 150px;
     height: 150px;
 }
 
-.startAJob h5{
+.startAJob h5 {
     color: var(--color-subtext);
     font-weight: 400;
     margin-top: 10px;
 }
 
-.startAJob h5 span{
+.startAJob h5 span {
     color: var(--ui-accent);
     cursor: pointer;
 }

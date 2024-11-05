@@ -117,9 +117,21 @@
 #sidenNavApp .sidenavItems .userTitle {
     font-size: 14px;
     font-weight: 400;
-    color: var(--ui-accent) !important;
+    /* color: var(--ui-accent) !important; */
     margin-top: auto;
     margin-bottom: auto;
+    text-align: left;
+}
+
+#sidenNavApp .sidenavItems .userTitle h5 {
+    margin-bottom: 0;
+    color: #fff;
+}
+
+#sidenNavApp .sidenavItems .userTitle p {
+    margin-bottom: 0;
+    color: #838383;
+    font-size: 12px;
 }
 
 /* -------- SideNav MainMenu Styles ------- */

@@ -354,8 +354,14 @@ function Messages() {
                     Messages <button class="clearButton"><i class="fa-regular fa-arrows-rotate fs-5" style={{ color: 'rgb(148, 148, 148)' }}></i></button>
                   </h3>
                 </div>
+                <div className="col-12 mt-3">
+                  <AgentSearch
+                    getDropdownValue={setRecipient}
+                    getAllAgents={setAgents}
+                  />
+                </div>
                 <div className="col-12">
-                  <nav className="mb-3">
+                  <nav className="my-3">
                     <div className="nav nav-tabs">
                       <button
                         className={
@@ -380,11 +386,33 @@ function Messages() {
                   </nav>
                   {activeTab === "all" ? (
                     <div className="tab-content">
-                      <AgentSearch
+                      {/* <AgentSearch
                         getDropdownValue={setRecipient}
                         getAllAgents={setAgents}
-                      />
-                      <div className="callList">
+                      /> */}
+                      <div className="callList" style={{ height: 'calc(100vh - 200px)' }}>
+                        <div className="chatHeading" data-bell={""}>
+                          <h5 data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Pinned <i class="fa-solid fa-caret-down"></i></h5>
+                        </div>
+                        <div class="collapse" id="collapseExample" style={{ borderBottom: '1px solid #ddd', marginBottom: 12 }}>
+                          <div className="contactListItem" data-bell={""}>
+                            <div className="row justify-content-between">
+                              <div className="col-xl-12 d-flex">
+                                <div
+                                  className="profileHolder"
+                                  id={"profileOfflineNav"}
+                                >
+                                  <i className="fa-light fa-user fs-5"></i>
+                                </div>
+                                <div className="my-auto ms-2 ms-xl-3">
+                                  <h4>Test</h4>
+                                  <h5>0000</h5>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
                         {contact.map((item) => {
                           return (
                             <div
@@ -438,10 +466,10 @@ function Messages() {
                     </div>
                   ) : (
                     <div className="tab-content">
-                      <AgentSearch
+                      {/* <AgentSearch
                         getDropdownValue={setRecipient}
                         getAllAgents={setAgents}
-                      />
+                      /> */}
                       <div className="callList">
                         {onlineUser.map((item) => {
                           return (
@@ -510,23 +538,33 @@ function Messages() {
                     <div className="contactHeader">
                       <div>
                         <h4>{recipient[0]}</h4>
+                        {console.log('test', recipient[0])}
                         {/* <span className="status online">Online</span> */}
                       </div>
                       <div className="d-flex my-auto">
                         <button
-                          className="appPanelButton"
+                          className="clearButton2 xl"
                           effect="ripple"
-                          onclick="location.href='http://192.168.2.220/ringerappCI/webrtc/user-app-caller'"
                         >
                           <i className="fa-light fa-phone" />
                         </button>
                         <button
-                          className="appPanelButton"
+                          className="clearButton2 xl"
                           effect="ripple"
-                          onclick="location.href='http://192.168.2.220/ringerappCI/webrtc/user-app-videocaller'"
                         >
                           <i className="fa-light fa-video" />
                         </button>
+                        <div class="dropdown">
+                          <button class="clearButton2 xl" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Start Call</a></li>
+                            <li><a class="dropdown-item" href="#">Send Message</a></li>
+                            <li><a class="dropdown-item" href="#">Add to Contact</a></li>
+                            <li><a class="dropdown-item" href="#">Delete Contact</a></li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   ) : (
@@ -598,29 +636,59 @@ function Messages() {
                     </div>
                     {recipient[0] ? (
                       <div className="messageInput">
-                        <div className="col-10">
-                          <input
-                            type="text"
-                            name=""
-                            id=""
-                            placeholder="Please enter your message"
-                            value={messageInput}
-                            onChange={(e) => setMessageInput(e.target.value)}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") {
-                                sendMessage();
-                              }
-                            }}
-                          />
+                        <div className="col-12">
+                          <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                              <button class="tabLink active" id="nav-sms-tab" data-bs-toggle="tab" data-bs-target="#nav-sms" type="button" role="tab" aria-controls="nav-sms" aria-selected="true">SMS</button>
+                              <button class="tabLink" id="nav-whatsapp-tab" data-bs-toggle="tab" data-bs-target="#nav-whatsapp" type="button" role="tab" aria-controls="nav-whatsapp" aria-selected="false" disabled>WhatsApp</button>
+                              <button class="tabLink" id="nav-skype-tab" data-bs-toggle="tab" data-bs-target="#nav-skype" type="button" role="tab" aria-controls="nav-skype" aria-selected="false" disabled>Skype</button>
+                            </div>
+                          </nav>
                         </div>
-                        <div className="col-auto d-flex">
-                          <button
-                            effect="ripple"
-                            className="appPanelButtonColor"
-                            onClick={() => sendMessage()}
-                          >
-                            <i className="fa-solid fa-paper-plane-top" />
-                          </button>
+                        <div class="tab-content col-12" id="nav-tabContent">
+                          <div class="tab-pane fade show active" id="nav-sms" role="tabpanel" aria-labelledby="nav-sms-tab">
+                            <textarea
+                              type="text"
+                              name=""
+                              className="input"
+                              placeholder="Please enter your message"
+                              value={messageInput}
+                              onChange={(e) => setMessageInput(e.target.value)}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                  sendMessage();
+                                }
+                              }}
+                            />
+                          </div>
+                          <div class="tab-pane fade" id="nav-whatsapp" role="tabpanel" aria-labelledby="nav-whatsapp-tab">...</div>
+                          <div class="tab-pane fade" id="nav-skype" role="tabpanel" aria-labelledby="nav-skype-tab">...</div>
+                        </div>
+
+                        <div className="col-12 d-flex justify-content-between align-items-center">
+                          <div className="d-flex">
+                            <button className="clearButton2">
+                              <i className="fa-light fa-eraser" />
+                            </button>
+                            <button className="clearButton2">
+                              <i class="fa-regular fa-image"></i>
+                            </button>
+                            <button className="clearButton2">
+                              <i class="fa-solid fa-paperclip"></i>
+                            </button>
+                            <button className="clearButton2">
+                              <i class="fa-regular fa-face-smile"></i>
+                            </button>
+                          </div>
+                          <div>
+                            <button
+                              effect="ripple"
+                              className="clearColorButton dark"
+                              onClick={() => sendMessage()}
+                            >
+                              Send Now <i className="fa-solid fa-paper-plane-top" />
+                            </button>
+                          </div>
                         </div>
                       </div>
                     ) : (
@@ -632,7 +700,7 @@ function Messages() {
             </div>
           </div>
         </section>
-      </main>
+      </main >
     </>
   );
 }

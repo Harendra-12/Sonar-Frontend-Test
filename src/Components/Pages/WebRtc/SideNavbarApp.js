@@ -9,7 +9,7 @@ function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
   const [loading, setLoading] = useState(true); // Loading state for popup
   // const callState = useSelector((state) => state.callState);
   // console.log("callStatesss", callState);
-  
+
   const extension = account?.extension?.extension || "";
   const [connectedStatus, setConnectedStatus] = useState("");
 
@@ -52,10 +52,11 @@ function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
                       : "profileOfflineNav"
                   }
                 >
-                  {extension}
+                  <i class="fa-light fa-user"></i>
                 </div>
                 <div className="userTitle">
-                  {extension}-{account.username}
+                  <h5>{account.username}</h5>
+                  <p>Ext- {extension}</p>
                 </div>
               </button>
             </li>{" "}
