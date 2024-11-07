@@ -250,14 +250,14 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
                   </h4>
                 </div>
               </div>
-              <div className={isVideoOn ? "d-flex justify-content-between my-2" : "d-flex justify-content-center my-2"}>
+              <div className="d-flex justify-content-center my-2">
                 <div onClick={() => onSubmit("audio")}>
                   <button className="callButton">
                     <i className="fa-thin fa-phone" />
                   </button>
                 </div>
                 {isVideoOn ? (
-                  <div onClick={() => onSubmit("video")}>
+                  <div onClick={() => onSubmit("video")} className="ms-3">
                     <button className="callButton">
                       <i className="fa-thin fa-video" />
                     </button>

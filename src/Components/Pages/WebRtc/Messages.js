@@ -376,7 +376,7 @@ function Messages() {
                 </div>
               </div>
               <div
-                className="col-12 col-xl-3 d-flex flex-wrap justify-content-between py-3 border-end px-xl-0"
+                className="col-12 col-xl-4 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-between py-3 border-end px-xl-0"
                 style={{ height: "100%" }}
               >
                 <div className="col-auto" style={{ padding: '0 10px' }}>
@@ -618,7 +618,7 @@ function Messages() {
                 </div>
               </div>
               <div
-                className="col-12 col-xl-9 callDetails eFaxCompose"
+                className="col-12 col-xl-8 col-lg-8 col-xxl-9 callDetails eFaxCompose"
                 style={{ height: "100%" }}
                 id="callDetails"
               >
