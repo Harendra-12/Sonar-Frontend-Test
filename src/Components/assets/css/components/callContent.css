@@ -37,7 +37,7 @@
 .mainContentApp .tab-content .callList .callListDiff {
     font-size: 14px !important;
     margin: 5px 0;
-    font-family: Outfit;
+    /* font-family: Outfit; */
     font-weight: 500;
     color: #505050;
 }
@@ -49,9 +49,9 @@
 .mainContentApp .tab-content .callListItem h6 {
     font-size: 12px;
     margin: 0;
-    font-family: Outfit;
+    font-family: Open sans;
     font-weight: 500;
-    color: #505050;
+    color: #505050d6;
 }
 
 .mainContentApp .tab-content .callListItem span {
@@ -88,7 +88,7 @@
     font-weight: 400;
     color: #747474;
 
-    max-width: 290px;
+    max-width: 250px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -342,7 +342,16 @@
     margin-bottom: 0;
 }
 
-.mainContentApp .tab-content .callListItem.selected,
+.mainContentApp .tab-content .callListItem.selected {
+    background-color: #439fdd25;
+    /* background: #f5f5f5; */
+    /* border-right: 4px solid var(--ui-accent); */
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.20) 0px 1px 5px;
+    /* margin-top: 10px; */
+    z-index: 1;
+}
+
 .mainContentApp .tab-content .contactListItem.selected {
     /* background-color: #439fdd25; */
     background: #f5f5f5;

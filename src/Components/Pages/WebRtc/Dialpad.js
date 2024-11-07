@@ -131,7 +131,7 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
             <div className="col-xl-3 col-md-6 col-11 dialPadContainer p-2">
               <div className="d-flex justify-content-between pt-3 pb-1 px-2">
                 <div>
-                  <i className="fa-light fa-address-book fs-5" />
+                  <i className="fa-light fa-address-book fs-5 text-white" />
                 </div>
                 <div>
                   <h3>Dial Number:</h3>
@@ -140,7 +140,7 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
                   onClick={() => hideDialpad(false)}
                   style={{ cursor: "pointer" }}
                 >
-                  <i className="fa-regular fa-xmark fs-5" />
+                  <i className="fa-regular fa-xmark fs-5 text-white" />
                 </div>
               </div>
               <div className="mb-2">
@@ -250,7 +250,7 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
                   </h4>
                 </div>
               </div>
-              <div className="d-flex justify-content-center">
+              <div className={isVideoOn ? "d-flex justify-content-between my-2" : "d-flex justify-content-center my-2"}>
                 <div onClick={() => onSubmit("audio")}>
                   <button className="callButton">
                     <i className="fa-thin fa-phone" />

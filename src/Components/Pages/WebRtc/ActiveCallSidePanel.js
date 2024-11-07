@@ -167,8 +167,8 @@ function ActiveCallSidePanel({
         >
           <div className="profilepicHolder">{chennel + 1}</div>
           <div className="callContent">
-            <h4>Line {chennel + 1}</h4>
-            <h5>{destination}</h5>
+            <h4>{destination} <span className="float-end" style={{ fontSize: 12 }}>Line {chennel + 1}</span></h4>
+            <h5>01:20</h5>
           </div>
         </div>
       ) : session?._state === "Initial" ? (
@@ -178,8 +178,8 @@ function ActiveCallSidePanel({
         >
           <div className="profilepicHolder">{chennel + 1}</div>
           <div className="callContent">
-            <h4>Line {chennel + 1}</h4>
-            <h5>{destination}</h5>
+            <h4>{destination} <span className="float-end" style={{ fontSize: 12 }}>Line {chennel + 1}</span></h4>
+            <h5>01:20</h5>
           </div>
         </div>
       ) : (
@@ -189,8 +189,8 @@ function ActiveCallSidePanel({
         >
           <div className="profilepicHolder">{chennel + 1}</div>
           <div className="callContent">
-            <h4>Line {chennel + 1}</h4>
-            <h5>{destination}</h5>
+            <h4>{destination} <span className="float-end" style={{ fontSize: 12 }}>Line {chennel + 1}</span></h4>
+            <h5>01:20</h5>
           </div>
         </div>
       )}

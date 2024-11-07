@@ -148,9 +148,9 @@
 }
 
 .messageItem.sender .messageDetails {
-    background-color: #f4f7f9;
+    background-color: #a9dbff3d;
     border-radius: 10px 10px 0px 10px;
-    border: none;
+    border: 1px solid var(--border-color);
 }
 
 .messageItem.sender {
@@ -195,7 +195,7 @@
 .messageList .messageDetails {
     /* min-width: max-content; */
     display: inline-block;
-    max-width: 260px;
+    max-width: 500px;
     min-width: 30px;
     min-height: 30px;
     padding: 8px 12px;
