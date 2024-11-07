@@ -99,11 +99,11 @@
 
 .callerContent .user .primaryUserWindow,
 .caller .primaryUserWindow {
-    width: 160px;
-    height: 200px;
+    width: 200px;
+    height: 160px;
     position: absolute;
     z-index: 999;
-    bottom: 0;
+    bottom: 10px;
     right: 0;
 
     background: var(--nav-color);
@@ -161,7 +161,7 @@
 
 .videoCall .caller.minimize {
     width: 250px;
-    height:200px;
+    height: 200px;
     left: inherit;
     top: inherit;
     bottom: 0;
@@ -171,7 +171,7 @@
     overflow: hidden;
 }
 
-.videoCall .caller.minimize .appPanelButtonCaller{
+.videoCall .caller.minimize .appPanelButtonCaller {
     position: absolute;
     right: 10px;
     top: 10px;
@@ -183,8 +183,8 @@
 }
 
 .videoCall .caller.minimize .primaryUserWindow {
-    width: 50px;
-    height: 70px;
+    width: 70px;
+    height: 50px;
     position: absolute;
     bottom: 0;
     right: 0;
