@@ -573,3 +573,124 @@ input[type=number] {
     border: none;
     border-radius: 5px;
 }
+
+.contactTags {
+    display: flex;
+    align-items: center;
+    margin-top: 2px;
+}
+
+.contactTags span {
+    border-radius: 50px;
+    background-color: #ddd;
+    color: #000;
+    padding: 2px 10px;
+    font-size: 12px !important;
+    margin: 5px 10px 0 0 !important;
+}
+
+.contactTags span.work {
+    background-color: #b8eadc;
+    color: #00c193 !important;
+}
+
+.contactTags span.important {
+    background-color: #f8d5d5;
+    color: #e55a57 !important;
+}
+
+.contactTags span.priority {
+    background-color: #fdeacd;
+    color: #f7a659 !important;
+}
+
+.contactTags span.personal {
+    background-color: #c7e4fc;
+    color: #2793f4;
+}
+
+.contactTags span.more {
+    color: red !important;
+    background-color: transparent;
+    font-size: 14px !important;
+    font-weight: 500;
+    padding: 0;
+}
+
+.ovalSelect {
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: transparent;
+}
+
+.newHeader {
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.myProfileWidget {
+    display: flex;
+    align-items: center;
+    border-left: 1px solid var(--border-color);
+    padding: 0 20px;
+}
+
+.myProfileWidget .profileHolder {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    cursor: pointer;
+    background-color: var(--ui-accent);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    /* overflow: hidden; */
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;
+    margin-right: 10px;
+    position: relative;
+}
+
+.myProfileWidget .profileHolder#profileOnlineNav::after {
+    content: none;
+}
+
+.myProfileWidget .profileHolder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.myProfileWidget .profileName {
+    font-size: 16px;
+    font-weight: 500;
+    font-family: Roboto;
+}
+
+.myProfileWidget .profileName span.status {
+    display: block;
+    font-size: 13px;
+    font-weight: 400;
+    color: #898989;
+}
+
+.viewingAs {
+    text-transform: uppercase;
+    color: #757575;
+    font-size: 14px !important;
+    font-weight: 500;
+}
+
+.viewingAs span {
+    display: block;
+    text-transform: capitalize;
+    color: #000;
+    font-size: 18px;
+    margin-top: 5px;
+}

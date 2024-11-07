@@ -64,12 +64,15 @@
 
 /* Contact List Item Start*/
 .mainContentApp .tab-content .contactListItem {
-    padding: 10px 10px;
+    padding: 15px 10px;
     position: relative;
-    border-radius: 10px;
-    margin-bottom: 5px;
+    border-radius: 0px;
+    /* margin-bottom: 5px; */
     cursor: pointer;
     transition: 0.3s ease-in-out;
+    border-bottom: 1px solid #ddd;
+    background-color: #fff;
+    min-height: 99.19px;
 }
 
 .mainContentApp .tab-content .contactListItem h4 {
@@ -80,12 +83,12 @@
 
 .mainContentApp .tab-content .contactListItem h5 {
     font-size: 14px !important;
-    margin: 5px 0;
+    margin: 5px 0 0;
     font-family: Roboto;
     font-weight: 400;
     color: #747474;
 
-    width: 290px;
+    max-width: 290px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -97,6 +100,14 @@
     font-family: Outfit;
     font-weight: 500;
     color: #505050;
+}
+
+.mainContentApp .tab-content .contactListItem p.timeAgo {
+    font-size: 12px !important;
+    margin: 5px 0 0;
+    font-family: Roboto;
+    font-weight: 400;
+    color: #ababab;
 }
 
 .mainContentApp .tab-content .contactListItem span {
@@ -114,7 +125,7 @@
     right: 10px;
     width: 20px;
     height: 20px;
-    background-color: var(--funky-boy1);
+    background-color: var(--ui-accent);
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -129,9 +140,9 @@
 }
 
 .mainContentApp .contactListItem .profileHolder {
-    width: 50px;
-    height: 50px;
-    margin: auto 0px auto 0px;
+    width: 45px;
+    height: 45px;
+    /* margin: auto 0px auto 0px; */
     /* margin: auto 15px auto 0px; */
     text-align: center;
     cursor: pointer;
@@ -143,7 +154,7 @@
     color: #fff;
     /* overflow: hidden; */
     position: relative;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 2px;
 }
 
 #profileOnline::after {
@@ -333,10 +344,13 @@
 
 .mainContentApp .tab-content .callListItem.selected,
 .mainContentApp .tab-content .contactListItem.selected {
-    background-color: #439fdd25;
-    border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.20) 0px 1px 5px;
-    margin-top: 10px;
+    /* background-color: #439fdd25; */
+    background: #f5f5f5;
+    border-right: 4px solid var(--ui-accent);
+    /* border-radius: 10px; */
+    /* box-shadow: rgba(0, 0, 0, 0.20) 0px 1px 5px; */
+    /* margin-top: 10px; */
+    z-index: 1;
 }
 
 .mainContentApp .tab-content .callListItem:hover,

@@ -6,3 +6,8 @@ h4 {
 h5 {
     font-size: 16px !important;
 }
+
+.gray14 {
+    font-size: 14px;
+    color: #858585;
+}
