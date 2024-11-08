@@ -14,7 +14,7 @@ function IncomingCallPopup({
   isMicOn,
   isVideoOn,
 }) {
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(true);
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
   const { decline, answer, session } = useSessionCall(sessionId);
@@ -273,19 +273,27 @@ function IncomingCallPopup({
           }}
         >
           <div className="user">
-            <div className="userHolder">
-              <i className="fa-solid fa-user" />
-            </div>
             <div className="userInfo text-start my-0 px-2">
+              <h5>Incoming Call...</h5>
               <h4>{callerExtension}</h4>
-              <h5>{callerExtension}</h5>
             </div>
-            <div className="controls m-0">
-              <button class="callButton me-0" onClick={() => handleAnswerCall("audio")}>
-                <i class="fa-duotone fa-phone"></i>
-              </button>
-              <button class="callButton hangup me-0" onClick={decline}>
+            <div className="controls px-2">
+              <button class="callButton hangup" onClick={decline}>
                 <i class="fa-duotone fa-phone-hangup"></i>
+              </button>
+              <button
+                className="callButton bg-primary"
+                onClick={() => {
+                  setAttendShow(true);
+                  setIsMinimized(true);
+                }}
+              >
+                <i className="fa-thin fa-phone-arrow-up-right" />
+              </button>
+              <button class="callButton" onClick={() => handleAnswerCall("audio")}>
+                <i class="fa-duotone fa-phone"></i>
+                <div class="circle1"></div>
+                <div class="circle2"></div>
               </button>
             </div>
           </div>

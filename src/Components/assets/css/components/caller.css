@@ -118,7 +118,8 @@
 
 .incomingCallPopup .userInfo h5 {
     font-weight: 300;
-    color: #ffffffa1;
+    color: #ffffff86;
+    font-family: Roboto;
 }
 
 .incomingCallPopup .controls {
@@ -141,12 +142,17 @@
     bottom: 10px;
     transform: none;
     min-height: auto;
-    padding: 10px;
+    width: 250px;
+    padding: 20px;
     border-radius: 10px;
+
+
+    display: block;
 }
 
 .incomingCallPopup.minimized .user {
-    flex-wrap: nowrap;
+    /* flex-wrap: nowrap; */
+    display: block;
 }
 
 .incomingCallPopup.minimized .userHolder {
@@ -156,11 +162,28 @@
 }
 
 .incomingCallPopup.minimized .userInfo h4 {
-    font-size: 18px !important;
-    margin-bottom: 5px;
+    font-size: 16px !important;
+    /* margin-bottom: 5px; */
 }
 
 .incomingCallPopup.minimized .userInfo h5 {
-    font-size: 14px !important;
-    margin-bottom: 0px;
+    font-size: 12px !important;
+    margin-bottom: 5px;
+}
+
+.incomingCallPopup.minimized .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 25px;
+}
+
+.incomingCallPopup.minimized .controls button {
+    margin: 0;
+}
+
+.incomingCallPopup.minimized .controls button:nth-child(2) {
+    width: 40px;
+    height: 40px;
 }

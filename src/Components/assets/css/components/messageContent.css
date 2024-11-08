@@ -271,6 +271,7 @@
     padding: 10px 10px;
     border: 1px solid #ddd;
     /* border-radius: 10px 10px 0 0; */
+    position: relative;
 }
 
 .chatHeading h5 {
@@ -278,6 +279,8 @@
     font-size: 14px !important;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+
+    font-weight: 600;
 }
 
 .chatHeading i {
@@ -286,6 +289,23 @@
 
 .chatHeading h5:not(.collapsed) i {
     transform: rotate(180deg);
+}
+
+.chatHeading h5 span {
+    background-color: var(--ui-accent);
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    right: 35px;
+    transform: translate(0, -50%);
+
+    font-size: 12px;
 }
 
 .callList .collapse {

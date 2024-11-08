@@ -32,14 +32,18 @@
 
 
 .dialPadContainer .dialerInput {
-    border: 1px solid #ddd;
+    border: 1px solid #dddddd30;
     padding: 5px 30px;
     width: 80%;
-    color: #000000;
-    background: var(--bg-color) url(../../images/search_b.png) no-repeat 7px center / 17px 17px;
+    color: #fff;
+    background: #ffffff20 url(../../images/search_b.png) no-repeat 7px center / 17px 17px;
     border-radius: 5px;
     outline: none !important;
     margin: 10px 0;
+}
+
+.dialPadContainer .dialerInput:focus {
+    border: 1px solid #00a1ff;
 }
 
 .inCall .dialPadContainer {

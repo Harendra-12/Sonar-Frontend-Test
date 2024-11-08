@@ -649,3 +649,32 @@
 .tableButton.warning:hover i {
   color: #ffa500 !important;
 }
+
+
+.callButton i {
+  position: relative;
+  z-index: 1;
+}
+
+.callButton .circle1,
+.callButton .circle2 {
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  background-color: #1ac444;
+  position: absolute;
+  z-index: 0;
+  animation: scaling 2s cubic-bezier(0.12, 0.7, 0.74, 0.71) infinite;
+}
+
+@keyframes scaling {
+  0% {
+    transform: scale(0);
+    background-color: #1ac444;
+  }
+
+  100% {
+    transform: scale(2);
+    background-color: rgba(245, 0, 182, 0);
+  }
+}

@@ -349,7 +349,7 @@ function Messages() {
                 <div className="newHeader">
                   <div className="col-auto" style={{ padding: '0 10px' }}>
                     <h3 style={{ fontFamily: "Outfit", marginBottom: '0' }}>
-                      <button class="clearButton text-dark"><i class="fa-solid fa-caret-left fs-4"></i></button> Messages <button class="clearButton"><i class="fa-regular fa-arrows-rotate fs-5" style={{ color: 'rgb(148, 148, 148)' }}></i></button>
+                      <button class="clearButton text-dark"><i class="fa-solid fa-chevron-left fs-4"></i></button> Messages <button class="clearButton"><i class="fa-regular fa-arrows-rotate fs-5" style={{ color: 'rgb(148, 148, 148)' }}></i></button>
                     </h3>
                   </div>
                   <div className="d-flex justify-content-end align-items-center">
@@ -428,7 +428,7 @@ function Messages() {
                       /> */}
                       <div className="callList" style={{ height: 'calc(100vh - 270px)' }}>
                         <div className="chatHeading">
-                          <h5 data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1">Pinned <i class="fa-solid fa-caret-down"></i></h5>
+                          <h5 data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1">Pinned <i class="fa-solid fa-chevron-down"></i></h5>
                         </div>
                         <div class="collapse show" id="collapse1">
                           <div className="contactListItem" data-bell={"1"}>
@@ -458,7 +458,7 @@ function Messages() {
                         </div>
 
                         <div className="chatHeading">
-                          <h5 data-bs-toggle="collapse" href="#collapse2" role="button" aria-expanded="false" aria-controls="collapse2">Chats <i class="fa-solid fa-caret-down"></i></h5>
+                          <h5 data-bs-toggle="collapse" href="#collapse2" role="button" aria-expanded="false" aria-controls="collapse2">Chats <i class="fa-solid fa-chevron-down"></i></h5>
                         </div>
                         <div class="collapse show" id="collapse2" style={{ borderBottom: '1px solid #ddd' }}>
                           {contact.map((item) => {

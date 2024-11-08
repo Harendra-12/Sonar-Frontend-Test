@@ -160,40 +160,58 @@ function ActiveCallSidePanel({
 
   return (
     <>
-      {isHeld ? (
-        <div
-          onClick={() => handleActiveCall(session._id, destination)}
-          className="col-12 callItem hold"
-        >
-          <div className="profilepicHolder">{chennel + 1}</div>
-          <div className="callContent">
-            <h4>{destination} <span className="float-end" style={{ fontSize: 12 }}>Line {chennel + 1}</span></h4>
-            <h5>01:20</h5>
+      <div class="chatHeading">
+        <h5 data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1">Active Call <span>1</span> <i class="fa-solid fa-chevron-down"></i></h5>
+      </div>
+      <div class="collapse show px-0" id="collapse1">
+        {isHeld ? (
+          <div
+            onClick={() => handleActiveCall(session._id, destination)}
+            className="col-12 callItem hold"
+          >
+            <div className="profilepicHolder">{chennel + 1}</div>
+            <div className="callContent">
+              <h4>{destination}</h4>
+              <h5>01:20</h5>
+              {/* <span className="float-end" style={{ fontSize: 12 }}>Line {chennel + 1}</span> */}
+            </div>
+            <div className="callBtnGrp my-auto ms-auto">
+              <button className="appPanelButtonCaller bg-warning"><i class="fa-solid fa-pause"></i></button>
+              <button className="appPanelButtonCaller bg-danger me-0"><i class="fa-solid fa-phone-hangup"></i></button>
+            </div>
           </div>
-        </div>
-      ) : session?._state === "Initial" ? (
-        <div
-          onClick={() => handleActiveCall(session._id, destination)}
-          className="col-12 callItem ringing"
-        >
-          <div className="profilepicHolder">{chennel + 1}</div>
-          <div className="callContent">
-            <h4>{destination} <span className="float-end" style={{ fontSize: 12 }}>Line {chennel + 1}</span></h4>
-            <h5>01:20</h5>
+        ) : session?._state === "Initial" ? (
+          <div
+            onClick={() => handleActiveCall(session._id, destination)}
+            className="col-12 callItem ringing"
+          >
+            <div className="profilepicHolder">{chennel + 1}</div>
+            <div className="callContent">
+              <h4>{destination}</h4>
+              <h5>Incoming...</h5>
+            </div>
+            <div className="callBtnGrp my-auto ms-auto">
+              <button className="appPanelButtonCaller" style={{ background: '#1ac444' }}><i class="fa-solid fa-phone"></i></button>
+              <button className="appPanelButtonCaller bg-danger me-0"><i class="fa-solid fa-phone-hangup"></i></button>
+            </div>
           </div>
-        </div>
-      ) : (
-        <div
-          onClick={() => handleActiveCall(session._id, destination)}
-          className="col-12 callItem active"
-        >
-          <div className="profilepicHolder">{chennel + 1}</div>
-          <div className="callContent">
-            <h4>{destination} <span className="float-end" style={{ fontSize: 12 }}>Line {chennel + 1}</span></h4>
-            <h5>01:20</h5>
+        ) : (
+          <div
+            onClick={() => handleActiveCall(session._id, destination)}
+            className="col-12 callItem active"
+          >
+            <div className="profilepicHolder">{chennel + 1}</div>
+            <div className="callContent">
+              <h4>{destination}</h4>
+              <h5>01:20</h5>
+              {/* <span className="float-end" style={{ fontSize: 12 }}>Line {chennel + 1}</span> */}
+            </div>
+            <div className="callBtnGrp my-auto ms-auto">
+              <button className="appPanelButtonCaller bg-danger"><i class="fa-solid fa-phone-hangup"></i></button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       <audio ref={audioRef}></audio>
 
