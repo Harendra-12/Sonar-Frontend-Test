@@ -47,81 +47,78 @@ function ConferenceCall() {
                                     </div>
                                 </div>
                             </div>
-                            <div className='col-lg-8 col-xl-8 col-12 border-end'>
-
-                            </div>
-                            <div className='col-lg-4 col-xl-4 col-12'>
-                                <div className="messageOverlay">
-                                    <div className="contactHeader py-3">
-                                        <div>
-                                            <h4>Messages</h4>
+                            <div className='videoCallWrapper'>
+                                <div className='row'>
+                                    <div className='col-lg-8 col-xl-8 col-12'>
+                                        <div className='heading'>
+                                            <h4>Conference <span>14:20</span></h4>
+                                            <button className='clearButton'><i class="fa-sharp fa-solid fa-circle-plus"></i> Add Participant</button>
+                                        </div>
+                                        <div className='videoBody'>
+                                            <div className='activeGuyName'>
+                                                You
+                                            </div>
+                                            <div className='participant active'>
+                                                <img src='https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png' />
+                                            </div>
+                                            <div className='participant' data-mic='true'>
+                                                <img src='https://ogletree.com/app/uploads/people/alexandre-abitbol.jpg' />
+                                            </div>
+                                            <div className='participant' data-mic='false' style={{ top: `120px` }}>
+                                                <img src='https://ogletree.com/app/uploads/people/jerod-a-allen.jpg' />
+                                            </div>
+                                            <div className='participant' data-pin='true' style={{ top: `220px` }}>
+                                                <img src='https://ogletree.com/app/uploads/people/janice-g-dubler.jpg' />
+                                            </div>
+                                            <div className='participant' style={{ top: `320px` }}>
+                                                <img src='https://i.pinimg.com/736x/54/b7/58/54b758f7757dfb67d75a0b6640cb2efa.jpg' />
+                                            </div>
+                                        </div>
+                                        <div className='videoControls'>
+                                            <button className='appPanelButtonCallerRect'>
+                                                <i class="fa-light fa-microphone"></i>
+                                            </button>
+                                            <button className='appPanelButtonCallerRect'>
+                                                <i class="fa-light fa-video"></i>
+                                            </button>
+                                            <button className='appPanelButtonCallerRect'>
+                                                <i class="fa-sharp fa-light fa-record-vinyl"></i>
+                                            </button>
+                                            <button className='appPanelButtonCallerRect' style={{ fontSize: '14px', padding: '10px 20px', backgroundColor: '#e45758' }}>
+                                                Leave Call
+                                            </button>
+                                            <button className='appPanelButtonCallerRect'>
+                                                <i class="fa-light fa-screencast"></i>
+                                            </button>
+                                            <button className='appPanelButtonCallerRect'>
+                                                <i class="fa-light fa-chalkboard-user"></i>
+                                            </button>
+                                            <button className='appPanelButtonCallerRect'>
+                                                <i class="fa-light fa-hand"></i>
+                                            </button>
                                         </div>
                                     </div>
-                                    <div className="messageContent">
-                                        <div className="messageList">
-                                            <div className="messageItem sender">
-                                                <div className="second">
-                                                    <h6>
-                                                        1003,<span>3:48</span>
-                                                    </h6>
-                                                    <div className="messageDetails">
-                                                        <p>hi</p>
-                                                    </div>
+                                    <div className='col-lg-4 col-xl-4 col-12 p-3'>
+                                        <div className="messageOverlay">
+                                            <div className="contactHeader py-3">
+                                                <div>
+                                                    <h4>Messages</h4>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className="messageInput">
-                                            <div className="col-12">
-                                                <nav>
-                                                    <div className="nav nav-tabs" id="nav-tab" role="tablist">
-                                                        <button
-                                                            className="tabLink active"
-                                                            id="nav-sms-tab"
-                                                            data-bs-toggle="tab"
-                                                            data-bs-target="#nav-sms"
-                                                            type="button"
-                                                            role="tab"
-                                                            aria-controls="nav-sms"
-                                                            aria-selected="true"
-                                                        >
-                                                            SMS
-                                                        </button>
-                                                        <button
-                                                            className="tabLink"
-                                                            id="nav-whatsapp-tab"
-                                                            data-bs-toggle="tab"
-                                                            data-bs-target="#nav-whatsapp"
-                                                            type="button"
-                                                            role="tab"
-                                                            aria-controls="nav-whatsapp"
-                                                            aria-selected="false"
-                                                            disabled=""
-                                                        >
-                                                            WhatsApp
-                                                        </button>
-                                                        <button
-                                                            className="tabLink"
-                                                            id="nav-skype-tab"
-                                                            data-bs-toggle="tab"
-                                                            data-bs-target="#nav-skype"
-                                                            type="button"
-                                                            role="tab"
-                                                            aria-controls="nav-skype"
-                                                            aria-selected="false"
-                                                            disabled=""
-                                                        >
-                                                            Skype
-                                                        </button>
+                                            <div className="messageContent">
+                                                <div className="messageList">
+                                                    <div className="messageItem sender">
+                                                        <div className="second">
+                                                            <h6>
+                                                                1003,<span>3:48</span>
+                                                            </h6>
+                                                            <div className="messageDetails">
+                                                                <p>hi</p>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </nav>
-                                            </div>
-                                            <div className="tab-content col-12" id="nav-tabContent">
-                                                <div
-                                                    className="tab-pane fade show active"
-                                                    id="nav-sms"
-                                                    role="tabpanel"
-                                                    aria-labelledby="nav-sms-tab"
-                                                >
+                                                </div>
+                                                <div className="messageInput">
                                                     <textarea
                                                         type="text"
                                                         name=""
@@ -129,43 +126,27 @@ function ConferenceCall() {
                                                         placeholder="Please enter your message"
                                                         defaultValue={""}
                                                     />
-                                                </div>
-                                                <div
-                                                    className="tab-pane fade"
-                                                    id="nav-whatsapp"
-                                                    role="tabpanel"
-                                                    aria-labelledby="nav-whatsapp-tab"
-                                                >
-                                                    ...
-                                                </div>
-                                                <div
-                                                    className="tab-pane fade"
-                                                    id="nav-skype"
-                                                    role="tabpanel"
-                                                    aria-labelledby="nav-skype-tab"
-                                                >
-                                                    ...
-                                                </div>
-                                            </div>
-                                            <div className="col-12 d-flex justify-content-between align-items-center">
-                                                <div className="d-flex">
-                                                    <button className="clearButton2">
-                                                        <i className="fa-light fa-eraser" />
-                                                    </button>
-                                                    <button className="clearButton2">
-                                                        <i className="fa-regular fa-image" />
-                                                    </button>
-                                                    <button className="clearButton2">
-                                                        <i className="fa-solid fa-paperclip" />
-                                                    </button>
-                                                    <button className="clearButton2">
-                                                        <i className="fa-regular fa-face-smile" />
-                                                    </button>
-                                                </div>
-                                                <div>
-                                                    <button effect="ripple" className="clearColorButton dark">
-                                                        Send Now <i className="fa-solid fa-paper-plane-top" />
-                                                    </button>
+                                                    <div className="col-12 d-flex justify-content-between align-items-center">
+                                                        <div className="d-flex">
+                                                            <button className="clearButton2">
+                                                                <i className="fa-light fa-eraser" />
+                                                            </button>
+                                                            <button className="clearButton2">
+                                                                <i className="fa-regular fa-image" />
+                                                            </button>
+                                                            <button className="clearButton2">
+                                                                <i className="fa-solid fa-paperclip" />
+                                                            </button>
+                                                            <button className="clearButton2">
+                                                                <i className="fa-regular fa-face-smile" />
+                                                            </button>
+                                                        </div>
+                                                        <div>
+                                                            <button effect="ripple" className="clearColorButton dark">
+                                                                Send Now <i className="fa-solid fa-paper-plane-top" />
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

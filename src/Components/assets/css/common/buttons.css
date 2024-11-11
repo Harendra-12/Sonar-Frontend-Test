@@ -425,12 +425,35 @@
   justify-content: center;
 }
 
-.appPanelButtonCaller.active {
+.appPanelButtonCaller.active,
+.appPanelButtonCallerRect.active {
   background-color: #5c5c5c;
 }
 
-.appPanelButtonCaller.active i {
+.appPanelButtonCaller.active i,
+.appPanelButtonCallerRect.active i {
   font-weight: 900;
+}
+
+.appPanelButtonCallerRect {
+  background-color: #3a3c4a;
+  border: none;
+  color: #fff;
+  /* width: 35px; */
+  /* height: 35px; */
+  margin-right: 10px;
+  min-width: 45px;
+  min-height: 45px;
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s ease-in-out;
+}
+
+.appPanelButtonCallerRect:hover {
+  background-color: #000 !important;
 }
 
 .appPanelButtonColor2 {
