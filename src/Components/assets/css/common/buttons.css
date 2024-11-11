@@ -6,7 +6,35 @@
   text-decoration: none;
 }
 
-.panelButton {
+.clearButton2 {
+  background: none;
+  border: 0;
+  /* background-color: var(--color1); */
+  color: #858585;
+  text-decoration: none;
+  font-size: 17px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s ease-in-out;
+  padding: 0;
+}
+
+.clearButton2:hover {
+  background-color: #e7e7e7;
+  color: #000;
+}
+
+.xl {
+  width: 40px;
+  height: 40px;
+  font-size: 19px;
+}
+
+.panelButtonOLD {
   /* border: 2px solid var(--ui-accent);
     color: var(--ui-accent);
     background: none; */
@@ -27,6 +55,75 @@
   box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;
   text-decoration: none;
   color: #fff;
+}
+
+.panelButton {
+  width: 100px;
+  height: 37px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  background: red;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+  /* background: var(--nav-color); */
+  background: var(--ui-accent);
+  padding: 0;
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+.panelButton.gray {
+  background-color: #6c757d;
+}
+
+.panelButton,
+.panelButton span {
+  transition: 200ms;
+}
+
+.panelButton .text {
+  transform: translateX(10px);
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.panelButton .icon {
+  position: absolute;
+  border-left: 1px solid #ffffff75;
+  transform: translateX(65px);
+  height: 35px;
+  width: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 16px;
+}
+
+.panelButton:hover {
+  /* background: linear-gradient(195deg, #ff3636, #c90000); */
+  background: #474747;
+}
+
+.panelButton:hover .text {
+  color: transparent;
+}
+
+.panelButton:hover .icon {
+  width: 100px;
+  border-left: none;
+  transform: translateX(0);
+}
+
+.panelButton:focus {
+  outline: none;
+}
+
+.panelButton:active .icon i {
+  transform: scale(0.8);
 }
 
 .toggleButton {
@@ -52,7 +149,7 @@
 .panelButtonWhite {
   border: 1px solid #868686;
   padding: 5px 10px;
-  margin: 5px 5px;
+  /* margin: 5px 5px; */
   border-radius: 3px;
   background-color: #fff;
   font-size: 13px;
@@ -60,6 +157,7 @@
   box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;
   text-decoration: none;
   color: #000;
+  text-align: center;
 }
 
 .formButton {
@@ -75,7 +173,7 @@
 }
 
 .getApp {
-  background-color: var(--nav-color);
+  background: var(--nav-color);
   border: none;
   color: #fff;
   padding: 0 15px;
@@ -106,18 +204,29 @@
 }
 
 .clearColorButton i {
-  font-weight: 900;
+  font-weight: 400;
 }
 
 .clearColorButton:hover {
-  background-color: var(--color2);
+  background-color: var(--ui-accent);
   /* color: var(--color2);
     border: 1px solid var(--color2);
     box-shadow: none; */
 }
 
+.clearColorButton.dark {
+  background-color: var(--ui-accent);
+  padding: 7px 14px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.clearColorButton.dark i {
+  margin-left: 5px;
+}
+
 .clearColorButton:hover i {
-  font-weight: 400;
+  font-weight: 900;
 }
 
 .clearColorButton.activation {
@@ -140,7 +249,7 @@
   border: none;
   background-color: #fff;
   border-radius: 50px;
-  /* border: 1px solid #c9c9c970; */
+  border: 1px solid #fff;
   /* box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px; */
   color: #454545;
   font-weight: 500;
@@ -153,11 +262,11 @@
 }
 
 .tabButton.active {
-  background-color: #ffffff33;
+  background-color: #00699185;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
   color: #fff;
-  border: 1px solid #fff;
+  border: 1px solid #ffffff00;
 }
 
 /* .tabButtonParent:first-child .tabButton {
@@ -291,7 +400,7 @@
 }
 
 .appPanelButtonColor {
-  background-color: var(--color2);
+  background-color: var(--ui-accent);
   border: none;
   color: #fff;
   width: 35px;
@@ -327,7 +436,7 @@
 .appPanelButtonColor2 {
   background-color: transparent;
   border: none;
-  color: var(--color2);
+  color: var(--ui-accent);
   width: 35px;
   height: 35px;
   font-size: 18px;
@@ -479,8 +588,8 @@
   border-radius: 50%;
   background-color: var(--ui-accent);
   color: #fff;
-  width: 25px;
-  height: 25px;
+  width: 28px;
+  height: 28px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -510,8 +619,22 @@
   background-color: #00ab2b;
 }
 
+.tableButton.warning {
+  background-color: #ffa500;
+}
+
+.tableButton.empty {
+  background-color: transparent;
+  border: 1px solid var(--ui-accent);
+}
+
+.tableButton.empty i {
+  color: var(--ui-accent) !important;
+}
+
 .tableButton.delete:hover,
-.tableButton.edit:hover {
+.tableButton.edit:hover,
+.tableButton.warning:hover {
   background-color: #ff00000d;
 }
 
@@ -521,4 +644,37 @@
 
 .tableButton.edit:hover i {
   color: #00ab2b !important;
+}
+
+.tableButton.warning:hover i {
+  color: #ffa500 !important;
+}
+
+
+.callButton i {
+  position: relative;
+  z-index: 1;
+}
+
+.callButton .circle1,
+.callButton .circle2 {
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  background-color: #1ac444;
+  position: absolute;
+  z-index: 0;
+  animation: scaling 2s cubic-bezier(0.12, 0.7, 0.74, 0.71) infinite;
+}
+
+@keyframes scaling {
+  0% {
+    transform: scale(0);
+    background-color: #1ac444;
+  }
+
+  100% {
+    transform: scale(2);
+    background-color: rgba(245, 0, 182, 0);
+  }
 }

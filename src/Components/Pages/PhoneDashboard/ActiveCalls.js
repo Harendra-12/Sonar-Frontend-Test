@@ -12,6 +12,7 @@ function ActiveCalls() {
   const [loading, setLoading] = useState(false);
   const [bargeStatus, setBargeStatus] = useState("disable");
   const [id, setId] = useState("");
+  const [dest,setDest]=useState("")
   async function killCall(id) {
     setLoading(true);
     const apiData = await generalGetFunction(`/freeswitch/call-kill/${id}`);
@@ -38,10 +39,10 @@ function ActiveCalls() {
       toast.error(apiData.message);
     }
   }
-  async function eavesdropCall(id) {
+  async function eavesdropCall(id,dest) {
     setLoading(true);
     const apiData = await generalGetFunction(
-      `/freeswitch/call-eavesdrop/${id}`
+      `/freeswitch/call-eavesdrop/${id}/${dest}`
     );
 
     if (apiData?.status) {
@@ -53,10 +54,10 @@ function ActiveCalls() {
       toast.error(apiData.message);
     }
   }
-  async function interceptCall(id) {
+  async function interceptCall(id, dest) {
     setLoading(true);
     const apiData = await generalGetFunction(
-      `/freeswitch/call-intercept/${id}`
+      `/freeswitch/call-intercept/${id}/${dest}`
     );
 
     if (apiData?.status) {
@@ -70,12 +71,12 @@ function ActiveCalls() {
   }
 
   useEffect(() => {
-    if (bargeStatus === "burge") {
+    if (bargeStatus === "barge") {
       bargeCall(id);
     } else if (bargeStatus === "intercept") {
-      interceptCall(id);
+      interceptCall(id,dest);
     } else if (bargeStatus === "eavesdrop") {
-      eavesdropCall(id);
+      eavesdropCall(id,dest);
     }
   }, [bargeStatus, id]);
 
@@ -98,7 +99,7 @@ function ActiveCalls() {
         <div className="container-fluid">
           <div className="row">
             {/* <Header title="Active Calls" /> */}
-            <div className="col-12" style={{ overflow: "auto" }}>
+            <div className="col-12 px-1" style={{ overflow: "auto" }}>
               <div className="tableContainer">
                 <table>
                   <thead>
@@ -109,7 +110,7 @@ function ActiveCalls() {
                       {/* <th>CID Name</th> */}
                       <th>CID Number</th>
                       <th>Destination</th>
-                      <th>Burge</th>
+                      <th>Barge</th>
                       {/* <th>Intercept</th>
                         <th>Eavesdrop</th> */}
                       <th>Hang Up</th>
@@ -118,12 +119,11 @@ function ActiveCalls() {
                   <tbody>
                     {activeCall &&
                       activeCall
-                        // .filter(
-                        //   (call) =>
-                        //     call.direction === "inbound" &&
-                        //     call.callstate === "ACTIVE"
-                        // )
-                        .map((item, key) => {
+                        .filter(
+                          (call) =>
+                            call.callstate === "ACTIVE" || call.b_callee_direction==="ACTIVE"
+                        ).map
+                        ((item, key) => {
                           return (
                             <tr>
                               <td>{key + 1}</td>
@@ -141,24 +141,31 @@ function ActiveCalls() {
                                   onChange={(e) => {
                                     setBargeStatus(e.target.value);
                                     setId(item.uuid);
+                                    setDest(item?.dest.includes("set:valet_ticket")
+                                    ? extractLastNumber(item?.accountcode)
+                                    : extractLastNumber(item?.dest))
                                   }}
                                 >
                                   <option value="disbale">Choose action</option>
                                   <option
-                                    value="burge"
+                                    value="barge"
                                     onClick={() => bargeCall(item.uuid)}
                                   >
-                                    Burge
+                                    Barge
                                   </option>
                                   <option
                                     value="intercept"
-                                    onClick={() => interceptCall(item.uuid)}
+                                    onClick={() => interceptCall(item.uuid,item?.dest.includes("set:valet_ticket")
+                                      ? extractLastNumber(item?.accountcode)
+                                      : extractLastNumber(item?.dest))}
                                   >
                                     Intercept
                                   </option>
                                   <option
                                     value="eavesdrop"
-                                    onClick={() => eavesdropCall(item.uuid)}
+                                    onClick={() => eavesdropCall(item.uuid,item?.dest.includes("set:valet_ticket")
+                                      ? extractLastNumber(item?.accountcode)
+                                      : extractLastNumber(item?.dest))}
                                   >
                                     Eavesdrop
                                   </option>

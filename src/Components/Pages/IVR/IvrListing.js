@@ -94,7 +94,8 @@ const IvrListing = () => {
                     effect="ripple"
                     className="panelButton"
                   >
-                    Add
+                    <span className="text">Add</span>
+                    <span className="icon"><i class="fa-solid fa-plus"></i></span>
                   </Link>
                 </div>
               </div>
@@ -231,34 +232,42 @@ const IvrListing = () => {
                 <div className="col-10 ps-0">
                   <h4>Warning!</h4>
                   <p>Are you sure you want to delete this IVR?</p>
-                  {deleteId !== "" ? (
+                  <div className="d-flex justify-content-between">
+                    {deleteId !== "" ? (
+                      <button
+                        className="panelButton m-0"
+                        onClick={() => handleDelete(deleteId)}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-check"></i>
+                        </span>
+                      </button>
+                    ) : (
+                      <button
+                        className="panelButton m-0"
+                        onClick={() => {
+                          setPopUp(false);
+                        }}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-check"></i>
+                        </span>
+                      </button>
+                    )}
+
                     <button
-                      className="panelButton m-0"
-                      onClick={() => handleDelete(deleteId)}
-                    >
-                      Confirm
-                    </button>
-                  ) : (
-                    <button
-                      className="panelButton m-0"
+                      className="panelButtonWhite m-0 float-end"
                       onClick={() => {
                         setPopUp(false);
+                        setDeleteId("");
+                        // setDeleteToggle(false);
                       }}
                     >
-                      Lets Go!
+                      Cancel
                     </button>
-                  )}
-
-                  <button
-                    className="panelButtonWhite m-0 float-end"
-                    onClick={() => {
-                      setPopUp(false);
-                      setDeleteId("");
-                      // setDeleteToggle(false);
-                    }}
-                  >
-                    Cancel
-                  </button>
+                  </div>
                 </div>
               </div>
             </div>

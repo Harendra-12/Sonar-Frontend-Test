@@ -25,6 +25,7 @@ var allUser = [];
 var allUserRefresh = 0;
 var microPhonePermission = false;
 var callProgress = false;
+var videoCall = false;
 var sessions = [];
 var callProgressId = "";
 var callProgressDestination = "";
@@ -49,6 +50,9 @@ var timeZone = [];
 var timeZoneRefresh = 0;
 var ivr = [];
 var ivrRefresh = 0;
+var deviceProvisioning = [];
+var deviceProvisioningRefresh = 0;
+var minimize = false;
 
 const initialState = {
   account,
@@ -77,6 +81,7 @@ const initialState = {
   allUser,
   allUserRefresh,
   callProgress,
+  videoCall,
   sessions,
   callProgressId,
   callProgressDestination,
@@ -101,6 +106,9 @@ const initialState = {
   timeZoneRefresh,
   ivr,
   ivrRefresh,
+  deviceProvisioning,
+  deviceProvisioningRefresh,
+  minimize,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -164,6 +172,8 @@ const counterReducer = (state = initialState, action) => {
         ...state,
         callProgressDestination: action.callProgressDestination,
       };
+    case "SET_VIDEOCALL":
+      return { ...state, videoCall: action.videoCall };
     case "SET_ADDCONTACTREFRESH":
       return { ...state, addContactRefresh: action.addContactRefresh };
     case "SET_ROLES":
@@ -210,6 +220,18 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, ivr: action.ivr };
     case "SET_IVRREFRESH":
       return { ...state, ivrRefresh: action.ivrRefresh };
+    case "SET_DEVICE_PROVISIONING":
+      return { ...state, deviceProvisioning: action.deviceProvisioning };
+    case "SET_DEVICE_PROVISIONINGREFRESH":
+      return {
+        ...state,
+        deviceProvisioningRefresh: action.deviceProvisioningRefresh,
+      };
+    case "SET_MINIMIZE":
+      return {
+        ...state,
+        minimize: action.minimize,
+      };
     default:
       return state;
   }

@@ -35,8 +35,6 @@ import SipAdd from "./Components/Pages/SIP/SipAdd";
 import SofiaSetting from "./Components/Pages/Sofia/SofiaSetting";
 import SofiaAddSetting from "./Components/Pages/Sofia/SofiaAddSetting";
 import SofiaEditSetting from "./Components/Pages/Sofia/SofiaEditSetting";
-import Call from "./Components/Pages/WebRtc/Call";
-import OngoingCall from "./Components/Pages/WebRtc/OngoingCall";
 import CdrReport from "./Components/Pages/WebRtc/CdrReport";
 import InboundRoute from "./Components/Pages/Dialplan/InboundRouteAdd";
 import CallSettings from "./Components/CommonComponents/CallSettings";
@@ -79,19 +77,13 @@ import WalletTransactionsList from "./Components/Pages/Billing/WalletTransaction
 import PhoneDashboard from "./Components/Pages/PhoneDashboard/PhoneDashboard";
 import DidListing from "./Components/Pages/NumberManagement/DidListing";
 import Music from "./Components/Pages/Voice/Music";
-import EFax from "./Components/Pages/WebRtc/EFax";
-import ActiveCalls from "./Components/Pages/PhoneDashboard/ActiveCalls";
-import AllContact from "./Components/Pages/WebRtc/AllContact";
-import AllVoicemails from "./Components/Pages/WebRtc/AllVoicemails";
-import CallDashboard from "./Components/Pages/WebRtc/CallDashboard";
 import { ToastContainer } from "react-toastify";
 // import RingGroupSettings from "./Components/CommonComponents/RingGroupSettings";
 import CallCenterSettings from "./Components/Pages/CallCenter/CallCenterSettings";
 import RingGroupSettings from "./Components/Pages/RingGroups/RingGroupSettings";
 import DidConfig from "./Components/Pages/NumberManagement/DidConfig";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Variable from "./Components/Pages/Variable/Variable";
-import CallCenter from "./Components/Pages/WebRtc/CallCenter";
 import PortNumber from "./Components/Pages/NumberManagement/PortNumber";
 import PortNumberAdd from "./Components/Pages/NumberManagement/PortNumberAdd";
 import PortNumberEdit from "./Components/Pages/NumberManagement/PortNumberEdit";
@@ -107,6 +99,11 @@ import IvrAdd from "./Components/Pages/IVR/IvrAdd";
 import IvrListing from "./Components/Pages/IVR/IvrListing";
 import IvrEdit from "./Components/Pages/IVR/IvrEdit";
 import IvrOptions from "./Components/Pages/IVR/IvrOptions";
+import VideoCall from "./Components/Pages/WebRtc/VideoCall";
+import DeviceProvisioningAdd from "./Components/Pages/DeviceProvisioning/DeviceProvisioningAdd";
+import DeviceProvisioning from "./Components/Pages/DeviceProvisioning/DeviceProvisioning";
+import DeviceProvisioningEdit from "./Components/Pages/DeviceProvisioning/DeviceProvisioningEdit";
+import ConferenceCall from "./Components/Pages/WebRtc/ConferenceCall";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -129,9 +126,9 @@ const DispatchSetter = () => {
 };
 
 function App() {
-  const dispatch = useDispatch();
-  const domainRefresh = useSelector((state) => state.domainRefresh);
-  const loading = useSelector((state) => state.loading);
+  // const dispatch = useDispatch();
+  // const domainRefresh = useSelector((state) => state.domainRefresh);
+  // const loading = useSelector((state) => state.loading);
   // console.log("this is loading", loading);
 
   Socket();
@@ -237,6 +234,8 @@ function App() {
           <Route path="/cdr-report" element={<CdrReport />} />
           {/* <Route path="/efax" element={<EFax />} />
           <Route path="/call-dashboard" element={<CallDashboardPage />} /> */}
+          <Route path="/video-call" element={<VideoCall />} />
+          <Route path="/conference-call" element={<ConferenceCall />} />
           {/* WebRtc path end */}
 
           {/* Admin Packages path start */}
@@ -329,6 +328,18 @@ function App() {
           <Route path="/ivr-edit" element={<IvrEdit />} />
           <Route path="/ivr-options" element={<IvrOptions />} />
           {/* Ivr Page End */}
+
+          {/* Device Provisioning Start */}
+          <Route path="/device-provisioning" element={<DeviceProvisioning />} />
+          <Route
+            path="/device-provisioning-add"
+            element={<DeviceProvisioningAdd />}
+          />
+          <Route
+            path="/device-provisioning-edit"
+            element={<DeviceProvisioningEdit />}
+          />
+          {/* Device Profisioning End  */}
 
           {/* 404 Redirection */}
           <Route path="*" element={<Navigate to="/dashboard" />} />

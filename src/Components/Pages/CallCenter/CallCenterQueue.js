@@ -116,206 +116,197 @@ function CallCenterQueue() {
         <div className="container-fluid">
           <div className="row">
             <Header title="Call Center" />
-            <div
-              className="d-flex flex-wrap px-xl-3 py-2 position-relative"
-              style={{ zIndex: 1 }}
-              id="detailsHeader"
-            >
-              <div className="col-xl-4 my-auto">
-                <div className="position-relative searchBox">
-                  <input
-                    type="search"
-                    name="Search"
-                    id="headerSearch"
-                    placeholder="Search"
-                  />
+            <div className="overviewTableWrapper">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap">
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content">
+                        <h4>Call Center Queue</h4>
+                      </div>
+                      <div className="buttonGroup">
+                        <button
+                          effect="ripple"
+                          className="panelButton gray"
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
+                        >
+                          <span className="text">Back</span>
+                          <span className="icon">
+                            <i class="fa-solid fa-caret-left"></i>
+                          </span>
+                        </button>
+                        <Link
+                          // to="/cal-center-queue-add"
+                          // onClick={backToTop}
+                          onClick={handleAddCallCenterValidation}
+                          effect="ripple"
+                          className="panelButton"
+                        >
+                          <span className="text">Add</span>
+                          <span className="icon"><i class="fa-solid fa-plus"></i></span>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-12" style={{ overflow: "auto", padding: '25px 20px 0' }}>
+                    <div className="tableHeader">
+                      <div className="showEntries">
+                        <label>Show</label>
+                        <select className="formItem">
+                          <option>10</option>
+                        </select>
+                        <label>entries</label>
+                      </div>
+                      <div className="searchBox position-relative">
+                        <label>Search:</label>
+                        <input
+                          type="search"
+                          name="Search"
+                          placeholder="Search"
+                          className="formItem"
+                        />
+                      </div>
+                    </div>
+                    <div className="tableContainer">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Queue Name</th>
+                            <th>Extension</th>
+                            <th>Strategy</th>
+                            <th>Timeout Action</th>
+                            <th>Prefix</th>
+                            <th>Total Agents</th>
+                            <th>Settings</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {loading ? (
+                            <tr>
+                              <td colSpan={99}>
+                                <ContentLoader />
+                              </td>
+                            </tr>
+                          ) : (
+                            <>
+                              {callCenter &&
+                                callCenter.map((item) => {
+                                  return (
+                                    <tr>
+                                      <td
+                                        onClick={() =>
+                                          navigate(
+                                            `/cal-center-queue-edit?id=${item.id}`
+                                          )
+                                        }
+                                      >
+                                        {item.queue_name}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          navigate(
+                                            `/cal-center-queue-edit?id=${item.id}`
+                                          )
+                                        }
+                                      >
+                                        {item.extension}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          navigate(
+                                            `/cal-center-queue-edit?id=${item.id}`
+                                          )
+                                        }
+                                      >
+                                        {item.strategy}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          navigate(
+                                            `/cal-center-queue-edit?id=${item.id}`
+                                          )
+                                        }
+                                      >
+                                        {item.queue_timeout_action}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          navigate(
+                                            `/cal-center-queue-edit?id=${item.id}`
+                                          )
+                                        }
+                                      >
+                                        {item.queue_cid_prefix}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          navigate(
+                                            `/cal-center-queue-edit?id=${item.id}`
+                                          )
+                                        }
+                                      >
+                                        {item.agents.length}
+                                      </td>
+                                      <td>
+                                        <button
+                                          className="tableButton"
+                                          onClick={() =>
+                                            navigate(
+                                              `/call-center-settings?id=${item.id}`
+                                            )
+                                          }
+                                        >
+                                          <i className="fa-duotone fa-gear"></i>
+                                        </button>
+                                      </td>
+                                      <td>
+                                        {" "}
+                                        <button
+                                          className="tableButton edit"
+                                          onClick={() =>
+                                            navigate(
+                                              `/cal-center-queue-edit?id=${item.id}`
+                                            )
+                                          }
+                                        >
+                                          <i class="fa-solid fa-pencil"></i>
+                                        </button>
+                                      </td>
+                                      <td>
+                                        <button className="tableButton delete" onClick={() => {
+                                          setPopUp(true);
+                                          // setDeleteToggle(true);
+                                          setDeleteId(item.id);
+                                        }}>
+                                          <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                              {callCenter && callCenter.length === 0 ? (
+                                <td colSpan={99}>
+                                  <EmptyPrompt
+                                    name="Call Center"
+                                    link="cal-center-queue-add"
+                                  />
+                                </td>
+                              ) : (
+                                ""
+                              )}
+                            </>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="col-xl-8 pt-3 pt-xl-0">
-                <div className="d-flex justify-content-end">
-                  <button
-                    effect="ripple"
-                    className="panelButton"
-                    onClick={() => {
-                      navigate(-1);
-                      backToTop();
-                    }}
-                  >
-                    Back
-                  </button>
-                  <Link
-                    // to="/cal-center-queue-add"
-                    // onClick={backToTop}
-                    onClick={handleAddCallCenterValidation}
-                    effect="ripple"
-                    className="panelButton"
-                  >
-                    Add
-                  </Link>
-                  {/* <div className="my-auto position-relative mx-3">
-                    <label className="switch">
-                      <input type="checkbox" id="showAllCheck" />
-                      <span className="slider round" />
-                    </label>
-                    <span className="position-relative mx-1">Show All</span>
-                  </div> */}
-                </div>
-              </div>
-            </div>
-            <div
-              className="col-12"
-              style={{ overflow: "auto", position: "relative" }}
-            >
-              <div className="tableContainer">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Queue Name</th>
-                      <th>Extension</th>
-                      <th>Strategy</th>
-                      <th>Timeout Action</th>
-                      <th>Prefix</th>
-                      <th>Total Agents</th>
-                      <th>Settings</th>
-                      <th>Edit</th>
-                      <th>Delete</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {loading ? (
-                      <tr>
-                        <td colSpan={99}>
-                          <ContentLoader />
-                        </td>
-                      </tr>
-                    ) : (
-                      <>
-                        {callCenter &&
-                          callCenter.map((item) => {
-                            return (
-                              <tr>
-                                <td
-                                  onClick={() =>
-                                    navigate(
-                                      `/cal-center-queue-edit?id=${item.id}`
-                                    )
-                                  }
-                                >
-                                  {item.queue_name}
-                                </td>
-                                <td
-                                  onClick={() =>
-                                    navigate(
-                                      `/cal-center-queue-edit?id=${item.id}`
-                                    )
-                                  }
-                                >
-                                  {item.extension}
-                                </td>
-                                <td
-                                  onClick={() =>
-                                    navigate(
-                                      `/cal-center-queue-edit?id=${item.id}`
-                                    )
-                                  }
-                                >
-                                  {item.strategy}
-                                </td>
-                                <td
-                                  onClick={() =>
-                                    navigate(
-                                      `/cal-center-queue-edit?id=${item.id}`
-                                    )
-                                  }
-                                >
-                                  {item.queue_timeout_action}
-                                </td>
-                                <td
-                                  onClick={() =>
-                                    navigate(
-                                      `/cal-center-queue-edit?id=${item.id}`
-                                    )
-                                  }
-                                >
-                                  {item.queue_cid_prefix}
-                                </td>
-                                <td
-                                  onClick={() =>
-                                    navigate(
-                                      `/cal-center-queue-edit?id=${item.id}`
-                                    )
-                                  }
-                                >
-                                  {item.agents.length}
-                                </td>
-                                <td>
-                                  <button
-                                    className="tableButton"
-                                    onClick={() =>
-                                      navigate(
-                                        `/call-center-settings?id=${item.id}`
-                                      )
-                                    }
-                                  >
-                                    <i className="fa-duotone fa-gear"></i>
-                                  </button>
-                                </td>
-                                <td>
-                                  {" "}
-                                  <button
-                                    className="tableButton edit"
-                                    onClick={() =>
-                                      navigate(
-                                        `/cal-center-queue-edit?id=${item.id}`
-                                      )
-                                    }
-                                  >
-                                    <i class="fa-solid fa-pencil"></i>
-                                  </button>
-                                </td>
-                                <td>
-                                  <button className="tableButton delete" onClick={() => {
-                                    setPopUp(true);
-                                    // setDeleteToggle(true);
-                                    setDeleteId(item.id);
-                                  }}>
-                                    <i class="fa-solid fa-trash"></i>
-                                  </button>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        {callCenter && callCenter.length === 0 ? (
-                          <td colSpan={99}>
-                            <EmptyPrompt
-                              name="Call Center"
-                              link="cal-center-queue-add"
-                            />
-                          </td>
-                        ) : (
-                          ""
-                        )}
-                      </>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div className="sidePannel d-none">
-              <div className="wrapper">
-                <ul className="label">
-                  <li>
-                    Agent <span className="float-end">Status</span>
-                  </li>
-                </ul>
-                <ul>
-                  <li>
-                    Name243 <span className="extensionStatus"></span>
-                  </li>
-                  <li>
-                    Name <span className="extensionStatus"></span>
-                  </li>
-                </ul>
               </div>
             </div>
           </div>
@@ -338,34 +329,42 @@ function CallCenterQueue() {
                       ? error
                       : "Are you sure you want to delete this queue?"}
                   </p>
-                  {deleteId == "" ? (
+                  <div className="mt-2 d-flex justify-content-between">
+                    {deleteId == "" ? (
+                      <button
+                        className="panelButton m-0"
+                        onClick={() => {
+                          setPopUp(false);
+                          navigate(`${redirectRoutes}`);
+                        }}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-check"></i>
+                        </span>
+                      </button>
+                    ) : (
+                      <button
+                        className="panelButton m-0"
+                        onClick={() => handleDelete(deleteId)}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-check"></i>
+                        </span>
+                      </button>
+                    )}
+
                     <button
-                      className="panelButton m-0"
+                      className="panelButtonWhite m-0 float-end"
                       onClick={() => {
                         setPopUp(false);
-                        navigate(`${redirectRoutes}`);
+                        setDeleteId("");
                       }}
                     >
-                      Lets Go!
+                      Cancel
                     </button>
-                  ) : (
-                    <button
-                      className="panelButton m-0"
-                      onClick={() => handleDelete(deleteId)}
-                    >
-                      Confirm
-                    </button>
-                  )}
-
-                  <button
-                    className="panelButtonWhite m-0 float-end"
-                    onClick={() => {
-                      setPopUp(false);
-                      setDeleteId("");
-                    }}
-                  >
-                    Cancel
-                  </button>
+                  </div>
                 </div>
               </div>
             </div>

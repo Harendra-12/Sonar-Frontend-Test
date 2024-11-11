@@ -7,7 +7,7 @@ const style = {
 
 const ErrorMessage = ({ text }) => {
   return (
-    <div className="d-flex align-items-start">
+    <div className="d-flex align-items-center">
       <MdErrorOutline className="text-danger" style={{ flexShrink: 0 }} />
       <span style={style} className="text-danger ms-1">
         {text}

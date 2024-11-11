@@ -25,9 +25,9 @@
     border: 1px solid #c7c7c7;
     border-radius: 5px;
     /* box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px; */
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
+    /* box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06); */
     padding: 5px 10px;
-    margin-top: 5px;
+    /* margin-top: 5px; */
     text-align: left;
     position: relative;
     transition: 0.3s ease-in-out;
@@ -36,10 +36,21 @@
 
 .mainContent .itemWrapperb:hover {
     border: 1px solid var(--ui-accent);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
 }
 
 .mainContent .itemWrapperb:hover .heading {
     color: var(--ui-accent);
+}
+
+.mainContent .itemWrapper .react-clock__face {
+    border: 1px solid var(--color-subtext);
+}
+
+.mainContent .itemWrapper .react-clock__mark__body,
+.mainContent .itemWrapper .react-clock__hour-hand__body,
+.mainContent .itemWrapper .react-clock__minute-hand__body {
+    background-color: var(--color-subtext);
 }
 
 .mainContent .title {
@@ -104,6 +115,13 @@
     border-radius: 10px;
     background-color: var(--color2-trans);
     float: inline-end;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 5px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.itemWrapper .heading:hover i {
+    box-shadow: none
 }
 
 .itemWrapper .data-number2 {
@@ -111,6 +129,28 @@
     /* margin-top: 28px; */
     margin-top: 20px;
 
+}
+
+.itemWrapper .data-number2 ul {
+    list-style: none;
+}
+
+.itemWrapper .data-number2 ul li {
+    padding: 15px 0;
+}
+
+.itemWrapper .data-number2 ul li:first-child {
+    padding-top: 0;
+}
+
+.itemWrapper .data-number2 ul li:hover {
+    color: var(--color2);
+    cursor: pointer;
+    border-bottom: 1px solid var(--color2) !important;
+}
+
+.itemWrapper .data-number2 ul li:not(:last-child) {
+    border-bottom: 1px solid #c9c9c970;
 }
 
 .itemWrapper .data-number2 h5 {
@@ -392,7 +432,7 @@
     /* border: 1px solid #c9c9c970; */
     border-radius: 10px;
     background-color: #fff;
-    padding: 10px;
+    padding: 15px;
     text-align: center;
     position: relative;
     /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */

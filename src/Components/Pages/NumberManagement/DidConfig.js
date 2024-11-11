@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -23,7 +24,7 @@ const DidConfig = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const locationData = location.state;
-  const [dataAvailable, setDataAvailable] = useState(true);
+  // const [dataAvailable, setDataAvailable] = useState(true);
   const account = useSelector((state) => state.account);
   const [holdMusic, setHoldMusic] = useState();
   const [loading, setLoading] = useState(true);
@@ -38,7 +39,7 @@ const DidConfig = () => {
 
   useEffect(() => {
     if (locationData.configuration !== null) {
-      setDataAvailable(false);
+      // setDataAvailable(false);
 
       setValue("usages", locationData.configuration.usages || []);
       setValue("did_id_view", locationData.did || "");
@@ -58,7 +59,7 @@ const DidConfig = () => {
       );
     } else {
       setValue("usages", "extension" || []);
-      setDataAvailable(true);
+      // setDataAvailable(true);
     }
   }, [locationData]);
   useEffect(() => {
@@ -175,70 +176,7 @@ const DidConfig = () => {
     }
   });
 
-  // Custom styles for react-select
-  const customStyles = {
-    control: (provided, state) => ({
-      ...provided,
-      // border: '1px solid var(--color4)',
-      border: "1px solid var(--color4)",
-      borderRadius: "5px",
-      outline: "none",
-      fontSize: "14px",
-      width: "100%",
-      minHeight: "32px",
-      height: "auto",
-      boxShadow: state.isFocused ? "none" : provided.boxShadow,
-      "&:hover": {
-        borderColor: "var(--ui-accent)",
-      },
-    }),
-    valueContainer: (provided) => ({
-      ...provided,
-      height: "auto",
-      padding: "0 6px",
-    }),
-    input: (provided) => ({
-      ...provided,
-      margin: "0",
-    }),
-    indicatorSeparator: (provided) => ({
-      display: "none",
-    }),
-    indicatorsContainer: (provided) => ({
-      ...provided,
-      height: "32px",
-    }),
-    dropdownIndicator: (provided) => ({
-      ...provided,
-      color: "#202020",
-      "&:hover": {
-        color: "#202020",
-      },
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      paddingLeft: "15px",
-      paddingTop: 0,
-      paddingBottom: 0,
-      "&:hover": {
-        backgroundColor: "#0055cc",
-        color: "#fff",
-      },
-      fontSize: "14px",
-    }),
-    menu: (provided) => ({
-      ...provided,
-      margin: 0,
-      padding: 0,
-    }),
-    menuList: (provided) => ({
-      ...provided,
-      padding: 0,
-      margin: 0,
-      maxHeight: "150px",
-      overflowY: "auto",
-    }),
-  };
+ 
 
   return (
     <>
@@ -263,14 +201,16 @@ const DidConfig = () => {
                       backToTop();
                     }}
                   >
-                    Back
+                    <span className="text">Back</span>
+                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                   </button>
                   <button
                     effect="ripple"
                     className="panelButton"
                     onClick={handleFormSubmit}
                   >
-                    {locationData.configuration ? "Update" : "Save"}
+                    <span className="text">{locationData.configuration ? "Update" : "Save"}</span>
+                    <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                   </button>
                 </div>
               </div>

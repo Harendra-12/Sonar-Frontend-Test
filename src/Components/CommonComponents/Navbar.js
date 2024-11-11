@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React from "react";
 import "../assets/css/style.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,7 +14,6 @@ function Navbar() {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
-  const tempAccount = useSelector((state) => state.tempAccount);
   const userType = account?.usertype; // "Company"
   const isCustomerAdmin = account?.email == accountDetails?.email || false;
   async function logOut() {
@@ -584,7 +584,7 @@ function Navbar() {
                       <div className="itemTitle">Call Center</div>
                     </NavLink>
                   </li>
-                  <li className="dashboard ">
+                  {/* <li className="dashboard ">
                     <NavLink
                       to="/variable"
                       onClick={backToTop}
@@ -593,7 +593,7 @@ function Navbar() {
                     >
                       <div className="itemTitle">Variable</div>
                     </NavLink>
-                  </li>
+                  </li> */}
                   <li className="dashboard ">
                     <NavLink
                       to="/ivr"
@@ -602,6 +602,16 @@ function Navbar() {
                       effect="ripple"
                     >
                       <div className="itemTitle">IVR</div>
+                    </NavLink>
+                  </li>
+                  <li className="dashboard ">
+                    <NavLink
+                      to="/device-provisioning"
+                      onClick={backToTop}
+                      type="button"
+                      effect="ripple"
+                    >
+                      <div className="itemTitle">Device Provisioning</div>
                     </NavLink>
                   </li>
                   {account?.extension || isCustomerAdmin ? (

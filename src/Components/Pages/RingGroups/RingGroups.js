@@ -122,182 +122,172 @@ const RingGroups = () => {
         <div className="container-fluid">
           <div className="row">
             <Header title="Ring Groups" />
-            <div className="d-flex flex-wrap px-xl-3 py-2" id="detailsHeader">
-              <div className="col-xl-4 my-auto">
-                <div className="position-relative searchBox">
-                  <input
-                    type="search"
-                    name="Search"
-                    id="headerSearch"
-                    placeholder="Search"
-                  />
+            <div className="overviewTableWrapper">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap">
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content">
+                        <h4>Ring Group List</h4>
+                        <p>You can see all list of ring groups</p>
+                      </div>
+                      <div className="buttonGroup">
+                        <button
+                          effect="ripple"
+                          className="panelButton gray"
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
+                        >
+                          <span className="text">Back</span>
+                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                        </button>
+                        <Link
+                          // to="/ring-groups-add"
+                          // onClick={backToTop}
+                          onClick={handleRingGroupAddValidation}
+                          effect="ripple"
+                          className="panelButton"
+                        >
+                          <span className="text">Add</span>
+                          <span className="icon"><i class="fa-solid fa-plus"></i></span>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-12" style={{ overflow: "auto", padding: '25px 20px 0' }}>
+                    <div className="tableHeader">
+                      <div className="showEntries">
+                        <label>Show</label>
+                        <select className="formItem">
+                          <option>10</option>
+                        </select>
+                        <label>entries</label>
+                      </div>
+                      <div className="searchBox">
+                        <label>Search:</label>
+                        <input type="search" className="formItem" />
+                      </div>
+                    </div>
+                    <div className="tableContainer">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Extension</th>
+                            <th>Strategy</th>
+                            <th>Members</th>
+                            <th>Phone Numbers</th>
+                            <th>Status</th>
+                            <th>Description</th>
+                            {/* <th>Setting</th>
+                            <th>Edit</th>
+                            <th>Delete</th> */}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {loading ? (
+                            <tr>
+                              <td colSpan={99}>
+                                <ContentLoader />
+                              </td>
+                            </tr>
+                          ) : (
+                            <>
+                              {ringGroup &&
+                                ringGroup.map((item, index) => {
+                                  return (
+                                    <tr key={index}>
+                                      <td
+                                        onClick={() =>
+                                          navigate(`/ring-groups-edit?id=${item.id}`)
+                                        }
+                                      >
+                                        {item.name}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          navigate(`/ring-groups-edit?id=${item.id}`)
+                                        }
+                                      >
+                                        {item.extension}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          navigate(`/ring-groups-edit?id=${item.id}`)
+                                        }
+                                      >
+                                        {item.strategy}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          navigate(`/ring-groups-edit?id=${item.id}`)
+                                        }
+                                      >
+                                        {item.ring_group_destination.map((item, index, array) => (
+                                          <span>{item.destination}{index < array.length - 1 ? ", " : ""}</span>
+                                        ))}
+                                      </td>
+                                      <td>(999) 999-9999, (999) 999-9999</td>
+                                      <td
+                                        onClick={() =>
+                                          navigate(`/ring-groups-edit?id=${item.id}`)
+                                        }
+                                      >
+                                        {item.status === "active" ? "Active" : "Inactive"}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          navigate(`/ring-groups-edit?id=${item.id}`)
+                                        }
+                                        className="ellipsis"
+                                        id="detailBox"
+                                      >
+                                        {item.description}
+                                      </td>
+                                      <div className="utilPopup">
+                                        <button onClick={() =>
+                                          navigate(
+                                            `/ring-groups-settings?id=${item.id}`
+                                          )
+                                        }>
+                                          <i className="fa-light fa-gear" />
+                                        </button>
+                                        <button onClick={() =>
+                                          navigate(
+                                            `/ring-groups-edit?id=${item.id}`
+                                          )
+                                        }>
+                                          <i className="fa-light fa-pencil" />
+                                        </button>
+                                        <button onClick={() => {
+                                          setPopUp(true);
+                                          setDeleteId(item.id);
+                                        }}>
+                                          <i className="fa-light fa-trash" />
+                                        </button>
+                                      </div>
+                                    </tr>
+                                  );
+                                })}
+                              {ringGroup && ringGroup.length === 0 ? (
+                                <td colSpan={99}>
+                                  <EmptyPrompt
+                                    name="Ring Group"
+                                    link="ring-groups-add"
+                                  />
+                                </td>
+                              ) : (
+                                ""
+                              )}
+                            </>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="col-xl-8 pt-3 pt-xl-0">
-                <div className="d-flex justify-content-end">
-                  <button
-                    effect="ripple"
-                    className="panelButton"
-                    onClick={() => {
-                      navigate(-1);
-                      backToTop();
-                    }}
-                  >
-                    Back
-                  </button>
-                  <Link
-                    // to="/ring-groups-add"
-                    // onClick={backToTop}
-                    onClick={handleRingGroupAddValidation}
-                    effect="ripple"
-                    className="panelButton"
-                  >
-                    Add
-                  </Link>
-                  {/* <div className="my-auto position-relative mx-3">
-                    <label className="switch">
-                      <input type="checkbox" id="showAllCheck" />
-                      <span className="slider round" />
-                    </label>
-                    <span className="position-relative mx-1">Show All</span>
-                  </div> */}
-                </div>
-              </div>
-            </div>
-            <div className="col-12" style={{ overflow: "auto" }}>
-              <div className="tableContainer">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Extension</th>
-                      <th>Strategy</th>
-                      <th>Members</th>
-                      <th>Status</th>
-                      <th>Description</th>
-                      <th>Setting</th>
-                      <th>Edit</th>
-                      <th>Delete</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {loading ? (
-                      <tr>
-                        <td colSpan={99}>
-                          <ContentLoader />
-                        </td>
-                      </tr>
-                    ) : (
-                      <>
-                        {ringGroup &&
-                          ringGroup.map((item, index) => {
-                            return (
-                              <tr key={index}>
-                                <td
-                                  onClick={() =>
-                                    navigate(`/ring-groups-edit?id=${item.id}`)
-                                  }
-                                >
-                                  {item.name}
-                                </td>
-                                <td
-                                  onClick={() =>
-                                    navigate(`/ring-groups-edit?id=${item.id}`)
-                                  }
-                                >
-                                  {item.extension}
-                                </td>
-                                <td
-                                  onClick={() =>
-                                    navigate(`/ring-groups-edit?id=${item.id}`)
-                                  }
-                                >
-                                  {item.strategy}
-                                </td>
-                                <td
-                                  onClick={() =>
-                                    navigate(`/ring-groups-edit?id=${item.id}`)
-                                  }
-                                >
-                                  {item.ring_group_destination.length}
-                                </td>
-                                <td
-                                  onClick={() =>
-                                    navigate(`/ring-groups-edit?id=${item.id}`)
-                                  }
-                                >
-                                  <label
-                                    className={
-                                      item.status === "active"
-                                        ? "tableLabel success"
-                                        : "tableLabel fail"
-                                    }
-                                  >
-                                    {item.status === "active" ? "Active" : "Inactive"}
-                                  </label>
-                                </td>
-                                <td
-                                  onClick={() =>
-                                    navigate(`/ring-groups-edit?id=${item.id}`)
-                                  }
-                                  className="ellipsis"
-                                  id="detailBox"
-                                >
-                                  {item.description}
-                                </td>
-                                <td>
-                                  <button
-                                    onClick={() =>
-                                      navigate(
-                                        `/ring-groups-settings?id=${item.id}`
-                                      )
-                                    }
-                                    className="tableButton"
-                                  >
-                                    <i className="fa-duotone fa-gear text-success"></i>
-                                  </button>
-                                </td>
-                                <td>
-                                  {" "}
-                                  <button
-                                    className="tableButton edit"
-                                    onClick={() =>
-                                      navigate(
-                                        `/ring-groups-edit?id=${item.id}`
-                                      )
-                                    }
-                                  >
-                                    <i class="fa-solid fa-pencil"></i>
-                                  </button>
-                                </td>
-                                <td>
-                                  <button
-                                    className="tableButton delete"
-                                    onClick={() => {
-                                      setPopUp(true);
-                                      setDeleteId(item.id);
-                                    }}
-                                  >
-                                    <i className="fa-solid fa-trash"></i>
-                                  </button>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        {ringGroup && ringGroup.length === 0 ? (
-                          <td colSpan={99}>
-                            <EmptyPrompt
-                              name="Ring Group"
-                              link="ring-groups-add"
-                            />
-                          </td>
-                        ) : (
-                          ""
-                        )}
-                      </>
-                    )}
-                  </tbody>
-                </table>
               </div>
             </div>
           </div>
@@ -320,36 +310,40 @@ const RingGroups = () => {
                       ? error
                       : "Are you sure you want to delete this ring group?"}
                   </p>
-                  {deleteId !== "" ? (
+                  <div className="d-flex justify-content-between">
+                    {deleteId !== "" ? (
+                      <button
+                        className="panelButton m-0"
+                        onClick={() => handleDelete(deleteId)}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon"><i class="fa-solid fa-check"></i></span>
+                      </button>
+                    ) : (
+                      <button
+                        className="panelButton m-0"
+                        onClick={() => {
+                          // setForce(true);
+                          setPopUp(false);
+                          navigate(`${redirectRoutes}`);
+                        }}
+                      >
+                        <span className="text">Lets Go!</span>
+                        <span className="icon"><i class="fa-solid fa-check"></i></span>
+                      </button>
+                    )}
+
                     <button
-                      className="panelButton m-0"
-                      onClick={() => handleDelete(deleteId)}
-                    >
-                      Confirm
-                    </button>
-                  ) : (
-                    <button
-                      className="panelButton m-0"
+                      className="panelButtonWhite m-0 float-end"
                       onClick={() => {
-                        // setForce(true);
                         setPopUp(false);
-                        navigate(`${redirectRoutes}`);
+                        setDeleteId("");
+                        // setDeleteToggle(false);
                       }}
                     >
-                      Lets Go!
+                      Cancel
                     </button>
-                  )}
-
-                  <button
-                    className="panelButtonWhite m-0 float-end"
-                    onClick={() => {
-                      setPopUp(false);
-                      setDeleteId("");
-                      // setDeleteToggle(false);
-                    }}
-                  >
-                    Cancel
-                  </button>
+                  </div>
                 </div>
               </div>
             </div>

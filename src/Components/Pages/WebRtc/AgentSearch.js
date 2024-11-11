@@ -45,13 +45,14 @@ const AgentSearch = ({ getDropdownValue, value, getAllAgents }) => {
     control: (provided, state) => ({
       ...provided,
       // border: '1px solid var(--color4)',
-      border: "1px solid var(--color4);",
+      border: "1px solid #ddd",
       borderRadius: "5px",
       outline: "none",
       fontSize: "14px",
       width: "100%",
-      minHeight: "32px",
-      height: "32px",
+      minHeight: "35px",
+      padding: "0px 0 0 25px",
+      background: `#f5f5f5 url(${require('../../assets/images/search_b.png')}) no-repeat 7px center / 17px 17px`,
       boxShadow: state.isFocused ? "none" : provided.boxShadow,
       "&:hover": {
         borderColor: "var(--ui-accent)",
@@ -59,7 +60,7 @@ const AgentSearch = ({ getDropdownValue, value, getAllAgents }) => {
     }),
     valueContainer: (provided) => ({
       ...provided,
-      height: "32px",
+      height: "35px",
       padding: "0 6px",
     }),
     input: (provided) => ({
@@ -125,7 +126,7 @@ const AgentSearch = ({ getDropdownValue, value, getAllAgents }) => {
           styles={customStyles}
           value={selectedOption}
         />
-        <br />
+        {/* <br /> */}
         {/* <label htmlFor="data" className="formItemDesc" style={{ margin: 0 }}>
           Type agent name or extension
         </label> */}

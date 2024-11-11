@@ -12,9 +12,13 @@
     right: 10px;
 }
 
+.accordion-button:focus {
+    box-shadow: none;
+}
+
 .accordion-button:not(.collapsed) {
-    color: var(--color1);
-    background-color: var(--ui-accent);
+    /* color: var(--color1); */
+    background-color: #a2e1ff3d;
 }
 
 .accordion-button:not(.collapsed)::after {
@@ -106,7 +110,7 @@
     width: 100%;
     outline: none;
     transition: 0.3s ease-out;
-    margin: 0px 10px 10px 5px;
+    margin: 0px 10px 0px 0px;
     box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 5px;
 }
 

@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Dialpad from "./Dialpad";
 import CallDetails from "./CallDetails";
@@ -8,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 import { toast } from "react-toastify";
 import { useSIPProvider } from "react-sipjs";
+import VideoCall from "./VideoCall";
 
 function Call({
   setHangupRefresh,
@@ -16,6 +19,8 @@ function Call({
   setSelectedModule,
   isCustomerAdmin,
   isMicOn,
+  isVideoOn,
+  activePage,
 }) {
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
@@ -24,64 +29,30 @@ function Call({
   const [dialpadShow, setDialpadShow] = useState(false);
   const [clickStatus, setClickStatus] = useState("all");
   const callProgress = useSelector((state) => state.callProgress);
+  const videoCall = useSelector((state) => state.videoCall);
   const callProgressId = useSelector((state) => state.callProgressId);
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
   const [allCalls, setAllCalls] = useState([]);
   const extension = account?.extension?.extension || "";
-  // const [hangupRefresh, setHangupRefresh] = useState(0);
-  // const [callNow, setCallNow] = useState(false);
   const [previewCalls, setPreviewCalls] = useState([]);
   const [addContactToggle, setAddContactToggle] = useState(false);
   const [clickedCall, setClickedCall] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [allApiData, setAllApiData] = useState([]);
+  const [mode, setMode] = useState("audio");
   const [callHistory, setCallHistory] = useState([]);
-  const { sessionManager } = useSIPProvider();
-  // const [selectedModule, setSelectedModule] = useState("");
+  const { sessionManager, connectStatus } = useSIPProvider();
+  const [refreshCalls,setRefreshCalls] = useState(0);
   const callProgressDestination = useSelector(
     (state) => state.callProgressDestination
   );
-  // const globalSession = useSelector((state) => state.sessions);
   const [clickedExtension, setClickedExtension] = useState(null);
 
   function handleHideDialpad(value) {
     setDialpadShow(value);
   }
-
-  // useEffect(() => {
-  //   if (allCall && allCall.calls) {
-  //     const apiData = allCall;
-  //     setAllApiData(apiData.calls.reverse());
-
-  //     const uniqueArray = [
-  //       ...new Map(
-  //         apiData.calls
-  //           .filter(
-  //             (item) =>
-  //               item["Caller-Callee-ID-Number"] ===
-  //                 extension ||
-  //               item["Caller-Caller-ID-Number"] ===
-  //                 extension
-  //           )
-  //           .reverse()
-  //           .map((item) => [
-  //             // item["Caller-Callee-ID-Number"],
-  //             //   item["Caller-Caller-ID-Number"],
-  //             // item["Hangup-Cause"] &&
-  //             // item["variable_start_stamp"] &&
-  //             // item["variable_billsec"],
-  //             item,
-  //             item,
-  //           ])
-  //       ).values(),
-  //     ];
-  //     setAllCalls(uniqueArray.reverse());
-
-  //     setLoading(false);
-  //   }
-  // }, [allCall]);
   useEffect(() => {
     if (allCall && allCall.calls) {
       const apiData = allCall;
@@ -109,7 +80,8 @@ function Call({
       setAllCalls(uniqueArray.reverse());
       setLoading(false);
     }
-  }, [allCall, isCustomerAdmin]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allCall, isCustomerAdmin,refreshCalls]);
 
   useEffect(() => {
     console.log("This is account", account && account.account_id);
@@ -123,7 +95,7 @@ function Call({
     } else {
       navigate("/");
     }
-  }, [account, navigate, hangupRefresh]);
+  }, [account, navigate, hangupRefresh,refreshCalls]);
 
   // user data filter based on the extension
   useEffect(() => {
@@ -222,7 +194,12 @@ function Call({
   };
 
   const handleDoubleClickCall = (item) => {
-    onCall(item);
+    setMode("audio");
+    if (connectStatus !== "CONNECTED") {
+      toast.error("You are not connected with server");
+      return;
+    }
+    onCall(item, mode);
   };
 
   const renderCallItem = (item) => (
@@ -357,12 +334,18 @@ function Call({
     {}
   );
 
-  async function onCall(callDetails) {
+  async function onCall(callDetails, mode) {
     // e.preventDefault();
 
     if (!isMicOn) {
       toast.warn("Please turn on microphone");
       return;
+    }
+    if (mode === "video") {
+      if (!isVideoOn) {
+        toast.warn("Please turn on video");
+        return;
+      }
     }
     // setCallNow(false);
     if (extension == "") {
@@ -380,7 +363,30 @@ function Call({
     }
     const apiData = await sessionManager?.call(
       `sip:${otherPartyExtension}@192.168.2.225`,
-      {}
+      {
+        sessionDescriptionHandlerOptions: {
+          constraints: {
+            audio: true,
+            video: mode === "video" ? true : false,
+          },
+        },
+      },
+      {
+        media: {
+          audio: true,
+          video:
+            mode === "audio"
+              ? true
+              : {
+                  mandatory: {
+                    minWidth: 1280,
+                    minHeight: 720,
+                    minFrameRate: 30,
+                  },
+                  optional: [{ facingMode: "user" }],
+                },
+        },
+      }
     );
     setSelectedModule("onGoingCall");
 
@@ -392,8 +398,13 @@ function Call({
           id: apiData._id,
           destination: Number(otherPartyExtension),
           state: "Established",
+          mode: mode,
         },
       ],
+    });
+    dispatch({
+      type: "SET_VIDEOCALL",
+      videoCall: mode === "video" ? true : false,
     });
     dispatch({
       type: "SET_CALLPROGRESSID",
@@ -405,9 +416,33 @@ function Call({
     });
     dispatch({
       type: "SET_CALLPROGRESS",
-      callProgress: true,
+      callProgress: mode === "video" ? false : true,
     });
   }
+
+  console.log("call status", callProgress, videoCall);
+
+  useEffect(() => {
+    if (selectedModule === "onGoingCall") {
+      if (videoCall) {
+        dispatch({
+          type: "SET_MINIMIZE",
+          minimize: false,
+        });
+      } else {
+        dispatch({
+          type: "SET_MINIMIZE",
+          minimize: true,
+        });
+      }
+    } else {
+      dispatch({
+        type: "SET_MINIMIZE",
+        minimize: true,
+      });
+    }
+  }, [selectedModule, videoCall]);
+
   return (
     <div className="browserPhoneWrapper">
       {/* <SideNavbarApp /> */}
@@ -430,21 +465,35 @@ function Call({
                 <div className="col-12 webRtcHeading">
                   <div className="col-2">
                     <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
-                      Calls
+                      Calls{" "}
+                      <button class="clearButton" onClick={()=>setRefreshCalls(refreshCalls+1)}>
+                        <i
+                          class={loading?"fa-regular fa-arrows-rotate fs-5 fa-spin":"fa-regular fa-arrows-rotate fs-5 "}
+                          style={{ color: "rgb(148, 148, 148)" }}
+                        ></i>
+                      </button>
                     </h3>
                   </div>
-                  <div className="col-5">
-                    <h5
-                      style={{
-                        fontFamily: "Outfit",
-                        color: "#444444",
-                        marginBottom: "0",
-                      }}
-                    >
-                      Extension - {account && extension}
-                    </h5>
-                  </div>
-                  <div className="col-5 d-flex justify-content-end">
+                  <div className="col-10 d-flex justify-content-end align-items-center">
+                    <div className="col-auto  me-3">
+                      <h5
+                        style={{
+                          fontFamily: "Outfit",
+                          color: "#444444",
+                          marginBottom: "0",
+                        }}
+                      >
+                        {account && extension ? (
+                          <span className="text-success">
+                            Extension - {account && extension}
+                          </span>
+                        ) : (
+                          <span className="text-danger">
+                            No Extension Assigned
+                          </span>
+                        )}
+                      </h5>
+                    </div>
                     <div className="col-auto">
                       <button
                         className="appPanelButton"
@@ -545,17 +594,6 @@ function Call({
                         <i className="fa-light fa-user-plus" />
                       </button>
                     </div>
-                    {/* <div className="callList">
-                        <div className="text-center callListItem">
-                          <h5 className="fw-semibold">Today</h5>
-                          {previewCalls.length > 0 ? (
-                            previewCalls.map(renderCallItem)
-                          ) : (
-                            <h3>No {clickStatus} calls</h3>
-                          )}
-                        </div>
-                      </div> */}
-
                     <div
                       className="callList"
                       onClick={() => setSelectedModule("callDetails")}
@@ -591,29 +629,40 @@ function Call({
                 style={{ height: "100vh" }}
                 id="callDetails"
               >
-                {selectedModule == "onGoingCall"
-                  ? callProgress && (
-                      <OngoingCall
-                        key={callProgressId}
-                        id={callProgressId}
-                        destination={callProgressDestination}
-                        setHangupRefresh={setHangupRefresh}
-                        hangupRefresh={hangupRefresh}
-                        setSelectedModule={setSelectedModule}
-                      />
-                    )
-                  : clickedCall && (
-                      <CallDetails
-                        clickedCall={clickedCall}
-                        callHistory={callHistory}
-                        isCustomerAdmin={isCustomerAdmin}
-                        // setCallNow={setCallNow}
-                        // callNow={callNow}
-                        setSelectedModule={setSelectedModule}
-                        isMicOn={isMicOn}
-                        onCall={onCall}
-                      />
-                    )}
+                {selectedModule == "onGoingCall" ? (
+                  callProgress ? (
+                    <OngoingCall
+                      key={callProgressId}
+                      id={callProgressId}
+                      destination={callProgressDestination}
+                      setHangupRefresh={setHangupRefresh}
+                      hangupRefresh={hangupRefresh}
+                      setSelectedModule={setSelectedModule}
+                    />
+                  ) : (
+                    <CallDetails
+                      clickedCall={clickedCall}
+                      callHistory={callHistory}
+                      isCustomerAdmin={isCustomerAdmin}
+                      setSelectedModule={setSelectedModule}
+                      isMicOn={isMicOn}
+                      isVideoOn={isVideoOn}
+                      onCall={onCall}
+                    />
+                  )
+                ) : (
+                  clickedCall && (
+                    <CallDetails
+                      clickedCall={clickedCall}
+                      callHistory={callHistory}
+                      isCustomerAdmin={isCustomerAdmin}
+                      setSelectedModule={setSelectedModule}
+                      isMicOn={isMicOn}
+                      isVideoOn={isVideoOn}
+                      onCall={onCall}
+                    />
+                  )
+                )}
               </div>
             </div>
           </div>
@@ -654,6 +703,7 @@ function Call({
           hideDialpad={handleHideDialpad}
           setSelectedModule={setSelectedModule}
           isMicOn={isMicOn}
+          isVideoOn={isVideoOn}
         />
       ) : (
         ""
@@ -666,3 +716,8 @@ function Call({
 }
 
 export default Call;
+
+// 1. Add option to share screen when user is on video call
+// 2. Ask userpermission to shear different screen like entire screen, any specific tab of browser, or any specific window
+// 3. During screen shearing add option to toggle between screen shearing and video shearing
+// 4. Add DTMF options on video call page

@@ -402,9 +402,8 @@ function CallCenterQueueEdit() {
       <section id="phonePage">
         <div className="container-fluid px-0">
           <Header title="Edit Call Center Queue" />
-          <div id="subPageHeader">
+          {/* <div id="subPageHeader">
             <div className="col-xl-6 my-auto">
-              {/* <h4 className="my-auto">Edit Call Center Queue</h4> */}
             </div>
             <div className="col-xl-6 ps-2">
               <div className="d-flex align-items-center justify-content-end">
@@ -432,18 +431,20 @@ function CallCenterQueueEdit() {
                     navigate(-1);
                   }}
                 >
-                  Back
+                  <span className="text">Back</span>
+                  <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                 </button>
                 <button
                   effect="ripple"
                   className="panelButton"
                   onClick={handleFormSubmit}
                 >
-                  Update
+                  <span className="text">Save</span>
+                  <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="col-xl-12">
           {loading ? (
@@ -453,516 +454,541 @@ function CallCenterQueueEdit() {
           ) : (
             ""
           )}
+          <div className="overviewTableWrapper">
+            <div className="overviewTableChild">
+              <div className="d-flex flex-wrap">
+                <div className="col-12">
+                  <div className="heading">
+                    <div className="content">
+                      <h4>Edit Call Center Queue</h4>
+                    </div>
+                    <div className="buttonGroup">
+                      <div className="d-flex align-items-center">
+                        <div className="formLabel py-0 me-2">
+                          <label htmlFor="selectFormRow">Enabled</label>
+                        </div>
+                        <div className="my-auto position-relative mx-1">
+                          <label className="switch">
+                            <input
+                              type="checkbox"
+                              checked={watch().status}
+                              {...register("status")}
+                              id="showAllCheck"
+                            />
+                            <span className="slider round" />
+                          </label>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => {
+                          navigate(-1);
+                          backToTop();
+                        }}
+                        type="button"
+                        effect="ripple"
+                        className="panelButton gray"
+                      >
+                        <span className="text">Back</span>
+                        <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                      </button>
+                      <button
+                        effect="ripple"
+                        className="panelButton"
+                        onClick={handleFormSubmit}
+                      >
+                        <span className="text">Save</span>
+                        <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
+                <form action="#" className="tangoNavs mb-0">
+                  <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                      <button class="nav-link active" id="nav-gen-tab" data-bs-toggle="tab" data-bs-target="#nav-gen" type="button" role="tab" aria-controls="nav-gen" aria-selected="true">General</button>
+                      <button class="nav-link" id="nav-tier-tab" data-bs-toggle="tab" data-bs-target="#nav-tier" type="button" role="tab" aria-controls="nav-tier" aria-selected="false">Tier Rules</button>
+                      <button class="nav-link" id="nav-max-tab" data-bs-toggle="tab" data-bs-target="#nav-max" type="button" role="tab" aria-controls="nav-max" aria-selected="false">Max Wait Time</button>
+                      <button class="nav-link" id="nav-queue-tab" data-bs-toggle="tab" data-bs-target="#nav-queue" type="button" role="tab" aria-controls="nav-queue" aria-selected="false">Queue Rules</button>
+                      <button class="nav-link" id="nav-adv-tab" data-bs-toggle="tab" data-bs-target="#nav-adv" type="button" role="tab" aria-controls="nav-adv" aria-selected="false">Advanced</button>
+                    </div>
+                  </nav>
+                  <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-gen" role="tabpanel" aria-labelledby="nav-gen-tab" tabindex="0">
+                      <form className="row col-12 mx-auto mb-0">
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Queue Name</label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Enter the queue name.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              name="extension"
+                              {...register("queue_name", {
+                                ...requiredValidator,
+                                ...nameNumberValidator,
+                              })}
+                              className="formItem"
+                              onKeyDown={restrictToAllowedChars}
+                            />
+                            {errors.queue_name && (
+                              <ErrorMessage text={errors.queue_name.message} />
+                            )}
+                          </div>
+                        </div>
 
-          <div className="mx-2" id="detailsContent">
-            <form action="#" className="row">
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Queue Name</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Enter the queue name.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    name="extension"
-                    {...register("queue_name", {
-                      ...requiredValidator,
-                      ...nameNumberValidator,
-                    })}
-                    onKeyDown={restrictToAllowedChars}
-                    className="formItem"
-                  />
-                  {errors.queue_name && (
-                    <ErrorMessage text={errors.queue_name.message} />
-                  )}
-                </div>
-              </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Greeting</label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Select the desired Greeting.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <select
+                              {...register("greeting", { ...requiredValidator })}
+                              className="formItem w-100"
+                            >
+                              <option disabled value="" selected>
+                                Select Greeting
+                              </option>
+                              {greetingSound &&
+                                greetingSound.map((item, index) => {
+                                  return (
+                                    <option key={index} value={item.id}>
+                                      {item.name}
+                                    </option>
+                                  );
+                                })}
+                            </select>
+                            {errors.greeting && (
+                              <ErrorMessage text={errors.greeting.message} />
+                            )}
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Strategy</label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Select the queue ring strategy.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <select {...register("strategy")} className="formItem w-100">
+                              <option value="ring-all">Ring All</option>
+                              <option value="top-down">Top Down</option>
+                              <option value="sequentially-by-agent-order">
+                                Sequentially by agent order
+                              </option>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Extension</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Enter the extension.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    name="extension"
-                    {...register("extension", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    disabled
-                    className="formItem"
-                  />
-                  {errors.extension && (
-                    <ErrorMessage text={errors.extension.message} />
-                  )}
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Greeting</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Select the desired Greeting.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <select
-                    {...register("greeting", { ...requiredValidator })}
-                    className="formItem w-100"
-                  >
-                    <option disabled value="">
-                      Select Greeting
-                    </option>
-                    {greetingSound &&
-                      greetingSound.map((item, index) => {
-                        return (
-                          <option key={index} value={item.id}>
-                            {item.name}
-                          </option>
-                        );
-                      })}
-                  </select>
-                  {errors.greeting && (
-                    <ErrorMessage text={errors.greeting.message} />
-                  )}
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Strategy</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Select the queue ring strategy.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <select {...register("strategy")} className="formItem w-100">
-                    <option value="ring-all">Ring All</option>
-                    <option value="top-down">Top Down</option>
-                    <option value="sequentially-by-agent-order">
-                      Sequentially by agent order
-                    </option>
-                    <option value="random">Random</option>
-                    <option value="ring-progressively">
-                      Ring Progressively
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Music on Hold</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Select the desired hold music.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <select
-                    {...register("moh_sound", { ...requiredValidator })}
-                    className="formItem w-100"
-                  >
-                    <option value={""} disabled>
-                      Select Hold Music
-                    </option>
-                    {holdSound &&
-                      holdSound.map((item, index) => {
-                        return (
-                          <option key={index} value={item.id}>
-                            {item.name}
-                          </option>
-                        );
-                      })}
-                  </select>
-                  {errors.moh_sound && (
-                    <ErrorMessage text={errors.moh_sound.message} />
-                  )}
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Record</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Save the recording.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <select
-                    {...register("recording_enabled")}
-                    className="formItem w-100"
-                    name="recording_enabled"
-                  >
-                    <option value="true">True</option>
-                    <option value="false">False</option>
-                  </select>
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Action</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Set the action to perform when the max wait time is reached.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <ActionList
-                    title={null}
-                    label={null}
-                    getDropdownValue={actionListValue}
-                    value={watch().queue_timeout_action}
-                  />
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Discard Abandoned After</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    The number of seconds before the abandoned call is removed
-                    from the queue.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    name="extension"
-                    className="formItem"
-                    {...register("discard_abandoned_after", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToAllowedChars}
-                  />
-                  {errors.discard_abandoned_after && (
-                    <ErrorMessage
-                      text={errors.discard_abandoned_after.message}
-                    />
-                  )}
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Caller ID Name Prefix</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Set a prefix on the caller ID name.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    name="extension"
-                    className="formItem"
-                    {...register("queue_cid_prefix", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToAllowedChars}
-                  />
-                  {errors.queue_cid_prefix && (
-                    <ErrorMessage text={errors.queue_cid_prefix.message} />
-                  )}
-                </div>
-              </div>
+                              <option value="random">Random</option>
+                              <option value="ring-progressively">
+                                Ring Progressively
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Music on Hold</label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Select the desired hold music.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <select
+                              {...register("moh_sound", { ...requiredValidator })}
+                              className="formItem w-100"
+                            >
+                              <option disabled value="" selected>
+                                Select Hold Music
+                              </option>
+                              {holdSound &&
+                                holdSound.map((item, index) => {
+                                  return (
+                                    <option key={index} value={item.id}>
+                                      {item.name}
+                                    </option>
+                                  );
+                                })}
+                            </select>
+                            {errors.moh_sound && (
+                              <ErrorMessage text={errors.moh_sound.message} />
+                            )}
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Record</label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Save the recording.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <select
+                              {...register("recording_enabled")}
+                              className="formItem w-100"
+                              name="recording_enabled"
+                            >
+                              <option value="true">True</option>
+                              <option value="false">False</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Action</label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Set the action to perform when the max wait time is reached.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <ActionList
+                              title={null}
+                              label={null}
+                              getDropdownValue={actionListValue}
+                              value={watch().queue_timeout_action}
+                            />
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Discard Abandoned After</label>
+                            <label htmlFor="data" className="formItemDesc">
+                              The number of seconds before the abandoned call is removed
+                              from the queue.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              name="extension"
+                              className="formItem"
+                              {...register("discard_abandoned_after", {
+                                ...noSpecialCharactersValidator,
+                              })}
+                              onKeyDown={restrictToAllowedChars}
+                            />
+                            {errors.discard_abandoned_after && (
+                              <ErrorMessage
+                                text={errors.discard_abandoned_after.message}
+                              />
+                            )}
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Caller ID Name Prefix</label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Set a prefix on the caller ID name.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              name="extension"
+                              className="formItem"
+                              {...register("queue_cid_prefix", {
+                                ...noSpecialCharactersValidator,
+                              })}
+                              onKeyDown={restrictToAllowedChars}
+                            />
+                            {errors.queue_cid_prefix && (
+                              <ErrorMessage text={errors.queue_cid_prefix.message} />
+                            )}
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="tab-pane fade" id="nav-tier" role="tabpanel" aria-labelledby="nav-tier-tab" tabindex="0">
+                      <form className="row col-12 mx-auto mb-0">
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Tier Rules Apply</label>
+                          </div>
+                          <div className="col-6">
+                            <select
+                              {...register("tier_rules_apply")}
+                              className="formItem w-100"
+                            >
+                              <option value={1}>True</option>
+                              <option value={0}>False</option>2{" "}
+                            </select>
+                          </div>
+                        </div>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Time Base Score</label>
-                </div>
-                <div className="col-6">
-                  <select
-                    {...register("time_base_score")}
-                    className="formItem w-100"
-                  >
-                    <option value="queue">Queue</option>
-                    <option value="system">System</option>
-                  </select>
-                </div>
-              </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Tier Rule Wait Second</label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="number"
+                              name="extension"
+                              className="formItem"
+                              {...register("tier_rule_wait_second", {
+                                ...noSpecialCharactersValidator,
+                              })}
+                            />
+                            {errors.tier_rule_wait_second && (
+                              <ErrorMessage text={errors.tier_rule_wait_second.message} />
+                            )}
+                          </div>
+                        </div>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Tier Rules Apply</label>
-                </div>
-                <div className="col-6">
-                  <select
-                    {...register("tier_rules_apply")}
-                    className="formItem w-100"
-                  >
-                    <option value={1}>True</option>
-                    <option value={0}>False</option>
-                  </select>
-                </div>
-              </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Tier Rule Wait Multiply Level</label>
+                          </div>
+                          <div className="col-6">
+                            <select
+                              {...register("tier_rule_wait_multiply_level")}
+                              className="formItem w-100"
+                            >
+                              <option value={1}>True</option>
+                              <option value={0}>False</option>
+                            </select>
+                          </div>
+                        </div>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Tier Rule Wait Second</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    name="extension"
-                    className="formItem"
-                    {...register("tier_rule_wait_second", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToAllowedChars}
-                  />
-                  {errors.tier_rule_wait_second && (
-                    <ErrorMessage text={errors.tier_rule_wait_second.message} />
-                  )}
-                </div>
-              </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Tier Rule No Agent No Wait</label>
+                          </div>
+                          <div className="col-6">
+                            <select
+                              {...register("tier_rule_no_agent_no_wait")}
+                              className="formItem w-100"
+                            >
+                              <option value={1}>True</option>
+                              <option value={0}>False</option>
+                            </select>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="tab-pane fade" id="nav-max" role="tabpanel" aria-labelledby="nav-max-tab" tabindex="0">
+                      <form className="row col-12 mx-auto mb-0">
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Max Wait Time</label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="number"
+                              name="extension"
+                              className="formItem"
+                              {...register("max_wait_time", {
+                                ...noSpecialCharactersValidator,
+                              })}
+                              onKeyDown={restrictToNumbers}
+                            />
+                            {errors.max_wait_time && (
+                              <ErrorMessage text={errors.max_wait_time.message} />
+                            )}
+                          </div>
+                        </div>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Tier Rule Wait Multiply Level</label>
-                </div>
-                <div className="col-6">
-                  <select
-                    {...register("tier_rule_wait_multiply_level")}
-                    className="formItem w-100"
-                  >
-                    <option value={1}>True</option>
-                    <option value={0}>False</option>
-                  </select>
-                </div>
-              </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Max Wait Time with no agent</label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="number"
+                              name="extension"
+                              className="formItem"
+                              {...register("max_wait_time_with_no_agent", {
+                                ...noSpecialCharactersValidator,
+                              })}
+                              onKeyDown={restrictToNumbers}
+                            />
+                            {errors.max_wait_time_with_no_agent && (
+                              <ErrorMessage text={errors.max_wait_time_with_no_agent} />
+                            )}
+                          </div>
+                        </div>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Tier Rule No Agent No Wait</label>
-                </div>
-                <div className="col-6">
-                  <select
-                    {...register("tier_rule_no_agent_no_wait")}
-                    className="formItem w-100"
-                  >
-                    <option value={1}>True</option>
-                    <option value={0}>False</option>
-                  </select>
-                </div>
-              </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">
+                              Max Wait Time With No Agent Time Reached{" "}
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="number"
+                              name="extension"
+                              className="formItem"
+                              {...register("max_wait_time_with_no_agent_time_reached", {
+                                ...noSpecialCharactersValidator,
+                              })}
+                              onKeyDown={restrictToNumbers}
+                            />
+                            {errors.max_wait_time_with_no_agent_time_reached && (
+                              <ErrorMessage
+                                text={errors.max_wait_time_with_no_agent_time_reached}
+                              />
+                            )}
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="tab-pane fade" id="nav-queue" role="tabpanel" aria-labelledby="nav-queue-tab" tabindex="0">
+                      <form className="row col-12 mx-auto mb-0">
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Queue Announce</label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Select the desired queue announce sound.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <select
+                              {...register("queue_announce_sound")}
+                              className="formItem w-100"
+                            >
+                              <option disabled value="" selected>
+                                Select Queue Announce
+                              </option>
+                              {announcmentSound &&
+                                announcmentSound.map((item, index) => {
+                                  return (
+                                    <option key={index} value={item.id}>
+                                      {item.name}
+                                    </option>
+                                  );
+                                })}
+                            </select>
+                          </div>
+                        </div>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Abandoned Resume Allowed</label>
-                </div>
-                <div className="col-6">
-                  <select
-                    {...register("abandoned_resume_allowed")}
-                    className="formItem w-100"
-                  >
-                    <option value={1}>True</option>
-                    <option value={0}>False</option>
-                  </select>
-                </div>
-              </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Queue Announce Frequency</label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="number"
+                              name="extension"
+                              className="formItem"
+                              {...register("queue_announce_frequency", {
+                                ...noSpecialCharactersValidator,
+                              })}
+                              onKeyDown={restrictToNumbers}
+                            />
+                            {errors.queue_announce_frequency && (
+                              <ErrorMessage text={errors.queue_announce_frequency} />
+                            )}
+                          </div>
+                        </div>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Max Wait Time</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="number"
-                    name="extension"
-                    className="formItem"
-                    {...register("max_wait_time", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToNumbers}
-                  />
-                  {errors.max_wait_time && (
-                    <ErrorMessage text={errors.max_wait_time.message} />
-                  )}
-                </div>
-              </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Queue Description</label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Define queue description.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              name="queue_description"
+                              className="formItem"
+                              {...register("queue_description", {
+                                ...noSpecialCharactersValidator,
+                              })}
+                              onKeyDown={restrictToAllowedChars}
+                            />
+                            {errors.queue_description && (
+                              <ErrorMessage text={errors.queue_description} />
+                            )}
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="tab-pane fade" id="nav-adv" role="tabpanel" aria-labelledby="nav-adv-tab" tabindex="0">
+                      <form className="row col-12 mx-auto mb-0">
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Ring Progressively Delay</label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="number"
+                              name="extension"
+                              className="formItem"
+                              {...register("ring_progressively_delay", {
+                                ...noSpecialCharactersValidator,
+                              })}
+                              onKeyDown={restrictToNumbers}
+                            />
+                            {errors.ring_progressively_delay && (
+                              <ErrorMessage text={errors.ring_progressively_delay} />
+                            )}
+                          </div>
+                        </div>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Max Wait Time with no agent</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="number"
-                    name="extension"
-                    className="formItem"
-                    {...register("max_wait_time_with_no_agent", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToNumbers}
-                  />
-                  {errors.max_wait_time_with_no_agent && (
-                    <ErrorMessage text={errors.max_wait_time_with_no_agent} />
-                  )}
-                </div>
-              </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Record Template</label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Define record template.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              name="record_template"
+                              className="formItem"
+                              {...register("record_template", {
+                                ...noSpecialCharactersValidator,
+                              })}
+                              onKeyDown={restrictToAllowedChars}
+                            />
+                            {errors.record_template && (
+                              <ErrorMessage text={errors.record_template} />
+                            )}
+                          </div>
+                        </div>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">
-                    Max Wait Time With No Agent Time Reached{" "}
-                  </label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="number"
-                    name="extension"
-                    className="formItem"
-                    {...register("max_wait_time_with_no_agent_time_reached", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToNumbers}
-                  />
-                  {errors.max_wait_time_with_no_agent_time_reached && (
-                    <ErrorMessage
-                      text={errors.max_wait_time_with_no_agent_time_reached}
-                    />
-                  )}
-                </div>
-              </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Time Base Score</label>
+                          </div>
+                          <div className="col-6">
+                            <select
+                              {...register("time_base_score")}
+                              className="formItem w-100"
+                            >
+                              <option value="queue">Queue</option>
+                              <option value="system">System</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Abandoned Resume Allowed</label>
+                          </div>
+                          <div className="col-6">
+                            <select
+                              {...register("abandoned_resume_allowed")}
+                              className="formItem w-100"
+                            >
+                              <option value={1}>True</option>
+                              <option value={0}>False</option>
+                            </select>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
 
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Ring Progressively Delay</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="number"
-                    name="extension"
-                    className="formItem"
-                    {...register("ring_progressively_delay", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToNumbers}
-                  />
-                  {errors.ring_progressively_delay && (
-                    <ErrorMessage text={errors.ring_progressively_delay} />
-                  )}
-                </div>
-              </div>
-
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Record Template</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Define record template.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    name="record_template"
-                    className="formItem"
-                    {...register("record_template", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToAllowedChars}
-                  />
-                  {errors.record_template && (
-                    <ErrorMessage text={errors.record_template} />
-                  )}
-                </div>
-              </div>
-
-              {/* <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Record Template</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Define record template.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    name="record_template"
-                    className="formItem"
-                    {...register("record_template", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToAllowedChars}
-                  />
-                  {errors.record_template && (
-                    <ErrorMessage text={errors.record_template} />
-                  )}
-                </div>
-              </div> */}
-
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Queue Announce</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Select the desired queue announce sound.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <select
-                    {...register("queue_announce_sound")}
-                    className="formItem w-100"
-                  >
-                    <option disabled value="" selected>
-                      Select Queue Announce
-                    </option>
-                    {announcmentSound &&
-                      announcmentSound.map((item, index) => {
-                        return (
-                          <option key={index} value={item.id}>
-                            {item.name}
-                          </option>
-                        );
-                      })}
-                  </select>
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
-                    Select the desired queue announce sound.
-                  </label>
-                </div>
-              </div>
-
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Queue Announce Frequency</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="number"
-                    name="extension"
-                    className="formItem"
-                    {...register("queue_announce_frequency", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToNumbers}
-                  />
-                  {errors.queue_announce_frequency && (
-                    <ErrorMessage text={errors.queue_announce_frequency} />
-                  )}
-                </div>
-              </div>
-
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Queue Description</label>
-                  <label htmlFor="data" className="formItemDesc">
-                    Define queue description.
-                  </label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    name="queue_description"
-                    className="formItem"
-                    {...register("queue_description", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                    onKeyDown={restrictToAllowedChars}
-                  />
-                  {errors.queue_description && (
-                    <ErrorMessage text={errors.queue_description} />
-                  )}
-                </div>
-              </div>
-
-              {/* <div className="formRow col-xl-3">
+                  {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Truncate Agents On Load</label>
                   <label htmlFor="data" className="formItemDesc">
@@ -981,7 +1007,7 @@ function CallCenterQueueEdit() {
                 </div>
               </div> */}
 
-              {/* <div className="formRow col-xl-3">
+                  {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Truncate Tiers On Load</label>
                   <label htmlFor="data" className="formItemDesc">
@@ -1000,397 +1026,405 @@ function CallCenterQueueEdit() {
                 </div>
               </div> */}
 
-              <div className="formRow col-xl-12 border-0">
-                {agent &&
-                  agent.map((item, index) => {
-                    return (
-                      <div
-                        className="row pb-3 pt-2"
-                        key={index}
-                        style={{ borderBottom: "1px solid #8f8f8f47" }}
-                      >
-                        <div
-                          className="formLabel pe-2 m-0"
-                          style={{ width: "30px" }}
-                        >
-                          <label>{index + 1}.</label>
-                        </div>
-                        <div className="row col-11">
-                          <div className="col-2 ps-0 pe-2">
-                            <div className="formLabel">
-                              {index === 0 ? (
-                                <label htmlFor="">Choose Agent</label>
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                            <div className="position-relative">
-                              <select
-                                type="text"
-                                name="name"
-                                value={item.name}
-                                onChange={(e) => handleAgentChange(e, index)}
-                                className="formItem"
-                                placeholder="Destination"
-                              >
-                                <option value="" disabled>
-                                  Choose agent
-                                </option>
-                                {user &&
-                                  user
-                                    .filter((userItem) => {
-                                      // Keep the current agent for this index and exclude already selected ones in other indexes
-                                      return (
-                                        userItem.id == agent[index]?.name || // Keep the current agent for this index
-                                        !agent.some(
-                                          (agentItem, agentIndex) =>
-                                            agentItem.name == userItem.id &&
-                                            agentIndex != index
-                                        ) // Exclude agents selected in other rows
-                                      );
-                                    })
-                                    .map((userItem) => (
-                                      <option
-                                        value={userItem.id}
-                                        key={userItem.id}
-                                      >
-                                        {userItem.username} (
-                                        {userItem.extension?.extension})
-                                      </option>
-                                    ))}
-                                <option
-                                  value="addUser"
-                                  className="text-center border bg-info-subtle fs-6 fw-bold text-info"
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  Add User
-                                </option>
-                              </select>
-                            </div>
-                          </div>
-                          <div className="col-2 ps-0 pe-2">
-                            <div className="formLabel">
-                              {index === 0 ? (
-                                <label htmlFor="">Password</label>
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                            <div className="position-relative">
-                              <input
-                                type="text"
-                                name="password"
-                                value={item.password}
-                                onChange={(e) => handleAgentChange(e, index)}
-                                className="formItem"
-                                placeholder="Password"
-                              />
-                            </div>
-                          </div>
-                          <div className="col-1 ps-0 pe-2">
-                            <div className="formLabel">
-                              {index === 0 ? (
-                                <label htmlFor="">Tier Level</label>
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                            <select
-                              className="formItem me-0"
-                              style={{ width: "100%" }}
-                              name="level"
-                              value={item.level}
-                              onChange={(e) => handleAgentChange(e, index)}
-                              id="selectFormRow"
-                            >
-                              <option value={0}>0</option>
-                              <option value={1}>1</option>
-                              <option value={2}>2</option>
-                              <option value={3}>3</option>
-                              <option value={4}>4</option>
-                              <option value={5}>5</option>
-                              <option value={6}>6</option>
-                              <option value={7}>7</option>
-                              <option value={8}>8</option>
-                              <option value={9}>9</option>
-                            </select>
-                          </div>
-                          <div className="col-1 ps-0 pe-2">
-                            <div className="formLabel">
-                              {index === 0 ? (
-                                <label htmlFor="">Tier Position</label>
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                            <select
-                              className="formItem me-0"
-                              style={{ width: "100%" }}
-                              name="position"
-                              value={item.position}
-                              onChange={(e) => handleAgentChange(e, index)}
-                              id="selectFormRow"
-                            >
-                              <option value={0}>0</option>
-                              <option value={1}>1</option>
-                              <option value={2}>2</option>
-                              <option value={3}>3</option>
-                              <option value={4}>4</option>
-                              <option value={5}>5</option>
-                              <option value={6}>6</option>
-                              <option value={7}>7</option>
-                              <option value={8}>8</option>
-                              <option value={9}>9</option>
-                            </select>
-                          </div>
-                          <div className="col-2 ps-0 pe-2">
-                            <div className="formLabel">
-                              {index === 0 ? (
-                                <label htmlFor="">Call Timeout</label>
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                            <div className="position-relative">
-                              <input
-                                type="number"
-                                name="call_timeout"
-                                value={
-                                  item.call_timeout === null
-                                    ? ""
-                                    : item.call_timeout
-                                }
-                                onChange={(e) => handleAgentChange(e, index)}
-                                className="formItem"
-                                placeholder="Call Timeout"
-                              />
-                            </div>
-                          </div>
 
-                          <div className="col-2 ps-0 pe-2">
-                            <div className="formLabel">
-                              {index === 0 ? (
-                                <label htmlFor="">Reject Delay</label>
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                            <div className="position-relative">
-                              <input
-                                type="number"
-                                name="reject_delay_time"
-                                value={
-                                  item.reject_delay_time === null
-                                    ? ""
-                                    : item.reject_delay_time
-                                }
-                                onChange={(e) => handleAgentChange(e, index)}
-                                className="formItem"
-                                placeholder="Reject Delay"
-                              />
-                            </div>
-                          </div>
-
-                          <div className="col-2 ps-0 pe-2">
-                            <div className="formLabel">
-                              {index === 0 ? (
-                                <label htmlFor="">Max No Answer</label>
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                            <div className="position-relative">
-                              <input
-                                type="number"
-                                name="max_no_answer"
-                                value={
-                                  item.max_no_answer === null
-                                    ? ""
-                                    : item.max_no_answer
-                                }
-                                onChange={(e) => handleAgentChange(e, index)}
-                                className="formItem"
-                                placeholder="Max No Answer"
-                              />
-                            </div>
-                          </div>
-
-                          <div className="col-2 ps-0 pe-2">
-                            <div className="formLabel">
-                              {index === 0 ? (
-                                <label htmlFor="">Busy Delay</label>
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                            <div className="position-relative">
-                              <input
-                                type="number"
-                                name="busy_delay_time"
-                                value={
-                                  item.busy_delay_time === null
-                                    ? ""
-                                    : item.busy_delay_time
-                                }
-                                onChange={(e) => handleAgentChange(e, index)}
-                                className="formItem"
-                                placeholder="Busy Delay"
-                              />
-                            </div>
-                          </div>
-
-                          <div className="col-2 ps-0 pe-2">
-                            <div className="formLabel">
-                              {index === 0 ? (
-                                <label htmlFor="">No Answer Delay</label>
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                            <div className="position-relative">
-                              <input
-                                type="number"
-                                name="no_answer_delay_time"
-                                value={
-                                  item.no_answer_delay_time === null
-                                    ? ""
-                                    : item.no_answer_delay_time
-                                }
-                                onChange={(e) => handleAgentChange(e, index)}
-                                className="formItem"
-                                placeholder="No Answer Delay"
-                              />
-                            </div>
-                          </div>
-
-                          <div className="col-2 ps-0 pe-2">
-                            <div className="formLabel">
-                              {index === 0 ? (
-                                <label htmlFor="">Wrap Up Time</label>
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                            <div className="position-relative">
-                              <input
-                                type="number"
-                                name="wrap_up_time"
-                                value={
-                                  item.wrap_up_time === null
-                                    ? ""
-                                    : item.wrap_up_time
-                                }
-                                onChange={(e) => handleAgentChange(e, index)}
-                                className="formItem"
-                                placeholder="Wrap Up Time"
-                              />
-                            </div>
-                          </div>
-
-                          <div className="col-2 ps-0 pe-2">
-                            <div className="formLabel">
-                              {index === 0 ? (
-                                <label htmlFor="">Reserve Agents</label>
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                            <select
-                              className="formItem me-0"
-                              style={{ width: "100%" }}
-                              name="reserve_agents"
-                              value={item.reserve_agents}
-                              onChange={(e) => handleAgentChange(e, index)}
-                              id="selectFormRow"
-                            >
-                              <option value={0}>False</option>
-                              <option value={1}>True</option>
-                            </select>
-                          </div>
-
-                          <div className="col-2 ps-0 pe-2">
-                            <div className="formLabel">
-                              {index === 0 ? (
-                                <label htmlFor="">
-                                  Truncate agents on load
-                                </label>
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                            <select
-                              className="formItem me-0"
-                              style={{ width: "100%" }}
-                              name="truncate-agents-on-load"
-                              value={item["truncate-agents-on-load"]}
-                              onChange={(e) => handleAgentChange(e, index)}
-                              id="selectFormRow"
-                            >
-                              <option value={0}>False</option>
-                              <option value={1}>True</option>
-                            </select>
-                          </div>
-
-                          <div className="col-2 ps-0 pe-2">
-                            <div className="formLabel">
-                              {index === 0 ? (
-                                <label htmlFor="">Truncate tiers on load</label>
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                            <select
-                              className="formItem me-0"
-                              style={{ width: "100%" }}
-                              name="truncate-tiers-on-load"
-                              value={item["truncate-tiers-on-load"]}
-                              onChange={(e) => handleAgentChange(e, index)}
-                              id="selectFormRow"
-                            >
-                              <option value={0}>False</option>
-                              <option value={1}>True</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="row col">
-                          {agent.length === 1 ? (
-                            ""
-                          ) : (
-                            <div
-                              onClick={() => deleteDestination(item.id)}
-                              className="col-auto ps-0 pe-2 mt-auto"
-                            >
-                              <button
-                                type="button"
-                                className="clearButton text-danger"
-                              >
-                                <i className="fa-duotone fa-trash"></i>
-                              </button>
-                            </div>
-                          )}
-                          {index === agent.length - 1 &&
-                          index !== (user && user.length - 1) ? (
-                            <div
-                              onClick={addNewAgent}
-                              className="col-auto px-0 mt-auto"
-                            >
-                              <button
-                                type="button"
-                                className="panelButton my-auto"
-                              >
-                                Add more
-                              </button>
-                            </div>
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                {errors.agent && <ErrorMessage text={errors.agent.message} />}
+                </form>
               </div>
-            </form>
+              <div className="col-12" style={{ padding: '20px 23px' }}>
+                <form className="row">
+                  <div className="formRow col-xl-12 border-0">
+                    {agent &&
+                      agent.map((item, index) => {
+                        return (
+                          <div
+                            className="row pb-3 pt-2 ps-3"
+                            key={index}
+                            style={{ borderBottom: "1px solid #8f8f8f47" }}
+                          >
+                            <div
+                              className="formLabel pe-2 m-0"
+                              style={{ width: "30px" }}
+                            >
+                              <label>{index + 1}.</label>
+                            </div>
+                            <div className="row col-11">
+                              <div className="col-2 ps-0 pe-2">
+                                <div className="formLabel">
+                                  {index === 0 ? (
+                                    <label htmlFor="">Choose Agent</label>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                                <div className="position-relative">
+                                  <select
+                                    type="text"
+                                    name="name"
+                                    value={item.name}
+                                    onChange={(e) => handleAgentChange(e, index)}
+                                    className="formItem"
+                                    placeholder="Destination"
+                                  >
+                                    <option value="" disabled>
+                                      Choose agent
+                                    </option>
+                                    {user &&
+                                      user
+                                        .filter((userItem) => {
+                                          // Keep the current agent for this index and exclude already selected ones in other indexes
+                                          return (
+                                            userItem.id == agent[index]?.name || // Keep the current agent for this index
+                                            !agent.some(
+                                              (agentItem, agentIndex) =>
+                                                agentItem.name == userItem.id &&
+                                                agentIndex != index
+                                            ) // Exclude agents selected in other rows
+                                          );
+                                        })
+                                        .map((userItem) => (
+                                          <option
+                                            value={userItem.id}
+                                            key={userItem.id}
+                                          >
+                                            {userItem.username} (
+                                            {userItem.extension?.extension})
+                                          </option>
+                                        ))}
+                                    <option
+                                      value="addUser"
+                                      className="text-center border bg-info-subtle fs-6 fw-bold text-info"
+                                      style={{ cursor: "pointer" }}
+                                    >
+                                      Add User
+                                    </option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div className="col-2 ps-0 pe-2">
+                                <div className="formLabel">
+                                  {index === 0 ? (
+                                    <label htmlFor="">Password</label>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                                <div className="position-relative">
+                                  <input
+                                    type="text"
+                                    name="password"
+                                    value={item.password}
+                                    onChange={(e) => handleAgentChange(e, index)}
+                                    className="formItem"
+                                    placeholder="Password"
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-1 ps-0 pe-2">
+                                <div className="formLabel">
+                                  {index === 0 ? (
+                                    <label htmlFor="">Tier Level</label>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                                <select
+                                  className="formItem me-0"
+                                  style={{ width: "100%" }}
+                                  name="level"
+                                  value={item.level}
+                                  onChange={(e) => handleAgentChange(e, index)}
+                                  id="selectFormRow"
+                                >
+                                  <option value={0}>0</option>
+                                  <option value={1}>1</option>
+                                  <option value={2}>2</option>
+                                  <option value={3}>3</option>
+                                  <option value={4}>4</option>
+                                  <option value={5}>5</option>
+                                  <option value={6}>6</option>
+                                  <option value={7}>7</option>
+                                  <option value={8}>8</option>
+                                  <option value={9}>9</option>
+                                </select>
+                              </div>
+                              <div className="col-1 ps-0 pe-2">
+                                <div className="formLabel">
+                                  {index === 0 ? (
+                                    <label htmlFor="">Tier Position</label>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                                <select
+                                  className="formItem me-0"
+                                  style={{ width: "100%" }}
+                                  name="position"
+                                  value={item.position}
+                                  onChange={(e) => handleAgentChange(e, index)}
+                                  id="selectFormRow"
+                                >
+                                  <option value={0}>0</option>
+                                  <option value={1}>1</option>
+                                  <option value={2}>2</option>
+                                  <option value={3}>3</option>
+                                  <option value={4}>4</option>
+                                  <option value={5}>5</option>
+                                  <option value={6}>6</option>
+                                  <option value={7}>7</option>
+                                  <option value={8}>8</option>
+                                  <option value={9}>9</option>
+                                </select>
+                              </div>
+                              <div className="col-2 ps-0 pe-2">
+                                <div className="formLabel">
+                                  {index === 0 ? (
+                                    <label htmlFor="">Call Timeout</label>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                                <div className="position-relative">
+                                  <input
+                                    type="number"
+                                    name="call_timeout"
+                                    value={
+                                      item.call_timeout === null
+                                        ? ""
+                                        : item.call_timeout
+                                    }
+                                    onChange={(e) => handleAgentChange(e, index)}
+                                    className="formItem"
+                                    placeholder="Call Timeout"
+                                  />
+                                </div>
+                              </div>
+
+                              <div className="col-2 ps-0 pe-2">
+                                <div className="formLabel">
+                                  {index === 0 ? (
+                                    <label htmlFor="">Reject Delay</label>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                                <div className="position-relative">
+                                  <input
+                                    type="number"
+                                    name="reject_delay_time"
+                                    value={
+                                      item.reject_delay_time === null
+                                        ? ""
+                                        : item.reject_delay_time
+                                    }
+                                    onChange={(e) => handleAgentChange(e, index)}
+                                    className="formItem"
+                                    placeholder="Reject Delay"
+                                  />
+                                </div>
+                              </div>
+
+                              <div className="col-2 ps-0 pe-2">
+                                <div className="formLabel">
+                                  {index === 0 ? (
+                                    <label htmlFor="">Max No Answer</label>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                                <div className="position-relative">
+                                  <input
+                                    type="number"
+                                    name="max_no_answer"
+                                    value={
+                                      item.max_no_answer === null
+                                        ? ""
+                                        : item.max_no_answer
+                                    }
+                                    onChange={(e) => handleAgentChange(e, index)}
+                                    className="formItem"
+                                    placeholder="Max No Answer"
+                                  />
+                                </div>
+                              </div>
+
+                              <div className="col-2 ps-0 pe-2">
+                                <div className="formLabel">
+                                  {index === 0 ? (
+                                    <label htmlFor="">Busy Delay</label>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                                <div className="position-relative">
+                                  <input
+                                    type="number"
+                                    name="busy_delay_time"
+                                    value={
+                                      item.busy_delay_time === null
+                                        ? ""
+                                        : item.busy_delay_time
+                                    }
+                                    onChange={(e) => handleAgentChange(e, index)}
+                                    className="formItem"
+                                    placeholder="Busy Delay"
+                                  />
+                                </div>
+                              </div>
+
+                              <div className="col-2 ps-0 pe-2">
+                                <div className="formLabel">
+                                  {index === 0 ? (
+                                    <label htmlFor="">No Answer Delay</label>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                                <div className="position-relative">
+                                  <input
+                                    type="number"
+                                    name="no_answer_delay_time"
+                                    value={
+                                      item.no_answer_delay_time === null
+                                        ? ""
+                                        : item.no_answer_delay_time
+                                    }
+                                    onChange={(e) => handleAgentChange(e, index)}
+                                    className="formItem"
+                                    placeholder="No Answer Delay"
+                                  />
+                                </div>
+                              </div>
+
+                              <div className="col-2 ps-0 pe-2">
+                                <div className="formLabel">
+                                  {index === 0 ? (
+                                    <label htmlFor="">Wrap Up Time</label>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                                <div className="position-relative">
+                                  <input
+                                    type="number"
+                                    name="wrap_up_time"
+                                    value={
+                                      item.wrap_up_time === null
+                                        ? ""
+                                        : item.wrap_up_time
+                                    }
+                                    onChange={(e) => handleAgentChange(e, index)}
+                                    className="formItem"
+                                    placeholder="Wrap Up Time"
+                                  />
+                                </div>
+                              </div>
+
+                              <div className="col-2 ps-0 pe-2">
+                                <div className="formLabel">
+                                  {index === 0 ? (
+                                    <label htmlFor="">Reserve Agents</label>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                                <select
+                                  className="formItem me-0"
+                                  style={{ width: "100%" }}
+                                  name="reserve_agents"
+                                  value={item.reserve_agents}
+                                  onChange={(e) => handleAgentChange(e, index)}
+                                  id="selectFormRow"
+                                >
+                                  <option value={0}>False</option>
+                                  <option value={1}>True</option>
+                                </select>
+                              </div>
+
+                              <div className="col-2 ps-0 pe-2">
+                                <div className="formLabel">
+                                  {index === 0 ? (
+                                    <label htmlFor="">
+                                      Truncate agents on load
+                                    </label>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                                <select
+                                  className="formItem me-0"
+                                  style={{ width: "100%" }}
+                                  name="truncate-agents-on-load"
+                                  value={item["truncate-agents-on-load"]}
+                                  onChange={(e) => handleAgentChange(e, index)}
+                                  id="selectFormRow"
+                                >
+                                  <option value={0}>False</option>
+                                  <option value={1}>True</option>
+                                </select>
+                              </div>
+
+                              <div className="col-2 ps-0 pe-2">
+                                <div className="formLabel">
+                                  {index === 0 ? (
+                                    <label htmlFor="">Truncate tiers on load</label>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                                <select
+                                  className="formItem me-0"
+                                  style={{ width: "100%" }}
+                                  name="truncate-tiers-on-load"
+                                  value={item["truncate-tiers-on-load"]}
+                                  onChange={(e) => handleAgentChange(e, index)}
+                                  id="selectFormRow"
+                                >
+                                  <option value={0}>False</option>
+                                  <option value={1}>True</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div className="row col">
+                              {agent.length === 1 ? (
+                                ""
+                              ) : (
+                                <div
+                                  onClick={() => deleteDestination(item.id)}
+                                  className="col-auto ps-0 pe-2 mt-auto"
+                                >
+                                  <button
+                                    type="button"
+                                    className="clearButton text-danger"
+                                  >
+                                    <i className="fa-duotone fa-trash"></i>
+                                  </button>
+                                </div>
+                              )}
+                              {index === agent.length - 1 &&
+                                index !== (user && user.length - 1) ? (
+                                <div
+                                  onClick={addNewAgent}
+                                  className="col-auto px-0 mt-auto"
+                                >
+                                  <button
+                                    type="button"
+                                    className="panelButton my-auto"
+                                  >
+                                    <span className="text">Add</span>
+                                    <span className="icon"><i class="fa-solid fa-plus"></i></span>
+                                  </button>
+                                </div>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    {errors.agent && <ErrorMessage text={errors.agent.message} />}
+                  </div>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       </section>

@@ -163,16 +163,17 @@
 
 .eFaxCompose .newMessageWrapper .inputFileWrapper {
     width: max-content;
-    padding: 5px 10px;
-    margin-top: 20px;
-    border: 1px solid #ababab;
+    /* padding: 5px 10px; */
+    /* margin-top: 20px; */
+    /* border: 1px solid #ababab; */
     border-radius: 50px;
     display: flex;
-    /* justify-content: center; */
     background-color: #fff;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
     cursor: pointer;
     transition: 0.3s;
+    /* justify-content: center; */
+    margin-top: 10px;
 }
 
 .eFaxCompose .newMessageWrapper .inputFileWrapper:hover {

@@ -24,6 +24,9 @@ function GlobalCalls() {
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
   const ivrRefresh = useSelector((state) => state.ivrRefresh);
+  const deviceProvisioningRefresh = useSelector(
+    (state) => state.deviceProvisioningRefresh
+  );
 
   const rolesAndPermissionRefresh = useSelector(
     (state) => state.rolesAndPermissionRefresh
@@ -56,7 +59,8 @@ function GlobalCalls() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(
-        `/card/all?account_id=${account?.account_id}`
+        // `/card/all?account_id=${account?.account_id}`
+        `/card/all`
       );
       if (apiData?.status) {
         dispatch({
@@ -76,7 +80,8 @@ function GlobalCalls() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(
-        `/billing-address/all?account_id=${account?.account_id}`
+        // `/billing-address/all?account_id=${account?.account_id}`
+        `/billing-address/all`
       );
       if (apiData?.status) {
         dispatch({
@@ -257,7 +262,7 @@ function GlobalCalls() {
 
         dispatch({
           type: "SET_BALANCE",
-          balance: apiData.data,
+          balance: apiData,
         });
       }
     }
@@ -279,6 +284,22 @@ function GlobalCalls() {
       getData();
     }
   }, [ivrRefresh]);
+
+  // Getting device provisioning details
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction("/provision/all");
+      if (apiData?.status) {
+        dispatch({
+          type: "SET_DEVICE_PROVISIONING",
+          deviceProvisioning: apiData.data,
+        });
+      }
+    }
+    if (deviceProvisioningRefresh > 0) {
+      getData();
+    }
+  }, [deviceProvisioningRefresh]);
 
   // useEffect(() => {
   //   async function getData() {

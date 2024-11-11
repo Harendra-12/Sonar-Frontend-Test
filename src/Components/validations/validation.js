@@ -151,3 +151,18 @@ export const restrictToNumbersAndStar = {
     message: "Only digits and * and # are allowed",
   },
 };
+
+// Restricted characters for MAC address
+export const restrictToMacAddress = (e) => {
+  const allowedKey = /[0-9A-Fa-f]/;
+  if (
+    !allowedKey.test(e.key) &&
+    e.key !== "Backspace" &&
+    e.key !== "Tab" &&
+    e.key !== "ArrowLeft" &&
+    e.key !== "ArrowRight" &&
+    e.key !== "Delete"
+  ) {
+    e.preventDefault();
+  }
+};

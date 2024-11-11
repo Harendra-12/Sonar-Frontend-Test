@@ -49,8 +49,16 @@
 
     .formRow.col-xl-3 {
         width: inherit !important;
+        margin-right: 0px;
     }
 
+    .callerContent .user .userProfileContainer {
+        margin: 0;
+    }
+
+    .formLabel {
+        max-width: 100%;
+    }
 }
 
 @media (min-width: 1500px) {
@@ -71,8 +79,13 @@
 
 .formRow.col-xl-3 {
     width: 45%;
+    /* margin-right: 70px; */
 }
 
-form.row {
-    justify-content: space-between;
+.formRow.col-xl-3:nth-child(odd) {
+    margin-right: 70px;
 }
+
+/* form.row {
+    justify-content: space-between;
+} */

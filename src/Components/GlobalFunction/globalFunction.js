@@ -100,7 +100,7 @@ export async function generalPostFunction(endpoint, data) {
         );
       }
       if (err.response.status === 401) {
-        handleNavigation("/");
+        // handleNavigation("/");
         return err.response.data;
       } else {
         return err.response.data;

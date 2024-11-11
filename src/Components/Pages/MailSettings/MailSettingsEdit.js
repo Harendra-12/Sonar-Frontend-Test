@@ -126,14 +126,16 @@ const MailSettingsEdit = () => {
                       backToTop();
                     }}
                   >
-                    Back
+                    <span className="text">Back</span>
+                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                   </button>
                   <button
                     effect="ripple"
                     className="panelButton"
                     onClick={handleFormSubmit}
                   >
-                    Update
+                    <span className="text">Save</span>
+                    <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                   </button>
                 </div>
               </div>

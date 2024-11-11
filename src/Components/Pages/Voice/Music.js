@@ -15,6 +15,7 @@ import MusicPlayer from "../../CommonComponents/MusicPlayer";
 
 function Music() {
   const [music, setMusic] = useState();
+  const [currentPlaying, setCurrentPlaying] = useState(null);
   const account = useSelector((state) => state.account);
   const [loading, setLoading] = useState(true);
   const [newMusicPopup, setNewMusicPopup] = useState(false);
@@ -56,6 +57,7 @@ function Music() {
       }
       getData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh]);
 
   //   Handle delete function
@@ -132,24 +134,28 @@ function Music() {
                   />
                 </div>
               </div>
-              <div>
-                <button
-                  effect="ripple"
-                  className="panelButton"
-                  onClick={() => {
-                    navigate(-1);
-                    backToTop();
-                  }}
-                >
-                  Back
-                </button>
-                <button
-                  effect="ripple"
-                  className="panelButton"
-                  onClick={() => setNewMusicPopup(!newMusicPopup)}
-                >
-                  Add New Music
-                </button>
+              <div className="col-xl-8 pt-3 pt-xl-0">
+                <div className="d-flex justify-content-end">
+                  <button
+                    effect="ripple"
+                    className="panelButton"
+                    onClick={() => {
+                      navigate(-1);
+                      backToTop();
+                    }}
+                  >
+                    <span className="text">Back</span>
+                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                  </button>
+                  <button
+                    effect="ripple"
+                    className="panelButton"
+                    onClick={() => setNewMusicPopup(!newMusicPopup)}
+                  >
+                    <span className="text">Add</span>
+                    <span className="icon"><i class="fa-solid fa-plus"></i></span>
+                  </button>
+                </div>
               </div>
             </div>
             <div className="col-12" style={{ overflow: "auto" }}>
@@ -176,7 +182,16 @@ function Music() {
                               <td>{item.type}</td>
                               <td>{item.created_at.split("T")[0]}</td>
                               <td>
-                                <MusicPlayer audioSrc={item.path} />
+                                <MusicPlayer audioSrc={item.path} isPlaying={
+                                  currentPlaying ===
+                                  item.path
+                                }
+                                  onPlay={() =>
+                                    setCurrentPlaying(
+                                      item.path
+                                    )
+                                  }
+                                  onStop={() => setCurrentPlaying(null)} />
                               </td>
 
                               <td>
@@ -233,16 +248,22 @@ function Music() {
                             className="formItem"
                             type="file"
                             accept="audio/*"
-                            onChange={(e) => setNewMusic(e.target.files[0])}
+                            onChange={(e) => {
+                              const file = e.target.files[0];
+                              const fileName = file.name.replace(/ /g, '-');
+                              const newFile = new File([file], fileName, { type: file.type });
+                              setNewMusic(newFile);
+                            }}
                           />
                         </div>
                       </div>
-                      <div className="mt-2">
+                      <div className="mt-2 d-flex justify-content-between">
                         <button
                           className="panelButton m-0"
                           onClick={handleNewMusic}
                         >
-                          Confirm
+                          <span className="text">Confirm</span>
+                          <span className="icon"><i class="fa-solid fa-check"></i></span>
                         </button>
                         <button
                           className="panelButtonWhite m-0 float-end"
@@ -273,22 +294,25 @@ function Music() {
                       <h4>Warning!</h4>
                       <p>Are you sure you want to delete this music ?</p>
 
-                      <button
-                        className="panelButton m-0"
-                        onClick={() => {
-                          handleDelete(deleteId);
-                        }}
-                      >
-                        Confirm
-                      </button>
-                      <button
-                        className="panelButtonWhite m-0 float-end"
-                        onClick={() => {
-                          setDeletePopup(false);
-                        }}
-                      >
-                        Cancel
-                      </button>
+                      <div className="d-flex justify-content-between">
+                        <button
+                          className="panelButton m-0"
+                          onClick={() => {
+                            handleDelete(deleteId);
+                          }}
+                        >
+                          <span className="text">Confirm</span>
+                          <span className="icon"><i class="fa-solid fa-check"></i></span>
+                        </button>
+                        <button
+                          className="panelButtonWhite m-0 float-end"
+                          onClick={() => {
+                            setDeletePopup(false);
+                          }}
+                        >
+                          Cancel
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

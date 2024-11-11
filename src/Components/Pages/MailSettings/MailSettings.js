@@ -68,7 +68,8 @@ const MailSettings = () => {
                       effect="ripple"
                       className="panelButton"
                     >
-                      Add
+                      <span className="text">Add</span>
+                      <span className="icon"><i class="fa-solid fa-plus"></i></span>
                     </Link>
                   </div>
                 </div>
@@ -180,12 +181,13 @@ const MailSettings = () => {
                   Are you sure you want to delete this Mail Settings?
                   <br />
                   <br />
-                  <div className="mt-2">
+                  <div className="mt-2 d-flex justify-content-between">
                     <button
                       className="panelButton m-0"
                       onClick={handleSettingsDelete}
                     >
-                      Confirm
+                      <span className="text">Confirm</span>
+                      <span className="icon"><i class="fa-solid fa-check"></i></span>
                     </button>
                     <button
                       className="panelButtonWhite m-0 float-end"

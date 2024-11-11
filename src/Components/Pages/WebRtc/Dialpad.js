@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+/* eslint-disable eqeqeq */
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";
 import { toast } from "react-toastify";
 
-function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
+function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
   const account = useSelector((state) => state.account);
   const globalSession = useSelector((state) => state.sessions);
   const dispatch = useDispatch();
-  const { sessionManager } = useSIPProvider();
+  const { sessionManager, connectStatus } = useSIPProvider();
   const [destNumber, setDestNumber] = useState("");
   const extension = account?.extension?.extension || "";
+  const dialpadRef = useRef();
   const handleInputChange = (e) => {
     const { value } = e.target;
     const regex = /^[0-9*#]*$/;
@@ -18,10 +20,18 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
     }
   };
 
-  async function onSubmit(e) {
+  console.log("connectstatus form dialpad", connectStatus);
+
+  async function onSubmit(mode) {
     if (!isMicOn) {
       toast.warn("Please turn on microphone");
       return;
+    }
+    if (mode === "video") {
+      if (!isVideoOn) {
+        toast.warn("Please turn on camera");
+        return;
+      }
     }
 
     if (extension == "") {
@@ -32,25 +42,64 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
       toast.error("You cannot call yourself");
       return;
     }
+
+    if (connectStatus !== "CONNECTED") {
+      toast.error("You are not connected with server");
+      return;
+    }
+
     if (destNumber.length > 3) {
+      dispatch({
+        type: "SET_MINIMIZE",
+        minimize: false,
+      });
       hideDialpad(false);
       // e.preventDefault();
       const apiData = await sessionManager?.call(
         `sip:${destNumber}@${account.domain.domain_name}`,
         {
-          // Contact: `<sip:${extension}@${account.domain.domain_name}>`,
-          // `To: <sip:${Number(destNumber)}@${account.domain.domain_name}>`,
-          // `From: <sip:${extension}@${account.domain.domain_name}>`
+          sessionDescriptionHandlerOptions: {
+            constraints: {
+              audio: true,
+              video: mode === "video" ? true : false,
+            },
+          },
+        },
+        {
+          media: {
+            audio: true,
+            video:
+              mode === "audio"
+                ? true
+                : {
+                  mandatory: {
+                    minWidth: 1280,
+                    minHeight: 720,
+                    minFrameRate: 30,
+                  },
+                  optional: [{ facingMode: "user" }],
+                },
+          },
         }
       );
+      console.log("apiData", apiData);
 
       setSelectedModule("onGoingCall");
       dispatch({
         type: "SET_SESSIONS",
         sessions: [
           ...globalSession,
-          { id: apiData._id, destination: destNumber, state: "Established" },
+          {
+            id: apiData._id,
+            destination: destNumber,
+            state: "Established",
+            mode: mode,
+          },
         ],
+      });
+      dispatch({
+        type: "SET_VIDEOCALL",
+        videoCall: mode === "video" ? true : false,
       });
       dispatch({
         type: "SET_CALLPROGRESSID",
@@ -62,12 +111,17 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
       });
       dispatch({
         type: "SET_CALLPROGRESS",
-        callProgress: true,
+        callProgress: mode === "video" ? false : true,
       });
     } else {
       toast.error("Please enter a valid number");
     }
   }
+
+  // Dialpad Input Field will remain focused when this component mounts.
+  useEffect(() => {
+    dialpadRef.current.focus();
+  }, [])
 
   return (
     <>
@@ -77,7 +131,7 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
             <div className="col-xl-3 col-md-6 col-11 dialPadContainer p-2">
               <div className="d-flex justify-content-between pt-3 pb-1 px-2">
                 <div>
-                  <i className="fa-light fa-address-book fs-5" />
+                  <i className="fa-light fa-address-book fs-5 text-white" />
                 </div>
                 <div>
                   <h3>Dial Number:</h3>
@@ -86,7 +140,7 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
                   onClick={() => hideDialpad(false)}
                   style={{ cursor: "pointer" }}
                 >
-                  <i className="fa-regular fa-xmark fs-5" />
+                  <i className="fa-regular fa-xmark fs-5 text-white" />
                 </div>
               </div>
               <div className="mb-2">
@@ -97,12 +151,13 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
                   type="text"
                   placeholder="Dial"
                   className="dialerInput"
+                  ref={dialpadRef}
                   value={destNumber}
                   // onChange={(e) => setDestNumber(e.target.value)}
                   onChange={handleInputChange}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      onSubmit();
+                      onSubmit("audio");
                     }
                   }}
                 />
@@ -195,10 +250,21 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn }) {
                   </h4>
                 </div>
               </div>
-              <div onClick={onSubmit}>
-                <button className="callButton">
-                  <i className="fa-thin fa-phone" />
-                </button>
+              <div className="d-flex justify-content-center my-2">
+                <div onClick={() => onSubmit("audio")}>
+                  <button className="callButton">
+                    <i className="fa-thin fa-phone" />
+                  </button>
+                </div>
+                {isVideoOn ? (
+                  <div onClick={() => onSubmit("video")} className="ms-3">
+                    <button className="callButton">
+                      <i className="fa-thin fa-video" />
+                    </button>
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           </div>

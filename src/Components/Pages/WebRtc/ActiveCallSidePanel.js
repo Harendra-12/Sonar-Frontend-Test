@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSessionCall } from "react-sipjs";
+import connectMusic from "../../assets/music/ring-tone.mp3";
+import { SessionState } from "sip.js";
 
 function ActiveCallSidePanel({
   sessionId,
   chennel,
+  mode,
   destination,
   setHangupRefresh,
   hangupRefresh,
@@ -14,9 +17,52 @@ function ActiveCallSidePanel({
   const globalSession = useSelector((state) => state.sessions);
   const callProgressId = useSelector((state) => state.callProgressId);
   const { session, timer, hold, unhold } = useSessionCall(sessionId);
+  const audioRef = useRef(null);
+  const [playMusic, setPlayMusic] = useState(false);
   console.log(session);
   //Keep track for previous call progress Id
   const [prevCallProgressId, setPrevCallProgressId] = useState(callProgressId);
+  console.log("This is session", session?._state);
+
+  useEffect(() => {
+    const audioElement = audioRef.current;
+    console.log("Current playMusic value:", playMusic); // Log the state
+    console.log("Current audio state:", audioElement?.paused);
+
+    if (playMusic && audioElement) {
+      console.log("Starting music...");
+      audioElement.src = connectMusic; // Set the audio source
+      audioElement.loop = false; // Ensure looping is disabled
+      setTimeout(() => {
+        audioElement.play().catch((error) => {
+          console.error("Error playing the audio:", error);
+        });
+      }, 2000); // Play after 2 seconds
+    } else if (!playMusic && audioElement) {
+      console.log("Stopping music...");
+      audioElement.pause();
+      audioElement.currentTime = 0; // Reset to the start
+      audioElement.src = ""; // Clear the source for extra safety
+    }
+
+    // Cleanup when component unmounts
+    return () => {
+      if (audioElement) {
+        console.log("Cleaning up audio...");
+        audioElement.pause();
+        audioElement.currentTime = 0;
+        audioElement.src = ""; // Clear source to avoid dangling audio
+      }
+    };
+  }, [playMusic, connectMusic]); // Dependencies: playMusic, connectMusic
+
+  useEffect(() => {
+    if (session?._state === "Establishing") {
+      setPlayMusic(true);
+    } else {
+      setPlayMusic(false);
+    }
+  }, [session?._state]);
 
   const currentSession = globalSession.find(
     (session) => session.id === sessionId
@@ -32,8 +78,13 @@ function ActiveCallSidePanel({
       );
 
       //Hold previous call
-      if (prevSession && session._state == "Established") {
+      if (
+        prevSession &&
+        session?._state == "Established" &&
+        prevSession.mode !== "video"
+      ) {
         hold(prevSession.id);
+        console.log("hold hit", prevSession);
         dispatch({
           type: "SET_SESSIONS",
           sessions: globalSession.map((item) =>
@@ -47,9 +98,32 @@ function ActiveCallSidePanel({
   }, [callProgressId]);
 
   if (session["_state"] === "Terminated") {
+    // dispatch({
+    //   type:"SET_VIDEOCALL",
+    //   videoCall:false
+    // })
+    const updatedVideoCallMode = globalSession.find(
+      (item) => item.id === callProgressId
+    );
+
+    if (updatedVideoCallMode?.mode === "video") {
+      dispatch({
+        type: "SET_VIDEOCALL",
+        videoCall: false,
+      });
+    }
+    const updatedSession = globalSession.filter(
+      (item) => item.id !== session._id
+    );
+    dispatch({
+      type: "SET_SESSIONS",
+      sessions: updatedSession,
+    });
     setHangupRefresh(hangupRefresh + 1);
     setSelectedModule("callDetails");
     if (callProgressId === session._id) {
+      //check callprogressId in globalsession and if mode = video, change videocallState
+
       dispatch({
         type: "SET_CALLPROGRESSID",
         callProgressId: "",
@@ -63,13 +137,6 @@ function ActiveCallSidePanel({
         callProgress: false,
       });
     }
-    const updatedSession = globalSession.filter(
-      (item) => item.id !== session._id
-    );
-    dispatch({
-      type: "SET_SESSIONS",
-      sessions: updatedSession,
-    });
   }
 
   function handleActiveCall(id, dest) {
@@ -83,50 +150,70 @@ function ActiveCallSidePanel({
     });
     dispatch({
       type: "SET_CALLPROGRESS",
-      callProgress: true,
+      callProgress: mode === "audio" ? true : false,
+    });
+    dispatch({
+      type: "SET_VIDEOCALL",
+      videoCall: mode === "video" ? true : false,
     });
   }
 
   return (
     <>
-      {isHeld ? (
-        <div
-          onClick={() => handleActiveCall(session._id, destination)}
-          className="col-12 callItem hold"
-        >
-          <div className="profilepicHolder">{chennel + 1}</div>
-          <div className="callContent">
-            <h4>Line {chennel + 1}</h4>
-            <h5>{destination}</h5>
+      <div class="chatHeading">
+        <h5 data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1">Active Call <span>1</span> <i class="fa-solid fa-chevron-down"></i></h5>
+      </div>
+      <div class="collapse show px-0" id="collapse1">
+        {isHeld ? (
+          <div
+            onClick={() => handleActiveCall(session._id, destination)}
+            className="col-12 callItem hold"
+          >
+            <div className="profilepicHolder">{chennel + 1}</div>
+            <div className="callContent">
+              <h4>{destination}</h4>
+              <h5>01:20</h5>
+              {/* <span className="float-end" style={{ fontSize: 12 }}>Line {chennel + 1}</span> */}
+            </div>
+            <div className="callBtnGrp my-auto ms-auto">
+              <button className="appPanelButtonCaller bg-warning"><i class="fa-solid fa-pause"></i></button>
+              <button className="appPanelButtonCaller bg-danger me-0"><i class="fa-solid fa-phone-hangup"></i></button>
+            </div>
           </div>
-        </div>
-      ) : session._state === "Initial" ? (
-        <div
-          onClick={() => handleActiveCall(session._id, destination)}
-          className="col-12 callItem ringing"
-        >
-          <div className="profilepicHolder">{chennel + 1}</div>
-          <div className="callContent">
-            <h4>Line {chennel + 1}</h4>
-            <h5>{destination}</h5>
+        ) : session?._state === "Initial" ? (
+          <div
+            onClick={() => handleActiveCall(session._id, destination)}
+            className="col-12 callItem ringing"
+          >
+            <div className="profilepicHolder">{chennel + 1}</div>
+            <div className="callContent">
+              <h4>{destination}</h4>
+              <h5>Incoming...</h5>
+            </div>
+            <div className="callBtnGrp my-auto ms-auto">
+              <button className="appPanelButtonCaller" style={{ background: '#1ac444' }}><i class="fa-solid fa-phone"></i></button>
+              <button className="appPanelButtonCaller bg-danger me-0"><i class="fa-solid fa-phone-hangup"></i></button>
+            </div>
           </div>
-        </div>
-      ) : (
-        <div
-          onClick={() => handleActiveCall(session._id, destination)}
-          className="col-12 callItem active"
-        >
-          <div className="profilepicHolder">{chennel + 1}</div>
-          <div className="callContent">
-            <h4>Line {chennel + 1}</h4>
-            <h5>
-              {destination}
-              {/* <span className='float-end'>02:23
-                                    </span> */}
-            </h5>
+        ) : (
+          <div
+            onClick={() => handleActiveCall(session._id, destination)}
+            className="col-12 callItem active"
+          >
+            <div className="profilepicHolder">{chennel + 1}</div>
+            <div className="callContent">
+              <h4>{destination}</h4>
+              <h5>01:20</h5>
+              {/* <span className="float-end" style={{ fontSize: 12 }}>Line {chennel + 1}</span> */}
+            </div>
+            <div className="callBtnGrp my-auto ms-auto">
+              <button className="appPanelButtonCaller bg-danger"><i class="fa-solid fa-phone-hangup"></i></button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
+
+      <audio ref={audioRef}></audio>
 
       {/* <div className='col-12 callItem active'>
                         <div className='profilepicHolder'>

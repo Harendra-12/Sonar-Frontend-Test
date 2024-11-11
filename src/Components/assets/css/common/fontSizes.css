@@ -1,7 +1,13 @@
-h4{
-    font-size: 22px !important;
-    font-family: Outfit;
+h4 {
+    font-size: 20px !important;
+    font-family: Roboto;
 }
-h5{
+
+h5 {
     font-size: 16px !important;
+}
+
+.gray14 {
+    font-size: 14px;
+    color: #858585;
 }

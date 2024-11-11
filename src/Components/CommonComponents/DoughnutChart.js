@@ -13,7 +13,7 @@ const DoughnutChart = ({ fields, percentage, centerTitle, centerDesc, colors }) 
     labels: fields,
     datasets: [
       {
-        label: 'Total Calls',
+        label: 'Total',
         data: percentage,
         backgroundColor: colors,
         hoverBackgroundColor: colors,

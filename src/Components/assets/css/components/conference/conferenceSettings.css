@@ -1,0 +1,43 @@
+.settingsPanel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    backdrop-filter: blur(5px);
+    z-index: 10;
+}
+
+.settingsPanel .contentParentWrap {
+    width: 45%
+}
+
+.settingsPanel .contentParentWrap .contentWrap {
+    padding: 0px 0;
+    min-height: 275px;
+    position: relative;
+}
+
+.settingsPanel .contentWrap .closeButton {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+}
+
+.settingsPanel .tab-content {
+    margin: 15px 35px 10px 35px;
+    min-height: 150px;
+}
+
+.settingsPanel .tab-content h5 {
+    color: #fff;
+    margin-bottom: 0;
+}
+
+.selectContainer {
+    width: 130px;
+    margin-left: auto;
+    margin-bottom: 10px;
+}

@@ -7,6 +7,8 @@ function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
   const [popUp, setPopUp] = useState(false);
   const { connectStatus } = useSIPProvider();
   const [loading, setLoading] = useState(true); // Loading state for popup
+  // const callState = useSelector((state) => state.callState);
+  // console.log("callStatesss", callState);
 
   const extension = account?.extension?.extension || "";
   const [connectedStatus, setConnectedStatus] = useState("");
@@ -33,6 +35,8 @@ function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
       <style>
         {`#sidenNav{
         display:none;
+      } .circularLoader{
+        display:none;
       }`}
       </style>
       <div id="sidenNavApp">
@@ -48,10 +52,11 @@ function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
                       : "profileOfflineNav"
                   }
                 >
-                  {extension}
+                  <i class="fa-light fa-user"></i>
                 </div>
                 <div className="userTitle">
-                  {extension}-{account.username}
+                  <h5>{account.username}</h5>
+                  <p>Ext- {extension}</p>
                 </div>
               </button>
             </li>{" "}
@@ -311,7 +316,8 @@ function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
                       setPopUp(false);
                     }}
                   >
-                    Close
+                    <span className="text">Close</span>
+                    <span className="icon"><i class="fa-solid fa-xmark"></i></span>
                   </button>
                 </div>
               </div>

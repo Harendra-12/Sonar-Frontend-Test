@@ -134,7 +134,7 @@
 #detailsHeader {
     background-color: var(--color2);
     /* border-bottom: 1px solid #ddd; */
-    /* box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px; */
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -143,13 +143,19 @@
 
 #detailsHeader h4 {
     color: #fff;
+    font-family: Roboto;
 }
 
 #detailsHeader .headerBgWave {
     width: 100%;
-    height: 220px;
+    height: 270px;
     position: absolute;
     top: 0;
     left: 0;
     z-index: -1;
+    background-color: var(--color2);
+}
+
+#detailsHeader .headerBgWave svg {
+    display: none;
 }

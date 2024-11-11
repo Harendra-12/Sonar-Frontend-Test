@@ -157,194 +157,207 @@ const Users = () => {
         <div className="container-fluid">
           <div className="row">
             <Header title="Users" />
-            <div className="d-flex flex-wrap px-xl-3 py-2" id="detailsHeader">
-              <div className="col-xl-4 my-auto">
-                <div className="position-relative searchBox">
-                  <input
-                    type="search"
-                    name="Search"
-                    id="headerSearch"
-                    placeholder="Search"
-                    value={userInput}
-                    onChange={(e) => setuserInput(e.target.value)}
-                    style={{ paddingRight: 100 }}
-                  />
-                  <select
-                    className="secretSelect"
-                    value={selectedOption}
-                    onChange={(e) => setSelectedOption(e.target.value)}
-                  >
-                    <option value="userName">Username</option>
-                    <option value="accountId">Account ID</option>
-                    {/* <option value="domain">Domain</option> */}
-                    <option value="online">Online</option>
-                    <option value="onCall">On Call</option>
-                  </select>
+            <div className="overviewTableWrapper">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap">
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content">
+                        <h4>Users</h4>
+                      </div>
+                      <div className="buttonGroup">
+                        <button
+                          effect="ripple"
+                          className="panelButton gray"
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
+                        >
+                          <span className="text">Back</span>
+                          <span className="icon">
+                            <i class="fa-solid fa-caret-left"></i>
+                          </span>
+                        </button>
+                        <Link
+                          // to="/users-add"
+                          // onClick={backToTop}
+                          onClick={handleAddUserValidation}
+                          effect="ripple"
+                          className="panelButton"
+                        >
+                          <span className="text">Add</span>
+                          <span className="icon">
+                            <i class="fa-solid fa-plus"></i>
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-12" style={{ overflow: "auto", padding: '25px 20px 0' }}>
+                    <div className="tableHeader">
+                      <div className="showEntries">
+                        <label>Show</label>
+                        <select className="formItem">
+                          <option>10</option>
+                        </select>
+                        <label>entries</label>
+                      </div>
+                      <div className="searchBox position-relative">
+                        <label>Search:</label>
+                        <input
+                          type="search"
+                          name="Search"
+                          className="formItem"
+                          placeholder="Search"
+                          value={userInput}
+                          onChange={(e) => setuserInput(e.target.value)}
+                          style={{ paddingRight: 100 }}
+                        />
+                        <select
+                          className="secretSelect"
+                          value={selectedOption}
+                          onChange={(e) => setSelectedOption(e.target.value)}
+                        >
+                          <option value="userName">Username</option>
+                          <option value="accountId">Account ID</option>
+                          {/* <option value="domain">Domain</option> */}
+                          <option value="online">Online</option>
+                          <option value="onCall">On Call</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="tableContainer">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Username (Extension)</th>
+                            <th>Account ID</th>
+                            {/* <th>Domain</th> */}
+                            <th>Online</th>
+                            <th>On Call</th>
+                            <th>Edit</th>
+                            <th>Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {loading ? (
+                            <tr>
+                              <td colSpan={99}>
+                                <ContentLoader />
+                              </td>
+                            </tr>
+                          ) : (
+                            <>
+                              {user &&
+                                filterUser.map((item, index) => {
+                                  const isCustomerAdmin =
+                                    account.email === item.email;
+
+                                  // Skip rendering the row if isCustomerAdmin is true
+                                  if (isCustomerAdmin) {
+                                    return null; // Return null to avoid rendering the row
+                                  }
+
+                                  return (
+                                    <tr key={index}>
+                                      <td
+                                        onClick={() =>
+                                          navigate(`/users-edit`, {
+                                            state: item,
+                                          })
+                                        }
+                                      >
+                                        {item.username} ({item.extension?.extension})
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          navigate(`/users-edit`, {
+                                            state: item,
+                                          })
+                                        }
+                                      >
+                                        {item.account_id}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          navigate(`/users-edit`, {
+                                            state: item,
+                                          })
+                                        }
+                                      >
+                                        <span
+                                          className={
+                                            onlineUser.includes(item.id)
+                                              ? "extensionStatus online"
+                                              : "extensionStatus"
+                                          }
+                                        ></span>
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          navigate(`/users-edit`, {
+                                            state: item,
+                                          })
+                                        }
+                                      >
+                                        True
+                                      </td>
+                                      <td>
+                                        <button
+                                          className="tableButton edit"
+                                          onClick={() =>
+                                            navigate(`/users-edit`, {
+                                              state: item,
+                                            })
+                                          }
+                                        >
+                                          <i class="fa-solid fa-pencil"></i>
+                                        </button>
+                                      </td>
+                                      <td
+                                      // onClick={() =>
+                                      //   handleStatusChange(item.id, item.status)
+                                      // }
+                                      >
+                                        {item.status === "E"
+                                          ? "Enabled"
+                                          : "Disabled"}
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                            </>
+                          )}
+
+                          {user && user.length === 0 ? (
+                            <td colSpan={99}>
+                              <EmptyPrompt name="User" link="users-add" />
+                            </td>
+                          ) : (
+                            ""
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="tableHeader mb-3">
+                      {user && user.data.length > 0 ? (
+                        <PaginationComponent
+                          pageNumber={(e) => setPageNumber(e)}
+                          totalPage={user.last_page}
+                          from={(pageNumber - 1) * user.per_page + 1}
+                          to={user.to - 1} // -1 because customeradmin user is removed form the list
+                          total={user.total - 1} // -1 because customeradmin user is removed form the list
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="col-xl-8 mt-3 mt-xl-0">
-                <div className="d-flex justify-content-end flex-wrap">
-                  <button
-                    effect="ripple"
-                    className="panelButton"
-                    onClick={() => {
-                      navigate(-1);
-                      backToTop();
-                    }}
-                  >
-                    Back
-                  </button>
-                  <Link
-                    // to="/users-add"
-                    // onClick={backToTop}
-                    onClick={handleAddUserValidation}
-                    effect="ripple"
-                    className="panelButton"
-                  >
-                    Add
-                  </Link>
-                  {/* <div className="my-auto position-relative mx-3">
-                    <label className="switch">
-                      <input type="checkbox" id="showAllCheck" />
-                      <span className="slider round" />
-                    </label>
-                    <span className="position-relative mx-1">Show All</span>
-                  </div> */}
-                </div>
-              </div>
-            </div>
-            <div className="col-12" style={{ overflow: "auto" }}>
-              <div className="mx-2 tableContainer">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Username (Extension)</th>
-                      <th>Account ID</th>
-                      {/* <th>Domain</th> */}
-                      <th>Online</th>
-                      <th>On Call</th>
-                      <th>Edit</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {loading ? (
-                      <tr>
-                        <td colSpan={99}>
-                          <ContentLoader />
-                        </td>
-                      </tr>
-                    ) : (
-                      <>
-                        {user &&
-                          filterUser.map((item, index) => {
-                            const isCustomerAdmin =
-                              account.email === item.email;
-
-                            // Skip rendering the row if isCustomerAdmin is true
-                            if (isCustomerAdmin) {
-                              return null; // Return null to avoid rendering the row
-                            }
-
-                            return (
-                              <tr key={index}>
-                                <td
-                                  onClick={() =>
-                                    navigate(`/users-edit`, {
-                                      state: item,
-                                    })
-                                  }
-                                >
-                                  {item.username} ({item.extension?.extension})
-                                </td>
-                                <td
-                                  onClick={() =>
-                                    navigate(`/users-edit`, {
-                                      state: item,
-                                    })
-                                  }
-                                >
-                                  {item.account_id}
-                                </td>
-                                <td
-                                  onClick={() =>
-                                    navigate(`/users-edit`, {
-                                      state: item,
-                                    })
-                                  }
-                                >
-                                  <span
-                                    className={
-                                      onlineUser.includes(item.id)
-                                        ? "extensionStatus online"
-                                        : "extensionStatus"
-                                    }
-                                  ></span>
-                                </td>
-                                <td
-                                  onClick={() =>
-                                    navigate(`/users-edit`, {
-                                      state: item,
-                                    })
-                                  }
-                                >
-                                  True
-                                </td>
-                                <td>
-                                  <button className="tableButton edit" onClick={() =>
-                                    navigate(`/users-edit`, {
-                                      state: item,
-                                    })
-                                  }>
-                                    <i class="fa-solid fa-pencil"></i>
-                                  </button>
-                                </td>
-                                <td
-                                  onClick={() =>
-                                    handleStatusChange(item.id, item.status)
-                                  }
-                                >
-                                  <label
-                                    className={
-                                      item.status === "E"
-                                        ? "tableLabel success"
-                                        : "tableLabel fail"
-                                    }
-                                  >
-                                    {item.status === "E"
-                                      ? "Enabled"
-                                      : "Disabled"}
-                                  </label>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                      </>
-                    )}
-
-                    {user && user.length === 0 ? (
-                      <td colSpan={99}>
-                        <EmptyPrompt name="User" link="users-add" />
-                      </td>
-                    ) : (
-                      ""
-                    )}
-                  </tbody>
-                </table>
               </div>
             </div>
           </div>
-          {user && user.data.length > 0 ? (
-            <PaginationComponent
-              pageNumber={(e) => setPageNumber(e)}
-              totalPage={user.last_page}
-              from={(pageNumber - 1) * user.per_page + 1}
-              to={user.to - 1} // -1 because customeradmin user is removed form the list
-              total={user.total - 1} // -1 because customeradmin user is removed form the list
-            />
-          ) : (
-            ""
-          )}
         </div>
       </section>
       {popUp ? (

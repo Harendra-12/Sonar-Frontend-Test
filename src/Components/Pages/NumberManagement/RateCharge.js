@@ -54,7 +54,8 @@ function RateCharge() {
                       effect="ripple"
                       className="panelButton"
                     >
-                      Back
+                      <span className="text">Back</span>
+                      <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                     </p>
                     <Link
                       to="/did-add-rate"
@@ -62,7 +63,8 @@ function RateCharge() {
                       effect="ripple"
                       className="panelButton"
                     >
-                      Add
+                      <span className="text">Add</span>
+                      <span className="icon"><i class="fa-solid fa-plus"></i></span>
                     </Link>
                   </div>
                   <div className="col-xl-8 mt-3 mt-xl-0">

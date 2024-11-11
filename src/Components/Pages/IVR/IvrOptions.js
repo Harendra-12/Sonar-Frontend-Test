@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ActionList from "../../CommonComponents/ActionList";
@@ -9,7 +11,6 @@ import {
   generalPostFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
-import { set } from "date-fns";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import "react-phone-number-input/style.css";
@@ -137,14 +138,16 @@ function IvrOptions() {
                     backToTop();
                   }}
                 >
-                  Back
+                  <span className="text">Back</span>
+                  <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                 </button>
                 <button
                   onClick={handleSubmit}
                   effect="ripple"
                   className="panelButton"
                 >
-                  Save
+                  <span className="text">Save</span>
+                  <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                 </button>
               </div>
             </div>
@@ -192,6 +195,7 @@ function IvrOptions() {
                           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].filter(option => editId === item.id ? !options.find(opt => opt.option_key == option) : true).map(option => (
                             <option key={option} value={option}>{option}</option>
                           ))}
+                          <option value={item.option_key}>{item.option_key}</option>
                         </select>
                       </div>
                     </div>
@@ -241,7 +245,7 @@ function IvrOptions() {
                     </div>
                     {item.action_name === "pstn" ||
                       (editId === item.id && editAction_name === "pstn") ? (
-                      <div className="col-2 pe-2">
+                      <div className="col-3 pe-2">
                         <PhoneInput
                           disabled={
                             editId === item.id
@@ -292,7 +296,7 @@ function IvrOptions() {
                         />
                       </div>
                     )}
-                    <div className="col-auto me-2 h-100">
+                    <div className={index === 0 ? "col-auto mt-auto me-2 h-100" : "col-auto me-2 h-100"}>
                       <button
                         type="button"
                         onClick={() => deleteOption(item.id)}
@@ -302,7 +306,7 @@ function IvrOptions() {
                       </button>
                     </div>
 
-                    <div className="col-auto">
+                    <div className={index === 0 ? "col-auto mt-auto" : "col-auto"}>
                       <button
                         onClick={() => {
                           if (editId === item.id) {
@@ -321,10 +325,11 @@ function IvrOptions() {
                         effect="ripple"
                         type="button"
                       >
-                        <i className="fa-duotone fa-circle-plus me-2"></i>
-                        {editId === item.id ? "Save" : "Update"}
+                        <span className="text">{editId === item.id ? "Save" : "Update"}</span>
+                        <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                       </button>
                     </div>
+                    {index === 0 ? <div className="col-12 mb-2"></div> : ""}
                   </div>
                 );
               })}
@@ -420,8 +425,8 @@ function IvrOptions() {
                     effect="ripple"
                     type="button"
                   >
-                    <i className="fa-duotone fa-circle-plus me-2"></i>
-                    Add More
+                    <span className="text">Add</span>
+                    <span className="icon"><i class="fa-solid fa-plus"></i></span>
                   </button>
                 </div>
               </div>

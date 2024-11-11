@@ -83,7 +83,7 @@ function Messages() {
         if (
           chatHistory[recipient[0]]?.total &&
           chatHistory[recipient[0]].pageNumber * 40 <
-            chatHistory[recipient[0]].total
+          chatHistory[recipient[0]].total
         ) {
           getData(chatHistory[recipient[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
@@ -345,17 +345,59 @@ function Messages() {
         <section>
           <div className="container-fluid">
             <div className="row">
+              <div className="col-12 ps-xl-0">
+                <div className="newHeader">
+                  <div className="col-auto" style={{ padding: '0 10px' }}>
+                    <h3 style={{ fontFamily: "Outfit", marginBottom: '0' }}>
+                      <button class="clearButton text-dark"><i class="fa-solid fa-chevron-left fs-4"></i></button> Messages <button class="clearButton"><i class="fa-regular fa-arrows-rotate fs-5" style={{ color: 'rgb(148, 148, 148)' }}></i></button>
+                    </h3>
+                  </div>
+                  <div className="d-flex justify-content-end align-items-center">
+                    <div className="col-9">
+                      <input type="search" name="Search" placeholder="Search users, groups or chat" class="formItem fw-normal" style={{ backgroundColor: '#f5f5f5' }} />
+                    </div>
+                    <div className="col-auto mx-2">
+                      <button
+                        className="clearButton2 xl"
+                        effect="ripple"
+                      >
+                        <i className="fa-regular fa-bell" />
+                      </button>
+                    </div>
+                    <div className="col-auto">
+                      <div className="myProfileWidget">
+                        <div class="profileHolder" id="profileOnlineNav">
+                          <img src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg" alt="profile" />
+                        </div>
+                        <div class="profileName">test two <span className="status">Available</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div
-                className="col-12 col-xl-6 d-flex flex-wrap justify-content-between py-3 border-end"
+                className="col-12 col-xl-4 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-between py-3 border-end px-xl-0"
                 style={{ height: "100%" }}
               >
-                <div className="col-auto">
-                  <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
-                    Messages
-                  </h3>
+                <div className="col-auto" style={{ padding: '0 10px' }}>
+                  <h5 className="viewingAs">
+                    Viewing As:
+                    <span>test two</span>
+                  </h5>
+                </div>
+                <div className="col-auto" style={{ padding: '0 10px' }}>
+                  <button className="clearColorButton dark">
+                    <i class="fa-light fa-pen-to-square"></i> New Chat
+                  </button>
+                </div>
+                <div className="col-12 mt-3" style={{ padding: '0 10px' }}>
+                  <AgentSearch
+                    getDropdownValue={setRecipient}
+                    getAllAgents={setAgents}
+                  />
                 </div>
                 <div className="col-12">
-                  <nav>
+                  <nav className="mt-3">
                     <div className="nav nav-tabs">
                       <button
                         className={
@@ -364,7 +406,7 @@ function Messages() {
                         data-category="all"
                         onClick={() => setActiveTab("all")}
                       >
-                        All
+                        All <span className="unread">2</span>
                       </button>
                       <button
                         onClick={() => setActiveTab("online")}
@@ -380,68 +422,155 @@ function Messages() {
                   </nav>
                   {activeTab === "all" ? (
                     <div className="tab-content">
-                      <AgentSearch
+                      {/* <AgentSearch
                         getDropdownValue={setRecipient}
                         getAllAgents={setAgents}
-                      />
-                      <div className="callList">
-                        {contact.map((item) => {
-                          return (
-                            <div
-                              data-bell={
-                                unreadMessage[item?.extension]
-                                  ? unreadMessage[item?.extension]
-                                  : ""
-                              }
-                              className={
-                                recipient[0] === item?.extension
-                                  ? "contactListItem selected"
-                                  : "contactListItem"
-                              }
-                            >
-                              <div
-                                onClick={() => {
-                                  setRecipient([item?.extension, item.id]);
-                                  setUnreadMessage((prevState) => {
-                                    const {
-                                      [item?.extension]: _,
-                                      ...newState
-                                    } = prevState;
-                                    return newState;
-                                  });
-                                }}
-                                className="row justify-content-between"
-                              >
-                                <div className="col-xl-6 d-flex">
-                                  <div
-                                    className="profileHolder"
-                                    id={
-                                      onlineUser.find(
-                                        (user) => user.id === item.id
-                                      )
-                                        ? "profileOnlineNav"
-                                        : "profileOfflineNav"
-                                    }
-                                  >
-                                    <i className="fa-light fa-user fs-5"></i>
+                      /> */}
+                      <div className="callList" style={{ height: 'calc(100vh - 270px)' }}>
+                        <div className="chatHeading">
+                          <h5 data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1">Pinned <i class="fa-solid fa-chevron-down"></i></h5>
+                        </div>
+                        <div class="collapse show" id="collapse1">
+                          <div className="contactListItem" data-bell={"1"}>
+                            <div className="row justify-content-between">
+                              <div className="col-xl-12 d-flex">
+                                <div
+                                  className="profileHolder"
+                                  id={"profileOfflineNav"}
+                                >
+                                  <i className="fa-light fa-user fs-5"></i>
+                                </div>
+                                <div className="my-auto ms-2 ms-xl-3">
+                                  <h4>Test</h4>
+                                  <h5>Hi! I need some help with the stuff you were talking about</h5>
+                                  <div className="contactTags">
+                                    <span className="work">Work</span>
+                                    <span className="important">Important</span>
+                                    <span className="more">+2</span>
                                   </div>
-                                  <div className="my-auto ms-2 ms-xl-3">
-                                    <h4>{item?.name}</h4>
-                                    <h5>{item?.extension}</h5>
-                                  </div>
+                                </div>
+                                <div className="col text-end">
+                                  <p className="timeAgo">1h ago</p>
                                 </div>
                               </div>
                             </div>
-                          );
-                        })}
+                          </div>
+                        </div>
+
+                        <div className="chatHeading">
+                          <h5 data-bs-toggle="collapse" href="#collapse2" role="button" aria-expanded="false" aria-controls="collapse2">Chats <i class="fa-solid fa-chevron-down"></i></h5>
+                        </div>
+                        <div class="collapse show" id="collapse2" style={{ borderBottom: '1px solid #ddd' }}>
+                          {contact.map((item) => {
+                            return (
+                              <div
+                                data-bell={
+                                  unreadMessage[item?.extension]
+                                    ? unreadMessage[item?.extension]
+                                    : ""
+                                }
+                                className={
+                                  recipient[0] === item?.extension
+                                    ? "contactListItem selected"
+                                    : "contactListItem"
+                                }
+                              >
+                                <div
+                                  onClick={() => {
+                                    setRecipient([item?.extension, item.id]);
+                                    setUnreadMessage((prevState) => {
+                                      const {
+                                        [item?.extension]: _,
+                                        ...newState
+                                      } = prevState;
+                                      return newState;
+                                    });
+                                  }}
+                                  className="row justify-content-between"
+                                >
+                                  <div className="col-xl-12 d-flex">
+                                    <div
+                                      className="profileHolder"
+                                      id={
+                                        onlineUser.find(
+                                          (user) => user.id === item.id
+                                        )
+                                          ? "profileOnlineNav"
+                                          : "profileOfflineNav"
+                                      }
+                                    >
+                                      <i className="fa-light fa-user fs-5"></i>
+                                    </div>
+                                    <div className="my-auto ms-2 ms-xl-3">
+                                      <h4>{item?.name}</h4>
+                                      <h5>{item?.extension}</h5>
+                                      <div className="contactTags">
+                                        <span className="work">Work</span>
+                                        <span className="priority">Priority</span>
+                                        <span className="more">+2</span>
+                                      </div>
+                                    </div>
+                                    <div className="col text-end">
+                                      <p className="timeAgo">1min ago</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                          <div className="contactListItem" data-bell={"1"}>
+                            <div className="row justify-content-between">
+                              <div className="col-xl-12 d-flex">
+                                <div
+                                  className="profileHolder"
+                                  id={"profileOfflineNav"}
+                                >
+                                  <i className="fa-light fa-user fs-5"></i>
+                                </div>
+                                <div className="my-auto ms-2 ms-xl-3">
+                                  <h4>Test2</h4>
+                                  <h5>So when do you start me to build the quantum defibrillator</h5>
+                                  <div className="contactTags">
+                                    <span className="work">Work</span>
+                                  </div>
+                                </div>
+                                <div className="col text-end">
+                                  <p className="timeAgo">15min ago</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="contactListItem" data-bell={""}>
+                            <div className="row justify-content-between">
+                              <div className="col-xl-12 d-flex">
+                                <div
+                                  className="profileHolder"
+                                  id={"profileOfflineNav"}
+                                >
+                                  <i className="fa-light fa-user fs-5"></i>
+                                </div>
+                                <div className="my-auto ms-2 ms-xl-3">
+                                  <h4>Test3</h4>
+                                  <h5>Alright</h5>
+                                  <div className="contactTags">
+                                    <span className="priority">Priority</span>
+                                  </div>
+                                </div>
+                                <div className="col text-end">
+                                  <p className="timeAgo">5min ago</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   ) : (
                     <div className="tab-content">
-                      <AgentSearch
+                      {/* <AgentSearch
                         getDropdownValue={setRecipient}
                         getAllAgents={setAgents}
-                      />
+                      /> */}
                       <div className="callList">
                         {onlineUser.map((item) => {
                           return (
@@ -462,7 +591,7 @@ function Messages() {
                                 }
                                 className="row justify-content-between"
                               >
-                                <div className="col-xl-6 d-flex">
+                                <div className="col-xl-12 d-flex">
                                   <div
                                     className="profileHolder"
                                     id="profileOnlineNav"
@@ -479,20 +608,8 @@ function Messages() {
                           );
                         })}
                         {onlineUser.length === 0 && (
-                          <div data-bell="" className="contactListItem">
-                            <div className="row justify-content-between">
-                              <div className="col-xl-6 d-flex">
-                                {/* <div
-                                  className="profileHolder"
-                                  id="profileOnline"
-                                >
-                                  <i className="fa-light fa-user fs-5"></i>
-                                </div> */}
-                                <div className="my-auto ms-2 ms-xl-3">
-                                  <h4>No online user found</h4>
-                                </div>
-                              </div>
-                            </div>
+                          <div className="chatHeading" data-bell={""}>
+                            <h5>No Online user found</h5>
                           </div>
                         )}
                       </div>
@@ -501,7 +618,7 @@ function Messages() {
                 </div>
               </div>
               <div
-                className="col-12 col-xl-6 callDetails eFaxCompose"
+                className="col-12 col-xl-8 col-lg-8 col-xxl-9 callDetails eFaxCompose"
                 style={{ height: "100%" }}
                 id="callDetails"
               >
@@ -510,23 +627,44 @@ function Messages() {
                     <div className="contactHeader">
                       <div>
                         <h4>{recipient[0]}</h4>
+                        <div className="contactTags">
+                          <span className="work">Work</span>
+                          <span className="important">Important</span>
+                          <span className="priority">Priority</span>
+                          <span className="personal">Personal</span>
+                        </div>
                         {/* <span className="status online">Online</span> */}
                       </div>
                       <div className="d-flex my-auto">
+                        <div className="d-flex align-items-center me-2">
+                          <label className="gray14 me-2">Assigned to:</label>
+                          <select className="ovalSelect">
+                            <option>Test Buttowski</option>
+                          </select>
+                        </div>
                         <button
-                          className="appPanelButton"
+                          className="clearButton2 xl"
                           effect="ripple"
-                          onclick="location.href='http://192.168.2.220/ringerappCI/webrtc/user-app-caller'"
                         >
-                          <i className="fa-light fa-phone" />
+                          <i className="fa-regular fa-phone" />
                         </button>
                         <button
-                          className="appPanelButton"
+                          className="clearButton2 xl"
                           effect="ripple"
-                          onclick="location.href='http://192.168.2.220/ringerappCI/webrtc/user-app-videocaller'"
                         >
-                          <i className="fa-light fa-video" />
+                          <i className="fa-regular fa-video" />
                         </button>
+                        <div class="dropdown">
+                          <button class="clearButton2 xl" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Start Call</a></li>
+                            <li><a class="dropdown-item" href="#">Send Message</a></li>
+                            <li><a class="dropdown-item" href="#">Add to Contact</a></li>
+                            <li><a class="dropdown-item" href="#">Delete Contact</a></li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   ) : (
@@ -535,14 +673,13 @@ function Messages() {
                   <div className="messageContent">
                     <div className="messageList" ref={messageListRef}>
                       {allMessage?.[recipient[0]]?.map((item, index) => {
-                        // console.log("inside loop",item);
-
+                        // console.log("inside loop", item);
                         return (
                           <>
                             {item.from == extension ? (
                               <div className="messageItem sender">
                                 <div className="second">
-                                  <h6>
+                                  <h6>{item.from},
                                     <span>
                                       {item.time
                                         .split(" ")[1]
@@ -560,6 +697,7 @@ function Messages() {
                               <div className="messageItem receiver">
                                 <div className="second">
                                   <h6>
+                                    {item.from},
                                     <span>
                                       {item.time
                                         .split(" ")[1]
@@ -598,29 +736,59 @@ function Messages() {
                     </div>
                     {recipient[0] ? (
                       <div className="messageInput">
-                        <div className="col-10">
-                          <input
-                            type="text"
-                            name=""
-                            id=""
-                            placeholder="Please enter your message"
-                            value={messageInput}
-                            onChange={(e) => setMessageInput(e.target.value)}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") {
-                                sendMessage();
-                              }
-                            }}
-                          />
+                        <div className="col-12">
+                          <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                              <button class="tabLink active" id="nav-sms-tab" data-bs-toggle="tab" data-bs-target="#nav-sms" type="button" role="tab" aria-controls="nav-sms" aria-selected="true">SMS</button>
+                              <button class="tabLink" id="nav-whatsapp-tab" data-bs-toggle="tab" data-bs-target="#nav-whatsapp" type="button" role="tab" aria-controls="nav-whatsapp" aria-selected="false" disabled>WhatsApp</button>
+                              <button class="tabLink" id="nav-skype-tab" data-bs-toggle="tab" data-bs-target="#nav-skype" type="button" role="tab" aria-controls="nav-skype" aria-selected="false" disabled>Skype</button>
+                            </div>
+                          </nav>
                         </div>
-                        <div className="col-auto d-flex">
-                          <button
-                            effect="ripple"
-                            className="appPanelButtonColor"
-                            onClick={() => sendMessage()}
-                          >
-                            <i className="fa-solid fa-paper-plane-top" />
-                          </button>
+                        <div class="tab-content col-12" id="nav-tabContent">
+                          <div class="tab-pane fade show active" id="nav-sms" role="tabpanel" aria-labelledby="nav-sms-tab">
+                            <textarea
+                              type="text"
+                              name=""
+                              className="input"
+                              placeholder="Please enter your message"
+                              value={messageInput}
+                              onChange={(e) => setMessageInput(e.target.value)}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                  sendMessage();
+                                }
+                              }}
+                            />
+                          </div>
+                          <div class="tab-pane fade" id="nav-whatsapp" role="tabpanel" aria-labelledby="nav-whatsapp-tab">...</div>
+                          <div class="tab-pane fade" id="nav-skype" role="tabpanel" aria-labelledby="nav-skype-tab">...</div>
+                        </div>
+
+                        <div className="col-12 d-flex justify-content-between align-items-center">
+                          <div className="d-flex">
+                            <button className="clearButton2">
+                              <i className="fa-light fa-eraser" />
+                            </button>
+                            <button className="clearButton2">
+                              <i class="fa-regular fa-image"></i>
+                            </button>
+                            <button className="clearButton2">
+                              <i class="fa-solid fa-paperclip"></i>
+                            </button>
+                            <button className="clearButton2">
+                              <i class="fa-regular fa-face-smile"></i>
+                            </button>
+                          </div>
+                          <div>
+                            <button
+                              effect="ripple"
+                              className="clearColorButton dark"
+                              onClick={() => sendMessage()}
+                            >
+                              Send Now <i className="fa-solid fa-paper-plane-top" />
+                            </button>
+                          </div>
                         </div>
                       </div>
                     ) : (
@@ -632,7 +800,7 @@ function Messages() {
             </div>
           </div>
         </section>
-      </main>
+      </main >
     </>
   );
 }

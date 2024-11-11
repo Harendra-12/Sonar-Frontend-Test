@@ -37,7 +37,7 @@
 .mainContentApp .tab-content .callList .callListDiff {
     font-size: 14px !important;
     margin: 5px 0;
-    font-family: Outfit;
+    /* font-family: Outfit; */
     font-weight: 500;
     color: #505050;
 }
@@ -49,9 +49,9 @@
 .mainContentApp .tab-content .callListItem h6 {
     font-size: 12px;
     margin: 0;
-    font-family: Outfit;
+    font-family: Open sans;
     font-weight: 500;
-    color: #505050;
+    color: #505050d6;
 }
 
 .mainContentApp .tab-content .callListItem span {
@@ -64,25 +64,34 @@
 
 /* Contact List Item Start*/
 .mainContentApp .tab-content .contactListItem {
-    padding: 10px 10px;
+    padding: 15px 10px;
     position: relative;
-    border-radius: 10px;
-    margin-bottom: 5px;
+    border-radius: 0px;
+    /* margin-bottom: 5px; */
     cursor: pointer;
     transition: 0.3s ease-in-out;
+    border-bottom: 1px solid #ddd;
+    background-color: #fff;
+    min-height: 99.19px;
 }
 
 .mainContentApp .tab-content .contactListItem h4 {
     font-size: 17px !important;
     margin: 0;
+    font-family: Roboto;
 }
 
 .mainContentApp .tab-content .contactListItem h5 {
     font-size: 14px !important;
-    margin: 5px 0;
-    font-family: Outfit;
-    font-weight: 500;
-    color: #505050;
+    margin: 5px 0 0;
+    font-family: Roboto;
+    font-weight: 400;
+    color: #747474;
+
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .mainContentApp .tab-content .contactListItem h6 {
@@ -93,6 +102,14 @@
     color: #505050;
 }
 
+.mainContentApp .tab-content .contactListItem p.timeAgo {
+    font-size: 12px !important;
+    margin: 5px 0 0;
+    font-family: Roboto;
+    font-weight: 400;
+    color: #ababab;
+}
+
 .mainContentApp .tab-content .contactListItem span {
     font-size: 17px;
     margin: 0;
@@ -101,14 +118,14 @@
     color: var(--ui-accent);
 }
 
-.mainContentApp .tab-content .contactListItem::after{
+.mainContentApp .tab-content .contactListItem::after {
     content: attr(data-bell);
     position: absolute;
     bottom: 10px;
     right: 10px;
     width: 20px;
     height: 20px;
-    background-color: var(--funky-boy1);
+    background-color: var(--ui-accent);
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -118,14 +135,14 @@
     color: #fff;
 }
 
-.mainContentApp .tab-content .contactListItem[data-bell=""]::after{
+.mainContentApp .tab-content .contactListItem[data-bell=""]::after {
     content: none !important;
 }
 
 .mainContentApp .contactListItem .profileHolder {
-    width: 50px;
-    height: 50px;
-    margin: auto 0px auto 0px;
+    width: 45px;
+    height: 45px;
+    /* margin: auto 0px auto 0px; */
     /* margin: auto 15px auto 0px; */
     text-align: center;
     cursor: pointer;
@@ -137,7 +154,7 @@
     color: #fff;
     /* overflow: hidden; */
     position: relative;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 2px;
 }
 
 #profileOnline::after {
@@ -325,11 +342,24 @@
     margin-bottom: 0;
 }
 
-.mainContentApp .tab-content .callListItem.selected,
-.mainContentApp .tab-content .contactListItem.selected {
+.mainContentApp .tab-content .callListItem.selected {
     background-color: #439fdd25;
+    /* background: #f5f5f5; */
+    /* border-right: 4px solid var(--ui-accent); */
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.20) 0px 1px 5px;
+    /* margin-top: 10px; */
+    z-index: 1;
+}
+
+.mainContentApp .tab-content .contactListItem.selected {
+    /* background-color: #439fdd25; */
+    background: #f5f5f5;
+    border-right: 4px solid var(--ui-accent);
+    /* border-radius: 10px; */
+    /* box-shadow: rgba(0, 0, 0, 0.20) 0px 1px 5px; */
+    /* margin-top: 10px; */
+    z-index: 1;
 }
 
 .mainContentApp .tab-content .callListItem:hover,
@@ -343,25 +373,25 @@
     align-items: center;
 }
 
-.startAJob{
+.startAJob {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
 }
 
-.startAJob img{
+.startAJob img {
     width: 150px;
     height: 150px;
 }
 
-.startAJob h5{
+.startAJob h5 {
     color: var(--color-subtext);
     font-weight: 400;
     margin-top: 10px;
 }
 
-.startAJob h5 span{
+.startAJob h5 span {
     color: var(--ui-accent);
     cursor: pointer;
 }

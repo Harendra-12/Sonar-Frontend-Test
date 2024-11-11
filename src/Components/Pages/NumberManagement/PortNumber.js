@@ -100,7 +100,8 @@ function PortNumber() {
                         backToTop();
                       }}
                     >
-                      Back
+                      <span className="text">Back</span>
+                      <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                     </button>
                     <Link
                       to="/port-number-add"
@@ -108,7 +109,8 @@ function PortNumber() {
                       effect="ripple"
                       className="panelButton"
                     >
-                      Add
+                      <span className="text">Add</span>
+                      <span className="icon"><i class="fa-solid fa-plus"></i></span>
                     </Link>
                   </div>
                 </div>
@@ -254,22 +256,25 @@ function PortNumber() {
                         ?
                       </p>
 
-                      <button
-                        className="panelButton m-0"
-                        onClick={() => {
-                          handleDeletePortNumber();
-                        }}
-                      >
-                        Confirm
-                      </button>
-                      <button
-                        className="panelButtonWhite m-0 float-end"
-                        onClick={() => {
-                          setPopup(false);
-                        }}
-                      >
-                        Cancel
-                      </button>
+                      <div className="d-flex justify-content-between">
+                        <button
+                          className="panelButton m-0"
+                          onClick={() => {
+                            handleDeletePortNumber();
+                          }}
+                        >
+                          <span className="text">Confirm</span>
+                          <span className="icon"><i class="fa-solid fa-check"></i></span>
+                        </button>
+                        <button
+                          className="panelButtonWhite m-0 float-end"
+                          onClick={() => {
+                            setPopup(false);
+                          }}
+                        >
+                          Cancel
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -4,10 +4,12 @@ import EFaxFile from "./EFaxFile";
 import {
   generalDeleteFunction,
   generalGetFunction,
+  generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import Select from "react-select";
 import { useForm } from "react-hook-form";
 import CircularLoader from "../../Loader/CircularLoader";
+import { toast } from "react-toastify";
 
 function EFax() {
   const [clickStatus, setClickStatus] = useState("all");
@@ -16,8 +18,11 @@ function EFax() {
   const [deleteFile, setDeleteFile] = useState(null);
   const [contentLoading, setContentLoading] = useState(true);
   const [dropdownOption, setDropdownOption] = useState([]);
-  const { watch, setValue } = useForm();
   const [EfaxFileLoading, setEfaxFileLoading] = useState(true);
+  const [faxFileId, setFaxDileId] = useState("")
+  const [destinationId, setDestinationId] = useState("")
+  const [faxIdent, setFaxIdent] = useState("")
+  const [faxHeader, setFaxHeader] = useState("")
 
   useEffect(() => {
     const getData = async () => {
@@ -90,74 +95,38 @@ function EFax() {
     }
   };
 
-  const selectedUsages = watch("usages", []);
+  async function sendFax() {
+    console.log("api hit");
 
-  // Custom styles for react-select
-  const customStyles = {
-    control: (provided, state) => ({
-      ...provided,
-      // border: '1px solid var(--color4)',
-      border: "1px solid var(--color4)",
-      borderRadius: "5px",
-      outline: "none",
-      fontSize: "14px",
-      width: "100%",
-      minHeight: "32px",
-      height: "auto",
-      boxShadow: state.isFocused ? "none" : provided.boxShadow,
-      "&:hover": {
-        borderColor: "var(--ui-accent)",
-      },
-    }),
-    valueContainer: (provided) => ({
-      ...provided,
-      height: "auto",
-      padding: "0 6px",
-    }),
-    input: (provided) => ({
-      ...provided,
-      margin: "0",
-    }),
-    indicatorSeparator: (provided) => ({
-      display: "none",
-    }),
-    indicatorsContainer: (provided) => ({
-      ...provided,
-      height: "32px",
-    }),
-    dropdownIndicator: (provided) => ({
-      ...provided,
-      color: "#202020",
-      "&:hover": {
-        color: "#202020",
-      },
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      paddingLeft: "15px",
-      paddingTop: 0,
-      paddingBottom: 0,
-      // backgroundColor: state.isSelected ? "transparent" : "transparent",
-      "&:hover": {
-        backgroundColor: "#0055cc",
-        color: "#fff",
-      },
-      fontSize: "14px",
-    }),
-    menu: (provided) => ({
-      ...provided,
-      margin: 0,
-      padding: 0,
-    }),
-    menuList: (provided) => ({
-      ...provided,
-      padding: 0,
-      margin: 0,
-      maxHeight: "150px",
-      overflowY: "auto",
-    }),
-  };
-
+    if (destinationId === "") {
+      toast.error("Please enter destination id")
+    } else if (faxFileId === "") {
+      toast.error("Please select file")
+    } else if (faxIdent === "") {
+      toast.error("Please enter fax identifier")
+    } else if (faxHeader === "") {
+      toast.error("Please enter fax header")
+    }else {
+      setContentLoading(true)
+      const parsedData = {
+        "destination_caller_id_number": destinationId,
+        "fax_files_id": faxFileId,
+        "fax_ident": faxIdent,
+        "fax_header": faxHeader
+      }
+      const response = await generalPostFunction(`/send-fax`, parsedData)
+      if (response.status) {
+        toast.success(response.message)
+        setDestinationId("")
+        setFaxDileId("")
+        setFaxIdent("")
+        setFaxHeader("")
+        setContentLoading(false)
+      } else {
+        setContentLoading(false)
+      }
+    }
+  }
   return (
     <>
       {/* <SideNavbarApp /> */}
@@ -179,7 +148,7 @@ function EFax() {
               >
                 <div className="col-auto">
                   <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
-                    eFax
+                    eFax <button class="clearButton"><i class="fa-regular fa-arrows-rotate fs-5" style={{ color: 'rgb(148, 148, 148)' }}></i></button>
                   </h3>
                 </div>
                 <div className="col-auto d-flex">
@@ -443,19 +412,22 @@ function EFax() {
                                 <div className="col-auto my-auto">
                                   <input
                                     type="text"
-                                    placeholder="Recipents"
                                     className="border-0 mb-0"
+                                    value={destinationId}
+                                    onChange={(e) => setDestinationId(e.target.value)}
                                   />
                                 </div>
                               </div>
                             </div>
                             <div className="messageSubject">
-                              <label>Cover Page</label>
-                              <input type="text" placeholder="Subject" />
+                              <label>Fax Identifier</label>
+                              <input value={faxIdent}
+                                onChange={(e) => setFaxIdent(e.target.value)} type="text" />
                             </div>
                             <div className="messageBody">
-                              <label>Cover Page Note</label>
-                              <textarea rows={4} />
+                              <label>Fax Header</label>
+                              <input value={faxHeader}
+                                onChange={(e) => setFaxHeader(e.target.value)} />
                             </div>
                             <div className="messageBody">
                               <label>
@@ -464,18 +436,19 @@ function EFax() {
                               </label>
                               <div className="inputFileWrapper">
                                 {/* <input type="file" /> */}
-                                {/* <select>
-                                <option value="" disabled>
-                                  Chose file
-                                </option>
-                                {allFiles &&
-                                  allFiles.map((file) => (
-                                    <option value={file.id}>
-                                      {file.file_name}
-                                    </option>
-                                  ))}
-                              </select> */}
-                                {dropdownOption && (
+                                <select value={faxFileId} onChange={(e) => setFaxDileId(e.target.value)}>
+                                  <option value="" disabled>
+                                    Chose file
+                                  </option>
+                                  {allFiles &&
+                                    allFiles.map((file) => (
+                                      <option value={file.id}>
+                                        {file.file_name}
+                                      </option>
+                                    ))}
+                                </select>
+
+                                {/* {dropdownOption && (
                                   <Select
                                     closeMenuOnSelect={false}
                                     isMulti
@@ -487,13 +460,13 @@ function EFax() {
                                     onChange={(selectedOptions) => {
                                       const values = selectedOptions
                                         ? selectedOptions.map(
-                                            (option) => option.value
-                                          )
+                                          (option) => option.value
+                                        )
                                         : [];
                                       setValue("usages", values);
                                     }}
                                   />
-                                )}
+                                )} */}
                               </div>
                             </div>
                             <div className="buttonControl">
@@ -501,7 +474,7 @@ function EFax() {
                                 Cancel
                               </button>
                               {/* <button className="panelButton">Send Later</button> */}
-                              <button className="panelButton">Send Now</button>
+                              <button onClick={sendFax} className="panelButton"><span className="text">Send</span><span className="icon"><i class="fa-solid fa-paper-plane-top"></i></span></button>
                             </div>
                           </div>
                         </div>
@@ -582,12 +555,13 @@ function EFax() {
                   <br />
                   <p>{deleteFile.file_name}</p>
                   <br />
-                  <div className="mt-2">
+                  <div className="mt-2 d-flex justify-content-between">
                     <button
                       className="panelButton m-0"
                       onClick={deleteDocument}
                     >
-                      Confirm
+                      <span className="text">Confirm</span>
+                      <span className="icon"><i class="fa-solid fa-check"></i></span>
                     </button>
                     <button
                       className="panelButtonWhite m-0 float-end"

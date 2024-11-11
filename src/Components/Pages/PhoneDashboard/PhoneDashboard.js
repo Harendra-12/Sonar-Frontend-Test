@@ -11,7 +11,7 @@ import DoughnutChart from "../../CommonComponents/DoughnutChart";
 import GraphChart from "../../CommonComponents/GraphChart";
 
 function PhoneDashboard() {
-  const [calls, setCalls] = useState(true);
+  const [calls, setCalls] = useState(false);
   const [group, setGroup] = useState(false);
   const [queue, setQueue] = useState(false);
   const navigate = useNavigate();
@@ -168,45 +168,55 @@ function PhoneDashboard() {
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row ">
-            <Header title="Phone Dashboard" />
+            <Header title="Phone Dashboard" style={{ boxShadow: "none" }} />
+            <div id="detailsHeader" className="p-0">
+              <div className="headerBgWave">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                  <path
+                    fill="var(--color2)"
+                    fill-opacity="1"
+                    d="M0,160L120,186.7C240,213,480,267,720,277.3C960,288,1200,256,1320,240L1440,224L1440,0L1320,0C1200,0,960,0,720,0C480,0,240,0,120,0L0,0Z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
             {/* <div
-                                className="row pt-3 justify-content-between"
-                                style={{}}
-                            >
-                                <div className="col-xl-4 col-6 my-auto">
-                                    <div className="position-relative searchBox">
-                                        <input
-                                            type="search"
-                                            name="Search"
-                                            id="headerSearch"
-                                            placeholder="Looking for an option?"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="col-xl-8 col-6">
-                                    <div className="d-flex justify-content-end">
-                                        <button
-                                            effect="ripple"
-                                            className="appPanelButton"
-                                        >
-                                            <i className="fa-duotone fa-pen" />
-                                        </button>
-                                        <button
-                                            effect="ripple"
-                                            className="appPanelButton"
-                                        >
-                                            <i className="fa-duotone fa-message" />
-                                        </button>
-                                        <button
-                                            effect="ripple"
-                                            className="appPanelButton"
-                                        >
-                                            <i className="fa-duotone fa-gear" />
-                                        </button>
-                                    </div>
-                                </div>
-                            </div> */}
-
+                  className="row pt-3 justify-content-between"
+                  style={{}}
+                >
+                  <div className="col-xl-4 col-6 my-auto">
+                      <div className="position-relative searchBox">
+                          <input
+                              type="search"
+                              name="Search"
+                              id="headerSearch"
+                              placeholder="Looking for an option?"
+                          />
+                      </div>
+                  </div>
+                  <div className="col-xl-8 col-6">
+                      <div className="d-flex justify-content-end">
+                          <button
+                              effect="ripple"
+                              className="appPanelButton"
+                          >
+                              <i className="fa-duotone fa-pen" />
+                          </button>
+                          <button
+                              effect="ripple"
+                              className="appPanelButton"
+                          >
+                              <i className="fa-duotone fa-message" />
+                          </button>
+                          <button
+                              effect="ripple"
+                              className="appPanelButton"
+                          >
+                              <i className="fa-duotone fa-gear" />
+                          </button>
+                      </div>
+                  </div>
+              </div> */}
             <div className="col-12 mt-3 tangoNavs">
               <div className="col-12 mt-3">
                 <div className="row">
@@ -244,7 +254,7 @@ function PhoneDashboard() {
               {queue ? <CallQueueDetails /> : ""}
               <div className="row mt-3">
                 <div className="col-xl-3">
-                  <div className="itemWrapper c">
+                  <div className="itemWrapper a">
                     <div className="heading">
                       <div class="d-flex flex-wrap justify-content-between align-items-center">
                         <div class="col-10">
@@ -281,7 +291,7 @@ function PhoneDashboard() {
                   </div>
                 </div>
                 <div className="col-xl-3">
-                  <div className="itemWrapper b">
+                  <div className="itemWrapper a">
                     <div className="heading">
                       <div class="d-flex flex-wrap justify-content-between align-items-center">
                         <div class="col-10">
@@ -320,7 +330,7 @@ function PhoneDashboard() {
                   </div>
                 </div>
                 <div className="col-xl-3">
-                  <div className="itemWrapper d">
+                  <div className="itemWrapper a">
                     <div className="heading">
                       <div class="d-flex flex-wrap justify-content-between align-items-center">
                         <div class="col-10">
@@ -422,11 +432,7 @@ function PhoneDashboard() {
                         Number(accountDetails.package?.number_of_user) -
                         extensionList,
                       ]}
-                      centerTitle={`${extensionList}/${Number(
-                        accountDetails.package?.number_of_user
-                      )}`}
-                      centerDesc="Extensions Details"
-                      colors={["#9999", "#FF6384", "#36A2EB"]}
+                      colors={["#9999", "#FF638470", "#36A2EB70"]}
                     />
                   </div>
                 </div>
@@ -434,12 +440,10 @@ function PhoneDashboard() {
                   <div className="wrapper">
                     <DoughnutChart
                       fields={[
-                        "Online Users",
-                        "Registered Users ",
-                        "Available Users ",
+                        "Registered Users",
+                        "Available Users",
                       ]}
                       percentage={[
-                        loginUser.length,
                         userList,
                         Number(accountDetails.package?.number_of_user) -
                         userList,
@@ -448,7 +452,7 @@ function PhoneDashboard() {
                         accountDetails.package?.number_of_user
                       )}`}
                       centerDesc="Total Users Available"
-                      colors={["#9999", "#FF6384", "#36A2EB"]}
+                      colors={["#36A2EB70", "#f17d0170", "#FF638470"]}
                     />
                   </div>
                   {/* <div className='circularProgressWrapper'>
