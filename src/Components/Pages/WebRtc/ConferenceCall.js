@@ -58,6 +58,9 @@ function ConferenceCall() {
                                             <div className='activeGuyName'>
                                                 You
                                             </div>
+                                            <div className='activeGuyName' style={{ bottom: '20px', top: 'inherit', width: '45px' }}>
+                                                <i class="fa-sharp fa-solid fa-volume"></i>
+                                            </div>
                                             <div className='participant active'>
                                                 <img src='https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png' />
                                             </div>
@@ -125,12 +128,10 @@ function ConferenceCall() {
                                                         className="input"
                                                         placeholder="Please enter your message"
                                                         defaultValue={""}
+                                                        rows={2}
                                                     />
                                                     <div className="col-12 d-flex justify-content-between align-items-center">
                                                         <div className="d-flex">
-                                                            <button className="clearButton2">
-                                                                <i className="fa-light fa-eraser" />
-                                                            </button>
                                                             <button className="clearButton2">
                                                                 <i className="fa-regular fa-image" />
                                                             </button>
