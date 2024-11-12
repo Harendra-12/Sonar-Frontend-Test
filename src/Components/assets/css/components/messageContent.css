@@ -511,3 +511,15 @@
     justify-content: center;
     padding: 15px 0;
 }
+
+.contactHeader .dropdown-menu {
+    padding: 5px 0;
+}
+
+.contactHeader .dropdown-menu .dropdown-item {
+    font-size: 13px;
+    color: var(--color-subtext);
+    padding: 5px 10px;
+    font-weight: 400;
+    font-family: Outfit;
+}

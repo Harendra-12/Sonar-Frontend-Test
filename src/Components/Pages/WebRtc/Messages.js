@@ -55,7 +55,7 @@ function Messages() {
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
-    
+
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   };
 
@@ -417,8 +417,8 @@ function Messages() {
                         data-category="all"
                         onClick={() => setActiveTab("all")}
                       >
-                        All{Object.values(unreadMessage).reduce((acc, count) => acc + count, 0)!==0 ?<span className="unread">{Object.values(unreadMessage).reduce((acc, count) => acc + count, 0)}</span>:""}
-                         
+                        All{Object.values(unreadMessage).reduce((acc, count) => acc + count, 0) !== 0 ? <span className="unread">{Object.values(unreadMessage).reduce((acc, count) => acc + count, 0)}</span> : ""}
+
                       </button>
                       <button
                         onClick={() => setActiveTab("online")}
@@ -651,8 +651,8 @@ function Messages() {
                         <div className="d-flex align-items-center me-2">
                           <label className="gray14 me-2">Assigned to:</label>
                           <select className="ovalSelect">
-                            <option>{agents.map((item)=>{
-                              if(item.extension.extension === recipient[0]){
+                            <option>{agents.map((item) => {
+                              if (item.extension.extension === recipient[0]) {
                                 return item.username
                               }
                             })}</option>
@@ -675,10 +675,9 @@ function Messages() {
                             <i class="fa-solid fa-ellipsis-vertical"></i>
                           </button>
                           <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Start Call</a></li>
-                            <li><a class="dropdown-item" href="#">Send Message</a></li>
-                            <li><a class="dropdown-item" href="#">Add to Contact</a></li>
-                            <li><a class="dropdown-item" href="#">Delete Contact</a></li>
+                            <li><a class="dropdown-item" href="#">Mark as unread</a></li>
+                            <li><a class="dropdown-item" href="#">Archive this chat</a></li>
+                            <li><a class="dropdown-item" href="#">Close this chat</a></li>
                           </ul>
                         </div>
                       </div>
@@ -698,7 +697,7 @@ function Messages() {
                             {/* Display "Today" or date header if it's a new date */}
                             {isNewDate && (
                               <div className="dateHeader">
-                                <p>{messageDate === todayDate  ? "Today" : messageDate}</p>
+                                <p>{messageDate === todayDate ? "Today" : messageDate}</p>
                               </div>
                             )}
 
