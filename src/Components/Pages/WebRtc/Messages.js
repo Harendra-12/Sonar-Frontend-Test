@@ -708,8 +708,7 @@ function Messages() {
                             {/* Display "Today" or date header if it's a new date */}
                             {isNewDate && (
                               <div
-                                ref={(el) => (headersRef.current[index] = el)} // Assign ref to each header
-                                className={`dateHeader ${lastVisibleHeader === headersRef.current[index] ? 'sticky' : ''}`}
+                                className="dateHeader"
                               >
                                 <p>{messageDate === todayDate ? "Today" : messageDate}</p>
                               </div>
