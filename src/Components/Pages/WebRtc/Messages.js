@@ -48,6 +48,7 @@ function Messages() {
     }
   }, [sipProvider?.connectStatus]);
 
+  // Formate date to get today date same as backend send
   const formatDateTime = (date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -58,6 +59,29 @@ function Messages() {
     
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   };
+
+  // Formate date for time stamp to get time when message arrives
+  function formatRelativeTime(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    
+    const diffMs = now - date;
+    const diffSeconds = Math.floor(diffMs / 1000);
+    const diffMinutes = Math.floor(diffSeconds / 60);
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+  
+    if (diffDays >= 1) {
+      if (diffDays === 1) return 'Yesterday';
+      return date.toLocaleDateString(); // Formats as the date for older days
+    } else if (diffHours >= 1) {
+      return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+    } else if (diffMinutes >= 1) {
+      return `${diffMinutes} minute${diffMinutes > 1 ? 's' : ''} ago`;
+    } else {
+      return `${diffSeconds} second${diffSeconds > 1 ? 's' : ''} ago`;
+    }
+  }
 
   useEffect(() => {
     console.log("Inside apiCalling");
@@ -342,6 +366,36 @@ function Messages() {
 
   console.log("UnreadMessage", unreadMessage);
 
+  const [lastVisibleHeader, setLastVisibleHeader] = useState(null);
+  const headersRef = useRef([]); // Array of refs for each date header
+  const containerRef = useRef(null); // Ref for the scrollable container
+
+  // Function to handle scroll and identify the last visible header
+  const handleScroll = () => {
+    const visibleHeaders = headersRef.current.filter(header => {
+      if (!header) return false;
+      const rect = header.getBoundingClientRect();
+      return rect.top >= 0 && rect.bottom <= window.innerHeight; // Header is fully in viewport
+    });
+
+    if (visibleHeaders.length > 0) {
+      const lastVisible = visibleHeaders[visibleHeaders.length - 1];
+      setLastVisibleHeader(lastVisible);
+    }
+  };
+
+  useEffect(() => {
+    const container = messageListRef.current;
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+      handleScroll(); // Initial check for the last visible header on load
+    }
+    return () => {
+      if (container) {
+        container.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
   return (
     <>
       <main
@@ -515,7 +569,7 @@ function Messages() {
                                     </div>
                                     <div className="my-auto ms-2 ms-xl-3">
                                       <h4>{item?.name}</h4>
-                                      <h5>{item?.extension}</h5>
+                                      {/* <h5>{JSON.parse(item?.last_message_data).message_text}</h5> */}
                                       <div className="contactTags">
                                         <span className="work">Work</span>
                                         <span className="priority">Priority</span>
@@ -523,57 +577,13 @@ function Messages() {
                                       </div>
                                     </div>
                                     <div className="col text-end">
-                                      <p className="timeAgo">1min ago</p>
+                                      {/* <p className="timeAgo">{formatRelativeTime(JSON.parse(item?.last_message_data).created_at)}</p> */}
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             );
                           })}
-                          <div className="contactListItem" data-bell={"1"}>
-                            <div className="row justify-content-between">
-                              <div className="col-xl-12 d-flex">
-                                <div
-                                  className="profileHolder"
-                                  id={"profileOfflineNav"}
-                                >
-                                  <i className="fa-light fa-user fs-5"></i>
-                                </div>
-                                <div className="my-auto ms-2 ms-xl-3">
-                                  <h4>Test2</h4>
-                                  <h5>So when do you start me to build the quantum defibrillator</h5>
-                                  <div className="contactTags">
-                                    <span className="work">Work</span>
-                                  </div>
-                                </div>
-                                <div className="col text-end">
-                                  <p className="timeAgo">15min ago</p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="contactListItem" data-bell={""}>
-                            <div className="row justify-content-between">
-                              <div className="col-xl-12 d-flex">
-                                <div
-                                  className="profileHolder"
-                                  id={"profileOfflineNav"}
-                                >
-                                  <i className="fa-light fa-user fs-5"></i>
-                                </div>
-                                <div className="my-auto ms-2 ms-xl-3">
-                                  <h4>Test3</h4>
-                                  <h5>Alright</h5>
-                                  <div className="contactTags">
-                                    <span className="priority">Priority</span>
-                                  </div>
-                                </div>
-                                <div className="col text-end">
-                                  <p className="timeAgo">5min ago</p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -688,53 +698,57 @@ function Messages() {
                   )}
                   <div className="messageContent">
                     <div className="messageList" ref={messageListRef}>
-                      {allMessage?.[recipient[0]]?.map((item, index, arr) => {
-                        const messageDate = item.time.split(" ")[0]; // Extract date from the time string
-                        const todayDate = new Date().toISOString().split("T")[0]; // Get today's date in "YYYY-MM-DD" format
-                        const isNewDate =
-                          index === 0 || messageDate !== arr[index - 1].time.split(" ")[0];
-                        return (
-                          <React.Fragment key={index}>
-                            {/* Display "Today" or date header if it's a new date */}
-                            {isNewDate && (
-                              <div className="dateHeader">
-                                <p>{messageDate === todayDate  ? "Today" : messageDate}</p>
-                              </div>
-                            )}
+                    {allMessage?.[recipient[0]]?.map((item, index, arr) => {
+        const messageDate = item.time.split(" ")[0]; // Extract date from the time string
+        const todayDate = new Date().toISOString().split("T")[0]; // Get today's date in "YYYY-MM-DD" format
+        const isNewDate =
+          index === 0 || messageDate !== arr[index - 1].time.split(" ")[0];
 
-                            {/* Message content */}
-                            {item.from === extension ? (
-                              <div className="messageItem sender">
-                                <div className="second">
-                                  <h6>
-                                    {item.from},
-                                    <span>
-                                      {item.time.split(" ")[1].split(":").slice(0, 2).join(":")}
-                                    </span>
-                                  </h6>
-                                  <div className="messageDetails">
-                                    <p>{item.body}</p>
-                                  </div>
-                                </div>
-                              </div>
-                            ) : (
-                              <div className="messageItem receiver">
-                                <div className="second">
-                                  <h6>
-                                    {item.from},
-                                    <span>
-                                      {item.time.split(" ")[1].split(":").slice(0, 2).join(":")}
-                                    </span>
-                                  </h6>
-                                  <div className="messageDetails">
-                                    <p>{item.body}</p>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-                          </React.Fragment>
-                        );
-                      })}
+        return (
+          <React.Fragment key={index}>
+            {/* Display "Today" or date header if it's a new date */}
+            {isNewDate && (
+              <div
+                ref={(el) => (headersRef.current[index] = el)} // Assign ref to each header
+                className={`dateHeader ${lastVisibleHeader === headersRef.current[index] ? 'sticky' : ''}`}
+              >
+                <p>{messageDate === todayDate ? "Today" : messageDate}</p>
+              </div>
+            )}
+
+            {/* Message content */}
+            {item.from === extension ? (
+              <div className="messageItem sender">
+                <div className="second">
+                  <h6>
+                    {item.from},
+                    <span>
+                      {item.time.split(" ")[1].split(":").slice(0, 2).join(":")}
+                    </span>
+                  </h6>
+                  <div className="messageDetails">
+                    <p>{item.body}</p>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="messageItem receiver">
+                <div className="second">
+                  <h6>
+                    {item.from},
+                    <span>
+                      {item.time.split(" ")[1].split(":").slice(0, 2).join(":")}
+                    </span>
+                  </h6>
+                  <div className="messageDetails">
+                    <p>{item.body}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </React.Fragment>
+        );
+      })}
 
 
                       {recipient[0] ? (
