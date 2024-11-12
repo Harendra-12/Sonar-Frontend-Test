@@ -56,7 +56,7 @@ function Messages() {
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
-    
+
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   };
 
@@ -64,13 +64,13 @@ function Messages() {
   function formatRelativeTime(dateString) {
     const date = new Date(dateString);
     const now = new Date();
-    
+
     const diffMs = now - date;
     const diffSeconds = Math.floor(diffMs / 1000);
     const diffMinutes = Math.floor(diffSeconds / 60);
     const diffHours = Math.floor(diffMinutes / 60);
     const diffDays = Math.floor(diffHours / 24);
-  
+
     if (diffDays >= 1) {
       if (diffDays === 1) return 'Yesterday';
       return date.toLocaleDateString(); // Formats as the date for older days
@@ -471,8 +471,8 @@ function Messages() {
                         data-category="all"
                         onClick={() => setActiveTab("all")}
                       >
-                        All{Object.values(unreadMessage).reduce((acc, count) => acc + count, 0)!==0 ?<span className="unread">{Object.values(unreadMessage).reduce((acc, count) => acc + count, 0)}</span>:""}
-                         
+                        All{Object.values(unreadMessage).reduce((acc, count) => acc + count, 0) !== 0 ? <span className="unread">{Object.values(unreadMessage).reduce((acc, count) => acc + count, 0)}</span> : ""}
+
                       </button>
                       <button
                         onClick={() => setActiveTab("online")}
@@ -661,8 +661,8 @@ function Messages() {
                         <div className="d-flex align-items-center me-2">
                           <label className="gray14 me-2">Assigned to:</label>
                           <select className="ovalSelect">
-                            <option>{agents.map((item)=>{
-                              if(item.extension.extension === recipient[0]){
+                            <option>{agents.map((item) => {
+                              if (item.extension.extension === recipient[0]) {
                                 return item.username
                               }
                             })}</option>
@@ -685,10 +685,9 @@ function Messages() {
                             <i class="fa-solid fa-ellipsis-vertical"></i>
                           </button>
                           <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Start Call</a></li>
-                            <li><a class="dropdown-item" href="#">Send Message</a></li>
-                            <li><a class="dropdown-item" href="#">Add to Contact</a></li>
-                            <li><a class="dropdown-item" href="#">Delete Contact</a></li>
+                            <li><a class="dropdown-item" href="#">Mark as unread</a></li>
+                            <li><a class="dropdown-item" href="#">Archive this chat</a></li>
+                            <li><a class="dropdown-item" href="#">Close this chat</a></li>
                           </ul>
                         </div>
                       </div>
@@ -698,57 +697,57 @@ function Messages() {
                   )}
                   <div className="messageContent">
                     <div className="messageList" ref={messageListRef}>
-                    {allMessage?.[recipient[0]]?.map((item, index, arr) => {
-        const messageDate = item.time.split(" ")[0]; // Extract date from the time string
-        const todayDate = new Date().toISOString().split("T")[0]; // Get today's date in "YYYY-MM-DD" format
-        const isNewDate =
-          index === 0 || messageDate !== arr[index - 1].time.split(" ")[0];
+                      {allMessage?.[recipient[0]]?.map((item, index, arr) => {
+                        const messageDate = item.time.split(" ")[0]; // Extract date from the time string
+                        const todayDate = new Date().toISOString().split("T")[0]; // Get today's date in "YYYY-MM-DD" format
+                        const isNewDate =
+                          index === 0 || messageDate !== arr[index - 1].time.split(" ")[0];
 
-        return (
-          <React.Fragment key={index}>
-            {/* Display "Today" or date header if it's a new date */}
-            {isNewDate && (
-              <div
-                ref={(el) => (headersRef.current[index] = el)} // Assign ref to each header
-                className={`dateHeader ${lastVisibleHeader === headersRef.current[index] ? 'sticky' : ''}`}
-              >
-                <p>{messageDate === todayDate ? "Today" : messageDate}</p>
-              </div>
-            )}
+                        return (
+                          <React.Fragment key={index}>
+                            {/* Display "Today" or date header if it's a new date */}
+                            {isNewDate && (
+                              <div
+                                ref={(el) => (headersRef.current[index] = el)} // Assign ref to each header
+                                className={`dateHeader ${lastVisibleHeader === headersRef.current[index] ? 'sticky' : ''}`}
+                              >
+                                <p>{messageDate === todayDate ? "Today" : messageDate}</p>
+                              </div>
+                            )}
 
-            {/* Message content */}
-            {item.from === extension ? (
-              <div className="messageItem sender">
-                <div className="second">
-                  <h6>
-                    {item.from},
-                    <span>
-                      {item.time.split(" ")[1].split(":").slice(0, 2).join(":")}
-                    </span>
-                  </h6>
-                  <div className="messageDetails">
-                    <p>{item.body}</p>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="messageItem receiver">
-                <div className="second">
-                  <h6>
-                    {item.from},
-                    <span>
-                      {item.time.split(" ")[1].split(":").slice(0, 2).join(":")}
-                    </span>
-                  </h6>
-                  <div className="messageDetails">
-                    <p>{item.body}</p>
-                  </div>
-                </div>
-              </div>
-            )}
-          </React.Fragment>
-        );
-      })}
+                            {/* Message content */}
+                            {item.from === extension ? (
+                              <div className="messageItem sender">
+                                <div className="second">
+                                  <h6>
+                                    {item.from},
+                                    <span>
+                                      {item.time.split(" ")[1].split(":").slice(0, 2).join(":")}
+                                    </span>
+                                  </h6>
+                                  <div className="messageDetails">
+                                    <p>{item.body}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="messageItem receiver">
+                                <div className="second">
+                                  <h6>
+                                    {item.from},
+                                    <span>
+                                      {item.time.split(" ")[1].split(":").slice(0, 2).join(":")}
+                                    </span>
+                                  </h6>
+                                  <div className="messageDetails">
+                                    <p>{item.body}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </React.Fragment>
+                        );
+                      })}
 
 
                       {recipient[0] ? (

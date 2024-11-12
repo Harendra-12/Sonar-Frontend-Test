@@ -15,7 +15,7 @@
 
 .mainContentApp .tab-content .callDetailsList {
     overflow: auto;
-    height: calc(100vh - 320px)
+    height: calc(100vh - 180px)
 }
 
 .mainContentApp .tab-content .callListItem {
@@ -261,18 +261,29 @@
 
 
 .mainContentApp .profileInfoHolder {
-    text-align: center;
-    padding: 20px 2px;
+    /* text-align: center; */
+    padding: 10px;
     background: linear-gradient(0deg, rgba(33, 171, 255, 1) 0%, rgba(22, 27, 46, 1) 100%);
-    border-radius: 5px;
+    border-radius: 10px;
     margin-top: 10px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 }
 
+.mainContentApp .profileInfoHolder .primeWrapper {
+    background: #ebebeb38;
+    backdrop-filter: blur(5px);
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+    display: flex;
+    justify-content: space-between;
+}
+
 .mainContentApp .profileInfoHolder .profileHolder {
-    width: 70px;
-    height: 70px;
-    margin: 15px auto;
+    width: 60px;
+    height: 60px;
+    margin: 0 15px 0 0;
     text-align: center;
     cursor: pointer;
     background-color: var(--ui-accent);
@@ -287,16 +298,32 @@
 
 .mainContentApp .profileInfoHolder h4 {
     color: #fff;
-    font-family: Outfit;
+    /* font-family: Outfit; */
     font-size: 20px !important;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .mainContentApp .profileInfoHolder h5 {
     color: #fff;
-    font-family: Outfit;
+    /* font-family: Outfit; */
     font-size: 15px !important;
-    font-weight: 300;
+    font-weight: 400;
+    margin-bottom: 5px;
+}
+
+.mainContentApp .profileInfoHolder .callDeetBtnGrp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: #ebebeb38;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.mainContentApp .profileInfoHolder .callDeetBtnGrp button:last-child {
+    margin: 0;
 }
 
 /* Filter Item */
