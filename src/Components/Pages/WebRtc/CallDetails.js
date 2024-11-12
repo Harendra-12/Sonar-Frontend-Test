@@ -50,7 +50,7 @@ function CallDetails({
     const min = Math.floor((duration / 60) % 60);
     const hour = Math.floor(duration / 3600);
     return (
-      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""}${sec ? sec + " sec" : ""
+      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${sec ? sec + " sec" : ""
       }` || "0 sec"
     );
   };
@@ -118,7 +118,7 @@ function CallDetails({
         <nav>
           <div className="nav nav-tabs" id="nav-tab" role="tablist">
             <button
-              className="tabLink active"
+              className="tabLink"
               effect="ripple"
               data-bs-toggle="tab"
               data-bs-target="#nav-home"
@@ -130,7 +130,7 @@ function CallDetails({
               <i className="fa-regular fa-circle-info" />
             </button>
             <button
-              className="tabLink"
+              className="tabLink active"
               effect="ripple"
               data-bs-toggle="tab"
               data-bs-target="#nav-profile"
@@ -145,7 +145,7 @@ function CallDetails({
         </nav>
         <div className="tab-content" id="nav-tabContent">
           <div
-            className="tab-pane fade show active"
+            className="tab-pane fade"
             id="nav-home"
             role="tabpanel"
             aria-labelledby="nav-home-tab"
@@ -233,7 +233,7 @@ function CallDetails({
             </div>
           </div>
           <div
-            className="tab-pane fade"
+            className="tab-pane fade show active"
             id="nav-profile"
             role="tabpanel"
             aria-labelledby="nav-profile-tab"

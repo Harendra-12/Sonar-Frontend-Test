@@ -114,7 +114,7 @@ const Extensions = () => {
                     <div className="heading">
                       <div className="content">
                         <h4>Extension List</h4>
-                        <p>You can see all list of extension</p>
+                        <p>You can see the list of extensions</p>
                       </div>
                       <div className="buttonGroup">
                         <button

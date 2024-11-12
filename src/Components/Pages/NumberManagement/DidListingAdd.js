@@ -63,7 +63,7 @@ const DidListingAdd = () => {
         <section id="phonePage">
           <div className="container-fluid px-0">
             <Header title="DID Add" />
-            <div id="subPageHeader">
+            {/* <div id="subPageHeader">
               <div className="col-xl-9 my-auto">
                 <p className="p-0 m-0">Add a new DID to your account</p>
               </div>
@@ -90,7 +90,7 @@ const DidListingAdd = () => {
                   </button>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div className="col-xl-12" style={{ overflow: "auto" }}>
@@ -101,69 +101,108 @@ const DidListingAdd = () => {
             ) : (
               ""
             )}
-            <div className="mx-2" id="detailsContent">
-              <form>
-                <div className="formRow col-xl-3">
-                  <div className="formLabel">
-                    <label className="text-dark">Add DID</label>
-                    <label htmlFor="data" className="formItemDesc">
-                      Add new DID.
-                    </label>
+
+            <div className="overviewTableWrapper">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap">
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content">
+                        <h4>DID Add</h4>
+                        <p>Add a new DID to your account.</p>
+                      </div>
+                      <div className="buttonGroup">
+                        <button
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
+                          type="button"
+                          effect="ripple"
+                          className="panelButton gray"
+                        >
+                          <span className="text">Back</span>
+                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                        </button>
+                        <button
+                          effect="ripple"
+                          className="panelButton"
+                          onClick={handleFormSubmit}
+                        >
+                          <span className="text">Save</span>
+                          <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                  <div className="col-6">
-                    <input
-                      type="text"
-                      name="did"
-                      className="formItem"
-                      minLength="8"
-                      maxLength="14"
-                      {...register("did", {
-                        ...requiredValidator,
-                        ...numberValidator,
-                        ...lengthValidator(8, 14),
-                      })}
-                      onKeyDown={restrictToNumbers}
-                    />
-                    {errors.did && <ErrorMessage text={errors.did.message} />}
-                  </div>
-                </div>
-                <div className="formRow col-xl-3">
-                  <div className="formLabel">
-                    <label className="text-dark">DID vendor</label>
-                    <label htmlFor="data" className="formItemDesc">
-                      Choose DID vendor.
-                    </label>
-                  </div>
-                  <div className="col-6">
-                    <select
-                      value={watch().did_vendor_id}
-                      className="formItem"
-                      name="did_vendor_id"
-                      id="selectFormRow"
-                      {...register("did_vendor_id", {
-                        ...requiredValidator,
-                        ...numberValidator,
-                      })}
-                    >
-                      <option disabled value={""}>
-                        Chose a vendor
-                      </option>
-                      {vendorData &&
-                        vendorData.map((item) => {
-                          return (
-                            <option key={item.id} value={item.id}>
-                              {item.vendor_name}
+                  <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
+                    <form>
+                      <div className="formRow col-xl-3">
+                        <div className="formLabel">
+                          <label className="text-dark">Add DID</label>
+                          <label htmlFor="data" className="formItemDesc">
+                            Add new DID.
+                          </label>
+                        </div>
+                        <div className="col-6">
+                          <input
+                            type="text"
+                            name="did"
+                            className="formItem"
+                            minLength="8"
+                            maxLength="14"
+                            {...register("did", {
+                              ...requiredValidator,
+                              ...numberValidator,
+                              ...lengthValidator(8, 14),
+                            })}
+                            onKeyDown={restrictToNumbers}
+                          />
+                          {errors.did && <ErrorMessage text={errors.did.message} />}
+                        </div>
+                      </div>
+                      <div className="formRow col-xl-3">
+                        <div className="formLabel">
+                          <label className="text-dark">DID vendor</label>
+                          <label htmlFor="data" className="formItemDesc">
+                            Choose DID vendor.
+                          </label>
+                        </div>
+                        <div className="col-6">
+                          <select
+                            value={watch().did_vendor_id}
+                            className="formItem"
+                            name="did_vendor_id"
+                            id="selectFormRow"
+                            {...register("did_vendor_id", {
+                              ...requiredValidator,
+                              ...numberValidator,
+                            })}
+                          >
+                            <option disabled value={""}>
+                              Chose a vendor
                             </option>
-                          );
-                        })}
-                    </select>
-                    {errors.did_vendor_id && (
-                      <ErrorMessage text={errors.did_vendor_id.message} />
-                    )}
+                            {vendorData &&
+                              vendorData.map((item) => {
+                                return (
+                                  <option key={item.id} value={item.id}>
+                                    {item.vendor_name}
+                                  </option>
+                                );
+                              })}
+                          </select>
+                          {errors.did_vendor_id && (
+                            <ErrorMessage text={errors.did_vendor_id.message} />
+                          )}
+                        </div>
+                      </div>
+                    </form>
                   </div>
                 </div>
-              </form>
+              </div>
             </div>
+
+
           </div>
         </section>
       </main>
