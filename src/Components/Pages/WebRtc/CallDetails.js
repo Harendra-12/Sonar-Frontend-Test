@@ -74,38 +74,44 @@ function CallDetails({
   return (
     <>
       <div className="profileInfoHolder">
-        <div className="profileHolder">
-          <i className="fa-light fa-user fs-3" />
-        </div>
-        <h4>
-          {!isCustomerAdmin
-            ? callDetails &&
-              callDetails?.["Caller-Callee-ID-Number"] === extension
-              ? callDetails?.["Caller-Caller-ID-Number"]
-              : callDetails?.["Caller-Callee-ID-Number"]
-            : callDetails?.["Caller-Callee-ID-Number"]}
-        </h4>
-        <h5>
-          {(callDetails && callDetails.caller_user?.username) || "USER XYZ"}
-        </h5>
-        <div className="d-flex justify-content-center align-items-center mt-3">
-          <button className="appPanelButton" effect="ripple">
-            <i className="fa-light fa-message-dots" />
-          </button>
-          <button
-            className="appPanelButton"
-            effect="ripple"
-            // onClick={() => onCall(callDetails)}
-            onClick={() => handleVoiceCall("audio")}
-          >
-            <i className="fa-light fa-phone" />
-          </button>
-          {isVideoOn && (
-            <button className="appPanelButton" effect="ripple" onClick={() => handleVoiceCall("video")}>
-              <i className="fa-light fa-video" />
+        <div className="primeWrapper">
+          <div className="d-flex align-items-center">
+            <div className="profileHolder">
+              <i className="fa-light fa-user fs-4" />
+            </div>
+            <div>
+              <h4>
+                {(callDetails && callDetails.caller_user?.username) || "USER XYZ"}
+              </h4>
+              <h5>
+                {!isCustomerAdmin
+                  ? callDetails &&
+                    callDetails?.["Caller-Callee-ID-Number"] === extension
+                    ? callDetails?.["Caller-Caller-ID-Number"]
+                    : callDetails?.["Caller-Callee-ID-Number"]
+                  : callDetails?.["Caller-Callee-ID-Number"]}
+              </h5>
+            </div>
+          </div>
+          <div className="callDeetBtnGrp">
+            <button className="appPanelButtonCallerRect" effect="ripple">
+              <i className="fa-light fa-message-dots" />
             </button>
-          )}
+            <button
+              className="appPanelButtonCallerRect"
+              effect="ripple"
+              // onClick={() => onCall(callDetails)}
+              onClick={() => handleVoiceCall("audio")}
+            >
+              <i className="fa-light fa-phone" />
+            </button>
+            {isVideoOn && (
+              <button className="appPanelButtonCallerRect" effect="ripple" onClick={() => handleVoiceCall("video")}>
+                <i className="fa-light fa-video" />
+              </button>
+            )}
 
+          </div>
         </div>
       </div>
       <div className="mt-2">
@@ -164,18 +170,18 @@ function CallDetails({
                     {!isCustomerAdmin ? (
                       <td
                         className={`${callDetails?.["Caller-Callee-ID-Number"] ===
-                            extension && callDetails?.["variable_billsec"] > 0
-                            ? "incoming"
-                            : callDetails?.["Caller-Caller-ID-Number"] ===
-                              extension
-                              ? "outgoing"
-                              : callDetails?.["Caller-Callee-ID-Number"] ===
-                                extension &&
-                                callDetails?.["variable_billsec"] === 0
-                                ? "missed"
-                                : callDetails?.["Call-Direction"] === "voicemail"
-                                  ? "voicemail"
-                                  : ""
+                          extension && callDetails?.["variable_billsec"] > 0
+                          ? "incoming"
+                          : callDetails?.["Caller-Caller-ID-Number"] ===
+                            extension
+                            ? "outgoing"
+                            : callDetails?.["Caller-Callee-ID-Number"] ===
+                              extension &&
+                              callDetails?.["variable_billsec"] === 0
+                              ? "missed"
+                              : callDetails?.["Call-Direction"] === "voicemail"
+                                ? "voicemail"
+                                : ""
                           }`}
                       >
                         <span>
@@ -199,10 +205,10 @@ function CallDetails({
                     ) : (
                       <td
                         className={`${callDetails?.["variable_billsec"] === 0
-                            ? "missed"
-                            : callDetails?.["Call-Direction"] === "voicemail"
-                              ? "voicemail"
-                              : ""
+                          ? "missed"
+                          : callDetails?.["Call-Direction"] === "voicemail"
+                            ? "voicemail"
+                            : ""
                           }`}
                       >
                         <span>
@@ -275,16 +281,16 @@ function CallDetails({
                       {!isCustomerAdmin ? (
                         <td
                           className={`${item?.["Caller-Callee-ID-Number"] === extension &&
-                              item?.["variable_billsec"] > 0
-                              ? "incoming"
-                              : item?.["Caller-Caller-ID-Number"] === extension
-                                ? "outgoing"
-                                : item?.["Caller-Callee-ID-Number"] ===
-                                  extension && item?.["variable_billsec"] === 0
-                                  ? "missed"
-                                  : item?.["Call-Direction"] === "voicemail"
-                                    ? "voicemail"
-                                    : ""
+                            item?.["variable_billsec"] > 0
+                            ? "incoming"
+                            : item?.["Caller-Caller-ID-Number"] === extension
+                              ? "outgoing"
+                              : item?.["Caller-Callee-ID-Number"] ===
+                                extension && item?.["variable_billsec"] === 0
+                                ? "missed"
+                                : item?.["Call-Direction"] === "voicemail"
+                                  ? "voicemail"
+                                  : ""
                             }`}
                         >
                           <span>
@@ -305,10 +311,10 @@ function CallDetails({
                       ) : (
                         <td
                           className={`${item?.["variable_billsec"] === 0
-                              ? "missed"
-                              : item?.["Call-Direction"] === "voicemail"
-                                ? "voicemail"
-                                : ""
+                            ? "missed"
+                            : item?.["Call-Direction"] === "voicemail"
+                              ? "voicemail"
+                              : ""
                             }`}
                         >
                           <span>
