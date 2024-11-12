@@ -162,6 +162,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
       toast.error("Invalid destination number");
     }
   };
+console.log("sessionsssss",session);
 
   return (
     <>

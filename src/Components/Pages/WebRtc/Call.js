@@ -668,34 +668,6 @@ function Call({
           </div>
         </section>
       </main>
-      {/* {console.log("this is session", sessions)} */}
-      {/* {sessions.length > 0 && Object.keys(sessions).length > 0 ? (
-        <>
-          <section
-            className="activeCallsSidePanel"
-            onClick={() => setSelectedModule("onGoingCall")}
-          >
-            <div className="container">
-              <div className="row">
-                {sessions.length > 0 &&
-                  sessions.map((session, chennel) => (
-                    <ActiveCallSidePanel
-                      key={chennel}
-                      sessionId={session.id}
-                      destination={session.destination}
-                      chennel={chennel}
-                      setHangupRefresh={setHangupRefresh}
-                      hangupRefresh={hangupRefresh}
-                      setSelectedModule={setSelectedModule}
-                    />
-                  ))}
-              </div>
-            </div>
-          </section>
-        </>
-      ) : (
-        ""
-      )} */}
       {/* <IncomingCallPopup /> */}
       {/* <IncomingCalls setSelectedModule={setSelectedModule} /> */}
       {dialpadShow ? (
@@ -716,8 +688,3 @@ function Call({
 }
 
 export default Call;
-
-// 1. Add option to share screen when user is on video call
-// 2. Ask userpermission to shear different screen like entire screen, any specific tab of browser, or any specific window
-// 3. During screen shearing add option to toggle between screen shearing and video shearing
-// 4. Add DTMF options on video call page

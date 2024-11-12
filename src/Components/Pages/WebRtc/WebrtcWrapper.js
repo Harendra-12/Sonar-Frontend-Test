@@ -14,6 +14,7 @@ import { SipRegister } from "./SipRegister";
 import SideNavbarApp from "./SideNavbarApp";
 import Messages from "./Messages";
 import VideoCall from "./VideoCall";
+import ConferenceCall from "./ConferenceCall";
 
 const WebrtcWrapper = () => {
   const dispatch = useDispatch();
@@ -168,7 +169,7 @@ const WebrtcWrapper = () => {
           reconnecting={reconnecting}
         />
         <div className="d-none">{extension && <SipRegister options={options} />}</div>
-        {activePage == "call" && (
+        {activePage === "call" && (
           <Call
             setHangupRefresh={setHangupRefresh}
             hangupRefresh={hangupRefresh}
@@ -180,15 +181,16 @@ const WebrtcWrapper = () => {
             activePage={activePage}
           />
         )}
-        {activePage == "all-contacts" && <AllContact />}
-        {activePage == "call-center" && <CallCenter />}
-        {activePage == "all-voice-mails" && (
+        {activePage === "all-contacts" && <AllContact />}
+        {activePage === "call-center" && <CallCenter />}
+        {activePage === "all-voice-mails" && (
           <AllVoicemails isCustomerAdmin={isCustomerAdmin} />
         )}
-        {activePage == "on-going-calls" && <OngoingCall />}
-        {activePage == "call-dashboard" && <CallDashboard />}
-        {activePage == "e-fax" && <EFax />}
-        {activePage == "messages" && <Messages />}
+        {activePage === "on-going-calls" && <OngoingCall />}
+        {activePage === "call-dashboard" && <CallDashboard />}
+        {activePage === "e-fax" && <EFax />}
+        {activePage === "messages" && <Messages />}
+        {activePage === "conference" && <ConferenceCall />}
         {/* {activePage == "videocall" && <VideoCall />} */}
 
         <IncomingCalls
