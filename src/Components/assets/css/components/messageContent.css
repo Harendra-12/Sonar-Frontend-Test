@@ -318,3 +318,151 @@
 .callList .collapse .contactListItem:last-child {
     border-bottom: none;
 }
+
+.videoCallWrapper {
+    background-color: var(--caller-color);
+}
+
+.videoCallWrapper .messageOverlay {
+    background-color: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.videoCallWrapper .messageOverlay .messageContent {
+    padding: 10px;
+}
+
+.videoCallWrapper .messageOverlay .contactHeader {
+    padding: 10px 20px;
+}
+
+.videoCallWrapper .heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 10px;
+}
+
+.videoCallWrapper .heading h4 {
+    margin-bottom: 0;
+    color: #fff;
+    font-weight: 400;
+}
+
+.videoCallWrapper .heading h4 span {
+    border-radius: 50px;
+    background-color: #3a3c4a;
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1;
+    margin-left: 15px;
+}
+
+.videoCallWrapper .videoBody {
+    height: calc(100vh - 196px);
+    padding: 10px;
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.videoCallWrapper .messageOverlay .messageList {
+    height: calc(100vh - 272px);
+}
+
+.videoCallWrapper .videoBody .activeGuyName {
+    background-color: #00000038;
+    padding: 10px 20px;
+    color: #fff;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 2;
+    border-radius: 10px;
+    min-height: 45px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.videoCallWrapper .videoBody .participant {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 90px;
+    height: 90px;
+    border-radius: 15px;
+    /* overflow: hidden; */
+    border: 2px solid #fff;
+}
+
+.videoCallWrapper .videoBody .participant.active {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.videoCallWrapper .videoBody .participant.active>*,
+.videoCallWrapper .videoBody .participant>* {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.videoCallWrapper .videoBody .participant[data-mic="true"]::after,
+.videoCallWrapper .videoBody .participant[data-mic="false"]::after {
+    content: '\f131';
+    font-family: 'FontAwesome';
+    background-color: #e45758;
+    color: #fff;
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    top: -4px;
+    left: -10px;
+    z-index: 1;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    -webkit-font-smoothing: antialiased;
+}
+
+.videoCallWrapper .videoBody .participant[data-pin="true"]::after {
+    content: '\f08d';
+    font-family: 'FontAwesome';
+    background-color: #01c78e;
+    color: #fff;
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    bottom: -4px;
+    left: -10px;
+    z-index: 1;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    -webkit-font-smoothing: antialiased;
+}
+
+
+.videoCallWrapper .videoBody .participant[data-mic="true"]::after {
+    content: '\f130' !important;
+}
+
+.videoCallWrapper .videoControls {
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+}
