@@ -48,6 +48,17 @@ function Messages() {
     }
   }, [sipProvider?.connectStatus]);
 
+  const formatDateTime = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  };
+
   useEffect(() => {
     console.log("Inside apiCalling");
 
@@ -108,7 +119,7 @@ function Messages() {
         try {
           const messager = new Messager(userAgent, target, messageInput);
           messager.message();
-          const time = new Date().toLocaleString();
+          const time = formatDateTime(new Date());
           setIsFreeSwitchMessage(true);
           setAllMessage((prevState) => ({
             ...prevState,
@@ -247,7 +258,7 @@ function Messages() {
           message?.incomingMessageRequest?.message?.getHeader("Content-Type");
 
         // Get the current time when the message is received
-        const time = new Date().toLocaleString(); // Or use .toISOString() for UTC format
+        const time = formatDateTime(new Date()); // Or use .toISOString() for UTC format
 
         // Check if the content is an image
 
@@ -382,7 +393,7 @@ function Messages() {
                 <div className="col-auto" style={{ padding: '0 10px' }}>
                   <h5 className="viewingAs">
                     Viewing As:
-                    <span>test two</span>
+                    <span>{account.username}</span>
                   </h5>
                 </div>
                 <div className="col-auto" style={{ padding: '0 10px' }}>
@@ -406,7 +417,8 @@ function Messages() {
                         data-category="all"
                         onClick={() => setActiveTab("all")}
                       >
-                        All <span className="unread">2</span>
+                        All{Object.values(unreadMessage).reduce((acc, count) => acc + count, 0)!==0 ?<span className="unread">{Object.values(unreadMessage).reduce((acc, count) => acc + count, 0)}</span>:""}
+                         
                       </button>
                       <button
                         onClick={() => setActiveTab("online")}
@@ -639,7 +651,11 @@ function Messages() {
                         <div className="d-flex align-items-center me-2">
                           <label className="gray14 me-2">Assigned to:</label>
                           <select className="ovalSelect">
-                            <option>Test Buttowski</option>
+                            <option>{agents.map((item)=>{
+                              if(item.extension.extension === recipient[0]){
+                                return item.username
+                              }
+                            })}</option>
                           </select>
                         </div>
                         <button
@@ -672,20 +688,28 @@ function Messages() {
                   )}
                   <div className="messageContent">
                     <div className="messageList" ref={messageListRef}>
-                      {allMessage?.[recipient[0]]?.map((item, index) => {
-                        // console.log("inside loop", item);
+                      {allMessage?.[recipient[0]]?.map((item, index, arr) => {
+                        const messageDate = item.time.split(" ")[0]; // Extract date from the time string
+                        const todayDate = new Date().toISOString().split("T")[0]; // Get today's date in "YYYY-MM-DD" format
+                        const isNewDate =
+                          index === 0 || messageDate !== arr[index - 1].time.split(" ")[0];
                         return (
-                          <>
-                            {item.from == extension ? (
+                          <React.Fragment key={index}>
+                            {/* Display "Today" or date header if it's a new date */}
+                            {isNewDate && (
+                              <div className="dateHeader">
+                                <p>{messageDate === todayDate  ? "Today" : messageDate}</p>
+                              </div>
+                            )}
+
+                            {/* Message content */}
+                            {item.from === extension ? (
                               <div className="messageItem sender">
                                 <div className="second">
-                                  <h6>{item.from},
+                                  <h6>
+                                    {item.from},
                                     <span>
-                                      {item.time
-                                        .split(" ")[1]
-                                        .split(":")
-                                        .slice(0, 2)
-                                        .join(":")}
+                                      {item.time.split(" ")[1].split(":").slice(0, 2).join(":")}
                                     </span>
                                   </h6>
                                   <div className="messageDetails">
@@ -699,11 +723,7 @@ function Messages() {
                                   <h6>
                                     {item.from},
                                     <span>
-                                      {item.time
-                                        .split(" ")[1]
-                                        .split(":")
-                                        .slice(0, 2)
-                                        .join(":")}
+                                      {item.time.split(" ")[1].split(":").slice(0, 2).join(":")}
                                     </span>
                                   </h6>
                                   <div className="messageDetails">
@@ -712,9 +732,11 @@ function Messages() {
                                 </div>
                               </div>
                             )}
-                          </>
+                          </React.Fragment>
                         );
                       })}
+
+
                       {recipient[0] ? (
                         ""
                       ) : (

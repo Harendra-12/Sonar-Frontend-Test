@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";
 
-function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
+function SideNavbarApp({activePage, setactivePage, isMicOn, reconnecting }) {
   const account = useSelector((state) => state.account);
   const [popUp, setPopUp] = useState(false);
   const { connectStatus } = useSIPProvider();
@@ -74,7 +74,7 @@ function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
               <div
                 // to="/message"
                 onClick={() => setactivePage("messages")}
-                className="navItem"
+                className={activePage==="messages"?"navItem active":"navItem"}
               >
                 <div className="iconHolder">
                   <i className="fa-solid fa-message" />
@@ -86,7 +86,7 @@ function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
               <div
                 // to="/call"
                 onClick={() => setactivePage("call")}
-                className="navItem"
+                className={activePage==="call"?"navItem active":"navItem"}
               >
                 <div className="iconHolder">
                   <i className="fa-solid fa-phone" />
@@ -98,7 +98,7 @@ function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
               <div
                 // to="/efax"
                 onClick={() => setactivePage("e-fax")}
-                className="navItem"
+                className={activePage==="e-fax"?"navItem active":"navItem"}
               >
                 <div className="iconHolder">
                   <i className="fa-solid fa-fax" />
@@ -110,7 +110,7 @@ function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
               <div
                 onClick={() => setactivePage("all-voice-mails")}
                 // to="/all-voicemails"
-                className="navItem"
+                className={activePage==="all-voice-mails"?"navItem active":"navItem"}
               >
                 <div className="iconHolder">
                   <i className="fa-solid fa-voicemail" />
@@ -122,7 +122,7 @@ function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
               <div
                 //  to="/"
                 onClick={() => setactivePage("favorites")}
-                className="navItem"
+                className={activePage==="favorites"?"navItem active":"navItem"}
               >
                 <div className="iconHolder">
                   <i className="fa-solid fa-star" />
@@ -134,7 +134,7 @@ function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
               <div
                 // to="/all-contacts"
                 onClick={() => setactivePage("all-contacts")}
-                className="navItem"
+                className={activePage==="all-contacts"?"navItem active":"navItem"}
               >
                 <div className="iconHolder">
                   <i className="fa-solid fa-address-book" />
@@ -154,7 +154,7 @@ function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
               <div
                 // to="/"
                 onClick={() => setactivePage("settings")}
-                className="navItem"
+                className={activePage==="settings"?"navItem active":"navItem"}
               >
                 <div className="iconHolder">
                   <i className="fa-solid fa-sliders" />
@@ -166,7 +166,7 @@ function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
               <div
                 // to="/call-dashboard"
                 onClick={() => setactivePage("call-dashboard")}
-                className="navItem"
+                className={activePage==="call-dashboard"?"navItem active":"navItem"}
               >
                 <div className="iconHolder">
                   <i className="fa-solid fa-sliders" />
@@ -178,7 +178,7 @@ function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
               <div
                 // to="/call-center"
                 onClick={() => setactivePage("call-center")}
-                className="navItem"
+                className={activePage==="call-center"?"navItem active":"navItem"}
               >
                 <div className="iconHolder">
                   <i className="fa-solid fa-sliders" />
@@ -190,7 +190,7 @@ function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
               <div
                 //  to="/"
                 onClick={() => setactivePage("admin")}
-                className="navItem"
+                className={activePage==="admin"?"navItem active":"navItem"}
               >
                 <div className="iconHolder">
                   <i className="fa-brands fa-black-tie" />
@@ -202,7 +202,7 @@ function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
               <div
                 // to="/"
                 onClick={() => setactivePage("reports")}
-                className="navItem"
+                className={activePage==="reports"?"navItem active":"navItem"}
               >
                 <div className="iconHolder">
                   <i className="fa-solid fa-chart-column" />
@@ -214,7 +214,7 @@ function SideNavbarApp({ setactivePage, isMicOn, reconnecting }) {
               <div
                 // to="/"
                 onClick={() => setactivePage("conference")}
-                className="navItem"
+                className={activePage==="conference"?"navItem active":"navItem"}
               >
                 <div className="iconHolder">
                   <i className="fa-sharp fa-solid fa-people-group" />

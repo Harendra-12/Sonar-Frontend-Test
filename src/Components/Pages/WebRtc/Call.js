@@ -562,7 +562,7 @@ function Call({
                       >
                         <i className="fa-light fa-phone-missed" />
                       </button>
-                      <button
+                      {/* <button
                         onClick={() => setClickStatus("voicemail")}
                         className={
                           clickStatus === "voicemail"
@@ -573,7 +573,7 @@ function Call({
                         data-category="voicemail"
                       >
                         <i className="fa-light fa-microphone-lines" />
-                      </button>
+                      </button> */}
                     </div>
                   </nav>
                   <div className="tab-content">

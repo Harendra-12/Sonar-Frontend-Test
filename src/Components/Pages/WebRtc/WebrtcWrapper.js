@@ -162,6 +162,7 @@ const WebrtcWrapper = () => {
       <SIPProvider options={options}>
         <SideNavbarApp
           setactivePage={setactivePage}
+          activePage={activePage}
           isMicOn={isMicOn}
           isVideoOn={isVideoOn}
           reconnecting={reconnecting}
