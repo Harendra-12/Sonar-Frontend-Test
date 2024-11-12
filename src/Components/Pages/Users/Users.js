@@ -11,6 +11,8 @@ import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import Header from "../../CommonComponents/Header";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
+
+import { toast } from "react-toastify";
 const Users = () => {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
@@ -27,9 +29,11 @@ const Users = () => {
   const logonUser = useSelector((state) => state.loginUser);
   const [pageNumber, setPageNumber] = useState(1);
   const [onlineUser, setOnlineUSer] = useState([0]);
-  const [changeState, setChangeState] = useState(1);
+  // const [changeState, setChangeState] = useState(1);
   const [popUp, setPopUp] = useState(false);
   const [error, setError] = useState("");
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [selectedUser, setSelectedUser] = useState(null);
   const usersByAccount = useSelector((state) => state.usersByAccount);
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
@@ -49,7 +53,6 @@ const Users = () => {
   }, []);
 
   useEffect(() => {
-    console.log("usersByAccount", usersByAccount);
     if (usersByAccount.data) {
       setUser(usersByAccount);
       setFilterUser(usersByAccount.data);
@@ -90,7 +93,7 @@ const Users = () => {
       }
       getApi();
     }
-  }, [account, navigate, pageNumber, changeState]);
+  }, [account, navigate, pageNumber]);
 
   // Filter user based on input
   useEffect(() => {
@@ -121,15 +124,15 @@ const Users = () => {
   }, [onlineUser, selectedOption, user, userInput]);
 
   // Handle status cahnge when a user click on status
-  async function handleStatusChange(id, status) {
-    const parsedData = {
-      status: status === "E" ? "D" : "E",
-    };
-    const apiData = await generalPutFunction(`/user/${id}`, parsedData);
-    if (apiData.status) {
-      setChangeState(changeState + 1);
-    }
-  }
+  // async function handleStatusChange(id, status) {
+  //   const parsedData = {
+  //     status: status === "E" ? "D" : "E",
+  //   };
+  //   const apiData = await generalPutFunction(`/user/${id}`, parsedData);
+  //   if (apiData.status) {
+  //     setChangeState(changeState + 1);
+  //   }
+  // }
 
   const handleAddUserValidation = (e) => {
     e.preventDefault();
@@ -150,6 +153,45 @@ const Users = () => {
 
     navigate(`/users-add`);
     backToTop();
+  };
+
+  const handleUpdateStatusUser = async (id) => {
+    setLoading(true);
+
+    const payload = {
+      account_id: account.account_id,
+      email: selectedUser.email,
+      extension_id: selectedUser.extension_id,
+      name: selectedUser.name,
+      permissions: selectedUser.permissions,
+      role_id: selectedUser.role_id,
+      status: selectedUser.status === "E" ? "D" : "E",
+      timezone_id: selectedUser.timezone_id,
+    };
+
+    const apiData = await generalPutFunction(`user/${id}`, payload);
+
+    if (apiData.status) {
+      const updatedData = user.data.map((item) => {
+        if (item.id === id) {
+          return {
+            ...item,
+            status: selectedUser.status === "E" ? "D" : "E",
+          };
+        }
+        return item;
+      });
+      setUser({ ...user, data: updatedData });
+      dispatch({
+        type: "SET_USERSBYACCOUNT",
+        usersByAccount: { ...user, data: updatedData },
+      });
+      setPopUp(false);
+      toast.success(apiData.message);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
   };
   return (
     <main className="mainContent">
@@ -194,12 +236,21 @@ const Users = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="col-12" style={{ overflow: "auto", padding: '25px 20px 0' }}>
+                  <div
+                    className="col-12"
+                    style={{ overflow: "auto", padding: "25px 20px 0" }}
+                  >
                     <div className="tableHeader">
                       <div className="showEntries">
                         <label>Show</label>
-                        <select className="formItem">
-                          <option>10</option>
+                        <select
+                          className="formItem"
+                          value={itemsPerPage}
+                          onChange={(e) => setItemsPerPage(e.target.value)}
+                        >
+                          <option value={10}>10</option>
+                          <option value={20}>20</option>
+                          <option value={30}>30</option>
                         </select>
                         <label>entries</label>
                       </div>
@@ -268,7 +319,8 @@ const Users = () => {
                                           })
                                         }
                                       >
-                                        {item.username} ({item.extension?.extension})
+                                        {item.username} (
+                                        {item.extension?.extension})
                                       </td>
                                       <td
                                         onClick={() =>
@@ -320,9 +372,23 @@ const Users = () => {
                                       //   handleStatusChange(item.id, item.status)
                                       // }
                                       >
-                                        {item.status === "E"
+                                        {/* {item.status === "E"
                                           ? "Enabled"
-                                          : "Disabled"}
+                                          : "Disabled"} */}
+                                        <div className="my-auto position-relative mx-1">
+                                          <label className="switch">
+                                            <input
+                                              type="checkbox"
+                                              checked={item.status === "E"}
+                                              onClick={(e) => {
+                                                setSelectedUser(item);
+                                                setPopUp(true);
+                                              }}
+                                              id="showAllCheck"
+                                            />
+                                            <span className="slider round" />
+                                          </label>
+                                        </div>
                                       </td>
                                     </tr>
                                   );
@@ -372,16 +438,34 @@ const Users = () => {
                 </div>
                 <div className="col-10 ps-0">
                   <h4>Warning!</h4>
-                  <p>{error}</p>
+                  <p>
+                    {error
+                      ? error
+                      : selectedUser?.id
+                      ? `Are you sure you want to ${
+                          selectedUser?.status === "E" ? "disable" : "enable"
+                        } ${selectedUser?.username}?`
+                      : ""}
+                  </p>
                   <button
+                    disabled={loading}
                     className="panelButton m-0"
                     onClick={() => {
                       // setForce(true);
-                      setPopUp(false);
-                      navigate("/roles");
+                      if (selectedUser?.id) {
+                        handleUpdateStatusUser(selectedUser?.id);
+                      } else {
+                        setPopUp(false);
+                        navigate("/roles");
+                      }
                     }}
                   >
-                    Lets Go!
+                    <span className="text">
+                      {selectedUser?.id ? "Confirm" : "Lets Go!"}
+                    </span>
+                    <span className="icon">
+                      <i class="fa-solid fa-check"></i>
+                    </span>
                   </button>
                   <button
                     className="panelButtonWhite m-0 float-end"
