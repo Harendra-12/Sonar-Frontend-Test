@@ -134,6 +134,51 @@
     font-size: 14px;
 }
 
+.messageOverlay .messageContent .dateHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    position: relative;
+    margin-top: 15px;
+}
+
+.messageOverlay .messageContent .dateHeader.sticky {
+    position: sticky;
+    top: 15px;
+}
+
+.messageOverlay .messageContent .dateHeader.sticky::after {
+    content: none;
+}
+
+.messageOverlay .messageContent .dateHeader::after {
+    content: '';
+    width: 90%;
+    height: 1px;
+    background-color: #ebebeb;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.messageOverlay .messageContent .dateHeader p {
+    width: max-content;
+    border-radius: 50px;
+    background-color: #fff;
+    border: 1px solid #ebebeb;
+    padding: 3px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-subtext);
+
+    margin-bottom: 0;
+    position: relative;
+    z-index: 1;
+}
+
 .messageList .messageItem {
     display: flex;
     /* justify-content: space-between; */
