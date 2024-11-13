@@ -221,7 +221,7 @@ function ActiveCallSidePanel({
           );
 
           if (updatedSession && updatedSession.state !== "OnHold") {
-            updatedSession.state = "Establishedab";
+            updatedSession.state = "Established";
             dispatch({
               type: "SET_SESSIONS",
               sessions: [
