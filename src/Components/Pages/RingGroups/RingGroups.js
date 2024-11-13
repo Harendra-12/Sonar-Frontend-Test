@@ -29,57 +29,33 @@ const RingGroups = () => {
   const [deleteId, setDeleteId] = useState("");
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const { data: usersData = [] } = allUser;
-  const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
-  const ringGroupState = useSelector((state) => state.ringGroup);
-
+  // const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
+  // const ringGroupState = useSelector((state) => state.ringGroup);
+  const [pageNumber, setPageNumber] = useState(1);
   useEffect(() => {
     dispatch({
       type: "SET_ALLUSERREFRESH",
       allUserRefresh: allUserRefresh + 1,
     });
 
-    if (ringGroupRefresh > 0) {
-      setLoading(false);
-      setRingGroup(ringGroupState);
+    const getRingGroupDashboardData = async () => {
       if (account && account.id) {
-        async function getData() {
-          //Add query for items per page - itemsPerPage
-          const apidata = await generalGetFunction(
-            `/ringgroup?account=${account.account_id}`
-          );
-          if (apidata?.status) {
-            setRingGroup(apidata.data);
-          } else {
-            navigate("/");
-          }
+        const apidata = await generalGetFunction(
+          `/ringgroup/dashboard?page=${pageNumber}`
+        );
+        console.log(apidata);
+        if (apidata?.status) {
+          setRingGroup(apidata.data);
+          setLoading(false);
+        } else {
+          navigate("/");
         }
-        getData();
       } else {
         navigate("/");
       }
-    } else {
-      if (account && account.id) {
-        async function getData() {
-          const apidata = await generalGetFunction(
-            `/ringgroup?account=${account.account_id}`
-          );
-          if (apidata?.status) {
-            setRingGroup(apidata.data);
-            setLoading(false);
-          } else {
-            navigate("/");
-          }
-        }
-        getData();
-      } else {
-        navigate("/");
-      }
-      dispatch({
-        type: "SET_RINGGROUPREFRESH",
-        ringGroupRefresh: ringGroupRefresh + 1,
-      });
-    }
-  }, []);
+    };
+    getRingGroupDashboardData();
+  }, [pageNumber]);
 
   const handleRingGroupAddValidation = (e) => {
     e.preventDefault();
@@ -109,8 +85,8 @@ const RingGroups = () => {
     setLoading(true);
     const apiData = await generalDeleteFunction(`/ringgroup/${id}`);
     if (apiData?.status) {
-      const newArray = ringGroup.filter((item) => item.id !== id);
-      setRingGroup(newArray);
+      const newArray = ringGroup.data.filter((item) => item.id !== id);
+      setRingGroup({ ...ringGroup, data: newArray });
       setLoading(false);
       toast.success(apiData.message);
 
@@ -157,7 +133,7 @@ const RingGroups = () => {
     if (apiData.status) {
       setLoading(false);
       toast.success(apiData.message);
-      const ringGroupData = [...ringGroupState];
+      const ringGroupData = ringGroup.data;
       const updatedRingGroupState = ringGroupData.map((item) => {
         if (item.id === id) {
           return {
@@ -168,13 +144,11 @@ const RingGroups = () => {
         }
         return item;
       });
-      //updating on global state
-      dispatch({
-        type: "SET_RINGGROUP",
-        ringGroup: updatedRingGroupState,
+      //update on localstate
+      setRingGroup({
+        ...ringGroup,
+        data: updatedRingGroupState,
       });
-      //updating on local state
-      setRingGroup(updatedRingGroupState);
 
       setSelectedRingGroup(null);
       setPopUp(false);
@@ -278,7 +252,7 @@ const RingGroups = () => {
                           ) : (
                             <>
                               {ringGroup &&
-                                ringGroup.map((item, index) => {
+                                ringGroup.data.map((item, index) => {
                                   return (
                                     <tr key={index}>
                                       <td
@@ -356,7 +330,7 @@ const RingGroups = () => {
                                         {item.description}
                                       </td>
                                       <div className="utilPopup">
-                                        <button
+                                        {/* <button
                                           onClick={() =>
                                             navigate(
                                               `/ring-groups-settings?id=${item.id}`
@@ -364,7 +338,7 @@ const RingGroups = () => {
                                           }
                                         >
                                           <i className="fa-light fa-gear" />
-                                        </button>
+                                        </button> */}
                                         <button
                                           onClick={() =>
                                             navigate(
@@ -386,7 +360,7 @@ const RingGroups = () => {
                                     </tr>
                                   );
                                 })}
-                              {ringGroup && ringGroup.length === 0 ? (
+                              {ringGroup && ringGroup.data.length === 0 ? (
                                 <td colSpan={99}>
                                   <EmptyPrompt
                                     name="Ring Group"
@@ -403,15 +377,13 @@ const RingGroups = () => {
                     </div>
 
                     <div className="tableHeader mb-3">
-                      {ringGroup && ringGroup.length > 0 ? (
-                        //Need to implement pagination in api (Backend)
+                      {ringGroup && ringGroup?.data?.length > 0 ? (
                         <PaginationComponent
-
-                        // pageNumber={(e) => setPageNumber(e)}
-                        // totalPage={user.last_page}
-                        // from={(pageNumber - 1) * user.per_page + 1}
-                        // to={user.to - 1} // -1 because customeradmin user is removed form the list
-                        // total={user.total - 1} // -1 because customeradmin user is removed form the list
+                          pageNumber={(e) => setPageNumber(e)}
+                          totalPage={ringGroup.last_page}
+                          from={ringGroup.from}
+                          to={ringGroup.to}
+                          total={ringGroup.total}
                         />
                       ) : (
                         ""
