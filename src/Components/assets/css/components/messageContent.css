@@ -43,10 +43,20 @@
 
 .mainContentApp #headerSearch {
     border: 1px solid #ddd;
-    padding: 5px 30px;
+    border-radius: 5px;
+    min-height: 35px;
+    padding: 0px 0 0 35px;
     width: 100%;
     color: #000000;
-    background: var(--bg-color) url(../../images/search_b.png) no-repeat 7px center / 17px 17px;
+    font-size: 14px;
+    background: #f5f5f5 url(../../images/search_b.png) no-repeat 7px center / 17px 17px;
+    outline: none;
+    transition: 0.1s ease-in-out;
+}
+
+.mainContentApp #headerSearch:focus,
+.mainContentApp #headerSearch:hover {
+    border-color: var(--ui-accent);
 }
 
 [type=search] {
@@ -147,6 +157,7 @@
 .dateHeader.sticky {
     position: sticky;
     top: 15px;
+    z-index: 9;
 }
 
 .dateHeader.sticky::after {

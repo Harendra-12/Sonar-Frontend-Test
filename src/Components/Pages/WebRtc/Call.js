@@ -178,7 +178,7 @@ function Call({
     const min = Math.floor((duration / 60) % 60);
     const hour = Math.floor(duration / 3600);
     return (
-      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""}${sec ? sec + " sec" : ""
+      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${sec ? sec + " sec" : ""
       }` || "0 sec"
     );
   };
@@ -220,40 +220,56 @@ function Call({
         } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
     >
       <div className="row justify-content-between">
-        {!isCustomerAdmin ? (
-          <div className="col-8 ms-4 text-start" style={{ cursor: "pointer" }}>
-            <h4>{item.caller_user ? item.caller_user.username : "USER XYZ"}</h4>
-            <h5>
-              {item["Caller-Callee-ID-Number"] === extension
-                ? item["Caller-Caller-ID-Number"]
-                : item["Caller-Callee-ID-Number"]}
-            </h5>
-            <h6>Call, {formatTime(item["variable_billsec"])}</h6>
+        <div className="col-xl-12 d-flex">
+          <div
+            className="profileHolder"
+          // id={"profileOfflineNav"}
+          >
+            <i className="fa-light fa-user fs-5"></i>
           </div>
-        ) : (
-          <div className="col-8 ms-4 text-start" style={{ cursor: "pointer" }}>
-            <h4>
-              {item["Caller-Callee-ID-Number"]}
-              ==<i class="fa-solid fa-angles-right"></i>
-              {item["Caller-Caller-ID-Number"]}
-            </h4>
-            <h6 className="mt-2">
-              Call, {formatTime(item["variable_billsec"])}
-            </h6>
-          </div>
-        )}
+          {!isCustomerAdmin ? (
+            <div className="col-4 my-auto ms-2 ms-xl-3" style={{ cursor: "pointer" }}>
+              <h4>{item.caller_user ? item.caller_user.username : "USER XYZ"}</h4>
+              <h5 style={{ paddingLeft: 20 }}>
+                {item["Caller-Callee-ID-Number"] === extension
+                  ? item["Caller-Caller-ID-Number"]
+                  : item["Caller-Callee-ID-Number"]}
+              </h5>
+              {/* <div className="contactTags">
+                <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
+              </div> */}
+            </div>
+          ) : (
+            <div className="col-4 my-auto ms-2 ms-xl-5" style={{ cursor: "pointer" }}>
+              <h4>
+                {item["Caller-Callee-ID-Number"]}
+                ==<i class="fa-solid fa-angles-right"></i>
+                {item["Caller-Caller-ID-Number"]}
+              </h4>
+              {/* <div className="contactTags">
+                <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
+              </div> */}
+            </div>
+          )}
 
-        <div className="col-3 text-end">
-          <h5>
-            {new Date(item.variable_start_stamp)
-              .toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true,
-              })
-              .replace(" AM", "am")
-              .replace(" PM", "pm")}
-          </h5>
+          {item["variable_billsec"] > 0 && <div className="col-3 mx-auto">
+            <div className="contactTags">
+              <span data-id="2">Duration: {formatTime(item["variable_billsec"])}</span>
+            </div>
+          </div>}
+
+          <div className="col-1 text-end ms-auto">
+            <p className="timeAgo">
+              {new Date(item.variable_start_stamp)
+                .toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true,
+                })
+                .replace(" AM", "am")
+                .replace(" PM", "pm")}
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -539,7 +555,7 @@ function Call({
 
                 <div className="col-12">
                   <nav className="mt-3">
-                    <div className="nav nav-tabs">
+                    <div className="nav nav-tabs" style={{ borderBottom: '1px solid #ddd' }}>
                       <button
                         onClick={() => setClickStatus("all")}
                         className={
@@ -547,7 +563,8 @@ function Call({
                         }
                         data-category="all"
                       >
-                        <i className="fa-light fa-phone" />
+                        {/* <i className="fa-light fa-phone" /> */}
+                        All
                       </button>
                       <button
                         onClick={() => setClickStatus("incoming")}
@@ -559,7 +576,8 @@ function Call({
                         effect="ripple"
                         data-category="incoming"
                       >
-                        <i className="fa-light fa-phone-arrow-down-left" />
+                        {/* <i className="fa-light fa-phone-arrow-down-left" /> */}
+                        Incoming
                       </button>
                       <button
                         onClick={() => setClickStatus("outgoing")}
@@ -571,7 +589,8 @@ function Call({
                         effect="ripple"
                         data-category="outgoing"
                       >
-                        <i className="fa-light fa-phone-arrow-up-right" />
+                        {/* <i className="fa-light fa-phone-arrow-up-right" /> */}
+                        Outgoing
                       </button>
                       <button
                         onClick={() => setClickStatus("missed")}
@@ -583,7 +602,8 @@ function Call({
                         effect="ripple"
                         data-category="missed"
                       >
-                        <i className="fa-light fa-phone-missed" />
+                        {/* <i className="fa-light fa-phone-missed" /> */}
+                        Missed
                       </button>
                       {/* <button
                         onClick={() => setClickStatus("voicemail")}
