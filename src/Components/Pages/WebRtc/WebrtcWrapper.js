@@ -189,7 +189,10 @@ const WebrtcWrapper = () => {
         {activePage === "on-going-calls" && <OngoingCall />}
         {activePage === "call-dashboard" && <CallDashboard />}
         {activePage === "e-fax" && <EFax />}
-        {activePage === "messages" && <Messages />}
+        {activePage === "messages" && <Messages
+          setSelectedModule={setSelectedModule}
+          isMicOn={isMicOn}
+          isVideoOn={isVideoOn} />}
         {activePage === "conference" && <ConferenceCall />}
         {/* {activePage == "videocall" && <VideoCall />} */}
 
