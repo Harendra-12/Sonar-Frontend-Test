@@ -430,6 +430,16 @@ function Messages() {
                       >
                         Online
                       </button>
+                      <button
+                        onClick={() => setActiveTab("tags")}
+                        className={
+                          activeTab === "tags" ? "tabLink active" : "tabLink"
+                        }
+                        effect="ripple"
+                        data-category="incoming"
+                      >
+                        Tags
+                      </button>
                     </div>
                   </nav>
                   {activeTab === "all" ? (
@@ -456,8 +466,8 @@ function Messages() {
                                   <h4>Test</h4>
                                   <h5>Hi! I need some help with the stuff you were talking about</h5>
                                   <div className="contactTags">
-                                    <span className="work">Work</span>
-                                    <span className="important">Important</span>
+                                    <span className="work" data-id="1">Work</span>
+                                    <span className="important" data-id="2">Important</span>
                                     <span className="more">+2</span>
                                   </div>
                                 </div>
@@ -517,8 +527,8 @@ function Messages() {
                                       <h4>{item?.name}</h4>
                                       <h5>{item?.extension}</h5>
                                       <div className="contactTags">
-                                        <span className="work">Work</span>
-                                        <span className="priority">Priority</span>
+                                        <span className="work" data-id="1">Work</span>
+                                        <span className="priority" data-id="3">Priority</span>
                                         <span className="more">+2</span>
                                       </div>
                                     </div>
@@ -543,7 +553,7 @@ function Messages() {
                                   <h4>Test2</h4>
                                   <h5>So when do you start me to build the quantum defibrillator</h5>
                                   <div className="contactTags">
-                                    <span className="work">Work</span>
+                                    <span className="work" data-id="1">Work</span>
                                   </div>
                                 </div>
                                 <div className="col text-end">
@@ -565,7 +575,7 @@ function Messages() {
                                   <h4>Test3</h4>
                                   <h5>Alright</h5>
                                   <div className="contactTags">
-                                    <span className="priority">Priority</span>
+                                    <span className="priority" data-id="3">Priority</span>
                                   </div>
                                 </div>
                                 <div className="col text-end">
@@ -577,13 +587,13 @@ function Messages() {
                         </div>
                       </div>
                     </div>
-                  ) : (
+                  ) : activeTab === "online" ? (
                     <div className="tab-content">
                       {/* <AgentSearch
                         getDropdownValue={setRecipient}
                         getAllAgents={setAgents}
                       /> */}
-                      <div className="callList">
+                      <div className="callList" style={{ height: 'calc(100vh - 270px)' }}>
                         {onlineUser.map((item) => {
                           return (
                             <div
@@ -626,6 +636,119 @@ function Messages() {
                         )}
                       </div>
                     </div>
+                  ) : (
+                    <div className="tab-content">
+                      {/* <AgentSearch
+                        getDropdownValue={setRecipient}
+                        getAllAgents={setAgents}
+                      /> */}
+                      <div className="callList" style={{ height: 'calc(100vh - 270px)' }}>
+                        <div className="chatHeading" data-bell={""}>
+                          <h5>Tag List <i class="fa-regular fa-circle-plus fs-5" style={{ cursor: "pointer", fontSize: 18 }}></i></h5>
+                        </div>
+
+                        <div className="contactTagsAddEdit">
+                          <div className="row align-items-center item">
+                            <div className="col-auto">
+                              <h5>Important</h5>
+                            </div>
+                            <div className="col-auto">
+                              <div className="contactTags">
+                                <span className="important" data-id="2">Important</span>
+                              </div>
+                            </div>
+                            <div className="col-auto d-flex ms-auto pe-0">
+                              <button className="clearButton2 xl">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                              </button>
+                              <button className="clearButton2 xl">
+                                <i class="fa-regular fa-trash text-danger"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="contactTagsAddEdit">
+                          <div className="row align-items-center item">
+                            <div className="col-auto">
+                              <h5>Work</h5>
+                            </div>
+                            <div className="col-auto">
+                              <div className="contactTags">
+                                <span className="important" data-id="1">Work</span>
+                              </div>
+                            </div>
+                            <div className="col-auto d-flex ms-auto pe-0">
+                              <button className="clearButton2 xl">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                              </button>
+                              <button className="clearButton2 xl">
+                                <i class="fa-regular fa-trash text-danger"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="contactTagsAddEdit">
+                          <div className="row align-items-center item">
+                            <div className="col-auto">
+                              <h5>Priority</h5>
+                            </div>
+                            <div className="col-auto">
+                              <div className="contactTags">
+                                <span className="important" data-id="3">Priority</span>
+                              </div>
+                            </div>
+                            <div className="col-auto d-flex ms-auto pe-0">
+                              <button className="clearButton2 xl">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                              </button>
+                              <button className="clearButton2 xl">
+                                <i class="fa-regular fa-trash text-danger"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="contactTagsAddEdit">
+                          <div className="row align-items-center item">
+                            <div className="col-auto">
+                              <h5>Personal</h5>
+                            </div>
+                            <div className="col-auto">
+                              <div className="contactTags">
+                                <span className="important" data-id="4">Personal</span>
+                              </div>
+                            </div>
+                            <div className="col-auto d-flex ms-auto pe-0">
+                              <button className="clearButton2 xl">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                              </button>
+                              <button className="clearButton2  xl">
+                                <i class="fa-regular fa-trash text-danger"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="contactTagsAddEdit">
+                          <div className="row align-items-center item">
+                            <div className="col-auto">
+                              <h5><input placeholder="Please enter tag name" type="text" /></h5>
+                            </div>
+                            <div className="col-auto">
+                              <div className="contactTags">
+                                <span className="important" data-id="4">Tag Name</span>
+                              </div>
+                            </div>
+                            <div className="col-auto d-flex ms-auto pe-0">
+                              <button className="clearButton2 xl">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                              </button>
+                              <button className="clearButton2  xl">
+                                <i class="fa-regular fa-trash text-danger"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   )}
                 </div>
               </div>
@@ -640,10 +763,20 @@ function Messages() {
                       <div>
                         <h4>{recipient[0]}</h4>
                         <div className="contactTags">
-                          <span className="work">Work</span>
-                          <span className="important">Important</span>
-                          <span className="priority">Priority</span>
-                          <span className="personal">Personal</span>
+                          <span className="work" data-id="1">Work</span>
+                          <span className="important" data-id="2">Important</span>
+                          <span className="priority" data-id="3">Priority</span>
+                          <span className="personal" data-id="4">Personal</span>
+                          <div class="dropdown">
+                            <span className="add" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-circle-plus me-1"></i> Add</span>
+                            <ul class="dropdown-menu">
+                              <li><a class="dropdown-item" href="#">Work</a></li>
+                              <li><a class="dropdown-item" href="#">Important</a></li>
+                              <li><a class="dropdown-item" href="#">Priority</a></li>
+                              <li><a class="dropdown-item" href="#">Personal</a></li>
+                            </ul>
+                          </div>
+
                         </div>
                         {/* <span className="status online">Online</span> */}
                       </div>

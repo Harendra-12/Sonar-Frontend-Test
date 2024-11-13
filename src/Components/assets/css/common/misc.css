@@ -586,25 +586,26 @@ input[type=number] {
     color: #000;
     padding: 2px 10px;
     font-size: 12px !important;
-    margin: 5px 10px 0 0 !important;
+    margin: 0px 10px 0 0 !important;
+    cursor: pointer;
 }
 
-.contactTags span.work {
+.contactTags span[data-id="1"] {
     background-color: #b8eadc;
     color: #00c193 !important;
 }
 
-.contactTags span.important {
+.contactTags span[data-id="2"] {
     background-color: #f8d5d5;
     color: #e55a57 !important;
 }
 
-.contactTags span.priority {
+.contactTags span[data-id="3"] {
     background-color: #fdeacd;
     color: #f7a659 !important;
 }
 
-.contactTags span.personal {
+.contactTags span[data-id="4"] {
     background-color: #c7e4fc;
     color: #2793f4;
 }
@@ -614,6 +615,29 @@ input[type=number] {
     background-color: transparent;
     font-size: 14px !important;
     font-weight: 500;
+    padding: 0;
+}
+
+.contactTags span.add {
+    background-color: var(--ui-accent);
+    color: #fff;
+}
+
+.contactTagsAddEdit {
+    padding: 10px 15px;
+}
+
+.contactTagsAddEdit h5 {
+    margin-bottom: 0;
+}
+
+.contactTagsAddEdit {
+    border-bottom: 1px solid #ddd;
+}
+
+.contactTagsAddEdit input {
+    border: none;
+    outline: none;
     padding: 0;
 }
 
