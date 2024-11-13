@@ -456,14 +456,12 @@ function Call({
         <section className="callPage">
           <div className="container-fluid">
             <div className="row">
-              <div
-                className="col-12 col-xl-6 allCallHistory"
-              // style={{ height: "100%" }}
-              >
-                <div className="col-12 webRtcHeading">
-                  <div className="col-2">
-                    <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
-                      Calls{" "}
+
+              <div className="col-12 ps-xl-0">
+                <div className="newHeader">
+                  <div className="col-auto" style={{ padding: '0 10px' }}>
+                    <h3 style={{ fontFamily: "Outfit", marginBottom: '0' }}>
+                      <button class="clearButton text-dark"><i class="fa-solid fa-chevron-left fs-4"></i></button> Calls{" "}
                       <button class="clearButton" onClick={() => setRefreshCalls(refreshCalls + 1)}>
                         <i
                           class={loading ? "fa-regular fa-arrows-rotate fs-5 fa-spin" : "fa-regular fa-arrows-rotate fs-5 "}
@@ -472,48 +470,75 @@ function Call({
                       </button>
                     </h3>
                   </div>
-                  <div className="col-10 d-flex justify-content-end align-items-center">
-                    <div className="col-auto  me-3">
-                      <h5
-                        style={{
-                          fontFamily: "Outfit",
-                          color: "#444444",
-                          marginBottom: "0",
-                        }}
+                  <div className="d-flex justify-content-end align-items-center">
+                    <div className="col-9">
+                      <input type="search" name="Search" placeholder="Search users, groups or chat" class="formItem fw-normal" style={{ backgroundColor: '#f5f5f5' }} />
+                    </div>
+                    <div className="col-auto mx-2">
+                      <button
+                        className="clearButton2 xl"
+                        effect="ripple"
                       >
-                        {account && extension ? (
-                          <span className="text-success">
-                            Extension - {account && extension}
-                          </span>
-                        ) : (
-                          <span className="text-danger">
-                            No Extension Assigned
-                          </span>
-                        )}
-                      </h5>
+                        <i className="fa-regular fa-bell" />
+                      </button>
                     </div>
                     <div className="col-auto">
-                      <button
-                        className="appPanelButton"
-                        effect="ripple"
-                        onClick={() => setDialpadShow(!dialpadShow)}
-                      >
-                        <i className="fa-light fa-mobile-retro" />
-                      </button>
-                    </div>
-                    <div className="col-auto  position-relative">
-                      <button className="appPanelButton" effect="ripple">
-                        <i className="fa-light fa-satellite-dish" />
-                      </button>
-                      {/* <div>
-                        <SipRegister />
-                      </div> */}
+                      <div className="myProfileWidget">
+                        <div class="profileHolder" id="profileOnlineNav">
+                          <img src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg" alt="profile" />
+                        </div>
+                        <div class="profileName">test two <span className="status">Available</span></div>
+                      </div>
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <div className="col-12 col-xl-6 allCallHistory">
+                <div className="col-auto" style={{ padding: '0 10px' }}>
+                  <h5 className="viewingAs">
+                    Viewing As:
+                    <span>
+                      {account && extension ? (
+                        <span>
+                          {account.username} - {account && extension}
+                        </span>
+                      ) : (
+                        <span className="text-danger">
+                          No Extension Assigned
+                        </span>
+                      )}
+                    </span>
+                  </h5>
+                </div>
+                <div className="col-auto" style={{ padding: '0 10px' }}>
+                  <button className="clearColorButton dark" onClick={() => setDialpadShow(!dialpadShow)}>
+                    <i className="fa-light fa-mobile-retro" /> Dial
+                  </button>
+                </div>
+                <div className="col-12 mt-3" style={{ padding: '0 10px' }}>
+                  <input
+                    type="search"
+                    name="Search"
+                    id="headerSearch"
+                    placeholder="Search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  {/* <button
+                      className="ms-2 me-0 appPanelButton"
+                      effect="ripple"
+                      onClick={() => setAddContactToggle(true)}
+                    >
+                      <i className="fa-light fa-user-plus" />
+                    </button> */}
+                </div>
+                {/* <div>
+                        <SipRegister />
+                      </div> */}
 
                 <div className="col-12">
-                  <nav>
+                  <nav className="mt-3">
                     <div className="nav nav-tabs">
                       <button
                         onClick={() => setClickStatus("all")}
@@ -575,23 +600,6 @@ function Call({
                     </div>
                   </nav>
                   <div className="tab-content">
-                    <div className="position-relative searchBox d-flex mt-3">
-                      <input
-                        type="search"
-                        name="Search"
-                        id="headerSearch"
-                        placeholder="Search"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                      />
-                      <button
-                        className="ms-2 me-0 appPanelButton"
-                        effect="ripple"
-                        onClick={() => setAddContactToggle(true)}
-                      >
-                        <i className="fa-light fa-user-plus" />
-                      </button>
-                    </div>
                     <div
                       className="callList"
                       onClick={() => setSelectedModule("callDetails")}
@@ -623,7 +631,7 @@ function Call({
                 </div>
               </div>
               <div
-                className="col-12 callDetails col-xl-6"
+                className="col-12 col-xl-6 callDetails"
                 style={{ height: "100vh" }}
                 id="callDetails"
               >

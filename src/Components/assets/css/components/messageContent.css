@@ -64,7 +64,7 @@
 
 .messageOverlay .contactHeader h4 {
     font-size: 18px !important;
-    margin-bottom: 0px;
+    margin-bottom: 5px;
     font-family: Roboto;
 }
 
@@ -522,4 +522,9 @@
     padding: 5px 10px;
     font-weight: 400;
     font-family: Outfit;
+}
+
+.contactHeader .dropdown-menu .dropdown-item:active {
+    background-color: #dfdfdf;
+
 }
