@@ -380,7 +380,7 @@ function Messages() {
                         <div class="profileHolder" id="profileOnlineNav">
                           <img src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg" alt="profile" />
                         </div>
-                        <div class="profileName">test two <span className="status">Available</span></div>
+                        <div class="profileName">{account.username} <span className="status">Available</span></div>
                       </div>
                     </div>
                   </div>
@@ -573,6 +573,34 @@ function Messages() {
                                 </div>
                                 <div className="my-auto ms-2 ms-xl-3">
                                   <h4>Test3</h4>
+                                  <h5>Alright</h5>
+                                  <div className="contactTags">
+                                    <span data-id="3">Priority</span>
+                                  </div>
+                                </div>
+                                <div className="col text-end">
+                                  <p className="timeAgo">5min ago</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="chatHeading">
+                          <h5 data-bs-toggle="collapse" href="#collapse3" role="button" aria-expanded="false" aria-controls="collapse3">Group Chat <i class="fa-solid fa-chevron-down"></i></h5>
+                        </div>
+                        <div class="collapse show" id="collapse3" style={{ borderBottom: '1px solid #ddd' }}>
+                          <div className="contactListItem" data-bell={""}>
+                            <div className="row justify-content-between">
+                              <div className="col-xl-12 d-flex">
+                                <div
+                                  className="profileHolder"
+                                  id={"profileOfflineNav"}
+                                >
+                                  <i className="fa-light fa-user fs-5"></i>
+                                </div>
+                                <div className="my-auto ms-2 ms-xl-3">
+                                  <h4>Group Chat</h4>
                                   <h5>Alright</h5>
                                   <div className="contactTags">
                                     <span data-id="3">Priority</span>
@@ -893,14 +921,14 @@ function Messages() {
                         <div className="col-12">
                           <nav>
                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                              <button class="tabLink active" id="nav-sms-tab" data-bs-toggle="tab" data-bs-target="#nav-sms" type="button" role="tab" aria-controls="nav-sms" aria-selected="true">SMS</button>
+                              <button class="tabLink active" id="nav-im-tab" data-bs-toggle="tab" data-bs-target="#nav-im" type="button" role="tab" aria-controls="nav-im" aria-selected="true">IM</button>
                               <button class="tabLink" id="nav-whatsapp-tab" data-bs-toggle="tab" data-bs-target="#nav-whatsapp" type="button" role="tab" aria-controls="nav-whatsapp" aria-selected="false" disabled>WhatsApp</button>
-                              <button class="tabLink" id="nav-skype-tab" data-bs-toggle="tab" data-bs-target="#nav-skype" type="button" role="tab" aria-controls="nav-skype" aria-selected="false" disabled>Skype</button>
+                              <button class="tabLink" id="nav-messenger-tab" data-bs-toggle="tab" data-bs-target="#nav-messenger" type="button" role="tab" aria-controls="nav-messenger" aria-selected="false" disabled>Messenger</button>
                             </div>
                           </nav>
                         </div>
                         <div class="tab-content col-12" id="nav-tabContent">
-                          <div class="tab-pane fade show active" id="nav-sms" role="tabpanel" aria-labelledby="nav-sms-tab">
+                          <div class="tab-pane fade show active" id="nav-im" role="tabpanel" aria-labelledby="nav-im-tab">
                             <textarea
                               type="text"
                               name=""
@@ -916,7 +944,7 @@ function Messages() {
                             />
                           </div>
                           <div class="tab-pane fade" id="nav-whatsapp" role="tabpanel" aria-labelledby="nav-whatsapp-tab">...</div>
-                          <div class="tab-pane fade" id="nav-skype" role="tabpanel" aria-labelledby="nav-skype-tab">...</div>
+                          <div class="tab-pane fade" id="nav-messenger" role="tabpanel" aria-labelledby="nav-messenger-tab">...</div>
                         </div>
 
                         <div className="col-12 d-flex justify-content-between align-items-center">

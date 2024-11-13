@@ -472,7 +472,6 @@ function Call({
         <section className="callPage">
           <div className="container-fluid">
             <div className="row">
-
               <div className="col-12 ps-xl-0">
                 <div className="newHeader">
                   <div className="col-auto" style={{ padding: '0 10px' }}>
@@ -503,7 +502,7 @@ function Call({
                         <div class="profileHolder" id="profileOnlineNav">
                           <img src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg" alt="profile" />
                         </div>
-                        <div class="profileName">test two <span className="status">Available</span></div>
+                        <div class="profileName">{account.username} <span className="status">Available</span></div>
                       </div>
                     </div>
                   </div>
@@ -563,8 +562,7 @@ function Call({
                         }
                         data-category="all"
                       >
-                        {/* <i className="fa-light fa-phone" /> */}
-                        All
+                        <i className="fa-light fa-phone" />
                       </button>
                       <button
                         onClick={() => setClickStatus("incoming")}
@@ -576,8 +574,7 @@ function Call({
                         effect="ripple"
                         data-category="incoming"
                       >
-                        {/* <i className="fa-light fa-phone-arrow-down-left" /> */}
-                        Incoming
+                        <i className="fa-light fa-phone-arrow-down-left" />
                       </button>
                       <button
                         onClick={() => setClickStatus("outgoing")}
@@ -589,8 +586,7 @@ function Call({
                         effect="ripple"
                         data-category="outgoing"
                       >
-                        {/* <i className="fa-light fa-phone-arrow-up-right" /> */}
-                        Outgoing
+                        <i className="fa-light fa-phone-arrow-up-right" />
                       </button>
                       <button
                         onClick={() => setClickStatus("missed")}
@@ -602,8 +598,7 @@ function Call({
                         effect="ripple"
                         data-category="missed"
                       >
-                        {/* <i className="fa-light fa-phone-missed" /> */}
-                        Missed
+                        <i className="fa-light fa-phone-missed" />
                       </button>
                       {/* <button
                         onClick={() => setClickStatus("voicemail")}
