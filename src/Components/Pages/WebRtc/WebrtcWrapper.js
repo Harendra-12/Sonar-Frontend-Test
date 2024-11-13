@@ -15,6 +15,7 @@ import SideNavbarApp from "./SideNavbarApp";
 import Messages from "./Messages";
 import VideoCall from "./VideoCall";
 import ConferenceCall from "./ConferenceCall";
+import ConferenceTest from "./ConferenceTest";
 
 const WebrtcWrapper = () => {
   const dispatch = useDispatch();
@@ -183,6 +184,7 @@ const WebrtcWrapper = () => {
         )}
         {activePage === "all-contacts" && <AllContact />}
         {activePage === "call-center" && <CallCenter />}
+        {activePage === "test" && <ConferenceTest />}
         {activePage === "all-voice-mails" && (
           <AllVoicemails isCustomerAdmin={isCustomerAdmin} />
         )}

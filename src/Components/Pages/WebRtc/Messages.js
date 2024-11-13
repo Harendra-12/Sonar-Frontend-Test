@@ -560,7 +560,7 @@ function Messages({setSelectedModule, isMicOn, isVideoOn }) {
                         getAllAgents={setAgents}
                       /> */}
                       <div className="callList" style={{ height: 'calc(100vh - 270px)' }}>
-                        <div className="chatHeading">
+                        {/* <div className="chatHeading">
                           <h5 data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1">Pinned <i class="fa-solid fa-chevron-down"></i></h5>
                         </div>
                         <div class="collapse show" id="collapse1">
@@ -588,7 +588,7 @@ function Messages({setSelectedModule, isMicOn, isVideoOn }) {
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
 
                         <div className="chatHeading">
                           <h5 data-bs-toggle="collapse" href="#collapse2" role="button" aria-expanded="false" aria-controls="collapse2">Chats <i class="fa-solid fa-chevron-down"></i></h5>
@@ -636,7 +636,7 @@ function Messages({setSelectedModule, isMicOn, isVideoOn }) {
                                     </div>
                                     <div className="my-auto ms-2 ms-xl-3">
                                       <h4>{item?.name}</h4>
-                                      {/* <h5>{JSON.parse(item?.last_message_data).message_text}</h5> */}
+                                      <h5>{(item?.last_message_data).message_text}</h5>
                                       <div className="contactTags">
                                         <span className="work">Work</span>
                                         <span className="priority">Priority</span>
@@ -644,7 +644,7 @@ function Messages({setSelectedModule, isMicOn, isVideoOn }) {
                                       </div>
                                     </div>
                                     <div className="col text-end">
-                                      {/* <p className="timeAgo">{formatRelativeTime(JSON.parse(item?.last_message_data).created_at)}</p> */}
+                                      <p className="timeAgo">{formatRelativeTime((item?.last_message_data).created_at)}</p>
                                     </div>
                                   </div>
                                 </div>
