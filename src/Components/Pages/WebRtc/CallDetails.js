@@ -73,50 +73,99 @@ function CallDetails({
   };
   return (
     <>
-      <div className="profileInfoHolder">
-        <div className="primeWrapper">
-          <div className="d-flex align-items-center">
-            <div className="profileHolder">
-              <i className="fa-light fa-user fs-4" />
-            </div>
-            <div>
-              <h4>
-                {(callDetails && callDetails.caller_user?.username) || "USER XYZ"}
-              </h4>
-              <h5>
-                {!isCustomerAdmin
-                  ? callDetails &&
-                    callDetails?.["Caller-Callee-ID-Number"] === extension
-                    ? callDetails?.["Caller-Caller-ID-Number"]
-                    : callDetails?.["Caller-Callee-ID-Number"]
-                  : callDetails?.["Caller-Callee-ID-Number"]}
-              </h5>
-            </div>
+      <div className="messageOverlay">
+        <div className="contactHeader">
+          <div>
+            <h4 className="mb-0">{callDetails?.caller_user?.username}</h4>
           </div>
-          <div className="callDeetBtnGrp">
-            <button className="appPanelButtonCallerRect" effect="ripple">
-              <i className="fa-light fa-message-dots" />
+          <div className="d-flex my-auto">
+            <div className="d-flex align-items-center me-2">
+              <label className="gray14 me-2">Assigned to:</label>
+              <select className="ovalSelect">
+                <option>
+                  {/* {agents.map((item) => {
+                    if (item.extension.extension === recipient[0]) {
+                      return item.username
+                    }
+                  })} */}
+                  {callDetails?.caller_user?.username}
+                </option>
+              </select>
+            </div>
+            <button
+              className="clearButton2 xl"
+              effect="ripple"
+            >
+              <i className="fa-regular fa-message-dots" />
             </button>
             <button
-              className="appPanelButtonCallerRect"
+              className="clearButton2 xl"
               effect="ripple"
-              // onClick={() => onCall(callDetails)}
               onClick={() => handleVoiceCall("audio")}
             >
-              <i className="fa-light fa-phone" />
+              <i className="fa-regular fa-phone" />
             </button>
             {isVideoOn && (
-              <button className="appPanelButtonCallerRect" effect="ripple" onClick={() => handleVoiceCall("video")}>
-                <i className="fa-light fa-video" />
+              <button
+                className="clearButton2 xl"
+                effect="ripple"
+                onClick={() => handleVoiceCall("video")}
+              >
+                <i className="fa-regular fa-video" />
               </button>
             )}
-
+            <div class="dropdown">
+              <button class="clearButton2 xl" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Mark as unread</a></li>
+                <li><a class="dropdown-item" href="#">Archive this chat</a></li>
+                <li><a class="dropdown-item" href="#">Close this chat</a></li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
+      <div className="profileInfoHolder">
+        <div className="profileHolder">
+          <i className="fa-light fa-user fs-4" />
+        </div>
+        <div>
+          <h4>
+            {(callDetails && callDetails.caller_user?.username) || "USER XYZ"}
+          </h4>
+          <h5>
+            Extension - {!isCustomerAdmin
+              ? callDetails &&
+                callDetails?.["Caller-Callee-ID-Number"] === extension
+                ? callDetails?.["Caller-Caller-ID-Number"]
+                : callDetails?.["Caller-Callee-ID-Number"]
+              : callDetails?.["Caller-Callee-ID-Number"]}
+          </h5>
+        </div>
+        {/* <div className="callDeetBtnGrp">
+          <button className="appPanelButtonCallerRect" effect="ripple">
+            <i className="fa-light fa-message-dots" />
+          </button>
+          <button
+            className="appPanelButtonCallerRect"
+            effect="ripple"
+            // onClick={() => onCall(callDetails)}
+            onClick={() => handleVoiceCall("audio")}
+          >
+            <i className="fa-light fa-phone" />
+          </button>
+          {isVideoOn && (
+            <button className="appPanelButtonCallerRect" effect="ripple" onClick={() => handleVoiceCall("video")}>
+              <i className="fa-light fa-video" />
+            </button>
+          )}
+        </div> */}
+      </div>
       <div className="mt-2">
-        <nav>
-          <div className="nav nav-tabs" id="nav-tab" role="tablist">
+        {/* <nav>
+          <div className="nav nav-tabs" id="nav-tab" role="tablist" style={{ borderBottom: '1px solid #ddd' }}>
             <button
               className="tabLink"
               effect="ripple"
@@ -127,7 +176,7 @@ function CallDetails({
               aria-controls="nav-home"
               aria-selected="true"
             >
-              <i className="fa-regular fa-circle-info" />
+              Call Info
             </button>
             <button
               className="tabLink active"
@@ -139,10 +188,10 @@ function CallDetails({
               aria-controls="nav-profile"
               aria-selected="false"
             >
-              <i className="fa-regular fa-clock-rotate-left" />
+              Call Logs
             </button>
           </div>
-        </nav>
+        </nav> */}
         <div className="tab-content" id="nav-tabContent">
           <div
             className="tab-pane fade"
@@ -151,24 +200,31 @@ function CallDetails({
             aria-labelledby="nav-home-tab"
             tabIndex={0}
           >
-            <div className="callDetailsList">
-              <table className="mt-3">
+            <div className="callDetailsList tableContainer">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Call Type</th>
+                    <th>Call ID</th>
+                    <th>Duration</th>
+                  </tr>
+                </thead>
                 <tbody>
                   <tr>
-                    {/* <td style={{ color: "#444444" }}>Jan 16, 2022</td> */}
                     <td style={{ color: "#444444" }}>
                       {formatDate(
                         callDetails && callDetails.variable_start_stamp
                       )}
                     </td>
-                    {/* <td>12:46 PM</td> */}
                     <td>
                       {formatTime(
                         callDetails && callDetails.variable_start_stamp
                       )}
                     </td>
                     {!isCustomerAdmin ? (
-                      <td
+                      <td style={{ paddingLeft: '32px' }}
                         className={`${callDetails?.["Caller-Callee-ID-Number"] ===
                           extension && callDetails?.["variable_billsec"] > 0
                           ? "incoming"
@@ -218,10 +274,7 @@ function CallDetails({
                         </span>
                       </td>
                     )}
-
-                    {/* <td>1 (999) 999-9999</td> */}
                     <td>{callDetails && callDetails.id}</td>
-                    {/* <td style={{ color: "#444444" }}>16 sec</td> */}
                     <td style={{ color: "#444444" }}>
                       {formatDuration(
                         callDetails && callDetails.variable_billsec
@@ -239,16 +292,36 @@ function CallDetails({
             aria-labelledby="nav-profile-tab"
             tabindex="0"
           >
-            <div className="callDetailsList">
-              <table className="mt-3">
-                <tbody>
-                  {callHistory?.map((item) => (
-                    <tr key={item.id}>
-                      <td style={{ color: "#444444" }}>
-                        {formatDate(item.variable_start_stamp)}
-                      </td>
-                      <td>{formatTime(item.variable_start_stamp)}</td>
-                      {/* <td
+            <div className="overviewTableWrapper p-2">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap">
+                  <div class="col-12">
+                    <div class="heading">
+                      <div class="content">
+                        <h4>Call Logs</h4>
+                        <p>You can see all of the call logs here</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-12" style={{ padding: '25px 20px 0px' }}>
+                    <div className="callDetailsList tableContainer mt-0">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Call Type</th>
+                            <th>Duration</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {callHistory?.map((item) => (
+                            <tr key={item.id}>
+                              <td style={{ color: "#444444" }}>
+                                {formatDate(item.variable_start_stamp)}
+                              </td>
+                              <td>{formatTime(item.variable_start_stamp)}</td>
+                              {/* <td
                         className={`${
                           item["Caller-Callee-ID-Number"] === extension &&
                           item["variable_billsec"] > 0
@@ -278,67 +351,75 @@ function CallDetails({
                             : ""}
                         </span>
                       </td> */}
-                      {!isCustomerAdmin ? (
-                        <td
-                          className={`${item?.["Caller-Callee-ID-Number"] === extension &&
-                            item?.["variable_billsec"] > 0
-                            ? "incoming"
-                            : item?.["Caller-Caller-ID-Number"] === extension
-                              ? "outgoing"
-                              : item?.["Caller-Callee-ID-Number"] ===
-                                extension && item?.["variable_billsec"] === 0
-                                ? "missed"
-                                : item?.["Call-Direction"] === "voicemail"
-                                  ? "voicemail"
-                                  : ""
-                            }`}
-                        >
-                          <span>
-                            {item &&
-                              item?.["Caller-Callee-ID-Number"] === extension &&
-                              item?.["variable_billsec"] > 0
-                              ? "Incoming"
-                              : item?.["Caller-Caller-ID-Number"] === extension
-                                ? "Outgoing"
-                                : item?.["Caller-Callee-ID-Number"] ===
-                                  extension && item?.["variable_billsec"] === 0
-                                  ? "Missed"
-                                  : item?.["Call-Direction"] === "voicemail"
-                                    ? "voicemail"
-                                    : ""}
-                          </span>
-                        </td>
-                      ) : (
-                        <td
-                          className={`${item?.["variable_billsec"] === 0
-                            ? "missed"
-                            : item?.["Call-Direction"] === "voicemail"
-                              ? "voicemail"
-                              : ""
-                            }`}
-                        >
-                          <span>
-                            {item?.["Caller-Callee-ID-Number"]}==
-                            <i class="fa-solid fa-angles-right"></i>
-                            {item?.["Caller-Caller-ID-Number"]}
-                          </span>
-                        </td>
-                      )}
-                      {/* <td>{item["Caller-Caller-ID-Number"]}</td> */}
-                      {/* <td>
+                              {!isCustomerAdmin ? (
+                                <td style={{ paddingLeft: '32px' }}
+                                  className={`${item?.["Caller-Callee-ID-Number"] === extension &&
+                                    item?.["variable_billsec"] > 0
+                                    ? "incoming"
+                                    : item?.["Caller-Caller-ID-Number"] === extension
+                                      ? "outgoing"
+                                      : item?.["Caller-Callee-ID-Number"] ===
+                                        extension && item?.["variable_billsec"] === 0
+                                        ? "missed"
+                                        : item?.["Call-Direction"] === "voicemail"
+                                          ? "voicemail"
+                                          : ""
+                                    }`}
+                                >
+                                  <span>
+                                    {item &&
+                                      item?.["Caller-Callee-ID-Number"] === extension &&
+                                      item?.["variable_billsec"] > 0
+                                      ? "Incoming"
+                                      : item?.["Caller-Caller-ID-Number"] === extension
+                                        ? "Outgoing"
+                                        : item?.["Caller-Callee-ID-Number"] ===
+                                          extension && item?.["variable_billsec"] === 0
+                                          ? "Missed"
+                                          : item?.["Call-Direction"] === "voicemail"
+                                            ? "voicemail"
+                                            : ""}
+                                  </span>
+                                </td>
+                              ) : (
+                                <td
+                                  className={`${item?.["variable_billsec"] === 0
+                                    ? "missed"
+                                    : item?.["Call-Direction"] === "voicemail"
+                                      ? "voicemail"
+                                      : ""
+                                    }`}
+                                >
+                                  <span>
+                                    {item?.["Caller-Callee-ID-Number"]}==
+                                    <i class="fa-solid fa-angles-right"></i>
+                                    {item?.["Caller-Caller-ID-Number"]}
+                                  </span>
+                                </td>
+                              )}
+                              {/* <td>{item["Caller-Caller-ID-Number"]}</td> */}
+                              {/* <td>
                         {item["Caller-Caller-ID-Number"] ===
                         extension
                           ? item["Caller-Caller-ID-Number"]
                           : item["Caller-Callee-ID-Number"]}
                       </td> */}
-                      <td style={{ color: "#444444" }}>
-                        {formatDuration(item.variable_billsec)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                              <td style={{ color: "#444444" }}>
+                                {formatDuration(item.variable_billsec)}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+
+
+
+
           </div>
         </div>
       </div>

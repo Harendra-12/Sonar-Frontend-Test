@@ -83,6 +83,12 @@ table tr th:first-child {
     min-height: 271px;
 }
 
+.tableContainer thead {
+    position: sticky;
+    top: 0;
+    z-index: 9;
+}
+
 .tableHeader {
     display: flex;
     justify-content: space-between;
@@ -168,10 +174,10 @@ table td.missed::after {
     content: '\e226';
     font-family: 'Font Awesome 6 Pro';
     position: absolute;
-    left: -15px;
-    top: 5px;
+    left: 10px;
+    top: 7px;
     color: red;
-    font-size: 16px;
+    font-size: 14px;
     transform: rotate(0deg);
 }
 
@@ -179,7 +185,7 @@ table td.outgoing::after {
     content: '\f061';
     font-family: 'Font Awesome 6 Pro';
     position: absolute;
-    left: -12px;
+    left: 10px;
     top: 5px;
     color: green;
     font-size: 18px;
@@ -190,7 +196,7 @@ table td.incoming::after {
     content: '\f061';
     font-family: 'Font Awesome 6 Pro';
     position: absolute;
-    left: -12px;
+    left: 10px;
     top: 5px;
     color: green;
     font-size: 18px;
