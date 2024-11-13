@@ -28,8 +28,9 @@ function CallCenterQueue() {
   const allUser = useSelector((state) => state.allUser);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const { data: usersData = [] } = allUser;
-  const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
-  const callCenterState = useSelector((state) => state.callCenter);
+  // const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
+  // const callCenterState = useSelector((state) => state.callCenter);
+  const [pageNumber, setPageNumber] = useState(1);
 
   useEffect(() => {
     dispatch({
@@ -37,40 +38,19 @@ function CallCenterQueue() {
       allUserRefresh: allUserRefresh + 1,
     });
 
-    if (callCenterRefresh > 0) {
-      setCallCenter(callCenterState);
-      setLoading(false);
-      async function getData() {
-        const apiData = await generalGetFunction("/call-center-queues");
-        if (apiData?.status) {
-          setLoading(false);
-          setCallCenter(apiData.data);
-        } else {
-          setLoading(false);
-        }
+    const getCallCenterDashboardData = async () => {
+      const apidata = await generalGetFunction(
+        `/call-center-queues/dashboard?page=${pageNumber}`
+      );
+      if (apidata?.status) {
+        setLoading(false);
+        setCallCenter(apidata.data);
+      } else {
+        setLoading(false);
       }
-      getData();
-    } else {
-      async function getData() {
-        const apiData = await generalGetFunction("/call-center-queues");
-        if (apiData?.status) {
-          setLoading(false);
-          setCallCenter(apiData.data);
-        } else {
-          setLoading(false);
-        }
-      }
-      dispatch({
-        type: "SET_CALLCENTERREFRESH",
-        callCenterRefresh: callCenterRefresh + 1,
-      });
-      getData();
-      dispatch({
-        type: "SET_CALLCENTERREFRESH",
-        callCenterRefresh: callCenterRefresh + 1,
-      });
-    }
-  }, []);
+    };
+    getCallCenterDashboardData();
+  }, [pageNumber]);
 
   const handleAddCallCenterValidation = (e) => {
     e.preventDefault();
@@ -104,8 +84,10 @@ function CallCenterQueue() {
     if (apiData?.status) {
       setLoading(false);
       // setRefresh(refresh+1)
-      const updatedCallCenter = callCenter.filter((item) => item.id !== id);
-      setCallCenter(updatedCallCenter);
+      const updatedCallCenter = callCenter.data.filter(
+        (item) => item.id !== id
+      );
+      setCallCenter({ ...callCenter, data: updatedCallCenter });
       toast.success(apiData.message);
       setDeleteId("");
     } else {
@@ -177,7 +159,7 @@ function CallCenterQueue() {
     );
     if (apiData?.status) {
       setLoading(false);
-      const updatedCallCenter = callCenter.map((item) => {
+      const updatedCallCenter = callCenter.data.map((item) => {
         if (item.id === id) {
           return {
             ...item,
@@ -187,11 +169,11 @@ function CallCenterQueue() {
           return item;
         }
       });
-      dispatch({
-        type: "SET_CALLCENTER",
-        callCenter: updatedCallCenter,
+
+      setCallCenter({
+        ...callCenter,
+        data: updatedCallCenter,
       });
-      setCallCenter(updatedCallCenter);
       toast.success(apiData.message);
       setPopUp(false);
       setSelectedCallCenter(null);
@@ -297,7 +279,7 @@ function CallCenterQueue() {
                           ) : (
                             <>
                               {callCenter &&
-                                callCenter.map((item) => {
+                                callCenter.data.map((item) => {
                                   return (
                                     <tr>
                                       <td
@@ -409,7 +391,7 @@ function CallCenterQueue() {
                                     </tr>
                                   );
                                 })}
-                              {callCenter && callCenter.length === 0 ? (
+                              {callCenter && callCenter.data.length === 0 ? (
                                 <td colSpan={99}>
                                   <EmptyPrompt
                                     name="Call Center"
@@ -425,15 +407,13 @@ function CallCenterQueue() {
                       </table>
                     </div>
                     <div className="tableHeader mb-3">
-                      {callCenter && callCenter.length > 0 ? (
-                        //Need to implement pagination in api (Backend)
+                      {callCenter && callCenter?.data?.length > 0 ? (
                         <PaginationComponent
-
-                        // pageNumber={(e) => setPageNumber(e)}
-                        // totalPage={user.last_page}
-                        // from={(pageNumber - 1) * user.per_page + 1}
-                        // to={user.to - 1} // -1 because customeradmin user is removed form the list
-                        // total={user.total - 1} // -1 because customeradmin user is removed form the list
+                          pageNumber={(e) => setPageNumber(e)}
+                          totalPage={callCenter.totalPage}
+                          from={callCenter.from}
+                          to={callCenter.to}
+                          total={callCenter.total}
                         />
                       ) : (
                         ""
