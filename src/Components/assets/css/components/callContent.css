@@ -16,7 +16,7 @@
 
 .mainContentApp .tab-content .callDetailsList {
     overflow: auto;
-    height: calc(100vh - 266px)
+    height: calc(100vh - 275px)
 }
 
 .mainContentApp .tab-content .callListItem {

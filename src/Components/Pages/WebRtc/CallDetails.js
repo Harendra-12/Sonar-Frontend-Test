@@ -77,6 +77,14 @@ function CallDetails({
         <div className="contactHeader">
           <div>
             <h4 className="mb-0">{callDetails?.caller_user?.username}</h4>
+            <p className="gray14 mb-0 mt-1">
+              Extension - {!isCustomerAdmin
+                ? callDetails &&
+                  callDetails?.["Caller-Callee-ID-Number"] === extension
+                  ? callDetails?.["Caller-Caller-ID-Number"]
+                  : callDetails?.["Caller-Callee-ID-Number"]
+                : callDetails?.["Caller-Callee-ID-Number"]}
+            </p>
           </div>
           <div className="d-flex my-auto">
             <div className="d-flex align-items-center me-2">
@@ -119,15 +127,15 @@ function CallDetails({
                 <i class="fa-solid fa-ellipsis-vertical"></i>
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Mark as unread</a></li>
-                <li><a class="dropdown-item" href="#">Archive this chat</a></li>
-                <li><a class="dropdown-item" href="#">Close this chat</a></li>
+                <li><a class="dropdown-item" href="#">Add to Contact</a></li>
+                <li><a class="dropdown-item" href="#">Video Call</a></li>
+                <li><a class="dropdown-item" href="#">Delete Contact</a></li>
               </ul>
             </div>
           </div>
         </div>
       </div>
-      <div className="profileInfoHolder">
+      {/* <div className="profileInfoHolder">
         <div className="profileHolder">
           <i className="fa-light fa-user fs-4" />
         </div>
@@ -144,7 +152,7 @@ function CallDetails({
               : callDetails?.["Caller-Callee-ID-Number"]}
           </h5>
         </div>
-        {/* <div className="callDeetBtnGrp">
+        <div className="callDeetBtnGrp">
           <button className="appPanelButtonCallerRect" effect="ripple">
             <i className="fa-light fa-message-dots" />
           </button>
@@ -161,8 +169,8 @@ function CallDetails({
               <i className="fa-light fa-video" />
             </button>
           )}
-        </div> */}
-      </div>
+        </div>
+      </div> */}
       <div className="mt-2">
         {/* <nav>
           <div className="nav nav-tabs" id="nav-tab" role="tablist" style={{ borderBottom: '1px solid #ddd' }}>
