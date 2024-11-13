@@ -15,26 +15,22 @@ function ActiveCallSidePanel({
   setSelectedModule,
   isMicOn,
   setactivePage,
+  globalSession,
 }) {
   const dispatch = useDispatch();
-  const globalSession = useSelector((state) => state.sessions);
+  // const globalSession = useSelector((state) => state.sessions);
+  console.log("This is global session", globalSession);
+
   const callProgressId = useSelector((state) => state.callProgressId);
   const { session, timer, hold, unhold, decline, hangup } =
     useSessionCall(sessionId);
   const audioRef = useRef(null);
   const [playMusic, setPlayMusic] = useState(false);
-  console.log(session);
   //Keep track for previous call progress Id
   const [prevCallProgressId, setPrevCallProgressId] = useState(callProgressId);
-  console.log("This is session", session?._state);
-  console.log("videocheck", callProgressId);
   useEffect(() => {
     const audioElement = audioRef.current;
-    console.log("Current playMusic value:", playMusic); // Log the state
-    console.log("Current audio state:", audioElement?.paused);
-
     if (playMusic && audioElement) {
-      console.log("Starting music...");
       audioElement.src = connectMusic; // Set the audio source
       audioElement.loop = false; // Ensure looping is disabled
       setTimeout(() => {
@@ -43,7 +39,6 @@ function ActiveCallSidePanel({
         });
       }, 2000); // Play after 2 seconds
     } else if (!playMusic && audioElement) {
-      console.log("Stopping music...");
       audioElement.pause();
       audioElement.currentTime = 0; // Reset to the start
       audioElement.src = ""; // Clear the source for extra safety
@@ -52,7 +47,6 @@ function ActiveCallSidePanel({
     // Cleanup when component unmounts
     return () => {
       if (audioElement) {
-        console.log("Cleaning up audio...");
         audioElement.pause();
         audioElement.currentTime = 0;
         audioElement.src = ""; // Clear source to avoid dangling audio
@@ -80,15 +74,17 @@ function ActiveCallSidePanel({
       const prevSession = globalSession.find(
         (item) => item.id === prevCallProgressId
       );
-      console.log("videocheck", prevSession);
       //Hold previous call
       if (
         prevSession &&
         session?._state == "Established" &&
         prevSession.mode !== "video"
       ) {
-        hold(prevSession.id);
-        console.log("hold hit", prevSession);
+        console.log("aaafrom auto hold");
+        
+        setTimeout(() => {
+          hold(prevSession.id);
+        }, 2000)
         dispatch({
           type: "SET_SESSIONS",
           sessions: globalSession.map((item) =>
@@ -109,7 +105,6 @@ function ActiveCallSidePanel({
     const updatedVideoCallMode = globalSession.find(
       (item) => item.id === callProgressId
     );
-
     if (updatedVideoCallMode?.mode === "video") {
       dispatch({
         type: "SET_VIDEOCALL",
@@ -127,7 +122,6 @@ function ActiveCallSidePanel({
     setSelectedModule("callDetails");
     if (callProgressId === session._id) {
       //check callprogressId in globalsession and if mode = video, change videocallState
-
       dispatch({
         type: "SET_CALLPROGRESSID",
         callProgressId: "",
@@ -162,6 +156,10 @@ function ActiveCallSidePanel({
     });
   }
 
+  const callerExtension = session.incomingInviteRequest
+    ? session?.incomingInviteRequest?.message?.from?._displayName
+    : session?.outgoingInviteRequest?.message?.to?.uri?.normal?.user;
+
   const handleAnswerCall = async (mode) => {
     // e.preventDefault();
     if (!isMicOn) {
@@ -179,148 +177,79 @@ function ActiveCallSidePanel({
       toast.warn("No webcam detected. Answering as audio call.");
       mode = "audio"; // Fallback to audio if no webcam is available
     }
-    session
-      .accept({
-        sessionDescriptionHandlerOptions: {
-          constraints: {
-            audio: true,
-            video: mode === "video" ? true : false,
-          },
+    session.accept({
+      sessionDescriptionHandlerOptions: {
+        constraints: {
+          audio: true,
+          video: mode === "video" ? true : false,
         },
-      })
-      .then(() => {
-        // Code to run after `session.accept()` completes
+      },
+    });
 
-        if (mode === "video") {
-          dispatch({
-            type: "SET_MINIMIZE",
-            minimize: false,
-          });
+    // if mode is video then set_session mode changed to video in extesting session
 
-          const updatedSession = globalSession.find(
-            (session) => session.id === sessionId
-          );
-          if (updatedSession) {
-            updatedSession.mode = "video";
-            dispatch({
-              type: "SET_SESSIONS",
-              sessions: [
-                ...globalSession.filter((session) => session.id !== sessionId),
-                updatedSession,
-              ],
-            });
-          }
-        } else {
-          const updatedSession = globalSession.find(
-            (session) => session.id === sessionId
-          );
-          console.log(
-            "videocheck",
-            updatedSession.state,
-            updatedSession.destination
-          );
-
-          if (updatedSession && updatedSession.state !== "OnHold") {
-            updatedSession.state = "Established";
-            dispatch({
-              type: "SET_SESSIONS",
-              sessions: [
-                ...globalSession.filter((session) => session.id !== sessionId),
-                updatedSession,
-              ],
-            });
-          }
-        }
-
-        setSelectedModule("onGoingCall");
-        setactivePage("call");
-        // dispatch({
-        //   type: "SET_CALLPROGRESSID",
-        //   callProgressId: sessionId,
-        // });
-        dispatch({
-          type: "SET_VIDEOCALL",
-          videoCall: mode === "video",
-        });
-        dispatch({
-          type: "SET_CALLPROGRESSDESTINATION",
-          callProgressDestination: destination,
-        });
-        dispatch({
-          type: "SET_CALLPROGRESS",
-          callProgress: mode === "audio",
-        });
-      })
-      .catch((error) => {
-        console.error("Error accepting the session:", error);
-        // Handle any errors from `session.accept()` here
+    if (mode === "video") {
+      dispatch({
+        type: "SET_MINIMIZE",
+        minimize: false,
       });
-    // session.accept({
-    //   sessionDescriptionHandlerOptions: {
-    //     constraints: {
-    //       audio: true,
-    //       video: mode === "video" ? true : false,
-    //     },
-    //   },
-    // });
+      const updatedSession = globalSession.find(
+        (session) => session.id === sessionId
+      );
+      if (updatedSession) {
+        updatedSession.mode = "video";
+        dispatch({
+          type: "SET_SESSIONS",
+          sessions: [
+            ...globalSession.filter((session) => session.id !== sessionId),
+            updatedSession,
+          ],
+        });
+      }
+    } else {
+      const updatedSession = globalSession.find(
+        (session) => session.id === sessionId
+      );
+      console.log("aaafrom updated session");
 
-    // // if mode is video then set_session mode changed to video in extesting session
+      if (updatedSession) {
+        updatedSession.state = "Established";
 
-    // if (mode === "video") {
-    //   dispatch({
-    //     type: "SET_MINIMIZE",
-    //     minimize: false,
-    //   });
-    //   const updatedSession = globalSession.find(
-    //     (session) => session.id === sessionId
-    //   );
-    //   if (updatedSession) {
-    //     updatedSession.mode = "video";
-    //     dispatch({
-    //       type: "SET_SESSIONS",
-    //       sessions: [
-    //         ...globalSession.filter((session) => session.id !== sessionId),
-    //         updatedSession,
-    //       ],
-    //     });
-    //   }
-    // } else {
-    //   const updatedSession = globalSession.find(
-    //     (session) => session.id === sessionId
-    //   );
-    //   // console.log("videocheck", updatedSession);
-    //   console.log("videocheck", "put on established");
-    //   if (updatedSession && updatedSession.state !== "OnHold") {
-    //     updatedSession.state = "Establishedab";
-    //     dispatch({
-    //       type: "SET_SESSIONS",
-    //       sessions: [
-    //         ...globalSession.filter((session) => session.id !== sessionId),
-    //         updatedSession,
-    //       ],
-    //     });
-    //   }
-    // }
+        dispatch({
+          type: "SET_SESSIONS",
+          sessions: [
+            ...globalSession.filter((session) => session.id !== sessionId),
+            updatedSession,
+          ],
+        });
 
-    // setSelectedModule("onGoingCall");
-    // setactivePage("call");
-    // dispatch({
-    //   type: "SET_CALLPROGRESSID",
-    //   callProgressId: sessionId,
-    // });
-    // dispatch({
-    //   type: "SET_VIDEOCALL",
-    //   videoCall: mode === "video" ? true : false,
-    // });
-    // dispatch({
-    //   type: "SET_CALLPROGRESSDESTINATION",
-    //   callProgressDestination: destination,
-    // });
-    // dispatch({
-    //   type: "SET_CALLPROGRESS",
-    //   callProgress: mode === "audio" ? true : false,
-    // });
+
+      }
+    }
+
+    setSelectedModule("onGoingCall");
+    setactivePage("call");
+    
+      dispatch({
+        type: "SET_CALLPROGRESSID",
+        callProgressId: sessionId,
+      });
+   
+
+    dispatch({
+      type: "SET_VIDEOCALL",
+      videoCall: mode === "video" ? true : false,
+    });
+    dispatch({
+      type: "SET_CALLPROGRESSDESTINATION",
+      callProgressDestination: callerExtension,
+    });
+    dispatch({
+      type: "SET_CALLPROGRESS",
+      callProgress: mode === "audio" ? true : false,
+    });
   };
+
   const canHold = session && session._state === SessionState.Established;
   const holdCall = (type) => {
     if (canHold) {
@@ -345,47 +274,6 @@ function ActiveCallSidePanel({
       toast.warn("Call has not been established");
     }
   };
-  // const [isReinviteInProgress, setReinviteInProgress] = useState(false);
-
-  // const holdCall = async (type) => {
-  //   if (!canHold) {
-  //     toast.warn("Call has not been established");
-  //     return;
-  //   }
-
-  //   // Prevent multiple hold/unhold requests at the same time
-  //   if (isReinviteInProgress) {
-  //     toast.info("Please wait until the current operation completes.");
-  //     return;
-  //   }
-
-  //   try {
-  //     setReinviteInProgress(true); // Set the reinvite in progress
-
-  //     if (type === "hold") {
-  //       await hold();
-  //       dispatch({
-  //         type: "SET_SESSIONS",
-  //         sessions: globalSession.map((item) =>
-  //           item.id === session.id ? { ...item, state: "OnHold" } : item
-  //         ),
-  //       });
-  //     } else if (type === "unhold") {
-  //       await unhold();
-  //       dispatch({
-  //         type: "SET_SESSIONS",
-  //         sessions: globalSession.map((item) =>
-  //           item.id === session.id ? { ...item, state: "Established" } : item
-  //         ),
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error with hold/unhold operation:", error);
-  //     toast.error("An error occurred. Please try again.");
-  //   } finally {
-  //     setReinviteInProgress(false); // Reset reinvite in progress
-  //   }
-  // };
   return (
     <>
       {isHeld ? (
@@ -463,34 +351,6 @@ function ActiveCallSidePanel({
       {/* </div> */}
 
       <audio ref={audioRef}></audio>
-
-      {/* <div className='col-12 callItem active'>
-                        <div className='profilepicHolder'>
-                            2
-                        </div>
-                        <div className='callContent'>
-                            <h4>Line 2</h4>
-                            <h5>1003 <span className='float-end'>02:23</span></h5>
-                        </div>
-                    </div>
-                    <div className='col-12 callItem ringing'>
-                        <div className='profilepicHolder'>
-                            3
-                        </div>
-                        <div className='callContent'>
-                            <h4>Line 3</h4>
-                            <h5>1003 <span className='float-end'>02:23</span></h5>
-                        </div>
-                    </div>
-                    <div className='col-12 callItem hold'>
-                        <div className='profilepicHolder'>
-                            4
-                        </div>
-                        <div className='callContent'>
-                            <h4>Line 4</h4>
-                            <h5>1003 <span className='float-end'>02:23</span></h5>
-                        </div>
-                    </div> */}
     </>
   );
 }

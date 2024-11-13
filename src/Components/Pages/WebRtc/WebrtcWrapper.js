@@ -256,6 +256,7 @@ const WebrtcWrapper = () => {
                               setSelectedModule={setSelectedModule}
                               isMicOn={isMicOn}
                               setactivePage={setactivePage}
+                              globalSession={sessions}
                             />
                           </div>
                         );
@@ -298,6 +299,7 @@ const WebrtcWrapper = () => {
                               setSelectedModule={setSelectedModule}
                               isMicOn={isMicOn}
                               setactivePage={setactivePage}
+                              globalSession={sessions}
                             />
                           </div>
                         );

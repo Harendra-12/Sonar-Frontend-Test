@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSessionCall, useSIPProvider } from "react-sipjs";
+import { useSessionCall } from "react-sipjs";
 import { toast } from "react-toastify";
 import { UserAgent } from "sip.js";
 import ringtone from "../../assets/music/cellphone-ringing-6475.mp3";
@@ -8,7 +8,6 @@ import ringtone from "../../assets/music/cellphone-ringing-6475.mp3";
 function IncomingCallPopup({
   sessionId,
   lastIncomingCall,
-  index,
   setSelectedModule,
   setactivePage,
   isMicOn,
@@ -20,11 +19,9 @@ function IncomingCallPopup({
   const { decline, answer, session } = useSessionCall(sessionId);
   const dispatch = useDispatch();
   const globalSession = useSelector((state) => state.sessions) || {};
-  const { sessionManager } = useSIPProvider();
   const [blindTransferNumber, setBlindTransferNumber] = useState("");
   const [attendShow, setAttendShow] = useState(false);
   const [audio] = useState(new Audio(ringtone)); // Initialize the Audio object
-  console.log("aaaa", session);
   useEffect(() => {
     if (lastIncomingCall && !isMinimized) {
       audio.loop = true; // Set loop so it keeps playing
@@ -37,7 +34,6 @@ function IncomingCallPopup({
       audio.currentTime = 0; // Reset the audio to the beginning
     };
   }, [lastIncomingCall, isMinimized, audio]);
-  console.log("answer:", answer);
   useEffect(() => {
     if (!lastIncomingCall) {
       setIsMinimized(true);
@@ -83,8 +79,6 @@ function IncomingCallPopup({
   const callerExtension = session.incomingInviteRequest
     ? session?.incomingInviteRequest?.message?.from?._displayName
     : session?.outgoingInviteRequest?.message?.to?.uri?.normal?.user;
-
-  const topPosition = 10 + index * 75;
 
   const handleAnswerCall = async (mode) => {
     // e.preventDefault();
