@@ -466,8 +466,8 @@ function Messages() {
                                   <h4>Test</h4>
                                   <h5>Hi! I need some help with the stuff you were talking about</h5>
                                   <div className="contactTags">
-                                    <span className="work" data-id="1">Work</span>
-                                    <span className="important" data-id="2">Important</span>
+                                    <span data-id="1">Work</span>
+                                    <span data-id="2">Important</span>
                                     <span className="more">+2</span>
                                   </div>
                                 </div>
@@ -527,8 +527,8 @@ function Messages() {
                                       <h4>{item?.name}</h4>
                                       <h5>{item?.extension}</h5>
                                       <div className="contactTags">
-                                        <span className="work" data-id="1">Work</span>
-                                        <span className="priority" data-id="3">Priority</span>
+                                        <span data-id="1">Work</span>
+                                        <span data-id="3">Priority</span>
                                         <span className="more">+2</span>
                                       </div>
                                     </div>
@@ -553,7 +553,7 @@ function Messages() {
                                   <h4>Test2</h4>
                                   <h5>So when do you start me to build the quantum defibrillator</h5>
                                   <div className="contactTags">
-                                    <span className="work" data-id="1">Work</span>
+                                    <span data-id="1">Work</span>
                                   </div>
                                 </div>
                                 <div className="col text-end">
@@ -575,7 +575,7 @@ function Messages() {
                                   <h4>Test3</h4>
                                   <h5>Alright</h5>
                                   <div className="contactTags">
-                                    <span className="priority" data-id="3">Priority</span>
+                                    <span data-id="3">Priority</span>
                                   </div>
                                 </div>
                                 <div className="col text-end">
@@ -654,7 +654,7 @@ function Messages() {
                             </div>
                             <div className="col-auto">
                               <div className="contactTags">
-                                <span className="important" data-id="2">Important</span>
+                                <span data-id="2">Important</span>
                               </div>
                             </div>
                             <div className="col-auto d-flex ms-auto pe-0">
@@ -674,7 +674,7 @@ function Messages() {
                             </div>
                             <div className="col-auto">
                               <div className="contactTags">
-                                <span className="important" data-id="1">Work</span>
+                                <span data-id="1">Work</span>
                               </div>
                             </div>
                             <div className="col-auto d-flex ms-auto pe-0">
@@ -694,7 +694,7 @@ function Messages() {
                             </div>
                             <div className="col-auto">
                               <div className="contactTags">
-                                <span className="important" data-id="3">Priority</span>
+                                <span data-id="3">Priority</span>
                               </div>
                             </div>
                             <div className="col-auto d-flex ms-auto pe-0">
@@ -714,7 +714,7 @@ function Messages() {
                             </div>
                             <div className="col-auto">
                               <div className="contactTags">
-                                <span className="important" data-id="4">Personal</span>
+                                <span data-id="4">Personal</span>
                               </div>
                             </div>
                             <div className="col-auto d-flex ms-auto pe-0">
@@ -734,7 +734,7 @@ function Messages() {
                             </div>
                             <div className="col-auto">
                               <div className="contactTags">
-                                <span className="important" data-id="4">Tag Name</span>
+                                <span data-id="4">Tag Name</span>
                               </div>
                             </div>
                             <div className="col-auto d-flex ms-auto pe-0">
@@ -763,10 +763,10 @@ function Messages() {
                       <div>
                         <h4>{recipient[0]}</h4>
                         <div className="contactTags">
-                          <span className="work" data-id="1">Work</span>
-                          <span className="important" data-id="2">Important</span>
-                          <span className="priority" data-id="3">Priority</span>
-                          <span className="personal" data-id="4">Personal</span>
+                          <span data-id="1">Work</span>
+                          <span data-id="2">Important</span>
+                          <span data-id="3">Priority</span>
+                          <span data-id="4">Personal</span>
                           <div class="dropdown">
                             <span className="add" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-circle-plus me-1"></i> Add</span>
                             <ul class="dropdown-menu">
