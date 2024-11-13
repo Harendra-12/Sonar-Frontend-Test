@@ -10,13 +10,13 @@
 
 .mainContentApp .tab-content .callList {
     overflow: hidden auto;
-    /* height: calc(100vh - 205px); */
-    height: calc(100vh - 180px);
+    height: calc(100vh - 261px);
+    /* height: calc(100vh - 180px); */
 }
 
 .mainContentApp .tab-content .callDetailsList {
     overflow: auto;
-    height: calc(100vh - 180px)
+    height: calc(100vh - 266px)
 }
 
 .mainContentApp .tab-content .callListItem {
@@ -267,7 +267,7 @@
 
 
 .mainContentApp .profileInfoHolder {
-    /* text-align: center; */
+    text-align: center;
     padding: 10px;
     /* background: linear-gradient(0deg, rgba(33, 171, 255, 1) 0%, rgba(22, 27, 46, 1) 100%); */
     /* background: var(--ui-accent); */
@@ -291,7 +291,7 @@
 .mainContentApp .profileInfoHolder .profileHolder {
     width: 60px;
     height: 60px;
-    margin: 0 15px 0 0;
+    margin: 15px auto;
     text-align: center;
     cursor: pointer;
     background-color: var(--ui-accent);

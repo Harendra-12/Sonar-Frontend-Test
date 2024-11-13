@@ -510,7 +510,7 @@ function Call({
                 </div>
               </div>
 
-              <div className="col-12 col-xl-6 allCallHistory">
+              <div className="col-12 col-xl-6 col-xxl-5 allCallHistory">
                 <div className="col-auto" style={{ padding: '0 10px' }}>
                   <h5 className="viewingAs">
                     Viewing As:
@@ -651,8 +651,8 @@ function Call({
                 </div>
               </div>
               <div
-                className="col-12 col-xl-6 callDetails"
-                style={{ height: "100vh" }}
+                className="col-12 col-xl-6 col-xxl-7 callDetails"
+                style={{ height: "calc(100vh - 65px)" }}
                 id="callDetails"
               >
                 {selectedModule == "onGoingCall" ? (
