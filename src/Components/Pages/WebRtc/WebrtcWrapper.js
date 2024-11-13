@@ -161,6 +161,8 @@ const WebrtcWrapper = () => {
     sessions.filter((session) => session.state === "Incoming"),
     sessions.filter((session) => session.state !== "Incoming")
   );
+
+  
   return (
     <>
       <SIPProvider options={options}>
