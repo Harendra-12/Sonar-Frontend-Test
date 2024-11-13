@@ -40,9 +40,11 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
     unmute,
     timer,
   } = useSessionCall(callProgressId);
-
+  const currentSession = globalSession.find(
+    (session) => session.id === callProgressId
+  );
   // Handle dialpad press and send DTMF
-
+  const isOnHeld = currentSession?.state === "OnHold";
   useEffect(() => {
     if (parkingNumber != "") {
       handleDigitPress(parkingNumber);
@@ -162,7 +164,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
       toast.error("Invalid destination number");
     }
   };
-console.log("sessionsssss",session);
+  console.log("sessionsssss", session);
 
   return (
     <>
@@ -297,10 +299,12 @@ console.log("sessionsssss",session);
             <button
               // onClick={isHeld ? unhold : hold}
               onClick={
-                isHeld ? () => holdCall("unhold") : () => holdCall("hold")
+                isOnHeld ? () => holdCall("unhold") : () => holdCall("hold")
               }
               className={
-                isHeld ? "appPanelButtonCaller active" : "appPanelButtonCaller"
+                isOnHeld
+                  ? "appPanelButtonCaller active"
+                  : "appPanelButtonCaller"
               }
               effect="ripple"
             >

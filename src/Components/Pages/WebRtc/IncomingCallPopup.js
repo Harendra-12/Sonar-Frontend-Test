@@ -55,7 +55,12 @@ function IncomingCallPopup({
         type: "SET_SESSIONS",
         sessions: [
           ...globalSession,
-          { id: sessionId, destination: callerExtension, mode: "audio" },
+          {
+            id: sessionId,
+            destination: callerExtension,
+            mode: "audio",
+            state: "Incoming",
+          },
         ],
       });
     }
@@ -119,6 +124,20 @@ function IncomingCallPopup({
       );
       if (updatedSession) {
         updatedSession.mode = "video";
+        dispatch({
+          type: "SET_SESSIONS",
+          sessions: [
+            ...globalSession.filter((session) => session.id !== sessionId),
+            updatedSession,
+          ],
+        });
+      }
+    } else {
+      const updatedSession = globalSession.find(
+        (session) => session.id === sessionId
+      );
+      if (updatedSession) {
+        updatedSession.state = "Established";
         dispatch({
           type: "SET_SESSIONS",
           sessions: [
@@ -226,14 +245,20 @@ function IncomingCallPopup({
               </div>
             </div>
             <div className="controls">
-              <button class="callButton" onClick={() => handleAnswerCall("audio")}>
+              <button
+                class="callButton"
+                onClick={() => handleAnswerCall("audio")}
+              >
                 <i class="fa-duotone fa-phone"></i>
               </button>
-              {isVideoOn &&
-                <button class="callButton" onClick={() => handleAnswerCall("video")}>
+              {isVideoOn && (
+                <button
+                  class="callButton"
+                  onClick={() => handleAnswerCall("video")}
+                >
                   <i class="fa-duotone fa-video"></i>
                 </button>
-              }
+              )}
               <button class="callButton hangup" onClick={decline}>
                 <i class="fa-duotone fa-phone-hangup"></i>
               </button>
@@ -268,9 +293,9 @@ function IncomingCallPopup({
       ) : (
         <div
           className="incomingCallPopup minimized"
-          style={{
-            marginBottom: topPosition,
-          }}
+          // style={{
+          //   marginBottom: topPosition,
+          // }}
         >
           <div className="user">
             <div className="userInfo text-start my-0 px-2">
@@ -290,7 +315,10 @@ function IncomingCallPopup({
               >
                 <i className="fa-thin fa-phone-arrow-up-right" />
               </button>
-              <button class="callButton" onClick={() => handleAnswerCall("audio")}>
+              <button
+                class="callButton"
+                onClick={() => handleAnswerCall("audio")}
+              >
                 <i class="fa-duotone fa-phone"></i>
                 <div class="circle1"></div>
                 <div class="circle2"></div>
