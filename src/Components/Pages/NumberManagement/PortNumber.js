@@ -85,7 +85,7 @@ function PortNumber() {
           <div className="container-fluid">
             <div className="row justify-content-center">
               <Header title="Port Number" />
-              <div
+              {/* <div
                 className="d-flex flex-wrap justify-content-end px-xl-3 py-2 position-relative"
                 style={{ zIndex: 1 }}
                 id="detailsHeader"
@@ -114,123 +114,171 @@ function PortNumber() {
                     </Link>
                   </div>
                 </div>
-              </div>
-              <div className="col-xl-12">
-                <div className="col-12" style={{ overflow: "auto" }}>
-                  <div className="tableContainer">
-                    {loading ? (
-                      <ContentLoader />
-                    ) : (
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Company Name</th>
-                            <th>Billing Address</th>
-                            <th>Pin</th>
-                            <th>Carrier</th>
-                            <th>Account no.</th>
-                            <th>Phone no.</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {portData.length > 0 &&
-                            portData.map((item) => {
-                              const handleEditPortNumber = (id) => {
-                                navigate(`/port-number-edit?id=${id}`);
-                              };
-                              return (
-                                <tr key={item.id}>
-                                  <td
-                                    onClick={() =>
-                                      handleEditPortNumber(item.id)
-                                    }
-                                    style={{ cursor: "default" }}
-                                  >
-                                    {item.id}
-                                  </td>
-                                  <td
-                                    onClick={() =>
-                                      handleEditPortNumber(item.id)
-                                    }
-                                    style={{ cursor: "default" }}
-                                  >
-                                    {item.fullname}
-                                  </td>
-                                  <td
-                                    onClick={() =>
-                                      handleEditPortNumber(item.id)
-                                    }
-                                    style={{ cursor: "default" }}
-                                  >
-                                    {item.company_name}
-                                  </td>
-                                  <td
-                                    onClick={() =>
-                                      handleEditPortNumber(item.id)
-                                    }
-                                    style={{ cursor: "default" }}
-                                  >
-                                    {item?.billing_address}
-                                  </td>
-                                  <td
-                                    onClick={() =>
-                                      handleEditPortNumber(item.id)
-                                    }
-                                    style={{ cursor: "default" }}
-                                  >
-                                    {item?.pin}
-                                  </td>
-                                  <td
-                                    onClick={() =>
-                                      handleEditPortNumber(item.id)
-                                    }
-                                    style={{ cursor: "default" }}
-                                  >
-                                    {item?.carrier}
-                                  </td>
+              </div> */}
 
-                                  <td
-                                    onClick={() =>
-                                      handleEditPortNumber(item.id)
-                                    }
-                                    style={{ cursor: "default" }}
-                                  >
-                                    {item?.account_number}
-                                  </td>
-                                  <td
-                                    onClick={() =>
-                                      handleEditPortNumber(item.id)
-                                    }
-                                    style={{ cursor: "default" }}
-                                  >
-                                    {item?.phone_number}
-                                  </td>
-                                  <td >
-                                    <button className="tableButton edit" onClick={() => handleEditPortNumber(item.id)}>
-                                      <i class="fa-solid fa-pencil"></i>
-                                    </button>
-                                  </td>
-                                  <td>
-                                    <button
-                                      className="tableButton delete"
-                                      onClick={() => {
-                                        setPopup(true);
-                                        setDeleteIndex(item.id);
-                                      }}
-                                    >
-                                      <i className="fa-solid fa-trash"></i>
-                                    </button>
-                                  </td>
-                                </tr>
-                              );
-                            })}
-                        </tbody>
-                      </table>
-                    )}
+              <div className="overviewTableWrapper">
+                <div className="overviewTableChild">
+                  <div className="d-flex flex-wrap">
+                    <div className="col-12">
+                      <div className="heading">
+                        <div className="content">
+                          <h4>Port Number</h4>
+                          <p>Port a number</p>
+                        </div>
+                        <div className="buttonGroup">
+                          <button
+                            effect="ripple"
+                            className="panelButton gray"
+                            onClick={() => {
+                              navigate(-1);
+                              backToTop();
+                            }}
+                          >
+                            <span className="text">Back</span>
+                            <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                          </button>
+                          <Link
+                            to="/port-number-add"
+                            onClick={backToTop}
+                            effect="ripple"
+                            className="panelButton"
+                          >
+                            <span className="text">Add</span>
+                            <span className="icon"><i class="fa-solid fa-plus"></i></span>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-12" style={{ overflow: "auto", padding: '25px 20px 0' }}>
+                      <div className="tableHeader">
+                        <div className="showEntries">
+                          <label>Show</label>
+                          <select className="formItem">
+                            <option>10</option>
+                          </select>
+                          <label>entries</label>
+                        </div>
+                        <div className="searchBox">
+                          <label>Search:</label>
+                          <input type="search" className="formItem" />
+                        </div>
+                      </div>
+                      <div className="tableContainer">
+                        {loading ? (
+                          <ContentLoader />
+                        ) : (
+                          <table>
+                            <thead>
+                              <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Company Name</th>
+                                <th>Billing Address</th>
+                                <th>Pin</th>
+                                <th>Carrier</th>
+                                <th>Account no.</th>
+                                <th>Phone no.</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {portData.length > 0 &&
+                                portData.map((item) => {
+                                  const handleEditPortNumber = (id) => {
+                                    navigate(`/port-number-edit?id=${id}`);
+                                  };
+                                  return (
+                                    <tr key={item.id}>
+                                      <td
+                                        onClick={() =>
+                                          handleEditPortNumber(item.id)
+                                        }
+                                        style={{ cursor: "default" }}
+                                      >
+                                        {item.id}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          handleEditPortNumber(item.id)
+                                        }
+                                        style={{ cursor: "default" }}
+                                      >
+                                        {item.fullname}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          handleEditPortNumber(item.id)
+                                        }
+                                        style={{ cursor: "default" }}
+                                      >
+                                        {item.company_name}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          handleEditPortNumber(item.id)
+                                        }
+                                        style={{ cursor: "default" }}
+                                      >
+                                        {item?.billing_address}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          handleEditPortNumber(item.id)
+                                        }
+                                        style={{ cursor: "default" }}
+                                      >
+                                        {item?.pin}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          handleEditPortNumber(item.id)
+                                        }
+                                        style={{ cursor: "default" }}
+                                      >
+                                        {item?.carrier}
+                                      </td>
+
+                                      <td
+                                        onClick={() =>
+                                          handleEditPortNumber(item.id)
+                                        }
+                                        style={{ cursor: "default" }}
+                                      >
+                                        {item?.account_number}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          handleEditPortNumber(item.id)
+                                        }
+                                        style={{ cursor: "default" }}
+                                      >
+                                        {item?.phone_number}
+                                      </td>
+                                      <td >
+                                        <button className="tableButton edit" onClick={() => handleEditPortNumber(item.id)}>
+                                          <i class="fa-solid fa-pencil"></i>
+                                        </button>
+                                      </td>
+                                      <td>
+                                        <button
+                                          className="tableButton delete"
+                                          onClick={() => {
+                                            setPopup(true);
+                                            setDeleteIndex(item.id);
+                                          }}
+                                        >
+                                          <i className="fa-solid fa-trash"></i>
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                            </tbody>
+                          </table>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

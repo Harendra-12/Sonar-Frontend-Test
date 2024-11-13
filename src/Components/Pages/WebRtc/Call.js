@@ -44,7 +44,7 @@ function Call({
   const [mode, setMode] = useState("audio");
   const [callHistory, setCallHistory] = useState([]);
   const { sessionManager, connectStatus } = useSIPProvider();
-  const [refreshCalls,setRefreshCalls] = useState(0);
+  const [refreshCalls, setRefreshCalls] = useState(0);
   const callProgressDestination = useSelector(
     (state) => state.callProgressDestination
   );
@@ -81,7 +81,7 @@ function Call({
       setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allCall, isCustomerAdmin,refreshCalls]);
+  }, [allCall, isCustomerAdmin, refreshCalls]);
 
   useEffect(() => {
     console.log("This is account", account && account.account_id);
@@ -95,7 +95,7 @@ function Call({
     } else {
       navigate("/");
     }
-  }, [account, navigate, hangupRefresh,refreshCalls]);
+  }, [account, navigate, hangupRefresh, refreshCalls]);
 
   // user data filter based on the extension
   useEffect(() => {
@@ -159,17 +159,17 @@ function Call({
 
     setCallHistory(
       filteredCalls[0] &&
-        allApiData.filter((item) => {
-          if (!isCustomerAdmin) {
-            return (
-              (item["Caller-Callee-ID-Number"] === extension &&
-                item["Caller-Caller-ID-Number"] === clickedExtension) ||
-              (item["Caller-Caller-ID-Number"] === extension &&
-                item["Caller-Callee-ID-Number"] === clickedExtension)
-            );
-          }
-          return true;
-        })
+      allApiData.filter((item) => {
+        if (!isCustomerAdmin) {
+          return (
+            (item["Caller-Callee-ID-Number"] === extension &&
+              item["Caller-Caller-ID-Number"] === clickedExtension) ||
+            (item["Caller-Caller-ID-Number"] === extension &&
+              item["Caller-Callee-ID-Number"] === clickedExtension)
+          );
+        }
+        return true;
+      })
     );
   }, [allCalls, clickStatus, searchQuery]);
 
@@ -178,8 +178,7 @@ function Call({
     const min = Math.floor((duration / 60) % 60);
     const hour = Math.floor(duration / 3600);
     return (
-      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""}${
-        sec ? sec + " sec" : ""
+      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""}${sec ? sec + " sec" : ""
       }` || "0 sec"
     );
   };
@@ -207,29 +206,28 @@ function Call({
       key={item.id}
       onClick={() => handleCallItemClick(item)}
       onDoubleClick={() => handleDoubleClickCall(item)}
-      className={`callListItem ${
-        item["Caller-Callee-ID-Number"] === extension &&
+      className={`callListItem ${item["Caller-Callee-ID-Number"] === extension &&
         item["variable_billsec"] > 0
-          ? "incoming"
-          : item["Caller-Caller-ID-Number"] === extension
+        ? "incoming"
+        : item["Caller-Caller-ID-Number"] === extension
           ? "outgoing"
           : item["Caller-Callee-ID-Number"] === extension &&
             item["variable_billsec"] === 0
-          ? "missed"
-          : item["Call-Direction"] === "voicemail"
-          ? "voicemail"
-          : ""
-      } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
+            ? "missed"
+            : item["Call-Direction"] === "voicemail"
+              ? "voicemail"
+              : ""
+        } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
     >
       <div className="row justify-content-between">
         {!isCustomerAdmin ? (
           <div className="col-8 ms-4 text-start" style={{ cursor: "pointer" }}>
-            <h4>
+            <h4>{item.caller_user ? item.caller_user.username : "USER XYZ"}</h4>
+            <h5>
               {item["Caller-Callee-ID-Number"] === extension
                 ? item["Caller-Caller-ID-Number"]
                 : item["Caller-Callee-ID-Number"]}
-            </h4>
-            <h5>{item.caller_user ? item.caller_user.username : "USER XYZ"}</h5>
+            </h5>
             <h6>Call, {formatTime(item["variable_billsec"])}</h6>
           </div>
         ) : (
@@ -378,13 +376,13 @@ function Call({
             mode === "audio"
               ? true
               : {
-                  mandatory: {
-                    minWidth: 1280,
-                    minHeight: 720,
-                    minFrameRate: 30,
-                  },
-                  optional: [{ facingMode: "user" }],
+                mandatory: {
+                  minWidth: 1280,
+                  minHeight: 720,
+                  minFrameRate: 30,
                 },
+                optional: [{ facingMode: "user" }],
+              },
         },
       }
     );
@@ -460,15 +458,15 @@ function Call({
             <div className="row">
               <div
                 className="col-12 col-xl-6 allCallHistory"
-                // style={{ height: "100%" }}
+              // style={{ height: "100%" }}
               >
                 <div className="col-12 webRtcHeading">
                   <div className="col-2">
                     <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
                       Calls{" "}
-                      <button class="clearButton" onClick={()=>setRefreshCalls(refreshCalls+1)}>
+                      <button class="clearButton" onClick={() => setRefreshCalls(refreshCalls + 1)}>
                         <i
-                          class={loading?"fa-regular fa-arrows-rotate fs-5 fa-spin":"fa-regular fa-arrows-rotate fs-5 "}
+                          class={loading ? "fa-regular fa-arrows-rotate fs-5 fa-spin" : "fa-regular fa-arrows-rotate fs-5 "}
                           style={{ color: "rgb(148, 148, 148)" }}
                         ></i>
                       </button>
@@ -599,18 +597,18 @@ function Call({
                       onClick={() => setSelectedModule("callDetails")}
                     >
                       {loading &&
-                      (callDetailsRefresh == 0 ||
-                        callDetailsRefresh == 1 ||
-                        callDetailsRefresh == 2) ? (
+                        (callDetailsRefresh == 0 ||
+                          callDetailsRefresh == 1 ||
+                          callDetailsRefresh == 2) ? (
                         <ContentLoader />
                       ) : Object.keys(groupedCalls).length > 0 ? (
                         sortKeys(Object.keys(groupedCalls)).map((date) => (
                           <>
                             <div
                               key={date}
-                              className="text-center callListItem"
+                              className="dateHeader"
                             >
-                              <h5 className="fw-semibold">{date}</h5>
+                              <p>{date}</p>
                             </div>
                             {sortedGroupedCalls[date].map(renderCallItem)}
                           </>

@@ -102,73 +102,77 @@ function DidListing() {
         <div className="container-fluid">
           <div className="row">
             <Header title="All DID" />
-            <div
-              className="d-flex flex-wrap justify-content-end px-xl-3 py-2 position-relative"
-              style={{ zIndex: 1 }}
-              id="detailsHeader"
-            >
-              <div className="col-xl-8 pt-3 pt-xl-0">
-                <div className="d-flex justify-content-end">
-                  <button
-                    effect="ripple"
-                    className="panelButton"
-                    onClick={() => {
-                      navigate(-1);
-                      backToTop();
-                    }}
-                  >
-                    <span className="text">Back</span>
-                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
-                  </button>
-                  <Link to="/did-add" effect="ripple" className="panelButton">
-                    <span className="text">Add</span>
-                    <span className="icon"><i class="fa-solid fa-plus"></i></span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="col-12" style={{ overflow: "auto" }}>
-              <div className="tableContainer">
-                {loading ? (
-                  <ContentLoader />
-                ) : (
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>DID</th>
-                        <th>E911</th>
-                        <th>Cname</th>
-                        <th>SMS</th>
-                        <th style={{ width: 150 }}>Configure</th>
-                        <th style={{ width: 150 }}>Reset Configuration</th>
-                        <th>Set as default</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {did &&
-                        did.map((item) => {
-                          return (
+
+            <div className="overviewTableWrapper">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap">
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content">
+                        <h4>All DID</h4>
+                        <p>Add a new DID</p>
+                      </div>
+                      <div className="buttonGroup">
+                        <button
+                          effect="ripple"
+                          className="panelButton gray"
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
+                        >
+                          <span className="text">Back</span>
+                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                        </button>
+                        <Link to="/did-add" effect="ripple" className="panelButton">
+                          <span className="text">Add</span>
+                          <span className="icon"><i class="fa-solid fa-plus"></i></span>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-12" style={{ overflow: "auto", padding: '25px 20px 0' }}>
+                    <div className="tableContainer">
+                      {loading ? (
+                        <ContentLoader />
+                      ) : (
+                        <table>
+                          <thead>
                             <tr>
-                              <td style={{ cursor: "default" }}>{item.did}</td>
-                              <td style={{ cursor: "default" }}>
-                                {item?.e911}
-                              </td>
-                              <td style={{ cursor: "default" }}>
-                                {item?.cnam}
-                              </td>
-                              <td style={{ cursor: "default" }}>{item?.sms}</td>
-                              <td style={{ cursor: "default" }}>
-                                <Tippy content={item.configuration !== null ? "Update the configuration" : "Not Configured! Click to configure"}>
-                                  <button
-                                    onClick={() =>
-                                      navigate(`/did-config`, { state: item })
-                                    }
-                                    className={item.configuration !== null ? "tableButton" : "tableButton warning"}
-                                  >
-                                    <i className={item.configuration !== null ? "fa-solid fa-gear text-success" : "fa-solid fa-triangle-exclamation"}></i>
-                                  </button>
-                                </Tippy>
-                                {/* <label
+                              <th>DID</th>
+                              <th>E911</th>
+                              <th>Cname</th>
+                              <th>SMS</th>
+                              <th style={{ width: 150 }}>Configure</th>
+                              <th style={{ width: 150 }}>Reset Configuration</th>
+                              <th>Set as default</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {did &&
+                              did.map((item) => {
+                                return (
+                                  <tr>
+                                    <td style={{ cursor: "default" }}>{item.did}</td>
+                                    <td style={{ cursor: "default" }}>
+                                      {item?.e911}
+                                    </td>
+                                    <td style={{ cursor: "default" }}>
+                                      {item?.cnam}
+                                    </td>
+                                    <td style={{ cursor: "default" }}>{item?.sms}</td>
+                                    <td style={{ cursor: "default" }}>
+                                      <Tippy content={item.configuration !== null ? "Update the configuration" : "Not Configured! Click to configure"}>
+                                        <button
+                                          onClick={() =>
+                                            navigate(`/did-config`, { state: item })
+                                          }
+                                          className={item.configuration !== null ? "tableButton" : "tableButton warning"}
+                                        >
+                                          <i className={item.configuration !== null ? "fa-solid fa-gear text-success" : "fa-solid fa-triangle-exclamation"}></i>
+                                        </button>
+                                      </Tippy>
+                                      {/* <label
                                   className={item.configuration !== null ? "tableLabel success" : "tableLabel pending"}
                                   style={{ cursor: "pointer" }}
                                   onClick={() =>
@@ -179,46 +183,51 @@ function DidListing() {
                                     ? "Update"
                                     : "Configure"}
                                 </label> */}
-                              </td>
-                              <td style={{ cursor: "default" }}>
-                                {" "}
-                                {item.configuration !== null && (
-                                  <Tippy content="Reset configuration of this DID">
-                                    <button
-                                      className="tableButton delete"
-                                      style={{ cursor: "pointer" }}
-                                      onClick={() =>
-                                        handleClick(item.configuration.id)
-                                      }
-                                    >
-                                      <i class="fa-solid fa-arrows-rotate"></i>
-                                    </button>
-                                  </Tippy>
-                                )}
-                              </td>
-                              <td style={{ cursor: "default" }}>
-                                <Tippy content={item.default_outbound === 1 ? "This DID is set as default" : "Set this DID default"}>
-                                  <button
-                                    className={item.default_outbound === 1 ? "tableButton" : "tableButton empty"}
-                                    style={{ cursor: "pointer" }}
-                                    onClick={() => {
-                                      if (item.default_outbound === 0) {
-                                        handleClickDefault(item.id)
-                                      }
-                                    }}
-                                  >
-                                    <i class="fa-solid fa-headset"></i>
-                                  </button>
-                                </Tippy>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                    </tbody>
-                  </table>
-                )}
+                                    </td>
+                                    <td style={{ cursor: "default" }}>
+                                      {" "}
+                                      {item.configuration !== null && (
+                                        <Tippy content="Reset configuration of this DID">
+                                          <button
+                                            className="tableButton delete"
+                                            style={{ cursor: "pointer" }}
+                                            onClick={() =>
+                                              handleClick(item.configuration.id)
+                                            }
+                                          >
+                                            <i class="fa-solid fa-arrows-rotate"></i>
+                                          </button>
+                                        </Tippy>
+                                      )}
+                                    </td>
+                                    <td style={{ cursor: "default" }}>
+                                      <Tippy content={item.default_outbound === 1 ? "This DID is set as default" : "Set this DID default"}>
+                                        <button
+                                          className={item.default_outbound === 1 ? "tableButton" : "tableButton empty"}
+                                          style={{ cursor: "pointer" }}
+                                          onClick={() => {
+                                            if (item.default_outbound === 0) {
+                                              handleClickDefault(item.id)
+                                            }
+                                          }}
+                                        >
+                                          <i class="fa-solid fa-headset"></i>
+                                        </button>
+                                      </Tippy>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                          </tbody>
+                        </table>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
+
+
           </div>
         </div>
       </section>

@@ -3,6 +3,7 @@ import Header from "../../CommonComponents/Header";
 import { Link, useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 import {
+  backToTop,
   generalDeleteFunction,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
@@ -56,110 +57,127 @@ const MailSettings = () => {
         <div className="container-fluid">
           <div className="row">
             <Header title="Mail Settings" />
-            <div className="d-flex flex-wrap px-xl-3 py-2" id="detailsHeader">
-              <div className="col-xl-4 my-auto">
-                <div className="position-relative searchBox"></div>
-              </div>
-              {mailSettings && !mailSettings.length > 0 && (
-                <div className="col-xl-8 mt-3 mt-xl-0">
-                  <div className="d-flex justify-content-end flex-wrap gap-2">
-                    <Link
-                      to="/mail-settings-add"
-                      effect="ripple"
-                      className="panelButton"
-                    >
-                      <span className="text">Add</span>
-                      <span className="icon"><i class="fa-solid fa-plus"></i></span>
-                    </Link>
+            <div className="overviewTableWrapper">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap">
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content">
+                        <h4>Mail Settings</h4>
+                        <p>You can configure your SMTP settings here</p>
+                      </div>
+                      <div className="buttonGroup">
+                        <button
+                          effect="ripple"
+                          className="panelButton gray"
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
+                        >
+                          <span className="text">Back</span>
+                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                        </button>
+                        {mailSettings && !mailSettings.length > 0 && (
+                          <Link
+                            to="/mail-settings-add"
+                            effect="ripple"
+                            className="panelButton"
+                          >
+                            <span className="text">Add</span>
+                            <span className="icon"><i class="fa-solid fa-plus"></i></span>
+                          </Link>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
-
-            <div className="col-12" style={{ overflow: "auto" }}>
-              <div className="mx-2 tableContainer">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Mail Driver</th>
-                      <th>Username</th>
-                      <th>Host</th>
-                      <th>Mail From</th>
-                      <th>Mail From Name</th>
-                      <th>Edit</th>
-                      <th>Delete</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {loading ? (
-                      <tr>
-                        <td colSpan={99}>
-                          <ContentLoader />
-                        </td>
-                      </tr>
-                    ) : (
-                      <>
-                        {mailSettings &&
-                          mailSettings.map((data, index) => (
-                            <tr key={index}>
-                              <td style={{ cursor: "default" }}>
-                                {data.mail_driver}
-                              </td>
-                              <td style={{ cursor: "default" }}>
-                                {data.mail_username}
-                              </td>
-                              <td style={{ cursor: "default" }}>
-                                {data.mail_host}
-                              </td>
-                              <td style={{ cursor: "default" }}>
-                                {data.mail_from_address}
-                              </td>
-                              <td style={{ cursor: "default" }}>
-                                {data.mail_from_name}
-                              </td>
-                              <td style={{ cursor: "default" }}>
-                                {" "}
-                                <button
-                                  className="tableButton edit"
-                                  onClick={() =>
-                                    navigate(
-                                      // `/mail-settings-edit?id=${data.id}`
-                                      `/mail-settings-edit`,
-                                      {
-                                        state: data.id,
-                                      }
-                                    )
-                                  }
-                                >
-                                  <i class="fa-solid fa-pencil"></i>
-                                </button>
-                              </td>
-                              <td style={{ cursor: "default" }}>
-                                <button
-                                  className="tableButton delete"
-                                  onClick={() => {
-                                    setOpenPopup(true);
-                                    setDeleteSetingsId(data.id);
-                                  }}
-                                >
-                                  <i class="fa-solid fa-trash"></i>
-                                </button>
+                  <div className="col-12" style={{ overflow: "auto", padding: '25px 20px 0' }}>
+                    <div className="mx-2 tableContainer">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Mail Driver</th>
+                            <th>Username</th>
+                            <th>Host</th>
+                            <th>Mail From</th>
+                            <th>Mail From Name</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {loading ? (
+                            <tr>
+                              <td colSpan={99}>
+                                <ContentLoader />
                               </td>
                             </tr>
-                          ))}
+                          ) : (
+                            <>
+                              {mailSettings &&
+                                mailSettings.map((data, index) => (
+                                  <tr key={index}>
+                                    <td style={{ cursor: "default" }}>
+                                      {data.mail_driver}
+                                    </td>
+                                    <td style={{ cursor: "default" }}>
+                                      {data.mail_username}
+                                    </td>
+                                    <td style={{ cursor: "default" }}>
+                                      {data.mail_host}
+                                    </td>
+                                    <td style={{ cursor: "default" }}>
+                                      {data.mail_from_address}
+                                    </td>
+                                    <td style={{ cursor: "default" }}>
+                                      {data.mail_from_name}
+                                    </td>
+                                    <td style={{ cursor: "default" }}>
+                                      {" "}
+                                      <button
+                                        className="tableButton edit"
+                                        onClick={() =>
+                                          navigate(
+                                            // `/mail-settings-edit?id=${data.id}`
+                                            `/mail-settings-edit`,
+                                            {
+                                              state: data.id,
+                                            }
+                                          )
+                                        }
+                                      >
+                                        <i class="fa-solid fa-pencil"></i>
+                                      </button>
+                                    </td>
+                                    <td style={{ cursor: "default" }}>
+                                      <button
+                                        className="tableButton delete"
+                                        onClick={() => {
+                                          setOpenPopup(true);
+                                          setDeleteSetingsId(data.id);
+                                        }}
+                                      >
+                                        <i class="fa-solid fa-trash"></i>
+                                      </button>
+                                    </td>
+                                  </tr>
+                                ))}
 
-                        {mailSettings.length === 0 && (
-                          <td colSpan={99}>
-                            <EmptyPrompt
-                              name="Mail Settings"
-                              link="mail-settings-add"
-                            />
-                          </td>
-                        )}
-                      </>
-                    )}
-                  </tbody>
-                </table>
+                              {mailSettings.length === 0 && (
+                                <td colSpan={99}>
+                                  <EmptyPrompt
+                                    name="Mail Settings"
+                                    link="mail-settings-add"
+                                  />
+                                </td>
+                              )}
+                            </>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

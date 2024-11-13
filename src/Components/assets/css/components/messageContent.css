@@ -134,26 +134,26 @@
     font-size: 14px;
 }
 
-.messageOverlay .messageContent .dateHeader {
+.dateHeader {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
 
     position: relative;
-    margin-top: 15px;
+    margin: 15px 0;
 }
 
-.messageOverlay .messageContent .dateHeader.sticky {
+.dateHeader.sticky {
     position: sticky;
     top: 15px;
 }
 
-.messageOverlay .messageContent .dateHeader.sticky::after {
+.dateHeader.sticky::after {
     content: none;
 }
 
-.messageOverlay .messageContent .dateHeader::after {
+.dateHeader::after {
     content: '';
     width: 90%;
     height: 1px;
@@ -164,7 +164,7 @@
     transform: translate(-50%, -50%);
 }
 
-.messageOverlay .messageContent .dateHeader p {
+.dateHeader p {
     width: max-content;
     border-radius: 50px;
     background-color: #fff;

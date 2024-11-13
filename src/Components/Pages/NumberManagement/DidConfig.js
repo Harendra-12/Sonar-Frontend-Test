@@ -176,7 +176,7 @@ const DidConfig = () => {
     }
   });
 
- 
+
 
   return (
     <>
@@ -184,7 +184,7 @@ const DidConfig = () => {
         <section id="phonePage">
           <div className="container-fluid px-0">
             <Header title="Destination Config" />
-            <div id="subPageHeader">
+            {/* <div id="subPageHeader">
               <div className="col-xl-9 my-auto">
                 <p className="mb-0">
                   Inbound destinations are the DID/DDI, DNIS or Alias for
@@ -214,7 +214,7 @@ const DidConfig = () => {
                   </button>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="col-xl-12" style={{ overflow: "auto" }}>
             {loading ? (
@@ -224,226 +224,266 @@ const DidConfig = () => {
             ) : (
               ""
             )}
-            <div className="mx-2" id="detailsContent">
-              <form className="row">
-                <div className="formRow col-xl-3">
-                  <div className="formLabel">
-                    <label htmlFor="">Selected DID</label>
-                    <label htmlFor="data" className="formItemDesc">
-                      Selected DID.
-                    </label>
-                  </div>
-                  <div className="col-6">
-                    <input
-                      type="text"
-                      name="did_id_view"
-                      className="formItem"
-                      value={locationData.did && locationData.did}
-                      disabled
-                      {...register("did_id", {
-                        ...noSpecialCharactersValidator,
-                      })}
-                    />
-
-                    {errors.did_id && (
-                      <ErrorMessage text={errors.did_id.message} />
-                    )}
-                  </div>
-                </div>
-
-                <div className="formRow col-xl-3">
-                  <div className="formLabel">
-                    <label htmlFor="">Usage</label>
-                    <label htmlFor="data" className="formItemDesc">
-                      Set how the Destination will be used.
-                    </label>
-                  </div>
-                  <div className="col-6">
-                    <select
-                      className="formItem"
-                      name="forward"
-                      id="selectFormRow"
-                      // onChange={(e) => setForwardEnable(e.target.value)}
-                      {...register("usages")}
-                    >
-                      <option value="extension">Extension</option>
-                      <option value="call center">Call Center</option>
-                      <option value="ring group">Ring Group</option>
-                      <option value="ivr">IVR</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="formRow col-xl-3">
-                  <div className="formLabel">
-                    <label htmlFor="">Action</label>
-                    <label htmlFor="data" className="formItemDesc">
-                      Set the action to perform when the max wait time is
-                      reached.
-                    </label>
-                  </div>
-                  <div className="col-6">
-                    <ActionList
-                      category={watch().usages}
-                      title={null}
-                      label={null}
-                      getDropdownValue={actionListValue}
-                      value={watch().action}
-                      {...register("action", requiredValidator)}
-                    />
-                    {errors.action && (
-                      <ErrorMessage text={errors.action.message} />
-                    )}
-                  </div>
-                </div>
-
-                <div className="formRow col-xl-3">
-                  <div className="formLabel">
-                    <label htmlFor="">Forward DID</label>
-                    <label htmlFor="data" className="formItemDesc">
-                      Want to forword DID.
-                    </label>
-                  </div>
-                  <div className="col-6">
-                    <select
-                      className="formItem"
-                      name="forward"
-                      id="selectFormRow"
-                      {...register("forward")}
-                    >
-                      <option value="disabled">Disable</option>
-                      <option value="pstn">PSTN</option>
-                      <option value="direct">Direct</option>
-                    </select>
-                  </div>
-                </div>
-                {forwardStatus === "pstn" && (
-                  <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="forward_to">Select PSTN</label>
-                      <label htmlFor="data" className="formItemDesc">
-                        Select a PSTN.
-                      </label>
+            <div className="overviewTableWrapper">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap">
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content">
+                        <h4>Destination Config</h4>
+                        <p>Inbound destinations are the DID/DDI, DNIS or Alias for
+                          inbound calls.</p>
+                      </div>
+                      <div className="buttonGroup">
+                        <button
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
+                          type="button"
+                          effect="ripple"
+                          className="panelButton gray"
+                        >
+                          <span className="text">Back</span>
+                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                        </button>
+                        <button
+                          effect="ripple"
+                          className="panelButton"
+                          onClick={handleFormSubmit}
+                        >
+                          <span className="text">{locationData.configuration ? "Update" : "Save"}</span>
+                          <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                        </button>
+                      </div>
                     </div>
-                    <div className="col-6">
-                      <input
-                        type="number"
-                        name="forward_to"
-                        className="formItem"
-                        {...register("forward_to", {
-                          required: "PSTN is required",
-                          pattern: {
-                            value: /^[0-9]*$/,
-                            message: "Only digits are allowed",
-                          },
-                          minLength: {
-                            value: 10,
-                            message: "Must be at least 10 digits",
-                          },
+                  </div>
+                  <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
+                    <form className="row">
+                      <div className="formRow col-xl-3">
+                        <div className="formLabel">
+                          <label htmlFor="">Selected DID</label>
+                          <label htmlFor="data" className="formItemDesc">
+                            Selected DID.
+                          </label>
+                        </div>
+                        <div className="col-6">
+                          <input
+                            type="text"
+                            name="did_id_view"
+                            className="formItem"
+                            value={locationData.did && locationData.did}
+                            disabled
+                            {...register("did_id", {
+                              ...noSpecialCharactersValidator,
+                            })}
+                          />
 
-                          ...noSpecialCharactersValidator,
-                        })}
-                      />
-                      {errors.forward_to && (
-                        <ErrorMessage text={errors.forward_to.message} />
+                          {errors.did_id && (
+                            <ErrorMessage text={errors.did_id.message} />
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="formRow col-xl-3">
+                        <div className="formLabel">
+                          <label htmlFor="">Usage</label>
+                          <label htmlFor="data" className="formItemDesc">
+                            Set how the Destination will be used.
+                          </label>
+                        </div>
+                        <div className="col-6">
+                          <select
+                            className="formItem"
+                            name="forward"
+                            id="selectFormRow"
+                            // onChange={(e) => setForwardEnable(e.target.value)}
+                            {...register("usages")}
+                          >
+                            <option value="extension">Extension</option>
+                            <option value="call center">Call Center</option>
+                            <option value="ring group">Ring Group</option>
+                            <option value="ivr">IVR</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="formRow col-xl-3">
+                        <div className="formLabel">
+                          <label htmlFor="">Action</label>
+                          <label htmlFor="data" className="formItemDesc">
+                            Set the action to perform when the max wait time is
+                            reached.
+                          </label>
+                        </div>
+                        <div className="col-6">
+                          <ActionList
+                            category={watch().usages}
+                            title={null}
+                            label={null}
+                            getDropdownValue={actionListValue}
+                            value={watch().action}
+                            {...register("action", requiredValidator)}
+                          />
+                          {errors.action && (
+                            <ErrorMessage text={errors.action.message} />
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="formRow col-xl-3">
+                        <div className="formLabel">
+                          <label htmlFor="">Forward DID</label>
+                          <label htmlFor="data" className="formItemDesc">
+                            Want to forword DID.
+                          </label>
+                        </div>
+                        <div className="col-6">
+                          <select
+                            className="formItem"
+                            name="forward"
+                            id="selectFormRow"
+                            {...register("forward")}
+                          >
+                            <option value="disabled">Disable</option>
+                            <option value="pstn">PSTN</option>
+                            <option value="direct">Direct</option>
+                          </select>
+                        </div>
+                      </div>
+                      {forwardStatus === "pstn" && (
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="forward_to">Select PSTN</label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Select a PSTN.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="number"
+                              name="forward_to"
+                              className="formItem"
+                              {...register("forward_to", {
+                                required: "PSTN is required",
+                                pattern: {
+                                  value: /^[0-9]*$/,
+                                  message: "Only digits are allowed",
+                                },
+                                minLength: {
+                                  value: 10,
+                                  message: "Must be at least 10 digits",
+                                },
+
+                                ...noSpecialCharactersValidator,
+                              })}
+                            />
+                            {errors.forward_to && (
+                              <ErrorMessage text={errors.forward_to.message} />
+                            )}
+                          </div>
+                        </div>
                       )}
-                    </div>
-                  </div>
-                )}
-                {forwardStatus === "direct" && (
-                  <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="selectFormRow">Forward Extension</label>
-                      <label htmlFor="data" className="formItemDesc">
-                        Select extension.
-                      </label>
-                    </div>
-                    <div className="col-6">
-                      <ActionList
-                        getDropdownValue={directListValue}
-                        value={watch().direct_extension}
-                        title={null}
-                        label={null}
-                        {...register("direct_extension", {
-                          requiredValidator,
-                        })}
-                      />
-                      {errors.direct_extension && (
-                        <ErrorMessage text={errors.direct_extension.message} />
+                      {forwardStatus === "direct" && (
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="selectFormRow">Forward Extension</label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Select extension.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <ActionList
+                              getDropdownValue={directListValue}
+                              value={watch().direct_extension}
+                              title={null}
+                              label={null}
+                              {...register("direct_extension", {
+                                requiredValidator,
+                              })}
+                            />
+                            {errors.direct_extension && (
+                              <ErrorMessage text={errors.direct_extension.message} />
+                            )}
+                          </div>
+                        </div>
                       )}
-                    </div>
-                  </div>
-                )}
-                <div className="formRow col-xl-3">
-                  <div className="formLabel">
-                    <label htmlFor="selectFormRow">Record</label>
-                    <label htmlFor="data" className="formItemDesc">
-                      Save the recording.
-                    </label>
-                  </div>
-                  <div className="col-6">
-                    <select
-                      className="formItem"
-                      name=""
-                      id="selectFormRow"
-                      {...register("record")}
-                    >
-                      <option selected="" value="true">
-                        True
-                      </option>
-                      <option value="false">False</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="formRow col-xl-3">
-                  <div className="formLabel">
-                    <label htmlFor="selectFormRow">Hold Music</label>
-                    <label htmlFor="data" className="formItemDesc">
-                      Save the recording.
-                    </label>
-                  </div>
-                  <div className="col-6">
-                    <select
-                      className="formItem"
-                      name=""
-                      id="selectFormRow"
-                      {...register("hold_music")}
-                      value={watch().hold_music}
-                    >
-                      <option value="default">default</option>
-                      {holdMusic &&
-                        holdMusic.map((ring) => {
-                          return (
-                            <option key={ring.id} value={ring.id}>
-                              {ring.name}
+                      <div className="formRow col-xl-3">
+                        <div className="formLabel">
+                          <label htmlFor="selectFormRow">Record</label>
+                          <label htmlFor="data" className="formItemDesc">
+                            Save the recording.
+                          </label>
+                        </div>
+                        <div className="col-6">
+                          <select
+                            className="formItem"
+                            name=""
+                            id="selectFormRow"
+                            {...register("record")}
+                          >
+                            <option selected="" value="true">
+                              True
                             </option>
-                          );
-                        })}
-                    </select>
-                  </div>
-                </div>
+                            <option value="false">False</option>
+                          </select>
+                        </div>
+                      </div>
 
-                <div className="formRow col-xl-3">
-                  <div className="formLabel">
-                    <label htmlFor="selectFormRow">Status</label>
-                  </div>
-                  <div className="col-6">
-                    <select
-                      className="formItem"
-                      name=""
-                      id="selectFormRow"
-                      {...register("status")}
-                    >
-                      <option selected="" value="true">
-                        True
-                      </option>
-                      <option value="false">False</option>
-                    </select>
+                      <div className="formRow col-xl-3">
+                        <div className="formLabel">
+                          <label htmlFor="selectFormRow">Hold Music</label>
+                          <label htmlFor="data" className="formItemDesc">
+                            Save the recording.
+                          </label>
+                        </div>
+                        <div className="col-6">
+                          <select
+                            className="formItem"
+                            name=""
+                            id="selectFormRow"
+                            {...register("hold_music")}
+                            value={watch().hold_music}
+                          >
+                            <option value="default">default</option>
+                            {holdMusic &&
+                              holdMusic.map((ring) => {
+                                return (
+                                  <option key={ring.id} value={ring.id}>
+                                    {ring.name}
+                                  </option>
+                                );
+                              })}
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="formRow col-xl-3">
+                        <div className="formLabel">
+                          <label htmlFor="selectFormRow">Status</label>
+                        </div>
+                        <div className="col-6">
+                          <select
+                            className="formItem"
+                            name=""
+                            id="selectFormRow"
+                            {...register("status")}
+                          >
+                            <option selected="" value="true">
+                              True
+                            </option>
+                            <option value="false">False</option>
+                          </select>
+                        </div>
+                      </div>
+                    </form>
                   </div>
                 </div>
-              </form>
+              </div>
             </div>
+
+
+
           </div>
         </section>
       </main>
