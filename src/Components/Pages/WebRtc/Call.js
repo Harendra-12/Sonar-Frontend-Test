@@ -529,7 +529,7 @@ function Call({
                 </div>
                 <div className="col-auto" style={{ padding: '0 10px' }}>
                   <button className="clearColorButton dark" onClick={() => setDialpadShow(!dialpadShow)}>
-                    <i className="fa-light fa-mobile-retro" /> Dial
+                    <i className="fa-light fa-mobile-retro" /> Dial Number
                   </button>
                 </div>
                 <div className="col-12 mt-3" style={{ padding: '0 10px' }}>
