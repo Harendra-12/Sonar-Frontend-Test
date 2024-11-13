@@ -23,9 +23,13 @@
     padding: 10px 10px;
     position: relative;
     cursor: pointer;
-    border-radius: 10px;
-    margin-bottom: 5px;
+    /* border-radius: 10px; */
+    /* margin-bottom: 5px; */
     transition: 0.3s ease-in-out;
+
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    border-right: 4px solid transparent;
 }
 
 .mainContentApp .tab-content .callListItem h4 {
@@ -58,7 +62,7 @@
 .mainContentApp .tab-content .callListItem span {
     font-size: 16px;
     margin: 0;
-    font-family: Outfit;
+    font-family: Roboto;
     font-weight: 500;
     color: #525252;
 }
@@ -103,9 +107,10 @@
     color: #505050;
 }
 
-.mainContentApp .tab-content .contactListItem p.timeAgo {
+.mainContentApp .tab-content .contactListItem p.timeAgo,
+.callListItem p.timeAgo {
     font-size: 12px !important;
-    margin: 5px 0 0;
+    margin: 0px 0 5px;
     font-family: Roboto;
     font-weight: 400;
     color: #ababab;
@@ -140,7 +145,7 @@
     content: none !important;
 }
 
-.mainContentApp .contactListItem .profileHolder {
+.mainContentApp .profileHolder {
     width: 45px;
     height: 45px;
     /* margin: auto 0px auto 0px; */
@@ -195,12 +200,12 @@
     content: '\e226';
     font-family: 'Font Awesome 6 Pro';
     position: absolute;
-    left: 5px;
-    top: 20px;
+    left: 70px;
+    top: 31px;
     /* width: 50px;
     height: 50px; */
     color: red;
-    font-size: 16px;
+    font-size: 14px;
     transform: rotate(0deg);
     /* background: url(''); */
 }
@@ -209,12 +214,12 @@
     content: '\f061';
     font-family: 'Font Awesome 6 Pro';
     position: absolute;
-    left: 5px;
-    top: 20px;
+    left: 70px;
+    top: 29px;
     /* width: 50px;
     height: 50px; */
     color: green;
-    font-size: 24px;
+    font-size: 18px;
     transform: rotate(130deg);
     /* background: url(''); */
 }
@@ -223,12 +228,12 @@
     content: '\f061';
     font-family: 'Font Awesome 6 Pro';
     position: absolute;
-    left: 5px;
-    top: 20px;
+    left: 70px;
+    top: 29px;
     /* width: 50px;
     height: 50px; */
     color: green;
-    font-size: 24px;
+    font-size: 18px;
     transform: rotate(-45deg);
     /* background: url(''); */
 }
@@ -237,7 +242,7 @@
     display: block !important;
 }
 
-.mainContentApp .callListItem .profileHolder {
+/* .mainContentApp .callListItem .profileHolder {
     width: 50px;
     height: 50px;
     margin: auto 15px auto 0;
@@ -251,7 +256,7 @@
     color: #fff;
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-}
+} */
 
 .profileHolder img {
     width: 100%;
@@ -373,11 +378,11 @@
 }
 
 .mainContentApp .tab-content .callListItem.selected {
-    background-color: #439fdd25;
-    /* background: #f5f5f5; */
-    /* border-right: 4px solid var(--ui-accent); */
-    border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.20) 0px 1px 5px;
+    /* background-color: #439fdd25; */
+    background: #f5f5f5;
+    border-right: 4px solid var(--ui-accent);
+    /* border-radius: 10px; */
+    /* box-shadow: rgba(0, 0, 0, 0.20) 0px 1px 5px; */
     /* margin-top: 10px; */
     z-index: 1;
 }

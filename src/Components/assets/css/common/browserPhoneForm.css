@@ -1,6 +1,6 @@
 .browserPhoneWrapper .formItem {
     padding: 10px;
-    height: auto;
+    /* height: auto; */
     border-radius: 5px;
     margin: 0 0 5px;
 }
@@ -33,10 +33,11 @@
     height: calc(100vh - 150px);
 }
 
-.callDashboardPrimTable table.callCenter th.sl{
+.callDashboardPrimTable table.callCenter th.sl {
     width: 100px;
 }
-.callDashboardPrimTable table.callCenter th{
+
+.callDashboardPrimTable table.callCenter th {
     width: 500px;
 }
 
