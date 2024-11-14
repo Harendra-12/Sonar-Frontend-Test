@@ -34,7 +34,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
   const [newTag, setNewTag] = useState("");
   const [upDateTag, setUpDateTag] = useState("");
   const [selectedTag, setSelectedTag] = useState("");
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function getData() {
@@ -582,7 +582,17 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                 <div className="col-auto" style={{ padding: '0 10px' }}>
                   <h5 className="viewingAs">
                     Viewing As:
-                    <span>{account.username}</span>
+                    <span>
+                      {account && extension ? (
+                        <span>
+                          {account.username} - {account && extension}
+                        </span>
+                      ) : (
+                        <span className="text-danger">
+                          No Extension Assigned
+                        </span>
+                      )}
+                    </span>
                   </h5>
                 </div>
                 <div className="col-auto" style={{ padding: '0 10px' }}>
@@ -742,7 +752,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                                   className="profileHolder"
                                   id={"profileOfflineNav"}
                                 >
-                                  <i className="fa-light fa-user fs-5"></i>
+                                  <i className="fa-light fa-users fs-5"></i>
                                 </div>
                                 <div className="my-auto ms-2 ms-xl-3">
                                   <h4>Group Chat</h4>
@@ -824,12 +834,12 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                             <div className="contactTagsAddEdit">
                               <div className="row align-items-center item">
                                 <div className="col-auto">
-                                  <h5><input value={selectedTag===item.id?upDateTag:item.name} onChange={(e) => setUpDateTag(e.target.value)} placeholder="Please enter tag name" type="text" disabled={selectedTag !== item.id} />
-                                    </h5>
+                                  <h5><input value={selectedTag === item.id ? upDateTag : item.name} onChange={(e) => setUpDateTag(e.target.value)} placeholder="Please enter tag name" type="text" disabled={selectedTag !== item.id} />
+                                  </h5>
                                 </div>
                                 <div className="col-auto">
                                   <div className="contactTags">
-                                    <span data-id={Math.floor(Math.random() * 4) + 1}>{selectedTag===item.id?upDateTag:item.name}</span>
+                                    <span data-id={Math.floor(Math.random() * 4) + 1}>{selectedTag === item.id ? upDateTag : item.name}</span>
                                   </div>
                                 </div>
                                 <div className="col-auto d-flex ms-auto pe-0">
@@ -1082,12 +1092,12 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
         </section>
       </main >
       {loading ? (
-              <div colSpan={99}>
-                <CircularLoader />
-              </div>
-            ) : (
-              ""
-            )}
+        <div colSpan={99}>
+          <CircularLoader />
+        </div>
+      ) : (
+        ""
+      )}
     </>
   );
 }

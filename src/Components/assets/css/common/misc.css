@@ -608,7 +608,7 @@ input[type=number] {
 
 .contactTags span[data-id="4"] {
     background-color: #c7e4fc;
-    color: #2793f4;
+    color: #2793f4 !important;
 }
 
 .contactTags span.more {
