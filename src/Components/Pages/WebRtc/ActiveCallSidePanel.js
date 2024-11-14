@@ -80,11 +80,10 @@ function ActiveCallSidePanel({
         session?._state == "Established" &&
         prevSession.mode !== "video"
       ) {
-        console.log("aaafrom auto hold");
-        
         setTimeout(() => {
           hold(prevSession.id);
-        }, 2000)
+        }, 2000);
+
         dispatch({
           type: "SET_SESSIONS",
           sessions: globalSession.map((item) =>
@@ -160,8 +159,8 @@ function ActiveCallSidePanel({
     ? session?.incomingInviteRequest?.message?.from?._displayName
     : session?.outgoingInviteRequest?.message?.to?.uri?.normal?.user;
 
-  const handleAnswerCall = async (mode) => {
-    // e.preventDefault();
+  const handleAnswerCall = async (e, mode) => {
+    e.stopPropagation();
     if (!isMicOn) {
       toast.warn("Please turn on microphone");
       return;
@@ -206,11 +205,11 @@ function ActiveCallSidePanel({
           ],
         });
       }
+      handleActiveCall(updatedSession.id, updatedSession.destination);
     } else {
       const updatedSession = globalSession.find(
         (session) => session.id === sessionId
       );
-      console.log("aaafrom updated session");
 
       if (updatedSession) {
         updatedSession.state = "Established";
@@ -222,32 +221,29 @@ function ActiveCallSidePanel({
             updatedSession,
           ],
         });
-
-
       }
+      handleActiveCall(updatedSession.id, updatedSession.destination);
     }
 
     setSelectedModule("onGoingCall");
     setactivePage("call");
-    
-      dispatch({
-        type: "SET_CALLPROGRESSID",
-        callProgressId: sessionId,
-      });
-   
 
-    dispatch({
-      type: "SET_VIDEOCALL",
-      videoCall: mode === "video" ? true : false,
-    });
-    dispatch({
-      type: "SET_CALLPROGRESSDESTINATION",
-      callProgressDestination: callerExtension,
-    });
-    dispatch({
-      type: "SET_CALLPROGRESS",
-      callProgress: mode === "audio" ? true : false,
-    });
+    // dispatch({
+    //   type: "SET_CALLPROGRESSID",
+    //   callProgressId: sessionId,
+    // });
+    // dispatch({
+    //   type: "SET_VIDEOCALL",
+    //   videoCall: mode === "video" ? true : false,
+    // });
+    // dispatch({
+    //   type: "SET_CALLPROGRESSDESTINATION",
+    //   callProgressDestination: callerExtension,
+    // });
+    // dispatch({
+    //   type: "SET_CALLPROGRESS",
+    //   callProgress: mode === "audio" ? true : false,
+    // });
   };
 
   const canHold = session && session._state === SessionState.Established;
@@ -317,7 +313,7 @@ function ActiveCallSidePanel({
             <button
               className="appPanelButtonCaller"
               style={{ background: "#1ac444" }}
-              onClick={() => handleAnswerCall("audio")}
+              onClick={(e) => handleAnswerCall(e, "audio")}
             >
               <i class="fa-solid fa-phone"></i>
             </button>
