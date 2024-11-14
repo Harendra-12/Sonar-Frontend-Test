@@ -340,13 +340,25 @@
 }
 
 /* New Contact Popup */
+.backdropContact {
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.294);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9;
+    backdrop-filter: blur(5px);
+}
+
 .addNewContactPopup {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 300px;
-    min-height: 400px;
+    width: 370px;
+    /* min-height: 400px; */
     border-radius: 10px;
     background-color: #fff;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -356,25 +368,40 @@
 .addNewContactPopup .heading {
     display: flex;
     align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
     margin-bottom: 20px;
 }
 
 .addNewContactPopup .heading i {
     color: #fff;
-    font-size: 18px;
+    font-size: 20px;
     background-color: var(--ui-accent);
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 55px;
+    height: 55px;
     display: flex;
     justify-content: center;
     align-items: center;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+    margin-bottom: 20px;
+
 }
 
-.addNewContactPopup .heading h3 {
-    margin-left: 15px;
-    margin-bottom: 0;
+.addNewContactPopup .heading h5 {
+    margin-bottom: 10px;
+}
+
+.addNewContactPopup .heading p {
+    font-size: 12px;
+    color: var(--color-subtext);
+}
+
+.addNewContactPopup .formLabel {
+    font-weight: 600;
+    font-size: 13px;
 }
 
 .mainContentApp .tab-content .callListItem.selected {

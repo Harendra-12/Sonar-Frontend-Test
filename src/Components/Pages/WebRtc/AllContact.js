@@ -136,7 +136,7 @@ function AllContact() {
                 </div>
               </div>
 
-              <div className="col-xl-6 pt-2 allCallHistory">
+              <div className="col-xl-6 allCallHistory">
                 <div className="col-auto" style={{ padding: '0 10px' }}>
                   <h5 className="viewingAs">
                     Viewing As:
@@ -194,7 +194,7 @@ function AllContact() {
                     </div>
                   </nav>
                   <div className="tab-content">
-                    <div className="callList">
+                    <div className="callList" style={{ height: 'calc(100vh - 215px)' }}>
                       {loading ? (
                         <div colSpan={99}>
                           <ContentLoader />
@@ -569,7 +569,7 @@ function AllContact() {
                   </div>
                 </div>
               </div>
-              <div className="col-xl-6">
+              {/* <div className="col-xl-6">
                 <section id="contactView">
                   <div
                     className="row justify-content-between"
@@ -730,7 +730,7 @@ function AllContact() {
                     </div>
                   </div>
                 </section>
-              </div>
+              </div> */}
             </div>
           </div>
         </section>

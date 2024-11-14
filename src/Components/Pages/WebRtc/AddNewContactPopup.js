@@ -91,71 +91,78 @@ function AddNewContactPopup({
     }
   });
   return (
-    <div className="addNewContactPopup">
-      <div className="row">
-        <div className="col-12 heading">
-          <i class="fa-light fa-user-plus"></i>
-          <h3>{editContactToggle ? "Edit Contact" : "Add Contact"}</h3>
-        </div>
-        <div class="col-xl-12">
-          <div class="formLabel">
-            <label for="">Full Name Of User</label>
+    <div className="backdropContact">
+      <div className="addNewContactPopup">
+        <div className="row">
+          <div className="col-12 heading">
+            <i class="fa-light fa-user-plus"></i>
+            <h5>{editContactToggle ? "Edit People in Contact Lists" : "Add People to Contact Lists"}</h5>
+            <p>Add people to your contact list effortlessly, keeping your connections organized and relationships stronger</p>
+            <div className="border-bottom col-12" />
           </div>
-          <div class="col-12">
-            <input
-              type="text"
-              class="formItem"
-              placeholder="Full Name"
-              {...register("name", { ...requiredValidator, ...nameValidator })}
-            />
+          <div class="col-xl-12">
+            <div class="formLabel">
+              <label for="">Full Name</label>
+            </div>
+            <div class="col-12">
+              <input
+                type="text"
+                class="formItem"
+                placeholder="Full Name"
+                {...register("name", { ...requiredValidator, ...nameValidator })}
+              />
 
-            {errors.name && <ErrorMessage text={errors.name.message} />}
+              {errors.name && <ErrorMessage text={errors.name.message} />}
+            </div>
           </div>
-        </div>
-        <div class="col-xl-12">
-          <div class="formLabel">
-            <label for="">DID / Extension</label>
+          <div class="col-xl-12 mt-3">
+            <div class="formLabel">
+              <label for="">DID / Extension</label>
+            </div>
+            <div class="col-12">
+              <input
+                type="text"
+                class="formItem"
+                placeholder="DID"
+                {...register("did", {
+                  ...requiredValidator,
+                  ...numberValidator,
+                })}
+              />
+              {errors.did && <ErrorMessage text={errors.did.message} />}
+            </div>
           </div>
-          <div class="col-12">
-            <input
-              type="text"
-              class="formItem"
-              placeholder="DID"
-              {...register("did", {
-                ...requiredValidator,
-                ...numberValidator,
-              })}
-            />
-            {errors.did && <ErrorMessage text={errors.did.message} />}
-          </div>
-        </div>
 
-        <div className="col-xl-12 mt-3">
-          <div className="d-flex justify-content-between">
-            <button
-              disabled={loading}
-              className="formButton ms-0"
-              onClick={() => {
-                setAddContactToggle(false);
-                setEditContactToggle(false);
-                setSelectedEditContact(null);
-              }}
-            >
-              Cancel
-            </button>
-            <button
-              disabled={loading}
-              className="formButton me-0"
-              onClick={() => {
-                if (editContactToggle) {
-                  handleEditContactSubmit();
-                } else {
-                  handleFormSubmit();
-                }
-              }}
-            >
-              {editContactToggle ? "Save" : "Create"}
-            </button>
+          <div className="col-xl-12 mt-4">
+            <div className="d-flex justify-content-between">
+              <button
+                disabled={loading}
+                className="panelButton gray ms-0"
+                onClick={() => {
+                  setAddContactToggle(false);
+                  setEditContactToggle(false);
+                  setSelectedEditContact(null);
+                }}
+              >
+                <span className="text">Cancel</span>
+                <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+              </button>
+              <button
+                disabled={loading}
+                className="panelButton me-0"
+                onClick={() => {
+                  if (editContactToggle) {
+                    handleEditContactSubmit();
+                  } else {
+                    handleFormSubmit();
+                  }
+                }}
+              >
+
+                <span className="text">{editContactToggle ? "Save" : "Create"}</span>
+                <span className="icon"><i class={`fa-solid fa-${editContactToggle ? "floppy-disk" : "check"}`}></i></span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

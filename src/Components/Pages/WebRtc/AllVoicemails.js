@@ -368,10 +368,19 @@ function AllVoicemails({ isCustomerAdmin }) {
                           </>
                         ))
                       ) : (
-                        <h3 className="text-center pt-10">
-                          {/* No {clickStatus} calls */}
-                          No Voicemails
-                        </h3>
+                        <div className="startAJob">
+                          <div class="text-center mt-3">
+                            <img
+                              src={require("../../assets/images/empty-box.png")}
+                              alt="Empty"
+                            ></img>
+                            <div>
+                              <h5>
+                                No <span><b>voicemails</b></span> available
+                              </h5>
+                            </div>
+                          </div>
+                        </div>
                       )}
 
                       {/* Call List Item */}
