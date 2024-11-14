@@ -16,7 +16,7 @@ function AllVoicemails({ isCustomerAdmin }) {
   const loadings = useSelector((state) => state.loading);
   const [loading, setLoading] = useState(false);
   const [clickedVoiceMail, setClickedVoiceMail] = useState(null);
-  const [voiceMailRefresh,setVoiceMailRefresh] = useState(0);
+  const [voiceMailRefresh, setVoiceMailRefresh] = useState(0);
 
   const audioRef = useRef(null);
 
@@ -44,7 +44,7 @@ function AllVoicemails({ isCustomerAdmin }) {
       console.log("api_data:", apiData);
     }
     getData();
-  }, [pageNumber,voiceMailRefresh]);
+  }, [pageNumber, voiceMailRefresh]);
 
   useEffect(() => {
     if (voiceMail?.data) {
@@ -147,12 +147,12 @@ function AllVoicemails({ isCustomerAdmin }) {
       onClick={() => handleVoiceMailClick(item)}
     >
       <div className="row justify-content-between align-items-center">
-        <div className="col-9 d-flex">
+        <div className="col-12 d-flex">
           <div className="profileHolder">
             {/* <i className="fa-light fa-user fs-5" /> */}
             <i class="fa-solid fa-microphone-lines fs-5"></i>
           </div>
-          <div className="my-auto">
+          <div className="col-4 my-auto ms-2 ms-xl-3">
             {isCustomerAdmin ? (
               <h4>
                 {item.src}
@@ -162,7 +162,7 @@ function AllVoicemails({ isCustomerAdmin }) {
             ) : (
               <h4>{getSourceName(item.src, item.dest)}</h4>
             )}
-            <h5>{formatDate(item.created_at)}</h5>
+            <h5 style={{ fontSize: "12px" }}>{formatDate(item.created_at)}</h5>
             {/* <h5>USER XYZ</h5>
             <h6
               style={{
@@ -174,9 +174,14 @@ function AllVoicemails({ isCustomerAdmin }) {
               Voicemail, 15 sec
             </h6> */}
           </div>
-        </div>
-        <div className="col-auto text-end">
-          <h5>{formatTo12HourTime(item.created_at)}</h5>
+          <div class="col-3 mx-auto">
+            <div class="contactTags">
+              <span data-id="2">Duration:  5 sec</span>
+            </div>
+          </div>
+          <div className="col-1 text-end ms-auto">
+            <p className="timeAgo">{formatTo12HourTime(item.created_at)}</p>
+          </div>
         </div>
       </div>
       {/* <div className="contactPopup">
@@ -255,40 +260,88 @@ function AllVoicemails({ isCustomerAdmin }) {
               : "0",
         }}
       >
-        <section>
+        <section className="callPage">
           <div className="container-fluid">
             <div className="row">
-              <div
-                className="col-xl-6 d-flex flex-wrap justify-content-between py-3 border-end"
-                style={{ height: "100%" }}
-              >
-                <div className="col-auto">
-                  <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
-                    Voicemails <button onClick={()=>setVoiceMailRefresh(voiceMailRefresh+1)} class="clearButton"><i class={loading?"fa-regular fa-arrows-rotate fs-5 fa-spin":"fa-regular fa-arrows-rotate fs-5"} style={{ color: 'rgb(148, 148, 148)' }}></i></button>
-                  </h3>
+
+              <div className="col-12 ps-xl-0">
+                <div className="newHeader">
+                  <div className="col-auto" style={{ padding: '0 10px' }}>
+                    <h3 style={{ fontFamily: "Outfit", marginBottom: '0' }}>
+                      <button class="clearButton text-dark"><i class="fa-solid fa-chevron-left fs-4"></i></button> Voicemails{" "}
+                      <button class="clearButton" onClick={() => setVoiceMailRefresh(voiceMailRefresh + 1)}>
+                        <i
+                          class={loading ? "fa-regular fa-arrows-rotate fs-5 fa-spin" : "fa-regular fa-arrows-rotate fs-5 "}
+                          style={{ color: "rgb(148, 148, 148)" }}
+                        ></i>
+                      </button>
+                    </h3>
+                  </div>
+                  <div className="d-flex justify-content-end align-items-center">
+                    <div className="col-9">
+                      <input type="search" name="Search" placeholder="Search users, groups or chat" class="formItem fw-normal" style={{ backgroundColor: '#f5f5f5' }} />
+                    </div>
+                    <div className="col-auto mx-2">
+                      <button
+                        className="clearButton2 xl"
+                        effect="ripple"
+                      >
+                        <i className="fa-regular fa-bell" />
+                      </button>
+                    </div>
+                    <div className="col-auto">
+                      <div className="myProfileWidget">
+                        <div class="profileHolder" id="profileOnlineNav">
+                          <img src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg" alt="profile" />
+                        </div>
+                        <div class="profileName">{account.username} <span className="status">Available</span></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="col-auto d-flex">
-                  <div className="col-auto">
-                    <button className="appPanelButton" effect="ripple">
-                      <i className="fa-light fa-mobile-retro" />
-                    </button>
-                  </div>
-                  <div className="col-auto">
-                    <button className="appPanelButton" effect="ripple">
-                      <i className="fa-light fa-satellite-dish" />
-                    </button>
-                  </div>
+              </div>
+
+
+              <div className="col-xl-6 allCallHistory pb-0s">
+                <div className="col-auto" style={{ padding: '0 10px' }}>
+                  <h5 className="viewingAs">
+                    Viewing As:
+                    <span>
+                      {account && extension ? (
+                        <span>
+                          {account.username} - {account && extension}
+                        </span>
+                      ) : (
+                        <span className="text-danger">
+                          No Extension Assigned
+                        </span>
+                      )}
+                    </span>
+                  </h5>
+                </div>
+                <div className="col-auto" style={{ padding: '0 10px' }}>
+                  <button className="clearColorButton dark">
+                    <i className="fa-light fa-mobile-retro" /> Dial Number
+                  </button>
+                </div>
+                <div className="col-12 mt-3" style={{ padding: '0 10px' }}>
+                  <input
+                    type="search"
+                    name="Search"
+                    id="headerSearch"
+                    placeholder="Search"
+                  />
                 </div>
                 <div className="col-12">
-                  <nav>
-                    <div className="nav nav-tabs">
-                      <button
+                  <nav className="mt-3">
+                    <div className="nav nav-tabs" style={{ borderBottom: '1px solid #ddd' }}>
+                      {/* <button
                         className="tabLink active"
                         effect="ripple"
                         data-category="all"
                       >
                         All
-                      </button>
+                      </button> */}
                       {/* <button
                         className="tabLink"
                         effect="ripple"
@@ -299,17 +352,6 @@ function AllVoicemails({ isCustomerAdmin }) {
                     </div>
                   </nav>
                   <div className="tab-content">
-                    <div className="position-relative searchBox d-flex mt-3">
-                      <input
-                        type="search"
-                        name="Search"
-                        id="headerSearch"
-                        placeholder="Search"
-                      />
-                      <button className="ms-2 appPanelButton" effect="ripple">
-                        <i className="fa-light fa-calendar-plus" />
-                      </button>
-                    </div>
                     <div className="callList">
                       {loading && loadings ? (
                         <ContentLoader />
@@ -318,9 +360,9 @@ function AllVoicemails({ isCustomerAdmin }) {
                           <>
                             <div
                               key={date}
-                              className="text-center callListItem"
+                              className="dateHeader"
                             >
-                              <h5 className="fw-semibold">{date}</h5>
+                              <p>{date}</p>
                             </div>
                             {sortedVoiceMails[date].map(renderCallItem)}
                           </>
@@ -335,19 +377,21 @@ function AllVoicemails({ isCustomerAdmin }) {
                       {/* Call List Item */}
                     </div>
                   </div>
-                  {voiceMail && voiceMail?.data?.length > 0 ? (
-                    // data here would be changed if we get data user specific
-                    //currently data is for all users in this account
-                    <PaginationComponent
-                      pageNumber={(e) => setPageNumber(e)}
-                      totalPage={voiceMail.last_page}
-                      from={(pageNumber - 1) * voiceMail.per_page + 1}
-                      to={voiceMail.to} //change here accordingly
-                      total={voiceMail.total} //change here accordingly
-                    />
-                  ) : (
-                    ""
-                  )}
+                  <div className="tableHeader mt-2 px-2">
+                    {voiceMail && voiceMail?.data?.length > 0 ? (
+                      // data here would be changed if we get data user specific
+                      //currently data is for all users in this account
+                      <PaginationComponent
+                        pageNumber={(e) => setPageNumber(e)}
+                        totalPage={voiceMail.last_page}
+                        from={(pageNumber - 1) * voiceMail.per_page + 1}
+                        to={voiceMail.to} //change here accordingly
+                        total={voiceMail.total} //change here accordingly
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </div>
                 </div>
               </div>
               {clickedVoiceMail && (
@@ -356,7 +400,60 @@ function AllVoicemails({ isCustomerAdmin }) {
                   style={{ height: "100%" }}
                   id="callDetails"
                 >
-                  <div className="profileInfoHolder">
+
+                  <div className="messageOverlay">
+                    <div className="contactHeader">
+                      <div>
+                        <h4 className="mb-0">Test User</h4>
+                        <p className="gray14 mb-0 mt-1">
+                          Extension - {getSourceName(
+                            clickedVoiceMail.src,
+                            clickedVoiceMail.dest
+                          )}
+                        </p>
+                      </div>
+                      <div className="d-flex my-auto">
+                        <div className="d-flex align-items-center me-2">
+                          <label className="gray14 me-2">Assigned to:</label>
+                          <select className="ovalSelect">
+                            <option>
+                              Test User
+                            </option>
+                          </select>
+                        </div>
+                        <button
+                          className="clearButton2 xl"
+                          effect="ripple"
+                        >
+                          <i className="fa-regular fa-message-dots" />
+                        </button>
+                        <button
+                          className="clearButton2 xl"
+                          effect="ripple"
+                        >
+                          <i className="fa-regular fa-phone" />
+                        </button>
+                        <button
+                          className="clearButton2 xl"
+                          effect="ripple"
+                        >
+                          <i className="fa-regular fa-video" />
+                        </button>
+                        <div class="dropdown">
+                          <button class="clearButton2 xl" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Add to Contact</a></li>
+                            <li><a class="dropdown-item" href="#">Video Call</a></li>
+                            <li><a class="dropdown-item" href="#">Delete Contact</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* <div className="profileInfoHolder">
                     <div className="profileHolder">
                       <i className="fa-light fa-user fs-3" />
                     </div>
@@ -370,13 +467,6 @@ function AllVoicemails({ isCustomerAdmin }) {
                         )}
                       </h4>
                     )}
-                    {/* <h4>
-                      {getSourceName(
-                        clickedVoiceMail?.src,
-                        clickedVoiceMail?.dest
-                      )}
-                    </h4> */}
-                    {/* <h5>USER XYZ</h5> */}
                     <div className="d-flex justify-content-center align-items-center mt-3">
                       <button className="appPanelButton" effect="ripple">
                         <i className="fa-light fa-message-dots" />
@@ -385,218 +475,253 @@ function AllVoicemails({ isCustomerAdmin }) {
                         <i className="fa-light fa-phone" />
                       </button>
                     </div>
-                  </div>
-                  <div className="mt-2">
-                    <nav>
-                      <div className="nav nav-tabs" id="nav-tab" role="tablist">
-                        <button
-                          className="tabLink active"
-                          effect="ripple"
-                          data-bs-toggle="tab"
-                          data-bs-target="#nav-home"
-                          type="button"
-                          role="tab"
-                          aria-controls="nav-home"
-                          aria-selected="true"
-                        >
-                          <i className="fa-regular fa-circle-info" />
-                        </button>
-                        <button
-                          className="tabLink"
-                          effect="ripple"
-                          data-bs-toggle="tab"
-                          data-bs-target="#nav-profile"
-                          type="button"
-                          role="tab"
-                          aria-controls="nav-profile"
-                          aria-selected="false"
-                        >
-                          <i className="fa-regular fa-clock-rotate-left" />
-                        </button>
-                      </div>
-                    </nav>
-                    <div className="tab-content" id="nav-tabContent">
-                      <div
-                        className="tab-pane fade show active"
-                        id="nav-home"
-                        role="tabpanel"
-                        aria-labelledby="nav-home-tab"
-                        tabIndex={0}
-                      >
-                        <div className="callDetailsList">
-                          <table className="mt-3">
-                            <tbody>
-                              <tr>
-                                <td style={{ color: "#444444" }}>
-                                  {formatDate(clickedVoiceMail.created_at)}
-                                </td>
-                                <td>
-                                  {formatTime(clickedVoiceMail.created_at)}
-                                </td>
-                                <td
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                  }}
+                  </div> */}
+                  <div className="overviewTableWrapper p-2 mt-2">
+                    <div className="overviewTableChild">
+                      <div className="d-flex flex-wrap">
+                        <div class="col-12">
+                          <div class="heading">
+                            <div class="content">
+                              <h4>Voicemails</h4>
+                              <p>You can see all of the voicemail logs here</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-12" style={{ padding: '0px 20px 0px' }}>
+                          <div className="mt-2">
+                            <nav className="mb-2">
+                              <div className="nav nav-tabs" id="nav-tab" role="tablist" style={{ borderBottom: '1px solid #ddd' }}>
+                                <button
+                                  className="tabLink active"
+                                  effect="ripple"
+                                  data-bs-toggle="tab"
+                                  data-bs-target="#nav-home"
+                                  type="button"
+                                  role="tab"
+                                  aria-controls="nav-home"
+                                  aria-selected="true"
                                 >
-                                  <i className="fa-solid fa-voicemail text-danger fw-bold me-1" />{" "}
-                                  <span className="d-none d-xl-inline-block">
-                                    Voicemail
-                                  </span>
-                                </td>
-                                <td>
-                                  {isCustomerAdmin ? (
-                                    <span>
-                                      {clickedVoiceMail.src}
-                                      ==<i class="fa-solid fa-angles-right"></i>
-                                      {clickedVoiceMail.dest}
-                                    </span>
-                                  ) : (
-                                    <span>
-                                      {getSourceName(
-                                        clickedVoiceMail.src,
-                                        clickedVoiceMail.dest
-                                      )}
-                                    </span>
-                                  )}
-                                </td>
-                                {/* <td>
+                                  Info
+                                </button>
+                                <button
+                                  className="tabLink"
+                                  effect="ripple"
+                                  data-bs-toggle="tab"
+                                  data-bs-target="#nav-profile"
+                                  type="button"
+                                  role="tab"
+                                  aria-controls="nav-profile"
+                                  aria-selected="false"
+                                >
+                                  Logs
+                                </button>
+                              </div>
+                            </nav>
+                            <div className="tab-content" id="nav-tabContent">
+                              <div
+                                className="tab-pane fade show active"
+                                id="nav-home"
+                                role="tabpanel"
+                                aria-labelledby="nav-home-tab"
+                                tabIndex={0}
+                              >
+                                <div className="callDetailsList tableContainer mt-0" style={{ height: 'calc(100vh - 311px)' }}>
+                                  <table>
+                                    <thead>
+                                      <tr>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Call Type</th>
+                                        <th>Sender</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td style={{ color: "#444444" }}>
+                                          {formatDate(clickedVoiceMail.created_at)}
+                                        </td>
+                                        <td>
+                                          {formatTime(clickedVoiceMail.created_at)}
+                                        </td>
+                                        <td
+                                          style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                          }}
+                                        >
+                                          <i className="fa-solid fa-voicemail text-danger fw-bold me-1" />{" "}
+                                          <span className="d-none d-xl-inline-block">
+                                            Voicemail
+                                          </span>
+                                        </td>
+                                        <td>
+                                          {isCustomerAdmin ? (
+                                            <span>
+                                              {clickedVoiceMail.src}
+                                              ==<i class="fa-solid fa-angles-right"></i>
+                                              {clickedVoiceMail.dest}
+                                            </span>
+                                          ) : (
+                                            <span>
+                                              {getSourceName(
+                                                clickedVoiceMail.src,
+                                                clickedVoiceMail.dest
+                                              )}
+                                            </span>
+                                          )}
+                                        </td>
+                                        {/* <td>
                                   {getSourceName(
                                     clickedVoiceMail.src,
                                     clickedVoiceMail.dest
                                   )}
                                 </td> */}
-                                {/* <td style={{ color: "#444444" }}>16 sec</td> */}
-                              </tr>
-                            </tbody>
-                          </table>
-                          <div className="audio-container">
-                            <audio ref={audioRef} controls={true}>
-                              {/* <source
+                                        {/* <td style={{ color: "#444444" }}>16 sec</td> */}
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                  <div className="audio-container mx-2">
+                                    <audio ref={audioRef} controls={true}>
+                                      {/* <source
                                 src="https://crmdata-test.s3.us-east-2.amazonaws.com/rout.8.webvio.in/2024/Oct/01/b78c0901-4cb1-4c3d-9f5f-2e0c0a61775c.wav"
                                 type="audio/ogg"
                               /> */}
-                              <source
-                                src={clickedVoiceMail.recording_path}
-                                type="audio/mpeg"
-                              />
-                            </audio>
+                                      <source
+                                        src={clickedVoiceMail.recording_path}
+                                        type="audio/mpeg"
+                                      />
+                                    </audio>
 
-                            <button
-                              className="audioCustomButton"
-                              onClick={() =>
-                                handleAudioDownload(
-                                  clickedVoiceMail.recording_path
-                                )
-                              }
-                            >
-                              <i className="fa-sharp fa-solid fa-download" />
-                            </button>
-                            {/* <button className="audioCustomButton ms-1">
+                                    <button
+                                      className="audioCustomButton"
+                                      onClick={() =>
+                                        handleAudioDownload(
+                                          clickedVoiceMail.recording_path
+                                        )
+                                      }
+                                    >
+                                      <i className="fa-sharp fa-solid fa-download" />
+                                    </button>
+                                    {/* <button className="audioCustomButton ms-1">
                               <i className="fa-sharp fa-solid fa-box-archive" />
                             </button> */}
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                className="tab-pane fade"
+                                id="nav-profile"
+                                role="tabpanel"
+                                aria-labelledby="nav-profile-tab"
+                                tabIndex={0}
+                              >
+                                <div className="callDetailsList tableContainer mt-0" style={{ height: 'calc(100vh - 311px)' }}>
+                                  <table>
+                                    <thead>
+                                      <tr>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Call Type</th>
+                                        <th>Sender</th>
+                                        <th>Duration</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {selectedVoiceMailExtensionList &&
+                                        selectedVoiceMailExtensionList.length > 0 &&
+                                        selectedVoiceMailExtensionList.map(
+                                          (item, index) => {
+                                            return (
+                                              <>
+                                                <tr
+                                                  data-bs-toggle="collapse"
+                                                  href={`#voiceMail${index}`}
+                                                  role="button"
+                                                >
+                                                  <td style={{ color: "#444444" }}>
+                                                    {formatDate(item.created_at)}
+                                                  </td>
+                                                  <td>{formatTime(item.created_at)}</td>
+                                                  <td
+                                                    style={{
+                                                      display: "flex",
+                                                      alignItems: "center",
+                                                    }}
+                                                  >
+                                                    <i className="fa-solid fa-voicemail text-danger fw-bold me-1" />{" "}
+                                                    <span className="d-none d-xl-inline-block">
+                                                      Voicemail
+                                                    </span>
+                                                  </td>
+                                                  <td>
+                                                    {isCustomerAdmin ? (
+                                                      <span>
+                                                        {item.src}
+                                                        ==
+                                                        <i class="fa-solid fa-angles-right"></i>
+                                                        {item.dest}
+                                                      </span>
+                                                    ) : (
+                                                      <span>
+                                                        {getSourceName(
+                                                          item.src,
+                                                          item.dest
+                                                        )}
+                                                      </span>
+                                                    )}
+                                                  </td>
+                                                  {/* <td>{item.dest}</td> */}
+                                                  <td style={{ color: "#444444" }}>
+                                                    24 sec
+                                                  </td>
+                                                </tr>
+                                                <tr
+                                                  className="collapse"
+                                                  id={`voiceMail${index}`}
+                                                >
+                                                  <td colSpan={5}>
+                                                    <div
+                                                      className="audio-container collapse"
+                                                      id={`voiceMail${index}`}
+                                                    >
+                                                      <audio controls={true}>
+                                                        <source
+                                                          src=""
+                                                          type="audio/ogg"
+                                                        />
+                                                        <source
+                                                          src={
+                                                            item.recording_path || ""
+                                                          }
+                                                          type="audio/mpeg"
+                                                        />
+                                                      </audio>
+                                                      {/* Custom buttons */}
+                                                      <button className="audioCustomButton">
+                                                        <i className="fa-sharp fa-solid fa-download" />
+                                                      </button>
+                                                      <button className="audioCustomButton ms-1">
+                                                        <i className="fa-sharp fa-solid fa-box-archive" />
+                                                      </button>
+                                                    </div>
+                                                  </td>
+                                                </tr>
+                                              </>
+                                            );
+                                          }
+                                        )}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                      <div
-                        className="tab-pane fade"
-                        id="nav-profile"
-                        role="tabpanel"
-                        aria-labelledby="nav-profile-tab"
-                        tabIndex={0}
-                      >
-                        <div className="callDetailsList">
-                          <table className="mt-3">
-                            <tbody>
-                              {selectedVoiceMailExtensionList &&
-                                selectedVoiceMailExtensionList.length > 0 &&
-                                selectedVoiceMailExtensionList.map(
-                                  (item, index) => {
-                                    return (
-                                      <>
-                                        <tr
-                                          data-bs-toggle="collapse"
-                                          href={`#voiceMail${index}`}
-                                          role="button"
-                                        >
-                                          <td style={{ color: "#444444" }}>
-                                            {formatDate(item.created_at)}
-                                          </td>
-                                          <td>{formatTime(item.created_at)}</td>
-                                          <td
-                                            style={{
-                                              display: "flex",
-                                              alignItems: "center",
-                                            }}
-                                          >
-                                            <i className="fa-solid fa-voicemail text-danger fw-bold me-1" />{" "}
-                                            <span className="d-none d-xl-inline-block">
-                                              Voicemail
-                                            </span>
-                                          </td>
-                                          <td>
-                                            {isCustomerAdmin ? (
-                                              <span>
-                                                {item.src}
-                                                ==
-                                                <i class="fa-solid fa-angles-right"></i>
-                                                {item.dest}
-                                              </span>
-                                            ) : (
-                                              <span>
-                                                {getSourceName(
-                                                  item.src,
-                                                  item.dest
-                                                )}
-                                              </span>
-                                            )}
-                                          </td>
-                                          {/* <td>{item.dest}</td> */}
-                                          <td style={{ color: "#444444" }}>
-                                            24 sec
-                                          </td>
-                                        </tr>
-                                        <tr
-                                          className="collapse"
-                                          id={`voiceMail${index}`}
-                                        >
-                                          <td colSpan={5}>
-                                            <div
-                                              className="audio-container collapse"
-                                              id={`voiceMail${index}`}
-                                            >
-                                              <audio controls={true}>
-                                                <source
-                                                  src=""
-                                                  type="audio/ogg"
-                                                />
-                                                <source
-                                                  src={
-                                                    item.recording_path || ""
-                                                  }
-                                                  type="audio/mpeg"
-                                                />
-                                              </audio>
-                                              {/* Custom buttons */}
-                                              <button className="audioCustomButton">
-                                                <i className="fa-sharp fa-solid fa-download" />
-                                              </button>
-                                              <button className="audioCustomButton ms-1">
-                                                <i className="fa-sharp fa-solid fa-box-archive" />
-                                              </button>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      </>
-                                    );
-                                  }
-                                )}
-                            </tbody>
-                          </table>
                         </div>
                       </div>
                     </div>
                   </div>
+
+
                 </div>
               )}
             </div>
