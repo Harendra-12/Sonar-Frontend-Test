@@ -37,9 +37,6 @@ const AgentSearch = ({ getDropdownValue, value, getAllAgents }) => {
         })),
     },
   ];
-
-  console.log("User list", user);
-
   // Custom styles for react-select
   const customStyles = {
     control: (provided, state) => ({

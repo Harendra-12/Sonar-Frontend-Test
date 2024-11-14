@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Messager, UserAgent } from "sip.js";
 import { useSIPProvider, CONNECT_STATUS } from "react-sipjs";
 import AgentSearch from "./AgentSearch";
-import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
+import CircularLoader from "../../Loader/CircularLoader";
 
-function Messages({setSelectedModule, isMicOn, isVideoOn }) {
+function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
   const dispatch = useDispatch()
   const { sessionManager, connectStatus } = useSIPProvider();
   const loginUser = useSelector((state) => state.loginUser);
@@ -28,16 +29,23 @@ function Messages({setSelectedModule, isMicOn, isVideoOn }) {
   const [activeTab, setActiveTab] = useState("all");
   const [onlineUser, setOnlineUser] = useState([]);
   const [unreadMessage, setUnreadMessage] = useState([]);
-
-
-  console.log("All agents", agents);
+  const [allTags, setAllTags] = useState([]);
+  const [addNewTag, setAddNewTag] = useState(false);
+  const [newTag, setNewTag] = useState("");
+  const [upDateTag, setUpDateTag] = useState("");
+  const [selectedTag, setSelectedTag] = useState("");
+  const [loading,setLoading] = useState(false);
 
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/message/contacts`);
+      const tagData = await generalGetFunction("/tags/all")
       if (apiData?.status && apiData.data.length > 0) {
         setContact(apiData.data);
         setRecipient([apiData.data[0].extension, apiData.data[0].id]);
+      }
+      if (tagData?.status) {
+        setAllTags(tagData.data)
       }
     }
     getData();
@@ -368,7 +376,7 @@ function Messages({setSelectedModule, isMicOn, isVideoOn }) {
 
 
   // Handle calling 
-  async function onSubmit(mode,destNumber) {
+  async function onSubmit(mode, destNumber) {
     if (!isMicOn) {
       toast.warn("Please turn on microphone");
       return;
@@ -460,6 +468,66 @@ function Messages({setSelectedModule, isMicOn, isVideoOn }) {
       });
     } else {
       toast.error("Please enter a valid number");
+    }
+  }
+
+  // Add new Tag
+  async function handleNewTag() {
+    if (newTag.length === 0) {
+      toast.error("Please enter a valid tag name");
+    } else {
+      setLoading(true);
+      const parsedData = {
+        name: newTag
+      }
+      const apiData = await generalPostFunction(`/tags/store`, parsedData);
+      if (apiData.status) {
+        setLoading(false)
+        toast.success("Tag added successfully");
+        setAddNewTag(false);
+        setNewTag("")
+        setAllTags([...allTags, apiData.data])
+      }
+    }
+  }
+
+  // Update tag
+  async function handleUpdateTag() {
+    if (upDateTag.length === 0) {
+      toast.error("Please enter a valid tag name");
+    } else {
+      setLoading(true)
+      const parsedData = {
+        name: upDateTag
+      }
+      const apiData = await generalPutFunction(`/tags/update/${selectedTag}`, parsedData);
+      if (apiData.status) {
+        setLoading(false)
+        toast.success("Tag updated successfully");
+        setUpDateTag("")
+        setSelectedTag("")
+        // Upadte the value of tag in existing data
+        const updatedTags = allTags.map((tag) => {
+          if (tag.id === selectedTag) {
+            return { ...tag, name: upDateTag };
+          }
+          return tag;
+        });
+        setAllTags(updatedTags);
+      }
+    }
+  }
+
+  // Delete tag
+  async function handleDeleteTag(id) {
+    setLoading(true)
+    const apiData = await generalDeleteFunction(`/tags/destroy/${id}`);
+    if (apiData.status) {
+      setLoading(false)
+      toast.success("Tag deleted successfully");
+      setSelectedTag("")
+      const updatedTags = allTags.filter((tag) => tag.id !== id);
+      setAllTags(updatedTags);
     }
   }
 
@@ -749,109 +817,59 @@ function Messages({setSelectedModule, isMicOn, isVideoOn }) {
                       /> */}
                       <div className="callList" style={{ height: 'calc(100vh - 270px)' }}>
                         <div className="chatHeading" data-bell={""}>
-                          <h5>Tag List <i class="fa-regular fa-circle-plus fs-5" style={{ cursor: "pointer", fontSize: 18 }}></i></h5>
+                          <h5>Tag List <i onClick={() => setAddNewTag(true)} class="fa-regular fa-circle-plus fs-5" style={{ cursor: "pointer", fontSize: 18 }}></i></h5>
                         </div>
-
-                        <div className="contactTagsAddEdit">
-                          <div className="row align-items-center item">
-                            <div className="col-auto">
-                              <h5>Important</h5>
-                            </div>
-                            <div className="col-auto">
-                              <div className="contactTags">
-                                <span data-id="2">Important</span>
+                        {allTags.map((item) => {
+                          return (
+                            <div className="contactTagsAddEdit">
+                              <div className="row align-items-center item">
+                                <div className="col-auto">
+                                  <h5><input value={selectedTag===item.id?upDateTag:item.name} onChange={(e) => setUpDateTag(e.target.value)} placeholder="Please enter tag name" type="text" disabled={selectedTag !== item.id} />
+                                    </h5>
+                                </div>
+                                <div className="col-auto">
+                                  <div className="contactTags">
+                                    <span data-id={Math.floor(Math.random() * 4) + 1}>{selectedTag===item.id?upDateTag:item.name}</span>
+                                  </div>
+                                </div>
+                                <div className="col-auto d-flex ms-auto pe-0">
+                                  {selectedTag === item.id ? <button className="clearButton2 xl" onClick={handleUpdateTag} >
+                                    <i class="fa-regular fa-circle-check"></i>
+                                  </button> : <button className="clearButton2 xl" onClick={() => { setSelectedTag(item.id); setUpDateTag(item.name) }} >
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                  </button>}
+                                  <button className="clearButton2 xl" onClick={() => handleDeleteTag(item.id)}>
+                                    <i class="fa-regular fa-trash text-danger"></i>
+                                  </button>
+                                </div>
                               </div>
                             </div>
-                            <div className="col-auto d-flex ms-auto pe-0">
-                              <button className="clearButton2 xl">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                              </button>
-                              <button className="clearButton2 xl">
-                                <i class="fa-regular fa-trash text-danger"></i>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="contactTagsAddEdit">
-                          <div className="row align-items-center item">
-                            <div className="col-auto">
-                              <h5>Work</h5>
-                            </div>
-                            <div className="col-auto">
-                              <div className="contactTags">
-                                <span data-id="1">Work</span>
+                          )
+                        })}
+                        {addNewTag && (
+                          <div className="contactTagsAddEdit">
+                            <div className="row align-items-center item">
+                              <div className="col-auto">
+                                <h5><input value={newTag} onChange={(e) => setNewTag(e.target.value)} placeholder="Please enter tag name" type="text" /></h5>
+                              </div>
+                              {newTag.length > 0 ?
+                                <div className="col-auto">
+                                  <div className="contactTags">
+                                    <span data-id="4">{newTag}</span>
+                                  </div>
+                                </div>
+                                : ""}
+                              <div className="col-auto d-flex ms-auto pe-0">
+                                <button className="clearButton2 xl" onClick={handleNewTag}>
+                                  <i class="fa-regular fa-circle-check"></i>
+                                </button>
+                                <button className="clearButton2  xl" onClick={() => setAddNewTag(false)}>
+                                  <i class="fa-regular fa-trash text-danger"></i>
+                                </button>
                               </div>
                             </div>
-                            <div className="col-auto d-flex ms-auto pe-0">
-                              <button className="clearButton2 xl">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                              </button>
-                              <button className="clearButton2 xl">
-                                <i class="fa-regular fa-trash text-danger"></i>
-                              </button>
-                            </div>
                           </div>
-                        </div>
-                        <div className="contactTagsAddEdit">
-                          <div className="row align-items-center item">
-                            <div className="col-auto">
-                              <h5>Priority</h5>
-                            </div>
-                            <div className="col-auto">
-                              <div className="contactTags">
-                                <span data-id="3">Priority</span>
-                              </div>
-                            </div>
-                            <div className="col-auto d-flex ms-auto pe-0">
-                              <button className="clearButton2 xl">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                              </button>
-                              <button className="clearButton2 xl">
-                                <i class="fa-regular fa-trash text-danger"></i>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="contactTagsAddEdit">
-                          <div className="row align-items-center item">
-                            <div className="col-auto">
-                              <h5>Personal</h5>
-                            </div>
-                            <div className="col-auto">
-                              <div className="contactTags">
-                                <span data-id="4">Personal</span>
-                              </div>
-                            </div>
-                            <div className="col-auto d-flex ms-auto pe-0">
-                              <button className="clearButton2 xl">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                              </button>
-                              <button className="clearButton2  xl">
-                                <i class="fa-regular fa-trash text-danger"></i>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="contactTagsAddEdit">
-                          <div className="row align-items-center item">
-                            <div className="col-auto">
-                              <h5><input placeholder="Please enter tag name" type="text" /></h5>
-                            </div>
-                            <div className="col-auto">
-                              <div className="contactTags">
-                                <span data-id="4">Tag Name</span>
-                              </div>
-                            </div>
-                            <div className="col-auto d-flex ms-auto pe-0">
-                              <button className="clearButton2 xl">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                              </button>
-                              <button className="clearButton2  xl">
-                                <i class="fa-regular fa-trash text-danger"></i>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
+                        )}
                       </div>
                     </div>
                   )}
@@ -897,20 +915,20 @@ function Messages({setSelectedModule, isMicOn, isVideoOn }) {
                           </select>
                         </div>
                         <button
-                          onClick={()=>onSubmit("audio",recipient[0])}
+                          onClick={() => onSubmit("audio", recipient[0])}
                           className="clearButton2 xl"
                           effect="ripple"
                         >
                           <i className="fa-regular fa-phone" />
                         </button>
-                        {isVideoOn?
-                        <button
-                          onClick={()=>onSubmit("video",recipient[0])}
-                          className="clearButton2 xl"
-                          effect="ripple"
-                        >
-                          <i className="fa-regular fa-video" />
-                        </button>:""}
+                        {isVideoOn ?
+                          <button
+                            onClick={() => onSubmit("video", recipient[0])}
+                            className="clearButton2 xl"
+                            effect="ripple"
+                          >
+                            <i className="fa-regular fa-video" />
+                          </button> : ""}
                         <div class="dropdown">
                           <button class="clearButton2 xl" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-ellipsis-vertical"></i>
@@ -938,7 +956,7 @@ function Messages({setSelectedModule, isMicOn, isVideoOn }) {
                           <React.Fragment key={index}>
                             {/* Display "Today" or date header if it's a new date */}
                             {isNewDate && (
-                              <div  className="dateHeader">
+                              <div className="dateHeader">
                                 <p>{messageDate === todayDate ? "Today" : messageDate}</p>
                               </div>
                             )}
@@ -1063,6 +1081,13 @@ function Messages({setSelectedModule, isMicOn, isVideoOn }) {
           </div>
         </section>
       </main >
+      {loading ? (
+              <div colSpan={99}>
+                <CircularLoader />
+              </div>
+            ) : (
+              ""
+            )}
     </>
   );
 }
