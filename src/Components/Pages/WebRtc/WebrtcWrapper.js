@@ -8,14 +8,17 @@ import CallDashboard from "./CallDashboard";
 import EFax from "./EFax";
 import { useSelector, useDispatch } from "react-redux";
 import ActiveCallSidePanel from "./ActiveCallSidePanel";
-import { SIPProvider } from "react-sipjs";
+import { SIPProvider, useSIPProvider } from "react-sipjs";
 import IncomingCalls from "./IncomingCalls";
 import { SipRegister } from "./SipRegister";
 import SideNavbarApp from "./SideNavbarApp";
 import Messages from "./Messages";
 import VideoCall from "./VideoCall";
+import ConferenceCall from "./ConferenceCall";
+import ConferenceTest from "./ConferenceTest";
 
 const WebrtcWrapper = () => {
+  const { sessions: sipSessions } = useSIPProvider();
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
   const callProgressId = useSelector((state) => state.callProgressId);
@@ -31,7 +34,7 @@ const WebrtcWrapper = () => {
   const [isVideoOn, setIsVideoOn] = useState(false); // State to track video status
   const [reconnecting, setReconnecting] = useState(0);
   const callProgress = useSelector((state) => state.callProgress);
-
+  console.log(sipSessions);
   const [closeVideoCall, setCloseVideoCall] = useState(false);
   const useWebSocketErrorHandling = (options) => {
     const retryCountRef = useRef(0);
@@ -155,8 +158,11 @@ const WebrtcWrapper = () => {
   }, [activePage]);
   console.log(
     "videocheck",
-    sessions.find((session) => session.mode === "video")
+    sessions.filter((session) => session.state === "Incoming"),
+    sessions.filter((session) => session.state !== "Incoming")
   );
+
+  
   return (
     <>
       <SIPProvider options={options}>
@@ -167,8 +173,10 @@ const WebrtcWrapper = () => {
           isVideoOn={isVideoOn}
           reconnecting={reconnecting}
         />
-        <div className="d-none">{extension && <SipRegister options={options} />}</div>
-        {activePage == "call" && (
+        <div className="d-none">
+          {extension && <SipRegister options={options} />}
+        </div>
+        {activePage === "call" && (
           <Call
             setHangupRefresh={setHangupRefresh}
             hangupRefresh={hangupRefresh}
@@ -178,17 +186,23 @@ const WebrtcWrapper = () => {
             isMicOn={isMicOn}
             isVideoOn={isVideoOn}
             activePage={activePage}
+            setactivePage={setactivePage}
           />
         )}
-        {activePage == "all-contacts" && <AllContact />}
-        {activePage == "call-center" && <CallCenter />}
-        {activePage == "all-voice-mails" && (
+        {activePage === "all-contacts" && <AllContact />}
+        {activePage === "call-center" && <CallCenter />}
+        {activePage === "test" && <ConferenceTest />}
+        {activePage === "all-voice-mails" && (
           <AllVoicemails isCustomerAdmin={isCustomerAdmin} />
         )}
-        {activePage == "on-going-calls" && <OngoingCall />}
-        {activePage == "call-dashboard" && <CallDashboard />}
-        {activePage == "e-fax" && <EFax />}
-        {activePage == "messages" && <Messages />}
+        {activePage === "on-going-calls" && <OngoingCall  />}
+        {activePage === "call-dashboard" && <CallDashboard />}
+        {activePage === "e-fax" && <EFax />}
+        {activePage === "messages" && <Messages
+          setSelectedModule={setSelectedModule}
+          isMicOn={isMicOn}
+          isVideoOn={isVideoOn} />}
+        {activePage === "conference" && <ConferenceCall />}
         {/* {activePage == "videocall" && <VideoCall />} */}
 
         <IncomingCalls
@@ -209,24 +223,95 @@ const WebrtcWrapper = () => {
             >
               <div className="container">
                 <div className="row">
+                  <div class="chatHeading">
+                    <h5
+                      data-bs-toggle="collapse"
+                      href="#collapse1"
+                      role="button"
+                      aria-expanded="false"
+                      aria-controls="collapse1"
+                    >
+                      Incoming Call{" "}
+                      <span>
+                        {
+                          sessions.filter(
+                            (session) => session.state === "Incoming"
+                          ).length
+                        }
+                      </span>{" "}
+                      <i class="fa-solid fa-chevron-down"></i>
+                    </h5>
+                  </div>
                   {sessions.length > 0 &&
-                    sessions.map((session, chennel) => (
-                      <ActiveCallSidePanel
-                        key={chennel}
-                        mode={session.mode}
-                        sessionId={session.id}
-                        destination={session.destination}
-                        chennel={chennel}
-                        setHangupRefresh={setHangupRefresh}
-                        hangupRefresh={hangupRefresh}
-                        setSelectedModule={setSelectedModule}
-                      />
-                    ))}
+                    sessions
+                      .filter((session) => session.state === "Incoming")
+                      .map((session, chennel) => {
+                        return (
+                          <div class="collapse show px-0" id="collapse1">
+                            <ActiveCallSidePanel
+                              key={chennel}
+                              mode={session.mode}
+                              sessionId={session.id}
+                              destination={session.destination}
+                              chennel={chennel}
+                              setHangupRefresh={setHangupRefresh}
+                              hangupRefresh={hangupRefresh}
+                              setSelectedModule={setSelectedModule}
+                              isMicOn={isMicOn}
+                              setactivePage={setactivePage}
+                              globalSession={sessions}
+                            />
+                          </div>
+                        );
+                      })}
+                </div>
+                <div className="row">
+                  <div class="chatHeading">
+                    <h5
+                      data-bs-toggle="collapse"
+                      href="#collapse2"
+                      role="button"
+                      aria-expanded="false"
+                      aria-controls="collapse2"
+                    >
+                      Active Call{" "}
+                      <span>
+                        {
+                          sessions.filter(
+                            (session) => session.state !== "Incoming"
+                          ).length
+                        }
+                      </span>{" "}
+                      <i class="fa-solid fa-chevron-down"></i>
+                    </h5>
+                  </div>
+                  {sessions.length > 0 &&
+                    sessions
+                      .filter((session) => session.state !== "Incoming")
+                      .map((session, chennel) => {
+                        return (
+                          <div class="collapse show px-0" id="collapse2">
+                            <ActiveCallSidePanel
+                              key={chennel}
+                              mode={session.mode}
+                              sessionId={session.id}
+                              destination={session.destination}
+                              chennel={chennel}
+                              setHangupRefresh={setHangupRefresh}
+                              hangupRefresh={hangupRefresh}
+                              setSelectedModule={setSelectedModule}
+                              isMicOn={isMicOn}
+                              setactivePage={setactivePage}
+                              globalSession={sessions}
+                            />
+                          </div>
+                        );
+                      })}
                 </div>
               </div>
             </section>
             {sessions.find((session) => session.mode === "video") &&
-              callProgressId ? (
+            callProgressId ? (
               <VideoCall
                 setHangupRefresh={setHangupRefresh}
                 hangupRefresh={hangupRefresh}

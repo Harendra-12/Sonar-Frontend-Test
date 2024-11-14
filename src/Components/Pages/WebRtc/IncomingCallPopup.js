@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSessionCall, useSIPProvider } from "react-sipjs";
+import { useSessionCall } from "react-sipjs";
 import { toast } from "react-toastify";
 import { UserAgent } from "sip.js";
 import ringtone from "../../assets/music/cellphone-ringing-6475.mp3";
@@ -8,7 +8,6 @@ import ringtone from "../../assets/music/cellphone-ringing-6475.mp3";
 function IncomingCallPopup({
   sessionId,
   lastIncomingCall,
-  index,
   setSelectedModule,
   setactivePage,
   isMicOn,
@@ -20,11 +19,9 @@ function IncomingCallPopup({
   const { decline, answer, session } = useSessionCall(sessionId);
   const dispatch = useDispatch();
   const globalSession = useSelector((state) => state.sessions) || {};
-  const { sessionManager } = useSIPProvider();
   const [blindTransferNumber, setBlindTransferNumber] = useState("");
   const [attendShow, setAttendShow] = useState(false);
   const [audio] = useState(new Audio(ringtone)); // Initialize the Audio object
-  console.log("aaaa", session);
   useEffect(() => {
     if (lastIncomingCall && !isMinimized) {
       audio.loop = true; // Set loop so it keeps playing
@@ -37,7 +34,6 @@ function IncomingCallPopup({
       audio.currentTime = 0; // Reset the audio to the beginning
     };
   }, [lastIncomingCall, isMinimized, audio]);
-  console.log("answer:", answer);
   useEffect(() => {
     if (!lastIncomingCall) {
       setIsMinimized(true);
@@ -55,7 +51,12 @@ function IncomingCallPopup({
         type: "SET_SESSIONS",
         sessions: [
           ...globalSession,
-          { id: sessionId, destination: callerExtension, mode: "audio" },
+          {
+            id: sessionId,
+            destination: callerExtension,
+            mode: "audio",
+            state: "Incoming",
+          },
         ],
       });
     }
@@ -78,8 +79,6 @@ function IncomingCallPopup({
   const callerExtension = session.incomingInviteRequest
     ? session?.incomingInviteRequest?.message?.from?._displayName
     : session?.outgoingInviteRequest?.message?.to?.uri?.normal?.user;
-
-  const topPosition = 10 + index * 75;
 
   const handleAnswerCall = async (mode) => {
     // e.preventDefault();
@@ -119,6 +118,20 @@ function IncomingCallPopup({
       );
       if (updatedSession) {
         updatedSession.mode = "video";
+        dispatch({
+          type: "SET_SESSIONS",
+          sessions: [
+            ...globalSession.filter((session) => session.id !== sessionId),
+            updatedSession,
+          ],
+        });
+      }
+    } else {
+      const updatedSession = globalSession.find(
+        (session) => session.id === sessionId
+      );
+      if (updatedSession) {
+        updatedSession.state = "Established";
         dispatch({
           type: "SET_SESSIONS",
           sessions: [
@@ -226,14 +239,20 @@ function IncomingCallPopup({
               </div>
             </div>
             <div className="controls">
-              <button class="callButton" onClick={() => handleAnswerCall("audio")}>
+              <button
+                class="callButton"
+                onClick={() => handleAnswerCall("audio")}
+              >
                 <i class="fa-duotone fa-phone"></i>
               </button>
-              {isVideoOn &&
-                <button class="callButton" onClick={() => handleAnswerCall("video")}>
+              {isVideoOn && (
+                <button
+                  class="callButton"
+                  onClick={() => handleAnswerCall("video")}
+                >
                   <i class="fa-duotone fa-video"></i>
                 </button>
-              }
+              )}
               <button class="callButton hangup" onClick={decline}>
                 <i class="fa-duotone fa-phone-hangup"></i>
               </button>
@@ -268,9 +287,9 @@ function IncomingCallPopup({
       ) : (
         <div
           className="incomingCallPopup minimized"
-          style={{
-            marginBottom: topPosition,
-          }}
+          // style={{
+          //   marginBottom: topPosition,
+          // }}
         >
           <div className="user">
             <div className="userInfo text-start my-0 px-2">
@@ -290,7 +309,10 @@ function IncomingCallPopup({
               >
                 <i className="fa-thin fa-phone-arrow-up-right" />
               </button>
-              <button class="callButton" onClick={() => handleAnswerCall("audio")}>
+              <button
+                class="callButton"
+                onClick={() => handleAnswerCall("audio")}
+              >
                 <i class="fa-duotone fa-phone"></i>
                 <div class="circle1"></div>
                 <div class="circle2"></div>

@@ -5,11 +5,13 @@ import {
   backToTop,
   generalDeleteFunction,
   generalGetFunction,
+  generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import ContentLoader from "../../Loader/ContentLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
+import PaginationComponent from "../../CommonComponents/PaginationComponent";
 
 function CallCenterQueue() {
   const navigate = useNavigate();
@@ -19,13 +21,16 @@ function CallCenterQueue() {
   const [callCenter, setCallCenter] = useState();
   const [error, setError] = useState("");
   const [redirectRoutes, setRedirectRoutes] = useState("");
+  const [itemsPerPage, setItemsPerPage] = useState(null);
+  const [selectedCallCenter, setSelectedCallCenter] = useState(null);
   // const [deleteToggle, setDeleteToggle] = useState();
   const [deleteId, setDeleteId] = useState("");
   const allUser = useSelector((state) => state.allUser);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const { data: usersData = [] } = allUser;
-  const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
-  const callCenterState = useSelector((state) => state.callCenter);
+  // const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
+  // const callCenterState = useSelector((state) => state.callCenter);
+  const [pageNumber, setPageNumber] = useState(1);
 
   useEffect(() => {
     dispatch({
@@ -33,40 +38,19 @@ function CallCenterQueue() {
       allUserRefresh: allUserRefresh + 1,
     });
 
-    if (callCenterRefresh > 0) {
-      setCallCenter(callCenterState);
-      setLoading(false);
-      async function getData() {
-        const apiData = await generalGetFunction("/call-center-queues");
-        if (apiData?.status) {
-          setLoading(false);
-          setCallCenter(apiData.data);
-        } else {
-          setLoading(false);
-        }
+    const getCallCenterDashboardData = async () => {
+      const apidata = await generalGetFunction(
+        `/call-center-queues/dashboard?page=${pageNumber}`
+      );
+      if (apidata?.status) {
+        setLoading(false);
+        setCallCenter(apidata.data);
+      } else {
+        setLoading(false);
       }
-      getData();
-    } else {
-      async function getData() {
-        const apiData = await generalGetFunction("/call-center-queues");
-        if (apiData?.status) {
-          setLoading(false);
-          setCallCenter(apiData.data);
-        } else {
-          setLoading(false);
-        }
-      }
-      dispatch({
-        type: "SET_CALLCENTERREFRESH",
-        callCenterRefresh: callCenterRefresh + 1,
-      });
-      getData();
-      dispatch({
-        type: "SET_CALLCENTERREFRESH",
-        callCenterRefresh: callCenterRefresh + 1,
-      });
-    }
-  }, []);
+    };
+    getCallCenterDashboardData();
+  }, [pageNumber]);
 
   const handleAddCallCenterValidation = (e) => {
     e.preventDefault();
@@ -100,8 +84,10 @@ function CallCenterQueue() {
     if (apiData?.status) {
       setLoading(false);
       // setRefresh(refresh+1)
-      const updatedCallCenter = callCenter.filter((item) => item.id !== id);
-      setCallCenter(updatedCallCenter);
+      const updatedCallCenter = callCenter.data.filter(
+        (item) => item.id !== id
+      );
+      setCallCenter({ ...callCenter, data: updatedCallCenter });
       toast.success(apiData.message);
       setDeleteId("");
     } else {
@@ -110,6 +96,92 @@ function CallCenterQueue() {
       setDeleteId("");
     }
   }
+
+  const handleUpdateCallCenterStatus = async (id) => {
+    setLoading(true);
+    const payload = {
+      ...selectedCallCenter,
+      status: selectedCallCenter.status == 0 ? true : false,
+      ...{
+        agents: selectedCallCenter?.agents
+          .map((item) => {
+            // Call checkPrevDestination with the current item
+
+            if (item.id.length > 0) {
+              // Return the object with or without 'id' based on hasId
+              return {
+                agent_name: item.name,
+                reserve_agents: item.reserve_agents,
+                truncate_agents_on_load: item["truncate-agents-on-load"],
+                truncate_tiers_on_load: item["truncate-tiers-on-load"],
+                tier_level: item.level,
+                call_timeout:
+                  item.call_timeout === null ? null : Number(item.call_timeout),
+                reject_delay_time:
+                  item.reject_delay_time === null
+                    ? null
+                    : Number(item.reject_delay_time),
+                max_no_answer:
+                  item.max_no_answer === null
+                    ? null
+                    : Number(item.max_no_answer),
+                no_answer_delay_time:
+                  item.no_answer_delay_time === null
+                    ? null
+                    : Number(item.no_answer_delay_time),
+                wrap_up_time:
+                  item.wrap_up_time === null ? null : Number(item.wrap_up_time),
+                busy_delay_time:
+                  item.busy_delay_time === null
+                    ? null
+                    : Number(item.busy_delay_time),
+                queue_timeout:
+                  item.queue_timeout === null
+                    ? null
+                    : Number(item.queue_timeout),
+                tier_position: item.position,
+                type: item.type,
+                // status: "Logged Out",
+                password: item.password,
+                contact: item.contact,
+                id: item.id,
+              };
+            } else {
+              return null;
+            }
+          })
+          .filter((item) => item !== null),
+      },
+    };
+    const apiData = await generalPutFunction(
+      `/call-center-queue/update/${id}`,
+      payload
+    );
+    if (apiData?.status) {
+      setLoading(false);
+      const updatedCallCenter = callCenter.data.map((item) => {
+        if (item.id === id) {
+          return {
+            ...item,
+            status: item.status == 0 ? 1 : 0,
+          };
+        } else {
+          return item;
+        }
+      });
+
+      setCallCenter({
+        ...callCenter,
+        data: updatedCallCenter,
+      });
+      toast.success(apiData.message);
+      setPopUp(false);
+      setSelectedCallCenter(null);
+    } else {
+      setLoading(false);
+    }
+  };
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -146,18 +218,29 @@ function CallCenterQueue() {
                           className="panelButton"
                         >
                           <span className="text">Add</span>
-                          <span className="icon"><i class="fa-solid fa-plus"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-plus"></i>
+                          </span>
                         </Link>
                       </div>
                     </div>
                   </div>
 
-                  <div className="col-12" style={{ overflow: "auto", padding: '25px 20px 0' }}>
+                  <div
+                    className="col-12"
+                    style={{ overflow: "auto", padding: "25px 20px 0" }}
+                  >
                     <div className="tableHeader">
                       <div className="showEntries">
                         <label>Show</label>
-                        <select className="formItem">
-                          <option>10</option>
+                        <select
+                          className="formItem"
+                          value={itemsPerPage}
+                          onChange={(e) => setItemsPerPage(e.target.value)}
+                        >
+                          <option value={10}>10</option>
+                          <option value={20}>20</option>
+                          <option value={30}>30</option>
                         </select>
                         <label>entries</label>
                       </div>
@@ -181,7 +264,7 @@ function CallCenterQueue() {
                             <th>Timeout Action</th>
                             <th>Prefix</th>
                             <th>Total Agents</th>
-                            <th>Settings</th>
+                            <th>Status</th>
                             <th>Edit</th>
                             <th>Delete</th>
                           </tr>
@@ -196,7 +279,7 @@ function CallCenterQueue() {
                           ) : (
                             <>
                               {callCenter &&
-                                callCenter.map((item) => {
+                                callCenter.data.map((item) => {
                                   return (
                                     <tr>
                                       <td
@@ -254,7 +337,22 @@ function CallCenterQueue() {
                                         {item.agents.length}
                                       </td>
                                       <td>
-                                        <button
+                                        <div className="my-auto position-relative mx-1">
+                                          <label className="switch">
+                                            <input
+                                              type="checkbox"
+                                              checked={item.status == 1}
+                                              onClick={(e) => {
+                                                setSelectedCallCenter(item);
+                                                setPopUp(true);
+                                              }}
+                                              // {...register("status")}
+                                              id="showAllCheck"
+                                            />
+                                            <span className="slider round" />
+                                          </label>
+                                        </div>
+                                        {/* <button
                                           className="tableButton"
                                           onClick={() =>
                                             navigate(
@@ -263,7 +361,7 @@ function CallCenterQueue() {
                                           }
                                         >
                                           <i className="fa-duotone fa-gear"></i>
-                                        </button>
+                                        </button> */}
                                       </td>
                                       <td>
                                         {" "}
@@ -279,18 +377,21 @@ function CallCenterQueue() {
                                         </button>
                                       </td>
                                       <td>
-                                        <button className="tableButton delete" onClick={() => {
-                                          setPopUp(true);
-                                          // setDeleteToggle(true);
-                                          setDeleteId(item.id);
-                                        }}>
+                                        <button
+                                          className="tableButton delete"
+                                          onClick={() => {
+                                            setPopUp(true);
+                                            // setDeleteToggle(true);
+                                            setDeleteId(item.id);
+                                          }}
+                                        >
                                           <i class="fa-solid fa-trash"></i>
                                         </button>
                                       </td>
                                     </tr>
                                   );
                                 })}
-                              {callCenter && callCenter.length === 0 ? (
+                              {callCenter && callCenter.data.length === 0 ? (
                                 <td colSpan={99}>
                                   <EmptyPrompt
                                     name="Call Center"
@@ -304,6 +405,19 @@ function CallCenterQueue() {
                           )}
                         </tbody>
                       </table>
+                    </div>
+                    <div className="tableHeader mb-3">
+                      {callCenter && callCenter?.data?.length > 0 ? (
+                        <PaginationComponent
+                          pageNumber={(e) => setPageNumber(e)}
+                          totalPage={callCenter.totalPage}
+                          from={callCenter.from}
+                          to={callCenter.to}
+                          total={callCenter.total}
+                        />
+                      ) : (
+                        ""
+                      )}
                     </div>
                   </div>
                 </div>
@@ -328,14 +442,25 @@ function CallCenterQueue() {
                     {deleteId == ""
                       ? error
                       : "Are you sure you want to delete this queue?"}
+                    {selectedCallCenter?.id &&
+                      `Are you sure you want to ${
+                        selectedCallCenter?.status == 1 ? "disable" : "enable"
+                      } the queue ${selectedCallCenter?.queue_name}?`}
                   </p>
                   <div className="mt-2 d-flex justify-content-between">
                     {deleteId == "" ? (
                       <button
+                        disabled={loading}
                         className="panelButton m-0"
                         onClick={() => {
-                          setPopUp(false);
-                          navigate(`${redirectRoutes}`);
+                          if (selectedCallCenter?.id) {
+                            handleUpdateCallCenterStatus(
+                              selectedCallCenter?.id
+                            );
+                          } else {
+                            setPopUp(false);
+                            navigate(`${redirectRoutes}`);
+                          }
                         }}
                       >
                         <span className="text">Confirm</span>
@@ -360,6 +485,7 @@ function CallCenterQueue() {
                       onClick={() => {
                         setPopUp(false);
                         setDeleteId("");
+                        setSelectedCallCenter(null);
                       }}
                     >
                       Cancel

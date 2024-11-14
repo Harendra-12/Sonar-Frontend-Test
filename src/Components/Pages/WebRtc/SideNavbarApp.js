@@ -224,6 +224,18 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Conference</div>
               </div>
             </li>
+            <li effect="ripple">
+              <div
+                // to="/"
+                onClick={() => setactivePage("test")}
+                className={activePage==="reports"?"navItem active":"navItem"}
+              >
+                <div className="iconHolder">
+                  <i className="fa-solid fa-chart-column" />
+                </div>
+                <div className="itemTitle">Conference Test</div>
+              </div>
+            </li>
           </ul>
         </div>
       </div>

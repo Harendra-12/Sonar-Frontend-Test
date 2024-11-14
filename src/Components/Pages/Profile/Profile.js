@@ -309,12 +309,12 @@ const Profile = () => {
                     <p>Store</p>
                     <ul>
                       <li>
-                        <Link to="/extensions-add" onClick={backToTop}>
+                        <Link to="#" onClick={backToTop}>
                           Buy Extensions
                         </Link>
                       </li>
                       <li>
-                        <Link to="/users-add" onClick={backToTop}>
+                        <Link to="#" onClick={backToTop}>
                           Increase Users
                         </Link>
                       </li>

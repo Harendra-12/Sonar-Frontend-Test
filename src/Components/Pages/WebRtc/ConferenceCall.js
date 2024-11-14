@@ -6,7 +6,6 @@ function ConferenceCall() {
     const sessions = useSelector((state) => state.sessions);
     return (
         <>
-            <SideNavbarApp />
             <main className='mainContentApp'
                 style={{
                     marginRight:

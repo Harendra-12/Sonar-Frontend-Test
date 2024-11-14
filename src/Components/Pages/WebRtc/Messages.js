@@ -1,12 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Messager, UserAgent } from "sip.js";
 import { useSIPProvider, CONNECT_STATUS } from "react-sipjs";
 import AgentSearch from "./AgentSearch";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { toast } from "react-toastify";
 
-function Messages() {
+function Messages({setSelectedModule, isMicOn, isVideoOn }) {
+  const dispatch = useDispatch()
+  const { sessionManager, connectStatus } = useSIPProvider();
   const loginUser = useSelector((state) => state.loginUser);
+  const globalSession = useSelector((state) => state.sessions);
   const messageListRef = useRef(null);
   const sipProvider = useSIPProvider();
   const sessions = useSelector((state) => state.sessions);
@@ -24,6 +28,7 @@ function Messages() {
   const [activeTab, setActiveTab] = useState("all");
   const [onlineUser, setOnlineUser] = useState([]);
   const [unreadMessage, setUnreadMessage] = useState([]);
+
 
   console.log("All agents", agents);
 
@@ -48,6 +53,7 @@ function Messages() {
     }
   }, [sipProvider?.connectStatus]);
 
+  // Formate date to get today date same as backend send
   const formatDateTime = (date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -59,9 +65,31 @@ function Messages() {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   };
 
-  useEffect(() => {
-    console.log("Inside apiCalling");
+  // Formate date for time stamp to get time when message arrives
+  function formatRelativeTime(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
 
+    const diffMs = now - date;
+    const diffSeconds = Math.floor(diffMs / 1000);
+    const diffMinutes = Math.floor(diffSeconds / 60);
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffDays >= 1) {
+      if (diffDays === 1) return 'Yesterday';
+      return date.toLocaleDateString(); // Formats as the date for older days
+    } else if (diffHours >= 1) {
+      return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+    } else if (diffMinutes >= 1) {
+      return `${diffMinutes} minute${diffMinutes > 1 ? 's' : ''} ago`;
+    } else {
+      return `${diffSeconds} second${diffSeconds > 1 ? 's' : ''} ago`;
+    }
+  }
+
+  // Getting messages based on pagination
+  useEffect(() => {
     async function getData(pageNumb) {
       const apiData = await generalGetFunction(
         `message/all?receiver_id=${recipient[1]}&page=${pageNumb}`
@@ -106,8 +134,8 @@ function Messages() {
     }
   }, [recipient, loadMore]);
 
-  console.log("Chat history", chatHistory);
 
+  // Logic to send message
   const sendMessage = () => {
     if (isSIPReady) {
       const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
@@ -220,8 +248,8 @@ function Messages() {
     }
   };
 
+  // Logic to recieve messages from differnt users
   const userAgent = sipProvider?.sessionManager?.userAgent;
-
   if (userAgent) {
     // Setup message delegate to handle incoming messages
     userAgent.delegate = {
@@ -301,14 +329,12 @@ function Messages() {
     };
   }
 
+  // Auto scroll 
   useEffect(() => {
     if (isFreeSwitchMessage) {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
     }
   }, [allMessage]);
-
-  console.log(allMessage);
-
   useEffect(() => {
     const handleScroll = () => {
       if (messageListRef.current) {
@@ -340,7 +366,102 @@ function Messages() {
     }
   }, [loginUser]);
 
-  console.log("UnreadMessage", unreadMessage);
+
+  // Handle calling 
+  async function onSubmit(mode,destNumber) {
+    if (!isMicOn) {
+      toast.warn("Please turn on microphone");
+      return;
+    }
+    if (mode === "video") {
+      if (!isVideoOn) {
+        toast.warn("Please turn on camera");
+        return;
+      }
+    }
+
+    if (extension == "") {
+      toast.error("No extension assigned to your account");
+      return;
+    }
+    if (destNumber == extension) {
+      toast.error("You cannot call yourself");
+      return;
+    }
+
+    if (connectStatus !== "CONNECTED") {
+      toast.error("You are not connected with server");
+      return;
+    }
+
+    if (destNumber.length > 3) {
+      dispatch({
+        type: "SET_MINIMIZE",
+        minimize: false,
+      });
+      // e.preventDefault();
+      const apiData = await sessionManager?.call(
+        `sip:${destNumber}@${account.domain.domain_name}`,
+        {
+          sessionDescriptionHandlerOptions: {
+            constraints: {
+              audio: true,
+              video: mode === "video" ? true : false,
+            },
+          },
+        },
+        {
+          media: {
+            audio: true,
+            video:
+              mode === "audio"
+                ? true
+                : {
+                  mandatory: {
+                    minWidth: 1280,
+                    minHeight: 720,
+                    minFrameRate: 30,
+                  },
+                  optional: [{ facingMode: "user" }],
+                },
+          },
+        }
+      );
+      console.log("apiData", apiData);
+
+      setSelectedModule("onGoingCall");
+      dispatch({
+        type: "SET_SESSIONS",
+        sessions: [
+          ...globalSession,
+          {
+            id: apiData._id,
+            destination: destNumber,
+            state: "Established",
+            mode: mode,
+          },
+        ],
+      });
+      dispatch({
+        type: "SET_VIDEOCALL",
+        videoCall: mode === "video" ? true : false,
+      });
+      dispatch({
+        type: "SET_CALLPROGRESSID",
+        callProgressId: apiData._id,
+      });
+      dispatch({
+        type: "SET_CALLPROGRESSDESTINATION",
+        callProgressDestination: destNumber,
+      });
+      dispatch({
+        type: "SET_CALLPROGRESS",
+        callProgress: mode === "video" ? false : true,
+      });
+    } else {
+      toast.error("Please enter a valid number");
+    }
+  }
 
   return (
     <>
@@ -449,7 +570,7 @@ function Messages() {
                         getAllAgents={setAgents}
                       /> */}
                       <div className="callList" style={{ height: 'calc(100vh - 270px)' }}>
-                        <div className="chatHeading">
+                        {/* <div className="chatHeading">
                           <h5 data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1">Pinned <i class="fa-solid fa-chevron-down"></i></h5>
                         </div>
                         <div class="collapse show" id="collapse1">
@@ -477,7 +598,7 @@ function Messages() {
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
 
                         <div className="chatHeading">
                           <h5 data-bs-toggle="collapse" href="#collapse2" role="button" aria-expanded="false" aria-controls="collapse2">Chats <i class="fa-solid fa-chevron-down"></i></h5>
@@ -525,7 +646,7 @@ function Messages() {
                                     </div>
                                     <div className="my-auto ms-2 ms-xl-3">
                                       <h4>{item?.name}</h4>
-                                      <h5>{item?.extension}</h5>
+                                      <h5>{(item?.last_message_data).message_text}</h5>
                                       <div className="contactTags">
                                         <span data-id="1">Work</span>
                                         <span data-id="3">Priority</span>
@@ -533,57 +654,13 @@ function Messages() {
                                       </div>
                                     </div>
                                     <div className="col text-end">
-                                      <p className="timeAgo">1min ago</p>
+                                      <p className="timeAgo">{formatRelativeTime((item?.last_message_data).created_at)}</p>
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             );
                           })}
-                          <div className="contactListItem" data-bell={"1"}>
-                            <div className="row justify-content-between">
-                              <div className="col-xl-12 d-flex">
-                                <div
-                                  className="profileHolder"
-                                  id={"profileOfflineNav"}
-                                >
-                                  <i className="fa-light fa-user fs-5"></i>
-                                </div>
-                                <div className="my-auto ms-2 ms-xl-3">
-                                  <h4>Test2</h4>
-                                  <h5>So when do you start me to build the quantum defibrillator</h5>
-                                  <div className="contactTags">
-                                    <span data-id="1">Work</span>
-                                  </div>
-                                </div>
-                                <div className="col text-end">
-                                  <p className="timeAgo">15min ago</p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="contactListItem" data-bell={""}>
-                            <div className="row justify-content-between">
-                              <div className="col-xl-12 d-flex">
-                                <div
-                                  className="profileHolder"
-                                  id={"profileOfflineNav"}
-                                >
-                                  <i className="fa-light fa-user fs-5"></i>
-                                </div>
-                                <div className="my-auto ms-2 ms-xl-3">
-                                  <h4>Test3</h4>
-                                  <h5>Alright</h5>
-                                  <div className="contactTags">
-                                    <span data-id="3">Priority</span>
-                                  </div>
-                                </div>
-                                <div className="col text-end">
-                                  <p className="timeAgo">5min ago</p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
                         </div>
 
                         <div className="chatHeading">
@@ -820,17 +897,20 @@ function Messages() {
                           </select>
                         </div>
                         <button
+                          onClick={()=>onSubmit("audio",recipient[0])}
                           className="clearButton2 xl"
                           effect="ripple"
                         >
                           <i className="fa-regular fa-phone" />
                         </button>
+                        {isVideoOn?
                         <button
+                          onClick={()=>onSubmit("video",recipient[0])}
                           className="clearButton2 xl"
                           effect="ripple"
                         >
                           <i className="fa-regular fa-video" />
-                        </button>
+                        </button>:""}
                         <div class="dropdown">
                           <button class="clearButton2 xl" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-ellipsis-vertical"></i>
@@ -853,15 +933,15 @@ function Messages() {
                         const todayDate = new Date().toISOString().split("T")[0]; // Get today's date in "YYYY-MM-DD" format
                         const isNewDate =
                           index === 0 || messageDate !== arr[index - 1].time.split(" ")[0];
+
                         return (
                           <React.Fragment key={index}>
                             {/* Display "Today" or date header if it's a new date */}
                             {isNewDate && (
-                              <div className="dateHeader">
+                              <div  className="dateHeader">
                                 <p>{messageDate === todayDate ? "Today" : messageDate}</p>
                               </div>
                             )}
-
                             {/* Message content */}
                             {item.from === extension ? (
                               <div className="messageItem sender">

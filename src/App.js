@@ -234,8 +234,8 @@ function App() {
           <Route path="/cdr-report" element={<CdrReport />} />
           {/* <Route path="/efax" element={<EFax />} />
           <Route path="/call-dashboard" element={<CallDashboardPage />} /> */}
-          <Route path="/video-call" element={<VideoCall />} />
-          <Route path="/conference-call" element={<ConferenceCall />} />
+          {/* <Route path="/video-call" element={<VideoCall />} />
+          <Route path="/conference-call" element={<ConferenceCall />} /> */}
           {/* WebRtc path end */}
 
           {/* Admin Packages path start */}
