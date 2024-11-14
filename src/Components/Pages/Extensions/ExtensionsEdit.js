@@ -401,6 +401,7 @@ const ExtensionsEdit = () => {
                       <div class="nav nav-tabs" id="nav-tab" role="tablist">
                         <button class="nav-link active" id="nav-gen-tab" data-bs-toggle="tab" data-bs-target="#nav-gen" type="button" role="tab" aria-controls="nav-gen" aria-selected="true">General</button>
                         <button class="nav-link" id="nav-voicemail-tab" data-bs-toggle="tab" data-bs-target="#nav-voicemail" type="button" role="tab" aria-controls="nav-voicemail" aria-selected="false">Voicemail</button>
+                        <button class="nav-link" id="nav-device-tab" data-bs-toggle="tab" data-bs-target="#nav-device" type="button" role="tab" aria-controls="nav-device" aria-selected="false">Device Provisioning</button>
                         <button class="nav-link" id="nav-adv-tab" data-bs-toggle="tab" data-bs-target="#nav-adv" type="button" role="tab" aria-controls="nav-adv" aria-selected="false">Advanced</button>
                       </div>
                     </nav>
@@ -409,10 +410,11 @@ const ExtensionsEdit = () => {
                         <form className="row col-12 mx-auto">
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <Tippy content=" Enter the alphanumeric extension. The default configuration
-                          allows 2 - 15 digit extensions.">
-                                <label htmlFor="">Extension</label>
-                              </Tippy>
+                              <label htmlFor="">Extension</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Enter the alphanumeric extension. The default configuration
+                                allows 2 - 15 digit extensions.
+                              </label>
                             </div>
                             <div className="col-xl-6 col-12">
                               <input
@@ -429,9 +431,10 @@ const ExtensionsEdit = () => {
                           </div>
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <Tippy content="Password length must be atleast 4 character">
-                                <label htmlFor="">Password</label>
-                              </Tippy>
+                              <label htmlFor="">Password</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Password length must be atleast 4 character
+                              </label>
                             </div>
                             <div className="col-xl-6 col-12">
                               <input
@@ -450,9 +453,10 @@ const ExtensionsEdit = () => {
                           </div>
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <Tippy content="Define users assigned to this Extension.">
-                                <label htmlFor="">Select User</label>
-                              </Tippy>
+                              <label htmlFor="">Select User</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Define users assigned to this Extension.
+                              </label>
                             </div>
                             <div className="col-xl-6 col-12">
                               <select
@@ -477,9 +481,10 @@ const ExtensionsEdit = () => {
                           </div>
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <Tippy content="Select the desired hold music.">
-                                <label htmlFor="">Music on Hold</label>
-                              </Tippy>
+                              <label htmlFor="">Music on Hold</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Select the desired hold music.
+                              </label>
                             </div>
                             <div className="col-xl-6 col-12">
                               <select {...register("moh")} className="formItem w-100">
@@ -500,9 +505,10 @@ const ExtensionsEdit = () => {
 
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <Tippy content="Enter the account code here.">
-                                <label htmlFor="">Account Code</label>
-                              </Tippy>
+                              <label htmlFor="">Account Code</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Enter the account code here.
+                              </label>
                             </div>
                             <div className="col-xl-6 col-12">
                               <input
@@ -521,9 +527,10 @@ const ExtensionsEdit = () => {
                           </div>
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <Tippy content="Enter the internal caller ID name & number here.">
-                                <label htmlFor="">Effective Caller ID</label>
-                              </Tippy>
+                              <label htmlFor="">Effective Caller ID</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Enter the internal caller ID name & number here.
+                              </label>
                             </div>
                             <div className="col-xl-6 col-12">
                               <div className="row">
@@ -589,9 +596,10 @@ const ExtensionsEdit = () => {
                     </div> */}
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <Tippy content="Choose whether to record local, inbound, outbound, or all.">
-                                <label htmlFor="selectFormRow">Record</label>
-                              </Tippy>
+                              <label htmlFor="selectFormRow">Record</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Choose whether to record local, inbound, outbound, or all.
+                              </label>
                             </div>
                             <div className="col-xl-6 col-12">
                               <select
@@ -635,9 +643,10 @@ const ExtensionsEdit = () => {
                     </div> */}
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <Tippy content="Enter the emergency caller ID name & number here.">
-                                <label htmlFor="">Emergency Caller ID</label>
-                              </Tippy>
+                              <label htmlFor="">Emergency Caller ID</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Enter the emergency caller ID name & number here.
+                              </label>
                             </div>
                             <div className="col-xl-6 col-12">
                               <div className="row">
@@ -702,9 +711,10 @@ const ExtensionsEdit = () => {
                     </div> */}
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <Tippy content="Enter the description.">
-                                <label htmlFor="selectFormRow">Description</label>
-                              </Tippy>
+                              <label htmlFor="selectFormRow">Description</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Enter the description.
+                              </label>
                             </div>
                             <div className="col-xl-6 col-12">
                               <input
@@ -723,9 +733,10 @@ const ExtensionsEdit = () => {
                           </div>
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <Tippy content="Enter the external (public) caller ID name & number here.">
-                                <label htmlFor="">Outbound Caller ID</label>
-                              </Tippy>
+                              <label htmlFor="">Outbound Caller ID</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Enter the external (public) caller ID name & number here.
+                              </label>
                             </div>
                             <div className="col-xl-6 col-12">
                               <div className="row">
@@ -769,9 +780,10 @@ const ExtensionsEdit = () => {
                         <form className="row col-12 mx-auto">
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <Tippy content="Enter the numeric voicemail password here.">
-                                <label htmlFor="">Voicemail Password</label>
-                              </Tippy>
+                              <label htmlFor="">Voicemail Password</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Enter the numeric voicemail password here.
+                              </label>
                             </div>
                             <div className="col-xl-6 col-12">
                               <input
@@ -790,9 +802,10 @@ const ExtensionsEdit = () => {
                           </div>
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <Tippy content="Enable/disable voicemail for this extension.">
-                                <label htmlFor="selectFormRow">Voicemail Enabled</label>
-                              </Tippy>
+                              <label htmlFor="selectFormRow">Voicemail Enabled</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Enable/disable voicemail for this extension.
+                              </label>
                             </div>
                             <div className="col-xl-6 col-12">
                               <select
@@ -814,9 +827,10 @@ const ExtensionsEdit = () => {
                           </div>
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <Tippy content="Enter the email address to send voicemail to (optional).">
-                                <label htmlFor="selectFormRow">Voicemail Mail To</label>
-                              </Tippy>
+                              <label htmlFor="selectFormRow">Voicemail Mail To</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Enter the email address to send voicemail to (optional).
+                              </label>
                             </div>
                             <div className="col-xl-6 col-12">
                               <input
@@ -835,9 +849,10 @@ const ExtensionsEdit = () => {
                           </div>
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <Tippy content="Select a listening option to include with the email notification.">
-                                <label htmlFor="selectFormRow">Voicemail File</label>
-                              </Tippy>
+                              <label htmlFor="selectFormRow">Voicemail File</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Select a listening option to include with the email notification.
+                              </label>
                             </div>
                             <div className="col-xl-6 col-12">
                               <select
@@ -862,9 +877,10 @@ const ExtensionsEdit = () => {
                           </div>
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <Tippy content="Choose whether to keep the voicemail in the system after sending the email notification.">
-                                <label htmlFor="selectFormRow">Voicemail Keep Local</label>
-                              </Tippy>
+                              <label htmlFor="selectFormRow">Voicemail Keep Local</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Choose whether to keep the voicemail in the system after sending the email notification.
+                              </label>
                             </div>
                             <div className="col-xl-6 col-12">
                               <select
@@ -882,6 +898,46 @@ const ExtensionsEdit = () => {
                               {errors.voiceMailkeepFile && (
                                 <ErrorMessage text={errors.voiceMailkeepFile.message} />
                               )}
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                      <div class="tab-pane fade" id="nav-device" role="tabpanel" aria-labelledby="nav-device-tab" tabindex="0">
+                        <form className="col-12 mx-auto">
+                          <div className="formRow col-xl-3">
+                            <div className="formLabel">
+                              <label htmlFor="">Address</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Enter the address.
+                              </label>
+                            </div>
+                            <div className="col-xl-6 col-12">
+                              <input
+                                type="text"
+                                name="extension"
+                                className="formItem"
+                              />
+                              {/* {errors.voicemail_password && (
+                                <ErrorMessage text={errors.voicemail_password.message} />
+                              )} */}
+                            </div>
+                          </div>
+                          <div className="formRow col-xl-3">
+                            <div className="formLabel">
+                              <label htmlFor="">Transport</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Select a transport
+                              </label>
+                            </div>
+                            <div className="col-xl-6 col-12">
+                              <input
+                                type="text"
+                                name="extension"
+                                className="formItem"
+                              />
+                              {/* {errors.voicemail_password && (
+                                <ErrorMessage text={errors.voicemail_password.message} />
+                              )} */}
                             </div>
                           </div>
                         </form>

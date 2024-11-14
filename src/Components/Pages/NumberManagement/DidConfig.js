@@ -476,6 +476,40 @@ const DidConfig = () => {
                           </select>
                         </div>
                       </div>
+
+                      <div className="formRow col-xl-3">
+                        <div className="formLabel">
+                          <label htmlFor="selectFormRow">Sticky Agent</label>
+                          <label htmlFor="data" className="formItemDesc">
+                            Select the status of Sticky Agent
+                          </label>
+                        </div>
+                        <div className="col-2 pe-2 ms-auto">
+                          <div class="formLabel">
+                            <label>Status</label>
+                          </div>
+                          <select
+                            className="formItem"
+                            name=""
+                            id="selectFormRow"
+                          >
+                            <option selected="" value="true">
+                              True
+                            </option>
+                            <option value="false">False</option>
+                          </select>
+                        </div>
+                        <div className="col-4">
+                          <div class="formLabel">
+                            <label>Duration <span style={{ color: 'var(--color-subtext)' }}>(in Days, Max 120)</span></label>
+                          </div>
+                          <input
+                            type="number"
+                            name="forward_to"
+                            className="formItem"
+                          />
+                        </div>
+                      </div>
                     </form>
                   </div>
                 </div>
