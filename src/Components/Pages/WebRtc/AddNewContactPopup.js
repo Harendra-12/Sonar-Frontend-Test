@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   nameValidator,
@@ -6,14 +6,26 @@ import {
   requiredValidator,
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
-import { generalPostFunction } from "../../GlobalFunction/globalFunction";
+import {
+  generalPostFunction,
+  generalPutFunction,
+} from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 
-function AddNewContactPopup({ setAddContactToggle }) {
+function AddNewContactPopup({
+  setAddContactToggle,
+  editContactToggle,
+  setEditContactToggle,
+  selectedEditContact,
+  setLoading,
+  setSelectedEditContact,
+  loading,
+}) {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -21,6 +33,7 @@ function AddNewContactPopup({ setAddContactToggle }) {
   const addContactRefresh = useSelector((state) => state.addContactRefresh);
   const dispatch = useDispatch();
   const handleFormSubmit = handleSubmit(async (data) => {
+    setLoading(true);
     const payload = {
       ...data,
       ...{
@@ -37,19 +50,52 @@ function AddNewContactPopup({ setAddContactToggle }) {
         type: "SET_ADDCONTACTREFRESH",
         addContactRefresh: addContactRefresh + 1,
       });
+      setLoading(false);
     } else {
       setAddContactToggle(false);
+      setLoading(false);
       // const errorMessage = Object.keys(apiData.errors);
       // toast.error(apiData.errors[errorMessage[0]][0]);
     }
   });
 
+  useEffect(() => {
+    if (selectedEditContact && editContactToggle) {
+      setValue("name", selectedEditContact.name);
+      setValue("did", selectedEditContact.did);
+    }
+  }, [selectedEditContact]);
+
+  const handleEditContactSubmit = handleSubmit(async (data) => {
+    setLoading(true);
+    const payload = {
+      ...selectedEditContact,
+      name: data.name,
+      did: data.did,
+    };
+    const apiData = await generalPutFunction(
+      `/contact/update/${selectedEditContact.id}`,
+      payload
+    );
+    if (apiData?.status) {
+      setEditContactToggle(false);
+      toast.success(apiData.message);
+      setAddContactToggle(false);
+      dispatch({
+        type: "SET_ADDCONTACTREFRESH",
+        addContactRefresh: addContactRefresh + 1,
+      });
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  });
   return (
     <div className="addNewContactPopup">
       <div className="row">
         <div className="col-12 heading">
           <i class="fa-light fa-user-plus"></i>
-          <h3>Add Contact</h3>
+          <h3>{editContactToggle ? "Edit Contact" : "Add Contact"}</h3>
         </div>
         <div class="col-xl-12">
           <div class="formLabel">
@@ -87,16 +133,28 @@ function AddNewContactPopup({ setAddContactToggle }) {
         <div className="col-xl-12 mt-3">
           <div className="d-flex justify-content-between">
             <button
+              disabled={loading}
               className="formButton ms-0"
-              onClick={() => setAddContactToggle(false)}
+              onClick={() => {
+                setAddContactToggle(false);
+                setEditContactToggle(false);
+                setSelectedEditContact(null);
+              }}
             >
               Cancel
             </button>
             <button
+              disabled={loading}
               className="formButton me-0"
-              onClick={() => handleFormSubmit()}
+              onClick={() => {
+                if (editContactToggle) {
+                  handleEditContactSubmit();
+                } else {
+                  handleFormSubmit();
+                }
+              }}
             >
-              Create
+              {editContactToggle ? "Save" : "Create"}
             </button>
           </div>
         </div>
