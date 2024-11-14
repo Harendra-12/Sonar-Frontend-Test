@@ -42,12 +42,12 @@ const customStyles = {
   control: (provided, state) => ({
     ...provided,
     // border: '1px solid var(--color4)',
-    border: "1px solid #abababa6",
-    borderRadius: "5px",
+    border: "1px solid var(--color4)",
+    borderRadius: "3px",
     outline: "none",
     fontSize: "14px",
     width: "100%",
-    minHeight: "32px",
+    minHeight: "34px",
     height: "auto",
     boxShadow: state.isFocused ? "none" : provided.boxShadow,
     "&:hover": {
@@ -232,6 +232,309 @@ function GetDid() {
         <div className="container-fluid">
           <div className="row justify-content-center">
             <Header title="Get DID" />
+
+            <div className="overviewTableWrapper pb-2">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap">
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content">
+                        <h4>Get DID</h4>
+                        <p>You can purchase a DID here</p>
+                      </div>
+                      <div className="buttonGroup">
+                        <button
+                          effect="ripple"
+                          className="panelButton gray"
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
+                        >
+                          <span className="text">Back</span>
+                          <span className="icon">
+                            <i class="fa-solid fa-caret-left"></i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
+                  <form onSubmit={handleSubmit(onSubmit)} className="mb-0">
+                    <div className="row col-xl-12">
+                      <div className="formRow col-xl-2">
+                        <div className="formLabel">
+                          <label htmlFor="searchType">Search Type</label>
+                        </div>
+                        <div className="col-12">
+                          <select
+                            name="searchType"
+                            className={`formItem ${errors.searchType ? "error" : ""
+                              }`}
+                            {...register("searchType", { ...requiredValidator })}
+                          >
+                            <option value="tollfree">Toll free</option>
+                          </select>
+                          {errors.searchType && (
+                            <ErrorMessage text={errors.searchType.message} />
+                          )}
+                          <label htmlFor="data" className="formItemDesc">Select the type of DID</label>
+                        </div>
+                      </div>
+                      <div className="formRow col-xl-2">
+                        <div className="formLabel d-flex justify-content-between" style={{ width: '100%' }}>
+                          <label htmlFor="quantity">Quantity</label>
+                          {errors.quantity && (
+                            <ErrorMessage text={errors.quantity.message} />
+                          )}
+                        </div>
+                        <div className="col-12">
+                          <input
+                            type="number"
+                            name="quantity"
+                            className={`formItem ${errors.quantity ? "error" : ""
+                              }`}
+                            {...register("quantity", {
+                              ...requiredValidator,
+                              ...lengthValidator(1, 10),
+                              ...noSpecialCharactersValidator,
+                            })}
+                            onKeyDown={restrictToNumbers}
+                          />
+
+                          <label htmlFor="data" className="formItemDesc">Input the quantity</label>
+                        </div>
+                      </div>
+                      <div className="formRow col-xl-auto">
+                        <div className="formLabel">
+                          <label htmlFor="">Usage</label>
+                        </div>
+                        <div className="col-12">
+                          <Select
+                            options={option}
+                            styles={customStyles}
+                            isMulti
+                            value={selectedUsage}
+                            onChange={handleChangeUsage}
+                            classNamePrefix="select"
+                            placeholder="Select usage..."
+                          />
+                          <label htmlFor="data" className="formItemDesc">
+                            Set how the Destination will be used
+                          </label>
+                        </div>
+                      </div>
+                      <div className="formRow col-xl-2">
+                        <div className="formLabel d-flex justify-content-between" style={{ width: '100%' }}>
+                          <label htmlFor="npa">NPA</label>
+                          {errors.npa && (
+                            <ErrorMessage text={errors.npa.message} />
+                          )}
+                        </div>
+                        <div className="col-12">
+                          <input
+                            type="number"
+                            name="npa"
+                            className={`formItem ${errors.npa ? "error" : ""}`}
+                            {...register("npa", {
+                              ...requiredValidator,
+                              ...lengthValidator(3, 3),
+                              ...noSpecialCharactersValidator,
+                            })}
+                          />
+
+                          <label htmlFor="data" className="formItemDesc">Input the NPA for the DID</label>
+                        </div>
+                      </div>
+                      <div className="formRow col">
+                        <div className="col-12">
+                          <div className="formLabel">
+                            <label htmlFor=""></label>
+                          </div>
+                          <button
+                            effect="ripple"
+                            className="panelButton m-0"
+                            type="submit"
+                          >
+                            <span className="text">Search</span>
+                            <span className="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                          </button>
+                          <label htmlFor="data" className="formItemDesc"></label>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <div className="mx-2">
+              <div className="row mt-3 col-xl-12 px-3">
+                {did && (
+                  <div className="col-xl-5">
+                    <div className="searchList">
+                      <div className="heading">
+                        <h5>Available DID</h5>
+                      </div>
+
+                      <div className="wrapper">
+                        {did.length === 0 ? (
+                          <ul>
+                            <li>No TFN Available</li>
+                          </ul>
+                        ) : (
+                          <>
+                            <ul>
+                              {did.map((item) => {
+                                return (
+                                  <li>
+                                    {item.didSummary}{" "}
+                                    <span
+                                      style={{ cursor: "pointer" }}
+                                      onClick={() => addSelect(item)}
+                                      className="float-end clearButton text-success fw-medium"
+                                    >
+                                      {selectedDid.includes(item) ? (
+                                        <i class="fa-duotone fa-square-check text-info"></i>
+                                      ) : (
+                                        <i class="fa-duotone fa-square-plus"></i>
+                                      )}{" "}
+                                    </span>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {selectedDid.length === 0 ? (
+                  ""
+                ) : (
+                  <div className="col-xl-4">
+                    <div className="searchList">
+                      <div className="heading">
+                        <h5>Added DID</h5>
+                      </div>
+                      <div className="wrapper">
+                        <ul>
+                          {selectedDid.map((item) => {
+                            return (
+                              <li>
+                                {item.didSummary}{" "}
+                                <span
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => removeDid(item)}
+                                  className="float-end clearButton text-danger fw-medium"
+                                >
+                                  <i class="fa-duotone fa-trash"></i>
+                                </span>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {selectedDid.length === 0 ? (
+                  ""
+                ) : (
+                  <div className="col-xl-3">
+                    <div className="searchList cart">
+                      <div className="heading">
+                        <h5>Order Summary</h5>
+                      </div>
+                      <div className="wrapper">
+                        <ul>
+                          {selectedDid.map((item) => {
+                            return (
+                              <li>
+                                {item.didSummary}{" "}
+                                <span className="float-end">
+                                  ${item.price}
+                                </span>
+                              </li>
+                            );
+                          })}
+                          <li className="border-black">
+                            <b>Total: </b>{" "}
+                            <span className="float-end">
+                              <b>
+                                $
+                                {selectedDid.reduce((total, item) => {
+                                  const price = parseFloat(item.price) || 0;
+                                  return total + price;
+                                }, 0)}
+                              </b>
+                            </span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div className="searchList checkout mt-3">
+                      <div className="heading">
+                        <h5>Payment Method</h5>
+                      </div>
+                      <div className="wrapper">
+                        <ul>
+                          <li>
+                            <i
+                              class="fa-duotone fa-wallet me-2"
+                              style={{ color: "var(--ui-accent)" }}
+                            ></i>{" "}
+                            Wallet{" "}
+                            <input
+                              type="radio"
+                              checked={
+                                paymentMethod === "wallet" ? true : false
+                              }
+                              name="fav_language"
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setPaymentMethod("wallet");
+                                }
+                              }}
+                            ></input>{" "}
+                            <span className="checkmark"></span>
+                          </li>
+                          <li>
+                            <i
+                              class="fa-duotone fa-credit-card me-2"
+                              style={{ color: "var(--ui-accent)" }}
+                            ></i>{" "}
+                            Credit Card{" "}
+                            <input
+                              type="radio"
+                              checked={
+                                paymentMethod === "card" ? true : false
+                              }
+                              name="fav_language"
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setPaymentMethod("card");
+                                }
+                              }}
+                            ></input>{" "}
+                            <span className="checkmark"></span>
+                          </li>
+                        </ul>
+                        <button className="payNow" onClick={handlePayment}>
+                          Pay Now{" "}
+                          <i class="fa-sharp fa-solid fa-arrow-right"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+
             {/* <div
               className="d-flex flex-wrap justify-content-end px-xl-3 py-2 position-relative"
               style={{ zIndex: 1 }}
@@ -256,276 +559,7 @@ function GetDid() {
             <div className="col-xl-12 px-0">
               {/* {loading ?
                   <div colSpan={99}><CircularLoader /></div> : ""} */}
-              <div className="mx-2" id="detailsContent">
-                <form onSubmit={handleSubmit(onSubmit)} className="mb-0">
-                  <div className="row col-xl-12">
-                    <div className="formRow col-xxl-1 col-xl-2">
-                      <div className="formLabel">
-                        <label htmlFor="searchType">Search Type</label>
-                      </div>
-                      <div className="col-12">
-                        <select
-                          name="searchType"
-                          className={`formItem ${errors.searchType ? "error" : ""
-                            }`}
-                          {...register("searchType", { ...requiredValidator })}
-                        >
-                          <option value="tollfree">Toll free</option>
-                        </select>
-                        {errors.searchType && (
-                          <ErrorMessage text={errors.searchType.message} />
-                        )}
-                        <label htmlFor="data" className="formItemDesc">Select the type of DID</label>
-                      </div>
-                    </div>
-                    <div className="formRow col-xl-2">
-                      <div className="formLabel d-flex justify-content-between" style={{ width: '100%' }}>
-                        <label htmlFor="quantity">Quantity</label>
-                        {errors.quantity && (
-                          <ErrorMessage text={errors.quantity.message} />
-                        )}
-                      </div>
-                      <div className="col-12">
-                        <input
-                          type="number"
-                          name="quantity"
-                          className={`formItem ${errors.quantity ? "error" : ""
-                            }`}
-                          {...register("quantity", {
-                            ...requiredValidator,
-                            ...lengthValidator(1, 10),
-                            ...noSpecialCharactersValidator,
-                          })}
-                          onKeyDown={restrictToNumbers}
-                        />
 
-                        <label htmlFor="data" className="formItemDesc">Input the quantity</label>
-                      </div>
-                    </div>
-                    <div className="formRow col-xl-auto">
-                      <div className="formLabel">
-                        <label htmlFor="">Usage</label>
-                      </div>
-                      <div className="col-12 d-flex flex-column">
-                        <Select
-                          options={option}
-                          styles={customStyles}
-                          isMulti
-                          value={selectedUsage}
-                          onChange={handleChangeUsage}
-                          classNamePrefix="select"
-                          placeholder="Select usage..."
-                        />
-                        <label htmlFor="data" className="formItemDesc">
-                          Set how the Destination will be used
-                        </label>
-                      </div>
-                    </div>
-                    <div className="formRow col-xl-2">
-                      <div className="formLabel d-flex justify-content-between" style={{ width: '100%' }}>
-                        <label htmlFor="npa">NPA</label>
-                        {errors.npa && (
-                          <ErrorMessage text={errors.npa.message} />
-                        )}
-                      </div>
-                      <div className="col-12">
-                        <input
-                          type="number"
-                          name="npa"
-                          className={`formItem ${errors.npa ? "error" : ""}`}
-                          {...register("npa", {
-                            ...requiredValidator,
-                            ...lengthValidator(3, 3),
-                            ...noSpecialCharactersValidator,
-                          })}
-                        />
-
-                        <label htmlFor="data" className="formItemDesc">Input the NPA for the DID</label>
-                      </div>
-                    </div>
-                    <div className="formRow col">
-                      <div className="col-12">
-                        <div className="formLabel">
-                          <label htmlFor=""></label>
-                        </div>
-                        <button
-                          effect="ripple"
-                          className="panelButton m-0"
-                          type="submit"
-                        >
-                          <span className="text">Search</span>
-                          <span className="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
-                        </button>
-                        <label htmlFor="data" className="formItemDesc"></label>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div className="mx-2">
-                <div className="row mt-3 col-xl-12">
-                  {did && (
-                    <div className="col-xl-5">
-                      <div className="searchList">
-                        <div className="heading">
-                          <h5>Available DID</h5>
-                        </div>
-
-                        <div className="wrapper">
-                          {did.length === 0 ? (
-                            <ul>
-                              <li>No TFN Available</li>
-                            </ul>
-                          ) : (
-                            <>
-                              <ul>
-                                {did.map((item) => {
-                                  return (
-                                    <li>
-                                      {item.didSummary}{" "}
-                                      <span
-                                        style={{ cursor: "pointer" }}
-                                        onClick={() => addSelect(item)}
-                                        className="float-end clearButton text-success fw-medium"
-                                      >
-                                        {selectedDid.includes(item) ? (
-                                          <i class="fa-duotone fa-square-check text-info"></i>
-                                        ) : (
-                                          <i class="fa-duotone fa-square-plus"></i>
-                                        )}{" "}
-                                      </span>
-                                    </li>
-                                  );
-                                })}
-                              </ul>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  {selectedDid.length === 0 ? (
-                    ""
-                  ) : (
-                    <div className="col-xl-4">
-                      <div className="searchList">
-                        <div className="heading">
-                          <h5>Added DID</h5>
-                        </div>
-                        <div className="wrapper">
-                          <ul>
-                            {selectedDid.map((item) => {
-                              return (
-                                <li>
-                                  {item.didSummary}{" "}
-                                  <span
-                                    style={{ cursor: "pointer" }}
-                                    onClick={() => removeDid(item)}
-                                    className="float-end clearButton text-danger fw-medium"
-                                  >
-                                    <i class="fa-duotone fa-trash"></i>
-                                  </span>
-                                </li>
-                              );
-                            })}
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  {selectedDid.length === 0 ? (
-                    ""
-                  ) : (
-                    <div className="col-xl-3">
-                      <div className="searchList cart">
-                        <div className="heading">
-                          <h5>Order Summary</h5>
-                        </div>
-                        <div className="wrapper">
-                          <ul>
-                            {selectedDid.map((item) => {
-                              return (
-                                <li>
-                                  {item.didSummary}{" "}
-                                  <span className="float-end">
-                                    ${item.price}
-                                  </span>
-                                </li>
-                              );
-                            })}
-                            <li className="border-black">
-                              <b>Total: </b>{" "}
-                              <span className="float-end">
-                                <b>
-                                  $
-                                  {selectedDid.reduce((total, item) => {
-                                    const price = parseFloat(item.price) || 0;
-                                    return total + price;
-                                  }, 0)}
-                                </b>
-                              </span>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-
-                      <div className="searchList checkout mt-3">
-                        <div className="heading">
-                          <h5>Payment Method</h5>
-                        </div>
-                        <div className="wrapper">
-                          <ul>
-                            <li>
-                              <i
-                                class="fa-duotone fa-wallet me-2"
-                                style={{ color: "var(--ui-accent)" }}
-                              ></i>{" "}
-                              Wallet{" "}
-                              <input
-                                type="radio"
-                                checked={
-                                  paymentMethod === "wallet" ? true : false
-                                }
-                                name="fav_language"
-                                onChange={(e) => {
-                                  if (e.target.checked) {
-                                    setPaymentMethod("wallet");
-                                  }
-                                }}
-                              ></input>{" "}
-                              <span className="checkmark"></span>
-                            </li>
-                            <li>
-                              <i
-                                class="fa-duotone fa-credit-card me-2"
-                                style={{ color: "var(--ui-accent)" }}
-                              ></i>{" "}
-                              Credit Card{" "}
-                              <input
-                                type="radio"
-                                checked={
-                                  paymentMethod === "card" ? true : false
-                                }
-                                name="fav_language"
-                                onChange={(e) => {
-                                  if (e.target.checked) {
-                                    setPaymentMethod("card");
-                                  }
-                                }}
-                              ></input>{" "}
-                              <span className="checkmark"></span>
-                            </li>
-                          </ul>
-                          <button className="payNow" onClick={handlePayment}>
-                            Pay Now{" "}
-                            <i class="fa-sharp fa-solid fa-arrow-right"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
             </div>
           </div>
         </div>
