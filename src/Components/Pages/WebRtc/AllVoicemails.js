@@ -176,7 +176,7 @@ function AllVoicemails({ isCustomerAdmin }) {
           </div>
           <div class="col-3 mx-auto">
             <div class="contactTags">
-              <span data-id="2">Duration:  5 sec</span>
+              <span data-id="2">Duration:  {item.duration}</span>
             </div>
           </div>
           <div className="col-1 text-end ms-auto">
@@ -672,7 +672,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                                   </td>
                                                   {/* <td>{item.dest}</td> */}
                                                   <td style={{ color: "#444444" }}>
-                                                    24 sec
+                                                    {item.duration}
                                                   </td>
                                                 </tr>
                                                 <tr
