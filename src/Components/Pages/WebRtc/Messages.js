@@ -35,6 +35,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
   const [upDateTag, setUpDateTag] = useState("");
   const [selectedTag, setSelectedTag] = useState("");
   const [loading,setLoading] = useState(false);
+  const [contactRefresh,setContactRefresh] = useState(0);
 
   useEffect(() => {
     async function getData() {
@@ -49,7 +50,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
       }
     }
     getData();
-  }, []);
+  }, [contactRefresh]);
 
   useEffect(() => {
     if (sipProvider && sipProvider.connectStatus === CONNECT_STATUS.CONNECTED) {
@@ -109,7 +110,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
           [recipient[0]]: [
             {
               from: item.user_id === recipient[1] ? recipient[0] : extension,
-              body: item.message_text,
+              body: item?.message_text,
               time: item.created_at,
             },
             ...(prevState[recipient[0]] || []),
@@ -164,6 +165,16 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
               { from: extension, body: messageInput, time },
             ],
           }));
+          // Update contact last message
+          const contactIndex = contact.findIndex(
+            (contact) => contact.extension === recipient[0]
+          );
+          if (contactIndex !== -1) {
+            const newContact = [...contact];
+            newContact[contactIndex].last_message_data.message_text = messageInput;
+            newContact[contactIndex].last_message_data.created_at = time;
+            setContact(newContact);
+          }
           setActiveTab("all");
 
           const extensionExists = contact.some(
@@ -282,6 +293,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
             extension: from,
           });
         } else {
+           
           // Move the extension object to the beginning of the array
           const index = contact.findIndex(
             (contact) => contact.extension === from
@@ -332,6 +344,17 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
             }));
             audio.play();
           }
+
+           // Update contact last message
+          //  const contactIndex = contact.findIndex(
+          //   (contact) => contact.extension === recipient[0]
+          // );
+          // if (contactIndex !== -1) {
+          //   const newContact = [...contact];
+          //   newContact[contactIndex].last_message_data.message_text = messageInput;
+          //   newContact[contactIndex].last_message_data.created_at = time;
+          //   setContact(newContact);
+          // }
         }
       },
     };
@@ -531,6 +554,31 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
     }
   }
 
+  // Handle assign task
+  async function handleAssignTask(tagId,userId) {
+    setLoading(true)
+    const parsedData = {
+      tag_id: tagId,
+      user_id: contact.find((contact) => contact.extension === userId).id
+    }
+    const apiData = await generalPostFunction(`/tag-users/store`, parsedData);
+    if (apiData.status) {
+    setContactRefresh(contactRefresh + 1)
+      setLoading(false)
+      toast.success("Tag assigned successfully");
+  }
+}
+
+// Handle unassign task
+async function handleUnassignTask(tagId) {
+  setLoading(true)
+  const apiData = await generalDeleteFunction(`/tag-users/destroy/${tagId}`);
+  if (apiData.status) {
+    setContactRefresh(contactRefresh + 1)
+    setLoading(false)
+    toast.success("Tag unassigned successfully");
+  }
+}
   return (
     <>
       <main
@@ -714,15 +762,21 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                                     </div>
                                     <div className="my-auto ms-2 ms-xl-3">
                                       <h4>{item?.name}</h4>
-                                      <h5>{(item?.last_message_data).message_text}</h5>
+                                      <h5>{(item?.last_message_data)?.message_text}</h5>
                                       <div className="contactTags">
-                                        <span data-id="1">Work</span>
-                                        <span data-id="3">Priority</span>
-                                        <span className="more">+2</span>
+                                        {item.tags?.slice(0,2)?.map((tag,key) => {
+                                          return (
+                                            <span data-id={key}>
+                                              {tag.tag?.[0]?.name}
+                                            </span>
+                                          );
+                                        })}
+                                        
+                                        <span className="more">{item.tags?.length>2 && `+${item.tags?.length-2}`}</span>
                                       </div>
                                     </div>
                                     <div className="col text-end">
-                                      <p className="timeAgo">{formatRelativeTime((item?.last_message_data).created_at)}</p>
+                                      <p className="timeAgo">{item?.last_message_data?formatRelativeTime((item?.last_message_data)?.created_at):""}</p>
                                     </div>
                                   </div>
                                 </div>
@@ -731,7 +785,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                           })}
                         </div>
 
-                        <div className="chatHeading">
+                        {/* <div className="chatHeading">
                           <h5 data-bs-toggle="collapse" href="#collapse3" role="button" aria-expanded="false" aria-controls="collapse3">Group Chat <i class="fa-solid fa-chevron-down"></i></h5>
                         </div>
                         <div class="collapse show" id="collapse3" style={{ borderBottom: '1px solid #ddd' }}>
@@ -757,7 +811,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   ) : activeTab === "online" ? (
@@ -819,7 +873,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                         <div className="chatHeading" data-bell={""}>
                           <h5>Tag List <i onClick={() => setAddNewTag(true)} class="fa-regular fa-circle-plus fs-5" style={{ cursor: "pointer", fontSize: 18 }}></i></h5>
                         </div>
-                        {allTags.map((item) => {
+                        {allTags.map((item,key) => {
                           return (
                             <div className="contactTagsAddEdit">
                               <div className="row align-items-center item">
@@ -829,7 +883,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                                 </div>
                                 <div className="col-auto">
                                   <div className="contactTags">
-                                    <span data-id={Math.floor(Math.random() * 4) + 1}>{selectedTag===item.id?upDateTag:item.name}</span>
+                                    <span data-id={key}>{selectedTag===item.id?upDateTag:item.name}</span>
                                   </div>
                                 </div>
                                 <div className="col-auto d-flex ms-auto pe-0">
@@ -886,17 +940,21 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                       <div>
                         <h4>{recipient[0]}</h4>
                         <div className="contactTags">
-                          <span data-id="1">Work</span>
-                          <span data-id="2">Important</span>
-                          <span data-id="3">Priority</span>
-                          <span data-id="4">Personal</span>
+                          {contact.find((contact) => contact.extension == recipient[0])?.tags?.map((item,key) => {
+                            return (
+                              <span data-id={key}>{item.tag?.[0]?.name} <i onClick={() => handleUnassignTask(item?.id)} class="fa-solid fa-circle-xmark "></i></span>
+                            )
+                          })}
+                          {/* <span data-id="1">Work</span> */}
+                          {}
                           <div class="dropdown">
-                            <span className="add" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-circle-plus me-1"></i> Add</span>
+                            <span className="add" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-circle-plus me-1"></i> Add tag</span>
                             <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="#">Work</a></li>
-                              <li><a class="dropdown-item" href="#">Important</a></li>
-                              <li><a class="dropdown-item" href="#">Priority</a></li>
-                              <li><a class="dropdown-item" href="#">Personal</a></li>
+                              {allTags.map((item) => {
+                                return(
+                                  <li className="dropdown-item" onClick={() => handleAssignTask(item.id,recipient[0])}>{item.name}</li>
+                                )
+                              })}
                             </ul>
                           </div>
 
