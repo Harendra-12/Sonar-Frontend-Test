@@ -11,6 +11,7 @@ function CallDetails({
   isMicOn,
   isVideoOn,
   onCall,
+  setactivePage,
 }) {
   const [callDetails, setCallDetails] = useState();
   const { connectStatus } = useSIPProvider();
@@ -103,6 +104,7 @@ function CallDetails({
             <button
               className="clearButton2 xl"
               effect="ripple"
+              onClick={()=>setactivePage("messages")}
             >
               <i className="fa-regular fa-message-dots" />
             </button>

@@ -21,6 +21,7 @@ function Call({
   isMicOn,
   isVideoOn,
   activePage,
+  setactivePage,
 }) {
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
@@ -658,6 +659,7 @@ function Call({
                 {selectedModule == "onGoingCall" ? (
                   callProgress ? (
                     <OngoingCall
+                      setactivePage={setactivePage}
                       key={callProgressId}
                       id={callProgressId}
                       destination={callProgressDestination}
@@ -674,6 +676,7 @@ function Call({
                       isMicOn={isMicOn}
                       isVideoOn={isVideoOn}
                       onCall={onCall}
+                      setactivePage={setactivePage}
                     />
                   )
                 ) : (
@@ -686,6 +689,7 @@ function Call({
                       isMicOn={isMicOn}
                       isVideoOn={isVideoOn}
                       onCall={onCall}
+                      setactivePage={setactivePage}
                     />
                   )
                 )}

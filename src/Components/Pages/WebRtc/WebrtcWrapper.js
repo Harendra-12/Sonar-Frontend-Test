@@ -186,6 +186,7 @@ const WebrtcWrapper = () => {
             isMicOn={isMicOn}
             isVideoOn={isVideoOn}
             activePage={activePage}
+            setactivePage={setactivePage}
           />
         )}
         {activePage === "all-contacts" && <AllContact />}
@@ -194,7 +195,7 @@ const WebrtcWrapper = () => {
         {activePage === "all-voice-mails" && (
           <AllVoicemails isCustomerAdmin={isCustomerAdmin} />
         )}
-        {activePage === "on-going-calls" && <OngoingCall />}
+        {activePage === "on-going-calls" && <OngoingCall  />}
         {activePage === "call-dashboard" && <CallDashboard />}
         {activePage === "e-fax" && <EFax />}
         {activePage === "messages" && <Messages

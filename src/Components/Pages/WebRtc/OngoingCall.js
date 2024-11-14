@@ -13,7 +13,7 @@ import {
 import { toast } from "react-toastify";
 import { Dialog, UserAgentCore } from "sip.js/lib/core";
 
-function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule }) {
+function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule,setactivePage }) {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
