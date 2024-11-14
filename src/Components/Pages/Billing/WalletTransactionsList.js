@@ -90,83 +90,125 @@ function WalletTransactionsList() {
         <div className="container-fluid">
           <div className="row">
             <Header title="Wallet Transactions" />
-            <div className="col-12" style={{ overflow: "auto" }}>
-              <div className="tableContainer">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Descriptor</th>
-                      <th>Payment Date</th>
-                      <th>Transaction ID</th>
-                      <th>Transaction Amount</th>
-                      <th>Transaction Type</th>
-                      <th>Download</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {transaction &&
-                      transaction.data.map((item) => {
-                        return (
-                          <tr>
-                            <td>{item.descriptor}</td>
-                            <td>{item.created_at.split("T")[0]}</td>
-                            <td>{item.payment_gateway_transaction_id}</td>
-                            <td>
-                              <label
-                                className={
-                                  item.transaction_type === "credit"
-                                    ? "tableLabel success"
-                                    : "tableLabel fail"
-                                }
-                              >
-                                ${item.amount}
-                              </label>
-                            </td>
-                            <td>
-                              <i
-                                className={
-                                  item.transaction_type === "credit"
-                                    ? "fa-duotone fa-circle-up text-success me-1"
-                                    : "fa-duotone fa-circle-down text-danger me-1"
-                                }
-                              ></i>{" "}
-                              {item.transaction_type === "credit"
-                                ? "Credit"
-                                : "Debit"}
-                            </td>
-                            <td>
-                              <button
-                                class="tableButton"
-                                onClick={() =>
-                                  downloadImage(
-                                    item.invoice_url,
-                                    `${item.descriptor}invoice`
-                                  )
-                                }
-                              >
-                                <i className="fa-solid fa-download"></i>
-                              </button>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </table>
+
+            <div className="overviewTableWrapper">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap">
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content">
+                        <h4>Wallet Transactions</h4>
+                        <p>You can see list of all transactions made using your wallet</p>
+                      </div>
+                      <div className="buttonGroup">
+                        <button
+                          effect="ripple"
+                          className="panelButton gray"
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
+                        >
+                          <span className="text">Back</span>
+                          <span className="icon">
+                            <i class="fa-solid fa-caret-left"></i>
+                          </span>
+                        </button>
+                        <button
+                          effect="ripple"
+                          className="panelButton"
+                        >
+                          <span className="text">Refresh</span>
+                          <span className="icon">
+                            <i class="fa-regular fa-arrows-rotate fs-5"></i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-12" style={{ overflow: "auto", padding: "25px 20px 0" }}>
+                    <div className="tableContainer">
+                      {loading ? <ContentLoader /> : (
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>Descriptor</th>
+                              <th>Payment Date</th>
+                              <th>Transaction ID</th>
+                              <th>Transaction Amount</th>
+                              <th>Transaction Type</th>
+                              <th>Download</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {transaction &&
+                              transaction.data.map((item) => {
+                                return (
+                                  <tr>
+                                    <td>{item.descriptor}</td>
+                                    <td>{item.created_at.split("T")[0]}</td>
+                                    <td>{item.payment_gateway_transaction_id}</td>
+                                    <td>
+                                      <label
+                                        className={
+                                          item.transaction_type === "credit"
+                                            ? "tableLabel success"
+                                            : "tableLabel fail"
+                                        }
+                                      >
+                                        ${item.amount}
+                                      </label>
+                                    </td>
+                                    <td>
+                                      <i
+                                        className={
+                                          item.transaction_type === "credit"
+                                            ? "fa-duotone fa-circle-up text-success me-1"
+                                            : "fa-duotone fa-circle-down text-danger me-1"
+                                        }
+                                      ></i>{" "}
+                                      {item.transaction_type === "credit"
+                                        ? "Credit"
+                                        : "Debit"}
+                                    </td>
+                                    <td>
+                                      <button
+                                        class="tableButton"
+                                        onClick={() =>
+                                          downloadImage(
+                                            item.invoice_url,
+                                            `${item.descriptor}invoice`
+                                          )
+                                        }
+                                      >
+                                        <i className="fa-solid fa-download"></i>
+                                      </button>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                          </tbody>
+                        </table>
+                      )}
+                    </div>
+                    <div className="tableHeader mb-3">
+                      {transaction && transaction.data.length > 0 ? (
+                        <PaginationComponent
+                          pageNumber={(e) => setPageNumber(e)}
+                          totalPage={transaction.last_page}
+                          from={(pageNumber - 1) * transaction.per_page + 1}
+                          to={transaction.to}
+                          total={transaction.total}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          {loading ? <ContentLoader /> : ""}
-          {transaction && transaction.data.length > 0 ? (
-            <PaginationComponent
-              pageNumber={(e) => setPageNumber(e)}
-              totalPage={transaction.last_page}
-              from={(pageNumber - 1) * transaction.per_page + 1}
-              to={transaction.to}
-              total={transaction.total}
-            />
-          ) : (
-            ""
-          )}
         </div>
       </section>
     </main>
