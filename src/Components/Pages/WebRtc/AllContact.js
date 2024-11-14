@@ -2,21 +2,33 @@ import React, { useEffect, useState } from "react";
 import SideNavbarApp from "./SideNavbarApp";
 import { useSelector } from "react-redux";
 import ActiveCallSidePanel from "./ActiveCallSidePanel";
-import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import {
+  generalDeleteFunction,
+  generalGetFunction,
+} from "../../GlobalFunction/globalFunction";
 import AddNewContactPopup from "./AddNewContactPopup";
+import { toast } from "react-toastify";
+import ContentLoader from "../../Loader/ContentLoader";
 
 function AllContact() {
   const sessions = useSelector((state) => state.sessions);
   const addContactRefresh = useSelector((state) => state.addContactRefresh);
   const [contact, setContact] = useState([]);
-  console.log(addContactRefresh);
+  const [loading, setLoading] = useState(true);
+  const [selectedDeleteId, setSelectedDeleteId] = useState(null);
+  const [selectedEditContact, setSelectedEditContact] = useState(null);
+  const [editContactToggle, setEditContactToggle] = useState(false);
   const [addContactToggle, setAddContactToggle] = useState(false);
   const [groupedContacts, setGroupedContacts] = useState({});
+  const [popUp, setPopUp] = useState(false);
   useEffect(() => {
     const getContact = async () => {
       const apiData = await generalGetFunction("/contact/all");
       if (apiData?.status) {
         setContact(apiData.data);
+        setLoading(false);
+      } else {
+        setLoading(false);
       }
     };
     getContact();
@@ -37,6 +49,35 @@ function AllContact() {
     const grouped = groupContactsByInitial(contact);
     setGroupedContacts(grouped);
   }, [contact]);
+
+  const deleteContactByIt = async (id) => {
+    setLoading(true);
+    const apiData = await generalDeleteFunction(`/contact/destroy/${id}`);
+
+    if (apiData?.status) {
+      const updatedContact = contact.filter((contact) => contact.id !== id);
+      setContact(updatedContact);
+      setLoading(false);
+      toast.success(apiData.message);
+      setPopUp(false);
+    } else {
+      setLoading(false);
+    }
+  };
+
+  const handleEditContact = async (contactId) => {
+    setLoading(true);
+    // setSelectedEditContact(contact);
+    const apiData = await generalGetFunction(`/contact/show/${contactId}`);
+    if (apiData.status) {
+      setEditContactToggle(true);
+      setAddContactToggle(true);
+      setSelectedEditContact(apiData.data);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
   return (
     <>
       {/* <SideNavbarApp /> */}
@@ -136,68 +177,90 @@ function AllContact() {
                                   class="fa-solid fa-calendar-plus"></i></button> */}
                     </div>
                     <div className="callList">
-                      {Object.keys(groupedContacts)
-                        .sort()
-                        .map((initial) => (
-                          <div key={initial}>
-                            <div className="text-center callListItem">
-                              <h5 className="fw-semibold">{initial}</h5>
-                            </div>
-                            {groupedContacts[initial].map((contact) => (
-                              <div className="contactListItem" key={contact.id}>
-                                <div className="row justify-content-between">
-                                  <div className="col-xl-7 col-xxl-6 d-flex">
-                                    <div
-                                      className="profileHolder"
-                                      id="profileOnline"
-                                    >
-                                      <i className="fa-light fa-user fs-5" />
+                      {loading ? (
+                        <div colSpan={99}>
+                          <ContentLoader />
+                        </div>
+                      ) : (
+                        Object.keys(groupedContacts)
+                          .sort()
+                          .map((initial) => (
+                            <div key={initial}>
+                              <div className="text-center callListItem">
+                                <h5 className="fw-semibold">{initial}</h5>
+                              </div>
+                              {groupedContacts[initial].map((contact) => (
+                                <div
+                                  className="contactListItem"
+                                  key={contact.id}
+                                >
+                                  <div className="row justify-content-between">
+                                    <div className="col-xl-7 col-xxl-6 d-flex">
+                                      <div
+                                        className="profileHolder"
+                                        id="profileOnline"
+                                      >
+                                        <i className="fa-light fa-user fs-5" />
+                                      </div>
+                                      <div className="my-auto ms-2 ms-xl-3">
+                                        <h4>{contact.name}</h4>
+                                        <h5>{contact.did}</h5>
+                                      </div>
                                     </div>
-                                    <div className="my-auto ms-2 ms-xl-3">
-                                      <h4>{contact.name}</h4>
+                                    <div className="col-10 col-xl-4 col-xxl-5">
+                                      <h4>
+                                        <span>Office</span>
+                                      </h4>
                                       <h5>{contact.did}</h5>
+                                      <h6
+                                        style={{
+                                          display: "flex",
+                                          alignItems: "center",
+                                        }}
+                                      >
+                                        <i className="fa-regular fa-xmark me-1" />{" "}
+                                        0
+                                      </h6>
+                                    </div>
+                                    <div className="col-auto text-end d-flex justify-content-center align-items-center">
+                                      <i
+                                        className="fa-sharp fa-thin fa-star"
+                                        style={{ fontSize: 18 }}
+                                      />
                                     </div>
                                   </div>
-                                  <div className="col-10 col-xl-4 col-xxl-5">
-                                    <h4>
-                                      <span>Office</span>
-                                    </h4>
-                                    <h5>{contact.did}</h5>
-                                    <h6
-                                      style={{
-                                        display: "flex",
-                                        alignItems: "center",
+                                  <div className="contactPopup">
+                                    <button>
+                                      <i className="fa-light fa-phone" />
+                                    </button>
+                                    <button>
+                                      <i className="fa-light fa-message" />
+                                    </button>
+                                    <button>
+                                      <i className="fa-light fa-star" />
+                                    </button>
+                                    <button
+                                      onClick={() => {
+                                        handleEditContact(contact.id);
                                       }}
                                     >
-                                      <i className="fa-regular fa-xmark me-1" />{" "}
-                                      0
-                                    </h6>
-                                  </div>
-                                  <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                                    <i
-                                      className="fa-sharp fa-thin fa-star"
-                                      style={{ fontSize: 18 }}
-                                    />
+                                      <i className="fa-light fa-pen-to-square" />
+                                    </button>
+                                    <button
+                                      onClick={() => {
+                                        // deleteContactByIt(contact.id)
+                                        setPopUp(true);
+                                        setSelectedDeleteId(contact.id);
+                                      }}
+                                    >
+                                      <i className="fa-light fa-trash" />
+                                    </button>
                                   </div>
                                 </div>
-                                <div className="contactPopup">
-                                  <button>
-                                    <i className="fa-light fa-phone" />
-                                  </button>
-                                  <button>
-                                    <i className="fa-light fa-message" />
-                                  </button>
-                                  <button>
-                                    <i className="fa-light fa-star" />
-                                  </button>
-                                  <button>
-                                    <i className="fa-light fa-trash" />
-                                  </button>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        ))}
+                              ))}
+                            </div>
+                          ))
+                      )}
                     </div>
                     {/* <div className="callList">
                       <div className="text-center callListItem">
@@ -665,28 +728,59 @@ function AllContact() {
           </div>
         </section>
       </main>
-      {/* {sessions.length > 0 && Object.keys(sessions).length > 0 ? (
-        <>
-          <section className="activeCallsSidePanel">
-            <div className="container">
-              <div className="row">
-                {sessions.length > 0 &&
-                  sessions.map((session, chennel) => (
-                    <ActiveCallSidePanel
-                      sessionId={session.id}
-                      destination={session.destination}
-                      chennel={chennel}
-                    />
-                  ))}
+
+      {addContactToggle && (
+        <AddNewContactPopup
+          setAddContactToggle={setAddContactToggle}
+          editContactToggle={editContactToggle}
+          setEditContactToggle={setEditContactToggle}
+          selectedEditContact={selectedEditContact}
+          setLoading={setLoading}
+          setSelectedEditContact={setSelectedEditContact}
+          loading={loading}
+        />
+      )}
+      {popUp ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-4">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-triangle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-0">
+                  <h4>Warning!</h4>
+                  <p>"Are you sure you want to delete this Contact?"</p>
+                  <div className="mt-2 d-flex justify-content-between">
+                    <button
+                      className="panelButton m-0"
+                      onClick={() => deleteContactByIt(selectedDeleteId)}
+                    >
+                      <span className="text">Confirm</span>
+                      <span className="icon">
+                        <i class="fa-solid fa-check"></i>
+                      </span>
+                    </button>
+
+                    <button
+                      className="panelButtonWhite m-0 float-end"
+                      onClick={() => {
+                        setPopUp(false);
+                        setSelectedDeleteId(null);
+                      }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
-          </section>
-        </>
+          </div>
+        </div>
       ) : (
         ""
-      )} */}
-      {addContactToggle && (
-        <AddNewContactPopup setAddContactToggle={setAddContactToggle} />
       )}
     </>
   );
