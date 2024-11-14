@@ -75,145 +75,180 @@ const IvrListing = () => {
         <div className="container-fluid">
           <div className="row">
             <Header title="IVR Master" />
-            <div className="d-flex flex-wrap px-xl-3 py-2" id="detailsHeader">
-              <div className="col-xl-4 my-auto">
-                <div className="position-relative searchBox">
-                  <input
-                    type="search"
-                    name="Search"
-                    id="headerSearch"
-                    placeholder="Search"
-                  />
+
+            <div className="overviewTableWrapper">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap">
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content">
+                        <h4>IVR Master</h4>
+                      </div>
+                      <div className="buttonGroup">
+                        <button
+                          effect="ripple"
+                          className="panelButton gray"
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
+                        >
+                          <span className="text">Back</span>
+                          <span className="icon">
+                            <i class="fa-solid fa-caret-left"></i>
+                          </span>
+                        </button>
+                        <Link
+                          to="/ivr-add"
+                          onClick={backToTop}
+                          effect="ripple"
+                          className="panelButton"
+                        >
+                          <span className="text">Add</span>
+                          <span className="icon"><i class="fa-solid fa-plus"></i></span>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-12" style={{ overflow: "auto", padding: "25px 20px 0" }}>
+                    <div className="tableHeader">
+                      <div className="showEntries">
+                        <label>Show</label>
+                        <select
+                          className="formItem"
+                        >
+                          <option value={10}>10</option>
+                          <option value={20}>20</option>
+                          <option value={30}>30</option>
+                        </select>
+                        <label>entries</label>
+                      </div>
+                      <div className="searchBox position-relative">
+                        <label>Search:</label>
+                        <input
+                          type="search"
+                          name="Search"
+                          className="formItem"
+                          placeholder="Search"
+                        />
+                      </div>
+                    </div>
+                    <div className="tableContainer">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Confirm Attempts</th>
+                            <th>Timeout</th>
+                            <th>Max Failures</th>
+                            <th>Options</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {loading ? (
+                            <tr>
+                              <td colSpan={99}>
+                                <ContentLoader />
+                              </td>
+                            </tr>
+                          ) : (
+                            <>
+                              {ivr &&
+                                ivr.map((item, index) => {
+                                  return (
+                                    <tr key={index}>
+                                      <td
+                                        onClick={() =>
+                                          navigate(`/ivr-edit`, { state: item.id })
+                                        }
+                                      >
+                                        {item.ivr_name}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          navigate(`/ivr-edit`, { state: item.id })
+                                        }
+                                      >
+                                        {item.ivr_type == "0" ? "Child" : "Master"}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          navigate(`/ivr-edit`, { state: item.id })
+                                        }
+                                      >
+                                        {item.confirm_attempts}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          navigate(`/ivr-edit`, { state: item.id })
+                                        }
+                                      >
+                                        {item.timeout}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          navigate(`/ivr-edit`, { state: item.id })
+                                        }
+                                      >
+                                        {item.max_failures}
+                                      </td>
+                                      <td>
+                                        <button
+                                          onClick={() =>
+                                            navigate(`/ivr-options`, {
+                                              state: {
+                                                id: item.id,
+                                                name: item.ivr_name,
+                                              },
+                                            })
+                                          }
+                                          className="tableButton"
+                                        >
+                                          <i className="fa-duotone fa-gear text-success"></i>
+                                        </button>
+                                      </td>
+                                      <td>
+                                        {" "}
+                                        <button
+                                          className="tableButton edit"
+                                          onClick={() =>
+                                            navigate(`/ivr-edit`, { state: item.id })
+                                          }
+                                        >
+                                          <i class="fa-solid fa-pencil"></i>
+                                        </button>
+                                      </td>
+                                      <td>
+                                        <button
+                                          className="tableButton delete"
+                                          onClick={() => {
+                                            setPopUp(true);
+                                            setDeleteId(item.id);
+                                          }}
+                                        >
+                                          <i className="fa-solid fa-trash"></i>
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                              {ivr && ivr.length === 0 ? (
+                                <td colSpan={99}>
+                                  <EmptyPrompt name="IVR " link="ivr-add" />
+                                </td>
+                              ) : (
+                                ""
+                              )}
+                            </>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="col-xl-8 pt-3 pt-xl-0">
-                <div className="d-flex justify-content-end">
-                  <Link
-                    to="/ivr-add"
-                    onClick={backToTop}
-                    effect="ripple"
-                    className="panelButton"
-                  >
-                    <span className="text">Add</span>
-                    <span className="icon"><i class="fa-solid fa-plus"></i></span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="col-12" style={{ overflow: "auto" }}>
-              <div className="tableContainer">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Type</th>
-                      <th>Confirm Attempts</th>
-                      <th>Timeout</th>
-                      <th>Max Failures</th>
-                      <th>Options</th>
-                      <th>Edit</th>
-                      <th>Delete</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {loading ? (
-                      <tr>
-                        <td colSpan={99}>
-                          <ContentLoader />
-                        </td>
-                      </tr>
-                    ) : (
-                      <>
-                        {ivr &&
-                          ivr.map((item, index) => {
-                            return (
-                              <tr key={index}>
-                                <td
-                                  onClick={() =>
-                                    navigate(`/ivr-edit`, { state: item.id })
-                                  }
-                                >
-                                  {item.ivr_name}
-                                </td>
-                                <td
-                                  onClick={() =>
-                                    navigate(`/ivr-edit`, { state: item.id })
-                                  }
-                                >
-                                  {item.ivr_type == "0" ? "Child" : "Master"}
-                                </td>
-                                <td
-                                  onClick={() =>
-                                    navigate(`/ivr-edit`, { state: item.id })
-                                  }
-                                >
-                                  {item.confirm_attempts}
-                                </td>
-                                <td
-                                  onClick={() =>
-                                    navigate(`/ivr-edit`, { state: item.id })
-                                  }
-                                >
-                                  {item.timeout}
-                                </td>
-                                <td
-                                  onClick={() =>
-                                    navigate(`/ivr-edit`, { state: item.id })
-                                  }
-                                >
-                                  {item.max_failures}
-                                </td>
-                                <td>
-                                  <button
-                                    onClick={() =>
-                                      navigate(`/ivr-options`, {
-                                        state: {
-                                          id: item.id,
-                                          name: item.ivr_name,
-                                        },
-                                      })
-                                    }
-                                    className="tableButton"
-                                  >
-                                    <i className="fa-duotone fa-gear text-success"></i>
-                                  </button>
-                                </td>
-                                <td>
-                                  {" "}
-                                  <button
-                                    className="tableButton edit"
-                                    onClick={() =>
-                                      navigate(`/ivr-edit`, { state: item.id })
-                                    }
-                                  >
-                                    <i class="fa-solid fa-pencil"></i>
-                                  </button>
-                                </td>
-                                <td>
-                                  <button
-                                    className="tableButton delete"
-                                    onClick={() => {
-                                      setPopUp(true);
-                                      setDeleteId(item.id);
-                                    }}
-                                  >
-                                    <i className="fa-solid fa-trash"></i>
-                                  </button>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        {ivr && ivr.length === 0 ? (
-                          <td colSpan={99}>
-                            <EmptyPrompt name="IVR " link="ivr-add" />
-                          </td>
-                        ) : (
-                          ""
-                        )}
-                      </>
-                    )}
-                  </tbody>
-                </table>
               </div>
             </div>
           </div>

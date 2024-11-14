@@ -295,24 +295,24 @@ const Extensions = () => {
                         </tbody>
                       </table>
                     </div>
+                    <div className="tableHeader mb-3">
+                      {extension && extension.data.length > 0 ? (
+                        <PaginationComponent
+                          pageNumber={(e) => setPageNumber(e)}
+                          totalPage={extension.last_page}
+                          from={(pageNumber - 1) * extension.per_page + 1}
+                          to={extension.to}
+                          total={extension.total}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-
-
           </div>
-          {extension && extension.data.length > 0 ? (
-            <PaginationComponent
-              pageNumber={(e) => setPageNumber(e)}
-              totalPage={extension.last_page}
-              from={(pageNumber - 1) * extension.per_page + 1}
-              to={extension.to}
-              total={extension.total}
-            />
-          ) : (
-            ""
-          )}
         </div>
       </section>
     </main>
