@@ -24,6 +24,9 @@ function EFax() {
   const [faxIdent, setFaxIdent] = useState("")
   const [faxHeader, setFaxHeader] = useState("")
 
+  const account = useSelector((state) => state.account);
+  const extension = account?.extension?.extension || "";
+
   useEffect(() => {
     const getData = async () => {
       setContentLoading(true);
@@ -106,7 +109,7 @@ function EFax() {
       toast.error("Please enter fax identifier")
     } else if (faxHeader === "") {
       toast.error("Please enter fax header")
-    }else {
+    } else {
       setContentLoading(true)
       const parsedData = {
         "destination_caller_id_number": destinationId,
@@ -139,33 +142,82 @@ function EFax() {
               : "0",
         }}
       >
-        <section>
+        <section className="callPage">
           <div className="container-fluid">
             <div className="row">
-              <div
-                className="col-12 col-xl-6 d-flex flex-wrap justify-content-between py-3 border-end"
-                style={{ height: "100%" }}
-              >
-                <div className="col-auto">
-                  <h3 style={{ fontFamily: "Outfit", color: "#444444" }}>
-                    eFax <button class="clearButton"><i class="fa-regular fa-arrows-rotate fs-5" style={{ color: 'rgb(148, 148, 148)' }}></i></button>
-                  </h3>
-                </div>
-                <div className="col-auto d-flex">
-                  <div className="col-auto">
-                    <button className="appPanelButton" effect="ripple">
-                      <i className="fa-solid fa-message-plus"></i>
-                    </button>
+
+              <div className="col-12 ps-xl-0">
+                <div className="newHeader">
+                  <div className="col-auto" style={{ padding: '0 10px' }}>
+                    <h3 style={{ fontFamily: "Outfit", marginBottom: '0' }}>
+                      <button class="clearButton text-dark"><i class="fa-solid fa-chevron-left fs-4"></i></button> E-Fax{" "}
+                      <button class="clearButton">
+                        <i
+                          class="fa-regular fa-arrows-rotate fs-5"
+                          style={{ color: "rgb(148, 148, 148)" }}
+                        ></i>
+                      </button>
+                    </h3>
                   </div>
-                  <div className="col-auto">
-                    <button className="appPanelButton" effect="ripple">
-                      <i className="fa-solid fa-gear"></i>
-                    </button>
+                  <div className="d-flex justify-content-end align-items-center">
+                    <div className="col-9">
+                      <input type="search" name="Search" placeholder="Search users, groups or chat" class="formItem fw-normal" style={{ backgroundColor: '#f5f5f5' }} />
+                    </div>
+                    <div className="col-auto mx-2">
+                      <button
+                        className="clearButton2 xl"
+                        effect="ripple"
+                      >
+                        <i className="fa-regular fa-bell" />
+                      </button>
+                    </div>
+                    <div className="col-auto">
+                      <div className="myProfileWidget">
+                        <div class="profileHolder" id="profileOnlineNav">
+                          <img src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg" alt="profile" />
+                        </div>
+                        <div class="profileName">{account.username} <span className="status">Available</span></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
+              </div>
+
+              <div className="col-xl-6 allCallHistory pb-0">
+
+                <div className="col-auto" style={{ padding: '0 10px' }}>
+                  <h5 className="viewingAs">
+                    Viewing As:
+                    <span>
+                      {account && extension ? (
+                        <span>
+                          {account.username} - {account && extension}
+                        </span>
+                      ) : (
+                        <span className="text-danger">
+                          No Extension Assigned
+                        </span>
+                      )}
+                    </span>
+                  </h5>
+                </div>
+                <div className="col-auto" style={{ padding: '0 10px' }}>
+                  <button className="clearColorButton dark">
+                    <i className="fa-light fa-fax" /> New Fax
+                  </button>
+                </div>
+                <div className="col-12 mt-3" style={{ padding: '0 10px' }}>
+                  <input
+                    type="search"
+                    name="Search"
+                    id="headerSearch"
+                    placeholder="Search"
+                  />
+                </div>
+
                 <div className="col-12">
-                  <nav>
-                    <div className="nav nav-tabs">
+                  <nav className="mt-3">
+                    <div className="nav nav-tabs" style={{ borderBottom: '1px solid #ddd' }}>
                       <button
                         onClick={() => setClickStatus("all")}
                         className={
@@ -210,38 +262,56 @@ function EFax() {
                     </div>
                   </nav>
                   <div className="tab-content">
-                    <div className="position-relative searchBox d-flex mt-3">
-                      <input
-                        type="search"
-                        name="Search"
-                        id="headerSearch"
-                        placeholder="Search"
-                      />
-                    </div>
                     {clickStatus === "all" && (
                       <div className="callList">
-                        <div className="text-center callListItem">
-                          <h5 className="fw-semibold">Today</h5>
+                        <div className="dateHeader">
+                          <p className="fw-semibold">Today</p>
                         </div>
-                        <div data-bell="" className="contactListItem">
+                        <div data-bell="" className="callListItem incoming">
                           <div className="row justify-content-between">
-                            <div className="col-xl-6 d-flex">
-                              <div className="profileHolder" id="profileOnline">
+                            <div className="col-xl-12 d-flex">
+                              <div className="profileHolder">
                                 <i className="fa-light fa-user fs-5"></i>
                               </div>
-                              <div className="my-auto ms-2 ms-xl-3">
+
+                              <div class="col-4 my-auto ms-2 ms-xl-3" style={{ cursor: "pointer" }}>
                                 <h4>AUSER XYZ</h4>
-                                <h5>1 (999) 999-9999</h5>
+                                <h5 style={{ paddingLeft: "20px" }}>1 (999) 999-9999</h5>
+                              </div>
+
+                              <div className="col-3 mx-auto">
+                                <div className="contactTags">
+                                  <span data-id="1">Received</span>
+                                </div>
+                                <h5 style={{ fontWeight: '400' }}><i class="fa-light fa-paperclip"></i> 1 Attachment</h5>
+                              </div>
+                              <div className="col-1 text-end ms-auto">
+                                <p className="timeAgo">12:46pm</p>
                               </div>
                             </div>
-                            <div className="col-10 col-xl-4">
-                              <h4>
-                                <span>Received</span>
-                              </h4>
-                              <h5>1 Attachment</h5>
-                            </div>
-                            <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                              <h5>12:46pm</h5>
+                          </div>
+                        </div>
+                        <div data-bell="" className="callListItem outgoing">
+                          <div className="row justify-content-between">
+                            <div className="col-xl-12 d-flex">
+                              <div className="profileHolder">
+                                <i className="fa-light fa-user fs-5"></i>
+                              </div>
+
+                              <div class="col-4 my-auto ms-2 ms-xl-3" style={{ cursor: "pointer" }}>
+                                <h4>AUSER XYZ</h4>
+                                <h5 style={{ paddingLeft: "20px" }}>1 (999) 999-9999</h5>
+                              </div>
+
+                              <div className="col-3 mx-auto">
+                                <div className="contactTags">
+                                  <span data-id="0">Sent</span>
+                                </div>
+                                <h5 style={{ fontWeight: '400' }}><i class="fa-light fa-paperclip"></i> 1 Attachment</h5>
+                              </div>
+                              <div className="col-1 text-end ms-auto">
+                                <p className="timeAgo">12:46pm</p>
+                              </div>
                             </div>
                           </div>
                         </div>

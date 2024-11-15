@@ -44,7 +44,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
       <div id="sidenNavApp">
         <div className="sidenavItems">
           <ul>
-            <li>
+            <li className="mb-2">
               <button className="navItem">
                 <div
                   className="profileHolder"
@@ -62,16 +62,16 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 </div>
               </button>
             </li>{" "}
-            <div className="text-center">
-              {/* <span
+            {/* <div className="text-center">
+              <span
                 style={{
                   color: connectStatus === "CONNECTED" ? "#00ff00" : "red",
                   fontSize: "12px",
                 }}
               >
                 {connectStatus}
-              </span> */}
-            </div>
+              </span>
+            </div> */}
             <li effect="ripple">
               <div
                 // to="/message"
@@ -228,7 +228,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
               <div
                 // to="/"
                 onClick={() => setactivePage("test")}
-                className={activePage==="reports"?"navItem active":"navItem"}
+                className={activePage === "reports" ? "navItem active" : "navItem"}
               >
                 <div className="iconHolder">
                   <i className="fa-solid fa-chart-column" />

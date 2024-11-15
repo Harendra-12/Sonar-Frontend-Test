@@ -21,7 +21,8 @@
 
 #sidenNavApp .sidenavItems ul li {
     /* padding: 7px 8px 7px 0px; */
-    margin: 2px 0;
+    /* margin: 2px 0; */
+    padding: 0px 7px;
 }
 
 #sidenNavApp .sidenavItems ul li i {
@@ -41,10 +42,14 @@
     width: 100%;
     display: flex;
     padding: 7px 8px 7px 0;
+
+    border-radius: 5px;
 }
 
 #sidenNavApp .sidenavItems ul li .navItem.active {
-    background: #ffffff29;
+    /* background: #ffffff29; */
+    background: var(--ui-accent);
+    color: #fff;
     box-shadow: rgba(0, 0, 0, 0.20) 0px 1px 5px;
 }
 
