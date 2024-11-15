@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import zIndex from "@mui/material/styles/zIndex";
 
 const AgentSearch = ({ getDropdownValue, value, getAllAgents }) => {
   const [user, setUser] = useState([]);
@@ -33,7 +34,7 @@ const AgentSearch = ({ getDropdownValue, value, getAllAgents }) => {
         user &&
         user?.map((item) => ({
           value: [item.extension.extension, item.id],
-          label: `${item.username}(${item.extension.extension})`,
+          label: `${item.username} - (${item.extension.extension})`,
         })),
     },
   ];
@@ -80,13 +81,13 @@ const AgentSearch = ({ getDropdownValue, value, getAllAgents }) => {
     }),
     option: (provided, state) => ({
       ...provided,
-      paddingLeft: "15px",
-      paddingTop: 0,
-      paddingBottom: 0,
+      paddingLeft: "13px",
+      paddingTop: 5,
+      paddingBottom: 5,
+      borderBottom: '1px solid #ddd',
       backgroundColor: state.isSelected ? "transparent" : "transparent",
       "&:hover": {
-        backgroundColor: "#0055cc",
-        color: "#fff",
+        backgroundColor: "#00000015",
       },
       fontSize: "14px",
     }),
@@ -94,12 +95,13 @@ const AgentSearch = ({ getDropdownValue, value, getAllAgents }) => {
       ...provided,
       margin: 0,
       padding: 0,
+      zIndex: 9
     }),
     menuList: (provided) => ({
       ...provided,
       padding: 0,
       margin: 0,
-      maxHeight: "150px",
+      maxHeight: "200px",
       overflowY: "auto",
     }),
   };

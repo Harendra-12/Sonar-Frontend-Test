@@ -302,7 +302,7 @@ function AllVoicemails({ isCustomerAdmin }) {
               </div>
 
 
-              <div className="col-xl-6 allCallHistory pb-0s">
+              <div className="col-xl-6 allCallHistory pb-0">
                 <div className="col-auto" style={{ padding: '0 10px' }}>
                   <h5 className="viewingAs">
                     Viewing As:

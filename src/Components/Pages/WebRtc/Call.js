@@ -638,9 +638,20 @@ function Call({
                           </>
                         ))
                       ) : (
-                        <h3 className="text-center pt-10">
-                          No {clickStatus} calls
-                        </h3>
+                        <div className="startAJob">
+                          <div class="text-center mt-3">
+                            <img
+                              src={require("../../assets/images/empty-box.png")}
+                              alt="Empty"
+                            ></img>
+                            <div>
+                              <h5>
+                                No <span><b>{clickStatus === "all" ? "calls" : clickStatus}</b></span> {clickStatus != "all" ? "calls" : ""} available.
+                              </h5>
+                              <h5>Please start a <b>call</b> to see them here.</h5>
+                            </div>
+                          </div>
+                        </div>
                       )}
                     </div>
                   </div>

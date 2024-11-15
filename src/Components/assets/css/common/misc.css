@@ -587,8 +587,14 @@ input[type=number] {
     color: #000;
     padding: 2px 10px;
     font-size: 12px !important;
+    font-weight: 400 !important;
     margin: 0px 10px 0 0 !important;
     cursor: pointer;
+}
+
+.contactTags span[data-id="0"] {
+    background-color: #c7e4fc;
+    color: #2793f4 !important;
 }
 
 .contactTags span[data-id="1"] {
@@ -607,8 +613,8 @@ input[type=number] {
 }
 
 .contactTags span[data-id="4"] {
-    background-color: #c7e4fc;
-    color: #2793f4 !important;
+    background-color: #ddb8ea;
+    color: #9300ff !important;
 }
 
 .contactTags span.more {
