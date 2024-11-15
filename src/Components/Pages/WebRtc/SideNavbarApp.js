@@ -29,6 +29,14 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
       setPopUp(false);
     }
   }, [connectStatus, isMicOn]);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      console.log("Checking connectedStatus:", connectedStatus);
+      // Add any logic you want to perform on each check
+    }, 30000);
+
+    return () => clearInterval(intervalId); // Cleanup interval on unmount
+  }, [connectedStatus]);
 
   console.log("connectedStatus", connectedStatus);
 
