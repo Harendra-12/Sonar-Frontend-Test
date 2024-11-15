@@ -412,34 +412,7 @@ function EFax() {
                     </div>
                   </div>
                   <div className="mt-2">
-                    <nav>
-                      <div className="nav nav-tabs" id="nav-tab" role="tablist">
-                        <button
-                          className="tabLink active"
-                          effect="ripple"
-                          data-bs-toggle="tab"
-                          data-bs-target="#nav-home"
-                          type="button"
-                          role="tab"
-                          aria-controls="nav-home"
-                          aria-selected="true"
-                        >
-                          <i className="fa-regular fa-inbox-out" />
-                        </button>
-                        <button
-                          className="tabLink"
-                          effect="ripple"
-                          data-bs-toggle="tab"
-                          data-bs-target="#nav-history"
-                          type="button"
-                          role="tab"
-                          aria-controls="nav-history"
-                          aria-selected="false"
-                        >
-                          <i className="fa-regular fa-clock-rotate-left" />
-                        </button>
-                      </div>
-                    </nav>
+
                     <div className="tab-content" id="nav-tabContent">
                       <div
                         className="tab-pane fade show active"
