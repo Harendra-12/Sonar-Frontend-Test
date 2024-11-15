@@ -190,7 +190,7 @@ function Navbar() {
                             </NavLink>
                           </li>
 
-                          <li className="tabItem" effect="ripple">
+                          {/* <li className="tabItem" effect="ripple">
                             <NavLink
                               to="/roles1"
                               onClick={backToTop}
@@ -203,7 +203,7 @@ function Navbar() {
                                 Device Provisioning
                               </div>
                             </NavLink>
-                          </li>
+                          </li> */}
                           <li className="tabItem ">
                             <NavLink
                               to="/mail-settings"

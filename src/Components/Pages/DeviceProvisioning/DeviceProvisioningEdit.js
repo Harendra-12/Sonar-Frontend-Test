@@ -13,6 +13,7 @@ import {
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import {
   backToTop,
+  generalDeleteFunction,
   generalGetFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
@@ -23,12 +24,13 @@ const DeviceProvisioningEdit = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const id = location.state;
 
+  const provisionings = location.state?.provisionings;
+  const extension_id = location.state?.extension_id;
+  const [popUp, setPopUp] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
   const [loading, setLoading] = useState(false);
-  const [allExtensions, setAllExtensions] = useState([]);
-  const extensionAll = useSelector((state) => state.extension);
-  const extensionRefresh = useSelector((state) => state.extensionRefresh);
+
   const deviceProvisioningRefresh = useSelector(
     (state) => state.deviceProvisioningRefresh
   );
@@ -41,46 +43,20 @@ const DeviceProvisioningEdit = () => {
   } = useForm();
 
   useEffect(() => {
-    async function getData() {
-      // fetch all the available extensions
-      setLoading(true);
-      if (extensionRefresh > 0) {
-        setAllExtensions(extensionAll);
-        setLoading(false);
-      } else {
-        dispatch({
-          type: "SET_EXTENSIONREFRESH",
-          extensionRefresh: extensionRefresh + 1,
-        });
-        setLoading(false);
-      }
-      const provisioningData = await generalGetFunction(
-        `/provision/show/${id}`
-      );
-      const prevId = extensionAll.find(
-        (item) => item.extension === provisioningData?.data.address
-      );
-      if (provisioningData.status && prevId) {
-        setLoading(false);
-        // reset(provisioningData.data);
-        reset({
-          address: String(prevId.id),
-          transport: provisioningData.data.transport,
-          port: provisioningData.data.port,
-          serial_number: provisioningData.data.serial_number,
-        });
-      }
-    }
-    if (id) {
-      getData();
-    } else {
-      navigate(-1);
-    }
-  }, [extensionRefresh, extensionAll]);
+    reset({
+      address: String(extension_id),
+      transport: provisionings.transport,
+      port: provisionings.port,
+      serial_number: provisionings.serial_number,
+    });
+  }, [provisionings]);
 
   const handleFormSubmit = handleSubmit(async (data) => {
     setLoading(true);
-    const apiData = await generalPutFunction(`/provision/update/${id}`, data);
+    const apiData = await generalPutFunction(
+      `/provision/update/${provisionings.id}`,
+      data
+    );
     if (apiData.status) {
       setLoading(false);
       toast.success(apiData.message);
@@ -97,6 +73,30 @@ const DeviceProvisioningEdit = () => {
     }
   });
 
+  async function handleDelete(id) {
+    setPopUp(false);
+    setLoading(true);
+    const apiData = await generalDeleteFunction(`/provision/destroy/${id}`);
+    if (apiData.status) {
+      //   const newArray = provisioningData.filter((item) => item.id !== id);
+
+      setLoading(false);
+      toast.success(apiData.message);
+
+      setDeleteId("");
+
+      // after succesfully deleting data need to recall the global function to update the global state
+      dispatch({
+        type: "SET_DEVICE_PROVISIONINGREFRESH",
+        deviceProvisioningRefresh: deviceProvisioningRefresh + 1,
+      });
+      navigate(-1);
+    } else {
+      setLoading(false);
+      toast.error(apiData.error);
+      setDeleteId("");
+    }
+  }
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -131,6 +131,19 @@ const DeviceProvisioningEdit = () => {
                     <i class="fa-solid fa-floppy-disk"></i>
                   </span>
                 </button>
+                <button
+                  effect="ripple"
+                  className="panelButton"
+                  onClick={() => {
+                    setPopUp(true);
+                    setDeleteId(provisionings.id);
+                  }}
+                >
+                  <span className="text">Delete</span>
+                  <span className="icon">
+                    <i class="fa-solid fa-trash"></i>
+                  </span>
+                </button>
               </div>
             </div>
           </div>
@@ -154,26 +167,13 @@ const DeviceProvisioningEdit = () => {
                   </label>
                 </div>
                 <div className="col-6">
-                  <select
+                  <input
+                    type="text"
                     className="formItem"
-                    // value={String(prevId?.id)}
-                    name="address "
-                    id="selectFormRow"
-                    {...register("address", {
-                      ...requiredValidator,
-                      ...numberValidator,
-                    })}
-                  >
-                    <option disabled selected value="">
-                      Chose a address
-                    </option>
-                    {allExtensions &&
-                      allExtensions.map((extension) => (
-                        <option value={extension.id} key={extension.id}>
-                          {extension.extension}
-                        </option>
-                      ))}
-                  </select>
+                    value={provisionings.address}
+                    disabled
+                  />
+
                   {errors.address && (
                     <ErrorMessage text={errors.address.message} />
                   )}
@@ -266,6 +266,63 @@ const DeviceProvisioningEdit = () => {
           </div>
         </div>
       </section>
+      {popUp ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-4">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-triangle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-0">
+                  <h4>Warning!</h4>
+                  <p>Are you sure you want to delete this?</p>
+                  <div className="d-flex justify-content-between">
+                    {deleteId !== "" ? (
+                      <button
+                        className="panelButton m-0"
+                        onClick={() => handleDelete(deleteId)}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-check"></i>
+                        </span>
+                      </button>
+                    ) : (
+                      <button
+                        className="panelButton m-0"
+                        onClick={() => {
+                          setPopUp(false);
+                        }}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-check"></i>
+                        </span>
+                      </button>
+                    )}
+
+                    <button
+                      className="panelButtonWhite m-0 float-end"
+                      onClick={() => {
+                        setPopUp(false);
+                        setDeleteId("");
+                        // setDeleteToggle(false);
+                      }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </main>
   );
 };
