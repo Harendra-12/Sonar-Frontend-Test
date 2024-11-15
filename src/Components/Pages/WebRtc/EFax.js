@@ -27,6 +27,8 @@ function EFax() {
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
 
+  const [showUserHistory, setShowUserHistory] = useState(false);
+
   useEffect(() => {
     const getData = async () => {
       setContentLoading(true);
@@ -202,7 +204,7 @@ function EFax() {
                   </h5>
                 </div>
                 <div className="col-auto" style={{ padding: '0 10px' }}>
-                  <button className="clearColorButton dark">
+                  <button className="clearColorButton dark" onClick={() => setShowUserHistory(false)}>
                     <i className="fa-light fa-fax" /> New Fax
                   </button>
                 </div>
@@ -229,7 +231,7 @@ function EFax() {
                         All
                       </button>
                       <button
-                        onClick={() => setClickStatus("file")}
+                        // onClick={() => setClickStatus("file")}
                         className={
                           clickStatus === "file" ? "tabLink active" : "tabLink"
                         }
@@ -267,7 +269,7 @@ function EFax() {
                         <div className="dateHeader">
                           <p className="fw-semibold">Today</p>
                         </div>
-                        <div data-bell="" className="callListItem incoming">
+                        <div data-bell="" className="callListItem incoming" onClick={() => setShowUserHistory(true)}>
                           <div className="row justify-content-between">
                             <div className="col-xl-12 d-flex">
                               <div className="profileHolder">
@@ -387,111 +389,97 @@ function EFax() {
                   </div>
                 </div>
               </div>
-              {clickStatus === "all" && (
+
+              {/* THIS UI WILL BE SHOWN TO USER BY DEFAULT OR WHEN HE CLICKS NEW EFAX */}
+              {clickStatus === "all" && !showUserHistory && (
                 <div
                   className="col-12 col-xl-6 callDetails eFaxCompose"
                   style={{ height: "100%" }}
                   id="callDetails"
                 >
-                  <div className="profileInfoHolder">
-                    <div className="profileHolder">
-                      <i className="fa-light fa-user fs-3" />
-                    </div>
-                    <h4>1 (999) 999-9999</h4>
-                    <h5>USER XYZ</h5>
-                    <div className="d-flex justify-content-center align-items-center mt-3">
-                      <button className="appPanelButton" effect="ripple">
-                        <i className="fa-light fa-message-dots" />
-                      </button>
-                      <button className="appPanelButton" effect="ripple">
-                        <i className="fa-light fa-phone" />
-                      </button>
-                      <button className="appPanelButton" effect="ripple">
-                        <i className="fa-light fa-video" />
-                      </button>
-                    </div>
-                  </div>
-                  <div className="mt-2">
-
-                    <div className="tab-content" id="nav-tabContent">
-                      <div
-                        className="tab-pane fade show active"
-                        id="nav-home"
-                        role="tabpanel"
-                        aria-labelledby="nav-home-tab"
-                        tabIndex={0}
-                      >
-                        <div className="newMessageWrapper">
-                          <div>
-                            <div className="messageTitle">
+                  <div className="overviewTableWrapper p-2 mt-2">
+                    <div className="overviewTableChild">
+                      <div className="d-flex flex-wrap">
+                        <div class="col-12">
+                          <div class="heading">
+                            <div class="content">
                               <h4>New Fax</h4>
+                              <p>You can send a new fax from here</p>
                             </div>
-                            <div className="messageTo">
-                              <label>To</label>
-                              <div className="d-flex flex-wrap">
-                                {/* Map This in Loop */}
-                                {/* <div className="col-auto">
+                          </div>
+                        </div>
+                        <div className="col-12" style={{ padding: '0px 20px 0px' }}>
+                          <div className="newMessageWrapper mb-3">
+                            <div>
+                              {/* <div className="messageTitle">
+                                <h4>New Fax</h4>
+                              </div> */}
+                              <div className="messageTo">
+                                <label>Recipents</label>
+                                <div className="d-flex flex-wrap">
+                                  {/* Map This in Loop */}
+                                  {/* <div className="col-auto">
                                   <div style={{ width: "max-content" }}>
                                     <button class="receipentButton">
                                       johndoe@email.com
                                     </button>
                                   </div>
                                 </div> */}
-                                {/* <div className="col-auto">
+                                  {/* <div className="col-auto">
                                   <div style={{ width: "max-content" }}>
                                     <button class="receipentButton">
                                       johndoe@email.com
                                     </button>
                                   </div>
                                 </div> */}
-                                {/* <div className="col-auto">
+                                  {/* <div className="col-auto">
                                   <div style={{ width: "max-content" }}>
                                     <button class="receipentButton">
                                       johndoe@email.com
                                     </button>
                                   </div>
                                 </div> */}
-                                {/* Map This in Loop */}
-                                <div className="col-auto my-auto">
-                                  <input
-                                    type="text"
-                                    className="border-0 mb-0"
-                                    value={destinationId}
-                                    onChange={(e) => setDestinationId(e.target.value)}
-                                  />
+                                  {/* Map This in Loop */}
+                                  <div className="col-auto my-auto">
+                                    <input
+                                      type="text"
+                                      className="border-0 mb-0"
+                                      value={destinationId}
+                                      onChange={(e) => setDestinationId(e.target.value)}
+                                    />
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                            <div className="messageSubject">
-                              <label>Fax Identifier</label>
-                              <input value={faxIdent}
-                                onChange={(e) => setFaxIdent(e.target.value)} type="text" />
-                            </div>
-                            <div className="messageBody">
-                              <label>Fax Header</label>
-                              <input value={faxHeader}
-                                onChange={(e) => setFaxHeader(e.target.value)} />
-                            </div>
-                            <div className="messageBody">
-                              <label>
-                                <i className="fa-regular fa-link"></i> Attach
-                                File(s) (maximum file size is 50 MB)
-                              </label>
-                              <div className="inputFileWrapper">
-                                {/* <input type="file" /> */}
-                                <select value={faxFileId} onChange={(e) => setFaxDileId(e.target.value)}>
-                                  <option value="" disabled>
-                                    Chose file
-                                  </option>
-                                  {allFiles &&
-                                    allFiles.map((file) => (
-                                      <option value={file.id}>
-                                        {file.file_name}
-                                      </option>
-                                    ))}
-                                </select>
+                              <div className="messageSubject">
+                                <label>Fax Identifier</label>
+                                <input value={faxIdent}
+                                  onChange={(e) => setFaxIdent(e.target.value)} type="text" />
+                              </div>
+                              <div className="messageBody">
+                                <label>Fax Header</label>
+                                <input value={faxHeader}
+                                  onChange={(e) => setFaxHeader(e.target.value)} />
+                              </div>
+                              <div className="messageBody">
+                                <label>
+                                  <i className="fa-regular fa-link"></i> Attach
+                                  File(s) (maximum file size is 50 MB)
+                                </label>
+                                <div className="inputFileWrapper">
+                                  {/* <input type="file" /> */}
+                                  <select value={faxFileId} onChange={(e) => setFaxDileId(e.target.value)} className="formItem">
+                                    <option value="" disabled>
+                                      Chose file
+                                    </option>
+                                    {allFiles &&
+                                      allFiles.map((file) => (
+                                        <option value={file.id}>
+                                          {file.file_name}
+                                        </option>
+                                      ))}
+                                  </select>
 
-                                {/* {dropdownOption && (
+                                  {/* {dropdownOption && (
                                   <Select
                                     closeMenuOnSelect={false}
                                     isMulti
@@ -510,60 +498,19 @@ function EFax() {
                                     }}
                                   />
                                 )} */}
+                                </div>
                               </div>
-                            </div>
-                            <div className="buttonControl">
-                              <button className="panelButtonWhite">
-                                Cancel
-                              </button>
-                              {/* <button className="panelButton">Send Later</button> */}
-                              <button onClick={sendFax} className="panelButton"><span className="text">Send</span><span className="icon"><i class="fa-solid fa-paper-plane-top"></i></span></button>
+                              <div className="buttonControl">
+                                {/* <button className="panelButton">Send Later</button> */}
+                                <button onClick={sendFax} className="panelButton"><span className="text">Send</span><span className="icon"><i class="fa-solid fa-paper-plane-top"></i></span></button>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div
-                        className="tab-pane fade"
-                        id="nav-history"
-                        role="tabpanel"
-                        aria-labelledby="nav-history-tab"
-                        tabIndex={1}
-                      >
-                        <div className="callDetailsList">
-                          <table className="mt-3">
-                            <tbody>
-                              <tr>
-                                <td style={{ color: "#444444" }}>
-                                  Jan 16, 2022
-                                </td>
-                                <td>12:46 PM</td>
-                                <td className="incoming">
-                                  <span>Received</span>
-                                </td>
-                                <td>1 (999) 999-9999</td>
-                                <td style={{ color: "#444444" }}>
-                                  1 Attachment
-                                </td>
-                              </tr>
-                              <tr>
-                                <td style={{ color: "#444444" }}>
-                                  Jan 16, 2022
-                                </td>
-                                <td>12:46 PM</td>
-                                <td className="outgoing">
-                                  <span>Sent</span>
-                                </td>
-                                <td>1 (999) 999-9999</td>
-                                <td style={{ color: "#444444" }}>
-                                  1 Attachment
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
                     </div>
                   </div>
+
                 </div>
               )}
               {clickStatus === "file" && (
@@ -575,6 +522,199 @@ function EFax() {
               {clickStatus === "file" && EfaxFileLoading && (
                 <div colSpan={99}>
                   <CircularLoader />
+                </div>
+              )}
+
+              {/* THIS UI WILL BE SHOWN WHEN USER CLICKS A EFAX MESSAGE */}
+              {showUserHistory && (
+                <div
+                  className="col-12 col-xl-6 callDetails eFaxCompose"
+                  style={{ height: "100%" }}
+                  id="callDetails"
+                >
+
+                  <div className="messageOverlay">
+                    <div className="contactHeader">
+                      <div>
+                        <h4 className="mb-0">Test User</h4>
+                        <p className="gray14 mb-0 mt-1">
+                          Extension - 1002
+                        </p>
+                      </div>
+                      <div className="d-flex my-auto">
+                        <div className="d-flex align-items-center me-2">
+                          <label className="gray14 me-2">Assigned to:</label>
+                          <select className="ovalSelect">
+                            <option>
+                              Test User
+                            </option>
+                          </select>
+                        </div>
+                        <button
+                          className="clearButton2 xl"
+                          effect="ripple"
+                        >
+                          <i className="fa-regular fa-message-dots" />
+                        </button>
+                        <button
+                          className="clearButton2 xl"
+                          effect="ripple"
+                        >
+                          <i className="fa-regular fa-phone" />
+                        </button>
+                        <button
+                          className="clearButton2 xl"
+                          effect="ripple"
+                        >
+                          <i className="fa-regular fa-video" />
+                        </button>
+                        <div class="dropdown">
+                          <button class="clearButton2 xl" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Add to Contact</a></li>
+                            <li><a class="dropdown-item" href="#">Video Call</a></li>
+                            <li><a class="dropdown-item" href="#">Delete Contact</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="overviewTableWrapper p-2 mt-2">
+                    <div className="overviewTableChild">
+                      <div className="d-flex flex-wrap">
+                        <div class="col-12">
+                          <div class="heading">
+                            <div class="content">
+                              <h4>E-Fax</h4>
+                              <p>You can see all of the eFax logs here</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-12" style={{ padding: '0px 20px 0px' }}>
+                          <div className="mt-2">
+                            <nav className="mb-2">
+                              <div className="nav nav-tabs" id="nav-tab" role="tablist" style={{ borderBottom: '1px solid #ddd' }}>
+                                <button
+                                  className="tabLink active"
+                                  effect="ripple"
+                                  data-bs-toggle="tab"
+                                  data-bs-target="#nav-home"
+                                  type="button"
+                                  role="tab"
+                                  aria-controls="nav-home"
+                                  aria-selected="true"
+                                >
+                                  Info
+                                </button>
+                                <button
+                                  className="tabLink"
+                                  effect="ripple"
+                                  data-bs-toggle="tab"
+                                  data-bs-target="#nav-history"
+                                  type="button"
+                                  role="tab"
+                                  aria-controls="nav-history"
+                                  aria-selected="false"
+                                >
+                                  Logs
+                                </button>
+                              </div>
+                            </nav>
+                            <div className="tab-content" id="nav-tabContent">
+                              <div
+                                className="tab-pane fade show active"
+                                id="nav-home"
+                                role="tabpanel"
+                                aria-labelledby="nav-home-tab"
+                                tabIndex={0}
+                              >
+                                <div className="callDetailsList tableContainer mt-0">
+                                  <table>
+                                    <thead>
+                                      <tr>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>eFax Type</th>
+                                        <th>DID / Extension</th>
+                                        <th>Attachment</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td style={{ color: "#444444" }}>
+                                          Jan 16, 2022
+                                        </td>
+                                        <td>12:46 PM</td>
+                                        <td className="incoming" style={{ paddingLeft: '30px' }}>
+                                          <span>Received</span>
+                                        </td>
+                                        <td>1 (999) 999-9999</td>
+                                        <td style={{ color: "#444444" }}>
+                                          1 Attachment
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                              <div
+                                className="tab-pane fade"
+                                id="nav-history"
+                                role="tabpanel"
+                                aria-labelledby="nav-history-tab"
+                                tabIndex={1}
+                              >
+                                <div className="callDetailsList tableContainer mt-0">
+                                  <table>
+                                    <thead>
+                                      <tr>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>eFax Type</th>
+                                        <th>DID / Extension</th>
+                                        <th>Attachment</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td style={{ color: "#444444" }}>
+                                          Jan 16, 2022
+                                        </td>
+                                        <td>12:46 PM</td>
+                                        <td className="incoming" style={{ paddingLeft: '30px' }}>
+                                          <span>Received</span>
+                                        </td>
+                                        <td>1 (999) 999-9999</td>
+                                        <td style={{ color: "#444444" }}>
+                                          1 Attachment
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style={{ color: "#444444" }}>
+                                          Jan 16, 2022
+                                        </td>
+                                        <td>12:46 PM</td>
+                                        <td className="outgoing" style={{ paddingLeft: '30px' }}>
+                                          <span>Sent</span>
+                                        </td>
+                                        <td>1 (999) 999-9999</td>
+                                        <td style={{ color: "#444444" }}>
+                                          1 Attachment
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
