@@ -604,7 +604,7 @@ function Navbar() {
                       <div className="itemTitle">IVR</div>
                     </NavLink>
                   </li>
-                  <li className="dashboard ">
+                  {/* <li className="dashboard ">
                     <NavLink
                       to="/device-provisioning"
                       onClick={backToTop}
@@ -613,7 +613,7 @@ function Navbar() {
                     >
                       <div className="itemTitle">Device Provisioning</div>
                     </NavLink>
-                  </li>
+                  </li> */}
                   <li className="dashboard ">
                     <NavLink
                       to="/call-blocking"
