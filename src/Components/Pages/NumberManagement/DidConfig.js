@@ -115,6 +115,7 @@ const DidConfig = () => {
   };
 
   const forwardStatus = watch("forward", "disabled");
+  const stickyAgentStatus = watch("sticky_agent", "0");
 
   const handleFormSubmit = handleSubmit(async (data) => {
     data.record = data.record === true || data.record === "true";

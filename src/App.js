@@ -4,6 +4,7 @@ import {
   Routes,
   Navigate,
   useNavigate,
+  Link,
 } from "react-router-dom";
 import ProtectedRoute from "./Components/CommonComponents/ProtectedRoute";
 import Navbar from "./Components/CommonComponents/Navbar";
@@ -104,6 +105,7 @@ import DeviceProvisioningAdd from "./Components/Pages/DeviceProvisioning/DeviceP
 import DeviceProvisioning from "./Components/Pages/DeviceProvisioning/DeviceProvisioning";
 import DeviceProvisioningEdit from "./Components/Pages/DeviceProvisioning/DeviceProvisioningEdit";
 import ConferenceCall from "./Components/Pages/WebRtc/ConferenceCall";
+import CallBlocking from "./Components/Pages/SpamFilter/CallBlocking";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -340,6 +342,9 @@ function App() {
             element={<DeviceProvisioningEdit />}
           />
           {/* Device Profisioning End  */}
+          {/* Spam Filter start */}
+          <Route path="/call-blocking" element={<CallBlocking />} />
+          {/* Spam Filter end */}
 
           {/* 404 Redirection */}
           <Route path="*" element={<Navigate to="/dashboard" />} />
