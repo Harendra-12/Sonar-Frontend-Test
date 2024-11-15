@@ -234,7 +234,7 @@ const RingGroups = () => {
                             <th>Extension</th>
                             <th>Strategy</th>
                             <th>Members</th>
-                            <th>Phone Numbers</th>
+                            {/* <th>Phone Numbers</th> */}
                             <th>Status</th>
                             <th>Description</th>
                             {/* <th>Setting</th>
@@ -300,7 +300,7 @@ const RingGroups = () => {
                                           )
                                         )}
                                       </td>
-                                      <td>(999) 999-9999, (999) 999-9999</td>
+                                      {/* <td>(999) 999-9999, (999) 999-9999</td> */}
                                       <td>
                                         <div className="my-auto position-relative mx-1">
                                           <label className="switch">

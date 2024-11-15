@@ -190,7 +190,7 @@ function Navbar() {
                             </NavLink>
                           </li>
 
-                          <li className="tabItem" effect="ripple">
+                          {/* <li className="tabItem" effect="ripple">
                             <NavLink
                               to="/roles1"
                               onClick={backToTop}
@@ -203,7 +203,7 @@ function Navbar() {
                                 Device Provisioning
                               </div>
                             </NavLink>
-                          </li>
+                          </li> */}
                           <li className="tabItem ">
                             <NavLink
                               to="/mail-settings"
@@ -604,7 +604,7 @@ function Navbar() {
                       <div className="itemTitle">IVR</div>
                     </NavLink>
                   </li>
-                  <li className="dashboard ">
+                  {/* <li className="dashboard ">
                     <NavLink
                       to="/device-provisioning"
                       onClick={backToTop}
@@ -613,7 +613,7 @@ function Navbar() {
                     >
                       <div className="itemTitle">Device Provisioning</div>
                     </NavLink>
-                  </li>
+                  </li> */}
                   {account?.extension || isCustomerAdmin ? (
                     <li className="dashboard ">
                       <a

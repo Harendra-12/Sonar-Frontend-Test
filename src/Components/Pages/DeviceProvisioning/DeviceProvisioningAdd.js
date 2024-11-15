@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { useNavigate } from "react-router-dom";
-import { backToTop, generalPostFunction } from "../../GlobalFunction/globalFunction";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  backToTop,
+  generalPostFunction,
+} from "../../GlobalFunction/globalFunction";
 import { useForm } from "react-hook-form";
 import {
   lengthValidator,
-
   minValidator,
   numberValidator,
   requiredValidator,
@@ -20,54 +22,47 @@ import { toast } from "react-toastify";
 const DeviceProvisioningAdd = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
-  const [allExtensions, setAllExtensions] = useState([]);
-  const extensionAll = useSelector((state) => state.extension);
-  const extensionRefresh = useSelector((state) => state.extensionRefresh);
-  const deviceProvisioningRefresh = useSelector((state) => state.deviceProvisioningRefresh);
-  // const loading = useSelector((state) => state.loading);
-  const [loading, setLoading] = useState(false);
+  const deviceProvisioningRefresh = useSelector(
+    (state) => state.deviceProvisioningRefresh
+  );
+  const extensionData = location.state;
+
+  const [loading, setLoading] = useState(true);
   const {
     register,
     formState: { errors },
     handleSubmit,
     watch,
     reset,
+    setValue,
   } = useForm();
-
-  useEffect(() => {
-    setLoading(true);
-
-    // fetch all the available extensions
-    if (extensionRefresh > 0) {
-      setLoading(false);
-      setAllExtensions(extensionAll);
-    } else {
-      dispatch({
-        type: "SET_EXTENSIONREFRESH",
-        extensionRefresh: extensionRefresh + 1,
-      });
-    }
-  }, [extensionRefresh, extensionAll]);
 
   const handleFormSubmit = handleSubmit(async (data) => {
     setLoading(true);
-   const apiData = await generalPostFunction("/provision/store", data);
-   if (apiData.status) {
-    setLoading(false);
-    toast.success(apiData.message);
+    data.address = extensionData.id;
+    const apiData = await generalPostFunction("/provision/store", data);
+    if (apiData.status) {
+      setLoading(false);
+      toast.success(apiData.message);
 
-    // // after succesfully adding data need to recall the global function to update the global state
-    dispatch({
-      type: "SET_DEVICE_PROVISIONINGREFRESH",
-      deviceProvisioningRefresh: deviceProvisioningRefresh + 1,
-    });
-    reset();
-    navigate(-1);
-  } else {
-    setLoading(false);
-  }
+      // // after succesfully adding data need to recall the global function to update the global state
+      dispatch({
+        type: "SET_DEVICE_PROVISIONINGREFRESH",
+        deviceProvisioningRefresh: deviceProvisioningRefresh + 1,
+      });
+      reset();
+      navigate(-1);
+    } else {
+      setLoading(false);
+    }
   });
+
+  useEffect(() => {
+    setValue("address", extensionData.id);
+    setLoading(false);
+  }, [extensionData]);
 
   return (
     <main className="mainContent">
@@ -126,26 +121,13 @@ const DeviceProvisioningAdd = () => {
                   </label>
                 </div>
                 <div className="col-6">
-                  <select
-                    value={watch().address}
+                  <input
+                    value={extensionData.extension}
+                    disabled
+                    type="text"
+                    name="address"
                     className="formItem"
-                    name="address "
-                    id="selectFormRow"
-                    {...register("address", {
-                      ...requiredValidator,
-                      ...numberValidator,
-                    })}
-                  >
-                    <option disabled selected value="">
-                      Chose a address
-                    </option>
-                    {allExtensions &&
-                      allExtensions.map((extension) => (
-                        <option value={extension.id} key={extension.id}>
-                          {extension.extension}
-                        </option>
-                      ))}
-                  </select>
+                  />
                   {errors.address && (
                     <ErrorMessage text={errors.address.message} />
                   )}

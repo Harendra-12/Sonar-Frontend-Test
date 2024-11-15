@@ -52,7 +52,6 @@ const Extensions = () => {
       name: user.name,
       extension: user.extension.extension, // Access the nested extension value
     }));
-  console.log(userWithExtension);
   useEffect(() => {
     if (extensionByAccount.data) {
       setExtension(extensionByAccount);
@@ -99,7 +98,7 @@ const Extensions = () => {
       }
       getData();
     }
-  }, [account, navigate, pageNumber]);
+  }, [navigate, pageNumber, , account]);
 
   return (
     <main className="mainContent">
@@ -126,7 +125,9 @@ const Extensions = () => {
                           }}
                         >
                           <span className="text">Back</span>
-                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-caret-left"></i>
+                          </span>
                         </button>
                         <Link
                           // to="/extensions-add"
@@ -136,12 +137,17 @@ const Extensions = () => {
                           className="panelButton"
                         >
                           <span className="text">Buy</span>
-                          <span className="icon"><i class="fa-solid fa-cart-shopping"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                          </span>
                         </Link>
                       </div>
                     </div>
                   </div>
-                  <div className="col-12" style={{ overflow: "auto", padding: '25px 20px 0' }}>
+                  <div
+                    className="col-12"
+                    style={{ overflow: "auto", padding: "25px 20px 0" }}
+                  >
                     <div className="tableHeader">
                       <div className="showEntries">
                         <label>Show</label>
@@ -170,6 +176,7 @@ const Extensions = () => {
                             <th>Status</th>
                             <th>Setting</th>
                             <th>Edit</th>
+                            <th>Device Provisioning</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -183,7 +190,7 @@ const Extensions = () => {
                             ""
                           )}
                           {extension &&
-                            extension.data.map((item, index) => {
+                            extension?.data?.map((item, index) => {
                               const foundUser = userWithExtension.find(
                                 (value) => value.extension === item.extension
                               );
@@ -276,18 +283,62 @@ const Extensions = () => {
                                     <button
                                       className="tableButton edit"
                                       onClick={() =>
-                                        navigate(`/extensions-edit?id=${item.id}`)
+                                        navigate(
+                                          `/extensions-edit?id=${item.id}`
+                                        )
                                       }
                                     >
                                       <i class="fa-solid fa-pencil"></i>
                                     </button>
                                   </td>
+
+                                  <td
+                                    style={{ cursor: "default" }}
+                                    className="d-flex justify-content-center"
+                                  >
+                                    {item.provisionings ? (
+                                      <button
+                                        className="tableButton "
+                                        onClick={() =>
+                                          navigate(
+                                            `/device-provisioning-edit`,
+                                            {
+                                              state: {
+                                                provisionings:
+                                                  item.provisionings,
+                                                extension_id: item.id,
+                                              },
+                                            }
+                                          )
+                                        }
+                                      >
+                                        <i class="fa-solid fa-mobile"></i>
+                                      </button>
+                                    ) : (
+                                      <button
+                                        className="tableButton "
+                                        onClick={() =>
+                                          navigate("/device-provisioning-add", {
+                                            state: {
+                                              extension: item.extension,
+                                              id: item.id,
+                                            },
+                                          })
+                                        }
+                                      >
+                                        <i class="fa-solid fa-plus"></i>
+                                      </button>
+                                    )}
+                                  </td>
                                 </tr>
                               );
                             })}
-                          {extension && extension.data.length === 0 ? (
+                          {extension && extension?.data?.length === 0 ? (
                             <td colSpan={99}>
-                              <EmptyPrompt name="Extension" link="extensions-add" />
+                              <EmptyPrompt
+                                name="Extension"
+                                link="extensions-add"
+                              />
                             </td>
                           ) : (
                             ""
@@ -299,10 +350,8 @@ const Extensions = () => {
                 </div>
               </div>
             </div>
-
-
           </div>
-          {extension && extension.data.length > 0 ? (
+          {extension && extension?.data?.length > 0 ? (
             <PaginationComponent
               pageNumber={(e) => setPageNumber(e)}
               totalPage={extension.last_page}

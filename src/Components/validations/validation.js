@@ -166,3 +166,14 @@ export const restrictToMacAddress = (e) => {
     e.preventDefault();
   }
 };
+
+export const rangeValidator = (min, max) => ({
+  min: {
+    value: min,
+    message: `Value must be at least ${min}`,
+  },
+  max: {
+    value: max,
+    message: `Value must be at most ${max}`,
+  },
+});

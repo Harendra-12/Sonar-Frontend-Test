@@ -12,7 +12,9 @@ import ActionList from "../../CommonComponents/ActionList";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import {
+  minValidator,
   noSpecialCharactersValidator,
+  rangeValidator,
   requiredValidator,
   usagesValidator,
 } from "../../validations/validation";
@@ -48,6 +50,14 @@ const DidConfig = () => {
       setValue("forward_to", locationData.configuration.forward_to || "");
       setValue("action", locationData.configuration.action || "");
       setValue("hold_music", locationData.configuration.hold_music || "");
+      setValue(
+        "stick_agent_expires",
+        locationData.configuration.stick_agent_expires || ""
+      );
+      setValue(
+        "stick_agent_type",
+        locationData.configuration.stick_agent_type || ""
+      );
 
       setValue(
         "record",
@@ -56,6 +66,12 @@ const DidConfig = () => {
       setValue(
         "status",
         locationData.configuration.status === 0 ? false : true || ""
+      );
+      setValue(
+        "sticky_agent_enable",
+        locationData.configuration.sticky_agent_enable === 0
+          ? false
+          : true || ""
       );
     } else {
       setValue("usages", "extension" || []);
@@ -118,6 +134,8 @@ const DidConfig = () => {
 
   const handleFormSubmit = handleSubmit(async (data) => {
     data.record = data.record === true || data.record === "true";
+    data.sticky_agent_enable =
+      data.sticky_agent_enable === true || data.sticky_agent_enable === "true";
     data.status = data.status === true || data.status === "true";
 
     if (data.forward === "pstn" && !data.forward_to) {
@@ -175,9 +193,7 @@ const DidConfig = () => {
       }
     }
   });
-
-
-
+  console.log(watch());
   return (
     <>
       <main className="mainContent">
@@ -231,8 +247,10 @@ const DidConfig = () => {
                     <div className="heading">
                       <div className="content">
                         <h4>Destination Config</h4>
-                        <p>Inbound destinations are the DID/DDI, DNIS or Alias for
-                          inbound calls.</p>
+                        <p>
+                          Inbound destinations are the DID/DDI, DNIS or Alias
+                          for inbound calls.
+                        </p>
                       </div>
                       <div className="buttonGroup">
                         <button
@@ -245,20 +263,32 @@ const DidConfig = () => {
                           className="panelButton gray"
                         >
                           <span className="text">Back</span>
-                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-caret-left"></i>
+                          </span>
                         </button>
                         <button
                           effect="ripple"
                           className="panelButton"
                           onClick={handleFormSubmit}
                         >
-                          <span className="text">{locationData.configuration ? "Update" : "Save"}</span>
-                          <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                          <span className="text">
+                            {locationData.configuration ? "Update" : "Save"}
+                          </span>
+                          <span className="icon">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                          </span>
                         </button>
                       </div>
                     </div>
                   </div>
-                  <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
+                  <div
+                    className="col-12"
+                    style={{
+                      padding: "25px 23px",
+                      borderBottom: "1px solid #ddd",
+                    }}
+                  >
                     <form className="row">
                       <div className="formRow col-xl-3">
                         <div className="formLabel">
@@ -387,7 +417,9 @@ const DidConfig = () => {
                       {forwardStatus === "direct" && (
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
-                            <label htmlFor="selectFormRow">Forward Extension</label>
+                            <label htmlFor="selectFormRow">
+                              Forward Extension
+                            </label>
                             <label htmlFor="data" className="formItemDesc">
                               Select extension.
                             </label>
@@ -403,7 +435,9 @@ const DidConfig = () => {
                               })}
                             />
                             {errors.direct_extension && (
-                              <ErrorMessage text={errors.direct_extension.message} />
+                              <ErrorMessage
+                                text={errors.direct_extension.message}
+                              />
                             )}
                           </div>
                         </div>
@@ -491,33 +525,76 @@ const DidConfig = () => {
                           <select
                             className="formItem"
                             name=""
+                            defaultValue="false"
                             id="selectFormRow"
+                            {...register("sticky_agent_enable")}
                           >
-                            <option selected="" value="true">
-                              True
-                            </option>
+                            <option value="true">True</option>
                             <option value="false">False</option>
                           </select>
                         </div>
+
                         <div className="col-4">
-                          <div class="formLabel">
-                            <label>Duration <span style={{ color: 'var(--color-subtext)' }}>(in Days, Max 120)</span></label>
-                          </div>
-                          <input
-                            type="number"
-                            name="forward_to"
-                            className="formItem"
-                          />
+                          {(watch().sticky_agent_enable == true ||
+                            watch().sticky_agent_enable == "true") && (
+                            <>
+                              <div class="formLabel">
+                                <label>
+                                  Duration{" "}
+                                  <span
+                                    style={{ color: "var(--color-subtext)" }}
+                                  >
+                                    (in Days, Max 99)
+                                  </span>
+                                </label>
+                              </div>
+                              <input
+                                type="number"
+                                name="forward_to"
+                                className="formItem"
+                                {...register(
+                                  "stick_agent_expires",
+                                  rangeValidator(1, 99)
+                                )}
+                              />
+                              {errors.stick_agent_expires && (
+                                <ErrorMessage
+                                  text={errors.stick_agent_expires.message}
+                                />
+                              )}
+                            </>
+                          )}
                         </div>
                       </div>
+
+                      {(watch().sticky_agent_enable == true ||
+                        watch().sticky_agent_enable == "true") && (
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="selectFormRow">
+                              Sticky Agent Type
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <select
+                              className="formItem"
+                              name=""
+                              id="selectFormRow"
+                              {...register("stick_agent_type")}
+                            >
+                              <option selected="" value="last_spoken">
+                                Last Spoken
+                              </option>
+                              <option value="longest_time">Longest Time</option>
+                            </select>
+                          </div>
+                        </div>
+                      )}
                     </form>
                   </div>
                 </div>
               </div>
             </div>
-
-
-
           </div>
         </section>
       </main>
