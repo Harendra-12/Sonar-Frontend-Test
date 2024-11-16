@@ -62,6 +62,8 @@ const ConferenceConfig = () => {
       if (apiData.status) {
         setLoading(false);
         toast.success(apiData.message);
+      }else{
+        setLoading(false);
       }
     }
   }
