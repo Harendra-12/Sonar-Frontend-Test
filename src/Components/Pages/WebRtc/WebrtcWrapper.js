@@ -16,6 +16,7 @@ import Messages from "./Messages";
 import VideoCall from "./VideoCall";
 import ConferenceCall from "./ConferenceCall";
 import ConferenceTest from "./ConferenceTest";
+import ConferenceConfig from "./ConferenceConfig";
 
 const WebrtcWrapper = () => {
   const { sessions: sipSessions } = useSIPProvider();
@@ -156,13 +157,7 @@ const WebrtcWrapper = () => {
       minimize: true,
     });
   }, [activePage]);
-  console.log(
-    "videocheck",
-    sessions.filter((session) => session.state === "Incoming"),
-    sessions.filter((session) => session.state !== "Incoming")
-  );
 
-  
   return (
     <>
       <SIPProvider options={options}>
@@ -195,14 +190,20 @@ const WebrtcWrapper = () => {
         {activePage === "all-voice-mails" && (
           <AllVoicemails isCustomerAdmin={isCustomerAdmin} />
         )}
-        {activePage === "on-going-calls" && <OngoingCall  />}
+        {activePage === "on-going-calls" && <OngoingCall />}
         {activePage === "call-dashboard" && <CallDashboard />}
         {activePage === "e-fax" && <EFax />}
-        {activePage === "messages" && <Messages
-          setSelectedModule={setSelectedModule}
-          isMicOn={isMicOn}
-          isVideoOn={isVideoOn} />}
-        {activePage === "conference" && <ConferenceCall />}
+        {activePage === "messages" && (
+          <Messages
+            setSelectedModule={setSelectedModule}
+            isMicOn={isMicOn}
+            isVideoOn={isVideoOn}
+          />
+        )}
+        {activePage === "conference" && (
+          // <ConferenceConfig />
+          <ConferenceCall />
+        )}
         {/* {activePage == "videocall" && <VideoCall />} */}
 
         <IncomingCalls

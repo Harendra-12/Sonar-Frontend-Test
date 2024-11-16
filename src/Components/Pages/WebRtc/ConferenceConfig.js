@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { toast } from "react-toastify";
-import { generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
+import {
+  generalGetFunction,
+  generalPostFunction,
+} from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../../Loader/CircularLoader";
 
 const ConferenceConfig = () => {
@@ -15,6 +18,7 @@ const ConferenceConfig = () => {
   const [holdSound, setHoldSound] = useState([]);
   const [moh, setMoh] = useState([]);
   const [allConferences, setAllConferences] = useState([]);
+  const [conferenceRefresh, setConferenceRefresh] = useState(0);
 
   useEffect(() => {
     async function getData() {
@@ -28,19 +32,28 @@ const ConferenceConfig = () => {
       }
     }
     getData();
-  }, []);
+  }, [conferenceRefresh]);
 
   async function handleSubmit() {
     console.log("Submit click", retryCount);
     if (conferenceName === null || conferenceName === "") {
       toast.error("Please enter conference name");
-    } else if (conferenceType === "private" && (participantPin < 100000 || participantPin > 999999)) {
+    } else if (
+      conferenceType === "private" &&
+      (participantPin < 100000 || participantPin > 999999)
+    ) {
       toast.error("Please enter 6 digit participant pin");
     } else if (members === null || members === "") {
       toast.error("Please enter number of members");
-    } else if (conferenceType === "private" && (moderatorPin < 100000 || moderatorPin > 999999)) {
+    } else if (
+      conferenceType === "private" &&
+      (moderatorPin < 100000 || moderatorPin > 999999)
+    ) {
       toast.error("Please enter 6 digit moderator pin");
-    } else if (conferenceType === "private" && (retryCount < 1 || retryCount > 5)) {
+    } else if (
+      conferenceType === "private" &&
+      (retryCount < 1 || retryCount > 5)
+    ) {
       toast.error("Please enter  retry count between 1 to 5");
     } else if (moh === "") {
       toast.error("Please select moh");
@@ -53,7 +66,7 @@ const ConferenceConfig = () => {
         moderator_pin: String(moderatorPin),
         nopin: conferenceType === "public" ? "0" : "1",
         moh_sound: moh,
-        participate_pin: String(participantPin)
+        participate_pin: String(participantPin),
       };
       const apiData = await generalPostFunction(
         "/conference/store",
@@ -62,9 +75,11 @@ const ConferenceConfig = () => {
       if (apiData.status) {
         setLoading(false);
         toast.success(apiData.message);
+        setConferenceRefresh(conferenceRefresh + 1);
       }
     }
   }
+  console.log(allConferences.data);
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -105,7 +120,7 @@ const ConferenceConfig = () => {
                         className="panelButton"
                         onClick={handleSubmit}
                       >
-                        <span className="text" >Save</span>
+                        <span className="text">Save</span>
                         <span className="icon">
                           <i class="fa-solid fa-floppy-disk"></i>
                         </span>
@@ -123,20 +138,26 @@ const ConferenceConfig = () => {
                   <form action="#" className="tangoNavs">
                     <nav>
                       <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        {allConferences?.data?.length &&
+                        allConferences?.data?.length > 0 ? (
+                          <button
+                            class="nav-link "
+                            id="nav-all-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#nav-all"
+                            type="button"
+                            role="tab"
+                            aria-controls="nav-all"
+                            aria-selected="true"
+                          >
+                            All
+                          </button>
+                        ) : (
+                          ""
+                        )}
+
                         <button
-                          class="nav-link active"
-                          id="nav-all-tab"
-                          data-bs-toggle="tab"
-                          data-bs-target="#nav-all"
-                          type="button"
-                          role="tab"
-                          aria-controls="nav-all"
-                          aria-selected="true"
-                        >
-                          All
-                        </button>
-                        <button
-                          class="nav-link active"
+                          class="nav-link "
                           id="nav-gen-tab"
                           data-bs-toggle="tab"
                           data-bs-target="#nav-gen"
@@ -148,7 +169,7 @@ const ConferenceConfig = () => {
                           Create
                         </button>
                         <button
-                          class="nav-link"
+                          class="nav-link "
                           id="nav-voicemail-tab"
                           data-bs-toggle="tab"
                           data-bs-target="#nav-voicemail"
@@ -176,27 +197,23 @@ const ConferenceConfig = () => {
                                 <th>Conference Name</th>
                                 <th>Max. Members</th>
                                 <th>Conference ID</th>
+                                <th>Moderator Pin</th>
+                                <th>Joining Pin</th>
+                                <th>Delete</th>
+                                <th>Action</th>
                               </tr>
                             </thead>
                             <tbody>
-
                               <>
                                 {allConferences &&
                                   allConferences?.data?.map((item) => {
                                     return (
                                       <tr>
-                                        <td
-                                        >
-                                          {item.conf_name}
-                                        </td>
-                                        <td
-                                        >
-                                          {item.conf_max_members}
-                                        </td>
-                                        <td
-                                        >
-                                          {item.conf_ext}
-                                        </td>
+                                        <td>{item.conf_name}</td>
+                                        <td>{item.conf_max_members}</td>
+                                        <td>{item.conf_ext}</td>
+                                        <td>{item.moderator_pin}</td>
+                                        <td>{item.participate_pin}</td>
                                         <td>
                                           <button
                                             className="tableButton delete"
@@ -209,10 +226,23 @@ const ConferenceConfig = () => {
                                             <i class="fa-solid fa-trash"></i>
                                           </button>
                                         </td>
+                                        <td>
+                                          <button
+                                            className="tableButton bg-success"
+                                            onClick={() => {
+                                              // setPopUp(true);
+                                              // setDeleteToggle(true);
+                                              // setDeleteId(item.id);
+                                            }}
+                                          >
+                                            Join
+                                            {/* <i class="fa-solid fa-trash"></i> */}
+                                          </button>
+                                        </td>
                                       </tr>
                                     );
-                                  })}                            </>
-
+                                  })}{" "}
+                              </>
                             </tbody>
                           </table>
                         </div>
@@ -237,7 +267,9 @@ const ConferenceConfig = () => {
                                 type="text"
                                 name="extension"
                                 className="formItem"
-                                onChange={(e) => setConferenceName(e.target.value)}
+                                onChange={(e) =>
+                                  setConferenceName(e.target.value)
+                                }
                                 value={conferenceName}
                               />
                             </div>
@@ -251,18 +283,29 @@ const ConferenceConfig = () => {
                               </label>
                             </div>
                             <div className="col-xl-6 col-12">
-                              <select className="formItem" onChange={(e) => setConferenceType(e.target.value)} value={conferenceType} >
+                              <select
+                                className="formItem"
+                                onChange={(e) =>
+                                  setConferenceType(e.target.value)
+                                }
+                                value={conferenceType}
+                              >
                                 <option value="public">Public</option>
                                 <option value="private">Private</option>
                               </select>
                             </div>
                           </div>
-                          {conferenceType === "public" ? "" :
+                          {conferenceType === "public" ? (
+                            ""
+                          ) : (
                             <>
                               <div className="formRow col-xl-3">
                                 <div className="formLabel">
                                   <label htmlFor="">Conference pin</label>
-                                  <label htmlFor="data" className="formItemDesc">
+                                  <label
+                                    htmlFor="data"
+                                    className="formItemDesc"
+                                  >
                                     Share this pin with participants
                                   </label>
                                 </div>
@@ -271,7 +314,9 @@ const ConferenceConfig = () => {
                                     type="number"
                                     name="extension"
                                     className="formItem"
-                                    onChange={(e) => setParticipantPin(e.target.value)}
+                                    onChange={(e) =>
+                                      setParticipantPin(e.target.value)
+                                    }
                                     value={participantPin}
                                   />
                                 </div>
@@ -279,8 +324,12 @@ const ConferenceConfig = () => {
                               <div className="formRow col-xl-3">
                                 <div className="formLabel">
                                   <label htmlFor="">Retry attempts</label>
-                                  <label htmlFor="data" className="formItemDesc">
-                                    Number of times participant can retry joining
+                                  <label
+                                    htmlFor="data"
+                                    className="formItemDesc"
+                                  >
+                                    Number of times participant can retry
+                                    joining
                                   </label>
                                 </div>
                                 <div className="col-xl-6 col-12">
@@ -288,13 +337,15 @@ const ConferenceConfig = () => {
                                     type="number"
                                     name="extension"
                                     className="formItem"
-                                    onChange={(e) => setRetryCount(e.target.value)}
+                                    onChange={(e) =>
+                                      setRetryCount(e.target.value)
+                                    }
                                     value={retryCount}
                                   />
                                 </div>
                               </div>
                             </>
-                          }
+                          )}
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
                               <label htmlFor="">Music on hold</label>
@@ -353,16 +404,17 @@ const ConferenceConfig = () => {
                                 type="number"
                                 name="extension"
                                 className="formItem"
-                                onChange={(e) => setModeratorPin(e.target.value)}
+                                onChange={(e) =>
+                                  setModeratorPin(e.target.value)
+                                }
                                 value={moderatorPin}
                               />
                             </div>
                           </div>
-
                         </form>
                       </div>
                       <div
-                        class="tab-pane fade"
+                        class="tab-pane fade "
                         id="nav-voicemail"
                         role="tabpanel"
                         aria-labelledby="nav-voicemail-tab"
@@ -386,9 +438,7 @@ const ConferenceConfig = () => {
                           </div>
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <label htmlFor="selectFormRow">
-                                PIN
-                              </label>
+                              <label htmlFor="selectFormRow">PIN</label>
                               <label htmlFor="data" className="formItemDesc">
                                 Enter pin to join private conference.
                               </label>
