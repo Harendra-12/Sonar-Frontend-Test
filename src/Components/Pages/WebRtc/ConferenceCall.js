@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SideNavbarApp from "./SideNavbarApp";
 import { useSessionCall } from "react-sipjs";
@@ -33,6 +33,9 @@ function ConferenceCall() {
       name: "Mohan Rajput",
     },
   ]);
+  const [videoCallToggle, setVideoCallToggle] = useState(false);
+
+  const [selectedConferenceUser, setSelectedConferenceUser] = useState(null);
   const callProgressId = useSelector((state) => state.callProgressId);
   const globalSession = useSelector((state) => state.sessions);
   //   const {
@@ -46,22 +49,8 @@ function ConferenceCall() {
   //     unmute,
   //     timer,
   //   } = useSessionCall(callProgressId);
-  const handleSelectConferenceUser = (id) => {
-    // Find the target object
-    const targetItem = conferenceArray.find((item) => item.id === id);
-
-    if (!targetItem) {
-      console.warn("ID not found in conferenceArray");
-      return;
-    }
-
-    // Filter out the target object from the array
-    const updatedConferenceQueue = [
-      targetItem, // Place the target object at the first index
-      ...conferenceArray.filter((item) => item.id !== id), // Append the remaining items
-    ];
-
-    setConferenceArray(updatedConferenceQueue);
+  const handleSelectConferenceUser = (item) => {
+    setSelectedConferenceUser(item);
   };
   //   const canMute = session && session._state === SessionState.Established;
 
@@ -88,6 +77,19 @@ function ConferenceCall() {
   //       toast.warn("Call has not been established");
   //     }
   //   };
+  const getInitials = (name) => {
+    if (!name) return "";
+    return name
+      .split(" ") // Split the name into an array of words
+      .filter((word) => word.trim().length > 0) // Remove empty words in case of extra spaces
+      .map((word) => word[0].toUpperCase()) // Take the first character and convert it to uppercase
+      .join(""); // Join the initials into a single string
+  };
+
+  useEffect(() => {
+    setSelectedConferenceUser(conferenceArray[0]);
+  }, []);
+
   return (
     <>
       <main
@@ -162,6 +164,26 @@ function ConferenceCall() {
                       </button>
                     </div>
                     <div className="videoBody overflow overflow-y-scroll">
+                      <div className="participant active ">
+                        {videoCallToggle ? (
+                          <div>
+                            <img src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
+                          </div>
+                        ) : (
+                          <div className="d-flex flex-column">
+                            <div className="justify-content-center h-100 d-flex align-items-center text-white fs-1">
+                              <div className=" rounded-circle bg-danger-subtle p-4">
+                                {getInitials(selectedConferenceUser?.name)}
+                              </div>
+                            </div>
+                            <div>
+                              <p className="text-center text-white">
+                                {selectedConferenceUser?.name}
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
                       {conferenceArray.map((item, index) => {
                         return (
                           <ConferenceUserTab
@@ -171,6 +193,7 @@ function ConferenceCall() {
                             handleSelectConferenceUser={
                               handleSelectConferenceUser
                             }
+                            getInitials={getInitials}
                           />
                         );
                       })}
@@ -307,18 +330,15 @@ function ConferenceCall() {
 
 export default ConferenceCall;
 
-const ConferenceUserTab = ({ item, index, handleSelectConferenceUser }) => {
+const ConferenceUserTab = ({
+  item,
+  index,
+  handleSelectConferenceUser,
+  getInitials,
+}) => {
   const [videoCallToggle, setVideoCallToggle] = useState(false);
   const [userMuted, setUserMuted] = useState(false);
 
-  const getInitials = (name) => {
-    if (!name) return "";
-    return name
-      .split(" ") // Split the name into an array of words
-      .filter((word) => word.trim().length > 0) // Remove empty words in case of extra spaces
-      .map((word) => word[0].toUpperCase()) // Take the first character and convert it to uppercase
-      .join(""); // Join the initials into a single string
-  };
   const truncateString = (str, threshold) => {
     if (typeof str !== "string" || typeof threshold !== "number") {
       throw new Error(
@@ -329,56 +349,32 @@ const ConferenceUserTab = ({ item, index, handleSelectConferenceUser }) => {
   };
   return (
     <>
-      {index == 0 ? (
-        <div className="participant active ">
-          {videoCallToggle ? (
+      <div
+        className="participant"
+        data-mic={userMuted}
+        //   data-pin="true"
+        style={{ top: `${120 + (index - 1) * 100}px`, cursor: "pointer" }}
+        onClick={() => handleSelectConferenceUser(item)}
+      >
+        {videoCallToggle ? (
+          <div>
+            <img src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
+          </div>
+        ) : (
+          <div className="d-flex flex-column">
+            <div className="justify-content-center h-100 d-flex align-items-center text-dark ">
+              <div className=" rounded-circle bg-warning-subtle p-2">
+                {getInitials(item.name)}
+              </div>
+            </div>
             <div>
-              <img src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
+              <p className="text-center text-white" style={{ fontSize: "8px" }}>
+                {truncateString(item.name, 15)}
+              </p>
             </div>
-          ) : (
-            <div className="d-flex flex-column">
-              <div className="justify-content-center h-100 d-flex align-items-center text-white fs-1">
-                <div className=" rounded-circle bg-danger-subtle p-4">
-                  {getInitials(item.name)}
-                </div>
-              </div>
-              <div>
-                <p className="text-center text-white">{item.name}</p>
-              </div>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div
-          className="participant"
-          data-mic={userMuted}
-          //   data-pin="true"
-          style={{ top: `${20 + (index - 1) * 100}px`, cursor: "pointer" }}
-          onClick={() => handleSelectConferenceUser(item.id)}
-        >
-          {videoCallToggle ? (
-            <div>
-              <img src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
-            </div>
-          ) : (
-            <div className="d-flex flex-column">
-              <div className="justify-content-center h-100 d-flex align-items-center text-dark ">
-                <div className=" rounded-circle bg-warning-subtle p-2">
-                  {getInitials(item.name)}
-                </div>
-              </div>
-              <div>
-                <p
-                  className="text-center text-white"
-                  style={{ fontSize: "8px" }}
-                >
-                  {truncateString(item.name, 15)}
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+          </div>
+        )}
+      </div>
     </>
   );
 };
