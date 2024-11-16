@@ -7,7 +7,7 @@
   /* transform: rotate(-90deg); */
 }
 
-.switch input { 
+.switch input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -39,20 +39,21 @@
   transition: .4s;
 }
 
-input:checked + .slider {
-  background-color: #347bab;
+input:checked+.slider {
+  background-color: #008521;
 }
 
-input:focus + .slider {
+input:focus+.slider {
   box-shadow: 0 0 1px var(--ui-accent);
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   -webkit-transform: translateX(25px);
   -ms-transform: translateX(25px);
   transform: translateX(18px);
-  background-color: var(--ui-accent);
+  background-color: #00ab2b;
 }
+
 /* Rounded sliders */
 .slider.round {
   border-radius: 34px;

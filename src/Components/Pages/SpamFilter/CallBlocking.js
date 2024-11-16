@@ -24,7 +24,7 @@ const CallBlocking = () => {
     const [pageNumber, setPageNumber] = useState(1);
     const [type, setType] = useState("");
     const [number, setNumber] = useState("");
-    const [deletePopup,setDeletePopup] = useState(false);
+    const [deletePopup, setDeletePopup] = useState(false);
 
     useEffect(() => {
         const getRingGroupDashboardData = async () => {
@@ -73,7 +73,7 @@ const CallBlocking = () => {
                 setNumber("")
                 setCallBlock([...callBlock, apidata.data])
                 toast.success("Number added to block list")
-            }else{
+            } else {
                 setLoading(false)
             }
         }
@@ -93,7 +93,7 @@ const CallBlocking = () => {
             setCallBlock(newList);
             setDeleteId("");
             toast.success("Number removed from block list")
-        }else{
+        } else {
             setLoading(false);
         }
     }
@@ -298,44 +298,47 @@ const CallBlocking = () => {
             ) : (
                 ""
             )}
-            {deletePopup ?   <div className="popup">
-          <div className="container h-100">
-            <div className="row h-100 justify-content-center align-items-center">
-              <div className="row content col-xl-4">
-                <div className="col-2 px-0">
-                  <div className="iconWrapper">
-                    <i className="fa-duotone fa-triangle-exclamation"></i>
-                  </div>
-                </div>
-                <div className="col-10 ps-0">
-                  <h4>Warning!</h4>
-                  <p>"Are you sure you want to remove this Contact from block list?"</p>
-                  <div className="mt-2 d-flex justify-content-between">
-                    <button
-                      className="panelButton m-0"
-                      onClick={() => handleDelete(deleteId)}
-                    >
-                      <span className="text">Confirm</span>
-                      <span className="icon">
-                        <i class="fa-solid fa-check"></i>
-                      </span>
-                    </button>
+            {deletePopup ? <div className="popup">
+                <div className="container h-100">
+                    <div className="row h-100 justify-content-center align-items-center">
+                        <div className="row content col-xl-4">
+                            <div className="col-2 px-0">
+                                <div className="iconWrapper">
+                                    <i className="fa-duotone fa-triangle-exclamation"></i>
+                                </div>
+                            </div>
+                            <div className="col-10 ps-0">
+                                <h4>Warning!</h4>
+                                <p>Are you sure you want to remove this Contact from block list?</p>
+                                <div className="mt-2 d-flex justify-content-between">
+                                    <button
+                                        className="panelButton m-0"
+                                        onClick={() => handleDelete(deleteId)}
+                                    >
+                                        <span className="text">Confirm</span>
+                                        <span className="icon">
+                                            <i class="fa-solid fa-check"></i>
+                                        </span>
+                                    </button>
 
-                    <button
-                      className="panelButtonWhite m-0 float-end"
-                      onClick={() => {
-                        setDeletePopup(false);
-                        setDeleteId(null);
-                      }}
-                    >
-                      Cancel
-                    </button>
-                  </div>
+                                    <button
+                                        className="panelButton gray m-0 float-end"
+                                        onClick={() => {
+                                            setDeletePopup(false);
+                                            setDeleteId(null);
+                                        }}
+                                    >
+                                        <span className="text">Cancel</span>
+                                        <span className="icon">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>:""}
+            </div> : ""}
         </main>
     );
 };

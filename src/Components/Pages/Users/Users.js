@@ -442,37 +442,41 @@ const Users = () => {
                     {error
                       ? error
                       : selectedUser?.id
-                      ? `Are you sure you want to ${
-                          selectedUser?.status === "E" ? "disable" : "enable"
+                        ? `Are you sure you want to ${selectedUser?.status === "E" ? "disable" : "enable"
                         } ${selectedUser?.username}?`
-                      : ""}
+                        : ""}
                   </p>
-                  <button
-                    disabled={loading}
-                    className="panelButton m-0"
-                    onClick={() => {
-                      // setForce(true);
-                      if (selectedUser?.id) {
-                        handleUpdateStatusUser(selectedUser?.id);
-                      } else {
-                        setPopUp(false);
-                        navigate("/roles");
-                      }
-                    }}
-                  >
-                    <span className="text">
-                      {selectedUser?.id ? "Confirm" : "Lets Go!"}
-                    </span>
-                    <span className="icon">
-                      <i class="fa-solid fa-check"></i>
-                    </span>
-                  </button>
-                  <button
-                    className="panelButtonWhite m-0 float-end"
-                    onClick={() => setPopUp(false)}
-                  >
-                    Cancel
-                  </button>
+                  <div className="d-flex justify-content-between">
+                    <button
+                      disabled={loading}
+                      className="panelButton m-0"
+                      onClick={() => {
+                        // setForce(true);
+                        if (selectedUser?.id) {
+                          handleUpdateStatusUser(selectedUser?.id);
+                        } else {
+                          setPopUp(false);
+                          navigate("/roles");
+                        }
+                      }}
+                    >
+                      <span className="text">
+                        {selectedUser?.id ? "Confirm" : "Lets Go!"}
+                      </span>
+                      <span className="icon">
+                        <i class="fa-solid fa-check"></i>
+                      </span>
+                    </button>
+                    <button
+                      className="panelButton gray m-0 float-end"
+                      onClick={() => setPopUp(false)}
+                    >
+                      <span className="text">Cancel</span>
+                      <span className="icon">
+                        <i class="fa-solid fa-xmark"></i>
+                      </span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

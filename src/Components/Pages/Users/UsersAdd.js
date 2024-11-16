@@ -372,17 +372,12 @@ const UsersAdd = () => {
                 </div>
                 <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
                   <div className="row gx-5">
-                    <div className={selectedRole ? "col-xl-6" : "col-xl-12"}>
+                    <div className="col-xl-6" style={{ borderRight: "1px solid var(--border-color)" }}>
                       <div className="profileView p-0">
                         <div className="profileDetailsHolder position-relative p-0 shadow-none">
                           <form className="row mb-0">
                             <div
-                              className={
-                                selectedRole
-                                  ? "formRow col-xl-12"
-                                  : "formRow col-xl-3"
-                              }
-                            >
+                              className="formRow col-xl-12">
                               <div className="formLabel">
                                 <label htmlFor="" className="me-2">
                                   Username
@@ -424,12 +419,7 @@ const UsersAdd = () => {
                               </div>
                             </div>
                             <div
-                              className={
-                                selectedRole
-                                  ? "formRow col-xl-12"
-                                  : "formRow col-xl-3"
-                              }
-                            >
+                              className="formRow col-xl-12">
                               <div className="formLabel">
                                 <label htmlFor="">Password</label>
                                 <label htmlFor="data" className="formItemDesc">
@@ -452,12 +442,7 @@ const UsersAdd = () => {
                               </div>
                             </div>
                             <div
-                              className={
-                                selectedRole
-                                  ? "formRow col-xl-12"
-                                  : "formRow col-xl-3"
-                              }
-                            >
+                              className="formRow col-xl-12">
                               <div className="formLabel">
                                 <label htmlFor="">Confirm Password</label>
                                 <label htmlFor="data" className="formItemDesc">
@@ -477,12 +462,7 @@ const UsersAdd = () => {
                               </div>
                             </div>
                             <div
-                              className={
-                                selectedRole
-                                  ? "formRow col-xl-12"
-                                  : "formRow col-xl-3"
-                              }
-                            >
+                              className="formRow col-xl-12">
                               <div className="formLabel">
                                 <label htmlFor="">Email</label>
                               </div>
@@ -503,12 +483,7 @@ const UsersAdd = () => {
                               </div>
                             </div>
                             <div
-                              className={
-                                selectedRole
-                                  ? "formRow col-xl-12"
-                                  : "formRow col-xl-3"
-                              }
-                            >
+                              className="formRow col-xl-12">
                               <div className="formLabel">
                                 <label htmlFor="">First Name</label>
                               </div>
@@ -530,12 +505,7 @@ const UsersAdd = () => {
                               </div>
                             </div>
                             <div
-                              className={
-                                selectedRole
-                                  ? "formRow col-xl-12"
-                                  : "formRow col-xl-3"
-                              }
-                            >
+                              className="formRow col-xl-12">
                               <div className="formLabel">
                                 <label htmlFor="">Last Name</label>
                               </div>
@@ -596,12 +566,7 @@ const UsersAdd = () => {
                                         </div>
                                     </div> */}
                             <div
-                              className={
-                                selectedRole
-                                  ? "formRow col-xl-12"
-                                  : "formRow col-xl-3"
-                              }
-                            >
+                              className="formRow col-xl-12">
                               <div className="formLabel">
                                 <label htmlFor="selectFormRow">Time Zone</label>
                                 <label htmlFor="data" className="formItemDesc">
@@ -634,12 +599,7 @@ const UsersAdd = () => {
                               </div>
                             </div>
                             <div
-                              className={
-                                selectedRole
-                                  ? "formRow col-xl-12"
-                                  : "formRow col-xl-3"
-                              }
-                            >
+                              className="formRow col-xl-12">
                               <div className="formLabel">
                                 <label htmlFor="selectFormRow">Status</label>
                                 <label htmlFor="data" className="formItemDesc">
@@ -720,12 +680,7 @@ const UsersAdd = () => {
                     </div>
                   </div> */}
                             <div
-                              className={
-                                selectedRole
-                                  ? "formRow col-xl-12"
-                                  : "formRow col-xl-3"
-                              }
-                            >
+                              className="formRow col-xl-12">
                               <div className="formLabel">
                                 <label htmlFor="selectFormRow">Role Type</label>
                                 <label htmlFor="data" className="formItemDesc">
@@ -778,12 +733,7 @@ const UsersAdd = () => {
                               </div>
                             </div>
                             <div
-                              className={
-                                selectedRole
-                                  ? "formRow col-xl-12"
-                                  : "formRow col-xl-3"
-                              }
-                            >
+                              className="formRow col-xl-12">
                               <div className="formLabel">
                                 <label htmlFor="selectFormRow">
                                   Select extension
@@ -850,7 +800,7 @@ const UsersAdd = () => {
                     </div>
 
                     {selectedRole && (
-                      <div className="col-xl-6" style={{ borderLeft: "1px solid var(--border-color)" }}>
+                      <div className="col-xl-6">
                         <div className="profileView p-0">
                           <div className="profileDetailsHolder position-relative p-0 shadow-none">
                             <div className="col-xl-12">

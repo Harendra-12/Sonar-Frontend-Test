@@ -237,9 +237,9 @@ const RingGroups = () => {
                             {/* <th>Phone Numbers</th> */}
                             <th>Status</th>
                             <th>Description</th>
-                            {/* <th>Setting</th>
+                            {/* <th>Setting</th> */}
                             <th>Edit</th>
-                            <th>Delete</th> */}
+                            <th>Delete</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -329,6 +329,29 @@ const RingGroups = () => {
                                       >
                                         {item.description}
                                       </td>
+                                      <td>
+                                        <button
+                                          className="tableButton edit"
+                                          onClick={() =>
+                                            navigate(
+                                              `/ring-groups-edit?id=${item.id}`
+                                            )
+                                          }
+                                        >
+                                          <i className="fa-solid fa-pencil" />
+                                        </button>
+                                      </td>
+                                      <td>
+                                        <button
+                                          className="tableButton delete"
+                                          onClick={() => {
+                                            setPopUp(true);
+                                            setDeleteId(item.id);
+                                          }}
+                                        >
+                                          <i className="fa-solid fa-trash" />
+                                        </button>
+                                      </td>
                                       <div className="utilPopup">
                                         {/* <button
                                           onClick={() =>
@@ -339,23 +362,6 @@ const RingGroups = () => {
                                         >
                                           <i className="fa-light fa-gear" />
                                         </button> */}
-                                        <button
-                                          onClick={() =>
-                                            navigate(
-                                              `/ring-groups-edit?id=${item.id}`
-                                            )
-                                          }
-                                        >
-                                          <i className="fa-light fa-pencil" />
-                                        </button>
-                                        <button
-                                          onClick={() => {
-                                            setPopUp(true);
-                                            setDeleteId(item.id);
-                                          }}
-                                        >
-                                          <i className="fa-light fa-trash" />
-                                        </button>
                                       </div>
                                     </tr>
                                   );
@@ -455,7 +461,7 @@ const RingGroups = () => {
                     )}
 
                     <button
-                      className="panelButtonWhite m-0 float-end"
+                      className="panelButton gray m-0 float-end"
                       onClick={() => {
                         setPopUp(false);
                         setDeleteId("");
@@ -463,7 +469,10 @@ const RingGroups = () => {
                         // setDeleteToggle(false);
                       }}
                     >
-                      Cancel
+                      <span className="text">Cancel</span>
+                      <span className="icon">
+                        <i class="fa-solid fa-xmark"></i>
+                      </span>
                     </button>
                   </div>
                 </div>
