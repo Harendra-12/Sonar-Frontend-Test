@@ -42,7 +42,7 @@
 }
 
 .eFaxCompose .newMessageWrapper {
-    height: calc(100vh - 330px);
+    /* height: calc(100vh - 330px); */
     background-color: #fff;
     border-radius: 10px;
     width: 100%;
@@ -56,10 +56,10 @@
 .eFaxCompose .newMessageWrapper .buttonControl {
     display: flex;
     justify-content: flex-end;
-    padding: 10px 10px 5px;
-    position: absolute;
-    right: 0px;
-    bottom: 0px;
+    padding: 10px 0px 5px;
+    /* position: absolute; */
+    right: 5px;
+    bottom: 20px;
 }
 
 .eFaxCompose .newMessageWrapper .messageTo {

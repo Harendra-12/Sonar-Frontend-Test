@@ -31,33 +31,166 @@ function Login() {
       </style>
       <div>
         <main className="login">
-          <div className="container position-relative h-100">
-            <div className="loginWrapper2">
-              <div className="row h-100">
-                <div className="col-xl-6 h-100 position-relative d-flex align-items-center">
-                  <div className="content col-xl-7 mx-auto py-5">
-                    <h3>Get Started Now</h3>
-                    <p>Enter your credentials to access your account</p>
-                    <div className="border-bottom my-4"></div>
-                    <LoginComponent />
-                  </div>
-                  <div className="text-center position-absolute" style={{ bottom: 0, left: '50%', transform: 'translate(-50%, -50%)' }}><p style={{ color: '#858585', fontSize: 12, marginBottom: 0 }}>2024 AnglePBX. All rights Reserved</p></div>
-                </div>
-                <div className="col-xl-6">
-                  <div className="loginImgWrapper">
-                    <div className="content">
-                      <h3>The simplest way to manage your workforce</h3>
-                      <p>Enter your credentials to access your control</p>
-                      <img src={require('../assets/images/logindash.png')} />
-                      <img className="comp" src={require('../assets/images/temp.png')} />
+          <div className="h-100 w-100 position-absolute top-0 start-0">
+            {init && (
+              <Particles
+                id="tsparticles"
+                options={{
+                  background: {
+                    color: {
+                      value: "#111525",
+                    },
+                  },
+                  fullScreen: {
+                    enable: false,
+                  },
+                  fpsLimit: 120,
+                  interactivity: {
+                    events: {
+                      onClick: {
+                        enable: true,
+                        mode: "push",
+                      },
+                      onHover: {
+                        enable: true,
+                        mode: "attract",
+                      },
+                      onChange: {
+                        enable: false,
+                      },
+                      resize: false,
+                    },
+                    modes: {
+                      pull: {
+                        quantity: 20,
+                      },
+                      attract: {
+                        distance: 50,
+                        duration: 2,
+                        speed: 5,
+                      },
+                    },
+                  },
+                  particles: {
+                    color: {
+                      value: "#00d1ff",
+                    },
+                    links: {
+                      color: "#28316f",
+                      distance: 150,
+                      enable: true,
+                      opacity: 0.5,
+                      width: 1,
+                    },
+                    move: {
+                      direction: "none",
+                      enable: true,
+                      outModes: {
+                        default: "bounce",
+                      },
+                      random: false,
+                      speed: 3,
+                      straight: false,
+                      attract: { enable: false, rotateX: 600, rotateY: 1200 },
+                    },
+                    number: {
+                      density: {
+                        enable: true,
+                        area: 800,
+                      },
+                      value: 600,
+                    },
+                    opacity: {
+                      value: 0.5,
+                      random: false,
+                      anim: {
+                        enable: false,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false,
+                      },
+                    },
+                    shape: {
+                      type: "circle",
+                    },
+                    size: {
+                      value: 3,
+                      random: true,
+                      anim: {
+                        enable: true,
+                        speed: 4.872463273808071,
+                        size_min: 0.1,
+                        sync: false,
+                      },
+                    },
+                  },
+                  detectRetina: true,
+                }}
+              />
+            )}
+          </div>
+          <div className="container h-100">
+            <div className="row h-100">
+              <div className="loginWrapper col-xl-6 m-auto">
+                <LoginComponent />
+                {/* <form className="forgotPassword">
+                  <div className="col-xl-8 m-auto">
+                    <div className="position-relative">
+                      <i className="fa-thin fa-user" />
+                      <input
+                        type="text"
+                        placeholder="USERNAME"
+                        className="loginFormItem"
+                      />
+                    </div>
+                    <div className="position-relative">
+                      <i className="fa-thin fa-lock" />
+                      <input
+                        type="email"
+                        placeholder="EMAIL"
+                        className="loginFormItem"
+                      />
+                    </div>
+                    <div className="position-relative">
+                      <i className="fa-thin fa-lock" />
+                      <input
+                        type="email"
+                        placeholder="CONFIRM EMAIL"
+                        className="loginFormItem"
+                      />
+                    </div>
+                    <div className="position-relative">
+                      <i className="fa-thin fa-lock" />
+                      <input
+                        type="text"
+                        placeholder="VERIFICATION ID"
+                        className="loginFormItem"
+                      />
+                    </div>
+                    <div>
+                      <button
+                        className="formSubmit"
+                        type="button"
+                        effect="ripple"
+                      >
+                        SEND REQUEST
+                      </button>
                     </div>
                   </div>
-                </div>
+                </form> */}
               </div>
             </div>
           </div>
-          <div className="loginWave">
-            <img src={require('../assets/images/wave.png')} />
+          <div className="someText">
+            <h1>Welcome.</h1>
+            <p>
+              Experience seamless communication and collaboration with our UCaaS
+              solution, designed for efficiency and innovation.
+            </p>
+          </div>
+          <div className="someLogo">
+            <h3>Angel PBX</h3>
+            <p>Connecting Beyond Horizon</p>
           </div>
         </main>
       </div>
@@ -186,27 +319,25 @@ export function LoginComponent() {
 
   return (
     <form className="loginForm">
-      <div className="col-xl-12 m-auto">
-        {/* <div className="iconWrapper">
+      <div className="col-xl-8 m-auto">
+        <div className="iconWrapper">
           <i className="fa-regular fa-user" />
-        </div> */}
-        <label>Username</label>
+        </div>
         <div className="position-relative">
           <i className="fa-thin fa-user" />
           <input
             type="text"
-            placeholder="Enter your username"
+            placeholder="USERNAME"
             className="loginFormItem"
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
           />
         </div>
-        <label>Password</label>
         <div className="position-relative">
           <i className="fa-thin fa-lock" />
           <input
             type="password"
-            placeholder="Enter your password"
+            placeholder="PASSWORD"
             className="loginFormItem"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -229,7 +360,7 @@ export function LoginComponent() {
                 alt=""
               />
             ) : (
-              "Login"
+              "LOGIN"
             )}
           </button>
         </div>
