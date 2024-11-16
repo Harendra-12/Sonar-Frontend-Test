@@ -104,6 +104,8 @@ import DeviceProvisioningAdd from "./Components/Pages/DeviceProvisioning/DeviceP
 import DeviceProvisioning from "./Components/Pages/DeviceProvisioning/DeviceProvisioning";
 import DeviceProvisioningEdit from "./Components/Pages/DeviceProvisioning/DeviceProvisioningEdit";
 import ConferenceCall from "./Components/Pages/WebRtc/ConferenceCall";
+import CallBlocking from "./Components/Pages/SpamFilter/CallBlocking";
+import ConferenceConfig from "./Components/Pages/WebRtc/ConferenceConfig";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -236,6 +238,7 @@ function App() {
           <Route path="/call-dashboard" element={<CallDashboardPage />} /> */}
           {/* <Route path="/video-call" element={<VideoCall />} />
           <Route path="/conference-call" element={<ConferenceCall />} /> */}
+          <Route path="/conference-config" element={<ConferenceConfig />} />
           {/* WebRtc path end */}
 
           {/* Admin Packages path start */}
