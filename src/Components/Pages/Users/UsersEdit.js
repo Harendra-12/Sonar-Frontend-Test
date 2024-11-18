@@ -758,7 +758,7 @@ const UsersEdit = () => {
                                         {filteredPermission[item].map(
                                           (innerItem, key) => (
                                             <div
-                                              className="col-xl-2 col-md-4 col-6" style={{ paddingLeft: 7 }}
+                                              className="col-xl-2 col-md-4 col-6" style={{ paddingLeft: 30 }}
                                               key={key}
                                             >
                                               <input
