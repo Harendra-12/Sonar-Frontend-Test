@@ -438,15 +438,17 @@ function Roles() {
                                 {selectedRole}
                               </span>
                             </div>
-                            <div className="col-2 text-end">
-                              <button
-                                className="btn btn-success py-1 px-2"
-                                onClick={handlePermissionSave}
-                              >
-                                <i class="fa-duotone fa-check-double me-2"></i>{" "}
-                                Save
-                              </button>
-                            </div>
+                            {selectedRole !== "Agent" &&
+                              <div className="col-2 text-end">
+                                <button
+                                  className="btn btn-success py-1 px-2"
+                                  onClick={handlePermissionSave}
+                                >
+                                  <i class="fa-duotone fa-check-double me-2"></i>{" "}
+                                  Save
+                                </button>
+                              </div>
+                            }
                           </div>
                         </div>
                         <div class="accordion permissionListWrapper">
