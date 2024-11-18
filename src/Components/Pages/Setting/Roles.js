@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  backToTop,
   generalDeleteFunction,
   generalGetFunction,
   generalPostFunction,
@@ -10,6 +11,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Header from "../../CommonComponents/Header";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Roles() {
   const dispatch = useDispatch();
@@ -34,6 +36,7 @@ function Roles() {
   const [selectedRole, setSelectedRole] = useState();
   const [selectedPermission, setSelectedPermission] = useState([]);
   const [defaultPermission, setDefaultPermission] = useState();
+  const navigate = useNavigate();
 
   // Getting the role and permission information at the very initial state
   // useEffect(() => {
@@ -257,18 +260,9 @@ function Roles() {
     <>
       <style>
         {`
-      .formRow{
-        padding: 0px 10px;
-        border: none;
-      }
-      .formLabel{
-        padding-left: 10px;
-        font-size: 16px;
-        color: #3c3c3c;
-      }
       .masterSegment{
       position: sticky;
-      top: 10px;
+      top: 0px;
       }
       `}
       </style>
@@ -277,193 +271,217 @@ function Roles() {
           <div className="container-fluid">
             <div className="row">
               <Header title="Roles" />
-              <div className="row masterList">
-                <div className="col-xl-4 ">
-                  <div className="masterSegment">
-                    <h6>
-                      <div className="row align-items-center justify-content-between">
-                        <div className="col-auto">List of Roles </div>
-                        {/* <div className="col pe-0">
-                        <input type="search" name="Search" id="headerSearch" placeholder="Search a role" onChange={(e) => setSearchDomain(e.target.value)} />
-                      </div> */}
-                        <div className="col-auto ps-0 mt-1">
-                          <button className="tableButton">
-                            <i
-                              className="fa-solid fa-plus"
-                              onClick={() => {
-                                setAddRole(true);
-                                setEditClick(false);
-                              }}
-                            ></i>
-                          </button>
-                        </div>
+            </div>
+          </div>
+
+          <div className="col-xl-12">
+            <div className="overviewTableWrapper">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap">
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content">
+                        <h4>List of Roles</h4>
+                        <p>Edit existing user roles or add new ones.</p>
                       </div>
-                    </h6>
-                    <ul>
-                      {addRole ? (
-                        <li>
-                          <div className="col-8">
-                            <input
-                              type="text"
-                              value={newRole}
-                              // onChange={(e) => setNewRole(e.target.value)}
-                              onChange={handleChange}
-                              placeholder="Add new Role"
-                              //on enter press, add new role
-                              onKeyDown={(e) => {
-                                if (e.key === "Enter") {
-                                  setPopup(true);
-                                  setSaveClick(true);
-                                }
-                              }}
-                            ></input>
-                          </div>
-                          <div className="col-auto">
-                            <button className="clearButton text-success">
-                              <i
-                                className="fa-duotone fa-circle-check"
-                                onClick={() => {
-                                  setPopup(true);
-                                  setSaveClick(true);
-                                }}
-                              ></i>
-                            </button>
-                            <button className="clearButton text-danger">
-                              <i
-                                className="fa-duotone fa-trash"
-                                onClick={() => {
-                                  setAddRole(false);
-                                  setNewRole("");
-                                }}
-                              ></i>
-                            </button>
-                          </div>
-                        </li>
-                      ) : (
-                        ""
-                      )}
-                      {role &&
-                        role.map((item, index) => {
-                          return (
-                            <li
-                              key={index}
-                              className={
-                                selectedRoleId === item.id ? "active" : ""
-                              }
-                            >
+                      <div className="buttonGroup">
+                        <button
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
+                          type="button"
+                          effect="ripple"
+                          className="panelButton gray"
+                        >
+                          <span className="text">Back</span>
+                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                        </button>
+                        <button
+                          onClick={() => {
+                            setAddRole(true);
+                            setEditClick(false);
+                          }}
+                          type="button"
+                          effect="ripple"
+                          className="panelButton"
+                        >
+                          <span className="text">Add</span>
+                          <span className="icon"><i class="fa-solid fa-plus"></i></span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
+                  <div className="row masterList">
+                    <div className="col-xl-4 " style={{ borderRight: '1px solid var(--border-color)' }}>
+                      <div className="masterSegment">
+                        <ul>
+                          {addRole ? (
+                            <li>
                               <div className="col-8">
                                 <input
                                   type="text"
-                                  placeholder={item.name}
-                                  onChange={(e) =>
-                                    setUpdateRole(e.target.value)
-                                  }
-                                  disabled={editIndex === index ? false : true}
+                                  value={newRole}
+                                  // onChange={(e) => setNewRole(e.target.value)}
+                                  onChange={handleChange}
+                                  placeholder="Add new Role"
+                                  //on enter press, add new role
+                                  onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                      setPopup(true);
+                                      setSaveClick(true);
+                                    }
+                                  }}
                                 ></input>
                               </div>
                               <div className="col-auto d-flex justify-content-end">
                                 <button className="tableButton edit">
-                                  {editIndex === index ? (
-                                    <i
-                                      className="fa-solid fa-circle-check"
-                                      onClick={() => {
-                                        setPopup(true);
-                                        setEditClick(true);
-                                        setAddRole(false);
-                                      }}
-                                    ></i>
-                                  ) : (
-                                    <i
-                                      className="fa-solid fa-pen-to-square"
-                                      onClick={() => {
-                                        setEditIndex(index);
-                                      }}
-                                    ></i>
-                                  )}
-                                </button>
-                                <button className="tableButton delete mx-2">
                                   <i
-                                    className="fa-solid fa-trash"
+                                    className="fa-solid fa-check"
                                     onClick={() => {
                                       setPopup(true);
-                                      setDeleteIndex(index);
-                                      setEditClick(false);
-                                      setAddRole(false);
+                                      setSaveClick(true);
                                     }}
                                   ></i>
                                 </button>
-                                <button className="tableButton">
+                                <button className="tableButton delete ms-2">
                                   <i
-                                    class="fa-solid fa-sliders"
+                                    className="fa-solid fa-trash"
                                     onClick={() => {
-                                      setSelectedRoleId(item.id);
-                                      setSelectedRole(item.name);
-                                      setSelectedPermission(
-                                        item.permissions?.map((item) => {
-                                          return item.permission_id;
-                                        })
-                                      );
+                                      setAddRole(false);
+                                      setNewRole("");
                                     }}
                                   ></i>
                                 </button>
                               </div>
                             </li>
-                          );
-                        })}
-                    </ul>
-                  </div>
-                </div>
-                {selectedRoleId && (
-                  <div className="col-xl-8 pe-0">
-                    <div className="profileView p-0 pb-2">
-                      <div className="profileDetailsHolder position-relative">
-                        <div className="col-xl-12">
-                          <div class="headerCommon d-flex justify-content-between align-items-center">
-                            <div class="col-5">
-                              Permissions for{" "}
-                              <span
-                                style={{
-                                  color: "var(--ui-accent)",
-                                  fontWeight: 600,
-                                  textTransform: "capitalize",
-                                }}
-                              >
-                                {selectedRole}
-                              </span>
-                            </div>
-
-                            {selectedRole !== "Agent" &&
-                              <div className="col-2 text-end">
-                                <button
-                                  className="btn btn-success py-1 px-2"
-                                  onClick={handlePermissionSave}
+                          ) : (
+                            ""
+                          )}
+                          {role &&
+                            role.map((item, index) => {
+                              return (
+                                <li
+                                  key={index}
+                                  className={
+                                    selectedRoleId === item.id ? "active" : ""
+                                  }
                                 >
-                                  <i class="fa-duotone fa-check-double me-2"></i>{" "}
-                                  Save
-                                </button>
-                              </div>
-                            }
-                          </div>
-                        </div>
-                        {selectedRole === "Agent" ? <div> This will apper only for agents</div> :
-                          <div class="accordion permissionListWrapper">
-                            {filteredPermission &&
-                              Object.keys(filteredPermission).map((item, key) => (
-                                <div className="accordion-item" key={key}>
-                                  <h2 class="accordion-header" id={`collapseHeading${key}`}>
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${key}`} aria-expanded="true" aria-controls={`collapse${key}`}>
-                                      <input
-                                        type="checkbox"
-                                        checked={parentChecked[item]}
-                                        onChange={() =>
-                                          handleParentCheckboxChange(item)
-                                        }
-                                      />
-
-                                      <label>{item}</label>
+                                  <div className="col-8">
+                                    <input
+                                      type="text"
+                                      placeholder={item.name}
+                                      onChange={(e) =>
+                                        setUpdateRole(e.target.value)
+                                      }
+                                      disabled={editIndex === index ? false : true}
+                                    ></input>
+                                  </div>
+                                  <div className="col-auto d-flex justify-content-end">
+                                    <button className={editIndex === index ? "tableButton edit" : "tableButton"}>
+                                      {editIndex === index ? (
+                                        <i
+                                          className="fa-solid fa-check"
+                                          onClick={() => {
+                                            setPopup(true);
+                                            setEditClick(true);
+                                            setAddRole(false);
+                                          }}
+                                        ></i>
+                                      ) : (
+                                        <i
+                                          className="fa-solid fa-pen-to-square"
+                                          onClick={() => {
+                                            setEditIndex(index);
+                                          }}
+                                        ></i>
+                                      )}
                                     </button>
-                                  </h2>
-                                  {/* <div className="header d-flex align-items-center">
+                                    <button className="tableButton delete mx-2">
+                                      <i
+                                        className="fa-solid fa-trash"
+                                        onClick={() => {
+                                          setPopup(true);
+                                          setDeleteIndex(index);
+                                          setEditClick(false);
+                                          setAddRole(false);
+                                        }}
+                                      ></i>
+                                    </button>
+                                    <button className="tableButton">
+                                      <i
+                                        class="fa-solid fa-sliders"
+                                        onClick={() => {
+                                          setSelectedRoleId(item.id);
+                                          setSelectedRole(item.name);
+                                          setSelectedPermission(
+                                            item.permissions?.map((item) => {
+                                              return item.permission_id;
+                                            })
+                                          );
+                                        }}
+                                      ></i>
+                                    </button>
+                                  </div>
+                                </li>
+                              );
+                            })}
+                        </ul>
+                      </div>
+                    </div>
+                    {selectedRoleId && (
+                      <div className="col-xl-8 pe-0">
+                        <div className="profileView p-0 pb-2">
+                          <div className="profileDetailsHolder position-relative p-0 shadow-none">
+                            <div className="col-xl-12" style={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 9 }}>
+                              <div class="headerCommon d-flex justify-content-between align-items-center pe-0">
+                                <div class="col-5">
+                                  Permissions for{" "}
+                                  <span
+                                    style={{
+                                      color: "var(--ui-accent)",
+                                      fontWeight: 600,
+                                      textTransform: "capitalize",
+                                    }}
+                                  >
+                                    {selectedRole}
+                                  </span>
+                                </div>
+
+                                {selectedRole !== "Agent" &&
+                                  <div className="col-2 text-end">
+                                    <button
+                                      className="panelButton ms-auto"
+                                      onClick={handlePermissionSave}
+                                    >
+                                      <span className="text">Confirm</span>
+                                      <span className="icon"><i class="fa-solid fa-check"></i></span>
+                                    </button>
+                                  </div>
+                                }
+                              </div>
+                            </div>
+                            {selectedRole === "Agent" ? <div> This will apper only for agents</div> :
+                              <div class="accordion permissionListWrapper">
+                                {filteredPermission &&
+                                  Object.keys(filteredPermission).map((item, key) => (
+                                    <div className="accordion-item" key={key}>
+                                      <h2 class="accordion-header" id={`collapseHeading${key}`}>
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${key}`} aria-expanded="true" aria-controls={`collapse${key}`}>
+                                          <input
+                                            type="checkbox"
+                                            checked={parentChecked[item]}
+                                            onChange={() =>
+                                              handleParentCheckboxChange(item)
+                                            }
+                                          />
+
+                                          <label>{item}</label>
+                                        </button>
+                                      </h2>
+                                      {/* <div className="header d-flex align-items-center">
                                 <div className="col-5">
                                   <input
                                     type="checkbox"
@@ -475,43 +493,46 @@ function Roles() {
                                   <label className="ms-2">{item}</label>
                                 </div>
                               </div> */}
-                                  <div id={`collapse${key}`} class="accordion-collapse collapse" aria-labelledby={`collapseHeading${key}`}>
-                                    <div class="accordion-body">
-                                      {filteredPermission[item].map(
-                                        (innerItem, key) => (
-                                          <div
-                                            className="col-xl-2 col-md-4 col-6" style={{ paddingLeft: 7 }}
-                                            key={key}
-                                          >
-                                            <input
-                                              type="checkbox"
-                                              id={`permission-${innerItem.id}`}
-                                              checked={selectedPermission.includes(
-                                                innerItem.id
-                                              )}
-                                              onChange={() =>
-                                                handleCheckboxChange(innerItem.id)
-                                              }
-                                            />
-                                            <label className="formLabel ms-2 text-capitalize">
-                                              {innerItem.action}
-                                            </label>
-                                          </div>
-                                        )
-                                      )}
+                                      <div id={`collapse${key}`} class="accordion-collapse collapse" aria-labelledby={`collapseHeading${key}`}>
+                                        <div class="accordion-body">
+                                          {filteredPermission[item].map(
+                                            (innerItem, key) => (
+                                              <div
+                                                className="col-xl-2 col-md-4 col-6" style={{ paddingLeft: 30 }}
+                                                key={key}
+                                              >
+                                                <input
+                                                  type="checkbox"
+                                                  id={`permission-${innerItem.id}`}
+                                                  checked={selectedPermission.includes(
+                                                    innerItem.id
+                                                  )}
+                                                  onChange={() =>
+                                                    handleCheckboxChange(innerItem.id)
+                                                  }
+                                                />
+                                                <label className="formLabel ms-2 text-capitalize">
+                                                  {innerItem.action}
+                                                </label>
+                                              </div>
+                                            )
+                                          )}
+                                        </div>
+                                      </div>
                                     </div>
-                                  </div>
-                                </div>
-                              ))}
+                                  ))}
+                              </div>
+                            }
                           </div>
-                        }
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
-                )}
+                </div>
               </div>
             </div>
           </div>
+
         </section>
         {popup ? (
           <div className="popup">
@@ -520,22 +541,22 @@ function Roles() {
                 <div className="row content col-xl-4">
                   <div className="col-2 px-0">
                     <div className="iconWrapper">
-                      <i className="fa-duotone fa-triangle-exclamation"></i>
+                      <i className="fa-duotone fa-circle-exclamation"></i>
                     </div>
                   </div>
                   <div className="col-10 ps-0">
                     <h4>Warning!</h4>
                     {saveClick ? (
-                      <p>Are you sure you want to add this Role: {newRole}?</p>
+                      <p>Are you sure you want to add this Role: <b style={{ color: 'var(--ui-accent)' }}>{newRole}</b>?</p>
                     ) : editClick ? (
                       <p>
-                        Are you sure you want to change {role[editIndex].name}{" "}
-                        to {updateRole}?
+                        Are you sure you want to change <b style={{ color: 'var(--ui-accent)' }}>{role[editIndex].name}</b>{" "}
+                        to <b style={{ color: 'var(--ui-accent)' }}>{updateRole}</b>?
                       </p>
                     ) : (
                       <p>
                         Are you sure you want to delete this{" "}
-                        {role[deleteIndex].name} ?
+                        <b style={{ color: 'var(--ui-accent)' }}>{role[deleteIndex].name}</b> ?
                       </p>
                     )}
 
@@ -550,7 +571,7 @@ function Roles() {
                         <span className="icon"><i class="fa-solid fa-check"></i></span>
                       </button>
                       <button
-                        className="panelButtonWhite m-0 float-end"
+                        className="panelButton gray m-0 float-end"
                         onClick={() => {
                           setPopup(false);
                           setSaveClick(false);
@@ -558,7 +579,8 @@ function Roles() {
                           setEditIndex("");
                         }}
                       >
-                        Cancel
+                        <span className="text">Cancel</span>
+                        <span className="icon"><i class="fa-solid fa-xmark"></i></span>
                       </button>
                     </div>
                   </div>

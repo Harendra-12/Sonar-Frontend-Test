@@ -816,21 +816,67 @@ const UsersAdd = () => {
                                     {selectedRole}
                                   </span>
                                 </div>
-                                {/* <div className="approvalButton">
-                          {" "}
-                          <button
-                            className="float-end btn btn-success btn-sm"
-                            // onClick={handlePermissionSave}
-                            style={{
-                              fontWeight: 600,
-                            }}
-                          >
-                            <i className="fa-duotone fa-check-double"></i> Save
-                          </button>{" "}
-                        </div> */}
                               </div>
                             </div>
-                            {filteredPermission &&
+                            <div class="accordion permissionListWrapper">
+                              {filteredPermission &&
+                                Object.keys(filteredPermission).map((item, key) => (
+                                  <div className="accordion-item" key={key}>
+                                    <h2 class="accordion-header" id={`collapseHeading${key}`}>
+                                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${key}`} aria-expanded="true" aria-controls={`collapse${key}`}>
+                                        <input
+                                          type="checkbox"
+                                          checked={parentChecked[item]}
+                                          onChange={() =>
+                                            handleParentCheckboxChange(item)
+                                          }
+                                        />
+
+                                        <label>{item}</label>
+                                      </button>
+                                    </h2>
+                                    {/* <div className="header d-flex align-items-center">
+                                      <div className="col-5">
+                                        <input
+                                          type="checkbox"
+                                          checked={parentChecked[item]}
+                                          onChange={() =>
+                                            handleParentCheckboxChange(item)
+                                          }
+                                        />
+                                        <label class="ms-2">{item}</label>
+                                      </div>
+                                    </div> */}
+                                    <div id={`collapse${key}`} class="accordion-collapse collapse" aria-labelledby={`collapseHeading${key}`}>
+                                      <div class="accordion-body">
+                                        {filteredPermission[item].map(
+                                          (innerItem, key) => (
+                                            <div
+                                              className="col-xl-2 col-md-4 col-6" style={{ paddingLeft: 30 }}
+                                              key={key}
+                                            >
+                                              <input
+                                                type="checkbox"
+                                                id={`permission-${innerItem.id}`}
+                                                checked={selectedPermission.includes(
+                                                  innerItem.id
+                                                )}
+                                                onChange={() =>
+                                                  handleCheckboxChange(innerItem.id)
+                                                }
+                                              />
+                                              <label className="formLabel ms-2 text-capitalize">
+                                                {innerItem.action}
+                                              </label>
+                                            </div>
+                                          )
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))}
+                            </div>
+                            {/* {filteredPermission &&
                               Object.keys(filteredPermission).map((item, key) => (
                                 <div className="permissionListWrapper" key={key}>
                                   <div className="header d-flex align-items-center">
@@ -870,7 +916,7 @@ const UsersAdd = () => {
                                     )}
                                   </div>
                                 </div>
-                              ))}
+                              ))} */}
                           </div>
                         </div>
                       </div>
