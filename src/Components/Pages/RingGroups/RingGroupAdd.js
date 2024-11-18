@@ -1290,13 +1290,13 @@ const RingGroupAdd = () => {
                             {destination.length === 1 ? (
                               ""
                             ) : (
-                              <div className="me-2 h-100 mt-auto">
+                              <div className="me-2 h-100 my-auto">
                                 <button
                                   type="button"
                                   onClick={() => deleteDestination(item.id)}
-                                  className="clearButton text-danger"
+                                  className="tableButton delete text-danger"
                                 >
-                                  <i className="fa-duotone fa-trash"></i>
+                                  <i className="fa-solid fa-trash"></i>
                                 </button>
                               </div>
                             )}

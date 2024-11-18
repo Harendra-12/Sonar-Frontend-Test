@@ -1366,13 +1366,13 @@ const RingGroupEdit = () => {
                           {destination.length === 1 ? (
                             ""
                           ) : (
-                            <div className="col-auto h-100 mt-auto">
+                            <div className="col-auto h-100 my-auto">
                               <button
                                 type="button"
                                 onClick={() => deleteDestination(item.id)}
-                                className="clearButton text-danger"
+                                className="tableButton text-danger"
                               >
-                                <i className="fa-duotone fa-trash"></i>
+                                <i className="fa-solid fa-trash"></i>
                               </button>
                             </div>
                           )}

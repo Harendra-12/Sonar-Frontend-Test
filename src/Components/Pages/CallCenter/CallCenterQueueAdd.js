@@ -1261,9 +1261,9 @@ function CallCenterQueueAdd() {
                                 >
                                   <button
                                     type="button"
-                                    className="clearButton text-danger"
+                                    className="tableButton delete"
                                   >
-                                    <i className="fa-duotone fa-trash"></i>
+                                    <i className="fa-solid fa-trash"></i>
                                   </button>
                                 </div>
                               )}
