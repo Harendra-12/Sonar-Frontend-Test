@@ -368,11 +368,11 @@ function Roles() {
                                   disabled={editIndex === index ? false : true}
                                 ></input>
                               </div>
-                              <div className="col-auto">
-                                <button className="clearButton text-success">
+                              <div className="col-auto d-flex justify-content-end">
+                                <button className="tableButton edit">
                                   {editIndex === index ? (
                                     <i
-                                      className="fa-duotone fa-circle-check"
+                                      className="fa-solid fa-circle-check"
                                       onClick={() => {
                                         setPopup(true);
                                         setEditClick(true);
@@ -381,16 +381,16 @@ function Roles() {
                                     ></i>
                                   ) : (
                                     <i
-                                      className="fa-duotone fa-pen-to-square"
+                                      className="fa-solid fa-pen-to-square"
                                       onClick={() => {
                                         setEditIndex(index);
                                       }}
                                     ></i>
                                   )}
                                 </button>
-                                <button className="clearButton text-danger">
+                                <button className="tableButton delete mx-2">
                                   <i
-                                    className="fa-duotone fa-trash"
+                                    className="fa-solid fa-trash"
                                     onClick={() => {
                                       setPopup(true);
                                       setDeleteIndex(index);
@@ -399,9 +399,9 @@ function Roles() {
                                     }}
                                   ></i>
                                 </button>
-                                <button className="clearButton text-primary">
+                                <button className="tableButton">
                                   <i
-                                    class="fa-duotone fa-sliders"
+                                    class="fa-solid fa-sliders"
                                     onClick={() => {
                                       setSelectedRoleId(item.id);
                                       setSelectedRole(item.name);
@@ -422,7 +422,7 @@ function Roles() {
                 </div>
                 {selectedRoleId && (
                   <div className="col-xl-8 pe-0">
-                    <div className="profileView">
+                    <div className="profileView p-0 pb-2">
                       <div className="profileDetailsHolder position-relative">
                         <div className="col-xl-12">
                           <div class="headerCommon d-flex justify-content-between align-items-center">
@@ -449,10 +449,24 @@ function Roles() {
                             </div>
                           </div>
                         </div>
-                        {filteredPermission &&
-                          Object.keys(filteredPermission).map((item, key) => (
-                            <div className="permissionListWrapper" key={key}>
-                              <div className="header d-flex align-items-center">
+                        <div class="accordion permissionListWrapper">
+                          {filteredPermission &&
+                            Object.keys(filteredPermission).map((item, key) => (
+                              <div className="accordion-item" key={key}>
+                                <h2 class="accordion-header" id={`collapseHeading${key}`}>
+                                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${key}`} aria-expanded="true" aria-controls={`collapse${key}`}>
+                                    <input
+                                      type="checkbox"
+                                      checked={parentChecked[item]}
+                                      onChange={() =>
+                                        handleParentCheckboxChange(item)
+                                      }
+                                    />
+
+                                    <label>{item}</label>
+                                  </button>
+                                </h2>
+                                {/* <div className="header d-flex align-items-center">
                                 <div className="col-5">
                                   <input
                                     type="checkbox"
@@ -463,33 +477,36 @@ function Roles() {
                                   />
                                   <label className="ms-2">{item}</label>
                                 </div>
+                              </div> */}
+                                <div id={`collapse${key}`} class="accordion-collapse collapse" aria-labelledby={`collapseHeading${key}`}>
+                                  <div class="accordion-body">
+                                    {filteredPermission[item].map(
+                                      (innerItem, key) => (
+                                        <div
+                                          className="col-xl-2 col-md-4 col-6" style={{ paddingLeft: 7 }}
+                                          key={key}
+                                        >
+                                          <input
+                                            type="checkbox"
+                                            id={`permission-${innerItem.id}`}
+                                            checked={selectedPermission.includes(
+                                              innerItem.id
+                                            )}
+                                            onChange={() =>
+                                              handleCheckboxChange(innerItem.id)
+                                            }
+                                          />
+                                          <label className="formLabel ms-2 text-capitalize">
+                                            {innerItem.action}
+                                          </label>
+                                        </div>
+                                      )
+                                    )}
+                                  </div>
+                                </div>
                               </div>
-                              <div className="row px-2 pt-1 border-bottom">
-                                {filteredPermission[item].map(
-                                  (innerItem, key) => (
-                                    <div
-                                      className="col-xl-2 col-md-4 col-6"
-                                      key={key}
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        id={`permission-${innerItem.id}`}
-                                        checked={selectedPermission.includes(
-                                          innerItem.id
-                                        )}
-                                        onChange={() =>
-                                          handleCheckboxChange(innerItem.id)
-                                        }
-                                      />
-                                      <label className="formLabel text-capitalize">
-                                        {innerItem.action}
-                                      </label>
-                                    </div>
-                                  )
-                                )}
-                              </div>
-                            </div>
-                          ))}
+                            ))}
+                        </div>
                       </div>
                     </div>
                   </div>

@@ -27,7 +27,9 @@
     justify-content: space-between;
     align-items: center;
     transition: 0.3s ease-in-out;
+    padding: 5px 0;
 }
+
 
 .masterList ul li input {
     background-color: transparent;
@@ -43,7 +45,7 @@
     background-color: var(--ui-accent);
     border-bottom: 1px solid transparent;
     border-radius: 8px;
-    padding: 4px 5px;
+    padding: 5px 5px;
 }
 
 .masterList ul li.active input::placeholder {
@@ -53,4 +55,9 @@
 
 .masterList ul li.active button i {
     color: #fff !important;
+}
+
+.masterList ul li.active button {
+    box-shadow: none;
+    background-color: transparent;
 }
