@@ -47,6 +47,7 @@ const UsersEdit = () => {
     formState: { errors },
     handleSubmit,
     reset,
+    setValue,
   } = useForm();
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const account = useSelector((state) => state.account);
@@ -591,6 +592,7 @@ const UsersEdit = () => {
                                         )
                                     );
                                   }}
+                                  disabled
                                 >
                                   <option value="" disabled>
                                     Choose Type
@@ -618,7 +620,7 @@ const UsersEdit = () => {
                                   Assign an extension to the newly created user.
                                 </label>
                               </div>
-                              <div className="col-6">
+                              <div className="col-4">
                                 <select
                                   className="formItem"
                                   name="extension_id"
@@ -638,6 +640,18 @@ const UsersEdit = () => {
                                     })}
                                 </select>
                               </div>
+                              {watch().extension_id &&
+                                <div className="col-2">
+                                  <button
+                                    effect="ripple"
+                                    className="panelButton delete"
+                                    onClick={(e)=>{e.preventDefault();setValue("extension_id", null)}}
+                                  >
+                                    <span className="text">Delete</span>
+                                    <span className="icon"><i class="fa-solid fa-xmark"></i></span>
+                                  </button>
+                                </div>
+                              }
                             </div>
                             <div className="formRow col-xl-12">
                               <div className="formLabel">

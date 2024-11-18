@@ -6,7 +6,7 @@ import { styled } from '@mui/material';
 // Register necessary components
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement);
 
-const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, colors, chartType }) => {
+const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, colors, chartType,label1,label2 }) => {
 
   // Define the data for the chart
   const data = {
@@ -24,12 +24,12 @@ const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, color
   const multiChartData = {
     labels: fields,
     datasets: [{
-      label: "CPU Usage",
+      label: label2,
       data: percentage[0],
       backgroundColor: colors[0],
       order: 2
     }, {
-      label: "Memory Usage",
+      label: label1,
       data: percentage[1],
       type: 'line',
       // this dataset is drawn on top

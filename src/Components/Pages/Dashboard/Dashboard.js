@@ -1413,7 +1413,9 @@ const Dashboard = () => {
                             <div class="d-flex flex-wrap justify-content-between align-items-center">
                               <GraphChart
                                 chartType="multiple"
-                                labels={["Field 1", "Field 2"]}
+                                label1={"Filed1"}
+                                label2={"Field2"}
+                                // labels={[ "Field 1", "Field 2"]}
                                 fields={["0s", "10s", "20s", "30s", "40s", "50s", "60s"]}
                                 percentage={[
                                   [10, 12, 14, 16, 24, 14, 16],  // CPU Usage

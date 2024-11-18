@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SideNavbarApp from "./SideNavbarApp";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ActiveCallSidePanel from "./ActiveCallSidePanel";
 import {
   generalDeleteFunction,
@@ -9,8 +9,11 @@ import {
 import AddNewContactPopup from "./AddNewContactPopup";
 import { toast } from "react-toastify";
 import ContentLoader from "../../Loader/ContentLoader";
+import { useNavigate } from "react-router-dom";
 
 function AllContact() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const sessions = useSelector((state) => state.sessions);
   const addContactRefresh = useSelector((state) => state.addContactRefresh);
   const [contact, setContact] = useState([]);
@@ -80,6 +83,19 @@ function AllContact() {
       setLoading(false);
     }
   };
+
+  async function logOut() {
+    const apiData = await generalGetFunction("/logout");
+    localStorage.clear();
+    if (apiData?.data) {
+      localStorage.clear();
+      dispatch({
+        action: "SET_ACCOUNT",
+        account: null,
+      });
+      navigate("/");
+    }
+  }
   return (
     <>
       {/* <SideNavbarApp /> */}
@@ -125,11 +141,16 @@ function AllContact() {
                       </button>
                     </div>
                     <div className="col-auto">
-                      <div className="myProfileWidget">
-                        <div class="profileHolder" id="profileOnlineNav">
-                          <img src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg" alt="profile" />
+                      <div class="dropdown">
+                        <div className="myProfileWidget" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          <div class="profileHolder" id="profileOnlineNav">
+                            <img src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg" alt="profile" />
+                          </div>
+                          <div class="profileName">{account.username} <span className="status">Available</span></div>
                         </div>
-                        <div class="profileName">{account.username} <span className="status">Available</span></div>
+                        <ul class="dropdown-menu" onClick={logOut}>
+                          <li><div class="dropdown-item" style={{ cursor: 'pointer' }} >Logout</div></li>
+                        </ul>
                       </div>
                     </div>
                   </div>

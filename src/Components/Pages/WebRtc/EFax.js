@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import EFaxFile from "./EFaxFile";
 import {
   generalDeleteFunction,
@@ -10,8 +10,11 @@ import Select from "react-select";
 import { useForm } from "react-hook-form";
 import CircularLoader from "../../Loader/CircularLoader";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function EFax() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [clickStatus, setClickStatus] = useState("all");
   const [allFiles, setAllFiles] = useState([]);
   const [deletePopup, setDeletePopup] = useState(false);
@@ -132,6 +135,19 @@ function EFax() {
       }
     }
   }
+
+  async function logOut() {
+    const apiData = await generalGetFunction("/logout");
+    localStorage.clear();
+    if (apiData?.data) {
+      localStorage.clear();
+      dispatch({
+        action: "SET_ACCOUNT",
+        account: null,
+      });
+      navigate("/");
+    }
+  }
   return (
     <>
       {/* <SideNavbarApp /> */}
@@ -174,11 +190,16 @@ function EFax() {
                       </button>
                     </div>
                     <div className="col-auto">
-                      <div className="myProfileWidget">
-                        <div class="profileHolder" id="profileOnlineNav">
-                          <img src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg" alt="profile" />
+                      <div class="dropdown">
+                        <div className="myProfileWidget" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          <div class="profileHolder" id="profileOnlineNav">
+                            <img src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg" alt="profile" />
+                          </div>
+                          <div class="profileName">{account.username} <span className="status">Available</span></div>
                         </div>
-                        <div class="profileName">{account.username} <span className="status">Available</span></div>
+                        <ul class="dropdown-menu" onClick={logOut}>
+                          <li><div class="dropdown-item" style={{ cursor: 'pointer' }} >Logout</div></li>
+                        </ul>
                       </div>
                     </div>
                   </div>
