@@ -2,35 +2,7 @@ import React from "react";
 
 function Account({ account, nextPage, companyStatus }) {
   return (
-    <>
-      <div className="col-12">
-        <div className="heading">
-          <div className="content">
-            <h4>Ring Group List</h4>
-            <p>You can see all list of ring groups</p>
-          </div>
-          <div className="buttonGroup">
-
-            <button
-              // to="/ring-groups-add"
-              // onClick={backToTop}
-              onClick={() => {
-                nextPage("payment")
-              }}
-              effect="ripple"
-              className="panelButton"
-            >
-              <span className="text">Add</span>
-              <span className="icon">
-                <i class="fa-solid fa-plus"></i>
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-
-
+    <div>
       <div className="profileView">
         <div className="profileDetailsHolder position-relative">
           <div className="header d-flex align-items-center">
@@ -206,7 +178,7 @@ function Account({ account, nextPage, companyStatus }) {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
