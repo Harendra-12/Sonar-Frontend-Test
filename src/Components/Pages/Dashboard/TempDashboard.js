@@ -169,17 +169,16 @@ function TempDashboard() {
                         <div
                           className="progress-bar progress-bar-striped progress-bar-animated bg-success"
                           style={{
-                            width: `${
-                              Number(account.company_status) === 1
-                                ? "40"
-                                : Number(account.company_status) === 2
+                            width: `${Number(account.company_status) === 1
+                              ? "40"
+                              : Number(account.company_status) === 2
                                 ? "55"
                                 : Number(account.company_status) === 3
-                                ? "65"
-                                : Number(account.company_status) === 4
-                                ? "85"
-                                : "100"
-                            }%`,
+                                  ? "65"
+                                  : Number(account.company_status) === 4
+                                    ? "85"
+                                    : "100"
+                              }%`,
                           }}
                         ></div>
                       </div>
@@ -198,11 +197,10 @@ function TempDashboard() {
                         </div>
                         <div
                           onClick={() => setStatusClick("payment")}
-                          className={`stepWrapper col-3 ${
-                            Number(account.company_status) > 1
-                              ? "success"
-                              : "pending"
-                          }`}
+                          className={`stepWrapper col-3 ${Number(account.company_status) > 1
+                            ? "success"
+                            : "pending"
+                            }`}
                         >
                           {/* <div className="status">
                             {" "}
@@ -229,13 +227,12 @@ function TempDashboard() {
                               setStatusClick("document");
                             }
                           }}
-                          className={`stepWrapper col-3 ${
-                            Number(account.company_status) === 3
-                              ? "pending"
-                              : Number(account.company_status) > 3
+                          className={`stepWrapper col-3 ${Number(account.company_status) === 3
+                            ? "pending"
+                            : Number(account.company_status) > 3
                               ? "success"
                               : ""
-                          }`}
+                            }`}
                         >
                           <div className="step ">
                             {Number(account.company_status) < 3 ? (
@@ -260,13 +257,12 @@ function TempDashboard() {
                               setStatusClick("config");
                             }
                           }}
-                          className={`stepWrapper col-3 ${
-                            Number(account.company_status) === 4
-                              ? "pending"
-                              : Number(account.company_status) > 4
+                          className={`stepWrapper col-3 ${Number(account.company_status) === 4
+                            ? "pending"
+                            : Number(account.company_status) > 4
                               ? "success"
                               : ""
-                          }`}
+                            }`}
                         >
                           <div className="step">
                             {Number(account.company_status) >= 4 ? (
@@ -291,34 +287,39 @@ function TempDashboard() {
                 </div>
               </div>
             </div>
-            <div className="col-xl-12">
-              {statusClick === "account" ? (
-                <Account
-                  account={account}
-                  companyStatus={account.company_status}
-                  nextPage={handleCallBack}
-                />
-              ) : statusClick === "payment" ? (
-                <Payment
-                  account={account}
-                  companyStatus={account.company_status}
-                  nextPage={handleCallBack}
-                />
-              ) : statusClick === "document" ? (
-                <Document
-                  account={account}
-                  refreshCallback={handleRefresh}
-                  refresh={refreshDetails}
-                  companyStatus={account.company_status}
-                  nextPage={handleCallBack}
-                />
-              ) : (
-                <ConfigureStepDashboard
-                  account2={account}
-                  companyStatus={account.company_status}
-                  nextPage={handleCallBack}
-                />
-              )}
+
+            <div className="overviewTableWrapper">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap">
+                  {statusClick === "account" ? (
+                    <Account
+                      account={account}
+                      companyStatus={account.company_status}
+                      nextPage={handleCallBack}
+                    />
+                  ) : statusClick === "payment" ? (
+                    <Payment
+                      account={account}
+                      companyStatus={account.company_status}
+                      nextPage={handleCallBack}
+                    />
+                  ) : statusClick === "document" ? (
+                    <Document
+                      account={account}
+                      refreshCallback={handleRefresh}
+                      refresh={refreshDetails}
+                      companyStatus={account.company_status}
+                      nextPage={handleCallBack}
+                    />
+                  ) : (
+                    <ConfigureStepDashboard
+                      account2={account}
+                      companyStatus={account.company_status}
+                      nextPage={handleCallBack}
+                    />
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>

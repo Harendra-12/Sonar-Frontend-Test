@@ -58,12 +58,12 @@ const RingGroup = () => {
       return setActiveCallData(activeCallFilterData);
     }
   }, [ringGroup, activeCall]);
-  
+
   return (
     <div
       className="tabGroupDetails"
       data-id={2}
-      // style={{ display: "none" }}
+    // style={{ display: "none" }}
     >
       <div className="col-12">
         <div className="col-12 title text-start">
@@ -72,14 +72,14 @@ const RingGroup = () => {
         {ringGroupData &&
           ringGroup &&
           ringGroup.map((call) => (
-            <div className="row mb-3">
+            <div className="row my-3">
               <div className="col-xl-1b">
                 <div className="itemWrapperb a">
                   <div className="heading">Ring Group</div>
                   <div className="data-number" style={{ fontSize: "19px" }}>
-                    {`${call.name} (${call.extension})`}
+                    {`${call.name}`}
                   </div>
-                  <div className="label2">N/A</div>
+                  <div className="label2">Extension - {call.extension}</div>
                 </div>
               </div>
               <div className="col-xl-1b">

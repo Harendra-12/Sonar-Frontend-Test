@@ -1402,8 +1402,8 @@ const Dashboard = () => {
                             <div class="heading">
                               <div class="d-flex flex-wrap justify-content-between align-items-center">
                                 <div class="col-10">
-                                  <h5>Dummy Data</h5>
-                                  <p>19 October, 2024</p>
+                                  <h5>Billing Expenses</h5>
+                                  <p>{accountDetails?.subscription[0].end_date.split(" ")[0]}</p>
                                 </div>
                                 <div class="col-2" onClick={() => navigate('/card-details')}>
                                   <i class="fa-solid fa-gauge-simple-high" ></i>
@@ -1413,8 +1413,8 @@ const Dashboard = () => {
                             <div class="d-flex flex-wrap justify-content-between align-items-center mt-3">
                               <GraphChart
                                 chartType="multiple"
-                                label1={"Filed1"}
-                                label2={"Field2"}
+                                label1={"Wallet"}
+                                label2={"Card"}
                                 // labels={[ "Field 1", "Field 2"]}
                                 fields={["0s", "10s", "20s", "30s", "40s", "50s", "60s"]}
                                 percentage={[

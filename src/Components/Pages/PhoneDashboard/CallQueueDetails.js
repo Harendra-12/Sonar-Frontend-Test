@@ -67,14 +67,14 @@ const CallQueueDetails = () => {
         {callQueue &&
           callCenter &&
           callCenter.map((call) => (
-            <div className="row mb-3">
+            <div className="row my-3">
               <div className="col-xl-1b">
                 <div className="itemWrapperb a">
                   <div className="heading">Queue Name</div>
                   <div className="data-number" style={{ fontSize: "19px" }}>
-                    {`${call.queue_name} (${call.extension})`}
+                    {`${call.queue_name}`}
                   </div>
-                  <div className="label2">N/A</div>
+                  <div className="label2">Extension - {call.extension}</div>
                 </div>
               </div>
               <div className="col-xl-1b">
@@ -137,7 +137,7 @@ const CallQueueDetails = () => {
                     }
                   </div>
                   <div className="label2">
-                  Percentage{" "}
+                    Percentage{" "}
                     {(
                       (callQueue.filter(
                         (data) =>
@@ -167,7 +167,7 @@ const CallQueueDetails = () => {
                     }
                   </div>
                   <div className="label2">
-                  Percentage{" "}
+                    Percentage{" "}
                     {(
                       (callQueue.filter(
                         (data) =>
@@ -188,7 +188,7 @@ const CallQueueDetails = () => {
                 <div className="itemWrapperb a">
                   <div className="heading">Active Calls</div>
                   <div className="data-number">
-                  {
+                    {
                       activeCallData.filter((e) => e.dest === call.extension)
                         .length
                     }

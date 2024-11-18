@@ -741,6 +741,7 @@ input[type=number] {
 
 .permissionListWrapper .accordion-button:not(.collapsed) {
     color: #2a2a2a;
+    background: #a2e1ff3d;
 
 }
 

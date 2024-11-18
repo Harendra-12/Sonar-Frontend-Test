@@ -818,7 +818,7 @@ const UsersAdd = () => {
                               Object.keys(filteredPermission).map((item, key) => (
                                 <div className="accordion-item" key={key}>
                                   <h2 class="accordion-header" id={`collapseHeading${key}`}>
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${key}`} aria-expanded="true" aria-controls={`collapse${key}`}>
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${key}`} aria-expanded="true" aria-controls={`collapse${key}`}>
                                       <input
                                         type="checkbox"
                                         checked={parentChecked[item]}
