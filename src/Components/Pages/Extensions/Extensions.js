@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import {
   backToTop,
+  featureUnderdevelopment,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
@@ -152,13 +153,13 @@ const Extensions = () => {
                       <div className="showEntries">
                         <label>Show</label>
                         <select className="formItem">
-                          <option>10</option>
+                          <option>Max</option>
                         </select>
                         <label>entries</label>
                       </div>
                       <div className="searchBox">
                         <label>Search:</label>
-                        <input type="search" className="formItem" />
+                        <input type="search" className="formItem" onChange={() => featureUnderdevelopment()} />
                       </div>
                     </div>
                     <div className="tableContainer">
@@ -174,7 +175,7 @@ const Extensions = () => {
                             <th>Call Screen</th>
                             <th>Description</th>
                             <th className="text-center">Status</th>
-                            <th className="text-center">Setting</th>
+                            {/* <th className="text-center">Setting</th> */}
                             <th className="text-center">Edit</th>
                             <th className="text-center" style={{ width: 95 }}>Add Devices</th>
                           </tr>
@@ -263,7 +264,7 @@ const Extensions = () => {
                                       }
                                     ></span>
                                   </td>
-                                  <td style={{ cursor: "default" }}>
+                                  {/* <td style={{ cursor: "default" }}>
                                     <button
                                       class="tableButton mx-auto"
                                       onClick={() =>
@@ -277,7 +278,7 @@ const Extensions = () => {
                                     >
                                       <i className="fa-duotone fa-gear"></i>
                                     </button>
-                                  </td>
+                                  </td> */}
                                   <td style={{ cursor: "default" }}>
                                     {" "}
                                     <button

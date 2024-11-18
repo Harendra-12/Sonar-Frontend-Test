@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   backToTop,
+  featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
@@ -117,9 +118,7 @@ const IvrListing = () => {
                         <select
                           className="formItem"
                         >
-                          <option value={10}>10</option>
-                          <option value={20}>20</option>
-                          <option value={30}>30</option>
+                          <option value={10}>Max</option>
                         </select>
                         <label>entries</label>
                       </div>
@@ -130,6 +129,7 @@ const IvrListing = () => {
                           name="Search"
                           className="formItem"
                           placeholder="Search"
+                          onChange={() => featureUnderdevelopment()}
                         />
                       </div>
                     </div>

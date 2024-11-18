@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   backToTop,
+  featureUnderdevelopment,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import Header from "../../CommonComponents/Header";
@@ -117,6 +118,7 @@ function CardTransactionsList() {
                         <button
                           effect="ripple"
                           className="panelButton"
+                          onClick={() => featureUnderdevelopment()}
                         >
                           <span className="text">Refresh</span>
                           <span className="icon">

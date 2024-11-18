@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import {
   backToTop,
+  featureUnderdevelopment,
   fileUploadFunction,
   generalDeleteFunction,
   generalGetFunction,
@@ -198,13 +199,13 @@ function Music() {
                       <div className="showEntries">
                         <label>Show</label>
                         <select className="formItem">
-                          <option>10</option>
+                          <option>Max</option>
                         </select>
                         <label>entries</label>
                       </div>
                       <div className="searchBox">
                         <label>Search:</label>
-                        <input type="search" className="formItem" />
+                        <input type="search" className="formItem" onChange={() => featureUnderdevelopment()} />
                       </div>
                     </div>
                     <div className="tableContainer">

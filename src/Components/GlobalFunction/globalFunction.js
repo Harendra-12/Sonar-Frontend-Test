@@ -190,3 +190,44 @@ export async function fileUploadFunction(endpoint, data) {
 export const backToTop = () => {
   window.scrollTo(0, 0);
 };
+
+export function featureUnderdevelopment() {
+
+  let popup = document.getElementById("globalPopup");
+
+  if (!popup) {
+    popup = document.createElement("div");
+    popup.id = "globalPopup";
+    popup.innerHTML = `
+    <div class="popup">
+      <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+          <div class="row content col-xl-3">
+            <div class="col-2 px-0">
+              <div class="iconWrapper">
+                <i class="fa-duotone fa-clock  text-info"></i>
+              </div>
+            </div>
+            <div class="col-10 ps-0">
+              <h4>Sorry!</h4>
+              <p>This feature is under development!</p>
+              <div class="d-flex justify-content-start">
+                <button
+                  class="panelButton gray m-0"
+                  onclick="document.getElementById('globalPopup').remove()"
+                >
+                  <span class="text">Ok</span>
+                  <span class="icon">
+                    <i class="fa-solid fa-xmark"></i>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`
+    document.body.appendChild(popup);
+  }
+
+}

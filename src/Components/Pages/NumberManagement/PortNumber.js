@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   backToTop,
+  featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
@@ -154,13 +155,13 @@ function PortNumber() {
                         <div className="showEntries">
                           <label>Show</label>
                           <select className="formItem">
-                            <option>10</option>
+                            <option>Max</option>
                           </select>
                           <label>entries</label>
                         </div>
                         <div className="searchBox">
                           <label>Search:</label>
-                          <input type="search" className="formItem" />
+                          <input type="search" className="formItem" onChange={() => featureUnderdevelopment()} />
                         </div>
                       </div>
                       <div className="tableContainer">

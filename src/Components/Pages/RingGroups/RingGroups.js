@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   backToTop,
+  featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
   generalPutFunction,
@@ -223,7 +224,7 @@ const RingGroups = () => {
                       </div>
                       <div className="searchBox">
                         <label>Search:</label>
-                        <input type="search" className="formItem" />
+                        <input type="search" className="formItem" onChange={() => featureUnderdevelopment()} />
                       </div>
                     </div>
                     <div className="tableContainer">

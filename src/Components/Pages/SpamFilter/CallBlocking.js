@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
     backToTop,
+    featureUnderdevelopment,
     generalDeleteFunction,
     generalGetFunction,
     generalPostFunction,
@@ -155,15 +156,13 @@ const CallBlocking = () => {
                                                         setItemsPerPage(e.target.value);
                                                     }}
                                                 >
-                                                    <option value={10}>10</option>
-                                                    <option value={20}>20</option>
-                                                    <option value={30}>30</option>
+                                                    <option value={10}>Max</option>
                                                 </select>
                                                 <label>entries</label>
                                             </div>
                                             <div className="searchBox">
                                                 <label>Search:</label>
-                                                <input type="search" className="formItem" />
+                                                <input type="search" className="formItem" onChange={() => featureUnderdevelopment()} />
                                             </div>
                                         </div>
                                         <div className="tableContainer">

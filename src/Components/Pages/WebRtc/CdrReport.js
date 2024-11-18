@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { backToTop, generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { backToTop, featureUnderdevelopment, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
@@ -166,6 +166,12 @@ function CdrReport() {
     setContentLoader(true)
     setRefrehsh(refresh + 1)
   }
+
+  useEffect(() => {
+    if (filterBy === "7_days" || filterBy === "1_month" || filterBy === "3_month") {
+      featureUnderdevelopment();
+    }
+  }, [filterBy])
   return (
     <main className="mainContent">
       <section id="phonePage">

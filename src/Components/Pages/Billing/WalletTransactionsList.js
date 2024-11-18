@@ -4,6 +4,7 @@ import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import { Link, useNavigate } from "react-router-dom";
 import {
   backToTop,
+  featureUnderdevelopment,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import ContentLoader from "../../Loader/ContentLoader";
@@ -117,6 +118,7 @@ function WalletTransactionsList() {
                         <button
                           effect="ripple"
                           className="panelButton"
+                          onClick={() => featureUnderdevelopment()}
                         >
                           <span className="text">Refresh</span>
                           <span className="icon">

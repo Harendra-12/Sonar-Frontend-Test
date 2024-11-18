@@ -3,6 +3,7 @@ import Header from "../../CommonComponents/Header";
 import { Link, useNavigate } from "react-router-dom";
 import {
   backToTop,
+  featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
   generalPutFunction,
@@ -251,6 +252,7 @@ function CallCenterQueue() {
                           name="Search"
                           placeholder="Search"
                           className="formItem"
+                          onChange={() => featureUnderdevelopment()}
                         />
                       </div>
                     </div>
@@ -443,8 +445,7 @@ function CallCenterQueue() {
                       ? error
                       : "Are you sure you want to delete this queue?"}
                     {selectedCallCenter?.id &&
-                      `Are you sure you want to ${
-                        selectedCallCenter?.status == 1 ? "disable" : "enable"
+                      `Are you sure you want to ${selectedCallCenter?.status == 1 ? "disable" : "enable"
                       } the queue ${selectedCallCenter?.queue_name}?`}
                   </p>
                   <div className="mt-2 d-flex justify-content-between">
