@@ -281,22 +281,15 @@ function Roles() {
                 <div className="col-xl-4 ">
                   <div className="masterSegment">
                     <h6>
-                      <div className="row align-items-center">
+                      <div className="row align-items-center justify-content-between">
                         <div className="col-auto">List of Roles </div>
                         {/* <div className="col pe-0">
                         <input type="search" name="Search" id="headerSearch" placeholder="Search a role" onChange={(e) => setSearchDomain(e.target.value)} />
                       </div> */}
                         <div className="col-auto ps-0 mt-1">
-                          <button
-                            className="clearButton"
-                            style={{
-                              width: "100%",
-                              height: "100%",
-                              fontSize: 22,
-                            }}
-                          >
+                          <button className="tableButton">
                             <i
-                              className="fa-duotone fa-circle-plus"
+                              className="fa-solid fa-plus"
                               onClick={() => {
                                 setAddRole(true);
                                 setEditClick(false);

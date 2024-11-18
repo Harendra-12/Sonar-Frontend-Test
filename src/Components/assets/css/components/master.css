@@ -27,7 +27,7 @@
     justify-content: space-between;
     align-items: center;
     transition: 0.3s ease-in-out;
-    padding: 5px 0;
+    padding: 5px 5px;
 }
 
 
@@ -54,10 +54,14 @@
 }
 
 .masterList ul li.active button i {
-    color: #fff !important;
+    color: #fff;
 }
 
 .masterList ul li.active button {
     box-shadow: none;
     background-color: transparent;
+}
+
+.masterList ul li.active button:hover {
+    background-color: #fff;
 }
