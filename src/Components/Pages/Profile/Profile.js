@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "../../CommonComponents/Header";
 import { useDispatch, useSelector } from "react-redux";
 import {
   backToTop,
+  featureUnderdevelopment,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 
@@ -16,6 +17,7 @@ const Profile = () => {
   const [timeZoneVal, setTimeZoneVal] = useState();
   console.log("user:", account);
   console.log("accountDetails:", accountDetails);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (timeZoneRefresh > 0) {
@@ -309,35 +311,35 @@ const Profile = () => {
                     <p>Store</p>
                     <ul>
                       <li>
-                        <Link to="#" onClick={backToTop}>
+                        <Link to="/extensions" onClick={backToTop}>
                           Buy Extensions
                         </Link>
                       </li>
                       <li>
-                        <Link to="#" onClick={backToTop}>
+                        <Link to="/users" onClick={backToTop}>
                           Increase Users
                         </Link>
                       </li>
                       <li>
-                        <Link>Explore Modules</Link>
+                        <Link onClick={() => featureUnderdevelopment()}>Explore Modules</Link>
                       </li>
                     </ul>
                     <p>How to AngelPBX</p>
                     <ul>
                       <li>
-                        <Link>Setup Guide</Link>
+                        <Link onClick={() => featureUnderdevelopment()}>Setup Guide</Link>
                       </li>
                       <li>
-                        <Link>Documentation</Link>
+                        <Link onClick={() => featureUnderdevelopment()}>Documentation</Link>
                       </li>
                     </ul>
                     <p>Connect With us</p>
                     <ul>
                       <li>
-                        <Link>Know about us!</Link>
+                        <Link onClick={() => navigate('https://ucaas.webvio.in:3001/')}>Know about us!</Link>
                       </li>
                       <li>
-                        <Link>Connect with us!</Link>
+                        <Link onClick={() => navigate('https://ucaas.webvio.in:3001/')}>Connect with us!</Link>
                       </li>
                     </ul>
                   </div>
