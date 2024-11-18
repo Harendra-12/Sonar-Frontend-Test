@@ -289,10 +289,6 @@
     border-bottom: 1px solid #cecece;
 }
 
-.permissionListWrapper {
-    padding-bottom: 10px;
-}
-
 .buttonPopup {
     width: 120px;
     border-radius: 10px;
@@ -724,4 +720,18 @@ input[type=number] {
     color: #000;
     font-size: 18px;
     margin-top: 5px;
+}
+
+.permissionListWrapper .accordion-button:not(.collapsed) {
+    color: #2a2a2a;
+
+}
+
+.permissionListWrapper .accordion-button label {
+    margin-left: 15px;
+}
+
+.permissionListWrapper .accordion-body {
+    display: flex;
+    justify-content: space-between;
 }
