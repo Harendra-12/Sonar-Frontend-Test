@@ -390,17 +390,17 @@ function GetDid() {
                                 return (
                                   <li>
                                     {item.didSummary}{" "}
-                                    <span
+                                    <button
                                       style={{ cursor: "pointer" }}
                                       onClick={() => addSelect(item)}
-                                      className="float-end clearButton text-success fw-medium"
+                                      className={selectedDid.includes(item) ? "tableButton edit float-end" : "tableButton float-end"}
                                     >
                                       {selectedDid.includes(item) ? (
-                                        <i class="fa-duotone fa-square-check text-info"></i>
+                                        <i class="fa-solid fa-check text-info"></i>
                                       ) : (
-                                        <i class="fa-duotone fa-square-plus"></i>
+                                        <i class="fa-solid fa-plus"></i>
                                       )}{" "}
-                                    </span>
+                                    </button>
                                   </li>
                                 );
                               })}
@@ -428,9 +428,9 @@ function GetDid() {
                                 <span
                                   style={{ cursor: "pointer" }}
                                   onClick={() => removeDid(item)}
-                                  className="float-end clearButton text-danger fw-medium"
+                                  className="float-end tableButton delete"
                                 >
-                                  <i class="fa-duotone fa-trash"></i>
+                                  <i class="fa-solid fa-trash"></i>
                                 </span>
                               </li>
                             );

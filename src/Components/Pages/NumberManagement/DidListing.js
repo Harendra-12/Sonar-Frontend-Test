@@ -143,9 +143,9 @@ function DidListing() {
                               <th>E911</th>
                               <th>Cname</th>
                               <th>SMS</th>
-                              <th style={{ width: 150 }}>Configure</th>
-                              <th style={{ width: 150 }}>Reset Configuration</th>
-                              <th>Set as default</th>
+                              <th style={{ width: 80, textAlign: 'center' }}>Configure</th>
+                              <th style={{ width: 100, textAlign: 'center' }}>Reset Config</th>
+                              <th style={{ width: 125, textAlign: 'center' }}>Default Caller DID</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -167,7 +167,7 @@ function DidListing() {
                                           onClick={() =>
                                             navigate(`/did-config`, { state: item })
                                           }
-                                          className={item.configuration !== null ? "tableButton" : "tableButton warning"}
+                                          className={item.configuration !== null ? "tableButton mx-auto" : "tableButton warning mx-auto"}
                                         >
                                           <i className={item.configuration !== null ? "fa-solid fa-gear text-success" : "fa-solid fa-triangle-exclamation"}></i>
                                         </button>
@@ -189,7 +189,7 @@ function DidListing() {
                                       {item.configuration !== null && (
                                         <Tippy content="Reset configuration of this DID">
                                           <button
-                                            className="tableButton delete"
+                                            className="tableButton delete mx-auto"
                                             style={{ cursor: "pointer" }}
                                             onClick={() =>
                                               handleClick(item.configuration.id)
@@ -203,7 +203,7 @@ function DidListing() {
                                     <td style={{ cursor: "default" }}>
                                       <Tippy content={item.default_outbound === 1 ? "This DID is set as default" : "Set this DID default"}>
                                         <button
-                                          className={item.default_outbound === 1 ? "tableButton" : "tableButton empty"}
+                                          className={item.default_outbound === 1 ? "tableButton mx-auto" : "tableButton empty mx-auto"}
                                           style={{ cursor: "pointer" }}
                                           onClick={() => {
                                             if (item.default_outbound === 0) {

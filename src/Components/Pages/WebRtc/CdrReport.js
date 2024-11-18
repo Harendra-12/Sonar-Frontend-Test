@@ -225,6 +225,9 @@ function CdrReport() {
                         >
                           <option value={"date"}>Only Date</option>
                           <option value={"date_range"}>Date Range</option>
+                          <option value={"7_days"}>Last 7 Days</option>
+                          <option value={"1_month"}>Last 1 Month</option>
+                          <option value={"3_month"}>Last 3 Months</option>
                         </select>
                       </div>
                       {filterBy === "date" && (

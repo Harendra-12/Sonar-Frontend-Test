@@ -173,10 +173,10 @@ const Extensions = () => {
                             <th>Call Group</th>
                             <th>Call Screen</th>
                             <th>Description</th>
-                            <th>Status</th>
-                            <th>Setting</th>
-                            <th>Edit</th>
-                            <th>Device Provisioning</th>
+                            <th className="text-center">Status</th>
+                            <th className="text-center">Setting</th>
+                            <th className="text-center">Edit</th>
+                            <th className="text-center" style={{ width: 95 }}>Add Devices</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -258,14 +258,14 @@ const Extensions = () => {
                                     <span
                                       className={
                                         onlineExtension.includes(item.extension)
-                                          ? "extensionStatus online"
-                                          : "extensionStatus"
+                                          ? "extensionStatus online mx-auto"
+                                          : "extensionStatus mx-auto"
                                       }
                                     ></span>
                                   </td>
                                   <td style={{ cursor: "default" }}>
                                     <button
-                                      class="tableButton"
+                                      class="tableButton mx-auto"
                                       onClick={() =>
                                         navigate("/call-settings", {
                                           state: {
@@ -281,7 +281,7 @@ const Extensions = () => {
                                   <td style={{ cursor: "default" }}>
                                     {" "}
                                     <button
-                                      className="tableButton edit"
+                                      className="tableButton edit mx-auto"
                                       onClick={() =>
                                         navigate(
                                           `/extensions-edit?id=${item.id}`
@@ -294,11 +294,10 @@ const Extensions = () => {
 
                                   <td
                                     style={{ cursor: "default" }}
-                                    className="d-flex justify-content-center"
                                   >
                                     {item.provisionings ? (
                                       <button
-                                        className="tableButton "
+                                        className="tableButton edit mx-auto"
                                         onClick={() =>
                                           navigate(
                                             `/device-provisioning-edit`,
@@ -312,11 +311,11 @@ const Extensions = () => {
                                           )
                                         }
                                       >
-                                        <i class="fa-solid fa-mobile"></i>
+                                        <i class="fa-solid fa-phone-office"></i>
                                       </button>
                                     ) : (
                                       <button
-                                        className="tableButton "
+                                        className="tableButton mx-auto"
                                         onClick={() =>
                                           navigate("/device-provisioning-add", {
                                             state: {
