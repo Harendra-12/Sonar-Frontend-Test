@@ -168,7 +168,7 @@ function PhoneDashboard() {
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row ">
-            <Header title="Phone Dashboard" style={{ boxShadow: "none" }} />
+            <Header title="Phone Dashboard" />
             <div id="detailsHeader" className="p-0">
               <div className="headerBgWave">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">

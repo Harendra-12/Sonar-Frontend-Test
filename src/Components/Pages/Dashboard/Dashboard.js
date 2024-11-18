@@ -385,7 +385,7 @@ const Dashboard = () => {
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row ">
-            <Header title="Dashboard" style={{ boxShadow: "none" }} />
+            <Header title="Dashboard" />
             <div id="detailsHeader" className="p-0">
               <div className="headerBgWave">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
@@ -1410,7 +1410,7 @@ const Dashboard = () => {
                                 </div>
                               </div>
                             </div>
-                            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center mt-3">
                               <GraphChart
                                 chartType="multiple"
                                 labels={["Field 1", "Field 2"]}

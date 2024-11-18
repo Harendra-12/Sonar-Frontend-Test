@@ -302,3 +302,7 @@ form.tangoNavs .nav-tabs {
     display: flex;
     justify-content: end;
 }
+
+.overviewTableWrapper .tableContainer {
+    height: calc(100vh - 328px);
+}

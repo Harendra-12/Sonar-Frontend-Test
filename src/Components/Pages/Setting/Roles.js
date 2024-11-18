@@ -433,8 +433,8 @@ function Roles() {
                     </div>
                     {selectedRoleId && (
                       <div className="col-xl-8 pe-0">
-                        <div className="profileView p-0 pb-2">
-                          <div className="profileDetailsHolder position-relative p-0 shadow-none">
+                        <div className="profileView p-0 pb-2 ">
+                          <div className="profileDetailsHolder position-relative p-0 shadow-none border-0">
                             <div className="col-xl-12" style={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 9 }}>
                               <div class="headerCommon d-flex justify-content-between align-items-center pe-0">
                                 <div class="col-5">
@@ -469,7 +469,7 @@ function Roles() {
                                   Object.keys(filteredPermission).map((item, key) => (
                                     <div className="accordion-item" key={key}>
                                       <h2 class="accordion-header" id={`collapseHeading${key}`}>
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${key}`} aria-expanded="true" aria-controls={`collapse${key}`}>
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#collapseRole${key}`} aria-expanded="true" aria-controls={`collapse${key}`}>
                                           <input
                                             type="checkbox"
                                             checked={parentChecked[item]}
@@ -493,7 +493,7 @@ function Roles() {
                                   <label className="ms-2">{item}</label>
                                 </div>
                               </div> */}
-                                      <div id={`collapse${key}`} class="accordion-collapse collapse" aria-labelledby={`collapseHeading${key}`}>
+                                      <div id={`collapseRole${key}`} class="accordion-collapse collapse" aria-labelledby={`collapseHeading${key}`}>
                                         <div class="accordion-body">
                                           {filteredPermission[item].map(
                                             (innerItem, key) => (

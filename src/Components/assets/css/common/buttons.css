@@ -249,7 +249,7 @@
   border: none;
   background-color: #fff;
   border-radius: 50px;
-  border: 1px solid #fff;
+  border: 1px solid #c9c9c970;
   /* box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px; */
   color: #454545;
   font-weight: 500;
@@ -262,7 +262,7 @@
 }
 
 .tabButton.active {
-  background-color: #00699185;
+  background-color: var(--ui-accent);
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
   color: #fff;

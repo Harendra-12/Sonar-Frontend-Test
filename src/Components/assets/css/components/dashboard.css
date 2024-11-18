@@ -118,6 +118,10 @@
     box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 5px;
     cursor: pointer;
     transition: 0.3s ease-in-out;
+
+    width: 42px;
+    height: 42px;
+    text-align: center;
 }
 
 .itemWrapper .heading:hover i {
@@ -346,7 +350,7 @@
 #phonePage .tabGroupDetails {
     padding: 10px;
     margin: 20px auto 0;
-    /* border: 1px solid #c9c9c970; */
+    border: 1px solid #c9c9c970;
     border-radius: 10px;
     background-color: #fff;
     /* box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px; */
@@ -412,15 +416,18 @@
 }
 
 .tangoNavs .nav-tabs .nav-link {
-    color: #fff;
+    /* color: #fff; */
+    color: #454545;
     padding: 10px 25px;
 }
 
 .tangoNavs .nav-tabs .nav-link.active {
     background-color: transparent;
     border: 1px solid transparent;
-    border-bottom: 3px solid #fff !important;
-    color: #fff;
+    /* border-bottom: 3px solid #fff !important; */
+    border-bottom: 3px solid var(--ui-accent) !important;
+    /* color: #fff; */
+    color: var(--ui-accent);
     font-weight: 600;
 }
 
@@ -429,7 +436,7 @@
 }
 
 .chartWrapper .wrapper {
-    /* border: 1px solid #c9c9c970; */
+    border: 1px solid #c9c9c970;
     border-radius: 10px;
     background-color: #fff;
     padding: 15px;
