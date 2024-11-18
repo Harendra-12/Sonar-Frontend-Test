@@ -313,7 +313,7 @@ function Roles() {
                     </div>
                   </div>
                 </div>
-                <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
+                <div className="col-12" style={{ padding: '25px 23px' }}>
                   <div className="row masterList">
                     <div className="col-xl-4 " style={{ borderRight: '1px solid var(--border-color)' }}>
                       <div className="masterSegment">
