@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ActiveCalls from "../PhoneDashboard/ActiveCalls";
-import { generalPostFunction } from "../../GlobalFunction/globalFunction";
+import { generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 
 function CallDashboard() {
@@ -56,6 +56,19 @@ function CallDashboard() {
       toast.success(unparkResponse.message);
     }
   };
+
+  // async function logOut() {
+  //   const apiData = await generalGetFunction("/logout");
+  //   localStorage.clear();
+  //   if (apiData?.data) {
+  //     localStorage.clear();
+  //     dispatch({
+  //       action: "SET_ACCOUNT",
+  //       account: null,
+  //     });
+  //     navigate("/");
+  //   }
+  // }
   return (
     <>
       {/* <SideNavbarApp /> */}

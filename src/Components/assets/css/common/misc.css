@@ -660,6 +660,23 @@ input[type=number] {
     border-bottom: 1px solid var(--border-color);
 }
 
+.newHeader .dropdown-menu {
+    padding: 5px 0;
+}
+
+.newHeader .dropdown-menu .dropdown-item {
+    font-size: 13px;
+    color: var(--color-subtext);
+    padding: 5px 10px;
+    font-weight: 400;
+    font-family: Outfit;
+}
+
+.newHeader .dropdown-menu .dropdown-item:active {
+    background-color: #dfdfdf;
+
+}
+
 .myProfileWidget {
     display: flex;
     align-items: center;

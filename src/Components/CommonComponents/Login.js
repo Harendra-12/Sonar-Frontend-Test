@@ -143,9 +143,23 @@ export function LoginComponent() {
                   type: "SET_TEMPACCOUNT",
                   tempAccount: null,
                 });
-                setLoading(false);
-                window.scrollTo(0, 0);
-                navigate("/dashboard");
+                // Checking wether user is agent or not if agent then redirect to webrtc else redirect to dashboard
+                if (profile.data.user_role?.roles?.name === "Agent") {
+                  if(profile.data.extension_id===null){
+                    toast.error("You are not assigned to any extension");
+                    setLoading(false);
+                  }else{
+                    setLoading(false);
+                    window.scrollTo(0, 0);
+                    navigate("/webrtc");
+                  }
+                 
+                } else {
+                  setLoading(false);
+                  window.scrollTo(0, 0);
+                  navigate("/dashboard");
+                }
+
               }
             } else {
               setLoading(false);

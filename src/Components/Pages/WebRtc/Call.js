@@ -11,6 +11,7 @@ import ContentLoader from "../../Loader/ContentLoader";
 import { toast } from "react-toastify";
 import { useSIPProvider } from "react-sipjs";
 import VideoCall from "./VideoCall";
+import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 
 function Call({
   setHangupRefresh,
@@ -458,6 +459,19 @@ function Call({
     }
   }, [selectedModule, videoCall]);
 
+  
+  async function logOut() {
+    const apiData = await generalGetFunction("/logout");
+    localStorage.clear();
+    if (apiData?.data) {
+      localStorage.clear();
+      dispatch({
+        action: "SET_ACCOUNT",
+        account: null,
+      });
+      navigate("/");
+    }
+  }
   return (
     <div className="browserPhoneWrapper">
       {/* <SideNavbarApp /> */}
@@ -499,11 +513,16 @@ function Call({
                       </button>
                     </div>
                     <div className="col-auto">
-                      <div className="myProfileWidget">
-                        <div class="profileHolder" id="profileOnlineNav">
-                          <img src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg" alt="profile" />
+                      <div class="dropdown">
+                        <div className="myProfileWidget" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          <div class="profileHolder" id="profileOnlineNav">
+                            <img src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg" alt="profile" />
+                          </div>
+                          <div class="profileName">{account.username} <span className="status">Available</span></div>
                         </div>
-                        <div class="profileName">{account.username} <span className="status">Available</span></div>
+                        <ul class="dropdown-menu" onClick={logOut}>
+                          <li><div class="dropdown-item" style={{ cursor: 'pointer' }} >Logout</div></li>
+                        </ul>
                       </div>
                     </div>
                   </div>

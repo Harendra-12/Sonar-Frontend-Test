@@ -47,6 +47,7 @@ const UsersEdit = () => {
     formState: { errors },
     handleSubmit,
     reset,
+    setValue,
   } = useForm();
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const account = useSelector((state) => state.account);
@@ -589,6 +590,7 @@ const UsersEdit = () => {
                                     )
                                 );
                               }}
+                              disabled
                             >
                               <option value="" disabled>
                                 Choose Type
@@ -617,24 +619,40 @@ const UsersEdit = () => {
                             </label>
                           </div>
                           <div className="col-6">
-                            <select
-                              className="formItem"
-                              name="extension_id"
-                              value={watch().extension_id}
-                              {...register("extension_id")}
-                            >
-                              <option value="" disabled>
-                                Available Extensions
-                              </option>
-                              {filterExtensions &&
-                                filterExtensions.map((extension, key) => {
-                                  return (
-                                    <option value={extension.id} key={key}>
-                                      {extension.extension}
-                                    </option>
-                                  );
-                                })}
-                            </select>
+                            <div className="row">
+                              <div className={watch().extension_id ? "col-8" : "col-12"}>
+                                <select
+                                  className="formItem"
+                                  name="extension_id"
+                                  value={watch().extension_id}
+                                  {...register("extension_id")}
+                                >
+                                  <option value="" disabled>
+                                    Available Extensions
+                                  </option>
+                                  {filterExtensions &&
+                                    filterExtensions.map((extension, key) => {
+                                      return (
+                                        <option value={extension.id} key={key}>
+                                          {extension.extension}
+                                        </option>
+                                      );
+                                    })}
+                                </select>
+                              </div>
+                              {watch().extension_id &&
+                                <div className="col-4">
+                                  <button
+                                    effect="ripple"
+                                    className="panelButton delete"
+                                    onClick={(e) => { e.preventDefault(); setValue("extension_id", null) }}
+                                  >
+                                    <span className="text">Delete</span>
+                                    <span className="icon"><i class="fa-solid fa-xmark"></i></span>
+                                  </button>
+                                </div>
+                              }
+                            </div>
                           </div>
                         </div>
                         <div className="formRow col-xl-12">
@@ -654,36 +672,6 @@ const UsersEdit = () => {
                             />
                           </div>
                         </div>
-                        {/* <div className="formRow col-xl-12">
-                  <div className="formLabel">
-                    <label htmlFor="selectFormRow">Domain</label>
-                  </div>
-                  <div className="col-6">
-                    <select
-                      className="formItem"
-                      name=""
-                      {...register("domain_id", { ...requiredValidator })}
-                    >
-                      <option disabled value="">
-                        Choose Domain
-                      </option>
-                      {domains &&
-                        domains.map((item, key) => {
-                          return (
-                            <option value={item[0]} key={key}>
-                              {item[1]}
-                            </option>
-                          );
-                        })}
-                    </select>
-                    {errors.domain_id && (
-                      <ErrorMessage text={errors.domain_id.message} />
-                    )}
-                    <label htmlFor="data" className="formItemDesc">
-                      Select the Domain.
-                    </label>
-                  </div>
-                </div> */}
                       </form>
                     </div>
 

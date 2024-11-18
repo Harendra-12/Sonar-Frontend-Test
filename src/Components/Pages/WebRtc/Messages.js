@@ -11,9 +11,11 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
+import { useNavigate } from "react-router-dom";
 
 function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { sessionManager, connectStatus } = useSIPProvider();
   const loginUser = useSelector((state) => state.loginUser);
   const globalSession = useSelector((state) => state.sessions);
@@ -618,6 +620,19 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
       toast.success("Tag unassigned successfully");
     }
   }
+
+  async function logOut() {
+    const apiData = await generalGetFunction("/logout");
+    localStorage.clear();
+    if (apiData?.data) {
+      localStorage.clear();
+      dispatch({
+        action: "SET_ACCOUNT",
+        account: null,
+      });
+      navigate("/");
+    }
+  }
   return (
     <>
       <main
@@ -664,22 +679,22 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                       </button>
                     </div>
                     <div className="col-auto">
-                      <div className="myProfileWidget">
-                        <div class="profileHolder" id="profileOnlineNav">
-                          <img
-                            src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
-                            alt="profile"
-                          />
+                      <div class="dropdown">
+                        <div className="myProfileWidget" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          <div class="profileHolder" id="profileOnlineNav">
+                            <img src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg" alt="profile" />
+                          </div>
+                          <div class="profileName">{account.username} <span className="status">Available</span></div>
                         </div>
-                        <div class="profileName">
-                          {account.username}{" "}
-                          <span className="status">Available</span>
-                        </div>
+                        <ul class="dropdown-menu" onClick={logOut}>
+                          <li><div class="dropdown-item" style={{ cursor: 'pointer' }} >Logout</div></li>
+                        </ul>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+              
               <div
                 className="col-12 col-xl-4 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-between py-3 border-end px-xl-0"
                 style={{ height: "100%" }}
