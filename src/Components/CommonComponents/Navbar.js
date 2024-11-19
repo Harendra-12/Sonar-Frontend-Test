@@ -98,7 +98,7 @@ function Navbar() {
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
-                          {account.permissions.includes(8) &&
+                          {account?.permissions?.includes(8) &&
                             <li className="tabItem" effect="ripple">
                               <NavLink
                                 to="/my-profile"
@@ -177,7 +177,7 @@ function Navbar() {
                             ""
                           )}
 
-                          {account.permissions.includes(350) &&
+                          {account?.permissions?.includes(350) &&
                             <li className="tabItem" effect="ripple">
                               <NavLink
                                 to="/roles"
