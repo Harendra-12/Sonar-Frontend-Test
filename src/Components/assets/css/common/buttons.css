@@ -78,6 +78,10 @@
   background-color: #6c757d;
 }
 
+.panelButton:disabled {
+  opacity: 0.5;
+}
+
 .panelButton,
 .panelButton span {
   transition: 200ms;
