@@ -98,18 +98,20 @@ function Navbar() {
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
-                          <li className="tabItem" effect="ripple">
-                            <NavLink
-                              to="/my-profile"
-                              onClick={backToTop}
-                              className="nav-link"
-                            >
-                              <div className="iconHolder">
-                                <i class="fa-duotone fa-user"></i>
-                              </div>
-                              <div className="itemTitle">My Profile</div>
-                            </NavLink>
-                          </li>
+                          {account.permissions.includes(8) &&
+                            <li className="tabItem" effect="ripple">
+                              <NavLink
+                                to="/my-profile"
+                                onClick={backToTop}
+                                className="nav-link"
+                              >
+                                <div className="iconHolder">
+                                  <i class="fa-duotone fa-user"></i>
+                                </div>
+                                <div className="itemTitle">My Profile</div>
+                              </NavLink>
+                            </li>
+                          }
 
                           {/* <li className="tabItem" effect="ripple">
                             <NavLink
@@ -175,20 +177,22 @@ function Navbar() {
                             ""
                           )}
 
-                          <li className="tabItem" effect="ripple">
-                            <NavLink
-                              to="/roles"
-                              onClick={backToTop}
-                              className="nav-link"
-                            >
-                              <div className="iconHolder">
-                                <i class="fa-duotone fa-arrow-up-big-small"></i>
-                              </div>
-                              <div className="itemTitle">
-                                Roles and Permisson
-                              </div>
-                            </NavLink>
-                          </li>
+                          {account.permissions.includes(350) &&
+                            <li className="tabItem" effect="ripple">
+                              <NavLink
+                                to="/roles"
+                                onClick={backToTop}
+                                className="nav-link"
+                              >
+                                <div className="iconHolder">
+                                  <i class="fa-duotone fa-arrow-up-big-small"></i>
+                                </div>
+                                <div className="itemTitle">
+                                  Roles and Permisson
+                                </div>
+                              </NavLink>
+                            </li>
+                          }
 
                           {/* <li className="tabItem" effect="ripple">
                             <NavLink
