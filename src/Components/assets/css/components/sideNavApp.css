@@ -101,7 +101,7 @@
 #profileOfflineNav::after {
     content: '';
     background-color: transparent;
-    /* border: 2px solid #ff1e1e; */
+    border: 2px solid #ff1e1e;
     border-radius: 50px;
     width: 115%;
     height: 115%;
@@ -110,7 +110,7 @@
 
 #profileOfflineNav::before {
     content: '';
-    /* background-color: #ff1e1e; */
+    background-color: #ff1e1e;
     border-radius: 50%;
     width: 30%;
     height: 30%;
