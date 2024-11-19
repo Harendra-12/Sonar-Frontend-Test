@@ -652,7 +652,7 @@ function Document({
                                 id={`flush-heading${key}`}
                               >
                                 <button
-                                  class="accordion-button collapsed"
+                                  class="accordion-button collapsed px-3"
                                   style={{ padding: "15px 5px" }}
                                   type="button"
                                   data-bs-toggle="collapse"
@@ -673,7 +673,7 @@ function Document({
                                   if (item.document_id === item2.document_id) {
                                     return (
                                       <div class="accordion-body">
-                                        <div className="row position-relative align-items-center">
+                                        <div className="row position-relative align-items-center w-100">
                                           <div className="col-auto ps-0 pe-2">
                                             <div className="iconWrapper2">
                                               {item.status === "1" ? (
