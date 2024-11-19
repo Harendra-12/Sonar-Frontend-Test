@@ -25,7 +25,9 @@ const Dashboard = () => {
   const activeCall = useSelector((state) => state.activeCall || []);
   const callCenter = useSelector((state) => state.callCenter || []);
   const extension = useSelector((state) => state.extension || []);
-
+  const permissions = useSelector((state) => state.permissions || []);
+  console.log(permissions);
+  
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
