@@ -341,9 +341,9 @@ function Document({
 
       <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
         <div className="row">
-          <div className="col-xl-12">
+          <div className="col-xl-12 mb-3">
             <div className="documentPending">
-              {checkDocumentStatus(account.details) != null && (
+              {checkDocumentStatus(account.details) != null && rejectDocument.length === uploadApprove.length && (
                 <div className="statusMessage">
                   <div className={`statusWrapper ${checkDocumentStatus(account.details).includes("approved") ? "success" : "pending"}`}>
                     <div className="mx-2">
@@ -369,7 +369,7 @@ function Document({
                     </div>
                   </div>
 
-                  <div className="profileView">
+                  <div className="profileView px-0">
                     <div
                       className="profileDetailsHolder position-relative"
                       style={{ border: "1px solid red" }}
@@ -383,16 +383,16 @@ function Document({
                           <ul>
                             {rejectDocument.map((item, key) => {
                               return (
-                                <li className="d-flex justify-content-between">
+                                <li className="d-flex justify-content-between mt-3">
                                   <div className="col-10">
                                     <b>
                                       <i className="fa-solid fa-triangle-exclamation me-1"></i>{" "}
                                       {item.document.name}
                                     </b>
-                                    : {item.description}
+                                    : <span style={{ color: '#959595' }}>{item.description}</span>
                                   </div>{" "}
                                   {uploadDocument[key] ? (
-                                    <div className="col-2 clearButton fw-bold float-end">
+                                    <div className="col-2 clearButton fw-bold float-end text-end">
                                       Under Verification{" "}
                                       {/* <i className="fa-duotone fa-upload"></i> */}
                                     </div>
@@ -403,22 +403,22 @@ function Document({
                                       //   setReUploadId(item.document_id);
                                       // }}
                                       style={{ cursor: "pointer" }}
-                                      className="pe-5 clearButton fw-bold float-end col-auto"
+                                      className="pe-5 clearButton fw-bold float-end col-auto text-end"
                                     >
                                       Approved{" "}
                                       {/* <i className="fa-duotone fa-upload"></i> */}
                                     </div>
                                   ) : (
-                                    <div
+                                    <button
                                       onClick={() => {
                                         setReUploadPopUp(true);
                                         setReUploadId(item.document_id);
                                       }}
                                       style={{ cursor: "pointer" }}
-                                      className="pe-5 clearButton fw-bold float-end col-auto"
+                                      className="tableButton"
                                     >
-                                      Upload <i className="fa-duotone fa-upload"></i>
-                                    </div>
+                                      <i className="fa-solid fa-upload"></i>
+                                    </button>
                                   )}
                                 </li>
                               );
@@ -633,8 +633,8 @@ function Document({
             )}
 
             {account.details.length > 0 ? (
-              <div className="profileView px-0">
-                <div className="profileDetailsHolder shadow-none px-0 border-0">
+              <div className="profileView px-0 pt-0">
+                <div className="profileDetailsHolder shadow-none px-0 border-0 pt-0">
                   <div className="headerCommon">
                     <div className="col-12">Uploaded Documents</div>
                   </div>
@@ -857,13 +857,16 @@ function Document({
                         </span>
                       </button>
                       <button
-                        className="panelButtonWhite m-0 float-end"
+                        className="panelButton gray m-0 float-end"
                         onClick={() => {
                           setReUploadPopUp(false);
                           setImagePreview(null);
                         }}
                       >
-                        Cancel
+                        <span className="text">Cancel</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-xmark"></i>
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -954,7 +957,7 @@ function Document({
                         </span>
                       </button>
                       <button
-                        className="panelButtonWhite m-0 float-end"
+                        className="panelButton gray m-0 float-end"
                         // onClick={() => setReUploadPopUp(false)}
                         onClick={() => {
                           setUploadPopup(false);
@@ -963,7 +966,10 @@ function Document({
                           setFile();
                         }}
                       >
-                        Cancel
+                        <span className="text">Cancel</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-xmark"></i>
+                        </span>
                       </button>
                     </div>
                   </div>
