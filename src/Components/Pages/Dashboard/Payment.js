@@ -2,164 +2,286 @@ import React from "react";
 
 function Payment({ account, nextPage, companyStatus }) {
   return (
-    <div>
-      <div className="col-xl-12">
-        <div className="d-flex flex-wrap">
-          <div className="col-xl-6">
-            <div className="profileView">
-              <div className="profileDetailsHolder position-relative">
-                <div className="header d-flex align-items-center">
-                  <div className="col-12">Payment & Subscription Details</div>
-                </div>
-                <div className="row" style={{ padding: "5px" }}>
-                  <div className="wrapper">
-                    <ul>
-                      <li>
-                        <label>Package Name</label>{" "}
-                        <label className="details">
-                          {account.package.name}
-                        </label>
-                      </li>
-                      <li>
-                        <label>Package Price</label>{" "}
-                        <label className="details">
-                          ${account.package.offer_price}
-                        </label>
-                      </li>
-                      <li>
-                        <label>Package Type</label>{" "}
-                        <label className="details">
-                          {account.package.subscription_type}
-                        </label>
-                      </li>
-                      <li>
-                        <label>Subscription Start</label>{" "}
-                        <label className="details">
-                          {account?.subscription?.[0].start_date}
-                        </label>
-                      </li>
-                      <li>
-                        <label>Subscription End</label>{" "}
-                        <label className="details">
-                          {account?.subscription?.[0].end_date}
-                        </label>
-                      </li>
-                      <li>
-                        <label>Time of Payment</label>{" "}
-                        <label className="details">
-                          {account?.payments[0].transaction_date}
-                        </label>
-                      </li>
-                      <li>
-                        <label>Payment Status</label>{" "}
-                        <label className="details">
-                          {account?.payments[0].payment_status}
-                        </label>
-                      </li>
-                      <li>
-                        <label>Transaction Id</label>{" "}
-                        <label className="details">
-                          {account?.payments[0].transaction_id}
-                        </label>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+    <>
+      <div className="d-flex flex-wrap">
+        <div className="col-12">
+          <div className="heading">
+            <div className="content">
+              <h4>Package Details</h4>
+              <p>View your payment & subscription details here.</p>
             </div>
-          </div>
-          <div className="col-xl-6">
-            <div className="profileView">
-              <div className="profileDetailsHolder position-relative">
-                <div className="header d-flex align-items-center pe-0">
-                  <div className="col-12">Billing Details</div>
-                </div>
-                <div className="row" style={{ padding: "5px" }}>
-                  <div className="wrapper">
-                    <ul>
-                      <li>
-                        <label>Full Name</label>{" "}
-                        <label className="details">
-                          {account?.billing_address?.[0]?.fullname}
-                        </label>
-                      </li>
-                      <li>
-                        <label>Email</label>{" "}
-                        <label className="details">
-                          {account?.billing_address?.[0]?.email}
-                        </label>
-                      </li>
-                      <li>
-                        <label>Phone Number</label>{" "}
-                        <label className="details">
-                          {account?.billing_address?.[0]?.contact_no}
-                        </label>
-                      </li>
-                      <li>
-                        <label>Address</label>{" "}
-                        <label className="details">
-                          {account?.billing_address?.[0]?.address}
-                        </label>
-                      </li>
-                      <li>
-                        <label>Zip Code</label>{" "}
-                        <label className="details">
-                          {account?.billing_address?.[0]?.zip}
-                        </label>
-                      </li>
-                      <li>
-                        <label>City</label>{" "}
-                        <label className="details">
-                          {account?.billing_address?.[0]?.city}
-                        </label>
-                      </li>
-                      <li>
-                        <label>State</label>{" "}
-                        <label className="details">
-                          {account?.billing_address?.[0]?.state}
-                        </label>
-                      </li>
-                      <li>
-                        <label>Country</label>{" "}
-                        <label className="details">
-                          {account?.billing_address?.[0]?.country}
-                        </label>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-xl-12">
-            <div className="col-xl-3 mx-auto d-flex gap-3">
-              <div
-                class={"approvalButton "}
-                onClick={() => {
-                  nextPage("account");
-                }}
+            <div className="buttonGroup">
+              <button
+                type="button"
+                effect="ripple"
+                className="panelButton gray"
+                onClick={() => { nextPage("account"); }}
               >
-                <i class="fa-solid fa-caret-left me-2"></i> Back
-              </div>
-              <div
-                class={
-                  Number(companyStatus) >= 2
-                    ? "approvalButton"
-                    : "approvalButton disabled"
-                }
+                <span className="text">Back</span>
+                <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+              </button>
+              <button
+                type="button"
+                effect="ripple"
+                className="panelButton"
                 onClick={() => {
                   if (Number(companyStatus) >= 2) {
                     nextPage("document");
                   }
                 }}
+                disabled={Number(companyStatus) >= 2 ? false : true}
               >
-                Next<i class="fa-solid fa-caret-right ms-2"></i>
-              </div>
+                <span className="text">Next</span>
+                <span className="icon"><i class="fa-solid fa-caret-right"></i></span>
+              </button>
             </div>
           </div>
         </div>
       </div>
-    </div>
+
+      <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
+        <div className="row gx-5">
+          <div className="col-xl-6" style={{ borderRight: '1px solid #ddd' }}>
+            <form action="#" className="row px-2">
+              <div className="col-xl-12 headerCommon">
+                Payment & Subscription Details
+              </div>
+              <div className="formRow col-xl-12">
+                <div className="formLabel">
+                  <label htmlFor="">Package Name</label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={account.package.name}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="formRow col-xl-12">
+                <div className="formLabel">
+                  <label htmlFor="">Package Price</label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={account.package.offer_price}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="formRow col-xl-12">
+                <div className="formLabel">
+                  <label htmlFor="">Package Type</label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={account.package.subscription_type}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="formRow col-xl-12">
+                <div className="formLabel">
+                  <label htmlFor="">Subscription Start</label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={account?.subscription?.[0].start_date}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="formRow col-xl-12">
+                <div className="formLabel">
+                  <label htmlFor="">Subscription End</label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={account?.subscription?.[0].end_date}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="formRow col-xl-12">
+                <div className="formLabel">
+                  <label htmlFor="">Time of Payment</label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={account?.payments[0].transaction_date}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="formRow col-xl-12">
+                <div className="formLabel">
+                  <label htmlFor="">Payment Status</label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={account?.payments[0].payment_status}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="formRow col-xl-12">
+                <div className="formLabel">
+                  <label htmlFor="">Transaction Id</label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={account?.payments[0].transaction_id}
+                    disabled
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
+          <div className="col-xl-6">
+            <form action="#" className="row px-2">
+              <div className="col-xl-12 headerCommon">
+                Billing Details
+              </div>
+              <div className="formRow col-xl-12">
+                <div className="formLabel">
+                  <label htmlFor="">Full Name</label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={account?.billing_address?.[0]?.fullname}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="formRow col-xl-12">
+                <div className="formLabel">
+                  <label htmlFor="">Email</label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={account?.billing_address?.[0]?.email}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="formRow col-xl-12">
+                <div className="formLabel">
+                  <label htmlFor="">Phone Number</label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={account?.billing_address?.[0]?.contact_no}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="formRow col-xl-12">
+                <div className="formLabel">
+                  <label htmlFor="">Address</label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={account?.billing_address?.[0]?.address}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="formRow col-xl-12">
+                <div className="formLabel">
+                  <label htmlFor="">Zip Code</label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={account?.billing_address?.[0]?.zip}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="formRow col-xl-12">
+                <div className="formLabel">
+                  <label htmlFor="">City</label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={account?.billing_address?.[0]?.city}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="formRow col-xl-12">
+                <div className="formLabel">
+                  <label htmlFor="">State</label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={account?.billing_address?.[0]?.state}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="formRow col-xl-12">
+                <div className="formLabel">
+                  <label htmlFor="">Country</label>
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={account?.billing_address?.[0]?.country}
+                    disabled
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 

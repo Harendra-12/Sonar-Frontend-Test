@@ -295,109 +295,155 @@ function Document({
 
   console.log(rejectDocument, "This is rejected doc.", uploadDocument);
   return (
-    <div className="d-flex flex-wrap documentPending">
-      <div className="col-xl-8">
-        {checkDocumentStatus(account.details) != null && (
-          <div className="statusMessage">
-            <div className="statusWrapper success">
-              <div className="mx-2">
-                <h5>
-                  <i className="fa-solid fa-check text-white me-1"></i>{" "}
-                  {checkDocumentStatus(account.details)}
-                </h5>
-              </div>
+    <>
+      <style>
+        {`
+          .formRow.col-xl-3:nth-child(odd) {
+            margin-right: 10px;
+          }
+        `}
+      </style>
+      <div className="d-flex flex-wrap">
+        <div className="col-12">
+          <div className="heading">
+            <div className="content">
+              <h4>Document Verification</h4>
+              <p>Please upload your documents for verification.</p>
+            </div>
+            <div className="buttonGroup">
+              <button
+                type="button"
+                effect="ripple"
+                className="panelButton gray"
+                onClick={() => { nextPage("payment"); }}
+              >
+                <span className="text">Back</span>
+                <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+              </button>
+              <button
+                type="button"
+                effect="ripple"
+                className="panelButton"
+                onClick={() => {
+                  if (Number(companyStatus) >= 4) {
+                    nextPage("configure");
+                  }
+                }}
+                disabled={Number(companyStatus) >= 4 ? false : true}
+              >
+                <span className="text">Next</span>
+                <span className="icon"><i class="fa-solid fa-caret-right"></i></span>
+              </button>
             </div>
           </div>
-        )}
-        {rejectDocument.length !== 0 &&
-          rejectDocument.length !== uploadApprove.length ? (
-          <>
-            <div className="statusMessage">
-              <div className={uploadDocument.every((value) => value === true) ? "statusWrapper pending" : "statusWrapper"}>
-                <h5>
-                  <i className="fa-solid fa-triangle-exclamation text-white me-1"></i>{" "}
-                  {uploadDocument.every((value) => value === true)
-                    ? "Documents are under review. We will get back to you soon!"
-                    : "We have faced an issue while validating your document(s)!"}
-                </h5>
-              </div>
-            </div>
+        </div>
+      </div>
 
-            <div className="profileView">
-              <div
-                className="profileDetailsHolder position-relative"
-                style={{ border: "1px solid red" }}
-              >
-                <div className="row px-2">
-                  <div className="statusContent">
-                    <p className="mb-2">
-                      The following document(s) have been rejected for various
-                      reasons :-
-                    </p>
-                    <ul>
-                      {rejectDocument.map((item, key) => {
-                        return (
-                          <li className="d-flex justify-content-between">
-                            <div className="col-10">
-                              <b>
-                                <i className="fa-solid fa-triangle-exclamation me-1"></i>{" "}
-                                {item.document.name}
-                              </b>
-                              : {item.description}
-                            </div>{" "}
-                            {uploadDocument[key] ? (
-                              <div className="col-2 clearButton fw-bold float-end">
-                                Under Verification{" "}
-                                {/* <i className="fa-duotone fa-upload"></i> */}
-                              </div>
-                            ) : uploadApprove[key] ? (
-                              <div
-                                // onClick={() => {
-                                //   setReUploadPopUp(true);
-                                //   setReUploadId(item.document_id);
-                                // }}
-                                style={{ cursor: "pointer" }}
-                                className="pe-5 clearButton fw-bold float-end col-auto"
-                              >
-                                Approved{" "}
-                                {/* <i className="fa-duotone fa-upload"></i> */}
-                              </div>
-                            ) : (
-                              <div
-                                onClick={() => {
-                                  setReUploadPopUp(true);
-                                  setReUploadId(item.document_id);
-                                }}
-                                style={{ cursor: "pointer" }}
-                                className="pe-5 clearButton fw-bold float-end col-auto"
-                              >
-                                Upload <i className="fa-duotone fa-upload"></i>
-                              </div>
-                            )}
-                          </li>
-                        );
-                      })}
-                    </ul>
+      <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
+        <div className="row">
+          <div className="col-xl-12">
+            <div className="documentPending">
+              {checkDocumentStatus(account.details) != null && (
+                <div className="statusMessage">
+                  <div className="statusWrapper success">
+                    <div className="mx-2">
+                      <h5>
+                        <i className="fa-solid fa-check text-white me-1"></i>{" "}
+                        {checkDocumentStatus(account.details)}
+                      </h5>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </>
-        ) : (
-          ""
-        )}
+              )}
+              {rejectDocument.length !== 0 &&
+                rejectDocument.length !== uploadApprove.length ? (
+                <>
+                  <div className="statusMessage">
+                    <div className={uploadDocument.every((value) => value === true) ? "statusWrapper pending" : "statusWrapper"}>
+                      <h5>
+                        <i className="fa-solid fa-triangle-exclamation text-white me-1"></i>{" "}
+                        {uploadDocument.every((value) => value === true)
+                          ? "Documents are under review. We will get back to you soon!"
+                          : "We have faced an issue while validating your document(s)!"}
+                      </h5>
+                    </div>
+                  </div>
 
-        <div className="profileView">
-          <div className="profileDetailsHolder position-relative">
-            <div className="header d-flex align-items-center">
-              <div className="col-5">Account Details</div>
+                  <div className="profileView">
+                    <div
+                      className="profileDetailsHolder position-relative"
+                      style={{ border: "1px solid red" }}
+                    >
+                      <div className="row px-2">
+                        <div className="statusContent">
+                          <p className="mb-2">
+                            The following document(s) have been rejected for various
+                            reasons :-
+                          </p>
+                          <ul>
+                            {rejectDocument.map((item, key) => {
+                              return (
+                                <li className="d-flex justify-content-between">
+                                  <div className="col-10">
+                                    <b>
+                                      <i className="fa-solid fa-triangle-exclamation me-1"></i>{" "}
+                                      {item.document.name}
+                                    </b>
+                                    : {item.description}
+                                  </div>{" "}
+                                  {uploadDocument[key] ? (
+                                    <div className="col-2 clearButton fw-bold float-end">
+                                      Under Verification{" "}
+                                      {/* <i className="fa-duotone fa-upload"></i> */}
+                                    </div>
+                                  ) : uploadApprove[key] ? (
+                                    <div
+                                      // onClick={() => {
+                                      //   setReUploadPopUp(true);
+                                      //   setReUploadId(item.document_id);
+                                      // }}
+                                      style={{ cursor: "pointer" }}
+                                      className="pe-5 clearButton fw-bold float-end col-auto"
+                                    >
+                                      Approved{" "}
+                                      {/* <i className="fa-duotone fa-upload"></i> */}
+                                    </div>
+                                  ) : (
+                                    <div
+                                      onClick={() => {
+                                        setReUploadPopUp(true);
+                                        setReUploadId(item.document_id);
+                                      }}
+                                      style={{ cursor: "pointer" }}
+                                      className="pe-5 clearButton fw-bold float-end col-auto"
+                                    >
+                                      Upload <i className="fa-duotone fa-upload"></i>
+                                    </div>
+                                  )}
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                ""
+              )}
             </div>
-            <div className="row px-2">
-              <div className="formRow col-xl-2 col-md-4 col-6">
+          </div>
+          <div className="col-xl-8" style={{ borderRight: '1px solid #ddd' }}>
+            <form action="#" className="row px-2 justify-content-between">
+              <div className="col-xl-12 headerCommon">
+                Account Details
+              </div>
+              <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="data">Company Name</label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <input
                     type="text"
                     className="formItem"
@@ -406,11 +452,11 @@ function Document({
                   />
                 </div>
               </div>
-              <div className="formRow col-xl-2 col-md-4 col-6">
+              <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="data">Admin Name</label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <input
                     type="text"
                     className="formItem"
@@ -419,11 +465,11 @@ function Document({
                   />
                 </div>
               </div>
-              <div className="formRow col-xl-2 col-md-4 col-6">
+              <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="data">Email</label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <input
                     type="text"
                     className="formItem"
@@ -432,11 +478,11 @@ function Document({
                   />
                 </div>
               </div>
-              <div className="formRow col-xl-2 col-md-4 col-6">
+              <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="data">Phone Number</label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <input
                     type="text"
                     className="formItem"
@@ -445,11 +491,11 @@ function Document({
                   />
                 </div>
               </div>
-              <div className="formRow col-xl-2 col-md-4 col-6">
+              <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="data">Alternate Number</label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <input
                     type="text"
                     className="formItem"
@@ -458,11 +504,11 @@ function Document({
                   />
                 </div>
               </div>
-              <div className="formRow col-xl-2 col-md-4 col-6">
+              <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="data">Timezone</label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <input
                     type="text"
                     className="formItem"
@@ -471,11 +517,11 @@ function Document({
                   />
                 </div>
               </div>
-              <div className="formRow col-xl-2 col-md-4 col-6">
+              <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="data">Block/Unit/Place</label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <input
                     type="text"
                     className="formItem"
@@ -484,11 +530,11 @@ function Document({
                   />
                 </div>
               </div>
-              <div className="formRow col-xl-2 col-md-4 col-6">
+              <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="data">Building</label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <input
                     type="text"
                     className="formItem"
@@ -497,11 +543,11 @@ function Document({
                   />
                 </div>
               </div>
-              <div className="formRow col-xl-2 col-md-4 col-6">
+              <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="data">City</label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <input
                     type="text"
                     className="formItem"
@@ -510,11 +556,11 @@ function Document({
                   />
                 </div>
               </div>
-              <div className="formRow col-xl-2 col-md-4 col-6">
+              <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="data">Zip Code</label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <input
                     type="text"
                     className="formItem"
@@ -523,11 +569,11 @@ function Document({
                   />
                 </div>
               </div>
-              <div className="formRow col-xl-2 col-md-4 col-6">
+              <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="data">State</label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <input
                     type="text"
                     className="formItem"
@@ -536,11 +582,11 @@ function Document({
                   />
                 </div>
               </div>
-              <div className="formRow col-xl-2 col-md-4 col-6">
+              <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="data">Country</label>
                 </div>
-                <div className="col-12">
+                <div className="col-6">
                   <input
                     type="text"
                     className="formItem"
@@ -549,434 +595,402 @@ function Document({
                   />
                 </div>
               </div>
-            </div>
+            </form>
+          </div>
+          <div className="col-xl-4">
+            {nonUploadedDocuments.length > 0 && (
+              <div className="masterList h-auto" style={{ borderBottom: '1px solid #ddd' }}>
+                <div className="masterSegment">
+                  <div className="headerCommon">
+                    <div className="col-12">Upload Below Documents</div>
+                  </div>
+                  <ul>
+                    {nonUploadedDocuments.map((item, index) => {
+                      return (
+                        <li
+                          key={index}
+                        >
+                          <div className="">
+                            <input type="text" placeholder={item?.name} disabled />
+                          </div>
+                          <button
+                            onClick={() => {
+                              setUploadPopup(true);
+                              setuploadId(item.id);
+                              // setReUploadId(item.document_id);
+                            }}
+                            style={{ cursor: "pointer" }}
+                            className="tableButton"
+                          >
+                            <i className="fa-solid fa-upload"></i>
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {account.details.length > 0 ? (
+              <div className="profileView px-0">
+                <div className="profileDetailsHolder shadow-none px-0 border-0">
+                  <div className="headerCommon">
+                    <div className="col-12">Uploaded Documents</div>
+                  </div>
+                  {account.details.length > 0 ? (
+                    <div className="qLinkContent" ref={wrapperRef}>
+                      <div
+                        class="accordion permissionListWrapper"
+                        id="accordionFlushExample"
+                      >
+                        {docId.map((item2, key) => {
+                          return (
+                            <div class="accordion-item">
+                              <h2
+                                class="accordion-header"
+                                id={`flush-heading${key}`}
+                              >
+                                <button
+                                  class="accordion-button collapsed"
+                                  style={{ padding: "15px 5px" }}
+                                  type="button"
+                                  data-bs-toggle="collapse"
+                                  data-bs-target={`#flush-collapse${key}`}
+                                  aria-expanded="false"
+                                  aria-controls={`flush-collapse${key}`}
+                                >
+                                  {item2?.document?.name}
+                                </button>
+                              </h2>
+                              <div
+                                id={`flush-collapse${key}`}
+                                class="accordion-collapse collapse"
+                                aria-labelledby={`flush-heading${key}`}
+                                data-bs-parent="#accordionFlushExample"
+                              >
+                                {account.details.map((item) => {
+                                  if (item.document_id === item2.document_id) {
+                                    return (
+                                      <div class="accordion-body">
+                                        <div className="row position-relative align-items-center">
+                                          <div className="col-auto ps-0 pe-2">
+                                            <div className="iconWrapper2">
+                                              {item.status === "1" ? (
+                                                <i className="fa-solid fa-check text-success"></i>
+                                              ) : item.status === "2" ? (
+                                                <i className="fa-solid fa-xmark text-danger"></i>
+                                              ) : (
+                                                <i className="fa-solid fa-image"></i>
+                                              )}
+                                            </div>
+                                          </div>
+                                          <div className="col-8 my-auto ps-1">
+                                            <p>{item?.document?.name}</p>
+                                          </div>
+                                          <div
+                                            className="col-auto px-0 my-auto ms-auto"
+                                            onClick={() => {
+                                              setOpenPopup(!openPopup);
+                                              setOpenNumber(key);
+                                            }}
+                                          >
+                                            <div className="iconWrapper">
+                                              <i className="fa-solid fa-ellipsis"></i>
+                                            </div>
+                                          </div>
+                                          <div className="col-12">
+                                            <p
+                                              style={{
+                                                fontSize: 12,
+                                                paddingLeft: 20,
+                                                color: "#ff2e2e",
+                                              }}
+                                            >
+                                              {item.description}
+                                            </p>
+                                          </div>
+                                          {openPopup && openNumber === key ? (
+                                            <div className="buttonPopup">
+                                              <div style={{ cursor: "pointer" }}>
+                                                <div
+                                                  className="clearButton"
+                                                  onClick={() =>
+                                                    downloadImage(
+                                                      item.path,
+                                                      "Register file"
+                                                    )
+                                                  }
+                                                >
+                                                  <i className="fa-solid fa-file-arrow-down"></i>{" "}
+                                                  Download
+                                                </div>
+                                              </div>
+                                              <div style={{ cursor: "pointer" }}>
+                                                <div className="clearButton">
+                                                  <a
+                                                    href={item.path}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                  >
+                                                    <i className="fa-sharp fa-solid fa-eye"></i>{" "}
+                                                    View
+                                                  </a>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          ) : (
+                                            ""
+                                          )}
+                                        </div>
+                                      </div>
+                                    );
+                                  }
+                                })}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : (
+                    // <Link to="/upload-document">
+                    <>
+                      <div className="imgWrapper">
+                        <img
+                          src={require("../../assets/images/upload-file.png")}
+                          alt=""
+                        />
+                      </div>
+                      <div className="text-center mt-3">
+                        <h5>
+                          Please upload the{" "}
+                          <span
+                            style={{ color: "var(--ui-accent)", cursor: "pointer" }}
+                          >
+                            <b>required documents</b>
+                          </span>
+                          .
+                        </h5>
+                      </div>
+                    </>
+                    // </Link>
+                  )}
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>
 
-      <div className="col-xl-4">
-        {nonUploadedDocuments.length > 0 && (
-          <div className="profileView">
-            <div className="profileDetailsHolder">
-              <div className="header d-flex align-items-center pe-0">
-                <div className="col-12">Upload Below Documents</div>
-              </div>
-              <div className="mt-2">
-                {nonUploadedDocuments.map((item, index) => {
-                  return (
-                    <div
-                      className="formRow"
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        marginBottom: "5px",
-                      }}
-                      key={index}
-                    >
-                      <div className="">
-                        <label htmlFor={`data-${item.id}`}>{item?.name}</label>
-                      </div>
-                      <div
-                        onClick={() => {
-                          setUploadPopup(true);
-                          setuploadId(item.id);
-                          // setReUploadId(item.document_id);
-                        }}
-                        style={{ cursor: "pointer" }}
-                        className=" clearButton fw-bold float-end col-auto"
-                      >
-                        Upload <i className="fa-duotone fa-upload"></i>
-                      </div>
+      <div className="d-flex flex-wrap documentPending">
+        {reUploadPopUp ? (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <div className="row content col-xl-4">
+                  <div className="col-2 px-0">
+                    <div className="iconWrapper">
+                      <i className="fa-duotone fa-triangle-exclamation"></i>
                     </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {account.details.length > 0 ? (
-          <div className="profileView">
-            <div className="profileDetailsHolder">
-              <div className="header d-flex align-items-center pe-0">
-                <div className="col-12">Uploaded Documents</div>
-              </div>
-              {account.details.length > 0 ? (
-                <div className="qLinkContent" ref={wrapperRef}>
-                  <div
-                    class="accordion accordion-flush"
-                    id="accordionFlushExample"
-                  >
-                    {docId.map((item2, key) => {
-                      return (
-                        <div class="accordion-item">
-                          <h2
-                            class="accordion-header"
-                            id={`flush-heading${key}`}
-                          >
-                            <button
-                              class="accordion-button collapsed"
-                              style={{ padding: "15px 5px" }}
-                              type="button"
-                              data-bs-toggle="collapse"
-                              data-bs-target={`#flush-collapse${key}`}
-                              aria-expanded="false"
-                              aria-controls={`flush-collapse${key}`}
-                            >
-                              {item2?.document?.name}
-                            </button>
-                          </h2>
-                          <div
-                            id={`flush-collapse${key}`}
-                            class="accordion-collapse collapse"
-                            aria-labelledby={`flush-heading${key}`}
-                            data-bs-parent="#accordionFlushExample"
-                          >
-                            {account.details.map((item) => {
-                              if (item.document_id === item2.document_id) {
-                                return (
-                                  <div class="accordion-body">
-                                    <div className="row position-relative align-items-center">
-                                      <div className="col-auto ps-0 pe-2">
-                                        <div className="iconWrapper2">
-                                          {item.status === "1" ? (
-                                            <i className="fa-solid fa-check text-success"></i>
-                                          ) : item.status === "2" ? (
-                                            <i className="fa-solid fa-xmark text-danger"></i>
-                                          ) : (
-                                            <i className="fa-solid fa-image"></i>
-                                          )}
-                                        </div>
-                                      </div>
-                                      <div className="col-8 my-auto ps-1">
-                                        <p>{item?.document?.name}</p>
-                                      </div>
-                                      <div
-                                        className="col-auto px-0 my-auto ms-auto"
-                                        onClick={() => {
-                                          setOpenPopup(!openPopup);
-                                          setOpenNumber(key);
-                                        }}
-                                      >
-                                        <div className="iconWrapper">
-                                          <i className="fa-solid fa-ellipsis"></i>
-                                        </div>
-                                      </div>
-                                      <div className="col-12">
-                                        <p
-                                          style={{
-                                            fontSize: 12,
-                                            paddingLeft: 20,
-                                            color: "#ff2e2e",
-                                          }}
-                                        >
-                                          {item.description}
-                                        </p>
-                                      </div>
-                                      {openPopup && openNumber === key ? (
-                                        <div className="buttonPopup">
-                                          <div style={{ cursor: "pointer" }}>
-                                            <div
-                                              className="clearButton"
-                                              onClick={() =>
-                                                downloadImage(
-                                                  item.path,
-                                                  "Register file"
-                                                )
-                                              }
-                                            >
-                                              <i className="fa-solid fa-file-arrow-down"></i>{" "}
-                                              Download
-                                            </div>
-                                          </div>
-                                          <div style={{ cursor: "pointer" }}>
-                                            <div className="clearButton">
-                                              <a
-                                                href={item.path}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                              >
-                                                <i className="fa-sharp fa-solid fa-eye"></i>{" "}
-                                                View
-                                              </a>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      ) : (
-                                        ""
-                                      )}
-                                    </div>
-                                  </div>
-                                );
-                              }
-                            })}
-                          </div>
+                  </div>
+                  <div className="col-10 ps-0">
+                    <h4>Warning!</h4>
+                    Please select the file you want to upload
+                    <br />
+                    <span style={{ fontSize: 14 }}>
+                      Note: File size should be less than 1 MB.
+                    </span>
+                    <input
+                      name="reg"
+                      className="formItem"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleChange}
+                    />
+                    <span style={{ fontSize: 10 }}>
+                      Only JPEG/JPG/PNG files are accepted.
+                    </span>
+                    {formDataError.reg ? (
+                      <>
+                        <br />
+                        <span style={{ color: "red", fontSize: 12 }}>
+                          <i class="fa-solid fa-triangle-exclamation"></i> Image
+                          should be less than 1 MB
+                        </span>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                    {imagePreview && (
+                      <div className="position-relative">
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          style={{ width: "100%", maxHeight: "400px" }}
+                        />
+                        <br />
+                        <div
+                          className="tableButton"
+                          style={{
+                            cursor: "pointer",
+                            position: "absolute",
+                            right: "10px",
+                            top: "10px",
+                          }}
+                          onClick={() => setEnlargeImage(true)}
+                        >
+                          {/* <span style={{ fontSize: 12 }} className="me-1">
+                          View
+                        </span> */}
+                          <i class="fa-solid fa-expand"></i>
                         </div>
-                      );
-                    })}
+                      </div>
+                    )}
+                    <div className="mt-2 d-flex justify-content-between">
+                      <button className="panelButton m-0" onClick={handleSubmit}>
+                        <span className="text">Confirm</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-check"></i>
+                        </span>
+                      </button>
+                      <button
+                        className="panelButtonWhite m-0 float-end"
+                        onClick={() => {
+                          setReUploadPopUp(false);
+                          setImagePreview(null);
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
                   </div>
                 </div>
-              ) : (
-                // <Link to="/upload-document">
-                <>
-                  <div className="imgWrapper">
-                    <img
-                      src={require("../../assets/images/upload-file.png")}
-                      alt=""
-                    />
-                  </div>
-                  <div className="text-center mt-3">
-                    <h5>
-                      Please upload the{" "}
-                      <span
-                        style={{ color: "var(--ui-accent)", cursor: "pointer" }}
-                      >
-                        <b>required documents</b>
-                      </span>
-                      .
-                    </h5>
-                  </div>
-                </>
-                // </Link>
-              )}
+              </div>
             </div>
           </div>
         ) : (
           ""
         )}
-      </div>
-      <div className="col-xl-12">
-        <div className="col-xl-3 mx-auto d-flex gap-3">
-          <div
-            class={"approvalButton "}
-            onClick={() => {
-              nextPage("payment");
-            }}
-          >
-            <i class="fa-solid fa-caret-left me-2"></i> Back
-          </div>
-          <div
-            class={
-              Number(companyStatus) >= 4
-                ? "approvalButton"
-                : "approvalButton disabled"
-            }
-            onClick={() => {
-              if (Number(companyStatus) >= 4) {
-                nextPage("configure");
-              }
-            }}
-          >
-            Next<i class="fa-solid fa-caret-right ms-2"></i>
-          </div>
-        </div>
-      </div>
-      {reUploadPopUp ? (
-        <div className="popup">
-          <div className="container h-100">
-            <div className="row h-100 justify-content-center align-items-center">
-              <div className="row content col-xl-4">
-                <div className="col-2 px-0">
-                  <div className="iconWrapper">
-                    <i className="fa-duotone fa-triangle-exclamation"></i>
+        {uploadPopup ? (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <div className="row content col-xl-4">
+                  <div className="col-2 px-0">
+                    <div className="iconWrapper">
+                      <i className="fa-duotone fa-triangle-exclamation"></i>
+                    </div>
                   </div>
-                </div>
-                <div className="col-10 ps-0">
-                  <h4>Warning!</h4>
-                  Please select the file you want to upload
-                  <br />
-                  <span style={{ fontSize: 14 }}>
-                    Note: File size should be less than 1 MB.
-                  </span>
-                  <input
-                    name="reg"
-                    className="formItem"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleChange}
-                  />
-                  <span style={{ fontSize: 10 }}>
-                    Only JPEG/JPG/PNG files are accepted.
-                  </span>
-                  {formDataError.reg ? (
-                    <>
-                      <br />
-                      <span style={{ color: "red", fontSize: 12 }}>
-                        <i class="fa-solid fa-triangle-exclamation"></i> Image
-                        should be less than 1 MB
-                      </span>
-                    </>
-                  ) : (
-                    ""
-                  )}
-                  {imagePreview && (
-                    <div className="position-relative">
-                      <img
-                        src={imagePreview}
-                        alt="Preview"
-                        style={{ width: "100%", maxHeight: "400px" }}
-                      />
-                      <br />
-                      <div
-                        className="tableButton"
-                        style={{
-                          cursor: "pointer",
-                          position: "absolute",
-                          right: "10px",
-                          top: "10px",
-                        }}
-                        onClick={() => setEnlargeImage(true)}
-                      >
-                        {/* <span style={{ fontSize: 12 }} className="me-1">
+                  <div className="col-10 ps-0">
+                    <h4>
+                      Upload{" "}
+                      {documentList.filter((item) => item.id == uploadId)[0].name}
+                    </h4>
+                    Please select the file you want to upload
+                    <br />
+                    <span style={{ fontSize: 14 }}>
+                      Note: File size should be less than 1 MB.
+                    </span>
+                    <br />
+                    <input
+                      name="reg"
+                      className="formItem mt-2"
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleUploadDoc(e)}
+                    // onChange={handleChange}
+                    />
+                    <span style={{ fontSize: 10 }}>
+                      Only JPEG/JPG/PNG files are accepted.
+                    </span>
+                    {uploadError ? (
+                      <>
+                        <br />
+                        <span style={{ color: "red", fontSize: 12 }}>
+                          <i class="fa-solid fa-triangle-exclamation"></i> Image
+                          should be less than 1 MB
+                        </span>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                    {imagePreview && (
+                      <div className="position-relative">
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          style={{ width: "100%", maxHeight: "400px" }}
+                        />
+                        <br />
+                        <div
+                          className="tableButton"
+                          style={{
+                            cursor: "pointer",
+                            position: "absolute",
+                            right: "10px",
+                            top: "10px",
+                          }}
+                          onClick={() => setEnlargeImage(true)}
+                        >
+                          {/* <span style={{ fontSize: 14, fontWeight: 600 }} className="me-1">
                           View
                         </span> */}
-                        <i class="fa-solid fa-expand"></i>
+                          <i class="fa-solid fa-expand"></i>
+                        </div>
                       </div>
+                    )}
+                    <div className="mt-2 d-flex justify-content-between">
+                      <button
+                        className="panelButton m-0"
+                        // onClick={handleSubmit}
+                        onClick={() => handleUploadDocument(uploadId)}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-check"></i>
+                        </span>
+                      </button>
+                      <button
+                        className="panelButtonWhite m-0 float-end"
+                        // onClick={() => setReUploadPopUp(false)}
+                        onClick={() => {
+                          setUploadPopup(false);
+                          setUploadError(false);
+                          setImagePreview(null);
+                          setFile();
+                        }}
+                      >
+                        Cancel
+                      </button>
                     </div>
-                  )}
-                  <div className="mt-2 d-flex justify-content-between">
-                    <button className="panelButton m-0" onClick={handleSubmit}>
-                      <span className="text">Confirm</span>
-                      <span className="icon">
-                        <i class="fa-solid fa-check"></i>
-                      </span>
-                    </button>
-                    <button
-                      className="panelButtonWhite m-0 float-end"
-                      onClick={() => {
-                        setReUploadPopUp(false);
-                        setImagePreview(null);
-                      }}
-                    >
-                      Cancel
-                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        ""
-      )}
-      {uploadPopup ? (
-        <div className="popup">
-          <div className="container h-100">
-            <div className="row h-100 justify-content-center align-items-center">
-              <div className="row content col-xl-4">
-                <div className="col-2 px-0">
-                  <div className="iconWrapper">
-                    <i className="fa-duotone fa-triangle-exclamation"></i>
-                  </div>
-                </div>
-                <div className="col-10 ps-0">
-                  <h4>
-                    Upload{" "}
-                    {documentList.filter((item) => item.id == uploadId)[0].name}
-                  </h4>
-                  Please select the file you want to upload
-                  <br />
-                  <span style={{ fontSize: 14 }}>
-                    Note: File size should be less than 1 MB.
-                  </span>
-                  <br />
-                  <input
-                    name="reg"
-                    className="formItem mt-2"
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => handleUploadDoc(e)}
-                  // onChange={handleChange}
-                  />
-                  <span style={{ fontSize: 10 }}>
-                    Only JPEG/JPG/PNG files are accepted.
-                  </span>
-                  {uploadError ? (
-                    <>
-                      <br />
-                      <span style={{ color: "red", fontSize: 12 }}>
-                        <i class="fa-solid fa-triangle-exclamation"></i> Image
-                        should be less than 1 MB
-                      </span>
-                    </>
-                  ) : (
-                    ""
-                  )}
-                  {imagePreview && (
-                    <div className="position-relative">
-                      <img
-                        src={imagePreview}
-                        alt="Preview"
-                        style={{ width: "100%", maxHeight: "400px" }}
-                      />
-                      <br />
-                      <div
-                        className="tableButton"
-                        style={{
-                          cursor: "pointer",
-                          position: "absolute",
-                          right: "10px",
-                          top: "10px",
-                        }}
-                        onClick={() => setEnlargeImage(true)}
-                      >
-                        {/* <span style={{ fontSize: 14, fontWeight: 600 }} className="me-1">
-                          View
-                        </span> */}
-                        <i class="fa-solid fa-expand"></i>
-                      </div>
-                    </div>
-                  )}
-                  <div className="mt-2 d-flex justify-content-between">
-                    <button
-                      className="panelButton m-0"
-                      // onClick={handleSubmit}
-                      onClick={() => handleUploadDocument(uploadId)}
-                    >
-                      <span className="text">Confirm</span>
-                      <span className="icon">
-                        <i class="fa-solid fa-check"></i>
-                      </span>
-                    </button>
-                    <button
-                      className="panelButtonWhite m-0 float-end"
-                      // onClick={() => setReUploadPopUp(false)}
-                      onClick={() => {
-                        setUploadPopup(false);
-                        setUploadError(false);
-                        setImagePreview(null);
-                        setFile();
-                      }}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
+        ) : (
+          ""
+        )}
+        {enlargeImage ? (
+          <div className="popup" onClick={() => setEnlargeImage(false)}>
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  style={{ maxWidth: "800px", maxHeight: "800px" }}
+                />
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        ""
-      )}
-      {enlargeImage ? (
-        <div className="popup" onClick={() => setEnlargeImage(false)}>
-          <div className="container h-100">
-            <div className="row h-100 justify-content-center align-items-center">
-              <img
-                src={imagePreview}
-                alt="Preview"
-                style={{ maxWidth: "800px", maxHeight: "800px" }}
-              />
-            </div>
-          </div>
-        </div>
-      ) : (
-        ""
-      )}
-      {loading ? <CircularLoader /> : ""}
-      {/* <ToastContainer
+        ) : (
+          ""
+        )}
+        {loading ? <CircularLoader /> : ""}
+        {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -988,7 +1002,8 @@ function Document({
         pauseOnHover
         theme="dark"
       /> */}
-    </div>
+      </div>
+    </>
   );
 }
 

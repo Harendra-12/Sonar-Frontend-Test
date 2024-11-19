@@ -355,6 +355,10 @@
     color: var(--ui-accent);
 }
 
+.profileDetailsHolder .accordion-button:not(.collapsed) {
+    background-color: #a2e1ff3d;
+}
+
 .profileDetailsHolder .accordion-button:focus {
     box-shadow: none;
 }
