@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EFaxFile from "./EFaxFile";
 import {
+  featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
   generalPostFunction,
@@ -168,23 +169,25 @@ function EFax() {
                 <div className="newHeader">
                   <div className="col-auto" style={{ padding: '0 10px' }}>
                     <h3 style={{ fontFamily: "Outfit", marginBottom: '0' }}>
-                      <button class="clearButton text-dark"><i class="fa-solid fa-chevron-left fs-4"></i></button> E-Fax{" "}
+                      <button class="clearButton text-dark" ><i class="fa-solid fa-chevron-left fs-4"></i></button> E-Fax{" "}
                       <button class="clearButton">
                         <i
                           class="fa-regular fa-arrows-rotate fs-5"
                           style={{ color: "rgb(148, 148, 148)" }}
+                          onClick={() => featureUnderdevelopment()}
                         ></i>
                       </button>
                     </h3>
                   </div>
                   <div className="d-flex justify-content-end align-items-center">
                     <div className="col-9">
-                      <input type="search" name="Search" placeholder="Search users, groups or chat" class="formItem fw-normal" style={{ backgroundColor: '#f5f5f5' }} />
+                      <input type="search" name="Search" placeholder="Search users, groups or chat" class="formItem fw-normal" style={{ backgroundColor: '#f5f5f5' }} onChange={() => featureUnderdevelopment()} />
                     </div>
                     <div className="col-auto mx-2">
                       <button
                         className="clearButton2 xl"
                         effect="ripple"
+                        onClick={() => featureUnderdevelopment()}
                       >
                         <i className="fa-regular fa-bell" />
                       </button>
@@ -574,18 +577,21 @@ function EFax() {
                         <button
                           className="clearButton2 xl"
                           effect="ripple"
+                          onClick={() => featureUnderdevelopment()}
                         >
                           <i className="fa-regular fa-message-dots" />
                         </button>
                         <button
                           className="clearButton2 xl"
                           effect="ripple"
+                          onClick={() => featureUnderdevelopment()}
                         >
                           <i className="fa-regular fa-phone" />
                         </button>
                         <button
                           className="clearButton2 xl"
                           effect="ripple"
+                          onClick={() => featureUnderdevelopment()}
                         >
                           <i className="fa-regular fa-video" />
                         </button>
@@ -594,9 +600,9 @@ function EFax() {
                             <i class="fa-solid fa-ellipsis-vertical"></i>
                           </button>
                           <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Add to Contact</a></li>
-                            <li><a class="dropdown-item" href="#">Video Call</a></li>
-                            <li><a class="dropdown-item" href="#">Delete Contact</a></li>
+                            <li><a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>Add to Contact</a></li>
+                            <li><a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>Video Call</a></li>
+                            <li><a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>Delete Contact</a></li>
                           </ul>
                         </div>
                       </div>

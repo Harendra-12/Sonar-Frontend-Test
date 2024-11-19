@@ -3,6 +3,7 @@ import SideNavbarApp from "./SideNavbarApp";
 import { useDispatch, useSelector } from "react-redux";
 import ActiveCallSidePanel from "./ActiveCallSidePanel";
 import {
+  featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
@@ -130,7 +131,7 @@ function AllContact() {
                   </div>
                   <div className="d-flex justify-content-end align-items-center">
                     <div className="col-9">
-                      <input type="search" name="Search" placeholder="Search users, groups or chat" class="formItem fw-normal" style={{ backgroundColor: '#f5f5f5' }} />
+                      <input type="search" name="Search" placeholder="Search users, groups or chat" class="formItem fw-normal" style={{ backgroundColor: '#f5f5f5' }} onChange={() => featureUnderdevelopment()} />
                     </div>
                     <div className="col-auto mx-2">
                       <button
@@ -258,13 +259,13 @@ function AllContact() {
                                     </div>
                                   </div>
                                   <div className="contactPopup">
-                                    <button>
+                                    <button onClick={() => featureUnderdevelopment()}>
                                       <i className="fa-light fa-phone" />
                                     </button>
-                                    <button>
+                                    <button onClick={() => featureUnderdevelopment()}>
                                       <i className="fa-light fa-message" />
                                     </button>
-                                    <button>
+                                    <button onClick={() => featureUnderdevelopment()}>
                                       <i className="fa-light fa-star" />
                                     </button>
                                     <button
@@ -780,7 +781,7 @@ function AllContact() {
                 </div>
                 <div className="col-10 ps-0">
                   <h4>Warning!</h4>
-                  <p>"Are you sure you want to delete this Contact?"</p>
+                  <p>Are you sure you want to delete this Contact?</p>
                   <div className="mt-2 d-flex justify-content-between">
                     <button
                       className="panelButton m-0"
@@ -793,13 +794,16 @@ function AllContact() {
                     </button>
 
                     <button
-                      className="panelButtonWhite m-0 float-end"
+                      className="panelButton gray m-0 float-end"
                       onClick={() => {
                         setPopUp(false);
                         setSelectedDeleteId(null);
                       }}
                     >
-                      Cancel
+                      <span className="text">Cancel</span>
+                      <span className="icon">
+                        <i class="fa-solid fa-xmark"></i>
+                      </span>
                     </button>
                   </div>
                 </div>

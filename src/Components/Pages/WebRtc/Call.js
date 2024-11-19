@@ -11,7 +11,7 @@ import ContentLoader from "../../Loader/ContentLoader";
 import { toast } from "react-toastify";
 import { useSIPProvider } from "react-sipjs";
 import VideoCall from "./VideoCall";
-import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { featureUnderdevelopment, generalGetFunction } from "../../GlobalFunction/globalFunction";
 
 function Call({
   setHangupRefresh,
@@ -459,7 +459,7 @@ function Call({
     }
   }, [selectedModule, videoCall]);
 
-  
+
   async function logOut() {
     const apiData = await generalGetFunction("/logout");
     localStorage.clear();
@@ -502,12 +502,13 @@ function Call({
                   </div>
                   <div className="d-flex justify-content-end align-items-center">
                     <div className="col-9">
-                      <input type="search" name="Search" placeholder="Search users, groups or chat" class="formItem fw-normal" style={{ backgroundColor: '#f5f5f5' }} />
+                      <input type="search" name="Search" placeholder="Search users, groups or chat" class="formItem fw-normal" style={{ backgroundColor: '#f5f5f5' }} onChange={() => featureUnderdevelopment()} />
                     </div>
                     <div className="col-auto mx-2">
                       <button
                         className="clearButton2 xl"
                         effect="ripple"
+                        onClick={() => featureUnderdevelopment()}
                       >
                         <i className="fa-regular fa-bell" />
                       </button>
