@@ -318,7 +318,7 @@ function Document({
                 onClick={() => { nextPage("payment"); }}
               >
                 <span className="text">Back</span>
-                <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
               </button>
               <button
                 type="button"
@@ -332,7 +332,7 @@ function Document({
                 disabled={Number(companyStatus) >= 4 ? false : true}
               >
                 <span className="text">Next</span>
-                <span className="icon"><i class="fa-solid fa-caret-right"></i></span>
+                <span className="icon"><i className="fa-solid fa-caret-right"></i></span>
               </button>
             </div>
           </div>
@@ -345,10 +345,10 @@ function Document({
             <div className="documentPending">
               {checkDocumentStatus(account.details) != null && (
                 <div className="statusMessage">
-                  <div className="statusWrapper success">
+                  <div className={`statusWrapper ${checkDocumentStatus(account.details).includes("approved") ? "success" : "pending"}`}>
                     <div className="mx-2">
                       <h5>
-                        <i className="fa-solid fa-check text-white me-1"></i>{" "}
+                        <i className={`fa-regular fa-${checkDocumentStatus(account.details).includes("approved") ? "check" : "clock"} me-1`}></i>{" "}
                         {checkDocumentStatus(account.details)}
                       </h5>
                     </div>
@@ -361,7 +361,7 @@ function Document({
                   <div className="statusMessage">
                     <div className={uploadDocument.every((value) => value === true) ? "statusWrapper pending" : "statusWrapper"}>
                       <h5>
-                        <i className="fa-solid fa-triangle-exclamation text-white me-1"></i>{" "}
+                        <i className="fa-solid fa-triangle-exclamation me-1"></i>{" "}
                         {uploadDocument.every((value) => value === true)
                           ? "Documents are under review. We will get back to you soon!"
                           : "We have faced an issue while validating your document(s)!"}
@@ -641,18 +641,18 @@ function Document({
                   {account.details.length > 0 ? (
                     <div className="qLinkContent" ref={wrapperRef}>
                       <div
-                        class="accordion permissionListWrapper"
+                        className="accordion permissionListWrapper"
                         id="accordionFlushExample"
                       >
                         {docId.map((item2, key) => {
                           return (
-                            <div class="accordion-item">
+                            <div className="accordion-item">
                               <h2
-                                class="accordion-header"
+                                className="accordion-header"
                                 id={`flush-heading${key}`}
                               >
                                 <button
-                                  class="accordion-button collapsed px-3"
+                                  className="accordion-button collapsed px-3"
                                   style={{ padding: "15px 5px" }}
                                   type="button"
                                   data-bs-toggle="collapse"
@@ -665,14 +665,14 @@ function Document({
                               </h2>
                               <div
                                 id={`flush-collapse${key}`}
-                                class="accordion-collapse collapse"
+                                className="accordion-collapse collapse"
                                 aria-labelledby={`flush-heading${key}`}
                                 data-bs-parent="#accordionFlushExample"
                               >
                                 {account.details.map((item) => {
                                   if (item.document_id === item2.document_id) {
                                     return (
-                                      <div class="accordion-body">
+                                      <div className="accordion-body">
                                         <div className="row position-relative align-items-center w-100">
                                           <div className="col-auto ps-0 pe-2">
                                             <div className="iconWrapper2">
@@ -817,7 +817,7 @@ function Document({
                       <>
                         <br />
                         <span style={{ color: "red", fontSize: 12 }}>
-                          <i class="fa-solid fa-triangle-exclamation"></i> Image
+                          <i className="fa-solid fa-triangle-exclamation"></i> Image
                           should be less than 1 MB
                         </span>
                       </>
@@ -845,7 +845,7 @@ function Document({
                           {/* <span style={{ fontSize: 12 }} className="me-1">
                           View
                         </span> */}
-                          <i class="fa-solid fa-expand"></i>
+                          <i className="fa-solid fa-expand"></i>
                         </div>
                       </div>
                     )}
@@ -853,7 +853,7 @@ function Document({
                       <button className="panelButton m-0" onClick={handleSubmit}>
                         <span className="text">Confirm</span>
                         <span className="icon">
-                          <i class="fa-solid fa-check"></i>
+                          <i className="fa-solid fa-check"></i>
                         </span>
                       </button>
                       <button
@@ -910,7 +910,7 @@ function Document({
                       <>
                         <br />
                         <span style={{ color: "red", fontSize: 12 }}>
-                          <i class="fa-solid fa-triangle-exclamation"></i> Image
+                          <i className="fa-solid fa-triangle-exclamation"></i> Image
                           should be less than 1 MB
                         </span>
                       </>
@@ -938,7 +938,7 @@ function Document({
                           {/* <span style={{ fontSize: 14, fontWeight: 600 }} className="me-1">
                           View
                         </span> */}
-                          <i class="fa-solid fa-expand"></i>
+                          <i className="fa-solid fa-expand"></i>
                         </div>
                       </div>
                     )}
@@ -950,7 +950,7 @@ function Document({
                       >
                         <span className="text">Confirm</span>
                         <span className="icon">
-                          <i class="fa-solid fa-check"></i>
+                          <i className="fa-solid fa-check"></i>
                         </span>
                       </button>
                       <button

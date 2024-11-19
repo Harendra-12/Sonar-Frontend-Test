@@ -457,7 +457,7 @@ input.noinputfield.edit {
 }
 
 .statusMessage {
-    padding: 10px;
+    padding: 0px 0 20px 0;
 }
 
 .statusWrapper {
@@ -483,6 +483,11 @@ input.noinputfield.edit {
     color: #fff;
     margin-bottom: 0;
     font-weight: 500;
+}
+
+.statusWrapper.success h5,
+.statusWrapper.success h5 i {
+    color: #03a500;
 }
 
 .statusContent ul {
