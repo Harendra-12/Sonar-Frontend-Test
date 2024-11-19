@@ -230,13 +230,10 @@ const WebrtcWrapper = () => {
                       aria-controls="collapse1"
                     >
                       Incoming Call{" "}
-                      <span>
-                        {
-                          sessions.filter(
-                            (session) => session.state === "Incoming"
-                          ).length
-                        }
-                      </span>{" "}
+                      {sessions.filter(
+                        (session) => session.state === "Incoming"
+                      ).length > 0 ? (<span>{sessions.filter((session) => session.state === "Incoming").length}</span>) : ""}
+                      {" "}
                       <i class="fa-solid fa-chevron-down"></i>
                     </h5>
                   </div>
@@ -273,13 +270,8 @@ const WebrtcWrapper = () => {
                       aria-controls="collapse2"
                     >
                       Active Call{" "}
-                      <span>
-                        {
-                          sessions.filter(
-                            (session) => session.state !== "Incoming"
-                          ).length
-                        }
-                      </span>{" "}
+                      {sessions.filter((session) => session.state !== "Incoming").length ? (<span>{sessions.filter((session) => session.state !== "Incoming").length}</span>) : ""}
+                      {" "}
                       <i class="fa-solid fa-chevron-down"></i>
                     </h5>
                   </div>
@@ -309,7 +301,7 @@ const WebrtcWrapper = () => {
               </div>
             </section>
             {sessions.find((session) => session.mode === "video") &&
-            callProgressId ? (
+              callProgressId ? (
               <VideoCall
                 setHangupRefresh={setHangupRefresh}
                 hangupRefresh={hangupRefresh}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";
 import { toast } from "react-toastify";
+import { featureUnderdevelopment } from "../../GlobalFunction/globalFunction";
 
 function CallDetails({
   clickedCall,
@@ -104,7 +105,7 @@ function CallDetails({
             <button
               className="clearButton2 xl"
               effect="ripple"
-              onClick={()=>setactivePage("messages")}
+              onClick={() => setactivePage("messages")}
             >
               <i className="fa-regular fa-message-dots" />
             </button>
@@ -129,9 +130,9 @@ function CallDetails({
                 <i class="fa-solid fa-ellipsis-vertical"></i>
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Add to Contact</a></li>
-                <li><a class="dropdown-item" href="#">Video Call</a></li>
-                <li><a class="dropdown-item" href="#">Delete Contact</a></li>
+                <li><a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>Add to Contact</a></li>
+                <li><a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>Video Call</a></li>
+                <li><a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>Delete Contact</a></li>
               </ul>
             </div>
           </div>

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ActiveCallSidePanel from "./ActiveCallSidePanel";
 import {
+  featureUnderdevelopment,
   generalGetFunction,
   globalErrorHandler,
 } from "../../GlobalFunction/globalFunction";
@@ -295,12 +296,13 @@ function AllVoicemails({ isCustomerAdmin }) {
                   </div>
                   <div className="d-flex justify-content-end align-items-center">
                     <div className="col-9">
-                      <input type="search" name="Search" placeholder="Search users, groups or chat" class="formItem fw-normal" style={{ backgroundColor: '#f5f5f5' }} />
+                      <input type="search" name="Search" placeholder="Search users, groups or chat" class="formItem fw-normal" style={{ backgroundColor: '#f5f5f5' }} onChange={() => featureUnderdevelopment()} />
                     </div>
                     <div className="col-auto mx-2">
                       <button
                         className="clearButton2 xl"
                         effect="ripple"
+                        onClick={() => featureUnderdevelopment()}
                       >
                         <i className="fa-regular fa-bell" />
                       </button>
@@ -341,7 +343,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                   </h5>
                 </div>
                 <div className="col-auto" style={{ padding: '0 10px' }}>
-                  <button className="clearColorButton dark">
+                  <button className="clearColorButton dark" onClick={() => featureUnderdevelopment()}>
                     <i className="fa-light fa-mobile-retro" /> Dial Number
                   </button>
                 </div>
@@ -351,6 +353,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                     name="Search"
                     id="headerSearch"
                     placeholder="Search"
+                    onChange={() => featureUnderdevelopment()}
                   />
                 </div>
                 <div className="col-12">
@@ -454,18 +457,21 @@ function AllVoicemails({ isCustomerAdmin }) {
                         <button
                           className="clearButton2 xl"
                           effect="ripple"
+                          onClick={() => featureUnderdevelopment()}
                         >
                           <i className="fa-regular fa-message-dots" />
                         </button>
                         <button
                           className="clearButton2 xl"
                           effect="ripple"
+                          onClick={() => featureUnderdevelopment()}
                         >
                           <i className="fa-regular fa-phone" />
                         </button>
                         <button
                           className="clearButton2 xl"
                           effect="ripple"
+                          onClick={() => featureUnderdevelopment()}
                         >
                           <i className="fa-regular fa-video" />
                         </button>
@@ -474,9 +480,9 @@ function AllVoicemails({ isCustomerAdmin }) {
                             <i class="fa-solid fa-ellipsis-vertical"></i>
                           </button>
                           <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Add to Contact</a></li>
-                            <li><a class="dropdown-item" href="#">Video Call</a></li>
-                            <li><a class="dropdown-item" href="#">Delete Contact</a></li>
+                            <li><a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>Add to Contact</a></li>
+                            <li><a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>Video Call</a></li>
+                            <li><a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>Delete Contact</a></li>
                           </ul>
                         </div>
                       </div>
