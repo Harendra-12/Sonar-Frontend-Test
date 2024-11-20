@@ -355,7 +355,9 @@ const UsersAdd = () => {
                           className="panelButton gray"
                         >
                           <span className="text">Back</span>
-                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-caret-left"></i>
+                          </span>
                         </button>
                         <button
                           type="button"
@@ -364,18 +366,28 @@ const UsersAdd = () => {
                           onClick={handleFormSubmit}
                         >
                           <span className="text">Save</span>
-                          <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                          </span>
                         </button>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
+                <div
+                  className="col-12"
+                  style={{
+                    padding: "25px 23px",
+                    borderBottom: "1px solid #ddd",
+                  }}
+                >
                   <div className="row gx-5">
-                    <div className="col-xl-6" style={{ borderRight: "1px solid var(--border-color)" }}>
+                    <div
+                      className="col-xl-6"
+                      style={{ borderRight: "1px solid var(--border-color)" }}
+                    >
                       <form className="row mb-0">
-                        <div
-                          className="formRow col-xl-12">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label htmlFor="" className="me-2">
                               Username
@@ -386,7 +398,9 @@ const UsersAdd = () => {
                                 Username Available
                               </label>
                             ) : isUserNameAvailable == false ? (
-                              <label className="status fail">Not Available</label>
+                              <label className="status fail">
+                                Not Available
+                              </label>
                             ) : (
                               ""
                             )}
@@ -416,8 +430,7 @@ const UsersAdd = () => {
                             )}
                           </div>
                         </div>
-                        <div
-                          className="formRow col-xl-12">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label htmlFor="">Password</label>
                             <label htmlFor="data" className="formItemDesc">
@@ -439,12 +452,12 @@ const UsersAdd = () => {
                             )}
                           </div>
                         </div>
-                        <div
-                          className="formRow col-xl-12">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label htmlFor="">Confirm Password</label>
                             <label htmlFor="data" className="formItemDesc">
-                              Green field borders indicate typed passwords match.
+                              Green field borders indicate typed passwords
+                              match.
                             </label>
                           </div>
                           <div className="col-6">
@@ -452,15 +465,16 @@ const UsersAdd = () => {
                               type="password"
                               name="extension"
                               className="formItem"
-                              {...register("cPassword", { ...requiredValidator })}
+                              {...register("cPassword", {
+                                ...requiredValidator,
+                              })}
                             />
                             {errors.cPassword && (
                               <ErrorMessage text={errors.cPassword.message} />
                             )}
                           </div>
                         </div>
-                        <div
-                          className="formRow col-xl-12">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label htmlFor="">Email</label>
                           </div>
@@ -480,8 +494,7 @@ const UsersAdd = () => {
                             )}
                           </div>
                         </div>
-                        <div
-                          className="formRow col-xl-12">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label htmlFor="">First Name</label>
                           </div>
@@ -502,8 +515,7 @@ const UsersAdd = () => {
                             )}
                           </div>
                         </div>
-                        <div
-                          className="formRow col-xl-12">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label htmlFor="">Last Name</label>
                           </div>
@@ -563,8 +575,7 @@ const UsersAdd = () => {
                                             </label>
                                         </div>
                                     </div> */}
-                        <div
-                          className="formRow col-xl-12">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label htmlFor="selectFormRow">Time Zone</label>
                             <label htmlFor="data" className="formItemDesc">
@@ -575,6 +586,7 @@ const UsersAdd = () => {
                             <select
                               className="formItem"
                               name=""
+                              defaultValue={""}
                               {...register("timezone_id", {
                                 ...requiredValidator,
                               })}
@@ -596,8 +608,7 @@ const UsersAdd = () => {
                             )}
                           </div>
                         </div>
-                        <div
-                          className="formRow col-xl-12">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label htmlFor="selectFormRow">Status</label>
                             <label htmlFor="data" className="formItemDesc">
@@ -677,8 +688,7 @@ const UsersAdd = () => {
                       </label>
                     </div>
                   </div> */}
-                        <div
-                          className="formRow col-xl-12">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label htmlFor="selectFormRow">Role Type</label>
                             <label htmlFor="data" className="formItemDesc">
@@ -730,8 +740,7 @@ const UsersAdd = () => {
                             )}
                           </div>
                         </div>
-                        <div
-                          className="formRow col-xl-12">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label htmlFor="selectFormRow">
                               Select extension
@@ -815,22 +824,33 @@ const UsersAdd = () => {
                           </div>
                           <div class="accordion permissionListWrapper">
                             {filteredPermission &&
-                              Object.keys(filteredPermission).map((item, key) => (
-                                <div className="accordion-item" key={key}>
-                                  <h2 class="accordion-header" id={`collapseHeading${key}`}>
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${key}`} aria-expanded="true" aria-controls={`collapse${key}`}>
-                                      <input
-                                        type="checkbox"
-                                        checked={parentChecked[item]}
-                                        onChange={() =>
-                                          handleParentCheckboxChange(item)
-                                        }
-                                      />
+                              Object.keys(filteredPermission).map(
+                                (item, key) => (
+                                  <div className="accordion-item" key={key}>
+                                    <h2
+                                      class="accordion-header"
+                                      id={`collapseHeading${key}`}
+                                    >
+                                      <button
+                                        class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target={`#collapse${key}`}
+                                        aria-expanded="true"
+                                        aria-controls={`collapse${key}`}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={parentChecked[item]}
+                                          onChange={() =>
+                                            handleParentCheckboxChange(item)
+                                          }
+                                        />
 
-                                      <label>{item}</label>
-                                    </button>
-                                  </h2>
-                                  {/* <div className="header d-flex align-items-center">
+                                        <label>{item}</label>
+                                      </button>
+                                    </h2>
+                                    {/* <div className="header d-flex align-items-center">
                                       <div className="col-5">
                                         <input
                                           type="checkbox"
@@ -842,34 +862,42 @@ const UsersAdd = () => {
                                         <label class="ms-2">{item}</label>
                                       </div>
                                     </div> */}
-                                  <div id={`collapse${key}`} class="accordion-collapse collapse" aria-labelledby={`collapseHeading${key}`}>
-                                    <div class="accordion-body">
-                                      {filteredPermission[item].map(
-                                        (innerItem, key) => (
-                                          <div
-                                            className="col-xl-2 col-md-4 col-6" style={{ paddingLeft: 30 }}
-                                            key={key}
-                                          >
-                                            <input
-                                              type="checkbox"
-                                              id={`permission-${innerItem.id}`}
-                                              checked={selectedPermission.includes(
-                                                innerItem.id
-                                              )}
-                                              onChange={() =>
-                                                handleCheckboxChange(innerItem.id)
-                                              }
-                                            />
-                                            <label className="formLabel ms-2 text-capitalize">
-                                              {innerItem.action}
-                                            </label>
-                                          </div>
-                                        )
-                                      )}
+                                    <div
+                                      id={`collapse${key}`}
+                                      class="accordion-collapse collapse"
+                                      aria-labelledby={`collapseHeading${key}`}
+                                    >
+                                      <div class="accordion-body">
+                                        {filteredPermission[item].map(
+                                          (innerItem, key) => (
+                                            <div
+                                              className="col-xl-2 col-md-4 col-6"
+                                              style={{ paddingLeft: 30 }}
+                                              key={key}
+                                            >
+                                              <input
+                                                type="checkbox"
+                                                id={`permission-${innerItem.id}`}
+                                                checked={selectedPermission.includes(
+                                                  innerItem.id
+                                                )}
+                                                onChange={() =>
+                                                  handleCheckboxChange(
+                                                    innerItem.id
+                                                  )
+                                                }
+                                              />
+                                              <label className="formLabel ms-2 text-capitalize">
+                                                {innerItem.action}
+                                              </label>
+                                            </div>
+                                          )
+                                        )}
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              ))}
+                                )
+                              )}
                           </div>
                           {/* {filteredPermission &&
                               Object.keys(filteredPermission).map((item, key) => (

@@ -221,18 +221,33 @@ const Users = () => {
                             <i class="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        <Link
-                          // to="/users-add"
-                          // onClick={backToTop}
-                          onClick={handleAddUserValidation}
-                          effect="ripple"
-                          className="panelButton"
-                        >
-                          <span className="text">Add</span>
-                          <span className="icon">
-                            <i class="fa-solid fa-plus"></i>
-                          </span>
-                        </Link>
+                        {account?.permissions?.includes(442) ? (
+                          <Link
+                            // to="/users-add"
+                            // onClick={backToTop}
+                            onClick={handleAddUserValidation}
+                            effect="ripple"
+                            className="panelButton"
+                          >
+                            <span className="text">Add</span>
+                            <span className="icon">
+                              <i class="fa-solid fa-plus"></i>
+                            </span>
+                          </Link>
+                        ) : (
+                          <button
+                            disabled
+                            onClick={handleAddUserValidation}
+                            effect="ripple"
+                            className="panelButton"
+                            style={{ cursor: "not-allowed" }}
+                          >
+                            <span className="text">Add</span>
+                            <span className="icon">
+                              <i class="fa-solid fa-plus"></i>
+                            </span>
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -442,9 +457,10 @@ const Users = () => {
                     {error
                       ? error
                       : selectedUser?.id
-                        ? `Are you sure you want to ${selectedUser?.status === "E" ? "disable" : "enable"
+                      ? `Are you sure you want to ${
+                          selectedUser?.status === "E" ? "disable" : "enable"
                         } ${selectedUser?.username}?`
-                        : ""}
+                      : ""}
                   </p>
                   <div className="d-flex justify-content-between">
                     <button

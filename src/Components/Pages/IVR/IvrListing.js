@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const IvrListing = () => {
   const dispatch = useDispatch();
-
+  const account = useSelector((state) => state.account);
   const [ivr, setIvr] = useState();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -99,25 +99,43 @@ const IvrListing = () => {
                             <i class="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        <Link
-                          to="/ivr-add"
-                          onClick={backToTop}
-                          effect="ripple"
-                          className="panelButton"
-                        >
-                          <span className="text">Add</span>
-                          <span className="icon"><i class="fa-solid fa-plus"></i></span>
-                        </Link>
+                        {account?.permissions?.includes(232) ? (
+                          <Link
+                            to="/ivr-add"
+                            onClick={backToTop}
+                            effect="ripple"
+                            className="panelButton"
+                          >
+                            <span className="text">Add</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-plus"></i>
+                            </span>
+                          </Link>
+                        ) : (
+                          <button
+                            type="button"
+                            className="panelButton disabled"
+                            disabled
+                            title="You do not have permission to add"
+                            style={{ cursor: "not-allowed" }}
+                          >
+                            <span className="text">Add</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-plus"></i>
+                            </span>
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
-                  <div className="col-12" style={{ overflow: "auto", padding: "25px 20px 0" }}>
+                  <div
+                    className="col-12"
+                    style={{ overflow: "auto", padding: "25px 20px 0" }}
+                  >
                     <div className="tableHeader">
                       <div className="showEntries">
                         <label>Show</label>
-                        <select
-                          className="formItem"
-                        >
+                        <select className="formItem">
                           <option value={10}>Max</option>
                         </select>
                         <label>entries</label>
@@ -162,35 +180,47 @@ const IvrListing = () => {
                                     <tr key={index}>
                                       <td
                                         onClick={() =>
-                                          navigate(`/ivr-edit`, { state: item.id })
+                                          navigate(`/ivr-edit`, {
+                                            state: item.id,
+                                          })
                                         }
                                       >
                                         {item.ivr_name}
                                       </td>
                                       <td
                                         onClick={() =>
-                                          navigate(`/ivr-edit`, { state: item.id })
+                                          navigate(`/ivr-edit`, {
+                                            state: item.id,
+                                          })
                                         }
                                       >
-                                        {item.ivr_type == "0" ? "Child" : "Master"}
+                                        {item.ivr_type == "0"
+                                          ? "Child"
+                                          : "Master"}
                                       </td>
                                       <td
                                         onClick={() =>
-                                          navigate(`/ivr-edit`, { state: item.id })
+                                          navigate(`/ivr-edit`, {
+                                            state: item.id,
+                                          })
                                         }
                                       >
                                         {item.confirm_attempts}
                                       </td>
                                       <td
                                         onClick={() =>
-                                          navigate(`/ivr-edit`, { state: item.id })
+                                          navigate(`/ivr-edit`, {
+                                            state: item.id,
+                                          })
                                         }
                                       >
                                         {item.timeout}
                                       </td>
                                       <td
                                         onClick={() =>
-                                          navigate(`/ivr-edit`, { state: item.id })
+                                          navigate(`/ivr-edit`, {
+                                            state: item.id,
+                                          })
                                         }
                                       >
                                         {item.max_failures}
@@ -215,7 +245,9 @@ const IvrListing = () => {
                                         <button
                                           className="tableButton edit"
                                           onClick={() =>
-                                            navigate(`/ivr-edit`, { state: item.id })
+                                            navigate(`/ivr-edit`, {
+                                              state: item.id,
+                                            })
                                           }
                                         >
                                           <i class="fa-solid fa-pencil"></i>
