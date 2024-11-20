@@ -16,6 +16,8 @@ function Navbar() {
   const accountDetails = useSelector((state) => state.accountDetails);
   const userType = account?.usertype; // "Company"
   const isCustomerAdmin = account?.email == accountDetails?.email || false;
+  const permissions = useSelector((state) => state.permissions || []);
+  console.log(permissions);
   async function logOut() {
     const apiData = await generalGetFunction("/logout");
     localStorage.clear();
@@ -98,7 +100,7 @@ function Navbar() {
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
-                          {account?.permissions?.includes(8) &&
+                          {account?.permissions?.includes(8) && (
                             <li className="tabItem" effect="ripple">
                               <NavLink
                                 to="/my-profile"
@@ -111,7 +113,7 @@ function Navbar() {
                                 <div className="itemTitle">My Profile</div>
                               </NavLink>
                             </li>
-                          }
+                          )}
 
                           {/* <li className="tabItem" effect="ripple">
                             <NavLink
@@ -177,7 +179,8 @@ function Navbar() {
                             ""
                           )}
 
-                          {account?.permissions?.includes(350) &&
+                          {account?.permissions?.includes(350) ||
+                          account?.permissions?.includes(352) ? (
                             <li className="tabItem" effect="ripple">
                               <NavLink
                                 to="/roles"
@@ -192,7 +195,7 @@ function Navbar() {
                                 </div>
                               </NavLink>
                             </li>
-                          }
+                          ) : null}
 
                           {/* <li className="tabItem" effect="ripple">
                             <NavLink
@@ -208,19 +211,23 @@ function Navbar() {
                               </div>
                             </NavLink>
                           </li> */}
-                          <li className="tabItem ">
-                            <NavLink
-                              to="/mail-settings"
-                              onClick={backToTop}
-                              type="button"
-                              effect="ripple"
-                            >
-                              <div className="iconHolder">
-                                <i class="fa-duotone fa-solid fa-envelopes-bulk"></i>
-                              </div>
-                              <div className="itemTitle">Mail Settings</div>
-                            </NavLink>
-                          </li>
+                          {account?.permissions?.includes(248) ||
+                          account?.permissions?.includes(250) ? (
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/mail-settings"
+                                onClick={backToTop}
+                                type="button"
+                                effect="ripple"
+                              >
+                                <div className="iconHolder">
+                                  <i class="fa-duotone fa-solid fa-envelopes-bulk"></i>
+                                </div>
+                                <div className="itemTitle">Mail Settings</div>
+                              </NavLink>
+                            </li>
+                          ) : null}
+
                           {userType === "SupreAdmin" ? (
                             <li className="tabItem" effect="ripple">
                               <NavLink
@@ -269,14 +276,17 @@ function Navbar() {
                               <div className="itemTitle">Phone Dashboard</div>
                             </NavLink>
                           </li>
-                          <li className="tabItem " effect="ripple">
-                            <NavLink to="/extensions">
-                              <div className="iconHolder">
-                                <i className="fa-duotone fa-phone-office" />
-                              </div>
-                              <div className="itemTitle">Extensions</div>
-                            </NavLink>
-                          </li>
+                          {account?.permissions?.includes(176) ||
+                          account?.permissions?.includes(178) ? (
+                            <li className="tabItem " effect="ripple">
+                              <NavLink to="/extensions">
+                                <div className="iconHolder">
+                                  <i className="fa-duotone fa-phone-office" />
+                                </div>
+                                <div className="itemTitle">Extensions</div>
+                              </NavLink>
+                            </li>
+                          ) : null}
 
                           <li className="tabItem " effect="ripple">
                             <NavLink to="/voice-music">
@@ -370,51 +380,55 @@ function Navbar() {
                           <div className="itemTitle">Outbound Routes</div>
                         </a>
                       </li> */}
-                  <li className="">
-                    <button
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapse4"
-                      aria-expanded="false"
-                      aria-controls="collapse4"
-                      effect="ripple"
-                    >
-                      <div className="itemTitle">Reports</div>
-                    </button>
-                    <div
-                      id="collapse4"
-                      className="accordion-collapse collapse"
-                      data-bs-parent="#sidenNav"
-                    >
-                      <div className="menuWrapper">
-                        <ul className="tabMenu">
-                          {/* <li className="tabItem" effect="ripple">
-                        <NavLink
-                          to="/call"
-                          onClick={backToTop}
-                          className="nav-link"
-                        >
-                          <div className="iconHolder">
-                            <i className="fa-duotone fa-swap-arrows" />
-                          </div>
-                          <div className="itemTitle">Call</div>
-                        </NavLink>
-                      </li> */}
-                          <li className="tabItem" effect="ripple">
+                  {account?.permissions?.includes(86) ? (
+                    <li className="">
+                      <button
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapse4"
+                        aria-expanded="false"
+                        aria-controls="collapse4"
+                        effect="ripple"
+                      >
+                        <div className="itemTitle">Reports</div>
+                      </button>
+                      <div
+                        id="collapse4"
+                        className="accordion-collapse collapse"
+                        data-bs-parent="#sidenNav"
+                      >
+                        <div className="menuWrapper">
+                          <ul className="tabMenu">
+                            {/* <li className="tabItem" effect="ripple">
                             <NavLink
-                              to="/cdr-report"
+                              to="/call"
                               onClick={backToTop}
                               className="nav-link"
                             >
                               <div className="iconHolder">
-                                <i class="fa-duotone fa-chart-bar"></i>
+                                <i className="fa-duotone fa-swap-arrows" />
                               </div>
-                              <div className="itemTitle">CDR Report</div>
+                              <div className="itemTitle">Call</div>
                             </NavLink>
-                          </li>
-                        </ul>
+                          </li> */}
+                            {account?.permissions?.includes(86) ? (
+                              <li className="tabItem" effect="ripple">
+                                <NavLink
+                                  to="/cdr-report"
+                                  onClick={backToTop}
+                                  className="nav-link"
+                                >
+                                  <div className="iconHolder">
+                                    <i class="fa-duotone fa-chart-bar"></i>
+                                  </div>
+                                  <div className="itemTitle">CDR Report</div>
+                                </NavLink>
+                              </li>
+                            ) : null}
+                          </ul>
+                        </div>
                       </div>
-                    </div>
-                  </li>
+                    </li>
+                  ) : null}
 
                   <li className="">
                     <button
@@ -457,18 +471,21 @@ function Navbar() {
                               <div className="itemTitle">DID Listing</div>
                             </NavLink>
                           </li>
-                          <li className="tabItem" effect="ripple">
-                            <NavLink
-                              to="/port-number"
-                              onClick={backToTop}
-                              className="nav-link"
-                            >
-                              <div className="iconHolder">
-                                <i class="fa-duotone fa-hashtag-lock"></i>
-                              </div>
-                              <div className="itemTitle">Port number</div>
-                            </NavLink>
-                          </li>
+                          {account?.permissions?.includes(308) ||
+                          account?.permissions?.includes(310) ? (
+                            <li className="tabItem" effect="ripple">
+                              <NavLink
+                                to="/port-number"
+                                onClick={backToTop}
+                                className="nav-link"
+                              >
+                                <div className="iconHolder">
+                                  <i class="fa-duotone fa-hashtag-lock"></i>
+                                </div>
+                                <div className="itemTitle">Port number</div>
+                              </NavLink>
+                            </li>
+                          ) : null}
                         </ul>
                       </div>
                     </div>
@@ -491,18 +508,22 @@ function Navbar() {
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
-                          <li className="tabItem" effect="ripple">
-                            <NavLink
-                              to="/card-details"
-                              onClick={backToTop}
-                              className="nav-link"
-                            >
-                              <div className="iconHolder">
-                                <i class="fa-duotone fa-money-check-dollar-pen"></i>
-                              </div>
-                              <div className="itemTitle">Payment Details</div>
-                            </NavLink>
-                          </li>
+                          {account?.permissions?.includes(290) ||
+                          account?.permissions?.includes(292) ? (
+                            <li className="tabItem" effect="ripple">
+                              <NavLink
+                                to="/card-details"
+                                onClick={backToTop}
+                                className="nav-link"
+                              >
+                                <div className="iconHolder">
+                                  <i class="fa-duotone fa-money-check-dollar-pen"></i>
+                                </div>
+                                <div className="itemTitle">Payment Details</div>
+                              </NavLink>
+                            </li>
+                          ) : null}
+
                           {/* <li className="tabItem" effect="ripple">
                             <NavLink
                               to="/invoice-list"
@@ -527,67 +548,86 @@ function Navbar() {
                               <div className="itemTitle">Expenses</div>
                             </NavLink>
                           </li> */}
-                          <li className="tabItem" effect="ripple">
-                            <NavLink
-                              to="/card-transaction-list"
-                              onClick={backToTop}
-                              className="nav-link"
-                            >
-                              <div className="iconHolder">
-                                <i class="fa-duotone fa-credit-card"></i>
-                              </div>
-                              <div className="itemTitle">Card Transactions</div>
-                            </NavLink>
-                          </li>
-                          <li className="tabItem" effect="ripple">
-                            <NavLink
-                              to="/wallet-transaction-list"
-                              onClick={backToTop}
-                              className="nav-link"
-                            >
-                              <div className="iconHolder">
-                                <i class="fa-duotone fa-wallet"></i>
-                              </div>
-                              <div className="itemTitle">
-                                Wallet Transactions
-                              </div>
-                            </NavLink>
-                          </li>
+                          {account?.permissions?.includes(80) ||
+                          account?.permissions?.includes(82) ? (
+                            <li className="tabItem" effect="ripple">
+                              <NavLink
+                                to="/card-transaction-list"
+                                onClick={backToTop}
+                                className="nav-link"
+                              >
+                                <div className="iconHolder">
+                                  <i class="fa-duotone fa-credit-card"></i>
+                                </div>
+                                <div className="itemTitle">
+                                  Card Transactions
+                                </div>
+                              </NavLink>
+                            </li>
+                          ) : null}
+
+                          {account?.permissions?.includes(470) ||
+                          account?.permissions?.includes(472) ? (
+                            <li className="tabItem" effect="ripple">
+                              <NavLink
+                                to="/wallet-transaction-list"
+                                onClick={backToTop}
+                                className="nav-link"
+                              >
+                                <div className="iconHolder">
+                                  <i class="fa-duotone fa-wallet"></i>
+                                </div>
+                                <div className="itemTitle">
+                                  Wallet Transactions
+                                </div>
+                              </NavLink>
+                            </li>
+                          ) : null}
                         </ul>
                       </div>
                     </div>
                   </li>
+                  {account?.permissions?.includes(344) ||
+                  account?.permissions?.includes(346) ? (
+                    <li className="dashboard ">
+                      <NavLink
+                        to="/ring-groups"
+                        onClick={backToTop}
+                        type="button"
+                        effect="ripple"
+                      >
+                        <div className="itemTitle">Ring Group</div>
+                      </NavLink>
+                    </li>
+                  ) : null}
+                  {account?.permissions?.includes(440) ||
+                  account?.permissions?.includes(442) ? (
+                    <li className="dashboard ">
+                      <NavLink
+                        to="/users"
+                        onClick={backToTop}
+                        type="button"
+                        effect="ripple"
+                      >
+                        <div className="itemTitle">Users</div>
+                      </NavLink>
+                    </li>
+                  ) : null}
 
-                  <li className="dashboard ">
-                    <NavLink
-                      to="/ring-groups"
-                      onClick={backToTop}
-                      type="button"
-                      effect="ripple"
-                    >
-                      <div className="itemTitle">Ring Group</div>
-                    </NavLink>
-                  </li>
-                  <li className="dashboard ">
-                    <NavLink
-                      to="/users"
-                      onClick={backToTop}
-                      type="button"
-                      effect="ripple"
-                    >
-                      <div className="itemTitle">Users</div>
-                    </NavLink>
-                  </li>
-                  <li className="dashboard ">
-                    <NavLink
-                      to="/cal-center-queue"
-                      onClick={backToTop}
-                      type="button"
-                      effect="ripple"
-                    >
-                      <div className="itemTitle">Call Center</div>
-                    </NavLink>
-                  </li>
+                  {account?.permissions?.includes(62) ||
+                  account?.permissions?.includes(64) ? (
+                    <li className="dashboard ">
+                      <NavLink
+                        to="/cal-center-queue"
+                        onClick={backToTop}
+                        type="button"
+                        effect="ripple"
+                      >
+                        <div className="itemTitle">Call Center</div>
+                      </NavLink>
+                    </li>
+                  ) : null}
+
                   {/* <li className="dashboard ">
                     <NavLink
                       to="/variable"
@@ -598,16 +638,20 @@ function Navbar() {
                       <div className="itemTitle">Variable</div>
                     </NavLink>
                   </li> */}
-                  <li className="dashboard ">
-                    <NavLink
-                      to="/ivr"
-                      onClick={backToTop}
-                      type="button"
-                      effect="ripple"
-                    >
-                      <div className="itemTitle">IVR</div>
-                    </NavLink>
-                  </li>
+                  {account?.permissions?.includes(230) ||
+                  account?.permissions?.includes(232) ? (
+                    <li className="dashboard ">
+                      <NavLink
+                        to="/ivr"
+                        onClick={backToTop}
+                        type="button"
+                        effect="ripple"
+                      >
+                        <div className="itemTitle">IVR</div>
+                      </NavLink>
+                    </li>
+                  ) : null}
+
                   {/* <li className="dashboard ">
                     <NavLink
                       to="/device-provisioning"

@@ -24,6 +24,8 @@ function CallCenterQueue() {
   const [redirectRoutes, setRedirectRoutes] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(null);
   const [selectedCallCenter, setSelectedCallCenter] = useState(null);
+  const account = useSelector((state) => state.account);
+
   // const [deleteToggle, setDeleteToggle] = useState();
   const [deleteId, setDeleteId] = useState("");
   const allUser = useSelector((state) => state.allUser);
@@ -211,18 +213,32 @@ function CallCenterQueue() {
                             <i class="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        <Link
-                          // to="/cal-center-queue-add"
-                          // onClick={backToTop}
-                          onClick={handleAddCallCenterValidation}
-                          effect="ripple"
-                          className="panelButton"
-                        >
-                          <span className="text">Add</span>
-                          <span className="icon">
-                            <i class="fa-solid fa-plus"></i>
-                          </span>
-                        </Link>
+                        {account?.permissions?.includes(64) ? (
+                          <Link
+                            // to="/cal-center-queue-add"
+                            // onClick={backToTop}
+                            onClick={handleAddCallCenterValidation}
+                            effect="ripple"
+                            className="panelButton"
+                          >
+                            <span className="text">Add</span>
+                            <span className="icon">
+                              <i class="fa-solid fa-plus"></i>
+                            </span>
+                          </Link>
+                        ) : (
+                          <button
+                            type="button"
+                            className="panelButton disabled"
+                            disabled
+                            title="You do not have permission to add"
+                          >
+                            <span className="text">Add</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-plus"></i>
+                            </span>
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -445,7 +461,8 @@ function CallCenterQueue() {
                       ? error
                       : "Are you sure you want to delete this queue?"}
                     {selectedCallCenter?.id &&
-                      `Are you sure you want to ${selectedCallCenter?.status == 1 ? "disable" : "enable"
+                      `Are you sure you want to ${
+                        selectedCallCenter?.status == 1 ? "disable" : "enable"
                       } the queue ${selectedCallCenter?.queue_name}?`}
                   </p>
                   <div className="mt-2 d-flex justify-content-between">
