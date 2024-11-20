@@ -13,8 +13,7 @@
 }
 
 #sidenNav .sidenavItems a.active {
-    background: linear-gradient(270deg, var(--color2) 0%, rgba(25, 130, 196, 1) 100%);
-    ;
+    background: #35353b;
     border-radius: 7px;
     color: #fff;
 }
@@ -102,7 +101,7 @@
     top: 50%;
     right: 10px;
     transform: translate(-50%, -50%);
-    color: #fff;
+    color: var(--ui-icon);
     font-size: 14px;
 }
 
