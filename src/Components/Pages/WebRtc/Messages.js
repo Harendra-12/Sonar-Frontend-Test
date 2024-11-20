@@ -1234,13 +1234,13 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                   <div className="messageContent">
                     <div className="messageList" ref={messageListRef}>
                       {allMessage?.[recipient[0]]?.map((item, index, arr) => {
-                        const messageDate = item.time.split(" ")[0]; // Extract date from the time string
+                        const messageDate = item.time?.split(" ")[0]; // Extract date from the time string
                         const todayDate = new Date()
                           .toISOString()
-                          .split("T")[0]; // Get today's date in "YYYY-MM-DD" format
+                          ?.split("T")[0]; // Get today's date in "YYYY-MM-DD" format
                         const isNewDate =
                           index === 0 ||
-                          messageDate !== arr[index - 1].time.split(" ")[0];
+                          messageDate !== arr[index - 1].time?.split(" ")[0];
 
                         return (
                           <React.Fragment key={index}>
@@ -1258,6 +1258,17 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                                 </p>
                               </div>
                             )}
+                             {!isAnyDateHeaderVisible && isNewDate && (
+                              <div
+                                className="dateHeader sticky"
+                              >
+                                <p>
+                                  {messageDate === todayDate
+                                    ? "Today"
+                                    : messageDate}
+                                </p>
+                              </div>
+                            )}
                             {/* Message content */}
                             {item.from === extension ? (
                               <div className="messageItem sender">
@@ -1266,8 +1277,8 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                                     {item.from},
                                     <span>
                                       {item.time
-                                        .split(" ")[1]
-                                        .split(":")
+                                        ?.split(" ")[1]
+                                        ?.split(":")
                                         .slice(0, 2)
                                         .join(":")}
                                     </span>
@@ -1284,8 +1295,8 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                                     {item.from},
                                     <span>
                                       {item.time
-                                        .split(" ")[1]
-                                        .split(":")
+                                        ?.split(" ")[1]
+                                        ?.split(":")
                                         .slice(0, 2)
                                         .join(":")}
                                     </span>
