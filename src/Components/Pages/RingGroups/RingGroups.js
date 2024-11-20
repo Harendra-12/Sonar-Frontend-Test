@@ -187,18 +187,33 @@ const RingGroups = () => {
                             <i class="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        <Link
-                          // to="/ring-groups-add"
-                          // onClick={backToTop}
-                          onClick={handleRingGroupAddValidation}
-                          effect="ripple"
-                          className="panelButton"
-                        >
-                          <span className="text">Add</span>
-                          <span className="icon">
-                            <i class="fa-solid fa-plus"></i>
-                          </span>
-                        </Link>
+                        {account?.permissions?.includes(346) ? (
+                          <Link
+                            // to="/ring-groups-add"
+                            // onClick={backToTop}
+                            onClick={handleRingGroupAddValidation}
+                            effect="ripple"
+                            className="panelButton"
+                          >
+                            <span className="text">Add</span>
+                            <span className="icon">
+                              <i class="fa-solid fa-plus"></i>
+                            </span>
+                          </Link>
+                        ) : (
+                          <button
+                            disabled
+                            onClick={handleRingGroupAddValidation}
+                            effect="ripple"
+                            className="panelButton"
+                            style={{ cursor: "not-allowed" }}
+                          >
+                            <span className="text">Add</span>
+                            <span className="icon">
+                              <i class="fa-solid fa-plus"></i>
+                            </span>
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -224,7 +239,11 @@ const RingGroups = () => {
                       </div>
                       <div className="searchBox">
                         <label>Search:</label>
-                        <input type="search" className="formItem" onChange={() => featureUnderdevelopment()} />
+                        <input
+                          type="search"
+                          className="formItem"
+                          onChange={() => featureUnderdevelopment()}
+                        />
                       </div>
                     </div>
                     <div className="tableContainer">

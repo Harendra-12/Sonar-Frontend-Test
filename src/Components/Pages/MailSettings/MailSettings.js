@@ -9,6 +9,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 const MailSettings = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const MailSettings = () => {
   const [mailSettings, setMailSettings] = useState([]);
   const [openPopup, setOpenPopup] = useState(false);
   const [deleteSettingsId, setDeleteSetingsId] = useState(null);
+  const account = useSelector((state) => state.account);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,22 +78,45 @@ const MailSettings = () => {
                           }}
                         >
                           <span className="text">Back</span>
-                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-caret-left"></i>
+                          </span>
                         </button>
                         {mailSettings && !mailSettings.length > 0 && (
-                          <Link
-                            to="/mail-settings-add"
-                            effect="ripple"
-                            className="panelButton"
-                          >
-                            <span className="text">Add</span>
-                            <span className="icon"><i class="fa-solid fa-plus"></i></span>
-                          </Link>
+                          <>
+                            {account?.permissions?.includes(250) ? (
+                              <Link
+                                to="/mail-settings-add"
+                                effect="ripple"
+                                className="panelButton"
+                              >
+                                <span className="text">Add</span>
+                                <span className="icon">
+                                  <i class="fa-solid fa-plus"></i>
+                                </span>
+                              </Link>
+                            ) : (
+                              <button
+                                effect="ripple"
+                                className="panelButton"
+                                disabled
+                                style={{ cursor: "not-allowed" }}
+                              >
+                                <span className="text">Add</span>
+                                <span className="icon">
+                                  <i class="fa-solid fa-plus"></i>
+                                </span>
+                              </button>
+                            )}
+                          </>
                         )}
                       </div>
                     </div>
                   </div>
-                  <div className="col-12" style={{ overflow: "auto", padding: '25px 20px 0' }}>
+                  <div
+                    className="col-12"
+                    style={{ overflow: "auto", padding: "25px 20px 0" }}
+                  >
                     <div className="mx-2 tableContainer">
                       <table>
                         <thead>
@@ -205,7 +230,9 @@ const MailSettings = () => {
                       onClick={handleSettingsDelete}
                     >
                       <span className="text">Confirm</span>
-                      <span className="icon"><i class="fa-solid fa-check"></i></span>
+                      <span className="icon">
+                        <i class="fa-solid fa-check"></i>
+                      </span>
                     </button>
                     <button
                       className="panelButtonWhite m-0 float-end"

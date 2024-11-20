@@ -195,7 +195,7 @@ const UsersEdit = () => {
   const handleFormSubmit = handleSubmit(async (data) => {
     if (password !== "" && password.length < 6) {
       toast.error("Password must be at least 5 characters");
-      return
+      return;
     }
     const {
       firstName,
@@ -210,7 +210,7 @@ const UsersEdit = () => {
     let updatedData = {
       ...data,
       ...{
-        name: `${firstName} ${lastName}`
+        name: `${firstName} ${lastName}`,
       },
     };
 
@@ -250,7 +250,7 @@ const UsersEdit = () => {
       // console.log("error message:", errorMessage[0][0]);
     }
   });
-
+  console.log(watch(), selectedRole, selectedPermission);
   // Filter out permissions base on the availabe id's inside user section
   const filterPermissionById = (data, idArray) => {
     const result = {};
@@ -279,7 +279,6 @@ const UsersEdit = () => {
     defaultPermission,
     account.permissions
   );
-  // console.log(filteredPermission);
 
   const [parentChecked, setParentChecked] = useState({});
 
@@ -375,7 +374,6 @@ const UsersEdit = () => {
             </div> */}
           </div>
 
-
           <div className="col-xl-12" style={{ overflow: "auto" }}>
             {loading ? (
               <div colSpan={99}>
@@ -404,7 +402,9 @@ const UsersEdit = () => {
                           className="panelButton gray"
                         >
                           <span className="text">Back</span>
-                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-caret-left"></i>
+                          </span>
                         </button>
                         <button
                           type="button"
@@ -413,14 +413,22 @@ const UsersEdit = () => {
                           onClick={handleFormSubmit}
                         >
                           <span className="text">Save</span>
-                          <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                          </span>
                         </button>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
+                <div
+                  className="col-12"
+                  style={{
+                    padding: "25px 23px",
+                    borderBottom: "1px solid #ddd",
+                  }}
+                >
                   <div className="row gx-5">
                     <div className="col-xl-6">
                       <form action="#" className="row px-2">
@@ -433,7 +441,9 @@ const UsersEdit = () => {
                               type="text"
                               name="extension"
                               className="formItem"
-                              {...register("username", { ...requiredValidator })}
+                              {...register("username", {
+                                ...requiredValidator,
+                              })}
                               disabled
                               onKeyDown={restrictToAllowedChars}
                             />
@@ -568,29 +578,26 @@ const UsersEdit = () => {
                             </label>
                           </div>
                           <div className="col-6">
-                            {/* {console.log(watch())} */}
                             <select
                               className="formItem"
                               name=""
                               value={watch().role_id}
                               {...register("role_id", { ...requiredValidator })}
                               onChange={(e) => {
-                                setSelectedRole(
-                                  e.target.value === ""
-                                    ? ""
-                                    : role[e.target.value].name
+                                const roleName = role.find(
+                                  (item) => item.id == e.target.value
                                 );
+
+                                setValue("role_id", e.target.value);
+                                setSelectedRole(roleName.name);
                                 setSelectedPermission(
                                   e.target.value === ""
                                     ? ""
-                                    : role[e.target.value].permissions.map(
-                                      (item) => {
+                                    : roleName.permissions.map((item) => {
                                         return item.permission_id;
-                                      }
-                                    )
+                                      })
                                 );
                               }}
-                              disabled
                             >
                               <option value="" disabled>
                                 Choose Type
@@ -620,7 +627,11 @@ const UsersEdit = () => {
                           </div>
                           <div className="col-6">
                             <div className="row">
-                              <div className={watch().extension_id ? "col-8" : "col-12"}>
+                              <div
+                                className={
+                                  watch().extension_id ? "col-8" : "col-12"
+                                }
+                              >
                                 <select
                                   className="formItem"
                                   name="extension_id"
@@ -640,18 +651,23 @@ const UsersEdit = () => {
                                     })}
                                 </select>
                               </div>
-                              {watch().extension_id &&
+                              {watch().extension_id && (
                                 <div className="col-4">
                                   <button
                                     effect="ripple"
                                     className="panelButton delete"
-                                    onClick={(e) => { e.preventDefault(); setValue("extension_id", null) }}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      setValue("extension_id", null);
+                                    }}
                                   >
                                     <span className="text">Delete</span>
-                                    <span className="icon"><i class="fa-solid fa-xmark"></i></span>
+                                    <span className="icon">
+                                      <i class="fa-solid fa-xmark"></i>
+                                    </span>
                                   </button>
                                 </div>
-                              }
+                              )}
                             </div>
                           </div>
                         </div>
@@ -676,7 +692,10 @@ const UsersEdit = () => {
                     </div>
 
                     {selectedRole && (
-                      <div className="col-xl-6" style={{ borderLeft: "1px solid var(--border-color)" }}>
+                      <div
+                        className="col-xl-6"
+                        style={{ borderLeft: "1px solid var(--border-color)" }}
+                      >
                         <div className="profileView p-0">
                           <div className="profileDetailsHolder position-relative p-0 shadow-none border-0">
                             <div className="col-xl-12">
@@ -696,22 +715,33 @@ const UsersEdit = () => {
                             </div>
                             <div class="accordion permissionListWrapper">
                               {filteredPermission &&
-                                Object.keys(filteredPermission).map((item, key) => (
-                                  <div className="accordion-item" key={key}>
-                                    <h2 class="accordion-header" id={`collapseHeading${key}`}>
-                                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#collapseRole${key}`} aria-expanded="true" aria-controls={`collapse${key}`}>
-                                        <input
-                                          type="checkbox"
-                                          checked={parentChecked[item]}
-                                          onChange={() =>
-                                            handleParentCheckboxChange(item)
-                                          }
-                                        />
+                                Object.keys(filteredPermission).map(
+                                  (item, key) => (
+                                    <div className="accordion-item" key={key}>
+                                      <h2
+                                        class="accordion-header"
+                                        id={`collapseHeading${key}`}
+                                      >
+                                        <button
+                                          class="accordion-button collapsed"
+                                          type="button"
+                                          data-bs-toggle="collapse"
+                                          data-bs-target={`#collapseRole${key}`}
+                                          aria-expanded="true"
+                                          aria-controls={`collapse${key}`}
+                                        >
+                                          <input
+                                            type="checkbox"
+                                            checked={parentChecked[item]}
+                                            onChange={() =>
+                                              handleParentCheckboxChange(item)
+                                            }
+                                          />
 
-                                        <label>{item}</label>
-                                      </button>
-                                    </h2>
-                                    {/* <div className="header d-flex align-items-center">
+                                          <label>{item}</label>
+                                        </button>
+                                      </h2>
+                                      {/* <div className="header d-flex align-items-center">
                                       <div className="col-5">
                                         <input
                                           type="checkbox"
@@ -723,34 +753,42 @@ const UsersEdit = () => {
                                         <label class="ms-2">{item}</label>
                                       </div>
                                     </div> */}
-                                    <div id={`collapseRole${key}`} class="accordion-collapse collapse" aria-labelledby={`collapseHeading${key}`}>
-                                      <div class="accordion-body">
-                                        {filteredPermission[item].map(
-                                          (innerItem, key) => (
-                                            <div
-                                              className="col-xl-2 col-md-4 col-6" style={{ paddingLeft: 30 }}
-                                              key={key}
-                                            >
-                                              <input
-                                                type="checkbox"
-                                                id={`permission-${innerItem.id}`}
-                                                checked={selectedPermission.includes(
-                                                  innerItem.id
-                                                )}
-                                                onChange={() =>
-                                                  handleCheckboxChange(innerItem.id)
-                                                }
-                                              />
-                                              <label className="formLabel ms-2 text-capitalize">
-                                                {innerItem.action}
-                                              </label>
-                                            </div>
-                                          )
-                                        )}
+                                      <div
+                                        id={`collapseRole${key}`}
+                                        class="accordion-collapse collapse"
+                                        aria-labelledby={`collapseHeading${key}`}
+                                      >
+                                        <div class="accordion-body">
+                                          {filteredPermission[item].map(
+                                            (innerItem, key) => (
+                                              <div
+                                                className="col-xl-2 col-md-4 col-6"
+                                                style={{ paddingLeft: 30 }}
+                                                key={key}
+                                              >
+                                                <input
+                                                  type="checkbox"
+                                                  id={`permission-${innerItem.id}`}
+                                                  checked={selectedPermission.includes(
+                                                    innerItem.id
+                                                  )}
+                                                  onChange={() =>
+                                                    handleCheckboxChange(
+                                                      innerItem.id
+                                                    )
+                                                  }
+                                                />
+                                                <label className="formLabel ms-2 text-capitalize">
+                                                  {innerItem.action}
+                                                </label>
+                                              </div>
+                                            )
+                                          )}
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                ))}
+                                  )
+                                )}
                             </div>
                           </div>
                         </div>

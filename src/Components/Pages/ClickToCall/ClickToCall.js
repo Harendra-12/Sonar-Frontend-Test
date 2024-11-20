@@ -1,8 +1,28 @@
 import React, { useState } from 'react'
+import { toast } from 'react-toastify'
+import { generalPostFunction } from '../../GlobalFunction/globalFunction'
 
 function ClickToCall() {
     const [widgetExpanded, setWidgetExpanded] = useState(false)
     const [callFormVisible, setCallFormVisible] = useState(false)
+    const [name, setName] = useState("")
+    const [number, setNumber] = useState("")
+
+    async function handleSubmit() {
+        if (number === "") {
+            toast.error("Please enter number")
+        } else if (number < 99999999 ) {
+            toast.error("Please enter valid number")
+        } else {
+            const parsedData = {
+                destination : number
+            }
+            const apiData = await generalPostFunction("/freeswitch/click-to-call", parsedData)
+            if (apiData.status) {
+                toast.success(apiData.message)
+            }
+        }
+    }
     return (
         <div className="clickToCall">
             <div className="clickToCallButton">
@@ -15,7 +35,7 @@ function ClickToCall() {
                     <div className="wrapper">
                         <button onClick={() => setCallFormVisible(false)}><i className="fa-solid fa-chevron-left"></i></button>
                         <div className="compLogo">
-                            <img src={require('../assets/images/compLogo.png')}></img>
+                            <img src={require('../../assets/images/compLogo.png')} alt=''></img>
                         </div>
                         <div className="text">
                             <h5>AnglePBX</h5>
@@ -42,14 +62,25 @@ function ClickToCall() {
                     {callFormVisible ? <div className="callDialogBox">
                         <div className="formBox">
                             <label className="formLabel">Name</label>
-                            <input type="text" placeholder="Enter your name" />
+                            <input type="text" placeholder="Enter your name" onChange={(e) => setName(e.target.value)} value={name} />
                         </div>
                         <div className="formBox">
                             <label className="formLabel">Number</label>
-                            <input type="tel" placeholder="Enter your Number" />
+                            <input
+                                type="number"
+                                placeholder="Enter your Number"
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    if (value.length <= 15) {
+                                        setNumber(value); // Allow typing up to 15 digits
+                                    }
+                                }}
+                                value={number}
+                            />
+
                         </div>
                         <div>
-                            <button>Call Now!</button>
+                            <button onClick={handleSubmit}>Call Now!</button>
                         </div>
                     </div> : ""}
                 </div>

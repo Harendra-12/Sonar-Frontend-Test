@@ -16,7 +16,10 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
     const { value } = e.target;
     const regex = /^[0-9*#]*$/;
     if (regex.test(value)) {
-      setDestNumber(value);
+        const value = e.target.value;
+        if (value.length <= 15) {
+          setDestNumber(value);
+        }
     }
   };
 
