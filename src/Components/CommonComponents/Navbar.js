@@ -8,6 +8,7 @@ import {
 } from "../GlobalFunction/globalFunction";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import ClickToCall from "./ClickToCall";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -665,6 +666,7 @@ function Navbar() {
           </div>
         </div>
       </section>
+      <ClickToCall />
     </div>
   );
 }

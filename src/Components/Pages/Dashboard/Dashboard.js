@@ -27,7 +27,7 @@ const Dashboard = () => {
   const extension = useSelector((state) => state.extension || []);
   const permissions = useSelector((state) => state.permissions || []);
   console.log(permissions);
-  
+
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -1405,7 +1405,14 @@ const Dashboard = () => {
                               <div class="d-flex flex-wrap justify-content-between align-items-center">
                                 <div class="col-10">
                                   <h5>Billing Expenses</h5>
-                                  <p>{accountDetails?.subscription[0].end_date.split(" ")[0]}</p>
+                                  <p>
+                                    {" "}
+                                    {new Date().getDate()}{" "}
+                                    {new Date().toLocaleString("default", {
+                                      month: "long",
+                                    })}
+                                    , {new Date().getFullYear()}
+                                  </p>
                                 </div>
                                 <div class="col-2" onClick={() => navigate('/card-details')}>
                                   <i class="fa-solid fa-gauge-simple-high" ></i>
