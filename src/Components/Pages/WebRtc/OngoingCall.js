@@ -168,7 +168,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule,setact
 
   return (
     <>
-      <div className="caller">
+      <div className="caller position-relative">
         <div className="container-fluid">
           <div class="row header">
             <div class="col-4"></div>
