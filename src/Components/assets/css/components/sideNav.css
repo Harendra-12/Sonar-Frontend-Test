@@ -66,11 +66,11 @@
 }
 
 #sidenNav .sidenavItems ul .dashboard a {
-    padding: 7px 20px;
+    padding: 7px 20px 7px 0;
 }
 
 #sidenNav .sidenavItems ul li button {
-    color: var(--ui-accent);
+    color: var(--ui-icon);
     text-decoration: none;
     text-align: center;
     border: none;
@@ -78,7 +78,7 @@
     width: 100%;
     display: flex;
     text-transform: uppercase;
-    padding: 7px 15px 7px 20px;
+    padding: 7px 20px 7px 0;
     margin-top: 5px;
     position: relative;
 }
@@ -148,6 +148,47 @@
 
 #sidenNav .sidenavItems .tabItem .itemTitle {
     padding-left: 5px;
+    position: relative;
 }
 
 /* -------- SideNav MainMenu Styles ------- */
+
+#sidenNav .sidenavItems .menuWrapper ul li a {
+    margin-left: 50px;
+    width: auto;
+}
+
+#sidenNav .sidenavItems .menuWrapper ul li a .itemTitle::after {
+    content: '\e3d6';
+    font-family: 'Font Awesome 6 Pro';
+    font-size: 16px;
+    position: absolute;
+    left: -32px;
+    bottom: 0;
+    color: #ffffff80;
+}
+
+#sidenNav .sidenavItems .menuWrapper ul li a .itemTitle::before {
+    /* content: '\f86c';
+    font-family: 'Font Awesome 6 Pro';
+    font-size: 20px;
+    color: #8a8b8c;
+    position: absolute;
+    left: -37.5px;
+    bottom: 14px;
+    transform: rotate(90deg);
+    z-index: 1; */
+
+    content: '';
+    background-color: #8a8b8c;
+    width: 2px;
+    height: 33px;
+    position: absolute;
+    left: -32.5px;
+    bottom: 11px;
+    z-index: 1;
+}
+
+#sidenNav .sidenavItems .menuWrapper ul li:first-child a .itemTitle::before {
+    height: 20px;
+}
