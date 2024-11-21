@@ -409,19 +409,19 @@ function CardAndBilling() {
                               </h5> */}
                               <h5>
                                 ${" "}
-                                {accountDetails.package?.offer_price.split(
+                                {accountDetails.package?.offer_price?.split(
                                   "."
                                 )[0]
-                                  ? accountDetails.package?.offer_price.split(
+                                  ? accountDetails.package?.offer_price?.split(
                                     "."
                                   )[0]
                                   : 0}
                                 .
                                 <sub style={{ fontSize: 14 }}>
-                                  {accountDetails.package?.offer_price.split(
+                                  {accountDetails.package?.offer_price?.split(
                                     "."
                                   )[1]
-                                    ? accountDetails.package?.offer_price.split(
+                                    ? accountDetails.package?.offer_price?.split(
                                       "."
                                     )[1]
                                     : "00"}
@@ -451,7 +451,7 @@ function CardAndBilling() {
                             <div class="d-flex flex-wrap justify-content-between align-items-center">
                               <div class="col-10">
                                 <h5>Wallet Balance</h5>
-                                <p>Created On: {accountDetails?.balance?.created_at.split("T")[0]},{" "}{accountDetails?.balance?.created_at.split("T")[1].split(".")[0]}</p>
+                                <p>Created On: {accountDetails?.balance?.created_at?.split("T")[0]},{" "}{accountDetails?.balance?.created_at?.split("T")[1]?.split(".")[0]}</p>
                               </div>
                               <div
                                 class="col-2"
@@ -474,15 +474,15 @@ function CardAndBilling() {
                             <div class="col-10">
                               <h5>
                                 ${" "}
-                                {accountDetails?.balance?.amount.split(".")[0]
-                                  ? accountDetails?.balance?.amount.split(
+                                {accountDetails?.balance?.amount?.split(".")[0]
+                                  ? accountDetails?.balance?.amount?.split(
                                     "."
                                   )[0]
                                   : 0}
                                 .
                                 <sub style={{ fontSize: 14 }}>
-                                  {accountDetails?.balance?.amount.split(".")[1]
-                                    ? accountDetails?.balance?.amount.split(
+                                  {accountDetails?.balance?.amount?.split(".")[1]
+                                    ? accountDetails?.balance?.amount?.split(
                                       "."
                                     )[1]
                                     : "00"}
@@ -1030,7 +1030,7 @@ function CardAndBilling() {
                                 onClick={() =>
                                   downloadImage(
                                     item.invoice_url,
-                                    `invoice${item.transaction_date.split(" ")[0]
+                                    `invoice${item.transaction_date?.split(" ")[0]
                                     }`
                                   )
                                 }
@@ -1052,7 +1052,7 @@ function CardAndBilling() {
                             <h5>Last Transaction</h5>
                             <p>
                               {
-                                accountDetails?.payments[0].transaction_date.split(
+                                accountDetails?.payments[0].transaction_date?.split(
                                   " "
                                 )[0]
                               }
@@ -1064,7 +1064,7 @@ function CardAndBilling() {
                             onClick={() =>
                               downloadImage(
                                 accountDetails?.payments[0].invoice_url,
-                                `invoice${accountDetails?.payments[0].transaction_date.split(
+                                `invoice${accountDetails?.payments[0].transaction_date?.split(
                                   " "
                                 )[0]
                                 }`
@@ -1086,14 +1086,14 @@ function CardAndBilling() {
                             <h5>
                               ${" "}
                               {
-                                accountDetails?.payments[0].amount_subtotal.split(
+                                accountDetails?.payments[0].amount_subtotal?.split(
                                   "."
                                 )[0]
                               }
                               .
                               <sub style={{ fontSize: 14 }}>
                                 {
-                                  accountDetails?.payments[0].amount_subtotal.split(
+                                  accountDetails?.payments[0].amount_subtotal?.split(
                                     "."
                                   )[1]
                                 }

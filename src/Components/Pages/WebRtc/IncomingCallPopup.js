@@ -317,6 +317,14 @@ function IncomingCallPopup({
                 <div class="circle1"></div>
                 <div class="circle2"></div>
               </button>
+              {isVideoOn && (
+                <button
+                  class="callButton"
+                  onClick={() => handleAnswerCall("video")}
+                >
+                  <i class="fa-duotone fa-video"></i>
+                </button>
+              )}
             </div>
           </div>
         </div>
