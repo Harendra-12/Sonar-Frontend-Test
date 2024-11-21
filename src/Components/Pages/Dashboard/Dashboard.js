@@ -1298,7 +1298,7 @@ const Dashboard = () => {
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
                               <h5>Wallet Info</h5>
-                              {accountDetails?.balance?.created_at ? <p>Created On: {accountDetails?.balance?.created_at.split("T")[0]},{" "}{accountDetails?.balance?.created_at.split("T")[1].split(".")[0]}</p> : ""}
+                              {accountDetails?.balance?.created_at ? <p>Created On: {accountDetails?.balance?.created_at?.split("T")[0]},{" "}{accountDetails?.balance?.created_at?.split("T")[1]?.split(".")[0]}</p> : ""}
                             </div>
                             <div className="col-2" onClick={() => navigate('/card-details')}>
                               <i className="fa-duotone fa-wallet" ></i>
@@ -1311,7 +1311,7 @@ const Dashboard = () => {
                             <div className="col-10">
                               <h5>${accountDetails?.balance?.amount || 0}</h5>
                               {accountDetails?.balance?.updated_at ? <p>
-                                Last recharged: {accountDetails?.balance?.updated_at.split("T")[0]},{" "}{accountDetails?.balance?.updated_at.split("T")[1].split(".")[0]}
+                                Last recharged: {accountDetails?.balance?.updated_at?.split("T")[0]},{" "}{accountDetails?.balance?.updated_at?.split("T")[1]?.split(".")[0]}
                               </p> : ""}
                             </div>
                             <div className="col-2">

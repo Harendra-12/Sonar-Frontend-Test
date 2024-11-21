@@ -20,7 +20,7 @@ import { Rnd } from "react-rnd";
 
 const WebrtcWrapper = () => {
   const [size, setSize] = useState({ width: 300, height: 450 });
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState({ x: 700, y: 300 });
   const { sessions: sipSessions } = useSIPProvider();
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
@@ -214,7 +214,7 @@ const WebrtcWrapper = () => {
 
 
         {/* Draggable Component */}
-        {sessions.length > 0 && callProgressId && selectedModule === "onGoingCall" &&
+        {sessions.length > 0 && callProgressId && selectedModule === "onGoingCall" && sessions.find((session) => session.mode === "video" && session.id === callProgressId) &&
           <Rnd
             size={{ width: size.width, height: size.height }}
             position={{ x: position.x, y: position.y }}
