@@ -88,6 +88,10 @@
     position: relative;
 }
 
+#sidenNav .sidenavItems ul li [data-bs-toggle="collapse"]:hover {
+    background: #35353b87;
+}
+
 #sidenNav .sidenavItems ul li [aria-expanded="false"]::after {
     content: '\f107';
     font-family: 'Font Awesome 6 Pro';

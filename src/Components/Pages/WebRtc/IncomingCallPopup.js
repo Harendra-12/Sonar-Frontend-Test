@@ -287,9 +287,9 @@ function IncomingCallPopup({
       ) : (
         <div
           className="incomingCallPopup minimized"
-          // style={{
-          //   marginBottom: topPosition,
-          // }}
+        // style={{
+        //   marginBottom: topPosition,
+        // }}
         >
           <div className="user">
             <div className="userInfo text-start my-0 px-2">
@@ -298,7 +298,7 @@ function IncomingCallPopup({
             </div>
             <div className="controls px-2">
               <button class="callButton hangup" onClick={decline}>
-                <i class="fa-duotone fa-phone-hangup"></i>
+                <i class="fa-solid fa-phone-hangup"></i>
               </button>
               <button
                 className="callButton bg-primary"
@@ -313,7 +313,7 @@ function IncomingCallPopup({
                 class="callButton"
                 onClick={() => handleAnswerCall("audio")}
               >
-                <i class="fa-duotone fa-phone"></i>
+                <i class="fa-solid fa-phone"></i>
                 <div class="circle1"></div>
                 <div class="circle2"></div>
               </button>
@@ -322,7 +322,7 @@ function IncomingCallPopup({
                   class="callButton"
                   onClick={() => handleAnswerCall("video")}
                 >
-                  <i class="fa-duotone fa-video"></i>
+                  <i class="fa-solid fa-video" style={{ color: '#ff9b00' }}></i>
                 </button>
               )}
             </div>

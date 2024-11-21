@@ -105,7 +105,7 @@ function Navbar() {
 
                     >
                       <div className="iconHolder">
-                        <i class="fa-regular fa-user"></i>
+                        <i class="fa-regular fa-user" style={{ color: '#00ff00' }}></i>
                       </div>
                       <div className="itemTitle">Account Details</div>
                     </button>
@@ -170,7 +170,7 @@ function Navbar() {
 
                     >
                       <div className="iconHolder">
-                        <i class="fa-regular fa-sliders"></i>
+                        <i class="fa-regular fa-sliders" style={{ color: '#ff9b00' }}></i>
                       </div>
                       <div className="itemTitle">Setting</div>
                     </button>
@@ -278,7 +278,7 @@ function Navbar() {
 
                     >
                       <div className="iconHolder">
-                        <i class="fa-regular fa-phone-intercom"></i>
+                        <i class="fa-regular fa-phone-intercom" style={{ color: '#00f1ff' }}></i>
                       </div>
                       <div className="itemTitle">Phone System</div>
                     </button>
@@ -411,7 +411,7 @@ function Navbar() {
 
                       >
                         <div className="iconHolder">
-                          <i class="fa-regular fa-chart-line-up"></i>
+                          <i class="fa-regular fa-chart-line-up" style={{ color: '#f9ff00' }}></i>
                         </div>
                         <div className="itemTitle">Reports</div>
                       </button>
@@ -463,7 +463,7 @@ function Navbar() {
 
                     >
                       <div className="iconHolder">
-                        <i class="fa-regular fa-hashtag"></i>
+                        <i class="fa-regular fa-hashtag" style={{ color: '#ca71ff' }}></i>
                       </div>
                       <div className="itemTitle">Number Management</div>
                     </button>
@@ -527,7 +527,7 @@ function Navbar() {
 
                     >
                       <div className="iconHolder">
-                        <i class="fa-regular fa-file-invoice-dollar"></i>
+                        <i class="fa-regular fa-file-invoice-dollar" style={{ color: '#ff7171' }}></i>
                       </div>
                       <div className="itemTitle">Billing</div>
                     </button>
@@ -643,7 +643,7 @@ function Navbar() {
 
                       >
                         <div className="iconHolder">
-                          <i class="fa-regular fa-users-gear"></i>
+                          <i class="fa-regular fa-users-gear" style={{ color: '#00ff80' }}></i>
                         </div>
                         <div className="itemTitle">Users</div>
                       </NavLink>
@@ -659,8 +659,8 @@ function Navbar() {
                         type="button"
 
                       >
-                        <div className="iconHolder">
-                          <i class="fa-regular fa-users-rectangle"></i>
+                        <div className="iconHolder" >
+                          <i class="fa-regular fa-users-rectangle" style={{ color: '#48dcff' }}></i>
                         </div>
                         <div className="itemTitle">Call Center</div>
                       </NavLink>
@@ -687,7 +687,7 @@ function Navbar() {
 
                       >
                         <div className="iconHolder">
-                          <i class="fa-regular fa-microphone-stand"></i>
+                          <i class="fa-regular fa-microphone-stand" style={{ color: '#ffc848' }}></i>
                         </div>
                         <div className="itemTitle">IVR</div>
                       </NavLink>
@@ -712,7 +712,7 @@ function Navbar() {
 
                     >
                       <div className="iconHolder">
-                        <i class="fa-regular fa-block-brick-fire"></i>
+                        <i class="fa-regular fa-block-brick-fire" style={{ color: '#ff4848' }}></i>
                       </div>
                       <div className="itemTitle">Call Blocking</div>
                     </NavLink>
@@ -727,7 +727,7 @@ function Navbar() {
 
                       >
                         <div className="iconHolder">
-                          <i class="fa-regular fa-headset"></i>
+                          <i class="fa-regular fa-headset" style={{ color: '#00d9ff' }}></i>
                         </div>
                         <div className="itemTitle">WebRtc</div>
                       </a>
@@ -743,7 +743,7 @@ function Navbar() {
 
                     >
                       <div className="iconHolder">
-                        <i class="fa-regular fa-bullseye-pointer"></i>
+                        <i class="fa-regular fa-bullseye-pointer" style={{ color: '#7c62ff' }}></i>
                       </div>
                       <div className="itemTitle">Click To Call</div>
                     </NavLink>
