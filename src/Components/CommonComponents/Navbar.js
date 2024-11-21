@@ -237,7 +237,11 @@ function Navbar() {
                                 to="/mail-settings"
                                 onClick={backToTop}
                                 type="button"
-
+                                className={({ isActive }) =>
+                                  isActive || ["/mail-settings-add", "/mail-settings-edit"].some((path) => window.location.pathname.includes(path))
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
                               >
                                 {/* <div className="iconHolder">
                                   <i class="fa-regular fa-solid fa-envelopes-bulk"></i>
@@ -300,7 +304,11 @@ function Navbar() {
                           {account?.permissions?.includes(176) ||
                             account?.permissions?.includes(178) ? (
                             <li className="tabItem " >
-                              <NavLink to="/extensions">
+                              <NavLink to="/extensions" className={({ isActive }) =>
+                                isActive || ["/extensions-add", "/extensions-edit"].some((path) => window.location.pathname.includes(path))
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }>
                                 {/* <div className="iconHolder">
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
@@ -458,7 +466,7 @@ function Navbar() {
                     <button
                       data-bs-toggle="collapse"
                       data-bs-target="#collapse10"
-                      aria-expanded={isChildActive(["/get-did", "/did-listing", "/port-number", "/did-config", "/did-add"]) ? "true" : "false"}
+                      aria-expanded={isChildActive(["/get-did", "/did-listing", "/port-number", "/did-config", "/did-add", "/port-number-add", "/port-number-edit"]) ? "true" : "false"}
                       aria-controls="collapse10"
 
                     >
@@ -469,7 +477,7 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse10"
-                      className={`accordion-collapse collapse ${isChildActive(["/get-did", "/did-listing", "/port-number", "/did-config", "/did-add"]) ? "show" : ""}`}
+                      className={`accordion-collapse collapse ${isChildActive(["/get-did", "/did-listing", "/port-number", "/did-config", "/did-add", "/port-number-add", "/port-number-edit"]) ? "show" : ""}`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -490,7 +498,11 @@ function Navbar() {
                             <NavLink
                               to="/did-listing"
                               onClick={backToTop}
-                              className="nav-link"
+                              className={({ isActive }) =>
+                                isActive || ["/did-add", "/did-config"].some((path) => window.location.pathname.includes(path))
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
                             >
                               {/* <div className="iconHolder">
                                 <i class="fa-regular fa-hashtag"></i>
@@ -504,7 +516,11 @@ function Navbar() {
                               <NavLink
                                 to="/port-number"
                                 onClick={backToTop}
-                                className="nav-link"
+                                className={({ isActive }) =>
+                                  isActive || ["/port-number-add", "/port-number-edit"].some((path) => window.location.pathname.includes(path))
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
                               >
                                 {/* <div className="iconHolder">
                                   <i class="fa-regular fa-hashtag-lock"></i>
@@ -624,7 +640,11 @@ function Navbar() {
                         to="/ring-groups"
                         onClick={backToTop}
                         type="button"
-
+                        className={({ isActive }) =>
+                          isActive || ["/ring-groups-add", "/ring-groups-edit"].some((path) => window.location.pathname.includes(path))
+                            ? "nav-link active"
+                            : "nav-link"
+                        }
                       >
                         <div className="iconHolder">
                           <i class="fa-regular fa-screen-users"></i>
@@ -640,7 +660,11 @@ function Navbar() {
                         to="/users"
                         onClick={backToTop}
                         type="button"
-
+                        className={({ isActive }) =>
+                          isActive || ["/users-add", "/users-edit"].some((path) => window.location.pathname.includes(path))
+                            ? "nav-link active"
+                            : "nav-link"
+                        }
                       >
                         <div className="iconHolder">
                           <i class="fa-regular fa-users-gear" style={{ color: '#00ff80' }}></i>
@@ -657,7 +681,11 @@ function Navbar() {
                         to="/cal-center-queue"
                         onClick={backToTop}
                         type="button"
-
+                        className={({ isActive }) =>
+                          isActive || ["/cal-center-queue-add", "/cal-center-queue-edit"].some((path) => window.location.pathname.includes(path))
+                            ? "nav-link active"
+                            : "nav-link"
+                        }
                       >
                         <div className="iconHolder" >
                           <i class="fa-regular fa-users-rectangle" style={{ color: '#48dcff' }}></i>
@@ -684,7 +712,11 @@ function Navbar() {
                         to="/ivr"
                         onClick={backToTop}
                         type="button"
-
+                        className={({ isActive }) =>
+                          isActive || ["/ivr-add", "/ivr-edit"].some((path) => window.location.pathname.includes(path))
+                            ? "nav-link active"
+                            : "nav-link"
+                        }
                       >
                         <div className="iconHolder">
                           <i class="fa-regular fa-microphone-stand" style={{ color: '#ffc848' }}></i>
