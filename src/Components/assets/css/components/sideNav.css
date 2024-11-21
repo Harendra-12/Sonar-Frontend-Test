@@ -12,8 +12,9 @@
     transition: all 0.2s ease-in-out;
 }
 
-#sidenNav .sidenavItems [data-bs-toggle="collapse"] {
+#sidenNav .sidenavItems [aria-expanded="true"] {
     background: #35353b87 !important;
+    border-radius: 7px;
 }
 
 #sidenNav .sidenavItems a.active {

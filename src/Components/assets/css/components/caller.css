@@ -18,7 +18,7 @@
     width: calc(100% - (var(--sideNavApp-width) + var(--active-calls-sidePanel-width)));
     height: 100%;
     border-radius: 0;
-    z-index: 1;
+    z-index: 9;
 }
 
 .videoCall .caller .footer {
@@ -142,7 +142,7 @@
     bottom: 10px;
     transform: none;
     min-height: auto;
-    width: 250px;
+    width: 260px;
     padding: 20px;
     border-radius: 10px;
 
@@ -261,13 +261,4 @@
 
 .react-draggable {
     z-index: 999;
-}
-
-.mainContentA .videoCall {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9;
 }

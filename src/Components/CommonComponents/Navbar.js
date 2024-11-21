@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 import React from "react";
 import "../assets/css/style.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   backToTop,
   generalGetFunction,
@@ -30,6 +30,13 @@ function Navbar() {
       navigate("/");
     }
   }
+
+  const location = useLocation();
+
+  const isChildActive = (childPaths) => {
+    return childPaths.some((path) => location.pathname.includes(path));
+  };
+
   return (
     <div>
       <section>
@@ -93,7 +100,7 @@ function Navbar() {
                     <button
                       data-bs-toggle="collapse"
                       data-bs-target="#collapse8"
-                      aria-expanded="false"
+                      aria-expanded={isChildActive(["/my-profile", "/change-password"]) ? "true" : "false"}
                       aria-controls="collapse5"
 
                     >
@@ -104,7 +111,7 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse8"
-                      className="accordion-collapse collapse"
+                      className={`accordion-collapse collapse ${isChildActive(["/my-profile", "/change-password"]) ? "show" : ""}`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -158,7 +165,7 @@ function Navbar() {
                     <button
                       data-bs-toggle="collapse"
                       data-bs-target="#collapse5"
-                      aria-expanded="false"
+                      aria-expanded={isChildActive(["/master", "/roles", "/mail-settings", "/admin/package"]) ? "true" : "false"}
                       aria-controls="collapse5"
 
                     >
@@ -169,7 +176,7 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse5"
-                      className="accordion-collapse collapse"
+                      className={`accordion-collapse collapse ${isChildActive(["/master", "/roles", "/mail-settings", "/admin/package"]) ? "show" : ""}`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -266,7 +273,7 @@ function Navbar() {
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#collapseOne"
-                      aria-expanded="false"
+                      aria-expanded={isChildActive(["/phone-dashboard", "/extensions", "/voice-music"]) ? "true" : "false"}
                       aria-controls="collapseOne"
 
                     >
@@ -277,7 +284,7 @@ function Navbar() {
                     </button>
                     <div
                       id="collapseOne"
-                      className="accordion-collapse collapse"
+                      className={`accordion-collapse collapse ${isChildActive(["/phone-dashboard", "/extensions", "/voice-music"]) ? "show" : ""}`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -399,7 +406,7 @@ function Navbar() {
                       <button
                         data-bs-toggle="collapse"
                         data-bs-target="#collapse4"
-                        aria-expanded="false"
+                        aria-expanded={isChildActive(["/cdr-report"]) ? "true" : "false"}
                         aria-controls="collapse4"
 
                       >
@@ -410,7 +417,7 @@ function Navbar() {
                       </button>
                       <div
                         id="collapse4"
-                        className="accordion-collapse collapse"
+                        className={`accordion-collapse collapse ${isChildActive(["/cdr-report"]) ? "show" : ""}`}
                         data-bs-parent="#sidenNav"
                       >
                         <div className="menuWrapper">
@@ -451,7 +458,7 @@ function Navbar() {
                     <button
                       data-bs-toggle="collapse"
                       data-bs-target="#collapse10"
-                      aria-expanded="false"
+                      aria-expanded={isChildActive(["/get-did", "/did-listing", "/port-number"]) ? "true" : "false"}
                       aria-controls="collapse10"
 
                     >
@@ -462,7 +469,7 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse10"
-                      className="accordion-collapse collapse"
+                      className={`accordion-collapse collapse ${isChildActive(["/get-did", "/did-listing", "/port-number"]) ? "show" : ""}`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -515,7 +522,7 @@ function Navbar() {
                     <button
                       data-bs-toggle="collapse"
                       data-bs-target="#collapse9"
-                      aria-expanded="false"
+                      aria-expanded={isChildActive(["/card-details", "/card-transaction-list", "/wallet-transaction-list"]) ? "true" : "false"}
                       aria-controls="collapse9"
 
                     >
@@ -526,7 +533,7 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse9"
-                      className="accordion-collapse collapse"
+                      className={`accordion-collapse collapse ${isChildActive(["/card-details", "/card-transaction-list", "/wallet-transaction-list"]) ? "show" : ""}`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
