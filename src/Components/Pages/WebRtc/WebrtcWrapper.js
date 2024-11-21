@@ -226,6 +226,10 @@ const WebrtcWrapper = () => {
               });
               setPosition(position);
             }}
+            minWidth={size.width}
+            minHeight={size.height}
+            maxWidth={'600px'}
+            maxHeight={'600px'}
             dragHandleClassName="drag-handle" // Specify draggable area
           >
             <div
