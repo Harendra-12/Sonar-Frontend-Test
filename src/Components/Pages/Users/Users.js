@@ -59,7 +59,7 @@ const Users = () => {
       setLoading(false);
       async function getApi() {
         const apiData = await generalGetFunction(
-          `/user/all?account=${account.account_id}&page=${pageNumber}`
+          `/user/all?page=${pageNumber}`
         );
         if (apiData?.status) {
           setUser(apiData.data);
@@ -77,7 +77,7 @@ const Users = () => {
       setLoading(true);
       async function getApi() {
         const apiData = await generalGetFunction(
-          `/user/all?account=${account.account_id}&page=${pageNumber}`
+          `/user/all?page=${pageNumber}`
         );
         if (apiData?.status) {
           setUser(apiData.data);
@@ -88,7 +88,7 @@ const Users = () => {
           });
           setLoading(false);
         } else {
-          navigate("/");
+          toast.error(apiData.message);
         }
       }
       getApi();

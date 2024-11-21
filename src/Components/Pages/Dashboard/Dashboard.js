@@ -828,7 +828,7 @@ const Dashboard = () => {
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
                               <h5>{account?.domain?.domain_name}</h5>
-                              <p>Created at: {account?.domain?.created_at.split("T")[0]},{" "}{account?.domain?.created_at.split("T")[1].split('.')[0]}</p>
+                              <p>Created at: {account?.domain?.created_at?.split("T")[0]},{" "}{account?.domain?.created_at?.split("T")[1]?.split('.')[0]}</p>
                             </div>
                             <div className="col-2">
                               <img
@@ -861,7 +861,7 @@ const Dashboard = () => {
                                 <div className="col-12">
                                   <ul>
                                     <li>
-                                      Time of Payment <span className="float-end">{accountDetails?.subscription[0]?.updated_at.split("T")[0]}, {" "}{accountDetails?.subscription[0]?.updated_at.split("T")[1].split(".")[0]}</span>
+                                      Time of Payment <span className="float-end">{accountDetails?.subscription[0]?.updated_at?.split("T")[0]}, {" "}{accountDetails?.subscription[0]?.updated_at?.split("T")[1]?.split(".")[0]}</span>
                                     </li>
                                     <li>
                                       Subscription Type <span className="float-end">{accountDetails?.package?.subscription_type ===
@@ -899,10 +899,10 @@ const Dashboard = () => {
                                       Subscription Status <span className="float-end">{accountDetails?.subscription[0]?.status}</span>
                                     </li>
                                     <li>
-                                      Subscription Start <span className="float-end">{accountDetails?.subscription[0]?.start_date.split(" ")[0]},{" "}{accountDetails?.subscription[0]?.start_date.split(" ")[1]}</span>
+                                      Subscription Start <span className="float-end">{accountDetails?.subscription[0]?.start_date?.split(" ")[0]},{" "}{accountDetails?.subscription[0]?.start_date?.split(" ")[1]}</span>
                                     </li>
                                     <li>
-                                      Subscription End <span className="float-end">{accountDetails?.subscription[0]?.end_date.split(" ")[0]},{" "}{accountDetails?.subscription[0]?.end_date.split(" ")[1]}</span>
+                                      Subscription End <span className="float-end">{accountDetails?.subscription[0]?.end_date?.split(" ")[0]},{" "}{accountDetails?.subscription[0]?.end_date?.split(" ")[1]}</span>
                                     </li>
                                   </ul>
                                 </div>
@@ -1212,7 +1212,7 @@ const Dashboard = () => {
                             <div className="col-10">
                               <h5>{accountDetails?.package.name}</h5>
                               <p>Price: ${accountDetails?.package?.regular_price} / {accountDetails?.package?.subscription_type === "annually" ? "Anually" : "Monthly"}</p>
-                              <p>Started On: {accountDetails?.subscription?.[0]?.created_at.split("T")[0]}</p>
+                              <p>Started On: {accountDetails?.subscription?.[0]?.created_at?.split("T")[0]}</p>
                             </div>
                             <div className="col-2">
                               <img
@@ -1230,7 +1230,7 @@ const Dashboard = () => {
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
                               <h5>Upcoming Transaction</h5>
-                              <p>{accountDetails?.subscription[0].end_date.split(" ")[0]}</p>
+                              <p>{accountDetails?.subscription[0].end_date?.split(" ")[0]}</p>
                             </div>
                             <div className="col-2" onClick={() => { navigate('/card-details') }}>
                               <i className="fa-duotone fa-money-check-dollar" ></i>
