@@ -682,7 +682,17 @@ function Call({
                 style={{ height: "calc(100vh - 65px)" }}
                 id="callDetails"
               >
-                {selectedModule == "onGoingCall" ? (
+                <CallDetails
+                      clickedCall={clickedCall}
+                      callHistory={callHistory}
+                      isCustomerAdmin={isCustomerAdmin}
+                      setSelectedModule={setSelectedModule}
+                      isMicOn={isMicOn}
+                      isVideoOn={isVideoOn}
+                      onCall={onCall}
+                      setactivePage={setactivePage}
+                    />
+                {/* {selectedModule == "onGoingCall" ? (
                   callProgress ? (
                     <OngoingCall
                       setactivePage={setactivePage}
@@ -718,7 +728,7 @@ function Call({
                       setactivePage={setactivePage}
                     />
                   )
-                )}
+                )} */}
               </div>
             </div>
           </div>
