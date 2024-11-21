@@ -19,8 +19,8 @@ import ConferenceTest from "./ConferenceTest";
 import { Rnd } from "react-rnd";
 
 const WebrtcWrapper = () => {
-  const [size, setSize] = useState({ width: 500, height: 800 });
-  const [position, setPosition] = useState({ x: 200, y: 300 });
+  const [size, setSize] = useState({ width: 300, height: 450 });
+  const [position, setPosition] = useState({ x: 0, y: 0 });
   const { sessions: sipSessions } = useSIPProvider();
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
@@ -232,25 +232,24 @@ const WebrtcWrapper = () => {
               style={{
                 height: "100%",
                 width: "100%",
-                border: "1px solid #ddd",
                 background: "#f0f0f0",
                 position: "relative",
+                zIndex: "999",
               }}
             >
               {/* Draggable Top Area */}
               <div
                 className="drag-handle"
                 style={{
-                  height: "20%",
-                  background: "#ccc",
-                  cursor: "move",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontWeight: "bold",
+                  position: 'absolute',
+                  top: '35px',
+                  width: '100%',
+                  height: '105px',
+                  zIndex: '1',
+                  background: 'transparent',
+                  cursor: 'move'
                 }}
               >
-                Drag Here
               </div>
               <OngoingCall
                 setactivePage={setactivePage}

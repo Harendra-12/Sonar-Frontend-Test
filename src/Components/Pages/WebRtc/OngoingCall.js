@@ -13,7 +13,7 @@ import {
 import { toast } from "react-toastify";
 import { Dialog, UserAgentCore } from "sip.js/lib/core";
 
-function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule,setactivePage }) {
+function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule, setactivePage }) {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
@@ -168,12 +168,12 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule,setact
 
   return (
     <>
-      <div className="caller position-relative">
+      <div className="audioCall position-relative">
         <div className="container-fluid">
           <div class="row header">
             <div class="col-4"></div>
-            <div class="col-4 text-center">
-              <h5>
+            <div class="col-4 text-center my-auto">
+              <h5 className="duration">
                 {timer?.answeredAt && (
                   <CallTimer
                     isEnd={session.state === SessionState.Terminated}
@@ -183,67 +183,64 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule,setact
               </h5>
             </div>
             <div class="col-4 d-none d-xl-flex justify-content-end">
-              <button class="appPanelButtonColor" effect="ripple">
-                <i class="fa-thin fa-gear"></i>
-              </button>
               <button
-                class="appPanelButtonColor ms-2"
-                effect="ripple"
-                onClick={()=>setSelectedModule("callDetails")}
+                class="clearButton"
+                onClick={() => setSelectedModule("callDetails")}
               >
-                <i class="fa-thin fa-arrows-maximize"></i>
+                <i class="fa-regular fa-horizontal-rule text-white"></i>
               </button>
             </div>
-          </div>
-          <div className="user">
-            <div className="my-auto">
-              <div id="userCallerProfile">
-                <div className="userHolder col-12 mx-auto my-5">
-                  <i className="fa-solid fa-user" />
-                </div>
-                <div className="col-12 text-center">
-                  <h3>{callProgressDestination}</h3>
-                </div>
-                {showParkList && (
-                  <div>
-                    <select
-                      defaultValue={""}
-                      onChange={(e) => setParkingNumber(e.target.value)}
-                    >
-                      <option className="" disabled value={""}>
-                        Select to Park
-                      </option>
-                      <option className="" value={"*1"}>
-                        HR (*1)
-                      </option>
-                      <option className="" value={"*69"}>
-                        Call-return (*69)
-                      </option>
-                      <option className="" value={"*70"}>
-                        DND (*70)
-                      </option>
-                      <option className="" value={"*870"}>
-                        Redial (*870)
-                      </option>
-                      <option className="" value={"*80"}>
-                        Group Delete (*80)
-                      </option>
-                      <option className="" value={"*81"}>
-                        Insertion (*81)
-                      </option>
-                      <option className="" value={"*4000"}>
-                        Voicemail check (*4000)
-                      </option>
-                      <option className="" value={"*99"}>
-                        Direct Voicemail (*99)
-                      </option>
-                    </select>
+            <div className="user">
+              <div className="my-auto">
+                <div id="userCallerProfile">
+                  <div className="userHolder col-12">
+                    <i className="fa-solid fa-user" />
                   </div>
-                )}
+                  <div className="col-12 text-center">
+                    <h3 className="number">{callProgressDestination}</h3>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           <div className="row footer">
+            {showParkList && (
+              <div className="parkList">
+                <select
+                  defaultValue={""}
+                  className="formItem"
+                  onChange={(e) => setParkingNumber(e.target.value)}
+                >
+                  <option className="" disabled value={""}>
+                    Select to Park
+                  </option>
+                  <option className="" value={"*1"}>
+                    HR (*1)
+                  </option>
+                  <option className="" value={"*69"}>
+                    Call-return (*69)
+                  </option>
+                  <option className="" value={"*70"}>
+                    DND (*70)
+                  </option>
+                  <option className="" value={"*870"}>
+                    Redial (*870)
+                  </option>
+                  <option className="" value={"*80"}>
+                    Group Delete (*80)
+                  </option>
+                  <option className="" value={"*81"}>
+                    Insertion (*81)
+                  </option>
+                  <option className="" value={"*4000"}>
+                    Voicemail check (*4000)
+                  </option>
+                  <option className="" value={"*99"}>
+                    Direct Voicemail (*99)
+                  </option>
+                </select>
+              </div>
+            )}
             <button
               onClick={
                 isMuted ? () => muteCall("unmute") : () => muteCall("mute")
@@ -253,7 +250,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule,setact
               }
               effect="ripple"
             >
-              <i className="fa-thin fa-microphone-slash" />
+              <i className="fa-solid fa-microphone-slash" />
             </button>
             <button
               onClick={() => {
@@ -266,11 +263,11 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule,setact
               }
               effect="ripple"
             >
-              <i className="fa-thin fa-grid" />
+              <i className="fa-solid fa-grid" />
             </button>
 
             <button className="appPanelButtonCaller" effect="ripple">
-              <i className="fa-thin fa-user-plus" />
+              <i className="fa-solid fa-user-plus" />
             </button>
             <button
               className={
@@ -283,14 +280,13 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule,setact
                 setAttendShow(!attendShow);
               }}
             >
-              <i className="fa-thin fa-phone-arrow-up-right" />
+              <i className="fa-solid fa-phone-arrow-up-right" />
             </button>
             <button
-              className={` ${
-                showParkList
-                  ? "appPanelButtonCaller active"
-                  : "appPanelButtonCaller"
-              } `}
+              className={` ${showParkList
+                ? "appPanelButtonCaller active"
+                : "appPanelButtonCaller"
+                } `}
               effect="ripple"
               onClick={() => setShowParkList(!showParkList)}
             >
@@ -308,7 +304,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule,setact
               }
               effect="ripple"
             >
-              <i className="fa-thin fa-pause" />
+              <i className="fa-solid fa-pause" />
             </button>
             <button
               onClick={() => {
@@ -319,7 +315,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule,setact
               className="appPanelButtonCaller bg-danger"
               effect="ripple"
             >
-              <i className="fa-thin fa-phone-hangup" />
+              <i className="fa-solid fa-phone-hangup text-white" />
             </button>
           </div>
         </div>
@@ -327,7 +323,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule,setact
           <div id="dialPad" className="inCall">
             <div className="container h-100">
               <div className="row align-items-center justify-content-center h-100">
-                <div className="col-xl-5 col-md-6 col-11 dialPadContainer p-2">
+                <div className="col-10 dialPadContainer p-2">
                   <div className="d-flex justify-content-end pt-1 pb-1 px-2">
                     {/* <div>
                   <i className="fa-light fa-address-book fs-5" />
@@ -352,8 +348,8 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule,setact
                       className="dialerInput"
                       disabled={true}
                       value={destNumber}
-                      // onChange={(e) => setDestNumber(e.target.value)}
-                      // onChange={handleInputChange}
+                    // onChange={(e) => setDestNumber(e.target.value)}
+                    // onChange={handleInputChange}
                     />
                   </div>
 
@@ -485,7 +481,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule,setact
                 // onClick={onSubmit}
                 >
                 <button className="callButton">
-                  <i className="fa-thin fa-phone" />
+                  <i className="fa-solid fa-phone" />
                 </button>
               </div> */}
                 </div>
@@ -500,7 +496,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule,setact
           <div id="dialPad" className="inCall">
             <div className="container h-100">
               <div className="row align-items-center justify-content-center h-100">
-                <div className="col-xl-5 col-md-6 col-11 dialPadContainer p-2">
+                <div className="col-10 dialPadContainer p-2">
                   <div className="d-flex justify-content-end pt-1 pb-1 px-2">
                     {/* <div>
                   <i className="fa-light fa-address-book fs-5" />
@@ -659,7 +655,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule,setact
                         effect="ripple"
                         onClick={handleAttendedTransfer}
                       >
-                        <i className="fa-thin fa-phone-arrow-up-right" />
+                        <i className="fa-solid fa-phone-arrow-up-right" />
                       </button>
                     </div>
                   </div>
@@ -667,7 +663,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule,setact
                 // onClick={onSubmit}
                 >
                 <button className="callButton">
-                  <i className="fa-thin fa-phone" />
+                  <i className="fa-solid fa-phone" />
                 </button>
               </div> */}
                 </div>
