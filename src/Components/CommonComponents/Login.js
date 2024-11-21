@@ -49,7 +49,7 @@ function Login() {
                       <h3>The simplest way to manage your workforce</h3>
                       <p>Enter your credentials to access your control</p>
                       <img src={require('../assets/images/logindash.png')} />
-                      <img className="comp" src={require('../assets/images/temp.png')} />
+                      {/* <img className="comp" src={require('../assets/images/temp.png')} /> */}
                     </div>
                   </div>
                 </div>
@@ -145,15 +145,15 @@ export function LoginComponent() {
                 });
                 // Checking wether user is agent or not if agent then redirect to webrtc else redirect to dashboard
                 if (profile.data.user_role?.roles?.name === "Agent") {
-                  if(profile.data.extension_id===null){
+                  if (profile.data.extension_id === null) {
                     toast.error("You are not assigned to any extension");
                     setLoading(false);
-                  }else{
+                  } else {
                     setLoading(false);
                     window.scrollTo(0, 0);
                     navigate("/webrtc");
                   }
-                 
+
                 } else {
                   setLoading(false);
                   window.scrollTo(0, 0);
