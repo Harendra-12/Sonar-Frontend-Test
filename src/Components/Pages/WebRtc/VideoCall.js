@@ -30,9 +30,9 @@ function VideoCall({
   const {
     isHeld = false,
     isMuted = false,
-    hangup = () => {},
-    hold = () => {},
-    unhold = () => {},
+    hangup = () => { },
+    hold = () => { },
+    unhold = () => { },
   } = sessionCallData;
 
   useEffect(() => {
@@ -259,7 +259,7 @@ function VideoCall({
   // console.log("sessionssss", session);
   return (
     <main className="mainContentA videoCall">
-      <div className={minimize ? "caller minimize" : "caller"}>
+      <div className={minimize ? "caller minimize mt-0" : "caller mt-0"}>
         <div className="container-fluid">
           {minimize ? (
             <div onClick={handleMaximize} className="appPanelButtonCaller">

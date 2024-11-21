@@ -12,10 +12,14 @@
     transition: all 0.2s ease-in-out;
 }
 
+#sidenNav .sidenavItems [data-bs-toggle="collapse"] {
+    background: #35353b87 !important;
+}
+
 #sidenNav .sidenavItems a.active {
-    background: #35353b;
+    background: #35353b !important;
     border-radius: 7px;
-    color: #fff;
+    /* color: #fff; */
 }
 
 #sidenNav .sidenavItems .active .accordion-collapse.collapse {
@@ -69,7 +73,7 @@
     padding: 7px 20px 7px 0;
 }
 
-#sidenNav .sidenavItems ul li button {
+#sidenNav .sidenavItems ul li [data-bs-toggle="collapse"] {
     color: var(--ui-icon);
     text-decoration: none;
     text-align: center;
@@ -83,7 +87,7 @@
     position: relative;
 }
 
-#sidenNav .sidenavItems ul li button[aria-expanded="false"]::after {
+#sidenNav .sidenavItems ul li [aria-expanded="false"]::after {
     content: '\f107';
     font-family: 'Font Awesome 6 Pro';
     position: absolute;
@@ -94,7 +98,7 @@
     font-size: 14px;
 }
 
-#sidenNav .sidenavItems ul li button[aria-expanded="true"]::after {
+#sidenNav .sidenavItems ul li [aria-expanded="true"]::after {
     content: '\f106';
     font-family: 'Font Awesome 6 Pro';
     position: absolute;
@@ -190,5 +194,5 @@
 }
 
 #sidenNav .sidenavItems .menuWrapper ul li:first-child a .itemTitle::before {
-    height: 20px;
+    height: 10px;
 }
