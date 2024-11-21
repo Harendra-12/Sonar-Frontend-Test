@@ -273,7 +273,7 @@ function Navbar() {
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#collapseOne"
-                      aria-expanded={isChildActive(["/phone-dashboard", "/extensions", "/voice-music"]) ? "true" : "false"}
+                      aria-expanded={isChildActive(["/phone-dashboard", "/extensions", "/voice-music", "/extensions-edit", "/extensions-add", "/device-provisioning-add"]) ? "true" : "false"}
                       aria-controls="collapseOne"
 
                     >
@@ -284,7 +284,7 @@ function Navbar() {
                     </button>
                     <div
                       id="collapseOne"
-                      className={`accordion-collapse collapse ${isChildActive(["/phone-dashboard", "/extensions", "/voice-music"]) ? "show" : ""}`}
+                      className={`accordion-collapse collapse ${isChildActive(["/phone-dashboard", "/extensions", "/voice-music", "/extensions-edit", "/extensions-add", "/device-provisioning-add"]) ? "show" : ""}`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -458,7 +458,7 @@ function Navbar() {
                     <button
                       data-bs-toggle="collapse"
                       data-bs-target="#collapse10"
-                      aria-expanded={isChildActive(["/get-did", "/did-listing", "/port-number"]) ? "true" : "false"}
+                      aria-expanded={isChildActive(["/get-did", "/did-listing", "/port-number", "/did-config", "/did-add"]) ? "true" : "false"}
                       aria-controls="collapse10"
 
                     >
@@ -469,7 +469,7 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse10"
-                      className={`accordion-collapse collapse ${isChildActive(["/get-did", "/did-listing", "/port-number"]) ? "show" : ""}`}
+                      className={`accordion-collapse collapse ${isChildActive(["/get-did", "/did-listing", "/port-number", "/did-config", "/did-add"]) ? "show" : ""}`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">

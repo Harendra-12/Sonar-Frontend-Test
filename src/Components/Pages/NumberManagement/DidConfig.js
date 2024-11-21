@@ -586,6 +586,98 @@ const DidConfig = () => {
                           </div>)}
                       </div>
 
+                      <div className="formRow col-xl-3 align-items-start">
+                        <div className="formLabel">
+                          <label htmlFor="selectFormRow">Spam Filter</label>
+                          <label htmlFor="data" className="formItemDesc">
+                            Select the type of Spam Filter
+                          </label>
+                        </div>
+                        <div className="col-6">
+                          <div className="row">
+                            <div className={`col-4 pe-2 ms-auto`}>
+                              <div class="formLabel">
+                                <label>Type</label>
+                              </div>
+                              <select
+                                className="formItem"
+                                name=""
+                                defaultValue="false"
+                                id="selectFormRow"
+                              >
+                                <option value="true">DTMF</option>
+                              </select>
+                            </div>
+
+                            <div className="col-4 pe-2">
+                              <div class="formLabel">
+                                <Tippy content="Input in Days, Max 5">
+                                  <label>
+                                    Length{" "}
+                                    <span
+                                      style={{ color: "var(--color-subtext)" }}
+                                    >
+                                    </span>
+                                  </label>
+                                </Tippy>
+                              </div>
+                              <select
+                                className="formItem"
+                                name=""
+                                defaultValue="false"
+                                id="selectFormRow"
+                              >
+                                <option value={0}>0</option>
+                                <option value={1}>1</option>
+                                <option value={2}>2</option>
+                                <option value={3}>3</option>
+                                <option value={4}>4</option>
+                                <option value={5}>5</option>
+                              </select>
+                              {/* {errors.stick_agent_expires && (
+                            <ErrorMessage
+                              text={errors.stick_agent_expires.message}
+                            />
+                          )} */}
+                            </div>
+                            <div className="col-4">
+                              <div className="formLabel">
+                                <label htmlFor="selectFormRow">
+                                  Retries
+                                </label>
+                              </div>
+                              <select
+                                className="formItem"
+                                name=""
+                                id="selectFormRow"
+                              >
+                                <option value={0}>0</option>
+                                <option value={1}>1</option>
+                                <option value={2}>2</option>
+                                <option value={3}>3</option>
+                              </select>
+                            </div>
+                            <div className="col-12">
+                              <div className="formLabel">
+                                <label htmlFor="selectFormRow">
+                                  Retry File
+                                </label>
+                              </div>
+                              <select
+                                className="formItem"
+                                name=""
+                                id="selectFormRow"
+                              >
+                                <option value={0}>0</option>
+                                <option value={1}>1</option>
+                                <option value={2}>2</option>
+                                <option value={3}>3</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
 
                     </form>
                   </div>
