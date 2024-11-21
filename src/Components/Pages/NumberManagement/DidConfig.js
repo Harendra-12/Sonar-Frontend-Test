@@ -520,7 +520,7 @@ const DidConfig = () => {
                             Select the status of Sticky Agent
                           </label>
                         </div>
-                        <div className="col-2 pe-2 ms-auto">
+                        <div className={`col-${watch().sticky_agent_enable == "true" ? "2" : "6"} pe-2 ms-auto`}>
                           <div class="formLabel">
                             <label>Status</label>
                           </div>
@@ -536,61 +536,54 @@ const DidConfig = () => {
                           </select>
                         </div>
 
-                        <div className="col-2 pe-2" style={{ width: "10%" }}>
-                          {(watch().sticky_agent_enable == true ||
-                            watch().sticky_agent_enable == "true") && (
-                              <>
-                                <div class="formLabel">
-                                  <Tippy content="Input in Days, Max 99">
-                                    <label>
-                                      Duration{" "}
-                                      <span
-                                        style={{ color: "var(--color-subtext)" }}
-                                      >
-                                      </span>
-                                    </label>
-                                  </Tippy>
-                                </div>
-                                <input
-                                  type="number"
-                                  name="forward_to"
-                                  className="formItem"
-                                  {...register(
-                                    "stick_agent_expires",
-                                    rangeValidator(1, 99)
-                                  )}
-                                />
-                                {errors.stick_agent_expires && (
-                                  <ErrorMessage
-                                    text={errors.stick_agent_expires.message}
-                                  />
-                                )}
-                              </>
+                        {(watch().sticky_agent_enable == true ||
+                          watch().sticky_agent_enable == "true") && (<div className="col-2 pe-2" style={{ width: "10%" }}>
+                            <div class="formLabel">
+                              <Tippy content="Input in Days, Max 99">
+                                <label>
+                                  Duration{" "}
+                                  <span
+                                    style={{ color: "var(--color-subtext)" }}
+                                  >
+                                  </span>
+                                </label>
+                              </Tippy>
+                            </div>
+                            <input
+                              type="number"
+                              name="forward_to"
+                              className="formItem"
+                              {...register(
+                                "stick_agent_expires",
+                                rangeValidator(1, 99)
+                              )}
+                            />
+                            {errors.stick_agent_expires && (
+                              <ErrorMessage
+                                text={errors.stick_agent_expires.message}
+                              />
                             )}
-                        </div>
-                        <div className="col-2" style={{ width: "23.3%" }}>
-                          {(watch().sticky_agent_enable == true ||
-                            watch().sticky_agent_enable == "true") && (
-                              <>
-                                <div className="formLabel">
-                                  <label htmlFor="selectFormRow">
-                                    Agent Type
-                                  </label>
-                                </div>
-                                <select
-                                  className="formItem"
-                                  name=""
-                                  id="selectFormRow"
-                                  {...register("stick_agent_type")}
-                                >
-                                  <option selected="" value="last_spoken">
-                                    Last Spoken
-                                  </option>
-                                  <option value="longest_time">Longest Time</option>
-                                </select>
-                              </>
-                            )}
-                        </div>
+
+                          </div>)}
+                        {(watch().sticky_agent_enable == true ||
+                          watch().sticky_agent_enable == "true") && (<div className="col-2" style={{ width: "23.3%" }}>
+                            <div className="formLabel">
+                              <label htmlFor="selectFormRow">
+                                Agent Type
+                              </label>
+                            </div>
+                            <select
+                              className="formItem"
+                              name=""
+                              id="selectFormRow"
+                              {...register("stick_agent_type")}
+                            >
+                              <option selected="" value="last_spoken">
+                                Last Spoken
+                              </option>
+                              <option value="longest_time">Longest Time</option>
+                            </select>
+                          </div>)}
                       </div>
 
 
