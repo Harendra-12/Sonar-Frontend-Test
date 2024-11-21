@@ -143,7 +143,7 @@ function IncomingCallPopup({
     }
 
     setSelectedModule("onGoingCall");
-    setactivePage("call");
+    // setactivePage("call");
     dispatch({
       type: "SET_CALLPROGRESSID",
       callProgressId: sessionId,

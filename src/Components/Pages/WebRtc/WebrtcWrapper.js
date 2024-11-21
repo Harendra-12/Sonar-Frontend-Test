@@ -16,9 +16,11 @@ import Messages from "./Messages";
 import VideoCall from "./VideoCall";
 import ConferenceCall from "./ConferenceCall";
 import ConferenceTest from "./ConferenceTest";
-import ConferenceConfig from "./ConferenceConfig";
+import { Rnd } from "react-rnd";
 
 const WebrtcWrapper = () => {
+  const [size, setSize] = useState({ width: 500, height: 800 });
+  const [position, setPosition] = useState({ x: 200, y: 300 });
   const { sessions: sipSessions } = useSIPProvider();
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
@@ -210,13 +212,64 @@ const WebrtcWrapper = () => {
           isVideoOn={isVideoOn}
         />
 
+
+        {/* Draggable Component */}
+        {sessions.length > 0 && callProgressId && selectedModule === "onGoingCall" &&
+          <Rnd
+            size={{ width: size.width, height: size.height }}
+            position={{ x: position.x, y: position.y }}
+            onDragStop={(e, d) => setPosition({ x: d.x, y: d.y })}
+            onResizeStop={(e, direction, ref, delta, position) => {
+              setSize({
+                width: ref.style.width,
+                height: ref.style.height,
+              });
+              setPosition(position);
+            }}
+            dragHandleClassName="drag-handle" // Specify draggable area
+          >
+            <div
+              style={{
+                height: "100%",
+                width: "100%",
+                border: "1px solid #ddd",
+                background: "#f0f0f0",
+                position: "relative",
+              }}
+            >
+              {/* Draggable Top Area */}
+              <div
+                className="drag-handle"
+                style={{
+                  height: "20%",
+                  background: "#ccc",
+                  cursor: "move",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontWeight: "bold",
+                }}
+              >
+                Drag Here
+              </div>
+              <OngoingCall
+                setactivePage={setactivePage}
+                key={callProgressId}
+                id={callProgressId}
+                setHangupRefresh={setHangupRefresh}
+                hangupRefresh={hangupRefresh}
+                setSelectedModule={setSelectedModule} />
+            </div>
+          </Rnd>
+        }
+
         {sessions.length > 0 && Object.keys(sessions).length > 0 ? (
           <>
             <section
               className="activeCallsSidePanel"
               onClick={() => {
                 setSelectedModule("onGoingCall");
-                setactivePage("call");
+                // setactivePage("call");
               }}
             >
               <div className="container">

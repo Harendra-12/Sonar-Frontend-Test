@@ -189,7 +189,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule,setact
               <button
                 class="appPanelButtonColor ms-2"
                 effect="ripple"
-                onClick="openMaximizeView()"
+                onClick={()=>setSelectedModule("callDetails")}
               >
                 <i class="fa-thin fa-arrows-maximize"></i>
               </button>
