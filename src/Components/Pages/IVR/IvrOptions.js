@@ -154,7 +154,7 @@ function IvrOptions() {
           </div> */}
         </div>
 
-        <div className="col-xl-12" style={{ overflow: "auto" }}>
+        <div className="col-xl-12" >
 
           <div className="overviewTableWrapper">
             <div className="overviewTableChild">

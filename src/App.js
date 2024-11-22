@@ -133,7 +133,7 @@ function App() {
   // const dispatch = useDispatch();
   // const domainRefresh = useSelector((state) => state.domainRefresh);
   const account = useSelector((state) => state.account);
-  const permission = account.permissions;
+  const permission = account?.permissions;
   Socket();
 
   // Unlock this if want push notification add account edit here if id is available
@@ -188,7 +188,7 @@ function App() {
           <Route
             path="/ring-groups"
             element={
-              permission.includes(344) || permission.includes(346) ? (
+              permission?.includes(344) || permission?.includes(346) ? (
                 <RingGroups />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -198,7 +198,7 @@ function App() {
           <Route
             path="/ring-groups-add"
             element={
-              permission.includes(346) ? (
+              permission?.includes(346) ? (
                 <RingGroupAdd />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -208,7 +208,7 @@ function App() {
           <Route
             path="/ring-groups-edit"
             element={
-              permission.includes(345) ? (
+              permission?.includes(345) ? (
                 <RingGroupEdit />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -222,7 +222,7 @@ function App() {
           <Route
             path="/users"
             element={
-              permission.includes(440) || permission.includes(442) ? (
+              permission?.includes(440) || permission?.includes(442) ? (
                 <Users />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -232,7 +232,7 @@ function App() {
           <Route
             path="/users-add"
             element={
-              permission.includes(442) ? (
+              permission?.includes(442) ? (
                 <UsersAdd />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -242,7 +242,7 @@ function App() {
           <Route
             path="/users-edit"
             element={
-              permission.includes(443) ? (
+              permission?.includes(443) ? (
                 <UsersEdit />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -256,7 +256,7 @@ function App() {
           <Route
             path="/extensions"
             element={
-              permission.includes(176) || permission.includes(178) ? (
+              permission?.includes(176) || permission?.includes(178) ? (
                 <Extensions />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -266,7 +266,7 @@ function App() {
           <Route
             path="/extensions-add"
             element={
-              permission.includes(178) ? (
+              permission?.includes(178) ? (
                 <ExtensionsAdd />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -276,7 +276,7 @@ function App() {
           <Route
             path="/extensions-edit"
             element={
-              permission.includes(177) ? (
+              permission?.includes(177) ? (
                 <ExtensionsEdit />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -327,7 +327,7 @@ function App() {
           <Route
             path="/cdr-report"
             element={
-              permission.includes(86) ? (
+              permission?.includes(86) ? (
                 <CdrReport />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -407,7 +407,7 @@ function App() {
           <Route
             path="/cal-center-queue"
             element={
-              permission.includes(62) || permission.includes(64) ? (
+              permission?.includes(62) || permission?.includes(64) ? (
                 <CallCenterQueue />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -417,7 +417,7 @@ function App() {
           <Route
             path="/cal-center-queue-edit"
             element={
-              permission.includes(63) ? (
+              permission?.includes(63) ? (
                 <CallCenterQueueEdit />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -427,7 +427,7 @@ function App() {
           <Route
             path="/cal-center-queue-add"
             element={
-              permission.includes(64) ? (
+              permission?.includes(64) ? (
                 <CallCenterQueueAdd />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -534,7 +534,7 @@ function App() {
           <Route
             path="/ivr-add"
             element={
-              permission.includes(232) ? (
+              permission?.includes(232) ? (
                 <IvrAdd />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -544,7 +544,7 @@ function App() {
           <Route
             path="/ivr"
             element={
-              permission.includes(230) || permission.includes(232) ? (
+              permission?.includes(230) || permission?.includes(232) ? (
                 <IvrListing />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -554,7 +554,7 @@ function App() {
           <Route
             path="/ivr-edit"
             element={
-              permission.includes(231) ? (
+              permission?.includes(231) ? (
                 <IvrEdit />
               ) : (
                 <Navigate to="/dashboard" replace />

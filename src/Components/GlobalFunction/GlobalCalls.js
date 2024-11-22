@@ -124,7 +124,7 @@ function GlobalCalls() {
   // Getting call center details
   useEffect(() => {
     async function getData() {
-      const apiData = await generalGetFunction(`/call-center-queues`);
+      const apiData = await generalGetFunction(`/call-center-queues/all`);
       if (apiData?.status) {
         dispatch({
           type: "SET_CALLCENTER",
