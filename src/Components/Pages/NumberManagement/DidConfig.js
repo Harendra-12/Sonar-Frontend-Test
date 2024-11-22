@@ -634,6 +634,27 @@ const DidConfig = () => {
                             {watch().spam_filter_type === "3" && <>
                               <div className="col-4 pe-2">
                                 <div class="formLabel">
+                                    <label>
+                                      DTMF type{" "}
+                                      <span
+                                        style={{ color: "var(--color-subtext)" }}
+                                      >
+                                      </span>
+                                    </label>
+                                </div>
+                                <select
+                                  className="formItem"
+                                  name=""
+                                  defaultValue="false"
+                                  id="selectFormRow"
+                                  {...register("dtmf_type")}
+                                >
+                                  <option value="random_digit">Random Digit</option>
+                                  <option value="last_caller_id_digit">Caller last digit</option>
+                                </select>
+                              </div>
+                              <div className="col-4 pe-2">
+                                <div class="formLabel">
                                   <Tippy content="Input in Days, Max 5">
                                     <label>
                                       Length{" "}
@@ -675,7 +696,7 @@ const DidConfig = () => {
                                   <option value={3}>3</option>
                                 </select>
                               </div>
-                              <div className="col-12">
+                              <div className="col-6">
                                 <div className="formLabel">
                                   <label htmlFor="selectFormRow">
                                     Retry File
