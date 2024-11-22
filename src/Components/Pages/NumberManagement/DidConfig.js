@@ -74,6 +74,26 @@ const DidConfig = () => {
           ? false
           : true || ""
       );
+      setValue(
+        "spam_filter_type",
+        locationData.configuration.spam_filter_type || "1"
+      );
+      setValue(
+        "dtmf_type",
+        locationData.configuration.dtmf_type || "random_digit"
+      );
+      setValue(
+        "dtmf_length",
+        locationData.configuration.dtmf_length || "3"
+      );
+      setValue(
+        "dtmf_retries",
+        locationData.configuration.dtmf_retries || "3"
+      );
+      setValue(
+        "dtmf_retry_file_sound	",
+        locationData.configuration.dtmf_retry_file_sound || "1"
+      );
     } else {
       setValue("usages", "extension" || []);
       // setDataAvailable(true);
@@ -595,7 +615,7 @@ const DidConfig = () => {
                         </div>
                         <div className="col-6">
                           <div className="row">
-                            <div className={`col-4 pe-2 ms-auto`}>
+                            <div className={`col-${watch().spam_filter_type == "1" || watch().spam_filter_type == "2" ? "12" : "4"} pe-2 ms-auto`}>
                               <div class="formLabel">
                                 <label>Type</label>
                               </div>
@@ -604,76 +624,83 @@ const DidConfig = () => {
                                 name=""
                                 defaultValue="false"
                                 id="selectFormRow"
+                                {...register("spam_filter_type")}
                               >
-                                <option value="true">DTMF</option>
+                                <option value="1">Disable</option>
+                                <option value="2">Call Screening</option>
+                                <option value="3">DTMF Input</option>
                               </select>
                             </div>
-
-                            <div className="col-4 pe-2">
-                              <div class="formLabel">
-                                <Tippy content="Input in Days, Max 5">
-                                  <label>
-                                    Length{" "}
-                                    <span
-                                      style={{ color: "var(--color-subtext)" }}
-                                    >
-                                    </span>
+                            {watch().spam_filter_type === "3" && <>
+                              <div className="col-4 pe-2">
+                                <div class="formLabel">
+                                  <Tippy content="Input in Days, Max 5">
+                                    <label>
+                                      Length{" "}
+                                      <span
+                                        style={{ color: "var(--color-subtext)" }}
+                                      >
+                                      </span>
+                                    </label>
+                                  </Tippy>
+                                </div>
+                                <select
+                                  className="formItem"
+                                  name=""
+                                  defaultValue="false"
+                                  id="selectFormRow"
+                                  {...register("dtmf_length")}
+                                >
+                                  <option value={1}>1</option>
+                                  <option value={2}>2</option>
+                                  <option value={3}>3</option>
+                                  <option value={4}>4</option>
+                                  <option value={5}>5</option>
+                                </select>
+                              </div>
+                              <div className="col-4">
+                                <div className="formLabel">
+                                  <label htmlFor="selectFormRow">
+                                    Retries
                                   </label>
-                                </Tippy>
+                                </div>
+                                <select
+                                  className="formItem"
+                                  name=""
+                                  id="selectFormRow"
+                                  {...register("dtmf_retries")}
+                                >
+                                  <option value={1}>1</option>
+                                  <option value={2}>2</option>
+                                  <option value={3}>3</option>
+                                </select>
                               </div>
-                              <select
-                                className="formItem"
-                                name=""
-                                defaultValue="false"
-                                id="selectFormRow"
-                              >
-                                <option value={0}>0</option>
-                                <option value={1}>1</option>
-                                <option value={2}>2</option>
-                                <option value={3}>3</option>
-                                <option value={4}>4</option>
-                                <option value={5}>5</option>
-                              </select>
-                              {/* {errors.stick_agent_expires && (
-                            <ErrorMessage
-                              text={errors.stick_agent_expires.message}
-                            />
-                          )} */}
-                            </div>
-                            <div className="col-4">
-                              <div className="formLabel">
-                                <label htmlFor="selectFormRow">
-                                  Retries
-                                </label>
+                              <div className="col-12">
+                                <div className="formLabel">
+                                  <label htmlFor="selectFormRow">
+                                    Retry File
+                                  </label>
+                                </div>
+                                <select
+                                  className="formItem"
+                                  name=""
+                                  id="selectFormRow"
+                                  {...register("dtmf_retry_file_sound")}
+                                >
+                                  <option value={1}>Select Invalid music file</option>
+                                  {holdMusic &&
+                                    holdMusic.map((ring) => {
+                                      return (
+                                        <option key={ring.id} value={ring.id}>
+                                          {ring.name}
+                                        </option>
+                                      );
+                                    })}
+                                </select>
                               </div>
-                              <select
-                                className="formItem"
-                                name=""
-                                id="selectFormRow"
-                              >
-                                <option value={0}>0</option>
-                                <option value={1}>1</option>
-                                <option value={2}>2</option>
-                                <option value={3}>3</option>
-                              </select>
-                            </div>
-                            <div className="col-12">
-                              <div className="formLabel">
-                                <label htmlFor="selectFormRow">
-                                  Retry File
-                                </label>
-                              </div>
-                              <select
-                                className="formItem"
-                                name=""
-                                id="selectFormRow"
-                              >
-                                <option value={0}>0</option>
-                                <option value={1}>1</option>
-                                <option value={2}>2</option>
-                                <option value={3}>3</option>
-                              </select>
-                            </div>
+                            </>}
+
+
                           </div>
                         </div>
                       </div>

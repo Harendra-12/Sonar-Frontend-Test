@@ -91,6 +91,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
     }
     getData();
   }, [contactRefresh]);
+ 
 
   useEffect(() => {
     if (sipProvider && sipProvider.connectStatus === CONNECT_STATUS.CONNECTED) {
