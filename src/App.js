@@ -83,7 +83,7 @@ import { ToastContainer } from "react-toastify";
 import CallCenterSettings from "./Components/Pages/CallCenter/CallCenterSettings";
 import RingGroupSettings from "./Components/Pages/RingGroups/RingGroupSettings";
 import DidConfig from "./Components/Pages/NumberManagement/DidConfig";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Variable from "./Components/Pages/Variable/Variable";
 import PortNumber from "./Components/Pages/NumberManagement/PortNumber";
 import PortNumberAdd from "./Components/Pages/NumberManagement/PortNumberAdd";
@@ -132,9 +132,8 @@ const DispatchSetter = () => {
 function App() {
   // const dispatch = useDispatch();
   // const domainRefresh = useSelector((state) => state.domainRefresh);
-  // const loading = useSelector((state) => state.loading);
-  // console.log("this is loading", loading);
-
+  const account = useSelector((state) => state.account);
+  const permission = account.permissions;
   Socket();
 
   // Unlock this if want push notification add account edit here if id is available
@@ -170,30 +169,120 @@ function App() {
           <Route element={<ProtectedRoute />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/temporary-dashboard" element={<TempDashboard />} />
-          <Route path="/my-profile" element={<Profile />} />
+          <Route
+            path="/my-profile"
+            element={
+              permission?.includes(8) ? (
+                <Profile />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
           <Route path="/master" element={<Master />} />
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/phone-dashboard" element={<PhoneDashboard />} />
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
           {/* Ring Groups Path Start */}
-          <Route path="/ring-groups" element={<RingGroups />} />
-          <Route path="/ring-groups-add" element={<RingGroupAdd />} />
-          <Route path="/ring-groups-edit" element={<RingGroupEdit />} />
+          <Route
+            path="/ring-groups"
+            element={
+              permission.includes(344) || permission.includes(346) ? (
+                <RingGroups />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
+          <Route
+            path="/ring-groups-add"
+            element={
+              permission.includes(346) ? (
+                <RingGroupAdd />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
+          <Route
+            path="/ring-groups-edit"
+            element={
+              permission.includes(345) ? (
+                <RingGroupEdit />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
           <Route path="/ring-groups-settings" element={<RingGroupSettings />} />
           {/* Ring Groups Path End */}
 
           {/* Users Path Start */}
-          <Route path="/users" element={<Users />} />
-          <Route path="/users-add" element={<UsersAdd />} />
-          <Route path="/users-edit" element={<UsersEdit />} />
+          <Route
+            path="/users"
+            element={
+              permission.includes(440) || permission.includes(442) ? (
+                <Users />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
+          <Route
+            path="/users-add"
+            element={
+              permission.includes(442) ? (
+                <UsersAdd />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
+          <Route
+            path="/users-edit"
+            element={
+              permission.includes(443) ? (
+                <UsersEdit />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
           <Route path="/users-import" element={<UsersImport />} />
           {/* Users Path End */}
 
           {/* Extensions Path Start */}
-          <Route path="/extensions" element={<Extensions />} />
-          <Route path="/extensions-add" element={<ExtensionsAdd />} />
-          <Route path="/extensions-edit" element={<ExtensionsEdit />} />
+          <Route
+            path="/extensions"
+            element={
+              permission.includes(176) || permission.includes(178) ? (
+                <Extensions />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
+          <Route
+            path="/extensions-add"
+            element={
+              permission.includes(178) ? (
+                <ExtensionsAdd />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
+          <Route
+            path="/extensions-edit"
+            element={
+              permission.includes(177) ? (
+                <ExtensionsEdit />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
           <Route path="/extensions-export" element={<ExtensionsExport />} />
           <Route path="/extensions-import" element={<ExtensionsImport />} />
           <Route path="/extension-summary" element={<ExtensionSummary />} />
@@ -235,7 +324,16 @@ function App() {
           <Route path="/call-center" element={<CallCenterPage />} />
           <Route path="/all-voicemails" element={<AllVoiceMailsPage />} />
           <Route path="/ongoing-call" element={<OngoingCallPage />} /> */}
-          <Route path="/cdr-report" element={<CdrReport />} />
+          <Route
+            path="/cdr-report"
+            element={
+              permission.includes(86) ? (
+                <CdrReport />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
           {/* <Route path="/efax" element={<EFax />} />
           <Route path="/call-dashboard" element={<CallDashboardPage />} /> */}
           {/* <Route path="/video-call" element={<VideoCall />} />
@@ -263,9 +361,36 @@ function App() {
           <Route path="/get-did" element={<GetDid />} />
           <Route path="/did-listing" element={<DidListing />} />
           <Route path="/did-config" element={<DidConfig />} />
-          <Route path="/port-number" element={<PortNumber />} />
-          <Route path="/port-number-add" element={<PortNumberAdd />} />
-          <Route path="/port-number-edit" element={<PortNumberEdit />} />
+          <Route
+            path="/port-number"
+            element={
+              permission?.includes(308) || permission?.includes(310) ? (
+                <PortNumber />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
+          <Route
+            path="/port-number-add"
+            element={
+              permission?.includes(310) ? (
+                <PortNumberAdd />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
+          <Route
+            path="/port-number-edit"
+            element={
+              permission?.includes(309) ? (
+                <PortNumberEdit />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
           <Route path="/did-add" element={<DidListingAdd />} />
           {/* Number Management Path End */}
 
@@ -279,14 +404,35 @@ function App() {
           {/* Payment path end */}
 
           {/* Call Center queue path start */}
-          <Route path="/cal-center-queue" element={<CallCenterQueue />} />
+          <Route
+            path="/cal-center-queue"
+            element={
+              permission.includes(62) || permission.includes(64) ? (
+                <CallCenterQueue />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
           <Route
             path="/cal-center-queue-edit"
-            element={<CallCenterQueueEdit />}
+            element={
+              permission.includes(63) ? (
+                <CallCenterQueueEdit />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
           />
           <Route
             path="/cal-center-queue-add"
-            element={<CallCenterQueueAdd />}
+            element={
+              permission.includes(64) ? (
+                <CallCenterQueueAdd />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
           />
           <Route
             path="/call-center-settings"
@@ -299,21 +445,51 @@ function App() {
           <Route path="/admin/package-add" element={<PackageAdd />} />
           <Route path="/admin/package-edit" element={<PackageEdit />} />
           <Route path="/admin/feature" element={<Feature />} />
-          <Route path="/roles" element={<Roles />} />
+          <Route
+            path="/roles"
+            element={
+              permission?.includes(350) || permission?.includes(352) ? (
+                <Roles />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
           <Route path="/upload-document" element={<DocumentUpload />} />
           {/* Settings path end */}
 
           {/* Billing Pages Start */}
-          <Route path="/card-details" element={<CardAndBilling />} />
+          <Route
+            path="/card-details"
+            element={
+              permission?.includes(290) || permission?.includes(292) ? (
+                <CardAndBilling />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
           <Route path="/invoice-list" element={<InvoiceList />} />
           <Route path="/expense-list" element={<ExpenseList />} />
           <Route
             path="/card-transaction-list"
-            element={<CardTransactionsList />}
+            element={
+              permission?.includes(80) || permission?.includes(82) ? (
+                <CardTransactionsList />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
           />
           <Route
             path="/wallet-transaction-list"
-            element={<WalletTransactionsList />}
+            element={
+              permission?.includes(470) || permission?.includes(472) ? (
+                <WalletTransactionsList />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
           />
           {/* Billing Pages End */}
 
@@ -322,15 +498,69 @@ function App() {
           {/* Variable Page End  */}
 
           {/* Mail Settings Page Start */}
-          <Route path="/mail-settings" element={<MailSettings />} />
-          <Route path="/mail-settings-add" element={<MailSettingsAdd />} />
-          <Route path="/mail-settings-edit" element={<MailSettingsEdit />} />
+          <Route
+            path="/mail-settings"
+            element={
+              permission?.includes(248) || permission?.includes(250) ? (
+                <MailSettings />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
+          <Route
+            path="/mail-settings-add"
+            element={
+              permission?.includes(250) ? (
+                <MailSettingsAdd />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
+          <Route
+            path="/mail-settings-edit"
+            element={
+              permission?.includes(249) ? (
+                <MailSettingsEdit />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
           {/* Mail Setting Page End */}
 
           {/* Ivr Page Start */}
-          <Route path="/ivr-add" element={<IvrAdd />} />
-          <Route path="/ivr" element={<IvrListing />} />
-          <Route path="/ivr-edit" element={<IvrEdit />} />
+          <Route
+            path="/ivr-add"
+            element={
+              permission.includes(232) ? (
+                <IvrAdd />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
+          <Route
+            path="/ivr"
+            element={
+              permission.includes(230) || permission.includes(232) ? (
+                <IvrListing />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
+          <Route
+            path="/ivr-edit"
+            element={
+              permission.includes(231) ? (
+                <IvrEdit />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
           <Route path="/ivr-options" element={<IvrOptions />} />
           {/* Ivr Page End */}
 
@@ -348,7 +578,7 @@ function App() {
           {/* Spam Filter start */}
           <Route path="/call-blocking" element={<CallBlocking />} />
           {/* Spam Filter end */}
-            <Route path="click-to-call" element={<ClickToCall />} />
+          <Route path="click-to-call" element={<ClickToCall />} />
           {/* 404 Redirection */}
           <Route path="*" element={<Navigate to="/dashboard" />} />
           {/* 404 Redirection */}

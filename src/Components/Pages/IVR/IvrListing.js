@@ -23,7 +23,8 @@ const IvrListing = () => {
   const ivrRefresh = useSelector((state) => state.ivrRefresh);
   const ivrArr = useSelector((state) => state.ivr);
   const loadings = useSelector;
-
+  const [refreshState, setRefreshState] = useState(false);
+  const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   useEffect(() => {
     // async function getData() {
     //   const apiData = await generalGetFunction("/ivr-master/all");
@@ -35,17 +36,20 @@ const IvrListing = () => {
     //   }
     // }
     // getData();
-    if (ivrRefresh > 0) {
+    setLoading(true);
+    if (ivrArr && !refreshState) {
       setIvr(ivrArr);
       setLoading(false);
+      setRefreshState(false);
     } else {
       dispatch({
         type: "SET_IVRREFRESH",
         ivrRefresh: ivrRefresh + 1,
       });
-      setLoading(false);
+      setRefreshState(false);
+      setLoading(true);
     }
-  }, [ivrArr]);
+  }, [ivrArr, refreshState]);
 
   async function handleDelete(id) {
     setPopUp(false);
@@ -86,6 +90,22 @@ const IvrListing = () => {
                         <h4>IVR Master</h4>
                       </div>
                       <div className="buttonGroup">
+                        <button
+                          effect="ripple"
+                          className="panelButton"
+                          onClick={() => setRefreshState(true)}
+                        >
+                          <span className="text">Refresh</span>
+                          <span className="icon">
+                            <i
+                              class={
+                                loading
+                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                  : "fa-regular fa-arrows-rotate fs-5"
+                              }
+                            ></i>
+                          </span>
+                        </button>
                         <button
                           effect="ripple"
                           className="panelButton gray"

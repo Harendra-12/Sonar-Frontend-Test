@@ -84,7 +84,9 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
               <div
                 // to="/message"
                 onClick={() => setactivePage("messages")}
-                className={activePage === "messages" ? "navItem active" : "navItem"}
+                className={
+                  activePage === "messages" ? "navItem active" : "navItem"
+                }
               >
                 <div className="iconHolder">
                   <i className="fa-solid fa-message" />
@@ -108,7 +110,9 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
               <div
                 // to="/efax"
                 onClick={() => setactivePage("e-fax")}
-                className={activePage === "e-fax" ? "navItem active" : "navItem"}
+                className={
+                  activePage === "e-fax" ? "navItem active" : "navItem"
+                }
               >
                 <div className="iconHolder">
                   <i className="fa-solid fa-fax" />
@@ -120,7 +124,11 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
               <div
                 onClick={() => setactivePage("all-voice-mails")}
                 // to="/all-voicemails"
-                className={activePage === "all-voice-mails" ? "navItem active" : "navItem"}
+                className={
+                  activePage === "all-voice-mails"
+                    ? "navItem active"
+                    : "navItem"
+                }
               >
                 <div className="iconHolder">
                   <i className="fa-solid fa-voicemail" />
@@ -132,7 +140,9 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
               <div
                 //  to="/"
                 onClick={() => setactivePage("favorites")}
-                className={activePage === "favorites" ? "navItem active" : "navItem"}
+                className={
+                  activePage === "favorites" ? "navItem active" : "navItem"
+                }
               >
                 <div className="iconHolder">
                   <i className="fa-solid fa-star" />
@@ -144,7 +154,9 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
               <div
                 // to="/all-contacts"
                 onClick={() => setactivePage("all-contacts")}
-                className={activePage === "all-contacts" ? "navItem active" : "navItem"}
+                className={
+                  activePage === "all-contacts" ? "navItem active" : "navItem"
+                }
               >
                 <div className="iconHolder">
                   <i className="fa-solid fa-address-book" />
@@ -164,7 +176,9 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
               <div
                 // to="/"
                 onClick={() => setactivePage("settings")}
-                className={activePage === "settings" ? "navItem active" : "navItem"}
+                className={
+                  activePage === "settings" ? "navItem active" : "navItem"
+                }
               >
                 <div className="iconHolder">
                   <i className="fa-solid fa-sliders" />
@@ -176,7 +190,9 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
               <div
                 // to="/call-dashboard"
                 onClick={() => setactivePage("call-dashboard")}
-                className={activePage === "call-dashboard" ? "navItem active" : "navItem"}
+                className={
+                  activePage === "call-dashboard" ? "navItem active" : "navItem"
+                }
               >
                 <div className="iconHolder">
                   <i className="fa-solid fa-sliders" />
@@ -188,7 +204,9 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
               <div
                 // to="/call-center"
                 onClick={() => setactivePage("call-center")}
-                className={activePage === "call-center" ? "navItem active" : "navItem"}
+                className={
+                  activePage === "call-center" ? "navItem active" : "navItem"
+                }
               >
                 <div className="iconHolder">
                   <i className="fa-solid fa-sliders" />
@@ -199,8 +217,10 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
             <li effect="ripple">
               <div
                 //  to="/"
-                onClick={() => navigate('/dashboard')}
-                className={activePage === "admin" ? "navItem active" : "navItem"}
+                onClick={() => navigate("/dashboard")}
+                className={
+                  activePage === "admin" ? "navItem active" : "navItem"
+                }
               >
                 <div className="iconHolder">
                   <i className="fa-brands fa-black-tie" />
@@ -212,7 +232,9 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
               <div
                 // to="/"
                 onClick={() => setactivePage("reports")}
-                className={activePage === "reports" ? "navItem active" : "navItem"}
+                className={
+                  activePage === "reports" ? "navItem active" : "navItem"
+                }
               >
                 <div className="iconHolder">
                   <i className="fa-solid fa-chart-column" />
@@ -224,7 +246,9 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
               <div
                 // to="/"
                 onClick={() => setactivePage("conference")}
-                className={activePage === "conference" ? "navItem active" : "navItem"}
+                className={
+                  activePage === "conference" ? "navItem active" : "navItem"
+                }
               >
                 <div className="iconHolder">
                   <i className="fa-sharp fa-solid fa-people-group" />
@@ -236,7 +260,9 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
               <div
                 // to="/"
                 onClick={() => setactivePage("test")}
-                className={activePage === "reports" ? "navItem active" : "navItem"}
+                className={
+                  activePage === "reports" ? "navItem active" : "navItem"
+                }
               >
                 <div className="iconHolder">
                   <i className="fa-solid fa-chart-column" />
@@ -289,47 +315,51 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   </div>
                 </div>
                 <div className="col-10 ps-2">
-                  {loading ? (
-                    <h4>Connecting...</h4> // Show loading indicator
+                  {extension !== "" ? (
+                    loading ? (
+                      <h4>Connecting...</h4> // Show loading indicator
+                    ) : (
+                      <>
+                        <h4>
+                          {connectedStatus !== "CONNECTED"
+                            ? "Network Issue!"
+                            : isMicOn !== true && "Audio Issue!"}
+                        </h4>
+                        {connectedStatus !== "CONNECTED" ? (
+                          <>
+                            <p className="mb-1">
+                              Failed to connect to the server!
+                            </p>
+                            <p style={{ fontSize: 12 }}>
+                              Error:{" "}
+                              <span className="fw-light text-danger">
+                                {reconnecting === 0
+                                  ? "Not connected with server"
+                                  : "Reconnecting..."}
+                              </span>
+                            </p>
+                          </>
+                        ) : isMicOn !== true ? (
+                          <>
+                            <p className="mb-1">Failed to open microphone!</p>
+                            <p style={{ fontSize: 12 }}>
+                              Error:{" "}
+                              <span className="fw-light text-danger">
+                                WebRTC features disabled! <br />
+                                You can access only messaging.
+                              </span>
+                              <br />
+                              <br />
+                              <span>{`Open settings > Microphone > Allow`}</span>
+                            </p>
+                          </>
+                        ) : (
+                          ""
+                        )}
+                      </>
+                    )
                   ) : (
-                    <>
-                      <h4>
-                        {connectedStatus !== "CONNECTED"
-                          ? "Network Issue!"
-                          : isMicOn !== true && "Audio Issue!"}
-                      </h4>
-                      {connectedStatus !== "CONNECTED" ? (
-                        <>
-                          <p className="mb-1">
-                            Failed to connect to the server!
-                          </p>
-                          <p style={{ fontSize: 12 }}>
-                            Error:{" "}
-                            <span className="fw-light text-danger">
-                              {reconnecting === 0
-                                ? "Not connected with server"
-                                : "Reconnecting..."}
-                            </span>
-                          </p>
-                        </>
-                      ) : isMicOn !== true ? (
-                        <>
-                          <p className="mb-1">Failed to open microphone!</p>
-                          <p style={{ fontSize: 12 }}>
-                            Error:{" "}
-                            <span className="fw-light text-danger">
-                              WebRTC features disabled! <br />
-                              You can access only messaging.
-                            </span>
-                            <br />
-                            <br />
-                            <span>{`Open settings > Microphone > Allow`}</span>
-                          </p>
-                        </>
-                      ) : (
-                        ""
-                      )}
-                    </>
+                    <p>No extension assigned</p>
                   )}
 
                   <button
@@ -339,7 +369,9 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     }}
                   >
                     <span className="text">Close</span>
-                    <span className="icon"><i class="fa-solid fa-xmark"></i></span>
+                    <span className="icon">
+                      <i class="fa-solid fa-xmark"></i>
+                    </span>
                   </button>
                 </div>
               </div>

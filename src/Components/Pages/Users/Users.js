@@ -13,6 +13,7 @@ import Header from "../../CommonComponents/Header";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 
 import { toast } from "react-toastify";
+import { set } from "react-hook-form";
 const Users = () => {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
@@ -35,6 +36,8 @@ const Users = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [selectedUser, setSelectedUser] = useState(null);
   const usersByAccount = useSelector((state) => state.usersByAccount);
+  const [refreshState, setRefreshState] = useState(false);
+  const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
       setOnlineUSer(
@@ -53,26 +56,26 @@ const Users = () => {
   }, []);
 
   useEffect(() => {
-    if (usersByAccount.data) {
+    if (usersByAccount.data && !refreshState) {
       setUser(usersByAccount);
       setFilterUser(usersByAccount.data);
       setLoading(false);
-      async function getApi() {
-        const apiData = await generalGetFunction(
-          `/user/all?page=${pageNumber}`
-        );
-        if (apiData?.status) {
-          setUser(apiData.data);
-          setFilterUser(apiData.data.data);
-          dispatch({
-            type: "SET_USERSBYACCOUNT",
-            usersByAccount: apiData.data,
-          });
-        } else {
-          navigate("/");
-        }
-      }
-      getApi();
+      // async function getApi() {
+      //   const apiData = await generalGetFunction(
+      //     `/user/all?page=${pageNumber}`
+      //   );
+      //   if (apiData?.status) {
+      //     setUser(apiData.data);
+      //     setFilterUser(apiData.data.data);
+      //     dispatch({
+      //       type: "SET_USERSBYACCOUNT",
+      //       usersByAccount: apiData.data,
+      //     });
+      //   } else {
+      //     navigate("/");
+      //   }
+      // }
+      // getApi();
     } else {
       setLoading(true);
       async function getApi() {
@@ -87,13 +90,20 @@ const Users = () => {
             usersByAccount: apiData.data,
           });
           setLoading(false);
+          setRefreshState(false);
         } else {
-          toast.error(apiData.message);
+          // toast.error(apiData.message);
+          setLoading(false);
+          setRefreshState(false);
+          // console.log(apiData.response.status);
+          if (apiData.response.status === 403) {
+            setNoPermissionToRead(true);
+          }
         }
       }
       getApi();
     }
-  }, [account, navigate, pageNumber]);
+  }, [account, navigate, pageNumber, refreshState]);
 
   // Filter user based on input
   useEffect(() => {
@@ -204,8 +214,24 @@ const Users = () => {
                 <div className="d-flex flex-wrap">
                   <div className="col-12">
                     <div className="heading">
-                      <div className="content">
+                      <div className="content d-flex">
                         <h4>Users</h4>
+                        <button
+                          effect="ripple"
+                          className="panelButton"
+                          onClick={() => setRefreshState(true)}
+                        >
+                          <span className="text">Refresh</span>
+                          <span className="icon">
+                            <i
+                              class={
+                                loading
+                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                  : "fa-regular fa-arrows-rotate fs-5"
+                              }
+                            ></i>
+                          </span>
+                        </button>
                       </div>
                       <div className="buttonGroup">
                         <button
@@ -306,8 +332,19 @@ const Users = () => {
                             <th>Status</th>
                           </tr>
                         </thead>
-                        <tbody>
-                          {loading ? (
+                        <tbody className="">
+                          {noPermissionToRead ? (
+                            // <div className="">
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td>You dont have permission</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                          ) : // </div>
+                          loading ? (
                             <tr>
                               <td colSpan={99}>
                                 <ContentLoader />
@@ -388,8 +425,8 @@ const Users = () => {
                                       // }
                                       >
                                         {/* {item.status === "E"
-                                          ? "Enabled"
-                                          : "Disabled"} */}
+                                            ? "Enabled"
+                                            : "Disabled"} */}
                                         <div className="my-auto position-relative mx-1">
                                           <label className="switch">
                                             <input
