@@ -214,7 +214,7 @@ const WebrtcWrapper = () => {
 
 
         {/* Draggable Component */}
-        {sessions.length > 0 && callProgressId && selectedModule === "onGoingCall" && sessions.find((session) => session.mode === "video" && session.id === callProgressId) &&
+        {sessions.length > 0 && callProgressId && selectedModule === "onGoingCall" && sessions.find((session) => session.mode === "audio" && session.id === callProgressId) &&
           <Rnd
             size={{ width: size.width, height: size.height }}
             position={{ x: position.x, y: position.y }}
@@ -226,8 +226,8 @@ const WebrtcWrapper = () => {
               });
               setPosition(position);
             }}
-            minWidth={size.width}
-            minHeight={size.height}
+            minWidth={'300px'}
+            minHeight={'450px'}
             maxWidth={'600px'}
             maxHeight={'600px'}
             dragHandleClassName="drag-handle" // Specify draggable area
