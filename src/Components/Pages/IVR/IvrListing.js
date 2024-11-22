@@ -26,29 +26,33 @@ const IvrListing = () => {
   const [refreshState, setRefreshState] = useState(false);
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   useEffect(() => {
-    // async function getData() {
-    //   const apiData = await generalGetFunction("/ivr-master/all");
-    //   if (apiData.status) {
-    //     setIvr(apiData.data);
-    //     setLoading(false);
-    //   } else {
-    //     setLoading(false);
-    //   }
-    // }
-    // getData();
-    setLoading(true);
-    if (ivrArr && !refreshState) {
-      setIvr(ivrArr);
-      setLoading(false);
-      setRefreshState(false);
-    } else {
-      dispatch({
-        type: "SET_IVRREFRESH",
-        ivrRefresh: ivrRefresh + 1,
-      });
-      setRefreshState(false);
+    async function getData() {
       setLoading(true);
+
+      const apiData = await generalGetFunction("/ivr-master/all");
+      if (apiData.status) {
+        setIvr(apiData.data);
+        setLoading(false);
+        setRefreshState(false);
+      } else {
+        setRefreshState(false);
+        setLoading(false);
+      }
     }
+    getData();
+    // setLoading(true);
+    // if (ivrArr && !refreshState) {
+    //   setIvr(ivrArr);
+    //   setLoading(false);
+    //   setRefreshState(false);
+    // } else {
+    //   dispatch({
+    //     type: "SET_IVRREFRESH",
+    //     ivrRefresh: ivrRefresh + 1,
+    //   });
+    //   setRefreshState(false);
+    //   setLoading(true);
+    // }
   }, [ivrArr, refreshState]);
 
   async function handleDelete(id) {
@@ -148,10 +152,7 @@ const IvrListing = () => {
                       </div>
                     </div>
                   </div>
-                  <div
-                    className="col-12"
-                    style={{  padding: "25px 20px 0" }}
-                  >
+                  <div className="col-12" style={{ padding: "25px 20px 0" }}>
                     <div className="tableHeader">
                       <div className="showEntries">
                         <label>Show</label>

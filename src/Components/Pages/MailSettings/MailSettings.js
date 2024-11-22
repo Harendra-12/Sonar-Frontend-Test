@@ -28,6 +28,9 @@ const MailSettings = () => {
         setLoading(false);
       } else {
         setLoading(false);
+        if (result.response.status === 403) {
+          setNoPermission(true);
+        }
         // navigate("/");
       }
     };
@@ -43,12 +46,12 @@ const MailSettings = () => {
     );
     if (apiData.status) {
       setLoading(false);
-      setOpenPopup(false);
+      // setOpenPopup(false);
       setMailSettings([]);
       toast.success(apiData.message);
     } else {
       setLoading(false);
-      setOpenPopup(false);
+      // setOpenPopup(false);
       // toast.error(apiData.message);
     }
   };
@@ -131,70 +134,84 @@ const MailSettings = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {loading ? (
+                          {noPermission ? (
                             <tr>
-                              <td colSpan={99}>
-                                <ContentLoader />
-                              </td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>No Permission</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
                             </tr>
                           ) : (
                             <>
-                              {mailSettings &&
-                                mailSettings.map((data, index) => (
-                                  <tr key={index}>
-                                    <td style={{ cursor: "default" }}>
-                                      {data.mail_driver}
-                                    </td>
-                                    <td style={{ cursor: "default" }}>
-                                      {data.mail_username}
-                                    </td>
-                                    <td style={{ cursor: "default" }}>
-                                      {data.mail_host}
-                                    </td>
-                                    <td style={{ cursor: "default" }}>
-                                      {data.mail_from_address}
-                                    </td>
-                                    <td style={{ cursor: "default" }}>
-                                      {data.mail_from_name}
-                                    </td>
-                                    <td style={{ cursor: "default" }}>
-                                      {" "}
-                                      <button
-                                        className="tableButton edit"
-                                        onClick={() =>
-                                          navigate(
-                                            // `/mail-settings-edit?id=${data.id}`
-                                            `/mail-settings-edit`,
-                                            {
-                                              state: data.id,
+                              {loading ? (
+                                <tr>
+                                  <td colSpan={99}>
+                                    <ContentLoader />
+                                  </td>
+                                </tr>
+                              ) : (
+                                <>
+                                  {mailSettings &&
+                                    mailSettings.map((data, index) => (
+                                      <tr key={index}>
+                                        <td style={{ cursor: "default" }}>
+                                          {data.mail_driver}
+                                        </td>
+                                        <td style={{ cursor: "default" }}>
+                                          {data.mail_username}
+                                        </td>
+                                        <td style={{ cursor: "default" }}>
+                                          {data.mail_host}
+                                        </td>
+                                        <td style={{ cursor: "default" }}>
+                                          {data.mail_from_address}
+                                        </td>
+                                        <td style={{ cursor: "default" }}>
+                                          {data.mail_from_name}
+                                        </td>
+                                        <td style={{ cursor: "default" }}>
+                                          {" "}
+                                          <button
+                                            className="tableButton edit"
+                                            onClick={() =>
+                                              navigate(
+                                                // `/mail-settings-edit?id=${data.id}`
+                                                `/mail-settings-edit`,
+                                                {
+                                                  state: data.id,
+                                                }
+                                              )
                                             }
-                                          )
-                                        }
-                                      >
-                                        <i class="fa-solid fa-pencil"></i>
-                                      </button>
-                                    </td>
-                                    <td style={{ cursor: "default" }}>
-                                      <button
-                                        className="tableButton delete"
-                                        onClick={() => {
-                                          setOpenPopup(true);
-                                          setDeleteSetingsId(data.id);
-                                        }}
-                                      >
-                                        <i class="fa-solid fa-trash"></i>
-                                      </button>
-                                    </td>
-                                  </tr>
-                                ))}
+                                          >
+                                            <i class="fa-solid fa-pencil"></i>
+                                          </button>
+                                        </td>
+                                        <td style={{ cursor: "default" }}>
+                                          <button
+                                            className="tableButton delete"
+                                            onClick={() => {
+                                              setOpenPopup(true);
+                                              setDeleteSetingsId(data.id);
+                                            }}
+                                          >
+                                            <i class="fa-solid fa-trash"></i>
+                                          </button>
+                                        </td>
+                                      </tr>
+                                    ))}
 
-                              {mailSettings.length === 0 && (
-                                <td colSpan={99}>
-                                  <EmptyPrompt
-                                    name="Mail Settings"
-                                    link="mail-settings-add"
-                                  />
-                                </td>
+                                  {mailSettings.length === 0 && (
+                                    <td colSpan={99}>
+                                      <EmptyPrompt
+                                        name="Mail Settings"
+                                        link="mail-settings-add"
+                                      />
+                                    </td>
+                                  )}
+                                </>
                               )}
                             </>
                           )}

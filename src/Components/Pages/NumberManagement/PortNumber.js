@@ -21,7 +21,7 @@ function PortNumber() {
   const portsAll = useSelector((state) => state.portsAll);
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
-
+  const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   useEffect(() => {
     if (portsAll) {
       setLoading(false);
@@ -37,7 +37,10 @@ function PortNumber() {
           });
         } else {
           setLoading(false);
-          navigate(-1);
+          // navigate(-1);
+          if (apiData.response.status === 403) {
+            setNoPermissionToRead(true);
+          }
         }
       }
       getData();
@@ -210,102 +213,119 @@ function PortNumber() {
                               </tr>
                             </thead>
                             <tbody>
-                              {portData.length > 0 &&
-                                portData.map((item) => {
-                                  const handleEditPortNumber = (id) => {
-                                    navigate(`/port-number-edit?id=${id}`);
-                                  };
-                                  return (
-                                    <tr key={item.id}>
-                                      <td
-                                        onClick={() =>
-                                          handleEditPortNumber(item.id)
-                                        }
-                                        style={{ cursor: "default" }}
-                                      >
-                                        {item.id}
-                                      </td>
-                                      <td
-                                        onClick={() =>
-                                          handleEditPortNumber(item.id)
-                                        }
-                                        style={{ cursor: "default" }}
-                                      >
-                                        {item.fullname}
-                                      </td>
-                                      <td
-                                        onClick={() =>
-                                          handleEditPortNumber(item.id)
-                                        }
-                                        style={{ cursor: "default" }}
-                                      >
-                                        {item.company_name}
-                                      </td>
-                                      <td
-                                        onClick={() =>
-                                          handleEditPortNumber(item.id)
-                                        }
-                                        style={{ cursor: "default" }}
-                                      >
-                                        {item?.billing_address}
-                                      </td>
-                                      <td
-                                        onClick={() =>
-                                          handleEditPortNumber(item.id)
-                                        }
-                                        style={{ cursor: "default" }}
-                                      >
-                                        {item?.pin}
-                                      </td>
-                                      <td
-                                        onClick={() =>
-                                          handleEditPortNumber(item.id)
-                                        }
-                                        style={{ cursor: "default" }}
-                                      >
-                                        {item?.carrier}
-                                      </td>
+                              {noPermissionToRead ? (
+                                <tr>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td> No Permission</td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                </tr>
+                              ) : (
+                                <>
+                                  {portData.length > 0 &&
+                                    portData.map((item) => {
+                                      const handleEditPortNumber = (id) => {
+                                        navigate(`/port-number-edit?id=${id}`);
+                                      };
+                                      return (
+                                        <tr key={item.id}>
+                                          <td
+                                            onClick={() =>
+                                              handleEditPortNumber(item.id)
+                                            }
+                                            style={{ cursor: "default" }}
+                                          >
+                                            {item.id}
+                                          </td>
+                                          <td
+                                            onClick={() =>
+                                              handleEditPortNumber(item.id)
+                                            }
+                                            style={{ cursor: "default" }}
+                                          >
+                                            {item.fullname}
+                                          </td>
+                                          <td
+                                            onClick={() =>
+                                              handleEditPortNumber(item.id)
+                                            }
+                                            style={{ cursor: "default" }}
+                                          >
+                                            {item.company_name}
+                                          </td>
+                                          <td
+                                            onClick={() =>
+                                              handleEditPortNumber(item.id)
+                                            }
+                                            style={{ cursor: "default" }}
+                                          >
+                                            {item?.billing_address}
+                                          </td>
+                                          <td
+                                            onClick={() =>
+                                              handleEditPortNumber(item.id)
+                                            }
+                                            style={{ cursor: "default" }}
+                                          >
+                                            {item?.pin}
+                                          </td>
+                                          <td
+                                            onClick={() =>
+                                              handleEditPortNumber(item.id)
+                                            }
+                                            style={{ cursor: "default" }}
+                                          >
+                                            {item?.carrier}
+                                          </td>
 
-                                      <td
-                                        onClick={() =>
-                                          handleEditPortNumber(item.id)
-                                        }
-                                        style={{ cursor: "default" }}
-                                      >
-                                        {item?.account_number}
-                                      </td>
-                                      <td
-                                        onClick={() =>
-                                          handleEditPortNumber(item.id)
-                                        }
-                                        style={{ cursor: "default" }}
-                                      >
-                                        {item?.phone_number}
-                                      </td>
-                                      <td>
-                                        <button
-                                          className="tableButton edit"
-                                          onClick={() =>
-                                            handleEditPortNumber(item.id)
-                                          }
-                                        >
-                                          <i class="fa-solid fa-pencil"></i>
-                                        </button>
-                                      </td>
-                                      <td>
-                                        <button
-                                          className="tableButton delete"
-                                          onClick={() => {
-                                            setPopup(true);
-                                            setDeleteIndex(item.id);
-                                          }}
-                                        >
-                                          <i className="fa-solid fa-trash"></i>
-                                        </button>
-                                      </td>
-                                    </tr>
-                                  );
-                                })}
+                                          <td
+                                            onClick={() =>
+                                              handleEditPortNumber(item.id)
+                                            }
+                                            style={{ cursor: "default" }}
+                                          >
+                                            {item?.account_number}
+                                          </td>
+                                          <td
+                                            onClick={() =>
+                                              handleEditPortNumber(item.id)
+                                            }
+                                            style={{ cursor: "default" }}
+                                          >
+                                            {item?.phone_number}
+                                          </td>
+                                          <td>
+                                            <button
+                                              className="tableButton edit"
+                                              onClick={() =>
+                                                handleEditPortNumber(item.id)
+                                              }
+                                            >
+                                              <i class="fa-solid fa-pencil"></i>
+                                            </button>
+                                          </td>
+                                          <td>
+                                            <button
+                                              className="tableButton delete"
+                                              onClick={() => {
+                                                setPopup(true);
+                                                setDeleteIndex(item.id);
+                                              }}
+                                            >
+                                              <i className="fa-solid fa-trash"></i>
+                                            </button>
+                                          </td>
+                                        </tr>
+                                      );
+                                    })}
+                                </>
+                              )}
                             </tbody>
                           </table>
                         )}

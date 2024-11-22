@@ -137,8 +137,8 @@ const RingGroups = () => {
     delete payLoad.ring_group_timeout_data;
     delete payLoad.ring_group_timeout_app;
 
+    setPopUp(false);
     const apiData = await generalPutFunction(`/ringgroup/${id}`, payLoad);
-
     if (apiData.status) {
       setLoading(false);
       toast.success(apiData.message);
@@ -160,7 +160,6 @@ const RingGroups = () => {
       });
 
       setSelectedRingGroup(null);
-      setPopUp(false);
     } else {
       setLoading(false);
     }
@@ -490,7 +489,7 @@ const RingGroups = () => {
                     )}
                   </p>
                   <div className="d-flex justify-content-between">
-                    {deleteId !== "" || selectedRingGroup.id ? (
+                    {deleteId !== "" || selectedRingGroup?.id ? (
                       <button
                         disabled={loading}
                         className="panelButton m-0"
