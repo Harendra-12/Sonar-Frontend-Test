@@ -161,6 +161,7 @@ function CallCenterQueue() {
           .filter((item) => item !== null),
       },
     };
+    setPopUp(false);
     const apiData = await generalPutFunction(
       `/call-center-queue/update/${id}`,
       payload
@@ -183,7 +184,7 @@ function CallCenterQueue() {
         data: updatedCallCenter,
       });
       toast.success(apiData.message);
-      setPopUp(false);
+
       setSelectedCallCenter(null);
     } else {
       setLoading(false);

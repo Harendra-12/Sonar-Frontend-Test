@@ -57,6 +57,7 @@ function AllContact() {
   }, [contact]);
 
   const deleteContactByIt = async (id) => {
+    setPopUp(false);
     setLoading(true);
     const apiData = await generalDeleteFunction(`/contact/destroy/${id}`);
 
@@ -65,7 +66,6 @@ function AllContact() {
       setContact(updatedContact);
       setLoading(false);
       toast.success(apiData.message);
-      setPopUp(false);
     } else {
       setLoading(false);
     }

@@ -56,53 +56,51 @@ const Users = () => {
   }, []);
 
   useEffect(() => {
-    if (usersByAccount.data && !refreshState) {
-      setUser(usersByAccount);
-      setFilterUser(usersByAccount.data);
-      setLoading(false);
-      // async function getApi() {
-      //   const apiData = await generalGetFunction(
-      //     `/user/all?page=${pageNumber}`
-      //   );
-      //   if (apiData?.status) {
-      //     setUser(apiData.data);
-      //     setFilterUser(apiData.data.data);
-      //     dispatch({
-      //       type: "SET_USERSBYACCOUNT",
-      //       usersByAccount: apiData.data,
-      //     });
-      //   } else {
-      //     navigate("/");
-      //   }
-      // }
-      // getApi();
-    } else {
-      setLoading(true);
-      async function getApi() {
-        const apiData = await generalGetFunction(
-          `/user/all?page=${pageNumber}`
-        );
-        if (apiData?.status) {
-          setUser(apiData.data);
-          setFilterUser(apiData.data.data);
-          dispatch({
-            type: "SET_USERSBYACCOUNT",
-            usersByAccount: apiData.data,
-          });
-          setLoading(false);
-          setRefreshState(false);
-        } else {
-          // toast.error(apiData.message);
-          setLoading(false);
-          setRefreshState(false);
-          // console.log(apiData.response.status);
-          if (apiData.response.status === 403) {
-            setNoPermissionToRead(true);
-          }
+    // if (usersByAccount.data && !refreshState) {
+    //   setUser(usersByAccount);
+    //   setFilterUser(usersByAccount.data);
+    //   setLoading(false);
+    //   // async function getApi() {
+    //   //   const apiData = await generalGetFunction(
+    //   //     `/user/all?page=${pageNumber}`
+    //   //   );
+    //   //   if (apiData?.status) {
+    //   //     setUser(apiData.data);
+    //   //     setFilterUser(apiData.data.data);
+    //   //     dispatch({
+    //   //       type: "SET_USERSBYACCOUNT",
+    //   //       usersByAccount: apiData.data,
+    //   //     });
+    //   //   } else {
+    //   //     navigate("/");
+    //   //   }
+    //   // }
+    //   // getApi();
+    // } else {
+    setLoading(true);
+    async function getApi() {
+      const apiData = await generalGetFunction(`/user/all?page=${pageNumber}`);
+      if (apiData?.status) {
+        setUser(apiData.data);
+        setFilterUser(apiData.data.data);
+        dispatch({
+          type: "SET_USERSBYACCOUNT",
+          usersByAccount: apiData.data,
+        });
+        setLoading(false);
+        setRefreshState(false);
+      } else {
+        // toast.error(apiData.message);
+        setLoading(false);
+        setRefreshState(false);
+        // console.log(apiData.response.status);
+        if (apiData.response.status === 403) {
+          setNoPermissionToRead(true);
         }
       }
-      getApi();
     }
+    getApi();
+    // }
   }, [account, navigate, pageNumber, refreshState]);
 
   // Filter user based on input
@@ -179,8 +177,8 @@ const Users = () => {
       timezone_id: selectedUser.timezone_id,
     };
 
+    setPopUp(false);
     const apiData = await generalPutFunction(`user/${id}`, payload);
-
     if (apiData.status) {
       const updatedData = user.data.map((item) => {
         if (item.id === id) {
@@ -196,7 +194,7 @@ const Users = () => {
         type: "SET_USERSBYACCOUNT",
         usersByAccount: { ...user, data: updatedData },
       });
-      setPopUp(false);
+
       toast.success(apiData.message);
       setLoading(false);
     } else {
