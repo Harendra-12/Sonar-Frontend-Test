@@ -97,6 +97,14 @@ function AllContact() {
       navigate("/");
     }
   }
+
+  const handleContactRefresh = () => {
+    setLoading(true);
+    dispatch({
+      type: "SET_ADDCONTACTREFRESH",
+      addContactRefresh: addContactRefresh + 1,
+    });
+  };
   return (
     <>
       {/* <SideNavbarApp /> */}
@@ -111,19 +119,25 @@ function AllContact() {
       >
         <section className="callPage">
           <div className="container-fluid">
-            <div
-              className="row"
-              style={{ height: "100%" }}
-            >
-
+            <div className="row" style={{ height: "100%" }}>
               <div className="col-12 ps-xl-0">
                 <div className="newHeader">
-                  <div className="col-auto" style={{ padding: '0 10px' }}>
-                    <h3 style={{ fontFamily: "Outfit", marginBottom: '0' }}>
-                      <button class="clearButton text-dark"><i class="fa-solid fa-chevron-left fs-4"></i></button> Contact{" "}
-                      <button class="clearButton">
+                  <div className="col-auto" style={{ padding: "0 10px" }}>
+                    <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
+                      <button class="clearButton text-dark">
+                        <i class="fa-solid fa-chevron-left fs-4"></i>
+                      </button>{" "}
+                      Contact{" "}
+                      <button
+                        class="clearButton"
+                        onClick={() => handleContactRefresh()}
+                      >
                         <i
-                          class="fa-regular fa-arrows-rotate fs-5"
+                          class={
+                            loading
+                              ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                              : "fa-regular fa-arrows-rotate fs-5"
+                          }
                           style={{ color: "rgb(148, 148, 148)" }}
                         ></i>
                       </button>
@@ -131,26 +145,48 @@ function AllContact() {
                   </div>
                   <div className="d-flex justify-content-end align-items-center">
                     <div className="col-9">
-                      <input type="search" name="Search" placeholder="Search users, groups or chat" class="formItem fw-normal" style={{ backgroundColor: '#f5f5f5' }} onChange={() => featureUnderdevelopment()} />
+                      <input
+                        type="search"
+                        name="Search"
+                        placeholder="Search users, groups or chat"
+                        class="formItem fw-normal"
+                        style={{ backgroundColor: "#f5f5f5" }}
+                        onChange={() => featureUnderdevelopment()}
+                      />
                     </div>
                     <div className="col-auto mx-2">
-                      <button
-                        className="clearButton2 xl"
-                        effect="ripple"
-                      >
+                      <button className="clearButton2 xl" effect="ripple">
                         <i className="fa-regular fa-bell" />
                       </button>
                     </div>
                     <div className="col-auto">
                       <div class="dropdown">
-                        <div className="myProfileWidget" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div
+                          className="myProfileWidget"
+                          type="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
                           <div class="profileHolder" id="profileOnlineNav">
-                            <img src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg" alt="profile" />
+                            <img
+                              src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
+                              alt="profile"
+                            />
                           </div>
-                          <div class="profileName">{account.username} <span className="status">Available</span></div>
+                          <div class="profileName">
+                            {account.username}{" "}
+                            <span className="status">Available</span>
+                          </div>
                         </div>
                         <ul class="dropdown-menu" onClick={logOut}>
-                          <li><div class="dropdown-item" style={{ cursor: 'pointer' }} >Logout</div></li>
+                          <li>
+                            <div
+                              class="dropdown-item"
+                              style={{ cursor: "pointer" }}
+                            >
+                              Logout
+                            </div>
+                          </li>
                         </ul>
                       </div>
                     </div>
@@ -159,7 +195,7 @@ function AllContact() {
               </div>
 
               <div className="col-xl-6 allCallHistory">
-                <div className="col-auto" style={{ padding: '0 10px' }}>
+                <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
                     Viewing As:
                     <span>
@@ -175,12 +211,15 @@ function AllContact() {
                     </span>
                   </h5>
                 </div>
-                <div className="col-auto" style={{ padding: '0 10px' }}>
-                  <button className="clearColorButton dark" onClick={() => setAddContactToggle(true)}>
+                <div className="col-auto" style={{ padding: "0 10px" }}>
+                  <button
+                    className="clearColorButton dark"
+                    onClick={() => setAddContactToggle(true)}
+                  >
                     <i className="fa-light fa-user-plus" /> Add Contact
                   </button>
                 </div>
-                <div className="col-12 mt-3" style={{ padding: '0 10px' }}>
+                <div className="col-12 mt-3" style={{ padding: "0 10px" }}>
                   <input
                     type="search"
                     name="Search"
@@ -191,7 +230,10 @@ function AllContact() {
 
                 <div className="col-12">
                   <nav className="mt-3">
-                    <div className="nav nav-tabs" style={{ borderBottom: '1px solid #ddd' }}>
+                    <div
+                      className="nav nav-tabs"
+                      style={{ borderBottom: "1px solid #ddd" }}
+                    >
                       {/* <button
                         className="tabLink active"
                         effect="ripple"
@@ -216,7 +258,10 @@ function AllContact() {
                     </div>
                   </nav>
                   <div className="tab-content">
-                    <div className="callList" style={{ height: 'calc(100vh - 215px)' }}>
+                    <div
+                      className="callList"
+                      style={{ height: "calc(100vh - 215px)" }}
+                    >
                       {loading ? (
                         <div colSpan={99}>
                           <ContentLoader />
@@ -230,15 +275,10 @@ function AllContact() {
                                 <p>{initial}</p>
                               </div>
                               {groupedContacts[initial].map((contact) => (
-                                <div
-                                  className="callListItem"
-                                  key={contact.id}
-                                >
+                                <div className="callListItem" key={contact.id}>
                                   <div className="row justify-content-between">
                                     <div className="col-xl-7 col-xxl-6 d-flex">
-                                      <div
-                                        className="profileHolder"
-                                      >
+                                      <div className="profileHolder">
                                         <i className="fa-light fa-user fs-5" />
                                       </div>
                                       <div className="my-auto ms-2 ms-xl-3">
@@ -259,13 +299,19 @@ function AllContact() {
                                     </div>
                                   </div>
                                   <div className="contactPopup">
-                                    <button onClick={() => featureUnderdevelopment()}>
+                                    <button
+                                      onClick={() => featureUnderdevelopment()}
+                                    >
                                       <i className="fa-light fa-phone" />
                                     </button>
-                                    <button onClick={() => featureUnderdevelopment()}>
+                                    <button
+                                      onClick={() => featureUnderdevelopment()}
+                                    >
                                       <i className="fa-light fa-message" />
                                     </button>
-                                    <button onClick={() => featureUnderdevelopment()}>
+                                    <button
+                                      onClick={() => featureUnderdevelopment()}
+                                    >
                                       <i className="fa-light fa-star" />
                                     </button>
                                     <button

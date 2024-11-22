@@ -46,6 +46,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
   const [isAnyDateHeaderVisible, setIsAnyDateHeaderVisible] = useState(false);
   const dateHeaderRefs = useRef([]); // Store refs for all dateHeader elements
   const visibilityMap = useRef(new Map()); // Track visibility of each ref
+  const [refreshstate, setRefreshState] = useState(false);
   console.log("isAnyDateHeaderVisible", isAnyDateHeaderVisible);
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -78,16 +79,20 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
     };
   }, [allMessage, recipient]);
   useEffect(() => {
+    setLoading(true);
     async function getData() {
       const apiData = await generalGetFunction(`/message/contacts`);
       const tagData = await generalGetFunction("/tags/all");
       if (apiData?.status && apiData.data.length > 0) {
         setContact(apiData.data);
         setRecipient([apiData.data[0].extension, apiData.data[0].id]);
+        setLoading(false);
       }
       if (tagData?.status) {
         setAllTags(tagData.data);
+        setLoading(false);
       }
+      setLoading(false);
     }
     getData();
   }, [contactRefresh]);
@@ -549,6 +554,8 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
         setAddNewTag(false);
         setNewTag("");
         setAllTags([...allTags, apiData.data]);
+      } else {
+        setLoading(false);
       }
     }
   }
@@ -579,6 +586,8 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
           return tag;
         });
         setAllTags(updatedTags);
+      } else {
+        setLoading(false);
       }
     }
   }
@@ -593,6 +602,8 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
       setSelectedTag("");
       const updatedTags = allTags.filter((tag) => tag.id !== id);
       setAllTags(updatedTags);
+    } else {
+      setLoading(false);
     }
   }
 
@@ -608,6 +619,8 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
       setContactRefresh(contactRefresh + 1);
       setLoading(false);
       toast.success("Tag assigned successfully");
+    } else {
+      setLoading(false);
     }
   }
 
@@ -619,6 +632,8 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
       setContactRefresh(contactRefresh + 1);
       setLoading(false);
       toast.success("Tag unassigned successfully");
+    } else {
+      setLoading(false);
     }
   }
 
@@ -656,9 +671,16 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                         <i class="fa-solid fa-chevron-left fs-4"></i>
                       </button>{" "}
                       Messages{" "}
-                      <button class="clearButton">
+                      <button
+                        class="clearButton"
+                        onClick={() => setContactRefresh(contactRefresh + 1)}
+                      >
                         <i
-                          class="fa-regular fa-arrows-rotate fs-5"
+                          class={
+                            loading
+                              ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                              : "fa-regular fa-arrows-rotate fs-5"
+                          }
                           style={{ color: "rgb(148, 148, 148)" }}
                         ></i>
                       </button>
@@ -681,21 +703,39 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                     </div>
                     <div className="col-auto">
                       <div class="dropdown">
-                        <div className="myProfileWidget" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div
+                          className="myProfileWidget"
+                          type="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
                           <div class="profileHolder" id="profileOnlineNav">
-                            <img src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg" alt="profile" />
+                            <img
+                              src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
+                              alt="profile"
+                            />
                           </div>
-                          <div class="profileName">{account.username} <span className="status">Available</span></div>
+                          <div class="profileName">
+                            {account.username}{" "}
+                            <span className="status">Available</span>
+                          </div>
                         </div>
                         <ul class="dropdown-menu" onClick={logOut}>
-                          <li><div class="dropdown-item" style={{ cursor: 'pointer' }} >Logout</div></li>
+                          <li>
+                            <div
+                              class="dropdown-item"
+                              style={{ cursor: "pointer" }}
+                            >
+                              Logout
+                            </div>
+                          </li>
                         </ul>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              
+
               <div
                 className="col-12 col-xl-4 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-between py-3 border-end px-xl-0"
                 style={{ height: "100%" }}
@@ -1259,10 +1299,8 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                                 </p>
                               </div>
                             )}
-                             {!isAnyDateHeaderVisible && isNewDate && (
-                              <div
-                                className="dateHeader sticky"
-                              >
+                            {!isAnyDateHeaderVisible && isNewDate && (
+                              <div className="dateHeader sticky">
                                 <p>
                                   {messageDate === todayDate
                                     ? "Today"

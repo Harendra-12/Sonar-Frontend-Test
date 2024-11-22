@@ -15,33 +15,35 @@ function WalletTransactionsList() {
   const [loading, setLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
   const navigate = useNavigate();
+  const [refreshState, setRefreshState] = useState(false);
   const allWaletTransactions = useSelector(
     (state) => state.allWaletTransactions
   );
   const dispatch = useDispatch();
   useEffect(() => {
-    if (allWaletTransactions) {
-      setLoading(false);
+    if (allWaletTransactions && !refreshState) {
       setTransaction(allWaletTransactions);
-      async function getData() {
-        const apiData = await generalGetFunction(
-          `/transaction/wallet?page=${pageNumber}`
-        );
-        if (apiData?.status) {
-          setLoading(false);
-          setTransaction(apiData.data);
-          dispatch({
-            type: "SET_ALLWALLETTRANSACTIONS",
-            allWaletTransactions: apiData.data,
-          });
-        } else {
-          setLoading(false);
-          navigate(-1);
-        }
-      }
-      getData();
+      setLoading(false);
+      // async function getData() {
+      //   const apiData = await generalGetFunction(
+      //     `/transaction/wallet?page=${pageNumber}`
+      //   );
+      //   if (apiData?.status) {
+      //     setLoading(false);
+      //     setTransaction(apiData.data);
+      //     dispatch({
+      //       type: "SET_ALLWALLETTRANSACTIONS",
+      //       allWaletTransactions: apiData.data,
+      //     });
+      //   } else {
+      //     setLoading(false);
+      //     navigate(-1);
+      //   }
+      // }
+      // getData();
     } else {
       async function getData() {
+        setLoading(true);
         const apiData = await generalGetFunction(
           `/transaction/wallet?page=${pageNumber}`
         );
@@ -52,14 +54,16 @@ function WalletTransactionsList() {
             type: "SET_ALLWALLETTRANSACTIONS",
             allWaletTransactions: apiData.data,
           });
+          setRefreshState(false);
         } else {
           setLoading(false);
           navigate(-1);
+          setRefreshState(false);
         }
       }
       getData();
     }
-  }, [pageNumber]);
+  }, [pageNumber, refreshState]);
 
   //   Handle download invoice
   const downloadImage = async (imageUrl, fileName) => {
@@ -99,7 +103,10 @@ function WalletTransactionsList() {
                     <div className="heading">
                       <div className="content">
                         <h4>Wallet Transactions</h4>
-                        <p>You can see list of all transactions made using your wallet</p>
+                        <p>
+                          You can see list of all transactions made using your
+                          wallet
+                        </p>
                       </div>
                       <div className="buttonGroup">
                         <button
@@ -118,19 +125,31 @@ function WalletTransactionsList() {
                         <button
                           effect="ripple"
                           className="panelButton"
-                          onClick={() => featureUnderdevelopment()}
+                          // onClick={() => featureUnderdevelopment()}
+                          onClick={() => setRefreshState(true)}
                         >
                           <span className="text">Refresh</span>
                           <span className="icon">
-                            <i class="fa-regular fa-arrows-rotate fs-5"></i>
+                            <i
+                              class={`${
+                                loading
+                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                  : "fa-regular fa-arrows-rotate fs-5 "
+                              } `}
+                            ></i>
                           </span>
                         </button>
                       </div>
                     </div>
                   </div>
-                  <div className="col-12" style={{ overflow: "auto", padding: "25px 20px 0" }}>
+                  <div
+                    className="col-12"
+                    style={{ overflow: "auto", padding: "25px 20px 0" }}
+                  >
                     <div className="tableContainer">
-                      {loading ? <ContentLoader /> : (
+                      {loading ? (
+                        <ContentLoader />
+                      ) : (
                         <table>
                           <thead>
                             <tr>
@@ -149,7 +168,9 @@ function WalletTransactionsList() {
                                   <tr>
                                     <td>{item.descriptor}</td>
                                     <td>{item.created_at.split("T")[0]}</td>
-                                    <td>{item.payment_gateway_transaction_id}</td>
+                                    <td>
+                                      {item.payment_gateway_transaction_id}
+                                    </td>
                                     <td>
                                       <label
                                         className={

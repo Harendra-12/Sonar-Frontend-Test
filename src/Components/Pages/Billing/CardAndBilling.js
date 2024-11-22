@@ -359,15 +359,17 @@ function CardAndBilling() {
                       <Cards
                         className="cardWrapper row align-items-center col-12 mx-auto"
                         number={selectedCard?.[0]?.card_number}
-                        expiry={`${selectedCard?.[0]?.exp_month
-                          ? selectedCard?.[0]?.exp_month < 10
-                            ? `0${selectedCard?.[0]?.exp_month}`
-                            : selectedCard?.[0]?.exp_month
-                          : ""
-                          }/${selectedCard?.[0]?.exp_year
+                        expiry={`${
+                          selectedCard?.[0]?.exp_month
+                            ? selectedCard?.[0]?.exp_month < 10
+                              ? `0${selectedCard?.[0]?.exp_month}`
+                              : selectedCard?.[0]?.exp_month
+                            : ""
+                        }/${
+                          selectedCard?.[0]?.exp_year
                             ? selectedCard?.[0]?.exp_year
                             : ""
-                          }`}
+                        }`}
                         cvc={selectedCard?.[0]?.cvc}
                         name={selectedCard?.[0]?.name}
                       />
@@ -382,12 +384,12 @@ function CardAndBilling() {
                               <p>
                                 {accountDetails.subscription[0]?.end_date
                                   ? new Date(
-                                    accountDetails.subscription[0].end_date
-                                  ).toLocaleString("en-GB", {
-                                    year: "numeric",
-                                    month: "2-digit",
-                                    day: "2-digit",
-                                  })
+                                      accountDetails.subscription[0].end_date
+                                    ).toLocaleString("en-GB", {
+                                      year: "numeric",
+                                      month: "2-digit",
+                                      day: "2-digit",
+                                    })
                                   : ""}
                               </p>
                             </div>
@@ -430,10 +432,13 @@ function CardAndBilling() {
                               <p>
                                 Package Name: {accountDetails.package?.name}
                               </p>
-                              <p>Type: {accountDetails.package?.subscription_type ===
+                              <p>
+                                Type:{" "}
+                                {accountDetails.package?.subscription_type ===
                                 "annually"
-                                ? "Yearly Basis"
-                                : "Monthly Basis"}</p>
+                                  ? "Yearly Basis"
+                                  : "Monthly Basis"}
+                              </p>
                             </div>
                             <div class="col-2">
                               {/* <img
@@ -488,9 +493,21 @@ function CardAndBilling() {
                                     : "00"}
                                 </sub>
                               </h5>
-                              <p>Min Balance: ${accountDetails?.balance?.min_amount}</p>
                               <p>
-                                {!selectedCard?.[0]?.card_number ? <span className="text-danger">Please add a card before recharge!</span> : <span className="text-success">Active Card: *** *** *** {selectedCard?.[0]?.card_number.slice(-4)}</span>}
+                                Min Balance: $
+                                {accountDetails?.balance?.min_amount}
+                              </p>
+                              <p>
+                                {!selectedCard?.[0]?.card_number ? (
+                                  <span className="text-danger">
+                                    Please add a card before recharge!
+                                  </span>
+                                ) : (
+                                  <span className="text-success">
+                                    Active Card: *** *** ***{" "}
+                                    {selectedCard?.[0]?.card_number.slice(-4)}
+                                  </span>
+                                )}
                               </p>
                             </div>
                             <div class="col-2">
@@ -531,8 +548,9 @@ function CardAndBilling() {
                                 return (
                                   <div className="col-xl-6" key={key}>
                                     <div
-                                      className={`savedCardWrapper ${item.default ? "active" : ""
-                                        }`}
+                                      className={`savedCardWrapper ${
+                                        item.default ? "active" : ""
+                                      }`}
                                     >
                                       <div className="imgWrapper">
                                         <div className="card-logo-container">
@@ -620,8 +638,9 @@ function CardAndBilling() {
                                   >
                                     <div className="accordion-item">
                                       <h2
-                                        className={`accordion-header addressDrawer ${item.default ? "active" : ""
-                                          }`}
+                                        className={`accordion-header addressDrawer ${
+                                          item.default ? "active" : ""
+                                        }`}
                                       >
                                         <div
                                           className="d-flex flex-wrap align-items-center"
@@ -728,12 +747,13 @@ function CardAndBilling() {
                                                       : item.fullname
                                                   }
                                                   name="name"
-                                                  className={`noinputfield ${errorBilling.name
-                                                    ? "error-border"
-                                                    : editBillId
+                                                  className={`noinputfield ${
+                                                    errorBilling.name
+                                                      ? "error-border"
+                                                      : editBillId
                                                       ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -754,12 +774,13 @@ function CardAndBilling() {
                                                   }
                                                   placeholder="Phone number"
                                                   name="phone"
-                                                  className={`noinputfield ${errorBilling.phone
-                                                    ? "error-border"
-                                                    : editBillId
+                                                  className={`noinputfield ${
+                                                    errorBilling.phone
+                                                      ? "error-border"
+                                                      : editBillId
                                                       ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -780,12 +801,13 @@ function CardAndBilling() {
                                                   }
                                                   placeholder="Email Address"
                                                   name="email"
-                                                  className={`noinputfield ${errorBilling.email
-                                                    ? "error-border"
-                                                    : editBillId
+                                                  className={`noinputfield ${
+                                                    errorBilling.email
+                                                      ? "error-border"
+                                                      : editBillId
                                                       ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -806,12 +828,13 @@ function CardAndBilling() {
                                                   }
                                                   placeholder="Full address"
                                                   name="address"
-                                                  className={`noinputfield ${errorBilling.address
-                                                    ? "error-border"
-                                                    : editBillId
+                                                  className={`noinputfield ${
+                                                    errorBilling.address
+                                                      ? "error-border"
+                                                      : editBillId
                                                       ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -832,12 +855,13 @@ function CardAndBilling() {
                                                   }
                                                   placeholder="City"
                                                   name="city"
-                                                  className={`noinputfield ${errorBilling.city
-                                                    ? "error-border"
-                                                    : editBillId
+                                                  className={`noinputfield ${
+                                                    errorBilling.city
+                                                      ? "error-border"
+                                                      : editBillId
                                                       ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -858,12 +882,13 @@ function CardAndBilling() {
                                                   }
                                                   placeholder="State"
                                                   name="state"
-                                                  className={`noinputfield ${errorBilling.state
-                                                    ? "error-border"
-                                                    : editBillId
+                                                  className={`noinputfield ${
+                                                    errorBilling.state
+                                                      ? "error-border"
+                                                      : editBillId
                                                       ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -884,12 +909,13 @@ function CardAndBilling() {
                                                   }
                                                   placeholder="Zip Code"
                                                   name="zip"
-                                                  className={`noinputfield ${errorBilling.zip
-                                                    ? "error-border"
-                                                    : editBillId
+                                                  className={`noinputfield ${
+                                                    errorBilling.zip
+                                                      ? "error-border"
+                                                      : editBillId
                                                       ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }
@@ -910,12 +936,13 @@ function CardAndBilling() {
                                                   }
                                                   placeholder="Country"
                                                   name="country"
-                                                  className={`noinputfield ${errorBilling.country
-                                                    ? "error-border"
-                                                    : editBillId
+                                                  className={`noinputfield ${
+                                                    errorBilling.country
+                                                      ? "error-border"
+                                                      : editBillId
                                                       ? "edit"
                                                       : ""
-                                                    }`}
+                                                  }`}
                                                   onChange={(e) =>
                                                     billingChnage(e)
                                                   }

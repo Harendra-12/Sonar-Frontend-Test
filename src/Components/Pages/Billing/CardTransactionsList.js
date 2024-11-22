@@ -17,30 +17,32 @@ function CardTransactionsList() {
   const navigate = useNavigate();
   const allCardTransactions = useSelector((state) => state.allCardTransactions);
   const dispatch = useDispatch();
+  const [refreshState, setRefreshState] = useState(false);
 
   useEffect(() => {
     console.log("allCardTransactions", allCardTransactions);
-    if (allCardTransactions) {
-      setLoading(false);
+    if (allCardTransactions && !refreshState) {
       setTransaction(allCardTransactions);
-      async function getData() {
-        const apiData = await generalGetFunction(
-          `/payments/all?page=${pageNumber}`
-        );
-        if (apiData?.status) {
-          setLoading(false);
-          setTransaction(apiData.data);
-          dispatch({
-            type: "SET_ALLCARDTRANSACTIONS",
-            allCardTransactions: apiData.data,
-          });
-        } else {
-          setLoading(false);
-          navigate(-1);
-        }
-      }
-      getData();
+      setLoading(false);
+      // async function getData() {
+      //   const apiData = await generalGetFunction(
+      //     `/payments/all?page=${pageNumber}`
+      //   );
+      //   if (apiData?.status) {
+      //     setLoading(false);
+      //     setTransaction(apiData.data);
+      //     dispatch({
+      //       type: "SET_ALLCARDTRANSACTIONS",
+      //       allCardTransactions: apiData.data,
+      //     });
+      //   } else {
+      //     setLoading(false);
+      //     navigate(-1);
+      //   }
+      // }
+      // getData();
     } else {
+      setLoading(true);
       async function getData() {
         const apiData = await generalGetFunction(
           `/payments/all?page=${pageNumber}`
@@ -52,14 +54,16 @@ function CardTransactionsList() {
             type: "SET_ALLCARDTRANSACTIONS",
             allCardTransactions: apiData.data,
           });
+          setRefreshState(false);
         } else {
           setLoading(false);
           navigate(-1);
+          setRefreshState(false);
         }
       }
       getData();
     }
-  }, [pageNumber]);
+  }, [pageNumber, refreshState]);
 
   //   Handle download invoice
   const downloadImage = async (imageUrl, fileName) => {
@@ -99,7 +103,10 @@ function CardTransactionsList() {
                     <div className="heading">
                       <div className="content">
                         <h4>Card Transactions</h4>
-                        <p>You can see list of all transactions made using your card</p>
+                        <p>
+                          You can see list of all transactions made using your
+                          card
+                        </p>
                       </div>
                       <div className="buttonGroup">
                         <button
@@ -118,19 +125,31 @@ function CardTransactionsList() {
                         <button
                           effect="ripple"
                           className="panelButton"
-                          onClick={() => featureUnderdevelopment()}
+                          // onClick={() => featureUnderdevelopment()}
+                          onClick={() => setRefreshState(true)}
                         >
                           <span className="text">Refresh</span>
                           <span className="icon">
-                            <i class="fa-regular fa-arrows-rotate fs-5"></i>
+                            <i
+                              class={`${
+                                loading
+                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                  : "fa-regular fa-arrows-rotate fs-5 "
+                              } `}
+                            ></i>
                           </span>
                         </button>
                       </div>
                     </div>
                   </div>
-                  <div className="col-12" style={{ overflow: "auto", padding: "25px 20px 0" }}>
+                  <div
+                    className="col-12"
+                    style={{ overflow: "auto", padding: "25px 20px 0" }}
+                  >
                     <div className="tableContainer">
-                      {loading ? <ContentLoader /> : (
+                      {loading ? (
+                        <ContentLoader />
+                      ) : (
                         <table>
                           <thead>
                             <tr>
@@ -151,7 +170,9 @@ function CardTransactionsList() {
                                   <tr>
                                     <td>{item.payment_details.name}</td>
                                     <td>{item.payment_details.card_number}</td>
-                                    <td>{item.transaction_date.split(" ")[0]}</td>
+                                    <td>
+                                      {item.transaction_date.split(" ")[0]}
+                                    </td>
                                     <td>{item.transaction_id}</td>
                                     <td>
                                       <label

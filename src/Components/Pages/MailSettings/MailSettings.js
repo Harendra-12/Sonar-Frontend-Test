@@ -18,7 +18,7 @@ const MailSettings = () => {
   const [openPopup, setOpenPopup] = useState(false);
   const [deleteSettingsId, setDeleteSetingsId] = useState(null);
   const account = useSelector((state) => state.account);
-
+  const [noPermission, setNoPermission] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -28,7 +28,7 @@ const MailSettings = () => {
         setLoading(false);
       } else {
         setLoading(false);
-        navigate("/");
+        // navigate("/");
       }
     };
 

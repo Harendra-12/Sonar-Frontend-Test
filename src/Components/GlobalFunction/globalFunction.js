@@ -68,8 +68,9 @@ export async function generalGetFunction(endpoint) {
       if (err.response?.status === 401) {
         handleNavigation("/");
         return err.response.data;
+      } else if (err.response?.status >= 500) {
+        toast.error("Something went wrong. Please try again later.");
       } else {
-        // return null;
         return err;
       }
       // console.log("This is error log",err.response.status);
@@ -192,7 +193,6 @@ export const backToTop = () => {
 };
 
 export function featureUnderdevelopment() {
-
   let popup = document.getElementById("globalPopup");
 
   if (!popup) {
@@ -226,8 +226,7 @@ export function featureUnderdevelopment() {
           </div>
         </div>
       </div>
-    </div>`
+    </div>`;
     document.body.appendChild(popup);
   }
-
 }

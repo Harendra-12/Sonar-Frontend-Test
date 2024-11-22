@@ -1,7 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { backToTop, featureUnderdevelopment, generalGetFunction } from "../../GlobalFunction/globalFunction";
+import {
+  backToTop,
+  featureUnderdevelopment,
+  generalGetFunction,
+} from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
@@ -31,8 +35,8 @@ function CdrReport() {
   const [startDate, setStartDate] = useState("");
   const [endDateFlag, setEndDateFlag] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [contentLoader, setContentLoader] = useState(false)
-  const [refresh, setRefrehsh] = useState(1)
+  const [contentLoader, setContentLoader] = useState(false);
+  const [refresh, setRefrehsh] = useState(1);
   useEffect(() => {
     if (filterBy === "date" && startDateFlag !== "") {
       setStartDate(startDateFlag);
@@ -104,8 +108,7 @@ function CdrReport() {
   };
 
   useEffect(() => {
-
-    setLoading(!contentLoader);
+    setLoading(true);
     // build a dynamic url which include only the available params to make API call easy
     const buildUrl = (baseApiUrl, params) => {
       const queryParams = Object.entries(params)
@@ -163,15 +166,19 @@ function CdrReport() {
   ]);
 
   function refreshCallData() {
-    setContentLoader(true)
-    setRefrehsh(refresh + 1)
+    setContentLoader(true);
+    setRefrehsh(refresh + 1);
   }
 
   useEffect(() => {
-    if (filterBy === "7_days" || filterBy === "1_month" || filterBy === "3_month") {
+    if (
+      filterBy === "7_days" ||
+      filterBy === "1_month" ||
+      filterBy === "3_month"
+    ) {
       featureUnderdevelopment();
     }
-  }, [filterBy])
+  }, [filterBy]);
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -207,13 +214,22 @@ function CdrReport() {
                       >
                         <span className="text">Refresh</span>
                         <span className="icon">
-                          <i class={contentLoader ? "fa-regular fa-arrows-rotate fs-5 fa-spin" : "fa-regular fa-arrows-rotate fs-5"}></i>
+                          <i
+                            class={
+                              contentLoader
+                                ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                : "fa-regular fa-arrows-rotate fs-5"
+                            }
+                          ></i>
                         </span>
                       </button>
                     </div>
                   </div>
                 </div>
-                <div className="col-12" style={{ overflow: "auto", padding: "25px 20px 0" }}>
+                <div
+                  className="col-12"
+                  style={{ overflow: "auto", padding: "25px 20px 0" }}
+                >
                   <div className="tableHeader">
                     <div className="d-flex justify-content-end">
                       <div className="formRow border-0 ps-xl-0">
@@ -353,7 +369,7 @@ function CdrReport() {
                             setCallDirection(e.target.value);
                             setPageNumber(1);
                           }}
-                        // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                          // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                         >
                           <option value={""}>All Calls</option>
                           <option value={"inbound"}>Inbound Calls</option>
@@ -482,21 +498,37 @@ function CdrReport() {
                           </tr>
                         ) : (
                           <>
-                            {cdr.data &&
-                              cdr.data.map((item, index) => {
+                            {cdr?.data &&
+                              cdr?.data?.map((item, index) => {
                                 return (
                                   <tr key={index}>
-                                    <td>{(pageNumber - 1) * 20 + (index + 1)}</td>
+                                    <td>
+                                      {(pageNumber - 1) * 20 + (index + 1)}
+                                    </td>
                                     <td>{item["Call-Direction"]}</td>
                                     <td>{item["application_state"]}</td>
                                     <td>{item["variable_sip_from_user"]}</td>
-                                    <td>{item["application_state"] === "intercept" || item["application_state"] === "eavesdrop" ? item["other_leg_destination_number"] : item["variable_sip_to_user"]}</td>
+                                    <td>
+                                      {item["application_state"] ===
+                                        "intercept" ||
+                                      item["application_state"] === "eavesdrop"
+                                        ? item["other_leg_destination_number"]
+                                        : item["variable_sip_to_user"]}
+                                    </td>
                                     <td>{item["application_state_to_ext"]}</td>
                                     <td>
-                                      {item["variable_start_stamp"].split(" ")[0]}
+                                      {
+                                        item["variable_start_stamp"].split(
+                                          " "
+                                        )[0]
+                                      }
                                     </td>
                                     <td>
-                                      {item["variable_start_stamp"].split(" ")[1]}
+                                      {
+                                        item["variable_start_stamp"].split(
+                                          " "
+                                        )[1]
+                                      }
                                     </td>
                                     <td>
                                       {item["recording_path"] && (
@@ -521,8 +553,8 @@ function CdrReport() {
                                         ? "NOT CONNECTED"
                                         : item["variable_DIALSTATUS"] ===
                                           "NO_USER_RESPONSE"
-                                          ? "BUSY"
-                                          : item["variable_DIALSTATUS"]}
+                                        ? "BUSY"
+                                        : item["variable_DIALSTATUS"]}
                                     </td>
                                     <td>{item["call_cost"]}</td>
                                   </tr>
