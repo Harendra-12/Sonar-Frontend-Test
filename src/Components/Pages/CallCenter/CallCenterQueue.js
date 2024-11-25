@@ -87,7 +87,7 @@ function CallCenterQueue() {
     setLoading(true);
     setPopUp(false);
     const apiData = await generalDeleteFunction(
-      `/call-center-queue/destroy/${id}`
+      `/call-center-queues/destroy/${id}`
     );
     if (apiData?.status) {
       setLoading(false);
@@ -163,7 +163,7 @@ function CallCenterQueue() {
     };
     setPopUp(false);
     const apiData = await generalPutFunction(
-      `/call-center-queue/update/${id}`,
+      `/call-center-queues/update/${id}`,
       payload
     );
     if (apiData?.status) {

@@ -72,7 +72,7 @@ function CallCenterQueueEdit() {
         setLoading(true);
         const userData = await generalGetFunction("/user/all");
         const callCenterData = await generalGetFunction(
-          `call-center-queue/${value}`
+          `call-center-queues/${value}`
         );
         if (userData?.status) {
           setLoading(false);
@@ -342,7 +342,7 @@ function CallCenterQueueEdit() {
     setLoading(true);
     // delete payload.record_template;
     const apiData = await generalPutFunction(
-      `/call-center-queue/update/${value}`,
+      `/call-center-queues/update/${value}`,
       payload
     );
     if (apiData.status) {

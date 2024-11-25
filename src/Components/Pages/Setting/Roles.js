@@ -62,6 +62,16 @@ function Roles() {
 
   useEffect(() => {
     setRole(roles);
+    if (!selectedRoleId) {
+      setSelectedRoleId(roles[0].id);
+      setSelectedRole(roles[0].name);
+      setSelectedPermission(
+        roles[0].permissions?.map((item) => {
+          return item.permission_id;
+        })
+      );
+    }
+
     setDefaultPermission(permissions);
   }, [roles, permissions, rolesAndPermissionRefresh]);
 
@@ -504,7 +514,7 @@ function Roles() {
                               </div>
                             </div>
                             {selectedRole === "Agent" ? (
-                              <div> This will apper only for agents</div>
+                              <div>When you assign this role to any agent then they have only WebRtc access</div>
                             ) : (
                               <div class="accordion permissionListWrapper">
                                 {filteredPermission &&

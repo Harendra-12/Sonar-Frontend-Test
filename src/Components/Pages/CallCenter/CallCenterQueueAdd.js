@@ -271,7 +271,7 @@ function CallCenterQueueAdd() {
     };
     // delete payload.record_template;
     const apiData = await generalPostFunction(
-      "/call-center-queue/store",
+      "/call-center-queues/store",
       payload
     );
     if (apiData?.status) {

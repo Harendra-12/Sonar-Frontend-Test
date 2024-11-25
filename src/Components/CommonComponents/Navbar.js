@@ -554,8 +554,8 @@ function Navbar() {
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
-                          {account?.permissions?.includes(290) ||
-                            account?.permissions?.includes(292) ? (
+                          {account?.permissions?.includes(470) ||
+                            account?.permissions?.includes(470) ? (
                             <li className="tabItem" >
                               <NavLink
                                 to="/card-details"

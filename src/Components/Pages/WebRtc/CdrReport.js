@@ -531,7 +531,7 @@ function CdrReport() {
                                       }
                                     </td>
                                     <td>
-                                      {item["recording_path"] && (
+                                      {item["recording_path"] && item["variable_billsec"]!==0 && (
                                         <MusicPlayer
                                           audioSrc={item["recording_path"]}
                                           isPlaying={

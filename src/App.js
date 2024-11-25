@@ -462,7 +462,7 @@ function App() {
           <Route
             path="/card-details"
             element={
-              permission?.includes(290) || permission?.includes(292) ? (
+              permission?.includes(470) || permission?.includes(470) ? (
                 <CardAndBilling />
               ) : (
                 <Navigate to="/dashboard" replace />

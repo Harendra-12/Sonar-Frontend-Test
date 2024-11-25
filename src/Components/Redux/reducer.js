@@ -53,6 +53,7 @@ var ivrRefresh = 0;
 var deviceProvisioning = [];
 var deviceProvisioningRefresh = 0;
 var minimize = false;
+var updateBalance = 0;
 
 const initialState = {
   account,
@@ -109,6 +110,7 @@ const initialState = {
   deviceProvisioning,
   deviceProvisioningRefresh,
   minimize,
+  updateBalance,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -231,6 +233,11 @@ const counterReducer = (state = initialState, action) => {
       return {
         ...state,
         minimize: action.minimize,
+      };
+    case "SET_UPDATEBALANCE":
+      return {
+        ...state,
+        updateBalance: action.updateBalance,
       };
     default:
       return state;

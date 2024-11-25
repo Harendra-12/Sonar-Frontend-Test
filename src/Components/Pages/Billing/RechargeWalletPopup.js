@@ -16,6 +16,7 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
   const accountDetailsRefresh = useSelector(
     (state) => state.accountDetailsRefresh
   );
+  const updateBalance = useSelector((state) => state.updateBalance);
   const [newCardPopUp, setNewCardPopUp] = useState(false);
   const account = useSelector((state) => state.account);
   const cardList = useSelector((state) => state.cardList);
@@ -114,14 +115,13 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
         if (apiData.status) {
           setLoading(false);
           dispatch({
-            type: "SET_ACCOUNTDETAILSREFRESH",
-            accountDetailsRefresh: accountDetailsRefresh + 1,
-          });
-
+            type: "SET_UPDATEBALANCE",
+            updateBalance: updateBalance + 1,
+          })
+          toast.success(apiData.message);
           setTimeout(() => {
             closePopup(false);
           }, 2000);
-          toast.success(apiData.message);
         } else {
           setLoading(false);
           navigate("/card-details");

@@ -19,11 +19,10 @@ function GlobalCalls() {
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
-  const domainRefresh = useSelector((state) => state.domainRefresh);
-  const usersRefresh = useSelector((state) => state.usersRefresh);
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
   const ivrRefresh = useSelector((state) => state.ivrRefresh);
+  const updateBalance = useSelector((state) => state.updateBalance);
   const deviceProvisioningRefresh = useSelector(
     (state) => state.deviceProvisioningRefresh
   );
@@ -258,8 +257,6 @@ function GlobalCalls() {
     async function getData() {
       const apiData = await generalGetFunction("/account-balance");
       if (apiData?.status) {
-        console.log("This is balance", apiData);
-
         dispatch({
           type: "SET_BALANCE",
           balance: apiData,
@@ -267,7 +264,7 @@ function GlobalCalls() {
       }
     }
     getData();
-  }, []);
+  }, [updateBalance]);
 
   // Getting ivr details
   useEffect(() => {

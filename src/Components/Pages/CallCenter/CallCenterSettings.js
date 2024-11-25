@@ -23,7 +23,7 @@ const CallCenterSettings = () => {
     async function getData() {
       setLoading(true);
       try {
-        const userData = await generalGetFunction(`/call-center-queue/${id}`);
+        const userData = await generalGetFunction(`/call-center-queues/${id}`);
         setLoading(false);
 
         console.log("API Response:", userData);
@@ -71,7 +71,7 @@ const CallCenterSettings = () => {
 
     setLoading(true);
     const apiData = await generalPutFunction(
-      `/call-center-queue/update/${id}`,
+      `/call-center-queues/update/${id}`,
       payload
     );
 
