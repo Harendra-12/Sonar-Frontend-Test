@@ -25,7 +25,8 @@ function CallCenterQueue() {
   const [itemsPerPage, setItemsPerPage] = useState(null);
   const [selectedCallCenter, setSelectedCallCenter] = useState(null);
   const account = useSelector((state) => state.account);
-
+  const [userInput, setuserInput] = useState("");
+  const [selectedOption, setSelectedOption] = useState("userName");
   // const [deleteToggle, setDeleteToggle] = useState();
   const [deleteId, setDeleteId] = useState("");
   const allUser = useSelector((state) => state.allUser);
@@ -283,7 +284,7 @@ function CallCenterQueue() {
                         </select>
                         <label>entries</label>
                       </div>
-                      <div className="searchBox position-relative">
+                      {/* <div className="searchBox position-relative">
                         <label>Search:</label>
                         <input
                           type="search"
@@ -292,6 +293,29 @@ function CallCenterQueue() {
                           className="formItem"
                           onChange={() => featureUnderdevelopment()}
                         />
+                      </div> */}
+                      <div className="searchBox position-relative">
+                        <label>Search:</label>
+                        <input
+                          type="search"
+                          name="Search"
+                          className="formItem"
+                          placeholder="Search"
+                          value={userInput}
+                          onChange={(e) => setuserInput(e.target.value)}
+                          style={{ paddingRight: 100 }}
+                        />
+                        <select
+                          className="secretSelect"
+                          value={selectedOption}
+                          onChange={(e) => setSelectedOption(e.target.value)}
+                        >
+                          <option value="userName">Queue Name</option>
+                          <option value="accountId">Strategy</option>
+
+                          <option value="onCall">Extension</option>
+                          <option value="onCall">Prefix</option>
+                        </select>
                       </div>
                     </div>
                     <div className="tableContainer">
