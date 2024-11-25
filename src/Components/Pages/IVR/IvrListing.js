@@ -25,6 +25,8 @@ const IvrListing = () => {
   const loadings = useSelector;
   const [refreshState, setRefreshState] = useState(false);
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
+  const [userInput, setuserInput] = useState("");
+  const [selectedOption, setSelectedOption] = useState("userName");
   useEffect(() => {
     async function getData() {
       setLoading(true);
@@ -161,7 +163,7 @@ const IvrListing = () => {
                         </select>
                         <label>entries</label>
                       </div>
-                      <div className="searchBox position-relative">
+                      {/* <div className="searchBox position-relative">
                         <label>Search:</label>
                         <input
                           type="search"
@@ -170,6 +172,28 @@ const IvrListing = () => {
                           placeholder="Search"
                           onChange={() => featureUnderdevelopment()}
                         />
+                      </div> */}
+                      <div className="searchBox position-relative">
+                        <label>Search:</label>
+                        <input
+                          type="search"
+                          name="Search"
+                          className="formItem"
+                          placeholder="Search"
+                          value={userInput}
+                          onChange={(e) => setuserInput(e.target.value)}
+                          style={{ paddingRight: 100 }}
+                        />
+                        <select
+                          className="secretSelect"
+                          value={selectedOption}
+                          onChange={(e) => setSelectedOption(e.target.value)}
+                        >
+                          <option value="userName">Name</option>
+                          <option value="accountId">Type</option>
+
+                          <option value="onCall"> Confirm Attempts</option>
+                        </select>
                       </div>
                     </div>
                     <div className="tableContainer">

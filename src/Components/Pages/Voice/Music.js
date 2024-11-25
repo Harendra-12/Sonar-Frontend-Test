@@ -28,6 +28,8 @@ function Music() {
   const navigate = useNavigate();
   const musicAll = useSelector((state) => state.musicAll);
   const dispatch = useDispatch();
+  const [userInput, setuserInput] = useState("");
+  const [selectedOption, setSelectedOption] = useState("userName");
   useEffect(() => {
     if (musicAll) {
       setLoading(false);
@@ -179,7 +181,9 @@ function Music() {
                           }}
                         >
                           <span className="text">Back</span>
-                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-caret-left"></i>
+                          </span>
                         </button>
                         <button
                           // to="/ring-groups-add"
@@ -189,12 +193,17 @@ function Music() {
                           className="panelButton"
                         >
                           <span className="text">Add</span>
-                          <span className="icon"><i class="fa-solid fa-plus"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-plus"></i>
+                          </span>
                         </button>
                       </div>
                     </div>
                   </div>
-                  <div className="col-12" style={{ overflow: "auto", padding: '25px 20px 0' }}>
+                  <div
+                    className="col-12"
+                    style={{ overflow: "auto", padding: "25px 20px 0" }}
+                  >
                     <div className="tableHeader">
                       <div className="showEntries">
                         <label>Show</label>
@@ -203,9 +212,33 @@ function Music() {
                         </select>
                         <label>entries</label>
                       </div>
-                      <div className="searchBox">
+                      {/* <div className="searchBox">
                         <label>Search:</label>
-                        <input type="search" className="formItem" onChange={() => featureUnderdevelopment()} />
+                        <input
+                          type="search"
+                          className="formItem"
+                          onChange={() => featureUnderdevelopment()}
+                        />
+                      </div> */}
+                      <div className="searchBox position-relative">
+                        <label>Search:</label>
+                        <input
+                          type="search"
+                          name="Search"
+                          className="formItem"
+                          placeholder="Search"
+                          value={userInput}
+                          onChange={(e) => setuserInput(e.target.value)}
+                          style={{ paddingRight: 100 }}
+                        />
+                        <select
+                          className="secretSelect"
+                          value={selectedOption}
+                          onChange={(e) => setSelectedOption(e.target.value)}
+                        >
+                          <option value="userName">Music</option>
+                          <option value="accountId">Type</option>
+                        </select>
                       </div>
                     </div>
                     <div className="tableContainer">
@@ -231,16 +264,14 @@ function Music() {
                                     <td>{item.type}</td>
                                     <td>{item.created_at.split("T")[0]}</td>
                                     <td>
-                                      <MusicPlayer audioSrc={item.path} isPlaying={
-                                        currentPlaying ===
-                                        item.path
-                                      }
+                                      <MusicPlayer
+                                        audioSrc={item.path}
+                                        isPlaying={currentPlaying === item.path}
                                         onPlay={() =>
-                                          setCurrentPlaying(
-                                            item.path
-                                          )
+                                          setCurrentPlaying(item.path)
                                         }
-                                        onStop={() => setCurrentPlaying(null)} />
+                                        onStop={() => setCurrentPlaying(null)}
+                                      />
                                     </td>
 
                                     <td>
@@ -302,8 +333,10 @@ function Music() {
                             accept="audio/*"
                             onChange={(e) => {
                               const file = e.target.files[0];
-                              const fileName = file.name.replace(/ /g, '-');
-                              const newFile = new File([file], fileName, { type: file.type });
+                              const fileName = file.name.replace(/ /g, "-");
+                              const newFile = new File([file], fileName, {
+                                type: file.type,
+                              });
                               setNewMusic(newFile);
                             }}
                           />
@@ -315,14 +348,18 @@ function Music() {
                           onClick={handleNewMusic}
                         >
                           <span className="text">Confirm</span>
-                          <span className="icon"><i class="fa-solid fa-check"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-check"></i>
+                          </span>
                         </button>
                         <button
                           className="panelButton gray m-0 float-end"
                           onClick={() => setNewMusicPopup(false)}
                         >
                           <span className="text">Cancel</span>
-                          <span className="icon"><i class="fa-solid fa-xmark"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-xmark"></i>
+                          </span>
                         </button>
                       </div>
                     </div>
@@ -355,7 +392,9 @@ function Music() {
                           }}
                         >
                           <span className="text">Confirm</span>
-                          <span className="icon"><i class="fa-solid fa-check"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-check"></i>
+                          </span>
                         </button>
                         <button
                           className="panelButtonWhite m-0 float-end"

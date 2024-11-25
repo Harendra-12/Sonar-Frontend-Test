@@ -26,7 +26,8 @@ const Extensions = () => {
   const userList = useSelector((state) => state.allUser?.data) || [];
   const dispatch = useDispatch();
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
-
+  const [userInput, setuserInput] = useState("");
+  const [selectedOption, setSelectedOption] = useState("userName");
   useEffect(() => {
     if (registerUser.length > 0) {
       setOnlineExtension(
@@ -161,13 +162,35 @@ const Extensions = () => {
                         </select>
                         <label>entries</label>
                       </div>
-                      <div className="searchBox">
+                      {/* <div className="searchBox">
                         <label>Search:</label>
                         <input
                           type="search"
                           className="formItem"
                           onChange={() => featureUnderdevelopment()}
                         />
+                      </div> */}
+                      <div className="searchBox position-relative">
+                        <label>Search:</label>
+                        <input
+                          type="search"
+                          name="Search"
+                          className="formItem"
+                          placeholder="Search"
+                          value={userInput}
+                          onChange={(e) => setuserInput(e.target.value)}
+                          style={{ paddingRight: 100 }}
+                        />
+                        <select
+                          className="secretSelect"
+                          value={selectedOption}
+                          onChange={(e) => setSelectedOption(e.target.value)}
+                        >
+                          <option value="userName">Extension</option>
+                          <option value="accountId">Effective CID Name </option>
+
+                          <option value="onCall">Outbound CID Name </option>
+                        </select>
                       </div>
                     </div>
                     <div className="tableContainer">
