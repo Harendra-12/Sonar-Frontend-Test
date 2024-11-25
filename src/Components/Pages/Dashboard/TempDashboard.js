@@ -151,7 +151,7 @@ function TempDashboard() {
           <Header title="New User Details" />
           <div className="d-flex flex-wrap">
             <div className="col-xl-12">
-              <div className="profileView">
+              <div className="profileView" style={{ padding: "10px 30px" }}>
                 <div className="profileDetailsHolder position-relative">
                   <div
                     className="baseDetails row align-items-center mt-3"
@@ -288,7 +288,7 @@ function TempDashboard() {
               </div>
             </div>
             <div className="col-xl-12">
-              <div className="overviewTableWrapper">
+              <div className="overviewTableWrapper pt-2">
                 <div className="overviewTableChild">
                   {statusClick === "account" ? (
                     <Account

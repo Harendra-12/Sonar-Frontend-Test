@@ -271,7 +271,7 @@ form.tangoNavs .nav-tabs {
 .overviewTableWrapper .overviewTableChild {
     /* border: 1px solid #ddd; */
     /* padding: 20px; */
-    background-color: #fff;
+    background-color: var(--ele-color);
     border-radius: 10px;
     /* overflow: hidden; */
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
@@ -284,6 +284,7 @@ form.tangoNavs .nav-tabs {
     padding: 15px 20px;
     background-color: #fafafa;
     border-bottom: 1px solid var(--border-color);
+    border-radius: 10px 10px 0 0;
 }
 
 

@@ -80,6 +80,11 @@
 
 .panelButton:disabled {
   opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.panelButton:disabled .icon i {
+  transform: none !important;
 }
 
 .panelButton,
