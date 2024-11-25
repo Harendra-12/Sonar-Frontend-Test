@@ -28,40 +28,6 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule, setac
   const callProgressDestination = useSelector(
     (state) => state.callProgressDestination
   );
-
-  const [participants, setParticipants] = useState([]);
-  const { client } = useSIPProvider();
-
-  useEffect(() => {
-    if (client) {
-      // Listen for NOTIFY messages for conference events
-      client.on("notify", (notification) => {
-        const event = parseConferenceEvent(notification.body);
-        if (event.action === "add-member") {
-          setParticipants((prev) => [...prev, event.member]);
-        } else if (event.action === "del-member") {
-          setParticipants((prev) =>
-            prev.filter((member) => member.id !== event.member.id)
-          );
-        }
-      });
-    }
-  }, [client]);
-
-  const parseConferenceEvent = (rawData) => {
-    const event = {};
-    rawData.split("\n").forEach((line) => {
-      const [key, value] = line.split(": ");
-      if (key && value) event[key.trim()] = value.trim();
-    });
-    return {
-      action: event["Conference-Action"],
-      member: { id: event["Member-ID"], name: event["Caller-Caller-ID-Name"] },
-    };
-  };
-
-  console.log("participants", participants);
-  
   const {
     isHeld,
     isMuted,
