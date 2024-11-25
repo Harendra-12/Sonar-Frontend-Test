@@ -42,7 +42,7 @@
     max-width: 215px;
     padding: 5px 0px;
     font-weight: 400;
-    color: #2a2a2a;
+    color: var(--form-label);
     /* margin-top: auto; */
     /* margin-bottom: auto; */
     position: relative;
@@ -107,7 +107,7 @@
 /* #detailsContent .formRow  */
 .formItem {
     /* background-color: #0e111e; */
-    background-color: #fff;
+    background-color: var(--ele-color);
     border: 1px solid var(--color4);
     /* color: #fff; */
     padding: 5px 10px;
@@ -118,13 +118,13 @@
     /* margin: 0px 5px 5px 0px; */
     height: 34px;
     transition: all 0.3s ease-in-out;
-    color: #555;
+    color: var(--form-input-text);
     font-weight: 700;
 }
 
 .formItem:not([type="file"]):focus,
 .formItem:not([type="file"]):hover {
-    border: 1px solid var(--ui-accent);
+    border: 1px solid var(--color2);
 }
 
 #detailsContent .formRow select {
@@ -282,7 +282,7 @@ form.tangoNavs .nav-tabs {
     justify-content: space-between;
     align-items: center;
     padding: 15px 20px;
-    background-color: #fafafa;
+    background-color: var(--formHeadingBloc);
     border-bottom: 1px solid var(--border-color);
     border-radius: 10px 10px 0 0;
 }

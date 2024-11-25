@@ -44,7 +44,7 @@ function DarkModeToggle() {
             <div className="itemTitle customTogle d-flex align-items-center">
                 Dark Mode
                 <label class="switch ms-3">
-                    <input type="checkbox" onChange={toggleTheme} />
+                    <input type="checkbox" onChange={toggleTheme} checked={isDark ? "true" : "false"} />
                     <span class="slider my-auto"></span>
                 </label>
             </div>

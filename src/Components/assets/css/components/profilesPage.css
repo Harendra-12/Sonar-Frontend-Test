@@ -6,7 +6,7 @@
     border: 1px solid #c9c9c970;
     padding: 10px;
     border-radius: 10px;
-    background-color: #fff;
+    background-color: var(--ele-color);
     /* box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 5px; */
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
 }
@@ -54,7 +54,7 @@
 .profileView .baseDetails .content p span {
     width: 18px;
     display: inline-block;
-    color: var(--ui-accent);
+    color: var(--ui-icon);
 }
 
 .profileView .baseDetails .summaryDetails {

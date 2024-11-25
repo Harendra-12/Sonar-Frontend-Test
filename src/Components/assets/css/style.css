@@ -86,6 +86,23 @@
     --sideNavApp-width: 210px;
     --active-calls-sidePanel-width: 250px;
     --ele-color: #fff;
+    --form-label: #2a2a2a;
+    --form-input-text: #555;
+    --formHeadingBloc: #fafafa;
+}
+
+:root.dark {
+    --nav-color: #141718;
+    --ui-accent: #141718;
+    --bg-color: #303030;
+    --ele-color: #141718;
+    --bgdark-color: #fff;
+    --color-subtext: #bbb;
+    --color2: #4bc0ff;
+    --form-label: #fff;
+    --form-input-text: #fff;
+    --bs-dark-rgb: #fff;
+    --formHeadingBloc: #000;
 }
 
 html {
@@ -102,6 +119,10 @@ body {
     margin: 0;
     padding: 0;
     /* overflow: hidden; */
+}
+
+body.dark {
+    color: #fff;
 }
 
 ul {
