@@ -434,7 +434,9 @@ const UsersEdit = () => {
                       <form action="#" className="row px-2">
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
-                            <label htmlFor="">Username</label>
+                            <label htmlFor="">
+                              Username<span className="text-danger">*</span>
+                            </label>
                           </div>
                           <div className="col-6">
                             <input
@@ -454,7 +456,9 @@ const UsersEdit = () => {
                         </div>
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
-                            <label htmlFor="">Email</label>
+                            <label htmlFor="">
+                              Email<span className="text-danger">*</span>
+                            </label>
                           </div>
                           <div className="col-6">
                             <input
@@ -474,7 +478,9 @@ const UsersEdit = () => {
                         </div>
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
-                            <label htmlFor="">First Name</label>
+                            <label htmlFor="">
+                              First Name<span className="text-danger">*</span>
+                            </label>
                           </div>
                           <div className="col-6">
                             <input
@@ -514,7 +520,9 @@ const UsersEdit = () => {
                         </div>
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
-                            <label htmlFor="selectFormRow">Time Zone</label>
+                            <label htmlFor="selectFormRow">
+                              Time Zone<span className="text-danger">*</span>
+                            </label>
                             <label htmlFor="data" className="formItemDesc">
                               Select the default time zone.
                             </label>
@@ -571,7 +579,9 @@ const UsersEdit = () => {
                         </div>
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
-                            <label htmlFor="selectFormRow">Role Type</label>
+                            <label htmlFor="selectFormRow">
+                              Role Type<span className="text-danger">*</span>
+                            </label>
                             <label htmlFor="data" className="formItemDesc">
                               Select Default to enable login or to disable login
                               select Virtual.
