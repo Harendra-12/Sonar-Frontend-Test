@@ -587,7 +587,9 @@ function CallCenterQueueEdit() {
                       <form className="row col-12 mx-auto mb-0">
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
-                            <label htmlFor="">Queue Name</label>
+                            <label htmlFor="">
+                              Queue Name<span className="text-danger">*</span>
+                            </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter the queue name.
                             </label>
@@ -611,7 +613,9 @@ function CallCenterQueueEdit() {
 
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
-                            <label htmlFor="">Greeting</label>
+                            <label htmlFor="">
+                              Greeting<span className="text-danger">*</span>
+                            </label>
                             <label htmlFor="data" className="formItemDesc">
                               Select the desired Greeting.
                             </label>
@@ -622,6 +626,11 @@ function CallCenterQueueEdit() {
                                 ...requiredValidator,
                               })}
                               className="formItem w-100"
+                              onChange={(e) => {
+                                if (e.target.value === "addmusic") {
+                                  navigate("voice-music");
+                                }
+                              }}
                             >
                               <option disabled value="" selected>
                                 Select Greeting
@@ -634,6 +643,13 @@ function CallCenterQueueEdit() {
                                     </option>
                                   );
                                 })}
+                              <option
+                                value="addmusic"
+                                className="text-center border bg-info-subtle fs-6 fw-bold text-info"
+                                style={{ cursor: "pointer" }}
+                              >
+                                Add Music
+                              </option>
                             </select>
                             {errors.greeting && (
                               <ErrorMessage text={errors.greeting.message} />
@@ -667,7 +683,10 @@ function CallCenterQueueEdit() {
                         </div>
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
-                            <label htmlFor="">Music on Hold</label>
+                            <label htmlFor="">
+                              Music on Hold
+                              <span className="text-danger">*</span>
+                            </label>
                             <label htmlFor="data" className="formItemDesc">
                               Select the desired hold music.
                             </label>
@@ -678,6 +697,11 @@ function CallCenterQueueEdit() {
                                 ...requiredValidator,
                               })}
                               className="formItem w-100"
+                              onChange={(e) => {
+                                if (e.target.value == "addmusic") {
+                                  navigate("voice-music");
+                                }
+                              }}
                             >
                               <option disabled value="" selected>
                                 Select Hold Music
@@ -690,6 +714,13 @@ function CallCenterQueueEdit() {
                                     </option>
                                   );
                                 })}
+                              <option
+                                value="addmusic"
+                                className="text-center border bg-info-subtle fs-6 fw-bold text-info"
+                                style={{ cursor: "pointer" }}
+                              >
+                                Add Music
+                              </option>
                             </select>
                             {errors.moh_sound && (
                               <ErrorMessage text={errors.moh_sound.message} />
@@ -1169,7 +1200,10 @@ function CallCenterQueueEdit() {
                               <div className="col-2 ps-0 pe-2">
                                 <div className="formLabel">
                                   {index === 0 ? (
-                                    <label htmlFor="">Choose Agent</label>
+                                    <label htmlFor="">
+                                      Choose Agent
+                                      <span className="text-danger">*</span>
+                                    </label>
                                   ) : (
                                     ""
                                   )}
