@@ -10,7 +10,7 @@
   background: none;
   border: 0;
   /* background-color: var(--color1); */
-  color: #858585;
+  color: var(--webUtilGray);
   text-decoration: none;
   font-size: 17px;
   width: 35px;
@@ -80,6 +80,11 @@
 
 .panelButton:disabled {
   opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.panelButton:disabled .icon i {
+  transform: none !important;
 }
 
 .panelButton,
@@ -193,11 +198,11 @@
 .clearColorButton {
   color: #fff;
   text-decoration: none;
-  /* background-color: var(--color2); */
-  background-color: #abe4ff46;
+  background-color: var(--color2);
+  /* background-color: #abe4ff46; */
   font-size: 16px;
   font-weight: 400;
-  border: 1px solid #fff;
+  /* border: 1px solid #fff; */
   border-radius: 50px;
   display: block;
   width: 100%;
@@ -205,6 +210,7 @@
   text-decoration: none;
   transition: 0.3s ease-in-out;
   /* box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06); */
+  border: none;
 }
 
 .clearColorButton i {
