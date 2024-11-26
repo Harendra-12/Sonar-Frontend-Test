@@ -5,13 +5,13 @@ table {
 table td {
     padding: 10px 10px;
     font-size: 12px;
-    color: var(--table-text);
+    color: #5f5f5f;
 }
 
 table th {
     padding: 10px 10px;
     font-size: 13px;
-    background-color: var(--table-head);
+    background-color: #f4f7f9;
 }
 
 table thead tr {
@@ -20,7 +20,7 @@ table thead tr {
 }
 
 table tbody tr {
-    background-color: var(--ele-color);
+    background-color: #fff;
     transition: 0.1s ease-in;
     border-bottom: 1px solid var(--border-color);
     position: relative;
@@ -79,7 +79,7 @@ table tr th:first-child {
     border-radius: 5px;
     margin-bottom: 10px;
     /* box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 5px; */
-    background-color: var(--ele-color);
+    background-color: #fff;
     min-height: 271px;
 }
 
@@ -112,6 +112,38 @@ table tr th:first-child {
 
 .tableHeader .showEntries select {
     margin-right: 10px;
+}
+
+#detailsHeader .profileHolder {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    cursor: pointer;
+    background-color: var(--ui-accent);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;
+}
+
+#detailsHeader .profileHolder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#detailsHeader .profileName {
+    color: #fff;
+    display: inline-block;
+    align-items: center;
+    font-size: 16px;
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 
@@ -172,12 +204,12 @@ table td.incoming::after {
 }
 
 .mainContentApp .callDetails table tbody tr:nth-child(even) {
-    background-color: var(--bg-color);
-    /* background-color: var(--ele-color); */
+    /* background-color: var(--bg-color); */
+    background-color: #fff;
 }
 
 .mainContentApp .callDetails table tbody tr {
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid #ddd;
 }
 
 #detailsHeader .context select {
@@ -198,11 +230,11 @@ table td.incoming::after {
     outline: none;
     height: 35px;
     background-color: transparent;
-    border-left: 1px solid var(--border-color);
+    border-left: 1px solid #ddd;
     border-radius: 0 50px 50px 0;
     font-size: 14px;
     font-weight: 700;
-    color: var(--color-subtext);
+    color: #555;
 }
 
 .searchBox {

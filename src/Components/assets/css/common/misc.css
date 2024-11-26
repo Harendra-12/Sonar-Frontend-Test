@@ -10,7 +10,7 @@
 }
 
 .popup .content {
-    background-color: var(--ele-color);
+    background-color: #fff;
     padding: 20px 10px;
     justify-content: center;
     border-radius: 10px;
@@ -171,9 +171,9 @@
 
 .searchList {
     padding: 10px 15px;
-    background-color: var(--ele-color);
+    background-color: #fff;
     border-radius: 10px;
-    /* border-left: 1px solid #ddd; */
+    border-left: 1px solid #ddd;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
@@ -198,22 +198,23 @@
 .searchList.cart ul li {
     border: none;
     font-weight: 600;
+    color: #454545;
     font-size: 13px;
-    color: var(--color-subtext);
+    color: #454545;
     font-family: Open Sans;
     padding: 0px 0 3px 0;
 }
 
 .searchList.cart ul li:last-child {
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid #ddd;
+    color: #000;
     padding-top: 3px;
     font-size: 14px;
-    color: inherit;
 }
 
 .searchList.checkout ul li {
     border-radius: 10px;
-    border: 1px solid var(--border-color);
+    border: 1px solid #ddd;
     margin-bottom: 10px;
     padding: 10px;
     transition: 0.3s;
@@ -221,7 +222,7 @@
 }
 
 .searchList.checkout ul li:hover {
-    background-color: #e7e7e745;
+    background-color: #e7e7e7;
 }
 
 .searchList.checkout input[type="radio"] {
@@ -659,7 +660,6 @@ input[type=number] {
     font-size: 14px;
     font-weight: 500;
     background-color: transparent;
-    color: inherit;
 }
 
 .newHeader {
@@ -730,12 +730,12 @@ input[type=number] {
     display: block;
     font-size: 13px;
     font-weight: 400;
-    color: var(--color-subtext);
+    color: #898989;
 }
 
 .viewingAs {
     text-transform: uppercase;
-    color: var(--webUtilGray);
+    color: #757575;
     font-size: 14px !important;
     font-weight: 500;
 }
@@ -743,22 +743,15 @@ input[type=number] {
 .viewingAs span {
     display: block;
     text-transform: capitalize;
-    color: var(--immortalBlack);
+    color: #000;
     font-size: 18px;
     margin-top: 5px;
 }
 
-.permissionListWrapper .accordion-item {
-    border-color: var(--border-color);
-}
-
-.permissionListWrapper .accordion-button {
-    background-color: var(--ele-color);
-    color: var(--form-label);
-}
-
 .permissionListWrapper .accordion-button:not(.collapsed) {
-    background: var(--accordion-active);
+    color: #2a2a2a;
+    background: #a2e1ff3d;
+
 }
 
 .permissionListWrapper .accordion-button label {
@@ -768,5 +761,4 @@ input[type=number] {
 .permissionListWrapper .accordion-body {
     display: flex;
     justify-content: space-between;
-    background-color: var(--ele-color);
 }

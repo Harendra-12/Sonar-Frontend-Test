@@ -289,14 +289,14 @@ function AllVoicemails({ isCustomerAdmin }) {
                       <button class="clearButton" onClick={() => setVoiceMailRefresh(voiceMailRefresh + 1)}>
                         <i
                           class={loading ? "fa-regular fa-arrows-rotate fs-5 fa-spin" : "fa-regular fa-arrows-rotate fs-5 "}
-                          style={{ color: "var(--webUtilGray)" }}
+                          style={{ color: "rgb(148, 148, 148)" }}
                         ></i>
                       </button>
                     </h3>
                   </div>
                   <div className="d-flex justify-content-end align-items-center">
                     <div className="col-9">
-                      <input type="search" name="Search" placeholder="Search users, groups or chat" class="formItem fw-normal" style={{ backgroundColor: 'var(--searchBg)' }} onChange={() => featureUnderdevelopment()} />
+                      <input type="search" name="Search" placeholder="Search users, groups or chat" class="formItem fw-normal" style={{ backgroundColor: '#f5f5f5' }} onChange={() => featureUnderdevelopment()} />
                     </div>
                     <div className="col-auto mx-2">
                       <button
@@ -358,7 +358,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                 </div>
                 <div className="col-12">
                   <nav className="mt-3">
-                    <div className="nav nav-tabs" style={{ borderBottom: '1px solid var(--border-color)' }}>
+                    <div className="nav nav-tabs" style={{ borderBottom: '1px solid #ddd' }}>
                       {/* <button
                         className="tabLink active"
                         effect="ripple"
@@ -526,7 +526,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                         <div className="col-12" style={{ padding: '0px 20px 0px' }}>
                           <div className="mt-2">
                             <nav className="mb-2">
-                              <div className="nav nav-tabs" id="nav-tab" role="tablist" style={{ borderBottom: '1px solid var(--border-color)' }}>
+                              <div className="nav nav-tabs" id="nav-tab" role="tablist" style={{ borderBottom: '1px solid #ddd' }}>
                                 <button
                                   className="tabLink active"
                                   effect="ripple"
@@ -573,7 +573,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                     </thead>
                                     <tbody>
                                       <tr>
-                                        <td>
+                                        <td style={{ color: "#444444" }}>
                                           {formatDate(clickedVoiceMail.created_at)}
                                         </td>
                                         <td>
@@ -674,7 +674,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                                   href={`#voiceMail${index}`}
                                                   role="button"
                                                 >
-                                                  <td>
+                                                  <td style={{ color: "#444444" }}>
                                                     {formatDate(item.created_at)}
                                                   </td>
                                                   <td>{formatTime(item.created_at)}</td>
@@ -707,7 +707,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                                     )}
                                                   </td>
                                                   {/* <td>{item.dest}</td> */}
-                                                  <td style={{ color: "var(--color-subtext)" }}>
+                                                  <td style={{ color: "#444444" }}>
                                                     {item.duration}
                                                   </td>
                                                 </tr>

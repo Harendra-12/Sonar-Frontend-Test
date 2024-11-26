@@ -4,7 +4,7 @@
     justify-content: space-between;
     /* padding: 10px; */
     padding: 15px 0;
-    border-right: 1px solid var(--border-color) !important;
+    border-right: 1px solid #dee2e6 !important;
     height: 100%;
 }
 
@@ -27,8 +27,8 @@
     /* margin-bottom: 5px; */
     transition: 0.3s ease-in-out;
 
-    background-color: var(--webBG);
-    border-bottom: 1px solid var(--border-color);
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
     border-right: 4px solid transparent;
 }
 
@@ -44,7 +44,7 @@
     margin: 5px 0;
     /* font-family: Outfit; */
     font-weight: 500;
-    color: var(--color-subtext);
+    color: #505050;
 }
 
 .mainContentApp .tab-content .callList .callListDiff {
@@ -75,8 +75,8 @@
     /* margin-bottom: 5px; */
     cursor: pointer;
     transition: 0.3s ease-in-out;
-    border-bottom: 1px solid var(--border-color);
-    background-color: var(--ele-color);
+    border-bottom: 1px solid #ddd;
+    background-color: #fff;
     min-height: 99.19px;
 }
 
@@ -360,7 +360,7 @@
     width: 370px;
     /* min-height: 400px; */
     border-radius: 10px;
-    background-color: var(--ele-color);
+    background-color: #fff;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     padding: 20px;
 }
@@ -406,7 +406,7 @@
 
 .mainContentApp .tab-content .callListItem.selected {
     /* background-color: #439fdd25; */
-    background: var(--searchBg);
+    background: #f5f5f5;
     border-right: 4px solid var(--ui-accent);
     /* border-radius: 10px; */
     /* box-shadow: rgba(0, 0, 0, 0.20) 0px 1px 5px; */
@@ -416,7 +416,7 @@
 
 .mainContentApp .tab-content .contactListItem.selected {
     /* background-color: #439fdd25; */
-    background: var(--searchBg);
+    background: #f5f5f5;
     border-right: 4px solid var(--ui-accent);
     /* border-radius: 10px; */
     /* box-shadow: rgba(0, 0, 0, 0.20) 0px 1px 5px; */

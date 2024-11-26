@@ -13,13 +13,12 @@
 }
 
 #sidenNav .sidenavItems [aria-expanded="true"] {
-    background: #3e8ef769 !important;
+    background: #35353b87 !important;
     border-radius: 7px;
 }
 
 #sidenNav .sidenavItems a.active {
-    /* background: #35353b !important; */
-    background: var(--color2) !important;
+    background: #35353b !important;
     border-radius: 7px;
     /* color: #fff; */
 }
@@ -27,6 +26,11 @@
 #sidenNav .sidenavItems .active .accordion-collapse.collapse {
     display: block;
 }
+
+#sidenNav .sidenavItems .tabMenu .tabItem.active {
+    background: #ffffff29;
+}
+
 
 /* #sidenNav .sidenavItems .active button .itemTitle {
     color: #000 !important;

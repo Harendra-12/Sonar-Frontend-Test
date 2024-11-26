@@ -11,16 +11,6 @@ function PaginationComponent({
 }) {
   return (
     <>
-      <style>
-        {`
-        .pagination_slider button{
-          color: var(--color-subtext) !important;
-        }
-        .pagination_slider button[aria-current="true"]{
-          color: #fff !important;
-        }
-      `}
-      </style>
       <label style={{ marginRight: 10, fontFamily: 'Roboto', color: 'var(--color-subtext)', fontWeight: 500, fontSize: 14 }}>
         Showing {from} to {to} of {total} Entries.
       </label>

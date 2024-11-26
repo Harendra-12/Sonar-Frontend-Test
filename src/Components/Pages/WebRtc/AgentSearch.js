@@ -43,15 +43,14 @@ const AgentSearch = ({ getDropdownValue, value, getAllAgents }) => {
     control: (provided, state) => ({
       ...provided,
       // border: '1px solid var(--color4)',
-      border: "1px solid var(--color4);",
-      backgroundColor: "var(--ele-color)",
+      border: "1px solid #ddd",
       borderRadius: "5px",
       outline: "none",
       fontSize: "14px",
       width: "100%",
       minHeight: "35px",
       padding: "0px 0 0 25px",
-      background: `var(--searchBg) url(${require('../../assets/images/search_b.png')}) no-repeat 7px center / 17px 17px`,
+      background: `#f5f5f5 url(${require('../../assets/images/search_b.png')}) no-repeat 7px center / 17px 17px`,
       boxShadow: state.isFocused ? "none" : provided.boxShadow,
       "&:hover": {
         borderColor: "var(--ui-accent)",
@@ -75,18 +74,20 @@ const AgentSearch = ({ getDropdownValue, value, getAllAgents }) => {
     }),
     dropdownIndicator: (provided) => ({
       ...provided,
-      color: "var(--color-subtext)",
+      color: "#202020",
+      "&:hover": {
+        color: "#202020",
+      },
     }),
     option: (provided, state) => ({
       ...provided,
       paddingLeft: "13px",
       paddingTop: 5,
       paddingBottom: 5,
-      borderBottom: '1px solid var(--border-color)',
-      backgroundColor: state.isSelected ? "var(--ele-color)" : "var(--ele-color)",
+      borderBottom: '1px solid #ddd',
+      backgroundColor: state.isSelected ? "transparent" : "transparent",
       "&:hover": {
-        backgroundColor: "#0055cc",
-        color: "#fff",
+        backgroundColor: "#00000015",
       },
       fontSize: "14px",
     }),
@@ -102,7 +103,6 @@ const AgentSearch = ({ getDropdownValue, value, getAllAgents }) => {
       margin: 0,
       maxHeight: "200px",
       overflowY: "auto",
-      backgroundColor: "var(--ele-color)",
     }),
   };
 

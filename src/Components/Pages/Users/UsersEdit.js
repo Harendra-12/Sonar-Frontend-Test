@@ -426,6 +426,7 @@ const UsersEdit = () => {
                   className="col-12"
                   style={{
                     padding: "25px 23px",
+                    borderBottom: "1px solid #ddd",
                   }}
                 >
                   <div className="row gx-5">
@@ -603,8 +604,8 @@ const UsersEdit = () => {
                                   e.target.value === ""
                                     ? ""
                                     : roleName.permissions.map((item) => {
-                                      return item.permission_id;
-                                    })
+                                        return item.permission_id;
+                                      })
                                 );
                               }}
                             >

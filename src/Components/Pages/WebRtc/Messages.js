@@ -96,7 +96,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
     }
     getData();
   }, [contactRefresh]);
-
+ 
 
   useEffect(() => {
     if (sipProvider && sipProvider.connectStatus === CONNECT_STATUS.CONNECTED) {
@@ -177,7 +177,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
         if (
           chatHistory[recipient[0]]?.total &&
           chatHistory[recipient[0]].pageNumber * 40 <
-          chatHistory[recipient[0]].total
+            chatHistory[recipient[0]].total
         ) {
           getData(chatHistory[recipient[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
@@ -492,13 +492,13 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
               mode === "audio"
                 ? true
                 : {
-                  mandatory: {
-                    minWidth: 1280,
-                    minHeight: 720,
-                    minFrameRate: 30,
+                    mandatory: {
+                      minWidth: 1280,
+                      minHeight: 720,
+                      minFrameRate: 30,
+                    },
+                    optional: [{ facingMode: "user" }],
                   },
-                  optional: [{ facingMode: "user" }],
-                },
           },
         }
       );
@@ -681,7 +681,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                               ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                               : "fa-regular fa-arrows-rotate fs-5"
                           }
-                          style={{ color: "var(--webUtilGray)" }}
+                          style={{ color: "rgb(148, 148, 148)" }}
                         ></i>
                       </button>
                     </h3>
@@ -693,7 +693,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                         name="Search"
                         placeholder="Search users, groups or chat"
                         class="formItem fw-normal"
-                        style={{ backgroundColor: "var(--searchBg)" }}
+                        style={{ backgroundColor: "#f5f5f5" }}
                       />
                     </div>
                     <div className="col-auto mx-2">
@@ -737,8 +737,8 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
               </div>
 
               <div
-                className="col-12 col-xl-4 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-between py-3 px-xl-0"
-                style={{ height: "100%", borderRight: '1px solid var(--border-color)' }}
+                className="col-12 col-xl-4 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-between py-3 border-end px-xl-0"
+                style={{ height: "100%" }}
               >
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
@@ -868,7 +868,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                         <div
                           class="collapse show"
                           id="collapse2"
-                          style={{ borderBottom: "1px solid var(--border-color)" }}
+                          style={{ borderBottom: "1px solid #ddd" }}
                         >
                           {contact.map((item) => {
                             return (
@@ -936,9 +936,9 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                                       <p className="timeAgo">
                                         {item?.last_message_data
                                           ? formatRelativeTime(
-                                            item?.last_message_data
-                                              ?.created_at
-                                          )
+                                              item?.last_message_data
+                                                ?.created_at
+                                            )
                                           : ""}
                                       </p>
                                     </div>

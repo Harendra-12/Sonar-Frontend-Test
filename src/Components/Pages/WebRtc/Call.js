@@ -495,14 +495,14 @@ function Call({
                       <button class="clearButton" onClick={() => setRefreshCalls(refreshCalls + 1)}>
                         <i
                           class={loading ? "fa-regular fa-arrows-rotate fs-5 fa-spin" : "fa-regular fa-arrows-rotate fs-5 "}
-                          style={{ color: "var(--webUtilGray)" }}
+                          style={{ color: "rgb(148, 148, 148)" }}
                         ></i>
                       </button>
                     </h3>
                   </div>
                   <div className="d-flex justify-content-end align-items-center">
                     <div className="col-9">
-                      <input type="search" name="Search" placeholder="Search users, groups or chat" class="formItem fw-normal" onChange={() => featureUnderdevelopment()} />
+                      <input type="search" name="Search" placeholder="Search users, groups or chat" class="formItem fw-normal" style={{ backgroundColor: '#f5f5f5' }} onChange={() => featureUnderdevelopment()} />
                     </div>
                     <div className="col-auto mx-2">
                       <button
@@ -534,15 +534,17 @@ function Call({
                 <div className="col-auto" style={{ padding: '0 10px' }}>
                   <h5 className="viewingAs">
                     Viewing As:
-                    {account && extension ? (
-                      <span>
-                        {account.username} - {account && extension}
-                      </span>
-                    ) : (
-                      <span className="text-danger">
-                        No Extension Assigned
-                      </span>
-                    )}
+                    <span>
+                      {account && extension ? (
+                        <span>
+                          {account.username} - {account && extension}
+                        </span>
+                      ) : (
+                        <span className="text-danger">
+                          No Extension Assigned
+                        </span>
+                      )}
+                    </span>
                   </h5>
                 </div>
                 <div className="col-auto" style={{ padding: '0 10px' }}>
@@ -573,7 +575,7 @@ function Call({
 
                 <div className="col-12">
                   <nav className="mt-3">
-                    <div className="nav nav-tabs" style={{ borderBottom: '1px solid var(--border-color)' }}>
+                    <div className="nav nav-tabs" style={{ borderBottom: '1px solid #ddd' }}>
                       <button
                         onClick={() => setClickStatus("all")}
                         className={
@@ -681,15 +683,15 @@ function Call({
                 id="callDetails"
               >
                 <CallDetails
-                  clickedCall={clickedCall}
-                  callHistory={callHistory}
-                  isCustomerAdmin={isCustomerAdmin}
-                  setSelectedModule={setSelectedModule}
-                  isMicOn={isMicOn}
-                  isVideoOn={isVideoOn}
-                  onCall={onCall}
-                  setactivePage={setactivePage}
-                />
+                      clickedCall={clickedCall}
+                      callHistory={callHistory}
+                      isCustomerAdmin={isCustomerAdmin}
+                      setSelectedModule={setSelectedModule}
+                      isMicOn={isMicOn}
+                      isVideoOn={isVideoOn}
+                      onCall={onCall}
+                      setactivePage={setactivePage}
+                    />
                 {/* {selectedModule == "onGoingCall" ? (
                   callProgress ? (
                     <OngoingCall
