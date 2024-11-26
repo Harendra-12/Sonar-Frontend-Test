@@ -8,7 +8,6 @@ import {
 } from "../GlobalFunction/globalFunction";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import DarkModeToggle from "./DarkModeToggle";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -65,7 +64,7 @@ function Navbar() {
 
                     >
                       <div className="iconHolder">
-                        <i class="fa-light fa-user"></i>
+                        <i class="fa-regular fa-user"></i>
                       </div>
                       <div className="itemTitle">Dashboard</div>
                     </NavLink>
@@ -91,7 +90,7 @@ function Navbar() {
 
                     >
                       <div className="iconHolder">
-                        <i class="fa-light fa-house"></i>
+                        <i class="fa-regular fa-house"></i>
                       </div>
                       <div className="itemTitle">Dashboard</div>
                     </NavLink>
@@ -106,7 +105,7 @@ function Navbar() {
 
                     >
                       <div className="iconHolder">
-                        <i class="fa-light fa-user"></i>
+                        <i class="fa-regular fa-user" style={{ color: '#00ff00' }}></i>
                       </div>
                       <div className="itemTitle">Account Details</div>
                     </button>
@@ -125,7 +124,7 @@ function Navbar() {
                                 className="nav-link"
                               >
                                 {/* <div className="iconHolder">
-                                  <i class="fa-light fa-user"></i>
+                                  <i class="fa-regular fa-user"></i>
                                 </div> */}
                                 <div className="itemTitle">My Profile</div>
                               </NavLink>
@@ -139,7 +138,7 @@ function Navbar() {
                               className="nav-link"
                             >
                               <div className="iconHolder">
-                                <i className="fa-light fa-swap-arrows" />
+                                <i className="fa-regular fa-swap-arrows" />
                               </div>
                               <div className="itemTitle">Details</div>
                             </NavLink>
@@ -152,7 +151,7 @@ function Navbar() {
                               className="nav-link"
                             >
                               {/* <div className="iconHolder">
-                                <i class="fa-light fa-unlock"></i>
+                                <i class="fa-regular fa-unlock"></i>
                               </div> */}
                               <div className="itemTitle">Change Password</div>
                             </NavLink>
@@ -171,7 +170,7 @@ function Navbar() {
 
                     >
                       <div className="iconHolder">
-                        <i class="fa-light fa-sliders"></i>
+                        <i class="fa-regular fa-sliders" style={{ color: '#ff9b00' }}></i>
                       </div>
                       <div className="itemTitle">Setting</div>
                     </button>
@@ -190,7 +189,7 @@ function Navbar() {
                                 className="nav-link"
                               >
                                 {/* <div className="iconHolder">
-                                  <i className="fa-light fa-swap-arrows" />
+                                  <i className="fa-regular fa-swap-arrows" />
                                 </div> */}
                                 <div className="itemTitle">Master</div>
                               </NavLink>
@@ -208,7 +207,7 @@ function Navbar() {
                                 className="nav-link"
                               >
                                 {/* <div className="iconHolder">
-                                  <i class="fa-light fa-arrow-up-big-small"></i>
+                                  <i class="fa-regular fa-arrow-up-big-small"></i>
                                 </div> */}
                                 <div className="itemTitle">
                                   Roles and Permisson
@@ -224,7 +223,7 @@ function Navbar() {
                               className="nav-link"
                             >
                               <div className="iconHolder">
-                                <i class="fa-light fa-laptop-mobile"></i>
+                                <i class="fa-regular fa-laptop-mobile"></i>
                               </div>
                               <div className="itemTitle">
                                 Device Provisioning
@@ -245,7 +244,7 @@ function Navbar() {
                                 }
                               >
                                 {/* <div className="iconHolder">
-                                  <i class="fa-light fa-solid fa-envelopes-bulk"></i>
+                                  <i class="fa-regular fa-solid fa-envelopes-bulk"></i>
                                 </div> */}
                                 <div className="itemTitle">Mail Settings</div>
                               </NavLink>
@@ -260,7 +259,7 @@ function Navbar() {
                                 className="nav-link"
                               >
                                 {/* <div className="iconHolder">
-                                  <i class="fa-light fa-cube"></i>
+                                  <i class="fa-regular fa-cube"></i>
                                 </div> */}
                                 <div className="itemTitle">Packages</div>
                               </NavLink>
@@ -283,7 +282,7 @@ function Navbar() {
 
                     >
                       <div className="iconHolder">
-                        <i class="fa-light fa-phone-intercom"></i>
+                        <i class="fa-regular fa-phone-intercom" style={{ color: '#00f1ff' }}></i>
                       </div>
                       <div className="itemTitle">Phone System</div>
                     </button>
@@ -297,7 +296,7 @@ function Navbar() {
                           <li className="tabItem " >
                             <NavLink to="/phone-dashboard">
                               {/* <div className="iconHolder">
-                                <i className="fa-light fa-light fa-list-dropdown"></i>
+                                <i className="fa-regular fa-regular fa-list-dropdown"></i>
                               </div> */}
                               <div className="itemTitle">Phone Dashboard</div>
                             </NavLink>
@@ -311,7 +310,7 @@ function Navbar() {
                                   : "nav-link"
                               }>
                                 {/* <div className="iconHolder">
-                                  <i className="fa-light fa-phone-office" />
+                                  <i className="fa-regular fa-phone-office" />
                                 </div> */}
                                 <div className="itemTitle">Extensions</div>
                               </NavLink>
@@ -321,7 +320,7 @@ function Navbar() {
                           <li className="tabItem " >
                             <NavLink to="/voice-music">
                               {/* <div className="iconHolder">
-                                <i class="fa-light fa-user-music"></i>
+                                <i class="fa-regular fa-user-music"></i>
                               </div> */}
                               <div className="itemTitle">Voice Music</div>
                             </NavLink>
@@ -329,7 +328,7 @@ function Navbar() {
                           {/* <li className="tabItem " >
                             <NavLink to="/active-calls">
                               <div className="iconHolder">
-                                <i class="fa-light fa-phone-volume"></i>
+                                <i class="fa-regular fa-phone-volume"></i>
                               </div>
                               <div className="itemTitle">Active Calls</div>
                             </NavLink>
@@ -358,7 +357,7 @@ function Navbar() {
                           <li className="tabItem" >
                             <NavLink to="/destination" className="nav-link">
                               <div className="iconHolder">
-                                <i className="fa-light fa-swap-arrows" />
+                                <i className="fa-regular fa-swap-arrows" />
                               </div>
                               <div className="itemTitle">Destinations</div>
                             </NavLink>
@@ -367,7 +366,7 @@ function Navbar() {
                           <li className="tabItem" >
                             <NavLink to="/destinations" className="nav-link">
                               <div className="iconHolder">
-                                <i className="fa-light fa-swap-arrows" />
+                                <i className="fa-regular fa-swap-arrows" />
                               </div>
                               <div className="itemTitle">Routes</div>
                             </NavLink>
@@ -383,7 +382,7 @@ function Navbar() {
                           className="nav-link"
                         >
                           <div className="iconHolder">
-                            <i className="fa-sharp fa-light fa-group-arrows-rotate" />
+                            <i className="fa-sharp fa-regular fa-group-arrows-rotate" />
                           </div>
                           <div className="itemTitle">Dialplan Manager</div>
                         </a>
@@ -394,7 +393,7 @@ function Navbar() {
                           className="nav-link"
                         >
                           <div className="iconHolder">
-                            <i className="fa-sharp fa-light fa-phone-volume" />
+                            <i className="fa-sharp fa-regular fa-phone-volume" />
                           </div>
                           <div className="itemTitle">Inbound Routes</div>
                         </a>
@@ -405,7 +404,7 @@ function Navbar() {
                           className="nav-link"
                         >
                           <div className="iconHolder">
-                            <i className="fa-light fa-phone-arrow-up-right" />
+                            <i className="fa-regular fa-phone-arrow-up-right" />
                           </div>
                           <div className="itemTitle">Outbound Routes</div>
                         </a>
@@ -420,7 +419,7 @@ function Navbar() {
 
                       >
                         <div className="iconHolder">
-                          <i class="fa-light fa-chart-line-up"></i>
+                          <i class="fa-regular fa-chart-line-up" style={{ color: '#f9ff00' }}></i>
                         </div>
                         <div className="itemTitle">Reports</div>
                       </button>
@@ -438,7 +437,7 @@ function Navbar() {
                               className="nav-link"
                             >
                               <div className="iconHolder">
-                                <i className="fa-light fa-swap-arrows" />
+                                <i className="fa-regular fa-swap-arrows" />
                               </div>
                               <div className="itemTitle">Call</div>
                             </NavLink>
@@ -451,7 +450,7 @@ function Navbar() {
                                   className="nav-link"
                                 >
                                   {/* <div className="iconHolder">
-                                    <i class="fa-light fa-chart-bar"></i>
+                                    <i class="fa-regular fa-chart-bar"></i>
                                   </div> */}
                                   <div className="itemTitle">CDR Report</div>
                                 </NavLink>
@@ -472,7 +471,7 @@ function Navbar() {
 
                     >
                       <div className="iconHolder">
-                        <i class="fa-light fa-hashtag"></i>
+                        <i class="fa-regular fa-hashtag" style={{ color: '#ca71ff' }}></i>
                       </div>
                       <div className="itemTitle">Number Management</div>
                     </button>
@@ -490,7 +489,7 @@ function Navbar() {
                               className="nav-link"
                             >
                               {/* <div className="iconHolder">
-                                <i className="fa-light fa-swap-arrows" />
+                                <i className="fa-regular fa-swap-arrows" />
                               </div> */}
                               <div className="itemTitle">Get DID</div>
                             </NavLink>
@@ -506,7 +505,7 @@ function Navbar() {
                               }
                             >
                               {/* <div className="iconHolder">
-                                <i class="fa-light fa-hashtag"></i>
+                                <i class="fa-regular fa-hashtag"></i>
                               </div> */}
                               <div className="itemTitle">DID Listing</div>
                             </NavLink>
@@ -524,7 +523,7 @@ function Navbar() {
                                 }
                               >
                                 {/* <div className="iconHolder">
-                                  <i class="fa-light fa-hashtag-lock"></i>
+                                  <i class="fa-regular fa-hashtag-lock"></i>
                                 </div> */}
                                 <div className="itemTitle">Port number</div>
                               </NavLink>
@@ -544,7 +543,7 @@ function Navbar() {
 
                     >
                       <div className="iconHolder">
-                        <i class="fa-light fa-file-invoice-dollar"></i>
+                        <i class="fa-regular fa-file-invoice-dollar" style={{ color: '#ff7171' }}></i>
                       </div>
                       <div className="itemTitle">Billing</div>
                     </button>
@@ -564,7 +563,7 @@ function Navbar() {
                                 className="nav-link"
                               >
                                 {/* <div className="iconHolder">
-                                  <i class="fa-light fa-money-check-dollar-pen"></i>
+                                  <i class="fa-regular fa-money-check-dollar-pen"></i>
                                 </div> */}
                                 <div className="itemTitle">Payment Details</div>
                               </NavLink>
@@ -578,7 +577,7 @@ function Navbar() {
                               className="nav-link"
                             >
                               <div className="iconHolder">
-                                <i className="fa-light fa-swap-arrows" />
+                                <i className="fa-regular fa-swap-arrows" />
                               </div>
                               <div className="itemTitle">Invoice Details</div>
                             </NavLink>
@@ -590,7 +589,7 @@ function Navbar() {
                               className="nav-link"
                             >
                               <div className="iconHolder">
-                                <i className="fa-light fa-swap-arrows" />
+                                <i className="fa-regular fa-swap-arrows" />
                               </div>
                               <div className="itemTitle">Expenses</div>
                             </NavLink>
@@ -604,7 +603,7 @@ function Navbar() {
                                 className="nav-link"
                               >
                                 {/* <div className="iconHolder">
-                                  <i class="fa-light fa-credit-card"></i>
+                                  <i class="fa-regular fa-credit-card"></i>
                                 </div> */}
                                 <div className="itemTitle">
                                   Card Transactions
@@ -622,7 +621,7 @@ function Navbar() {
                                 className="nav-link"
                               >
                                 {/* <div className="iconHolder">
-                                  <i class="fa-light fa-wallet"></i>
+                                  <i class="fa-regular fa-wallet"></i>
                                 </div> */}
                                 <div className="itemTitle">
                                   Wallet Transactions
@@ -648,7 +647,7 @@ function Navbar() {
                         }
                       >
                         <div className="iconHolder">
-                          <i class="fa-light fa-screen-users"></i>
+                          <i class="fa-regular fa-screen-users"></i>
                         </div>
                         <div className="itemTitle">Ring Group</div>
                       </NavLink>
@@ -668,7 +667,7 @@ function Navbar() {
                         }
                       >
                         <div className="iconHolder">
-                          <i class="fa-light fa-users-gear"></i>
+                          <i class="fa-regular fa-users-gear" style={{ color: '#00ff80' }}></i>
                         </div>
                         <div className="itemTitle">Users</div>
                       </NavLink>
@@ -689,7 +688,7 @@ function Navbar() {
                         }
                       >
                         <div className="iconHolder" >
-                          <i class="fa-light fa-users-rectangle"></i>
+                          <i class="fa-regular fa-users-rectangle" style={{ color: '#48dcff' }}></i>
                         </div>
                         <div className="itemTitle">Call Center</div>
                       </NavLink>
@@ -720,7 +719,7 @@ function Navbar() {
                         }
                       >
                         <div className="iconHolder">
-                          <i class="fa-light fa-microphone-stand"></i>
+                          <i class="fa-regular fa-microphone-stand" style={{ color: '#ffc848' }}></i>
                         </div>
                         <div className="itemTitle">IVR</div>
                       </NavLink>
@@ -745,7 +744,7 @@ function Navbar() {
 
                     >
                       <div className="iconHolder">
-                        <i class="fa-light fa-block-brick-fire"></i>
+                        <i class="fa-regular fa-block-brick-fire" style={{ color: '#ff4848' }}></i>
                       </div>
                       <div className="itemTitle">Call Blocking</div>
                     </NavLink>
@@ -760,7 +759,7 @@ function Navbar() {
 
                       >
                         <div className="iconHolder">
-                          <i class="fa-light fa-headset"></i>
+                          <i class="fa-regular fa-headset" style={{ color: '#00d9ff' }}></i>
                         </div>
                         <div className="itemTitle">WebRtc</div>
                       </a>
@@ -776,15 +775,10 @@ function Navbar() {
 
                     >
                       <div className="iconHolder">
-                        <i class="fa-light fa-bullseye-pointer"></i>
+                        <i class="fa-regular fa-bullseye-pointer" style={{ color: '#7c62ff' }}></i>
                       </div>
                       <div className="itemTitle">Click To Call</div>
                     </NavLink>
-                  </li>
-                  <li className="dashboard ">
-                    <a>
-                      <DarkModeToggle />
-                    </a>
                   </li>
                   <li className="dashboard ">
                     <NavLink
@@ -794,7 +788,7 @@ function Navbar() {
 
                     >
                       <div className="iconHolder">
-                        <i class="fa-light fa-power-off"></i>
+                        <i class="fa-regular fa-power-off" style={{ color: "red" }}></i>
                       </div>
                       <div className="itemTitle">Log Out</div>
                     </NavLink>

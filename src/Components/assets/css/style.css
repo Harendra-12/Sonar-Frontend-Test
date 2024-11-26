@@ -53,28 +53,36 @@
 
 
 :root {
+    /* --bg-color: #e7f8ff; */
+    /* --bg-color: #5d6aff0d; */
     --bg-color: #fafafa;
     --bgdark-color: #111525;
     /* Dark Mode */
-    /* --nav-color: #141718; */
-    --nav-color: #3e8ef7;
+    --nav-color: #141718;
     --button-dark: #2d3864;
+    /* --nav-color: #0676a9; */
     --div-color: #161c31;
     --caller-color: #0a0d16;
     --color1: #360568;
+    /* Primary Color */
+    /* --color2: #5b2a86; */
+    /* --color2: #00a6fb; */
     --color2: #3e8ef7;
     --color2-trans: #49c2ff30;
     /* Accent Color */
     --ui-accent: #3e8ef7;
-    /* --ui-icon: #00a6fb; */
-    --ui-icon: #fff;
+    /* --ui-icon: #00ffe0; */
+    --ui-icon: #00a6fb;
     --ui-accent-green: #a5d02a;
     --ui-accent-green-trans: #b7e92b30;
+    /* --ui-accent: #d76394; */
+    /* --ui-accent: #d763c9; */
     --color3: #f17d01;
     --color3-trans: #ffc46e30;
     /* Highlight, Notification & Alert Color */
     --color-text: #fff;
     /* Contrast Text Color */
+    /* --border-color: #1196ba63; */
     --border-color: #ddd;
 
     /* Light Mode */
@@ -85,24 +93,6 @@
     --sideNav-width: 250px;
     --sideNavApp-width: 210px;
     --active-calls-sidePanel-width: 250px;
-    --ele-color: #fff;
-    --form-label: #2a2a2a;
-    --form-input-text: #555;
-    --formHeadingBloc: #fafafa;
-}
-
-:root.dark {
-    --nav-color: #141718;
-    --ui-accent: #141718;
-    --bg-color: #303030;
-    --ele-color: #141718;
-    --bgdark-color: #fff;
-    --color-subtext: #bbb;
-    --color2: #4bc0ff;
-    --form-label: #fff;
-    --form-input-text: #fff;
-    --bs-dark-rgb: #fff;
-    --formHeadingBloc: #000;
 }
 
 html {
@@ -119,10 +109,6 @@ body {
     margin: 0;
     padding: 0;
     /* overflow: hidden; */
-}
-
-body.dark {
-    color: #fff;
 }
 
 ul {

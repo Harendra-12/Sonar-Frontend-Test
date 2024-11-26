@@ -42,7 +42,7 @@
     max-width: 215px;
     padding: 5px 0px;
     font-weight: 400;
-    color: var(--form-label);
+    color: #2a2a2a;
     /* margin-top: auto; */
     /* margin-bottom: auto; */
     position: relative;
@@ -107,7 +107,7 @@
 /* #detailsContent .formRow  */
 .formItem {
     /* background-color: #0e111e; */
-    background-color: var(--ele-color);
+    background-color: #fff;
     border: 1px solid var(--color4);
     /* color: #fff; */
     padding: 5px 10px;
@@ -118,13 +118,13 @@
     /* margin: 0px 5px 5px 0px; */
     height: 34px;
     transition: all 0.3s ease-in-out;
-    color: var(--form-input-text);
+    color: #555;
     font-weight: 700;
 }
 
 .formItem:not([type="file"]):focus,
 .formItem:not([type="file"]):hover {
-    border: 1px solid var(--color2);
+    border: 1px solid var(--ui-accent);
 }
 
 #detailsContent .formRow select {
@@ -271,7 +271,7 @@ form.tangoNavs .nav-tabs {
 .overviewTableWrapper .overviewTableChild {
     /* border: 1px solid #ddd; */
     /* padding: 20px; */
-    background-color: var(--ele-color);
+    background-color: #fff;
     border-radius: 10px;
     /* overflow: hidden; */
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
@@ -282,9 +282,8 @@ form.tangoNavs .nav-tabs {
     justify-content: space-between;
     align-items: center;
     padding: 15px 20px;
-    background-color: var(--formHeadingBloc);
+    background-color: #fafafa;
     border-bottom: 1px solid var(--border-color);
-    border-radius: 10px 10px 0 0;
 }
 
 
