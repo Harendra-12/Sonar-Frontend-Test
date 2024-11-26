@@ -470,7 +470,7 @@ function Roles() {
                               style={{
                                 position: "sticky",
                                 top: 0,
-                                backgroundColor: "white",
+                                backgroundColor: "var(--ele-color)",
                                 zIndex: 9,
                               }}
                             >

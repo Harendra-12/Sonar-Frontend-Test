@@ -1,5 +1,5 @@
 .masterList .masterSegment {
-    background-color: #fff;
+    background-color: transparent;
     /* border-radius: 10px; */
     /* margin-top: 10px; */
     /* padding: 15px; */
@@ -43,7 +43,7 @@
     font-family: Noto sans;
     -webkit-font-smoothing: antialiased;
     font-weight: 400;
-    color: #2a2a2a;
+    color: var(--form-label);
 }
 
 .masterList ul li.active {
