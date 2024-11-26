@@ -72,7 +72,7 @@ function CallCenterQueueEdit() {
         setLoading(true);
         const userData = await generalGetFunction("/user/all");
         const callCenterData = await generalGetFunction(
-          `call-center-queues/${value}`
+          `call-center-queues/show/${value}`
         );
         if (userData?.status) {
           setLoading(false);
