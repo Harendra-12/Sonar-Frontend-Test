@@ -781,7 +781,7 @@ function Navbar() {
                       <div className="itemTitle">Click To Call</div>
                     </NavLink>
                   </li>
-                  <li className="dashboard test">
+                  <li className="dashboard">
                     <a>
                       <DarkModeToggle marginLeft={"3"} />
                     </a>
