@@ -63,8 +63,8 @@ function Roles() {
   useEffect(() => {
     setRole(roles);
     if (!selectedRoleId) {
-      setSelectedRoleId(roles[0].id);
-      setSelectedRole(roles[0].name);
+      setSelectedRoleId(roles[0]?.id);
+      setSelectedRole(roles[0]?.name);
       setSelectedPermission(
         roles[0].permissions?.map((item) => {
           return item.permission_id;
@@ -115,7 +115,7 @@ function Roles() {
           name: updateRole,
         };
         const apiData = await generalPutFunction(
-          `/role/${role[editIndex].id}`,
+          `/role/${role[editIndex]?.id}`,
           parsedData
         );
         if (apiData.status) {
@@ -133,7 +133,7 @@ function Roles() {
     } else {
       setLoading(true);
       const apiData = await generalDeleteFunction(
-        `/role/${role[deleteIndex].id}`
+        `/role/${role[deleteIndex]?.id}`
       );
       if (apiData?.status) {
         setEditClick(false);
