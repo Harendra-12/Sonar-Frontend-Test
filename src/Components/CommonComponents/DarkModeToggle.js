@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
-function DarkModeToggle() {
+function DarkModeToggle({ marginLeft }) {
     const [isDark, setIsDark] = useState(false)
+    const darkModeToggle = useRef(null)
     const storedTheme = localStorage.getItem("theme");
     const root = document.documentElement;
 
@@ -24,6 +25,7 @@ function DarkModeToggle() {
         const defaultDark = storedTheme === "dark" || (storedTheme === null & prefersDark);
         if (defaultDark) {
             setIsDark(true)
+            darkModeToggle.current.checked = true
         }
     }, [])
 
@@ -43,8 +45,8 @@ function DarkModeToggle() {
             </div>
             <div className="itemTitle customTogle d-flex align-items-center">
                 Dark Mode
-                <label class="switch ms-3">
-                    <input type="checkbox" onChange={toggleTheme} checked={isDark ? "true" : "false"} />
+                <label class={`switch ms-${marginLeft}`}>
+                    <input type="checkbox" onChange={toggleTheme} ref={darkModeToggle} />
                     <span class="slider my-auto"></span>
                 </label>
             </div>

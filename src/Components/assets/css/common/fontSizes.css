@@ -9,5 +9,5 @@ h5 {
 
 .gray14 {
     font-size: 14px;
-    color: #858585;
+    color: var(--webUtilGray);
 }

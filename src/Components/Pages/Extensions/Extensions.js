@@ -185,7 +185,7 @@ const Extensions = () => {
                             <th className="text-center">Status</th>
                             {/* <th className="text-center">Setting</th> */}
                             <th className="text-center">Edit</th>
-                            <th className="text-center" style={{ width: 95 }}>
+                            <th className="text-center" style={{ width: 100 }}>
                               Add Devices
                             </th>
                           </tr>

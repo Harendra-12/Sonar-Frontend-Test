@@ -145,6 +145,7 @@ const ActionList = ({
       ...provided,
       // border: '1px solid var(--color4)',
       border: "1px solid var(--color4);",
+      backgroundColor: "var(--ele-color)",
       borderRadius: "5px",
       outline: "none",
       fontSize: "14px",
@@ -161,6 +162,10 @@ const ActionList = ({
       height: "32px",
       padding: "0 6px",
     }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: "var(--form-input-text)",
+    }),
     input: (provided) => ({
       ...provided,
       margin: "0",
@@ -174,17 +179,14 @@ const ActionList = ({
     }),
     dropdownIndicator: (provided) => ({
       ...provided,
-      color: "#202020",
-      "&:hover": {
-        color: "#202020",
-      },
+      color: "var(--form-input-text)",
     }),
     option: (provided, state) => ({
       ...provided,
       paddingLeft: "15px",
       paddingTop: 0,
       paddingBottom: 0,
-      backgroundColor: state.isSelected ? "transparent" : "transparent",
+      backgroundColor: state.isSelected ? "var(--ele-color)" : "var(--ele-color)",
       "&:hover": {
         backgroundColor: "#0055cc",
         color: "#fff",
@@ -202,6 +204,7 @@ const ActionList = ({
       margin: 0,
       maxHeight: "150px",
       overflowY: "auto",
+      backgroundColor: "var(--ele-color)",
     }),
   };
 

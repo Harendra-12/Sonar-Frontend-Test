@@ -328,7 +328,7 @@ function CallDetails({
                         <tbody>
                           {callHistory?.map((item) => (
                             <tr key={item.id}>
-                              <td style={{ color: "#444444" }}>
+                              <td>
                                 {formatDate(item.variable_start_stamp)}
                               </td>
                               <td>{formatTime(item.variable_start_stamp)}</td>
@@ -415,7 +415,7 @@ function CallDetails({
                           ? item["Caller-Caller-ID-Number"]
                           : item["Caller-Callee-ID-Number"]}
                       </td> */}
-                              <td style={{ color: "#444444" }}>
+                              <td style={{ color: "var(--color-subtext)" }}>
                                 {formatDuration(item.variable_billsec)}
                               </td>
                             </tr>

@@ -378,7 +378,6 @@ const UsersAdd = () => {
                   className="col-12"
                   style={{
                     padding: "25px 23px",
-                    borderBottom: "1px solid #ddd",
                   }}
                 >
                   <div className="row gx-5">

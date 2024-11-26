@@ -32,24 +32,24 @@
     border: none;
 }
 
-.mainContentApp #headerSearch {
+/* .mainContentApp #headerSearch {
     border: 1px solid #ddd;
     padding: 5px 30px;
     width: 100%;
     color: #000000;
     background: var(--bg-color) url('../../images/search_b.png') no-repeat 7px center / 17px 17px;
     border-radius: 50px;
-}
+} */
 
 .eFaxCompose .newMessageWrapper {
     /* height: calc(100vh - 330px); */
-    background-color: #fff;
+    background-color: var(--ele-color);
     border-radius: 10px;
     width: 100%;
     padding: 10px 15px;
     margin-top: 15px;
     position: relative;
-    border: 1px solid #dee2e6;
+    border: 1px solid var(--border-color);
     /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
 }
 
@@ -68,7 +68,7 @@
     /* display: flex;
     justify-content: space-between;
     align-items: center; */
-    border-bottom: 1px solid var(--color4);
+    border-bottom: 1px solid var(--color-subtext);
     position: relative;
 }
 
@@ -117,20 +117,22 @@
 }
 
 .eFaxCompose .newMessageWrapper label {
-    color: var(--color4);
+    color: var(--color-subtext);
     font-size: 14px;
 }
 
 .eFaxCompose .newMessageWrapper input,
 .eFaxCompose .newMessageWrapper textarea {
     border: none;
-    border-bottom: 1px solid var(--color4);
+    border-bottom: 1px solid var(--color-subtext);
     font-size: 14px;
     padding: 5px 5px 5px 0;
     outline: none;
     width: 100%;
     margin-bottom: 10px;
     resize: none;
+    background: transparent;
+    color: var(--form-input-text);
 }
 
 .eFaxCompose .newMessageWrapper input[type="file"] {

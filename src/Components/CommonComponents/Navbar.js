@@ -783,7 +783,7 @@ function Navbar() {
                   </li>
                   <li className="dashboard ">
                     <a>
-                      <DarkModeToggle />
+                      <DarkModeToggle marginLeft={"3"} />
                     </a>
                   </li>
                   <li className="dashboard ">

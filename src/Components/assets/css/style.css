@@ -57,7 +57,8 @@
     --bgdark-color: #111525;
     /* Dark Mode */
     /* --nav-color: #141718; */
-    --nav-color: #3e8ef7;
+    /* --nav-color: #292a3a; */
+    --nav-color: #161b2e;
     --button-dark: #2d3864;
     --div-color: #161c31;
     --caller-color: #0a0d16;
@@ -89,20 +90,39 @@
     --form-label: #2a2a2a;
     --form-input-text: #555;
     --formHeadingBloc: #fafafa;
+    --table-head: #f4f7f9;
+    --table-text: #5f5f5f;
+    --accordion-active: #a2e1ff3d;
+    --searchBg: #f5f5f5;
+    --webBG: #fafafa;
+    --webUtilGray: #858585;
+    --immortalBlack: #000;
+    --webCaller: #fff;
 }
 
 :root.dark {
-    --nav-color: #141718;
-    --ui-accent: #141718;
-    --bg-color: #303030;
-    --ele-color: #141718;
+    --nav-color: #171717;
+    /* --ui-accent: #141718; */
+    /* --bg-color: #212121; */
+    --bg-color: #1d1e22;
+    /* --ele-color: #141718; */
+    --ele-color: #303138;
     --bgdark-color: #fff;
     --color-subtext: #bbb;
-    --color2: #4bc0ff;
+    /* --color2: #4bc0ff; */
     --form-label: #fff;
     --form-input-text: #fff;
     --bs-dark-rgb: #fff;
-    --formHeadingBloc: #000;
+    --formHeadingBloc: #3c3e46;
+    --table-head: #1d1e22;
+    --border-color: #abababa6;
+    --table-text: var(--form-label);
+    --accordion-active: #3c3e46;
+    --searchBg: #383838;
+    --webBG: var(--bg-color);
+    --webUtilGray: var(--form-label);
+    --immortalBlack: var(--form-label);
+    --webCaller: var(--nav-color);
 }
 
 html {
