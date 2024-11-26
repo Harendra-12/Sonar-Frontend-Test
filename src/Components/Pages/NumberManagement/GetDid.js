@@ -43,15 +43,16 @@ const customStyles = {
     ...provided,
     // border: '1px solid var(--color4)',
     border: "1px solid var(--color4)",
+    backgroundColor: "var(--ele-color)",
     borderRadius: "3px",
     outline: "none",
     fontSize: "14px",
     width: "100%",
     minHeight: "34px",
-    height: "auto",
+    height: "32px",
     boxShadow: state.isFocused ? "none" : provided.boxShadow,
     "&:hover": {
-      borderColor: "none",
+      borderColor: "var(--ui-accent)",
     },
   }),
   valueContainer: (provided) => ({
@@ -59,6 +60,19 @@ const customStyles = {
     height: "auto",
     padding: "0 3px",
   }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: "var(--form-input-text)",
+  }),
+  multiValue: (provided) => ({
+    ...provided,
+    backgroundColor: "var(--border-color)",
+  }),
+  multiValueLabel: (provided) => ({
+    ...provided,
+    color: "var(--form-input-text)",
+  }),
+
   input: (provided) => ({
     ...provided,
     margin: "0",
@@ -72,17 +86,14 @@ const customStyles = {
   }),
   dropdownIndicator: (provided) => ({
     ...provided,
-    color: "#202020",
-    "&:hover": {
-      color: "#202020",
-    },
+    color: "var(--form-input-text)",
   }),
   option: (provided, state) => ({
     ...provided,
     paddingLeft: "15px",
     paddingTop: 0,
     paddingBottom: 0,
-    // backgroundColor: state.isSelected ? "transparent" : "transparent",
+    backgroundColor: state.isSelected ? "var(--ele-color)" : "var(--ele-color)",
     "&:hover": {
       backgroundColor: "#0055cc",
       color: "#fff",
@@ -100,6 +111,7 @@ const customStyles = {
     margin: 0,
     maxHeight: "150px",
     overflowY: "auto",
+    backgroundColor: "var(--ele-color)",
   }),
 };
 function GetDid() {
@@ -260,7 +272,7 @@ function GetDid() {
                     </div>
                   </div>
                 </div>
-                <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
+                <div className="col-12" style={{ padding: '25px 23px' }}>
                   <form onSubmit={handleSubmit(onSubmit)} className="mb-0">
                     <div className="row col-xl-12">
                       <div className="formRow col-xl-2">

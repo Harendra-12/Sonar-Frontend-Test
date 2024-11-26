@@ -42,14 +42,14 @@
 }
 
 .mainContentApp #headerSearch {
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
     min-height: 35px;
     padding: 0px 0 0 35px;
     width: 100%;
-    color: #000000;
+    color: var(--form-label);
     font-size: 14px;
-    background: #f5f5f5 url(../../images/search_b.png) no-repeat 7px center / 17px 17px;
+    background: var(--searchBg) url(../../images/search_b.png) no-repeat 7px center / 17px 17px;
     outline: none;
     transition: 0.1s ease-in-out;
 }
@@ -66,7 +66,7 @@
 /* Messaging UI */
 .messageOverlay .contactHeader {
     padding: 10px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -121,7 +121,7 @@
     flex-wrap: wrap;
     border-radius: 10px;
     border: 1px solid var(--border-color);
-    background-color: #fff;
+    background-color: var(--ele-color);
     padding: 5px;
     width: 100%;
     padding: 5px 15px;
@@ -132,6 +132,8 @@
     height: 100%;
     border: none;
     outline: none;
+    background: transparent;
+    color: inherit;
 }
 
 .messageContent .messageInput nav {
@@ -168,7 +170,7 @@
     content: '';
     width: 90%;
     height: 1px;
-    background-color: #ebebeb;
+    background-color: var(--border-color);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -178,8 +180,8 @@
 .dateHeader p {
     width: 130px;
     border-radius: 50px;
-    background-color: #fff;
-    border: 1px solid #ebebeb;
+    background-color: var(--ele-color);
+    border: 1px solid var(--border-color);
     padding: 3px 20px;
     font-size: 14px;
     font-weight: 500;
@@ -267,14 +269,14 @@
 
 .messageList .messageItem h6 span {
     font-size: 11px;
-    color: #757575;
+    /* color: var(--webUtilGray); */
     margin-left: 6px;
     font-weight: 400;
 }
 
 .messageList .messageDetails p {
     font-size: 14px;
-    color: #454545;
+    color: var(--form-label);
     margin-bottom: 0px;
     word-wrap: break-word;
 }
@@ -323,9 +325,9 @@
 }
 
 .chatHeading {
-    background: #f5f5f5;
+    background: var(--searchBg);
     padding: 10px 10px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     /* border-radius: 10px 10px 0 0; */
     position: relative;
 }
@@ -365,7 +367,7 @@
 }
 
 .callList .collapse {
-    background-color: #f5f5f5;
+    background-color: var(--searchBg);
     /* padding-top: 5px; */
     /* border-radius: 0 0 10px 10px; */
     /* padding: 5px; */
@@ -380,7 +382,7 @@
 }
 
 .videoCallWrapper .messageOverlay {
-    background-color: #fff;
+    background-color: var(--ele-color);
     border-radius: 15px;
     overflow: hidden;
 }
@@ -525,6 +527,7 @@
 
 .contactHeader .dropdown-menu {
     padding: 5px 0;
+    background-color: var(--ele-color);
 }
 
 .contactHeader .dropdown-menu .dropdown-item {

@@ -781,6 +781,11 @@ function Navbar() {
                     </NavLink>
                   </li>
                   <li className="dashboard ">
+                    <a>
+                      <DarkModeToggle marginLeft={"3"} />
+                    </a>
+                  </li>
+                  <li className="dashboard ">
                     <NavLink
                       to="/"
                       onClick={logOut}

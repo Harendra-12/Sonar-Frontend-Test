@@ -397,12 +397,13 @@ function Music() {
                           </span>
                         </button>
                         <button
-                          className="panelButtonWhite m-0 float-end"
+                          className="panelButton gray m-0 float-end"
                           onClick={() => {
                             setDeletePopup(false);
                           }}
                         >
-                          Cancel
+                          <span className="text">Cancel</span>
+                          <span className="icon"><i class="fa-solid fa-xmark"></i></span>
                         </button>
                       </div>
                     </div>
