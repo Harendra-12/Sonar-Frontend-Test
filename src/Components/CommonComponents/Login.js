@@ -41,7 +41,7 @@ function Login() {
                     <div className="border-bottom my-4"></div>
                     <LoginComponent />
                   </div>
-                  <div className="text-center position-absolute" style={{ bottom: 0, left: '50%', transform: 'translate(-50%, -50%)' }}><p style={{ color: '#858585', fontSize: 12, marginBottom: 0 }}>2024 AnglePBX. All rights Reserved</p></div>
+                  <div className="text-center position-absolute" style={{ bottom: 0, left: '50%', transform: 'translate(-50%, -50%)' }}><p style={{ color: 'var(--webUtilGray)', fontSize: 12, marginBottom: 0 }}>2024 AnglePBX. All rights Reserved</p></div>
                 </div>
                 <div className="col-xl-6">
                   <div className="loginImgWrapper">

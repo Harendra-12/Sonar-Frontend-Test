@@ -218,7 +218,7 @@ a.loginLabel {
 /* ------------------------- */
 
 .loginWrapper2 {
-    background-color: #fff;
+    background-color: var(--ele-color);
     border-radius: 20px;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
@@ -239,23 +239,35 @@ a.loginLabel {
     font-size: 28px;
 }
 
+.loginWrapper2 .content h3 {
+    color: var(--immortalBlack);
+}
+
+.loginWrapper2 .content p {
+    color: var(--color-subtext);
+}
+
+.loginWrapper2 .loginImgWrapper h3,
+.loginWrapper2 .loginImgWrapper p {
+    color: #fff;
+}
+
 .loginWrapper2 .content p,
 .loginWrapper2 .loginImgWrapper p {
     font-family: Open sans;
     font-weight: 400;
     font-size: 14px;
-    color: #787878;
 }
 
 .loginWrapper2 .content .loginFormItem {
     border: 1px solid var(--border-color);
     border-radius: 10px;
-    color: #000;
+    color: inherit;
     font-weight: 300;
 }
 
 .loginWrapper2 .content .loginFormItem::placeholder {
-    color: #00000062;
+    color: var(--color-subtext);
 }
 
 .loginWrapper2 .content .loginForm i {
@@ -271,6 +283,7 @@ a.loginLabel {
     font-family: 'Outfit';
     font-size: 14px;
     margin-bottom: 5px;
+    color: var(--immortalBlack);
 }
 
 .loginWrapper2 .content .formSubmit {
