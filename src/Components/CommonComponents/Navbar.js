@@ -8,6 +8,7 @@ import {
 } from "../GlobalFunction/globalFunction";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import DarkModeToggle from "./DarkModeToggle";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -779,6 +780,11 @@ function Navbar() {
                       </div>
                       <div className="itemTitle">Click To Call</div>
                     </NavLink>
+                  </li>
+                  <li className="dashboard test">
+                    <a>
+                      <DarkModeToggle marginLeft={"3"} />
+                    </a>
                   </li>
                   <li className="dashboard ">
                     <NavLink
