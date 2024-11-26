@@ -115,7 +115,7 @@ function ConferenceCall() {
                       <button class="clearButton">
                         <i
                           class="fa-regular fa-arrows-rotate fs-5"
-                          style={{ color: "rgb(148, 148, 148)" }}
+                          style={{ color: "var(--webUtilGray)" }}
                         ></i>
                       </button>
                     </h3>
@@ -127,7 +127,7 @@ function ConferenceCall() {
                         name="Search"
                         placeholder="Search users, groups or chat"
                         class="formItem fw-normal"
-                        style={{ backgroundColor: "#f5f5f5" }}
+                        style={{ backgroundColor: "var(--searchBg)" }}
                       />
                     </div>
                     <div className="col-auto mx-2">

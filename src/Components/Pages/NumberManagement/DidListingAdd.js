@@ -122,9 +122,7 @@ const DidListingAdd = () => {
                           className="panelButton gray"
                         >
                           <span className="text">Back</span>
-                          <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
-                          </span>
+                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                         </button>
                         <button
                           effect="ripple"
@@ -132,26 +130,16 @@ const DidListingAdd = () => {
                           onClick={handleFormSubmit}
                         >
                           <span className="text">Save</span>
-                          <span className="icon">
-                            <i class="fa-solid fa-floppy-disk"></i>
-                          </span>
+                          <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                         </button>
                       </div>
                     </div>
                   </div>
-                  <div
-                    className="col-12"
-                    style={{
-                      padding: "25px 23px",
-                      borderBottom: "1px solid #ddd",
-                    }}
-                  >
+                  <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
                     <form>
                       <div className="formRow col-xl-3">
                         <div className="formLabel">
-                          <label className="text-dark">
-                            Add DID<span className="text-danger">*</span>
-                          </label>
+                          <label className="text-dark">Add DID</label>
                           <label htmlFor="data" className="formItemDesc">
                             Add new DID.
                           </label>
@@ -170,16 +158,12 @@ const DidListingAdd = () => {
                             })}
                             onKeyDown={restrictToNumbers}
                           />
-                          {errors.did && (
-                            <ErrorMessage text={errors.did.message} />
-                          )}
+                          {errors.did && <ErrorMessage text={errors.did.message} />}
                         </div>
                       </div>
                       <div className="formRow col-xl-3">
                         <div className="formLabel">
-                          <label className="text-dark">
-                            DID vendor<span className="text-danger">*</span>
-                          </label>
+                          <label className="text-dark">DID vendor</label>
                           <label htmlFor="data" className="formItemDesc">
                             Choose DID vendor.
                           </label>
@@ -217,6 +201,8 @@ const DidListingAdd = () => {
                 </div>
               </div>
             </div>
+
+
           </div>
         </section>
       </main>

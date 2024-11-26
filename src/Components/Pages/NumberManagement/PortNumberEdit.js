@@ -130,6 +130,7 @@ function PortNumberEdit() {
             </div> */}
           </div>
           <div className="col-xl-12">
+
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
                 <div className="d-flex flex-wrap">
@@ -149,9 +150,7 @@ function PortNumberEdit() {
                           }}
                         >
                           <span className="text">Back</span>
-                          <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
-                          </span>
+                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                         </button>
                         <button
                           effect="ripple"
@@ -159,26 +158,16 @@ function PortNumberEdit() {
                           onClick={handleFormSubmit}
                         >
                           <span className="text">Save</span>
-                          <span className="icon">
-                            <i class="fa-solid fa-floppy-disk"></i>
-                          </span>
+                          <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                         </button>
                       </div>
                     </div>
                   </div>
-                  <div
-                    className="col-12"
-                    style={{
-                      padding: "25px 23px",
-                      borderBottom: "1px solid #ddd",
-                    }}
-                  >
+                  <div className="col-12" style={{ padding: '25px 23px' }}>
                     <form action="#" className="row">
                       <div className="formRow col-xl-3">
                         <div className="formLabel">
-                          <label className="text-dark">
-                            Full Name<span className="text-danger">*</span>
-                          </label>
+                          <label className="text-dark">Full Name</label>
                           <label htmlFor="data" className="formItemDesc">
                             Full legal name of the current owner.
                           </label>
@@ -200,9 +189,7 @@ function PortNumberEdit() {
                       </div>
                       <div className="formRow col-xl-3">
                         <div className="formLabel pe-2 col-2">
-                          <label className="text-dark">
-                            Company Name<span className="text-danger">*</span>
-                          </label>
+                          <label className="text-dark">Company Name</label>
                           <label htmlFor="data" className="formItemDesc">
                             The company to whom the number is registered.
                           </label>
@@ -224,10 +211,7 @@ function PortNumberEdit() {
                       </div>
                       <div className="formRow col-xl-3">
                         <div className="formLabel pe-2 col-2">
-                          <label className="text-dark">
-                            Billing Address
-                            <span className="text-danger">*</span>
-                          </label>
+                          <label className="text-dark">Billing Address</label>
                           <label htmlFor="data" className="formItemDesc">
                             The address associated with the current number.
                           </label>
@@ -242,18 +226,13 @@ function PortNumberEdit() {
                             })}
                           />
                           {errors.billing_address && (
-                            <ErrorMessage
-                              text={errors.billing_address.message}
-                            />
+                            <ErrorMessage text={errors.billing_address.message} />
                           )}
                         </div>
                       </div>
                       <div className="formRow col-xl-3">
                         <div className="formLabel">
-                          <label className="text-dark">
-                            PIN or Password
-                            <span className="text-danger">*</span>
-                          </label>
+                          <label className="text-dark">PIN or Password</label>
                           <label htmlFor="data" className="formItemDesc">
                             Some carriers require a PIN for porting.
                           </label>
@@ -267,16 +246,12 @@ function PortNumberEdit() {
                               ...requiredValidator,
                             })}
                           />
-                          {errors.pin && (
-                            <ErrorMessage text={errors.pin.message} />
-                          )}
+                          {errors.pin && <ErrorMessage text={errors.pin.message} />}
                         </div>
                       </div>
                       <div className="formRow col-xl-3">
                         <div className="formLabel">
-                          <label className="text-dark">
-                            Carrier<span className="text-danger">*</span>
-                          </label>
+                          <label className="text-dark">Carrier</label>
                           <label htmlFor="data" className="formItemDesc">
                             The current vendor/carrier of the number.
                           </label>
@@ -298,13 +273,11 @@ function PortNumberEdit() {
                       </div>
                       <div className="formRow col-xl-3">
                         <div className="formLabel">
-                          <label className="text-dark">
-                            Account Number<span className="text-danger">*</span>
-                          </label>
+                          <label className="text-dark">Account Number</label>
                           <br />
                           <label htmlFor="data" className="formItemDesc">
-                            Account Number with Current Provider. This can often
-                            be found on
+                            Account Number with Current Provider. This can often be
+                            found on
                           </label>
                         </div>
                         <div className="col-6">
@@ -318,17 +291,13 @@ function PortNumberEdit() {
                             })}
                           />
                           {errors.account_number && (
-                            <ErrorMessage
-                              text={errors.account_number.message}
-                            />
+                            <ErrorMessage text={errors.account_number.message} />
                           )}
                         </div>
                       </div>
                       <div className="formRow col-xl-3">
                         <div className="formLabel">
-                          <label className="text-dark">
-                            Phone Number<span className="text-danger">*</span>
-                          </label>
+                          <label className="text-dark">Phone Number</label>
                           <label htmlFor="data" className="formItemDesc">
                             The number(s) that need to be ported.
                           </label>

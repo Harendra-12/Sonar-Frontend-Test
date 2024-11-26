@@ -35,8 +35,6 @@ const RingGroups = () => {
   // const ringGroupState = useSelector((state) => state.ringGroup);
   const [pageNumber, setPageNumber] = useState(1);
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
-  const [userInput, setUserInput] = useState("");
-  const [selectedOption, setSelectedOption] = useState("userName");
   useEffect(() => {
     dispatch({
       type: "SET_ALLUSERREFRESH",
@@ -262,35 +260,13 @@ const RingGroups = () => {
                         </select>
                         <label>entries</label>
                       </div>
-                      {/* <div className="searchBox">
+                      <div className="searchBox">
                         <label>Search:</label>
                         <input
                           type="search"
                           className="formItem"
                           onChange={() => featureUnderdevelopment()}
                         />
-                      </div> */}
-                      <div className="searchBox position-relative">
-                        <label>Search:</label>
-                        <input
-                          type="search"
-                          name="Search"
-                          className="formItem"
-                          placeholder="Search"
-                          value={userInput}
-                          onChange={(e) => setUserInput(e.target.value)}
-                          style={{ paddingRight: 100 }}
-                        />
-                        <select
-                          className="secretSelect"
-                          value={selectedOption}
-                          onChange={(e) => setSelectedOption(e.target.value)}
-                        >
-                          <option value="userName">Name</option>
-                          <option value="accountId">Extension</option>
-
-                          <option value="online">Strategy</option>
-                        </select>
                       </div>
                     </div>
                     <div className="tableContainer">

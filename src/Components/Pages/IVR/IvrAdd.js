@@ -114,6 +114,7 @@ function IvrAdd() {
         </div>
 
         <div className="col-xl-12" style={{ overflow: "auto" }}>
+
           <div className="overviewTableWrapper">
             <div className="overviewTableChild">
               <div className="d-flex flex-wrap">
@@ -134,9 +135,7 @@ function IvrAdd() {
                         className="panelButton gray"
                       >
                         <span className="text">Back</span>
-                        <span className="icon">
-                          <i class="fa-solid fa-caret-left"></i>
-                        </span>
+                        <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                       </button>
                       <button
                         effect="ripple"
@@ -144,24 +143,17 @@ function IvrAdd() {
                         onClick={handleFormSubmit}
                       >
                         <span className="text">Save</span>
-                        <span className="icon">
-                          <i class="fa-solid fa-floppy-disk"></i>
-                        </span>
+                        <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                       </button>
                     </div>
                   </div>
                 </div>
               </div>
-              <div
-                className="col-12"
-                style={{ padding: "25px 23px", borderBottom: "1px solid #ddd" }}
-              >
+              <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
                 <form action="#" className="row">
                   <div className="formRow col-xl-3">
                     <div className="formLabel">
-                      <label htmlFor="">
-                        Name<span className="text-danger">*</span>
-                      </label>
+                      <label htmlFor="">Name</label>
                       {/* <label htmlFor="mail_driver" className="formItemDesc">
                     Select Mail Driver Type
                   </label> */}
@@ -205,9 +197,7 @@ function IvrAdd() {
 
                   <div className="formRow col-xl-3">
                     <div className="formLabel">
-                      <label htmlFor="">
-                        Greet Sound<span className="text-danger">*</span>{" "}
-                      </label>
+                      <label htmlFor="">Greet Sound </label>
                       <label htmlFor="mail_host" className="formItemDesc">
                         Upload a greet when entering the menu.
                       </label>
@@ -218,43 +208,20 @@ function IvrAdd() {
                         {...register("greet_long", {
                           ...requiredValidator,
                         })}
-                        onChange={(e) => {
-                          if (e.target.value == "addmusic") {
-                            navigate("/voice-music");
-                          }
-                        }}
-                        defaultValue={""}
                       >
-                        <option value="" disabled>
-                          Select greet sound
-                        </option>
+                        <option value="">Select greet sound</option>
                         {ivrMusic?.map((item) => {
                           return <option value={item?.id}>{item?.name}</option>;
                         })}
-                        <option
-                          value="addmusic"
-                          className="text-center border bg-info-subtle fs-6 fw-bold text-info"
-                          style={{ cursor: "pointer" }}
-                        >
-                          Add Music
-                        </option>
                       </select>
                       {errors.greet_long && (
-                        <ErrorMessage
-                          text={
-                            ivrMusic?.length > 0
-                              ? errors.greet_long.message
-                              : "No music found, please add"
-                          }
-                        />
+                        <ErrorMessage text={errors.greet_long.message} />
                       )}
                     </div>
                   </div>
                   <div className="formRow col-xl-3">
                     <div className="formLabel">
-                      <label htmlFor="">
-                        Invalid Sound<span className="text-danger">*</span>
-                      </label>
+                      <label htmlFor="">Invalid Sound</label>
                       <label htmlFor="mail_host" className="formItemDesc">
                         Upload an invalid sound.
                       </label>
@@ -265,47 +232,23 @@ function IvrAdd() {
                         {...register("invalid_sound", {
                           ...requiredValidator,
                         })}
-                        onChange={(e) => {
-                          if (e.target.value === "addmusic") {
-                            navigate("/voice-music");
-                          }
-                        }}
-                        defaultValue={""}
                       >
-                        <option value="" disabled>
-                          Select invalid sound
-                        </option>
+                        <option value="">Select invalid sound</option>
                         {ivrMusic?.map((item) => {
                           return <option value={item?.id}>{item?.name}</option>;
                         })}
-                        <option
-                          value="addmusic"
-                          className="text-center border bg-info-subtle fs-6 fw-bold text-info"
-                          style={{ cursor: "pointer" }}
-                        >
-                          Add Music
-                        </option>
                       </select>
                       {errors.invalid_sound && (
-                        <ErrorMessage
-                          text={
-                            ivrMusic?.length > 0
-                              ? errors.invalid_sound.message
-                              : "No music found, please add"
-                          }
-                        />
+                        <ErrorMessage text={errors.invalid_sound.message} />
                       )}
                     </div>
                   </div>
 
                   <div className="formRow col-xl-3">
                     <div className="formLabel">
-                      <label htmlFor="">
-                        Exit Sound<span className="text-danger">*</span>
-                      </label>
+                      <label htmlFor="">Exit Sound</label>
                       <label htmlFor="mail_host" className="formItemDesc">
-                        Select the exit action to be performed if the ivr
-                        exists.
+                        Select the exit action to be performed if the ivr exists.
                       </label>
                     </div>
                     <div className="col-6">
@@ -314,35 +257,14 @@ function IvrAdd() {
                         {...register("exit_sound", {
                           ...requiredValidator,
                         })}
-                        onChange={(e) => {
-                          if (e.target.value == "addmusic") {
-                            navigate("/voice-music");
-                          }
-                        }}
-                        defaultValue={""}
                       >
-                        <option value="" disabled>
-                          Select Exit Sound
-                        </option>
+                        <option value="">Select Exit Sound</option>
                         {ivrMusic?.map((item) => {
                           return <option value={item?.id}>{item?.name}</option>;
                         })}
-                        <option
-                          value="addmusic"
-                          className="text-center border bg-info-subtle fs-6 fw-bold text-info"
-                          style={{ cursor: "pointer" }}
-                        >
-                          Add Music
-                        </option>
                       </select>
                       {errors.exit_sound && (
-                        <ErrorMessage
-                          text={
-                            ivrMusic?.length > 0
-                              ? errors.exit_sound.message
-                              : "No music found, please add"
-                          }
-                        />
+                        <ErrorMessage text={errors.exit_sound.message} />
                       )}
                     </div>
                   </div>
@@ -373,9 +295,7 @@ function IvrAdd() {
                   </div>
                   <div className="formRow col-xl-3">
                     <div className="formLabel">
-                      <label htmlFor="">
-                        Confirm Attempts<span className="text-danger">*</span>
-                      </label>
+                      <label htmlFor="">Confirm Attempts</label>
                       <label htmlFor="mail_port" className="formItemDesc">
                         Enter number of confirm attempts
                       </label>
@@ -414,8 +334,8 @@ function IvrAdd() {
                     <div className="formLabel">
                       <label htmlFor="">Timeout</label>
                       <label htmlFor="mail_port" className="formItemDesc">
-                        Enter the number of miliseconds to wait after playing
-                        the greeting or the confirm macro.
+                        Enter the number of miliseconds to wait after playing the
+                        greeting or the confirm macro.
                       </label>
                     </div>
                     <div className="col-6">
@@ -506,8 +426,8 @@ function IvrAdd() {
                     <div className="formLabel">
                       <label htmlFor="">Inter Digit Timeout</label>
                       <label htmlFor="mail_port" className="formItemDesc">
-                        This is the time in milliseconds to wait before playing
-                        the prompt again if no input is received.
+                        This is the time in milliseconds to wait before playing the
+                        prompt again if no input is received.
                       </label>
                     </div>
                     <div className="col-6">
@@ -565,9 +485,7 @@ function IvrAdd() {
                       ...noSpecialCharactersValidator,
                     })}
                   /> */}
-                      {errors.min_digit && (
-                        <ErrorMessage text={errors.min_digit} />
-                      )}
+                      {errors.min_digit && <ErrorMessage text={errors.min_digit} />}
                     </div>
                   </div>
 
@@ -609,15 +527,15 @@ function IvrAdd() {
                       ...noSpecialCharactersValidator,
                     })}
                   /> */}
-                      {errors.max_digit && (
-                        <ErrorMessage text={errors.max_digit} />
-                      )}
+                      {errors.max_digit && <ErrorMessage text={errors.max_digit} />}
                     </div>
                   </div>
                 </form>
               </div>
             </div>
           </div>
+
+
         </div>
       </section>
       {loading ? (

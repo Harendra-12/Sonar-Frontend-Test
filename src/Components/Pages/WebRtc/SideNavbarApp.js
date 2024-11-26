@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSIPProvider } from "react-sipjs";
-import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
+import DarkModeToggle from '../../CommonComponents/DarkModeToggle';
 
 function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
   const account = useSelector((state) => state.account);
@@ -90,7 +90,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 }
               >
                 <div className="iconHolder">
-                  <i className="fa-solid fa-message" />
+                  <i className="fa-light fa-message" />
                 </div>
                 <div className="itemTitle">Messages</div>
               </div>
@@ -102,7 +102,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 className={activePage === "call" ? "navItem active" : "navItem"}
               >
                 <div className="iconHolder">
-                  <i className="fa-solid fa-phone" />
+                  <i className="fa-light fa-phone" />
                 </div>
                 <div className="itemTitle">Calls</div>
               </div>
@@ -116,7 +116,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 }
               >
                 <div className="iconHolder">
-                  <i className="fa-solid fa-fax" />
+                  <i className="fa-light fa-fax" />
                 </div>
                 <div className="itemTitle">eFax</div>
               </div>
@@ -132,7 +132,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 }
               >
                 <div className="iconHolder">
-                  <i className="fa-solid fa-voicemail" />
+                  <i className="fa-light fa-voicemail" />
                 </div>
                 <div className="itemTitle">Voicemails</div>
               </div>
@@ -146,7 +146,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 }
               >
                 <div className="iconHolder">
-                  <i className="fa-solid fa-star" />
+                  <i className="fa-light fa-star" />
                 </div>
                 <div className="itemTitle">Favorites</div>
               </div>
@@ -160,7 +160,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 }
               >
                 <div className="iconHolder">
-                  <i className="fa-solid fa-address-book" />
+                  <i className="fa-light fa-address-book" />
                 </div>
                 <div className="itemTitle">Contacts</div>
               </div>
@@ -168,7 +168,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
             {/* <li effect="ripple">
               <NavLink to="/" className='navItem'>
                 <div className="iconHolder">
-                  <i className="fa-regular fa-circle-question" />
+                  <i className="fa-light fa-circle-question" />
                 </div>
                 <div className="itemTitle">Help &amp; Feedback</div>
               </NavLink>
@@ -182,7 +182,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 }
               >
                 <div className="iconHolder">
-                  <i className="fa-solid fa-sliders" />
+                  <i className="fa-light fa-sliders" />
                 </div>
                 <div className="itemTitle">Settings</div>
               </div>
@@ -196,7 +196,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 }
               >
                 <div className="iconHolder">
-                  <i className="fa-solid fa-sliders" />
+                  <i className="fa-light fa-sliders" />
                 </div>
                 <div className="itemTitle">Call Dashboard</div>
               </div>
@@ -210,7 +210,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 }
               >
                 <div className="iconHolder">
-                  <i className="fa-solid fa-sliders" />
+                  <i className="fa-light fa-sliders" />
                 </div>
                 <div className="itemTitle">Call Center</div>
               </div>
@@ -238,7 +238,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 }
               >
                 <div className="iconHolder">
-                  <i className="fa-solid fa-chart-column" />
+                  <i className="fa-light fa-chart-column" />
                 </div>
                 <div className="itemTitle">Reports</div>
               </div>
@@ -252,7 +252,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 }
               >
                 <div className="iconHolder">
-                  <i className="fa-sharp fa-solid fa-people-group" />
+                  <i className="fa-sharp fa-light fa-people-group" />
                 </div>
                 <div className="itemTitle">Conference</div>
               </div>
@@ -266,7 +266,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 }
               >
                 <div className="iconHolder">
-                  <i className="fa-solid fa-chart-column" />
+                  <i className="fa-light fa-chart-column" />
                 </div>
                 <div className="itemTitle">Conference Test</div>
               </div>
@@ -376,7 +376,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   >
                     <span className="text">Close</span>
                     <span className="icon">
-                      <i class="fa-solid fa-xmark"></i>
+                      <i class="fa-light fa-xmark"></i>
                     </span>
                   </button>
                 </div>

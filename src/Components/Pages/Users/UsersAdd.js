@@ -378,7 +378,6 @@ const UsersAdd = () => {
                   className="col-12"
                   style={{
                     padding: "25px 23px",
-                    borderBottom: "1px solid #ddd",
                   }}
                 >
                   <div className="row gx-5">
@@ -390,7 +389,7 @@ const UsersAdd = () => {
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label htmlFor="" className="me-2">
-                              Username<span className="text-danger">*</span>
+                              Username
                             </label>
 
                             {isUserNameAvailable == true ? (
@@ -432,9 +431,7 @@ const UsersAdd = () => {
                         </div>
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
-                            <label htmlFor="">
-                              Password<span className="text-danger">*</span>
-                            </label>
+                            <label htmlFor="">Password</label>
                             <label htmlFor="data" className="formItemDesc">
                               Required: At least 4 character
                             </label>
@@ -456,10 +453,7 @@ const UsersAdd = () => {
                         </div>
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
-                            <label htmlFor="">
-                              Confirm Password
-                              <span className="text-danger">*</span>
-                            </label>
+                            <label htmlFor="">Confirm Password</label>
                             <label htmlFor="data" className="formItemDesc">
                               Green field borders indicate typed passwords
                               match.
@@ -481,9 +475,7 @@ const UsersAdd = () => {
                         </div>
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
-                            <label htmlFor="">
-                              Email<span className="text-danger">*</span>
-                            </label>
+                            <label htmlFor="">Email</label>
                           </div>
                           <div className="col-6">
                             <input
@@ -503,9 +495,7 @@ const UsersAdd = () => {
                         </div>
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
-                            <label htmlFor="">
-                              First Name<span className="text-danger">*</span>
-                            </label>
+                            <label htmlFor="">First Name</label>
                           </div>
                           <div className="col-6">
                             <input
@@ -586,9 +576,7 @@ const UsersAdd = () => {
                                     </div> */}
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
-                            <label htmlFor="selectFormRow">
-                              Time Zone<span className="text-danger">*</span>
-                            </label>
+                            <label htmlFor="selectFormRow">Time Zone</label>
                             <label htmlFor="data" className="formItemDesc">
                               Select the default time zone.
                             </label>
@@ -701,9 +689,7 @@ const UsersAdd = () => {
                   </div> */}
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
-                            <label htmlFor="selectFormRow">
-                              Role Type<span className="text-danger">*</span>
-                            </label>
+                            <label htmlFor="selectFormRow">Role Type</label>
                             <label htmlFor="data" className="formItemDesc">
                               Select Default to enable login or to disable login
                               select Virtual.

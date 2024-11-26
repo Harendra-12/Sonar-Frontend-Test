@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSessionCall, useSIPProvider } from "react-sipjs";
+import { useSessionCall } from "react-sipjs";
 import { CallTimer } from "./CallTimer";
 import {
   SessionState,
@@ -28,6 +28,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule, setac
   const callProgressDestination = useSelector(
     (state) => state.callProgressDestination
   );
+
   const {
     isHeld,
     isMuted,

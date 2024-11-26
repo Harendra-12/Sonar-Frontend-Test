@@ -507,10 +507,7 @@ const RingGroupAdd = () => {
                   <div className="heading">
                     <div className="content">
                       <h4>Ring Group Add</h4>
-                      <p>
-                        A ring group is a set of destinations that can be called
-                        with a ring strategy.
-                      </p>
+                      <p>A ring group is a set of destinations that can be called with a ring strategy.</p>
                     </div>
                     <div className="buttonGroup">
                       <div className="d-flex align-items-center">
@@ -540,9 +537,7 @@ const RingGroupAdd = () => {
                           className="panelButton gray"
                         >
                           <span className="text">Back</span>
-                          <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
-                          </span>
+                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                         </button>
                         <button
                           type="button"
@@ -551,27 +546,17 @@ const RingGroupAdd = () => {
                           onClick={handleFormSubmit}
                         >
                           <span className="text">Save</span>
-                          <span className="icon">
-                            <i class="fa-solid fa-floppy-disk"></i>
-                          </span>
+                          <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                         </button>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div
-                  className="col-12"
-                  style={{
-                    padding: "25px 23px",
-                    borderBottom: "1px solid #ddd",
-                  }}
-                >
+                <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
                   <form className="row mb-0">
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="">
-                          Name<span className="text-danger">*</span>
-                        </label>
+                        <label htmlFor="">Name</label>
                         <label htmlFor="data" className="formItemDesc">
                           Enter a name.
                         </label>
@@ -588,9 +573,7 @@ const RingGroupAdd = () => {
                           })}
                           onKeyDown={restrictToAllowedChars}
                         />
-                        {errors.name && (
-                          <ErrorMessage text={errors.name.message} />
-                        )}
+                        {errors.name && <ErrorMessage text={errors.name.message} />}
                       </div>
                     </div>
 
@@ -767,16 +750,16 @@ const RingGroupAdd = () => {
                               )),
                           })}
                           onKeyDown={restrictToNumbers}
-                          // {...register("call_timeout", {
-                          //   ...requiredValidator,
-                          //   ...noSpecialCharactersValidator,
-                          //   ...minValidator(
-                          //     destination.reduce(
-                          //       (max, obj) => Math.max(max, obj.delay),
-                          //       0
-                          //     )
-                          //   ),
-                          // })}
+                        // {...register("call_timeout", {
+                        //   ...requiredValidator,
+                        //   ...noSpecialCharactersValidator,
+                        //   ...minValidator(
+                        //     destination.reduce(
+                        //       (max, obj) => Math.max(max, obj.delay),
+                        //       0
+                        //     )
+                        //   ),
+                        // })}
                         />
                         {errors.call_timeout && (
                           <ErrorMessage text={errors.call_timeout.message} />
@@ -809,8 +792,8 @@ const RingGroupAdd = () => {
                       <div className="formLabel">
                         <label htmlFor="selectFormRow">Ring Back</label>
                         <label htmlFor="data" className="formItemDesc">
-                          Defines what the caller will hear while the
-                          destination is being called.
+                          Defines what the caller will hear while the destination is
+                          being called.
                         </label>
                       </div>
                       <div className="col-6">
@@ -1097,7 +1080,7 @@ const RingGroupAdd = () => {
               </div> */}
                   </form>
                 </div>
-                <div className="col-12" style={{ padding: "20px 23px" }}>
+                <div className="col-12" style={{ padding: '20px 23px' }}>
                   <form className="row">
                     <div className="formRow col-xl-12">
                       {destination.map((item, index) => {
@@ -1116,10 +1099,7 @@ const RingGroupAdd = () => {
                             <div className="col-3 pe-2">
                               {index === 0 ? (
                                 <div className="formLabel">
-                                  <label htmlFor="">
-                                    Destinations
-                                    <span className="text-danger">*</span>
-                                  </label>
+                                  <label htmlFor="">Destinations</label>
                                 </div>
                               ) : (
                                 ""
@@ -1193,14 +1173,11 @@ const RingGroupAdd = () => {
                                       .filter((item1) => {
                                         return (
                                           item1.extension.extension ==
-                                            destination[index]?.destination ||
+                                          destination[index]?.destination ||
                                           !destination.some(
-                                            (
-                                              destinationItem,
-                                              destinationIndex
-                                            ) =>
+                                            (destinationItem, destinationIndex) =>
                                               destinationItem.destination ==
-                                                item1.extension.extension &&
+                                              item1.extension.extension &&
                                               destinationIndex != index
                                           )
                                         );
@@ -1271,9 +1248,7 @@ const RingGroupAdd = () => {
                                 style={{ width: "100%" }}
                                 name="timeOut"
                                 value={item.timeOut}
-                                onChange={(e) =>
-                                  handleDestinationChange(index, e)
-                                }
+                                onChange={(e) => handleDestinationChange(index, e)}
                                 id="selectFormRow"
                               >
                                 <option>Timeout</option>
@@ -1302,9 +1277,7 @@ const RingGroupAdd = () => {
                                 className="formItem me-0"
                                 style={{ width: "100%" }}
                                 value={item.status}
-                                onChange={(e) =>
-                                  handleDestinationChange(index, e)
-                                }
+                                onChange={(e) => handleDestinationChange(index, e)}
                                 id="selectFormRow"
                                 name="status"
                               >
@@ -1336,9 +1309,7 @@ const RingGroupAdd = () => {
                                   type="button"
                                 >
                                   <span className="text">Add</span>
-                                  <span className="icon">
-                                    <i class="fa-solid fa-plus"></i>
-                                  </span>
+                                  <span className="icon"><i class="fa-solid fa-plus"></i></span>
                                 </button>
                               </div>
                             ) : (
@@ -1360,6 +1331,9 @@ const RingGroupAdd = () => {
               </div>
             </div>
           </div>
+
+
+
         </div>
         {/* {popUp ? (
           <div className="popup">

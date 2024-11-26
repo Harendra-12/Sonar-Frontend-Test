@@ -138,7 +138,7 @@ function AllContact() {
                               ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                               : "fa-regular fa-arrows-rotate fs-5"
                           }
-                          style={{ color: "rgb(148, 148, 148)" }}
+                          style={{ color: "var(--webUtilGray)" }}
                         ></i>
                       </button>
                     </h3>
@@ -150,7 +150,7 @@ function AllContact() {
                         name="Search"
                         placeholder="Search users, groups or chat"
                         class="formItem fw-normal"
-                        style={{ backgroundColor: "#f5f5f5" }}
+                        style={{ backgroundColor: "var(--searchBg)" }}
                         onChange={() => featureUnderdevelopment()}
                       />
                     </div>
@@ -232,7 +232,7 @@ function AllContact() {
                   <nav className="mt-3">
                     <div
                       className="nav nav-tabs"
-                      style={{ borderBottom: "1px solid #ddd" }}
+                      style={{ borderBottom: "1px solid var(--border-color)" }}
                     >
                       {/* <button
                         className="tabLink active"

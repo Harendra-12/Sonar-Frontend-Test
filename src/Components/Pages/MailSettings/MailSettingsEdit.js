@@ -163,9 +163,7 @@ const MailSettingsEdit = () => {
                           className="panelButton gray"
                         >
                           <span className="text">Back</span>
-                          <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
-                          </span>
+                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                         </button>
                         <button
                           type="button"
@@ -174,27 +172,17 @@ const MailSettingsEdit = () => {
                           onClick={handleFormSubmit}
                         >
                           <span className="text">Save</span>
-                          <span className="icon">
-                            <i class="fa-solid fa-floppy-disk"></i>
-                          </span>
+                          <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                         </button>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div
-                  className="col-12"
-                  style={{
-                    padding: "25px 23px",
-                    borderBottom: "1px solid #ddd",
-                  }}
-                >
+                <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
                   <form action="#" className="row">
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="">
-                          Mail Driver<span className="text-danger">*</span>
-                        </label>
+                        <label htmlFor="">Mail Driver</label>
                         <label htmlFor="mail_driver" className="formItemDesc">
                           Select Mail Driver Type
                         </label>
@@ -214,9 +202,7 @@ const MailSettingsEdit = () => {
                           <option value="smtp">SMTP</option>
                           <option value="pop3">POP3</option>
                           <option value="imap">IMAP</option>
-                          <option value="ews">
-                            EWS (Exchange Web Services)
-                          </option>
+                          <option value="ews">EWS (Exchange Web Services)</option>
                           <option value="mailgun">Mailgun</option>
                           <option value="sendgrid">SendGrid</option>
                           <option value="ses">Amazon SES</option>
@@ -231,9 +217,7 @@ const MailSettingsEdit = () => {
 
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="">
-                          Host<span className="text-danger">*</span>
-                        </label>
+                        <label htmlFor="">Host</label>
                         <label htmlFor="mail_host" className="formItemDesc">
                           Enter Mail Host
                         </label>
@@ -257,9 +241,7 @@ const MailSettingsEdit = () => {
 
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="">
-                          Port<span className="text-danger">*</span>
-                        </label>
+                        <label htmlFor="">Port</label>
                         <label htmlFor="mail_port" className="formItemDesc">
                           Enter Mail Port
                         </label>
@@ -284,9 +266,7 @@ const MailSettingsEdit = () => {
 
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="">
-                          Username<span className="text-danger">*</span>
-                        </label>
+                        <label htmlFor="">Username</label>
                         <label htmlFor="mail_username" className="formItemDesc">
                           Enter Mail Username
                         </label>
@@ -310,9 +290,7 @@ const MailSettingsEdit = () => {
 
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="">
-                          Password<span className="text-danger">*</span>
-                        </label>
+                        <label htmlFor="">Password</label>
                         <label htmlFor="mail_password" className="formItemDesc">
                           Enter Password
                         </label>
@@ -334,13 +312,8 @@ const MailSettingsEdit = () => {
 
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="">
-                          Encryption<span className="text-danger">*</span>
-                        </label>
-                        <label
-                          htmlFor="mail_encryption"
-                          className="formItemDesc"
-                        >
+                        <label htmlFor="">Encryption</label>
+                        <label htmlFor="mail_encryption" className="formItemDesc">
                           Select Encryption Type
                         </label>
                       </div>
@@ -359,18 +332,13 @@ const MailSettingsEdit = () => {
                           <option value="tls">
                             TLS (Transport Layer Security)
                           </option>
-                          <option value="ssl">
-                            SSL (Secure Sockets Layer)
-                          </option>
+                          <option value="ssl">SSL (Secure Sockets Layer)</option>
                           <option value="pgp">PGP (Pretty Good Privacy)</option>
                           <option value="gpg">GPG (GNU Privacy Guard)</option>
                           <option value="smime">
-                            S/MIME (Secure/Multipurpose Internet Mail
-                            Extensions)
+                            S/MIME (Secure/Multipurpose Internet Mail Extensions)
                           </option>
-                          <option value="end_to_end">
-                            End-to-End Encryption
-                          </option>
+                          <option value="end_to_end">End-to-End Encryption</option>
                           <option value="email_encryption">
                             Email Encryption Gateways
                           </option>
@@ -383,13 +351,8 @@ const MailSettingsEdit = () => {
 
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="">
-                          Mail From<span className="text-danger">*</span>
-                        </label>
-                        <label
-                          htmlFor="mail_from_address"
-                          className="formItemDesc"
-                        >
+                        <label htmlFor="">Mail From</label>
+                        <label htmlFor="mail_from_address" className="formItemDesc">
                           Enter Mail From
                         </label>
                       </div>
@@ -406,22 +369,15 @@ const MailSettingsEdit = () => {
                           onKeyDown={restrictToAllowedChars}
                         />
                         {errors.mail_from_address && (
-                          <ErrorMessage
-                            text={errors.mail_from_address.message}
-                          />
+                          <ErrorMessage text={errors.mail_from_address.message} />
                         )}
                       </div>
                     </div>
 
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="">
-                          Mail From Name<span className="text-danger">*</span>
-                        </label>
-                        <label
-                          htmlFor="mail_from_name"
-                          className="formItemDesc"
-                        >
+                        <label htmlFor="">Mail From Name</label>
+                        <label htmlFor="mail_from_name" className="formItemDesc">
                           Enter Mail From Name
                         </label>
                       </div>
@@ -445,6 +401,8 @@ const MailSettingsEdit = () => {
                 </div>
               </div>
             </div>
+
+
           </div>
         </section>
 

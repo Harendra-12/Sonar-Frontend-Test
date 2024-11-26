@@ -236,7 +236,7 @@ const WebrtcWrapper = () => {
               style={{
                 height: "100%",
                 width: "100%",
-                background: "#f0f0f0",
+                background: "transparent",
                 position: "relative",
                 zIndex: "999",
               }}
