@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSIPProvider } from "react-sipjs";
+import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 
 function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
   const account = useSelector((state) => state.account);
@@ -269,6 +270,11 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 </div>
                 <div className="itemTitle">Conference Test</div>
               </div>
+            </li>
+            <li className="dashboard ">
+              <a className="navItem">
+                <DarkModeToggle marginLeft={"2"} />
+              </a>
             </li>
           </ul>
         </div>
