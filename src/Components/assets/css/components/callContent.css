@@ -414,6 +414,10 @@
     z-index: 1;
 }
 
+.mainContentApp .tab-content .callListItem.selected h4 {
+    color: var(--immortalBlack);
+}
+
 .mainContentApp .tab-content .contactListItem.selected {
     /* background-color: #439fdd25; */
     background: var(--searchBg);
