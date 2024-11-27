@@ -26,6 +26,19 @@ const Dashboard = () => {
   const callCenter = useSelector((state) => state.callCenter || []);
   const extension = useSelector((state) => state.extension || []);
   const permissions = useSelector((state) => state.permissions || []);
+  const registerUser = useSelector((state) => state.registerUser || []);
+  const [onlineExtension, setOnlineExtension] = useState([0]);
+  useEffect(() => {
+    if (registerUser.length > 0) {
+      setOnlineExtension(
+        registerUser.map((item) => {
+          return item.extension;
+        })
+      );
+    } else {
+      setOnlineExtension([0]);
+    }
+  }, [registerUser]);
   console.log(permissions);
 
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -931,7 +944,7 @@ const Dashboard = () => {
                                       (item, index) => (
                                         <li key={index} onClick={() => navigate(`/extensions-edit?id=${item?.id}`)}>
                                           {item?.extension}
-                                          <span className={item?.sofia_status === 0 ? "float-end extensionStatus" : "float-end extensionStatus online"}></span>
+                                          <span className={onlineExtension?.includes(item?.extension) ? "float-end extensionStatus online" : "float-end extensionStatus"}></span>
                                         </li>
                                       ))}
                                   </ul>
@@ -1441,41 +1454,6 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-
-            {/* <div className="col-12 mt-3">
-                            <div className="row">
-                                <div className="col-xl-4 tabButtonParent">
-                                    <button
-                                        className={calls ? "tabButton active" : "tabButton"}
-                                        onClick={() => setCalls(!calls)}
-                                        data-id={1}
-                                    >
-                                        All Calls
-                                    </button>
-                                </div>
-                                <div className="col-xl-4 tabButtonParent">
-                                    <button
-                                        className={group ? "tabButton active" : "tabButton"}
-                                        onClick={() => setGroup(!group)}
-                                        data-id={2}
-                                    >
-                                        Ring Group
-                                    </button>
-                                </div>
-                                <div className="col-xl-4 tabButtonParent">
-                                    <button
-                                        className={queue ? "tabButton active" : "tabButton"}
-                                        onClick={() => setQueue(!queue)}
-                                        data-id={3}
-                                    >
-                                        Call Queue
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        {calls ? <AllCalls /> : ""}
-                        {group ? <RingGroup /> : ""}
-                        {queue ? <CallQueueDetails /> : ""} */}
           </div>
         </div>
       </section>

@@ -550,7 +550,7 @@ function CdrReport() {
                                     <td>{item["variable_billsec"]}</td>
                                     <td>
                                       {item["variable_DIALSTATUS"] === null
-                                        ? "NOT CONNECTED"
+                                        ? item["Hangup-Cause"]
                                         : item["variable_DIALSTATUS"] ===
                                           "NO_USER_RESPONSE"
                                           ? "BUSY"

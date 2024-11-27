@@ -504,7 +504,94 @@ function Roles() {
                               </div>
                             </div>
                             {selectedRole === "Agent" ? (
-                              <div> This will apper only for agents</div>
+                              <div className="d-flex flex-column">
+                                <span>
+                                  This will apper only for agents (Agents will
+                                  only access webrtc)
+                                </span>
+                                <div class="accordion permissionListWrapper">
+                                  {filteredPermission &&
+                                    Object.keys(filteredPermission).map(
+                                      (item, key) => (
+                                        <div
+                                          className="accordion-item"
+                                          key={key}
+                                        >
+                                          <h2
+                                            class="accordion-header"
+                                            id={`collapseHeading${key}`}
+                                          >
+                                            <button
+                                              class="accordion-button collapsed"
+                                              type="button"
+                                              data-bs-toggle="collapse"
+                                              data-bs-target={`#collapseRole${key}`}
+                                              aria-expanded="true"
+                                              aria-controls={`collapse${key}`}
+                                            >
+                                              <input
+                                                type="checkbox"
+                                                checked={parentChecked[item]}
+                                                onChange={() =>
+                                                  handleParentCheckboxChange(
+                                                    item
+                                                  )
+                                                }
+                                              />
+
+                                              <label>{item}</label>
+                                            </button>
+                                          </h2>
+                                          {/* <div className="header d-flex align-items-center">
+                                <div className="col-5">
+                                  <input
+                                    type="checkbox"
+                                    checked={parentChecked[item]}
+                                    onChange={() =>
+                                      handleParentCheckboxChange(item)
+                                    }
+                                  />
+                                  <label className="ms-2">{item}</label>
+                                </div>
+                              </div> */}
+                                          <div
+                                            id={`collapseRole${key}`}
+                                            class="accordion-collapse collapse"
+                                            aria-labelledby={`collapseHeading${key}`}
+                                          >
+                                            <div class="accordion-body">
+                                              {filteredPermission[item].map(
+                                                (innerItem, key) => (
+                                                  <div
+                                                    className="col-xl-2 col-md-4 col-6"
+                                                    style={{ paddingLeft: 30 }}
+                                                    key={key}
+                                                  >
+                                                    <input
+                                                      type="checkbox"
+                                                      id={`permission-${innerItem.id}`}
+                                                      checked={selectedPermission.includes(
+                                                        innerItem.id
+                                                      )}
+                                                      onChange={() =>
+                                                        handleCheckboxChange(
+                                                          innerItem.id
+                                                        )
+                                                      }
+                                                    />
+                                                    <label className="formLabel ms-2 text-capitalize">
+                                                      {innerItem.action}
+                                                    </label>
+                                                  </div>
+                                                )
+                                              )}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      )
+                                    )}
+                                </div>
+                              </div>
                             ) : (
                               <div class="accordion permissionListWrapper">
                                 {filteredPermission &&
