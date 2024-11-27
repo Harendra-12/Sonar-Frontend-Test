@@ -47,7 +47,8 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
   const dateHeaderRefs = useRef([]); // Store refs for all dateHeader elements
   const visibilityMap = useRef(new Map()); // Track visibility of each ref
   const [refreshstate, setRefreshState] = useState(false);
-  console.log("isAnyDateHeaderVisible", isAnyDateHeaderVisible);
+
+  console.log("isAnyDateHeaderVisible", allMessage);
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {

@@ -183,13 +183,10 @@ const ExtensionsEdit = () => {
           setMusicHold(apiData.data.moh);
         } else {
           setLoading(false);
-          navigate("/");
         }
       }
       getData();
-    } else {
-      navigate("/");
-    }
+    } 
   }, [account, navigate, value]);
 
   const handleFormSubmit = handleSubmit(async (data, title) => {
