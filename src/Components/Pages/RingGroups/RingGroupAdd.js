@@ -802,6 +802,11 @@ const RingGroupAdd = () => {
                           {...register("ring_back")}
                           id="selectFormRow"
                           defaultValue={"null"}
+                          onChange={(e) => {
+                            if (e.target.value === "addmusic") {
+                              navigate("/voice-music");
+                            }
+                          }}
                         >
                           <option value="null">None</option>
                           {/* <option>us-ring</option>
@@ -815,6 +820,13 @@ const RingGroupAdd = () => {
                                 </option>
                               );
                             })}
+                          <option
+                            value="addmusic"
+                            className="text-center border bg-info-subtle fs-6 fw-bold text-info"
+                            style={{ cursor: "pointer" }}
+                          >
+                            Add Music
+                          </option>
                         </select>
                       </div>
                     </div>

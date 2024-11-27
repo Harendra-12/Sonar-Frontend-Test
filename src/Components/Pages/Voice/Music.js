@@ -295,7 +295,7 @@ function Music() {
                           </select>
                         </div>
                         <div className="col-8">
-                          <input
+                          {/* <input
                             name="reg"
                             className="formItem"
                             type="file"
@@ -305,6 +305,44 @@ function Music() {
                               const fileName = file.name.replace(/ /g, '-');
                               const newFile = new File([file], fileName, { type: file.type });
                               setNewMusic(newFile);
+                            }}
+                          /> */}
+                          <input
+                            name="reg"
+                            className="formItem"
+                            type="file"
+                            accept="audio/*"
+                            onChange={(e) => {
+                              const file = e.target.files[0];
+
+                              if (file) {
+                                const audio = new Audio();
+                                audio.src = URL.createObjectURL(file);
+
+                                audio.onloadedmetadata = () => {
+                                  if (audio.duration <= 5) {
+                                    // Replace with your toast function
+                                    toast.error(
+                                      "Error: Audio file must be longer than 5 seconds.",
+                                      "error"
+                                    );
+                                    return;
+                                  }
+
+                                  const fileName = file.name.replace(/ /g, "-");
+                                  const newFile = new File([file], fileName, {
+                                    type: file.type,
+                                  });
+                                  setNewMusic(newFile);
+                                };
+
+                                audio.onerror = () => {
+                                  toast.error(
+                                    "Error: Unable to read the audio file.",
+                                    "error"
+                                  );
+                                };
+                              }
                             }}
                           />
                         </div>
