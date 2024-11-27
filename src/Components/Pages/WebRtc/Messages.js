@@ -48,7 +48,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
   const visibilityMap = useRef(new Map()); // Track visibility of each ref
   const [refreshstate, setRefreshState] = useState(false);
 
-  console.log("isAnyDateHeaderVisible", allMessage);
+  console.log("isAnyDateHeaderVisible", contact);
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -192,6 +192,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
 
   // Logic to send message
   const sendMessage = () => {
+    if(messageInput.trim() === '') return
     if (isSIPReady) {
       const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
       const userAgent = sipProvider?.sessionManager?.userAgent;
@@ -238,15 +239,18 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
               id: agentDetails.id,
               extension_id: agentDetails.extension_id,
               extension: recipient[0],
+              last_message_data: {message_text: messageInput, created_at: time},
             });
           }
           setMessageInput("");
 
           console.log("Message sent to:", targetURI);
         } catch (error) {
+          setMessageInput("")
           console.error("Error sending message:", error);
         }
       } else {
+        setMessageInput("")
         console.error("Invalid recipient address.");
       }
     } else {
@@ -330,7 +334,18 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
         const agentDetails = agents.find(
           (agent) => agent.extension.extension === from
         );
+        const time = formatDateTime(new Date());
 
+        const contactIndex = contact.findIndex(
+          (contact) => contact.extension === recipient[0]
+        );
+        if (contactIndex !== -1) {
+          const newContact = [...contact];
+          newContact[contactIndex].last_message_data.message_text =
+            body;
+          newContact[contactIndex].last_message_data.created_at = time;
+          setContact(newContact);
+        }
         if (!extensionExists) {
           contact.unshift({
             name: agentDetails.username,
@@ -338,6 +353,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
             id: agentDetails.id,
             extension_id: agentDetails.extension_id,
             extension: from,
+            last_message_data: { message_text: body, created_at: time },
           });
         } else {
           // Move the extension object to the beginning of the array
@@ -346,13 +362,18 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
           );
           const extensionObject = contact.splice(index, 1)[0];
           contact.unshift(extensionObject);
+          const newContact = [...contact];
+          newContact[index].last_message_data.message_text =
+            body;
+          newContact[index].last_message_data.created_at = time;
+          setContact(newContact);
         }
         // Check Content-Type for the incoming message
         const contentType =
           message?.incomingMessageRequest?.message?.getHeader("Content-Type");
 
         // Get the current time when the message is received
-        const time = formatDateTime(new Date()); // Or use .toISOString() for UTC format
+         // Or use .toISOString() for UTC format
 
         // Check if the content is an image
 
@@ -392,15 +413,15 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
           }
 
           // Update contact last message
-          //  const contactIndex = contact.findIndex(
-          //   (contact) => contact.extension === recipient[0]
-          // );
-          // if (contactIndex !== -1) {
-          //   const newContact = [...contact];
-          //   newContact[contactIndex].last_message_data.message_text = messageInput;
-          //   newContact[contactIndex].last_message_data.created_at = time;
-          //   setContact(newContact);
-          // }
+           const contactIndex = contact.findIndex(
+            (contact) => contact.extension === recipient[0]
+          );
+          if (contactIndex !== -1) {
+            const newContact = [...contact];
+            newContact[contactIndex].last_message_data.message_text = messageInput;
+            newContact[contactIndex].last_message_data.created_at = time;
+            setContact(newContact);
+          }
         }
       },
     };
