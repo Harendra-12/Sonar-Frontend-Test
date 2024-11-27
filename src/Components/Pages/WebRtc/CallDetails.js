@@ -89,19 +89,14 @@ function CallDetails({
             </p>
           </div>
           <div className="d-flex my-auto">
-            <div className="d-flex align-items-center me-2">
+            {/* <div className="d-flex align-items-center me-2">
               <label className="gray14 me-2">Assigned to:</label>
               <select className="ovalSelect">
                 <option>
-                  {/* {agents.map((item) => {
-                    if (item.extension.extension === recipient[0]) {
-                      return item.username
-                    }
-                  })} */}
                   {callDetails?.caller_user?.username}
                 </option>
               </select>
-            </div>
+            </div> */}
             <button
               className="clearButton2 xl"
               effect="ripple"

@@ -446,14 +446,14 @@ function AllVoicemails({ isCustomerAdmin }) {
                         </p>
                       </div>
                       <div className="d-flex my-auto">
-                        <div className="d-flex align-items-center me-2">
+                        {/* <div className="d-flex align-items-center me-2">
                           <label className="gray14 me-2">Assigned to:</label>
                           <select className="ovalSelect">
                             <option>
                               Test User
                             </option>
                           </select>
-                        </div>
+                        </div> */}
                         <button
                           className="clearButton2 xl"
                           effect="ripple"
