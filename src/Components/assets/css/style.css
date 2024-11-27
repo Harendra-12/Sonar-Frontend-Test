@@ -116,13 +116,14 @@
     --formHeadingBloc: #3c3e46;
     --table-head: #1d1e22;
     --border-color: #abababa6;
-    --table-text: var(--form-label);
+    --table-text: rgb(175, 175, 175);
     --accordion-active: #3c3e46;
     --searchBg: #383838;
     --webBG: var(--bg-color);
-    --webUtilGray: var(--form-label);
-    --immortalBlack: var(--form-label);
     --webCaller: var(--nav-color);
+
+    --webUtilGray: rgb(175, 175, 175);
+    --immortalBlack: rgb(241, 241, 241)
 }
 
 html {
@@ -142,7 +143,7 @@ body {
 }
 
 body.dark {
-    color: #fff;
+    color: rgb(175, 175, 175);
 }
 
 ul {

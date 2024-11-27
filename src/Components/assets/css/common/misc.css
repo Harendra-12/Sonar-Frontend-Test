@@ -650,6 +650,8 @@ input[type=number] {
     border: none;
     outline: none;
     padding: 0;
+    background: transparent;
+    color: var(--immortalBlack);
 }
 
 .ovalSelect {
