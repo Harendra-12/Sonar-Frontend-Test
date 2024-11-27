@@ -231,7 +231,7 @@ function CdrReport() {
                   style={{ overflow: "auto", padding: "25px 20px 0" }}
                 >
                   <div className="tableHeader">
-                    <div className="row justify-content-xl-end">
+                    <div className="d-flex justify-content-xl-end">
                       <div className="formRow border-0 ps-xl-0">
                         <label className="formLabel text-start mb-0 w-100">
                           Date Filter
@@ -531,7 +531,7 @@ function CdrReport() {
                                       }
                                     </td>
                                     <td>
-                                      {item["recording_path"] && item["variable_billsec"]>0 && (
+                                      {item["recording_path"] && item["variable_billsec"] > 0 && (
                                         <MusicPlayer
                                           audioSrc={item["recording_path"]}
                                           isPlaying={
