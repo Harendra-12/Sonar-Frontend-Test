@@ -342,7 +342,7 @@ function Roles() {
                         <ul>
                           {addRole ? (
                             <li>
-                              <div className="col-8">
+                              <div className="col-xl-8 col-7">
                                 <input
                                   type="text"
                                   value={newRole}
@@ -391,7 +391,7 @@ function Roles() {
                                     selectedRoleId === item.id ? "active" : ""
                                   }
                                 >
-                                  <div className="col-8">
+                                  <div className="col-xl-8 col-7">
                                     <input
                                       type="text"
                                       placeholder={item.name}
@@ -462,7 +462,7 @@ function Roles() {
                       </div>
                     </div>
                     {selectedRoleId && (
-                      <div className="col-xl-8 pe-0">
+                      <div className="col-xl-8 pe-xl-0">
                         <div className="profileView p-0 pb-2 ">
                           <div className="profileDetailsHolder position-relative p-0 shadow-none border-0">
                             <div
@@ -489,7 +489,7 @@ function Roles() {
                                 </div>
 
                                 {selectedRole !== "Agent" && (
-                                  <div className="col-2 text-end">
+                                  <div className="col-auto text-end">
                                     <button
                                       className="panelButton ms-auto"
                                       onClick={handlePermissionSave}

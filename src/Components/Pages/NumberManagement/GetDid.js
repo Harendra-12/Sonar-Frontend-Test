@@ -384,7 +384,7 @@ function GetDid() {
             <div className="mx-2">
               <div className="row mt-3 col-xl-12 px-3">
                 {did && (
-                  <div className="col-xl-5">
+                  <div className="col-xl-5 mb-3 mb-xl-0">
                     <div className="searchList">
                       <div className="heading">
                         <h5>Available DID</h5>
@@ -426,7 +426,7 @@ function GetDid() {
                 {selectedDid.length === 0 ? (
                   ""
                 ) : (
-                  <div className="col-xl-4">
+                  <div className="col-xl-4 mb-3 mb-xl-0">
                     <div className="searchList">
                       <div className="heading">
                         <h5>Added DID</h5>

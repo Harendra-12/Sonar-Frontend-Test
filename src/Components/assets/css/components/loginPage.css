@@ -262,7 +262,7 @@ a.loginLabel {
 .loginWrapper2 .content .loginFormItem {
     border: 1px solid var(--border-color);
     border-radius: 10px;
-    color: inherit;
+    color: var(--immortalBlack);
     font-weight: 300;
 }
 

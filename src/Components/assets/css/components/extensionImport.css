@@ -311,3 +311,16 @@ form.tangoNavs .nav-tabs {
     font-size: 12px;
     font-weight: 500;
 }
+
+.formRow.col-xl-3 {
+    width: 45%;
+    /* margin-right: 70px; */
+}
+
+.formRow.col-xl-3:nth-child(odd) {
+    margin-right: 70px;
+}
+
+/* form.row {
+    justify-content: space-between;
+} */

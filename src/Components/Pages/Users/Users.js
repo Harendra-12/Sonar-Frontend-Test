@@ -214,9 +214,11 @@ const Users = () => {
                     <div className="heading">
                       <div className="content d-flex">
                         <h4>Users</h4>
+                      </div>
+                      <div className="buttonGroup">
                         <button
                           effect="ripple"
-                          className="panelButton"
+                          className="panelButton ms-0"
                           onClick={() => setRefreshState(true)}
                         >
                           <span className="text">Refresh</span>
@@ -230,8 +232,6 @@ const Users = () => {
                             ></i>
                           </span>
                         </button>
-                      </div>
-                      <div className="buttonGroup">
                         <button
                           effect="ripple"
                           className="panelButton gray"
@@ -342,109 +342,109 @@ const Users = () => {
                               <td></td>
                             </tr>
                           ) : // </div>
-                          loading ? (
-                            <tr>
-                              <td colSpan={99}>
-                                <ContentLoader />
-                              </td>
-                            </tr>
-                          ) : (
-                            <>
-                              {user &&
-                                filterUser.map((item, index) => {
-                                  const isCustomerAdmin =
-                                    account.email === item.email;
+                            loading ? (
+                              <tr>
+                                <td colSpan={99}>
+                                  <ContentLoader />
+                                </td>
+                              </tr>
+                            ) : (
+                              <>
+                                {user &&
+                                  filterUser.map((item, index) => {
+                                    const isCustomerAdmin =
+                                      account.email === item.email;
 
-                                  // Skip rendering the row if isCustomerAdmin is true
-                                  if (isCustomerAdmin) {
-                                    return null; // Return null to avoid rendering the row
-                                  }
+                                    // Skip rendering the row if isCustomerAdmin is true
+                                    if (isCustomerAdmin) {
+                                      return null; // Return null to avoid rendering the row
+                                    }
 
-                                  return (
-                                    <tr key={index}>
-                                      <td
-                                        onClick={() =>
-                                          navigate(`/users-edit`, {
-                                            state: item,
-                                          })
-                                        }
-                                      >
-                                        {item.username} (
-                                        {item.extension?.extension})
-                                      </td>
-                                      <td
-                                        onClick={() =>
-                                          navigate(`/users-edit`, {
-                                            state: item,
-                                          })
-                                        }
-                                      >
-                                        {item.account_id}
-                                      </td>
-                                      <td
-                                        onClick={() =>
-                                          navigate(`/users-edit`, {
-                                            state: item,
-                                          })
-                                        }
-                                      >
-                                        <span
-                                          className={
-                                            onlineUser.includes(item.id)
-                                              ? "extensionStatus online"
-                                              : "extensionStatus"
-                                          }
-                                        ></span>
-                                      </td>
-                                      <td
-                                        onClick={() =>
-                                          navigate(`/users-edit`, {
-                                            state: item,
-                                          })
-                                        }
-                                      >
-                                        True
-                                      </td>
-                                      <td>
-                                        <button
-                                          className="tableButton edit"
+                                    return (
+                                      <tr key={index}>
+                                        <td
                                           onClick={() =>
                                             navigate(`/users-edit`, {
                                               state: item,
                                             })
                                           }
                                         >
-                                          <i class="fa-solid fa-pencil"></i>
-                                        </button>
-                                      </td>
-                                      <td
-                                      // onClick={() =>
-                                      //   handleStatusChange(item.id, item.status)
-                                      // }
-                                      >
-                                        {/* {item.status === "E"
+                                          {item.username} (
+                                          {item.extension?.extension})
+                                        </td>
+                                        <td
+                                          onClick={() =>
+                                            navigate(`/users-edit`, {
+                                              state: item,
+                                            })
+                                          }
+                                        >
+                                          {item.account_id}
+                                        </td>
+                                        <td
+                                          onClick={() =>
+                                            navigate(`/users-edit`, {
+                                              state: item,
+                                            })
+                                          }
+                                        >
+                                          <span
+                                            className={
+                                              onlineUser.includes(item.id)
+                                                ? "extensionStatus online"
+                                                : "extensionStatus"
+                                            }
+                                          ></span>
+                                        </td>
+                                        <td
+                                          onClick={() =>
+                                            navigate(`/users-edit`, {
+                                              state: item,
+                                            })
+                                          }
+                                        >
+                                          True
+                                        </td>
+                                        <td>
+                                          <button
+                                            className="tableButton edit"
+                                            onClick={() =>
+                                              navigate(`/users-edit`, {
+                                                state: item,
+                                              })
+                                            }
+                                          >
+                                            <i class="fa-solid fa-pencil"></i>
+                                          </button>
+                                        </td>
+                                        <td
+                                        // onClick={() =>
+                                        //   handleStatusChange(item.id, item.status)
+                                        // }
+                                        >
+                                          {/* {item.status === "E"
                                             ? "Enabled"
                                             : "Disabled"} */}
-                                        <div className="my-auto position-relative mx-1">
-                                          <label className="switch">
-                                            <input
-                                              type="checkbox"
-                                              checked={item.status === "E"}
-                                              onClick={(e) => {
-                                                setSelectedUser(item);
-                                                setPopUp(true);
-                                              }}
-                                              id="showAllCheck"
-                                            />
-                                            <span className="slider round" />
-                                          </label>
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  );
-                                })}
-                            </>
-                          )}
+                                          <div className="my-auto position-relative mx-1">
+                                            <label className="switch">
+                                              <input
+                                                type="checkbox"
+                                                checked={item.status === "E"}
+                                                onClick={(e) => {
+                                                  setSelectedUser(item);
+                                                  setPopUp(true);
+                                                }}
+                                                id="showAllCheck"
+                                              />
+                                              <span className="slider round" />
+                                            </label>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
+                              </>
+                            )}
 
                           {user && user.length === 0 ? (
                             <td colSpan={99}>
@@ -492,10 +492,9 @@ const Users = () => {
                     {error
                       ? error
                       : selectedUser?.id
-                      ? `Are you sure you want to ${
-                          selectedUser?.status === "E" ? "disable" : "enable"
+                        ? `Are you sure you want to ${selectedUser?.status === "E" ? "disable" : "enable"
                         } ${selectedUser?.username}?`
-                      : ""}
+                        : ""}
                   </p>
                   <div className="d-flex justify-content-between">
                     <button
