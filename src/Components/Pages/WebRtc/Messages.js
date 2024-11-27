@@ -1232,7 +1232,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                         {/* <span className="status online">Online</span> */}
                       </div>
                       <div className="d-flex my-auto">
-                        <div className="d-flex align-items-center me-2">
+                        {/* <div className="d-flex align-items-center me-2">
                           <label className="gray14 me-2">Assigned to:</label>
                           <select className="ovalSelect">
                             <option>
@@ -1243,7 +1243,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                               })}
                             </option>
                           </select>
-                        </div>
+                        </div> */}
                         <button
                           onClick={() => onSubmit("audio", recipient[0])}
                           className="clearButton2 xl"

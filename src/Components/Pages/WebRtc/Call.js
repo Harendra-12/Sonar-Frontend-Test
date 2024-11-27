@@ -473,7 +473,7 @@ function Call({
     }
   }
   return (
-    <div className="browserPhoneWrapper">
+    <>
       {/* <SideNavbarApp /> */}
       <main
         className="mainContentApp"
@@ -502,7 +502,7 @@ function Call({
                   </div>
                   <div className="d-flex justify-content-end align-items-center">
                     <div className="col-9">
-                      <input type="search" name="Search" placeholder="Search users, groups or chat" class="formItem fw-normal" onChange={() => featureUnderdevelopment()} />
+                      <input type="search" name="Search" placeholder="Search users, groups or chat" class="formItem fw-normal" onChange={() => featureUnderdevelopment()} style={{ backgroundColor: 'var(--searchBg)' }} />
                     </div>
                     <div className="col-auto mx-2">
                       <button
@@ -747,7 +747,7 @@ function Call({
       {addContactToggle && (
         <AddNewContactPopup setAddContactToggle={setAddContactToggle} />
       )}
-    </div>
+    </>
   );
 }
 

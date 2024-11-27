@@ -773,3 +773,12 @@ input[type=number] {
     background-color: var(--ele-color);
     flex-wrap: wrap;
 }
+
+.accordion .accordion-button {
+    background-color: var(--ele-color);
+}
+
+.accordion .accordion-item {
+    border-color: var(--border-color);
+    background-color: var(--ele-color);
+}

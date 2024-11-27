@@ -81,7 +81,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 {connectStatus}
               </span>
             </div> */}
-            <li effect="ripple">
+            <li >
               <div
                 // to="/message"
                 onClick={() => setactivePage("messages")}
@@ -95,7 +95,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Messages</div>
               </div>
             </li>
-            <li effect="ripple">
+            <li >
               <div
                 // to="/call"
                 onClick={() => setactivePage("call")}
@@ -107,7 +107,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Calls</div>
               </div>
             </li>
-            <li effect="ripple">
+            <li >
               <div
                 // to="/efax"
                 onClick={() => setactivePage("e-fax")}
@@ -121,7 +121,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">eFax</div>
               </div>
             </li>
-            <li effect="ripple">
+            <li >
               <div
                 onClick={() => setactivePage("all-voice-mails")}
                 // to="/all-voicemails"
@@ -137,7 +137,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Voicemails</div>
               </div>
             </li>
-            <li effect="ripple">
+            <li >
               <div
                 //  to="/"
                 onClick={() => setactivePage("favorites")}
@@ -151,7 +151,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Favorites</div>
               </div>
             </li>
-            <li effect="ripple">
+            <li >
               <div
                 // to="/all-contacts"
                 onClick={() => setactivePage("all-contacts")}
@@ -165,7 +165,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Contacts</div>
               </div>
             </li>
-            {/* <li effect="ripple">
+            {/* <li >
               <NavLink to="/" className='navItem'>
                 <div className="iconHolder">
                   <i className="fa-light fa-circle-question" />
@@ -173,7 +173,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Help &amp; Feedback</div>
               </NavLink>
             </li> */}
-            <li effect="ripple">
+            <li >
               <div
                 // to="/"
                 onClick={() => setactivePage("settings")}
@@ -187,7 +187,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Settings</div>
               </div>
             </li>
-            <li effect="ripple">
+            <li >
               <div
                 // to="/call-dashboard"
                 onClick={() => setactivePage("call-dashboard")}
@@ -201,7 +201,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Call Dashboard</div>
               </div>
             </li>
-            <li effect="ripple">
+            <li >
               <div
                 // to="/call-center"
                 onClick={() => setactivePage("call-center")}
@@ -215,7 +215,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Call Center</div>
               </div>
             </li>
-            <li effect="ripple">
+            <li >
               <div
                 //  to="/"
                 onClick={() => navigate("/dashboard")}
@@ -229,7 +229,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Admin</div>
               </div>
             </li>
-            <li effect="ripple">
+            <li >
               <div
                 // to="/"
                 onClick={() => setactivePage("reports")}
@@ -243,7 +243,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Reports</div>
               </div>
             </li>
-            <li effect="ripple">
+            <li >
               <div
                 // to="/"
                 onClick={() => setactivePage("conference")}
@@ -257,7 +257,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Conference</div>
               </div>
             </li>
-            <li effect="ripple">
+            <li >
               <div
                 // to="/"
                 onClick={() => setactivePage("test")}

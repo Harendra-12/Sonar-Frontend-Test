@@ -16,10 +16,10 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
     const { value } = e.target;
     const regex = /^[0-9*#]*$/;
     if (regex.test(value)) {
-        const value = e.target.value;
-        if (value.length <= 15) {
-          setDestNumber(value);
-        }
+      const value = e.target.value;
+      if (value.length <= 15) {
+        setDestNumber(value);
+      }
     }
   };
 
@@ -133,9 +133,7 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
           <div className="row align-items-center justify-content-center h-100">
             <div className="col-xl-3 col-md-6 col-11 dialPadContainer p-2">
               <div className="d-flex justify-content-between pt-3 pb-1 px-2">
-                <div>
-                  <i className="fa-light fa-address-book fs-5 text-white" />
-                </div>
+
                 <div>
                   <h3>Dial Number:</h3>
                 </div>
@@ -149,7 +147,7 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
               <div className="mb-2">
                 {/* <span>Outbound ID: (999) 999-9999</span> */}
               </div>
-              <div>
+              <div className="d-flex justify-content-between align-items-center" style={{ width: '75%', margin: 'auto' }}>
                 <input
                   type="text"
                   placeholder="Dial"
@@ -164,6 +162,9 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
                     }
                   }}
                 />
+                <div className="ms-3">
+                  <i className="fa-light fa-address-book fs-1 text-white" />
+                </div>
               </div>
               <div className="dialerWrap mt-2">
                 <div
