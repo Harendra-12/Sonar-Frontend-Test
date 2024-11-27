@@ -135,7 +135,7 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
               <div className="d-flex justify-content-between pt-3 pb-1 px-2">
 
                 <div>
-                  <h3>Dial Number:</h3>
+                  <h3>Dial Number</h3>
                 </div>
                 <div
                   onClick={() => hideDialpad(false)}
@@ -162,8 +162,8 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
                     }
                   }}
                 />
-                <div className="ms-3">
-                  <i className="fa-light fa-address-book fs-1 text-white" />
+                <div className="ms-3 d-flex align-items-center">
+                  <i className="fa-light fa-address-book fs-4 text-white" />
                 </div>
               </div>
               <div className="dialerWrap mt-2">

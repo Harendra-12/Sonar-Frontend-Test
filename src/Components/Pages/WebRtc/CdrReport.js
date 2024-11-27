@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import {
   backToTop,
@@ -12,6 +12,7 @@ import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import MusicPlayer from "../../CommonComponents/MusicPlayer";
+import AudioMotionAnalyzer from "audiomotion-analyzer";
 
 function CdrReport() {
   const [loading, setLoading] = useState(true);
@@ -37,6 +38,9 @@ function CdrReport() {
   const [endDate, setEndDate] = useState("");
   const [contentLoader, setContentLoader] = useState(false);
   const [refresh, setRefrehsh] = useState(1);
+
+  const thisAudioRef = useRef(null);
+
   useEffect(() => {
     if (filterBy === "date" && startDateFlag !== "") {
       setStartDate(startDateFlag);
@@ -179,6 +183,18 @@ function CdrReport() {
       featureUnderdevelopment();
     }
   }, [filterBy]);
+
+  const handlePlaying = (audio) => {
+    setCurrentPlaying(audio);
+    setTimeout(() => {
+      if (currentPlaying) {
+        thisAudioRef.current.play();
+      }
+    }, 200);
+  }
+
+
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -501,63 +517,91 @@ function CdrReport() {
                             {cdr?.data &&
                               cdr?.data?.map((item, index) => {
                                 return (
-                                  <tr key={index}>
-                                    <td>
-                                      {(pageNumber - 1) * 20 + (index + 1)}
-                                    </td>
-                                    <td>{item["Call-Direction"]}</td>
-                                    <td>{item["application_state"]}</td>
-                                    <td>{item["variable_sip_from_user"]}</td>
-                                    <td>
-                                      {item["application_state"] ===
-                                        "intercept" ||
-                                        item["application_state"] === "eavesdrop"
-                                        ? item["other_leg_destination_number"]
-                                        : item["variable_sip_to_user"]}
-                                    </td>
-                                    <td>{item["application_state_to_ext"]}</td>
-                                    <td>
-                                      {
-                                        item["variable_start_stamp"].split(
-                                          " "
-                                        )[0]
-                                      }
-                                    </td>
-                                    <td>
-                                      {
-                                        item["variable_start_stamp"].split(
-                                          " "
-                                        )[1]
-                                      }
-                                    </td>
-                                    <td>
-                                      {item["recording_path"] && item["variable_billsec"] > 0 && (
-                                        <MusicPlayer
-                                          audioSrc={item["recording_path"]}
-                                          isPlaying={
-                                            currentPlaying ===
-                                            item["recording_path"]
-                                          }
-                                          onPlay={() =>
-                                            setCurrentPlaying(
-                                              item["recording_path"]
-                                            )
-                                          }
-                                          onStop={() => setCurrentPlaying(null)}
-                                        />
-                                      )}
-                                    </td>
-                                    <td>{item["variable_billsec"]}</td>
-                                    <td>
-                                      {item["variable_DIALSTATUS"] === null
-                                        ? item["Hangup-Cause"]
-                                        : item["variable_DIALSTATUS"] ===
-                                          "NO_USER_RESPONSE"
-                                          ? "BUSY"
-                                          : item["variable_DIALSTATUS"]}
-                                    </td>
-                                    <td>{item["call_cost"]}</td>
-                                  </tr>
+                                  <>
+                                    <tr key={index} className="cdrTableRow">
+                                      <td>
+                                        {(pageNumber - 1) * 20 + (index + 1)}
+                                      </td>
+                                      <td>{item["Call-Direction"]}</td>
+                                      <td>{item["application_state"]}</td>
+                                      <td>{item["variable_sip_from_user"]}</td>
+                                      <td>
+                                        {item["application_state"] ===
+                                          "intercept" ||
+                                          item["application_state"] === "eavesdrop"
+                                          ? item["other_leg_destination_number"]
+                                          : item["variable_sip_to_user"]}
+                                      </td>
+                                      <td>{item["application_state_to_ext"]}</td>
+                                      <td>
+                                        {
+                                          item["variable_start_stamp"].split(
+                                            " "
+                                          )[0]
+                                        }
+                                      </td>
+                                      <td>
+                                        {
+                                          item["variable_start_stamp"].split(
+                                            " "
+                                          )[1]
+                                        }
+                                      </td>
+                                      <td>
+                                        {item["recording_path"] && item["variable_billsec"] > 0 && (
+                                          <button className="tableButton px-2 mx-0" onClick={() => handlePlaying(item["recording_path"])}>
+                                            <i className="fa-duotone fa-play"></i>
+                                          </button>
+
+                                          // <MusicPlayer
+                                          //   audioSrc={item["recording_path"]}
+                                          //   isPlaying={
+                                          //     currentPlaying ===
+                                          //     item["recording_path"]
+                                          //   }
+                                          //   onPlay={() => setCurrentPlaying(item["recording_path"])}
+                                          //   onStop={() => setCurrentPlaying(null)}
+                                          // />
+                                        )}
+                                      </td>
+                                      <td>{item["variable_billsec"]}</td>
+                                      <td>
+                                        {item["variable_DIALSTATUS"] === null
+                                          ? item["Hangup-Cause"]
+                                          : item["variable_DIALSTATUS"] ===
+                                            "NO_USER_RESPONSE"
+                                            ? "BUSY"
+                                            : item["variable_DIALSTATUS"]}
+                                      </td>
+                                      <td>{item["call_cost"]}</td>
+                                    </tr>
+                                    {currentPlaying === item["recording_path"] && <tr>
+                                      <td colSpan={99}>
+                                        <div className="audio-container mx-2">
+                                          <audio controls={true} ref={thisAudioRef}>
+                                            <source
+                                              src={item["recording_path"]}
+                                              type="audio/mpeg"
+                                            />
+                                          </audio>
+
+                                          <button
+                                            className="audioCustomButton"
+                                          // onClick={() =>
+                                          //   handleAudioDownload(
+                                          //     clickedVoiceMail.recording_path
+                                          //   )
+                                          // }
+                                          >
+                                            <i className="fa-sharp fa-solid fa-download" />
+                                          </button>
+                                          {/* <button className="audioCustomButton ms-1">
+                              <i className="fa-sharp fa-solid fa-box-archive" />
+                            </button> */}
+                                        </div>
+                                      </td>
+                                    </tr>}
+                                  </>
                                 );
                               })}
                           </>

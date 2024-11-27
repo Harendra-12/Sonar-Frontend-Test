@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 
-const MusicPlayer = ({ audioSrc, isPlaying, onPlay, onStop }) => {
+const MusicPlayer = ({ audioSrc, isPlaying, onPlay, onStop, controls }) => {
   const audioRef = useRef(null);
 
   const togglePlayPause = () => {
@@ -41,7 +41,7 @@ const MusicPlayer = ({ audioSrc, isPlaying, onPlay, onStop }) => {
 
   return (
     <div>
-      <audio ref={audioRef} src={audioSrc}></audio>
+      <audio ref={audioRef} src={audioSrc} controls={controls}></audio>
       <button onClick={togglePlayPause} className="tableButton px-2 mx-0">
         {isPlaying ? (
           <i className="fa-duotone fa-pause"></i>

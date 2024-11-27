@@ -91,7 +91,8 @@
     --form-input-text: #555;
     --formHeadingBloc: #fafafa;
     --table-head: #f4f7f9;
-    --table-text: #5f5f5f;
+    /* --table-text: #5f5f5f; */
+    --table-text: #303030;
     --accordion-active: #a2e1ff3d;
     --searchBg: #f5f5f5;
     --webBG: #fafafa;
@@ -116,7 +117,7 @@
     --formHeadingBloc: #3c3e46;
     --table-head: #1d1e22;
     --border-color: #abababa6;
-    --table-text: rgb(175, 175, 175);
+    --table-text: rgb(220, 220, 220);
     --accordion-active: #3c3e46;
     --searchBg: #383838;
     --webBG: var(--bg-color);

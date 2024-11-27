@@ -10,7 +10,7 @@ table td {
 
 table th {
     padding: 10px 10px;
-    font-size: 13px;
+    font-size: 14px;
     background-color: var(--table-head);
 }
 
@@ -32,7 +32,8 @@ table tbody tr:not(:last-child) {
 
 table tbody tr td {
     cursor: pointer;
-    font-weight: 500;
+    font-weight: 400;
+    font-size: 14px;
 }
 
 table tbody tr td a {

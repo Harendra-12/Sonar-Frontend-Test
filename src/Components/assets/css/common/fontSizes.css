@@ -1,6 +1,11 @@
+h3 {
+    color: var(--immortalBlack);
+}
+
 h4 {
     font-size: 20px !important;
     font-family: Roboto;
+    color: var(--immortalBlack);
 }
 
 h5 {
