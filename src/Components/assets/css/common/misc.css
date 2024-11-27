@@ -773,3 +773,7 @@ input[type=number] {
     background-color: var(--ele-color);
     flex-wrap: wrap;
 }
+
+.card {
+    background-color: var(--ele-color);
+}

@@ -108,6 +108,7 @@ import ConferenceCall from "./Components/Pages/WebRtc/ConferenceCall";
 import CallBlocking from "./Components/Pages/SpamFilter/CallBlocking";
 import ConferenceConfig from "./Components/Pages/WebRtc/ConferenceConfig";
 import ClickToCall from "./Components/Pages/ClickToCall/ClickToCall";
+import CallDashboardNew from "./Components/Pages/WebRtc/CallDashboardNew";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -339,6 +340,7 @@ function App() {
           {/* <Route path="/video-call" element={<VideoCall />} />
           <Route path="/conference-call" element={<ConferenceCall />} /> */}
           <Route path="/conference-config" element={<ConferenceConfig />} />
+          <Route path="/call-dashboard-new" element={<CallDashboardNew />} />
           {/* WebRtc path end */}
 
           {/* Admin Packages path start */}

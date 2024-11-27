@@ -44,6 +44,7 @@
 @import url('./components/conference/conferenceSettings.css');
 @import url('./components/conference/participantSlider.css');
 @import url('./components/clickToCall.css');
+@import url('./components/call-style.css');
 
 /* Responsive CSS */
 @import url('./common/responsive.css');
