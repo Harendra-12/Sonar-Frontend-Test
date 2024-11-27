@@ -208,7 +208,7 @@ function CallCenterQueue() {
                       <div className="buttonGroup">
                         <button
                           effect="ripple"
-                          className="panelButton"
+                          className="panelButton ms-0"
                           onClick={() => setRefreshState(refreshState + 1)}
                         >
                           <span className="text">Refresh</span>
@@ -446,7 +446,7 @@ function CallCenterQueue() {
                                       );
                                     })}
                                   {callCenter &&
-                                  callCenter.data.length === 0 ? (
+                                    callCenter.data.length === 0 ? (
                                     <td colSpan={99}>
                                       <EmptyPrompt
                                         name="Call Center"
@@ -500,8 +500,7 @@ function CallCenterQueue() {
                       ? error
                       : "Are you sure you want to delete this queue?"}
                     {selectedCallCenter?.id &&
-                      `Are you sure you want to ${
-                        selectedCallCenter?.status == 1 ? "disable" : "enable"
+                      `Are you sure you want to ${selectedCallCenter?.status == 1 ? "disable" : "enable"
                       } the queue ${selectedCallCenter?.queue_name}?`}
                   </p>
                   <div className="mt-2 d-flex justify-content-between">

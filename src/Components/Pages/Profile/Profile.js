@@ -105,7 +105,7 @@ const Profile = () => {
                       </p>
                     </div>
                     <div className="content ms-xl-auto col-xl-auto my-xl-auto mt-2">
-                      <div className="d-flex justify-content-between gap-2">
+                      <div className="d-flex justify-content-xl-between gap-2">
                         <div>
                           <p className="fw-light">Country:</p>
                           <p className="fw-light">Language:</p>
@@ -140,7 +140,7 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-              <div className="profileView mt-2">
+              <div className="profileView mt-xl-2">
                 <div className="row">
                   <div className="col-xl-6">
                     <div className="profileDetailsHolder">
@@ -236,7 +236,7 @@ const Profile = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="col-xl-6">
+                  <div className="col-xl-6 mt-xl-0 mt-3">
                     <div className="profileDetailsHolder position-relative">
                       <div className="header d-flex align-items-center">
                         <div className="col-12">Subscription Details</div>
@@ -301,7 +301,7 @@ const Profile = () => {
               </div>
             </div>
             <div className="col-xl-3">
-              <div className="profileView mt-3" style={{ height: "100%" }}>
+              <div className="profileView mt-xl-3" style={{ height: "100%" }}>
                 <div
                   className="profileDetailsHolder"
                   style={{ position: "sticky", top: 0 }}

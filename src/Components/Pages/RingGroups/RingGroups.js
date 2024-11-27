@@ -183,7 +183,7 @@ const RingGroups = () => {
                       <div className="buttonGroup">
                         <button
                           effect="ripple"
-                          className="panelButton"
+                          className="panelButton ms-0"
                           onClick={() => setRefreshState(refreshState + 1)}
                         >
                           <span className="text">Refresh</span>

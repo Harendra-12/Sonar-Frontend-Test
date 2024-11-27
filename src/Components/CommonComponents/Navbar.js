@@ -9,6 +9,7 @@ import {
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import DarkModeToggle from "./DarkModeToggle";
+import { toggleSideNav } from "./Header";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -73,7 +74,12 @@ function Navbar() {
                 </>
               ) : (
                 <>
-                  <li className="dashboard">
+                  <li className="dashboard d-flex align-items-center">
+                    <div className="d-xl-none d-block">
+                      <button className="clearButton d-flex align-items-center" onClick={toggleSideNav}>
+                        <i className="fa-light fa-bars fs-5 text-white" />
+                      </button>
+                    </div>
                     <Link to="/dashboard" onClick={backToTop}>
                       <div className="imgWrapper">
                         <img

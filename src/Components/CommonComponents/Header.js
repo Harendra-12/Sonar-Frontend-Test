@@ -52,11 +52,12 @@ function Header(props) {
 
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef);
+
   return (
     <div id="detailsHeader" style={props.style}>
-      <div className="col-auto d-flex align-items-center">
+      <div className="col-4 d-flex align-items-center">
         <div className="d-xl-none d-block me-3">
-          <button className="clearButton d-flex align-items-center">
+          <button className="clearButton d-flex align-items-center" onClick={toggleSideNav}>
             <i className="fa-light fa-bars fs-5" />
           </button>
         </div>
@@ -131,3 +132,13 @@ function Header(props) {
 }
 
 export default Header;
+
+export const toggleSideNav = () => {
+  const sideNav = document.getElementById("sidenNav");
+  const sideNavStyles = getComputedStyle(sideNav)
+  if (sideNavStyles.left === "-1000px") {
+    sideNav.style.left = "0";
+  } else {
+    sideNav.style.left = "-1000px";
+  }
+}

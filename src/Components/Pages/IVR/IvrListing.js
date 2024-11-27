@@ -96,7 +96,7 @@ const IvrListing = () => {
                       <div className="buttonGroup">
                         <button
                           effect="ripple"
-                          className="panelButton"
+                          className="panelButton ms-0"
                           onClick={() => setRefreshState(true)}
                         >
                           <span className="text">Refresh</span>

@@ -231,7 +231,7 @@ function CdrReport() {
                   style={{ overflow: "auto", padding: "25px 20px 0" }}
                 >
                   <div className="tableHeader">
-                    <div className="d-flex justify-content-end">
+                    <div className="row justify-content-xl-end">
                       <div className="formRow border-0 ps-xl-0">
                         <label className="formLabel text-start mb-0 w-100">
                           Date Filter
@@ -369,7 +369,7 @@ function CdrReport() {
                             setCallDirection(e.target.value);
                             setPageNumber(1);
                           }}
-                          // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                        // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                         >
                           <option value={""}>All Calls</option>
                           <option value={"inbound"}>Inbound Calls</option>
@@ -511,7 +511,7 @@ function CdrReport() {
                                     <td>
                                       {item["application_state"] ===
                                         "intercept" ||
-                                      item["application_state"] === "eavesdrop"
+                                        item["application_state"] === "eavesdrop"
                                         ? item["other_leg_destination_number"]
                                         : item["variable_sip_to_user"]}
                                     </td>
@@ -553,8 +553,8 @@ function CdrReport() {
                                         ? item["Hangup-Cause"]
                                         : item["variable_DIALSTATUS"] ===
                                           "NO_USER_RESPONSE"
-                                        ? "BUSY"
-                                        : item["variable_DIALSTATUS"]}
+                                          ? "BUSY"
+                                          : item["variable_DIALSTATUS"]}
                                     </td>
                                     <td>{item["call_cost"]}</td>
                                   </tr>

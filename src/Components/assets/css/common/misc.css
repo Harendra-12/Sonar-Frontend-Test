@@ -771,4 +771,5 @@ input[type=number] {
     display: flex;
     justify-content: space-between;
     background-color: var(--ele-color);
+    flex-wrap: wrap;
 }
