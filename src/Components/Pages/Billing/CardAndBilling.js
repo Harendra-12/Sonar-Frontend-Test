@@ -351,7 +351,7 @@ function CardAndBilling() {
         <div className="container-fluid">
           <div className="row">
             <Header title="Payment Details" />
-            <div className="col-xl-12 pt-4">
+            <div className="col-xl-12" style={{ padding: "30px 20px" }}>
               <div className="row gy-3">
                 <div className="col-xl-8">
                   <div className="row gy-3">
