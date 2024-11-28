@@ -109,6 +109,7 @@ import CallBlocking from "./Components/Pages/SpamFilter/CallBlocking";
 import ConferenceConfig from "./Components/Pages/WebRtc/ConferenceConfig";
 import ClickToCall from "./Components/Pages/ClickToCall/ClickToCall";
 import CallDashboardNew from "./Components/Pages/WebRtc/CallDashboardNew";
+import Leads from "./Components/Pages/DialerModule/Leads/Leads";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -581,6 +582,12 @@ function App() {
           <Route path="/call-blocking" element={<CallBlocking />} />
           {/* Spam Filter end */}
           <Route path="click-to-call" element={<ClickToCall />} />
+
+          {/* Dialer Modules */}
+          <Route path="/leads" element={<Leads />} />
+
+          {/* Dialer Modules */}
+
           {/* 404 Redirection */}
           <Route path="*" element={<Navigate to="/dashboard" />} />
           {/* 404 Redirection */}
