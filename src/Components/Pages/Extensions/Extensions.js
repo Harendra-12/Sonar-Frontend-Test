@@ -26,6 +26,8 @@ const Extensions = () => {
   const userList = useSelector((state) => state.allUser?.data) || [];
   const dispatch = useDispatch();
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [searchValue,setSearchValue] = useState('');
 
   useEffect(() => {
     if (registerUser.length > 0) {
@@ -37,7 +39,7 @@ const Extensions = () => {
     } else {
       setOnlineExtension([0]);
     }
-    generalGetFunction("/freeswitch/checkActiveExtensionOnServer");
+    // generalGetFunction("/freeswitch/checkActiveExtensionOnServer");
   }, [registerUser]);
   useEffect(() => {
     if (userList.length == 0) {
@@ -61,7 +63,7 @@ const Extensions = () => {
       async function getData() {
         if (account && account.account_id) {
           const apiData = await generalGetFunction(
-            `/extension/all?account=${account.account_id}&page=${pageNumber}`
+            `/extension/all?page=${pageNumber}&row_per_page=${itemsPerPage}`
           );
           if (apiData?.status) {
             setExtension(apiData.data);
@@ -71,16 +73,25 @@ const Extensions = () => {
             });
           }
         } else {
-          navigate("/");
+          setLoading(false);
         }
+      }
+      if(searchValue.trim().length === 0){
+        getData();
+      }else{
+        const timer = setTimeout(() => {
+          getData();
+        }, 1000);
+        return () => clearTimeout(timer);
       }
       getData();
     } else {
-      setLoading(true);
+      
       async function getData() {
+        setLoading(true);
         if (account && account.account_id) {
           const apiData = await generalGetFunction(
-            `/extension/all?account=${account.account_id}&page=${pageNumber}`
+            `/extension/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
           );
           if (apiData?.status) {
             setLoading(false);
@@ -94,16 +105,21 @@ const Extensions = () => {
               setNoPermissionToRead(true);
             }
             setLoading(false);
-            // toast.error(apiData.response.data.message);
           }
         } else {
           setLoading(false);
-          navigate("/");
         }
       }
-      getData();
+      if(searchValue.trim().length === 0){
+        getData();
+      }else{
+        const timer = setTimeout(() => {
+          getData();
+        }, 1000);
+        return () => clearTimeout(timer);
+      }
     }
-  }, [navigate, pageNumber, , account]);
+  }, [navigate, pageNumber, account,itemsPerPage,searchValue]);
 
   return (
     <main className="mainContent">
@@ -156,17 +172,20 @@ const Extensions = () => {
                     <div className="tableHeader">
                       <div className="showEntries">
                         <label>Show</label>
-                        <select className="formItem">
-                          <option>Max</option>
+                        <select className="formItem" value={itemsPerPage} onChange={(e) => setItemsPerPage(e.target.value)}>
+                          <option value={10}>10</option>
+                          <option value={20}>20</option>
+                          <option value={30}>30</option>
                         </select>
                         <label>entries</label>
                       </div>
                       <div className="searchBox">
                         <label>Search:</label>
                         <input
-                          type="search"
+                          type="text"
+                          value={searchValue}
                           className="formItem"
-                          onChange={() => featureUnderdevelopment()}
+                          onChange={(e) => setSearchValue(e.target.value)}
                         />
                       </div>
                     </div>

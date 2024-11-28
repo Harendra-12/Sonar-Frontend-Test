@@ -11,6 +11,8 @@ import EmptyPrompt from "../../Loader/EmptyPrompt";
 import Header from "../../CommonComponents/Header";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
+import PaginationComponent from "../../CommonComponents/PaginationComponent";
+import { set } from "react-hook-form";
 
 const IvrListing = () => {
   const dispatch = useDispatch();
@@ -22,14 +24,14 @@ const IvrListing = () => {
   const [deleteId, setDeleteId] = useState("");
   const ivrRefresh = useSelector((state) => state.ivrRefresh);
   const ivrArr = useSelector((state) => state.ivr);
-  const loadings = useSelector;
   const [refreshState, setRefreshState] = useState(false);
-  const [noPermissionToRead, setNoPermissionToRead] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);  
+  const [userInput,setuserInput] = useState("");
   useEffect(() => {
     async function getData() {
       setLoading(true);
-
-      const apiData = await generalGetFunction("/ivr-master/all");
+      const apiData = await generalGetFunction(`/ivr-master/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}`);
       if (apiData.status) {
         setIvr(apiData.data);
         setLoading(false);
@@ -39,21 +41,15 @@ const IvrListing = () => {
         setLoading(false);
       }
     }
-    getData();
-    // setLoading(true);
-    // if (ivrArr && !refreshState) {
-    //   setIvr(ivrArr);
-    //   setLoading(false);
-    //   setRefreshState(false);
-    // } else {
-    //   dispatch({
-    //     type: "SET_IVRREFRESH",
-    //     ivrRefresh: ivrRefresh + 1,
-    //   });
-    //   setRefreshState(false);
-    //   setLoading(true);
-    // }
-  }, [ivrArr, refreshState]);
+    if(userInput.trim().length === 0){
+      getData();
+    }else{
+      const timer = setTimeout(() => {
+        getData();
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [ivrArr, refreshState,itemsPerPage,pageNumber,userInput]);
 
   async function handleDelete(id) {
     setPopUp(false);
@@ -156,19 +152,26 @@ const IvrListing = () => {
                     <div className="tableHeader">
                       <div className="showEntries">
                         <label>Show</label>
-                        <select className="formItem">
-                          <option value={10}>Max</option>
+                        <select
+                          className="formItem"
+                          value={itemsPerPage}
+                          onChange={(e) => setItemsPerPage(e.target.value)}
+                        >
+                          <option value={10}>10</option>
+                          <option value={20}>20</option>
+                          <option value={30}>30</option>
                         </select>
                         <label>entries</label>
                       </div>
                       <div className="searchBox position-relative">
                         <label>Search:</label>
                         <input
-                          type="search"
+                          type="text"
                           name="Search"
                           className="formItem"
+                          value={userInput}
                           placeholder="Search"
-                          onChange={() => featureUnderdevelopment()}
+                          onChange={(e) => setuserInput(e.target.value)}
                         />
                       </div>
                     </div>
@@ -196,7 +199,7 @@ const IvrListing = () => {
                           ) : (
                             <>
                               {ivr &&
-                                ivr.map((item, index) => {
+                                ivr.data.map((item, index) => {
                                   return (
                                     <tr key={index}>
                                       <td
@@ -299,6 +302,19 @@ const IvrListing = () => {
                           )}
                         </tbody>
                       </table>
+                    </div>
+                    <div className="tableHeader mb-3">
+                      {ivr && ivr.data?.length > 0 ? (
+                        <PaginationComponent
+                          pageNumber={(e) => setPageNumber(e)}
+                          totalPage={ivr.last_page}
+                          from={(pageNumber - 1) * ivr.per_page + 1}
+                          to={ivr.to - 1} // -1 because customeradmin user is removed form the list
+                          total={ivr.total - 1} // -1 because customeradmin user is removed form the list
+                        />
+                      ) : (
+                        ""
+                      )}
                     </div>
                   </div>
                 </div>

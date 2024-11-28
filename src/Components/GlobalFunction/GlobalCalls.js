@@ -269,11 +269,11 @@ function GlobalCalls() {
   // Getting ivr details
   useEffect(() => {
     async function getData() {
-      const apiData = await generalGetFunction("/ivr-master/all");
+      const apiData = await generalGetFunction("/ivr-master/all?row_per_page=50");
       if (apiData?.status) {
         dispatch({
           type: "SET_IVR",
-          ivr: apiData.data,
+          ivr: apiData.data.data,
         });
       }
     }

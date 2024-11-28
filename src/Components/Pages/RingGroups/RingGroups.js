@@ -26,35 +26,27 @@ const RingGroups = () => {
   const [redirectRoutes, setRedirectRoutes] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [selectedRingGroup, setSelectedRingGroup] = useState(null);
-  // const [deleteToggle, setDeleteToggle] = useState(false);
   const [deleteId, setDeleteId] = useState("");
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const { data: usersData = [] } = allUser;
   const [refreshState, setRefreshState] = useState(0);
-  // const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
-  // const ringGroupState = useSelector((state) => state.ringGroup);
   const [pageNumber, setPageNumber] = useState(1);
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
-  useEffect(() => {
-    dispatch({
-      type: "SET_ALLUSERREFRESH",
-      allUserRefresh: allUserRefresh + 1,
-    });
+  const [searchValue, setSearchValue] = useState("");
 
+  
+  useEffect(() => {
     const getRingGroupDashboardData = async () => {
       if (account && account.id) {
         setLoading(true);
         const apidata = await generalGetFunction(
-          `/ringgroup/dashboard?page=${pageNumber}`
+          `/ringgroup/dashboard?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
         );
         console.log(apidata);
         if (apidata?.status) {
           setRingGroup(apidata.data);
           setLoading(false);
-          // setRefreshState(false);
         } else {
-          // setRefreshState(false);
-          // navigate("/");
           if (apidata.response.status === 403) {
             setNoPermissionToRead(true);
           }
@@ -63,8 +55,22 @@ const RingGroups = () => {
         navigate("/");
       }
     };
-    getRingGroupDashboardData();
-  }, [pageNumber, refreshState]);
+    if(searchValue.trim().length === 0){
+      getRingGroupDashboardData();
+    }else{
+      const timer = setTimeout(() => {
+        getRingGroupDashboardData();
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+    if(refreshState === 0){
+      dispatch({
+        type: "SET_ALLUSERREFRESH",
+        allUserRefresh: allUserRefresh + 1,
+      });
+    }
+   
+  }, [pageNumber, refreshState,itemsPerPage,searchValue]);
 
   const handleRingGroupAddValidation = (e) => {
     e.preventDefault();
@@ -260,12 +266,15 @@ const RingGroups = () => {
                         </select>
                         <label>entries</label>
                       </div>
-                      <div className="searchBox">
+                      <div className="searchBox position-relative">
                         <label>Search:</label>
                         <input
-                          type="search"
+                          type="text"
+                          name="Search"
+                          placeholder="Search"
+                          value={searchValue}
                           className="formItem"
-                          onChange={() => featureUnderdevelopment()}
+                          onChange={(e) => setSearchValue(e.target.value)}
                         />
                       </div>
                     </div>
@@ -277,10 +286,8 @@ const RingGroups = () => {
                             <th>Extension</th>
                             <th>Strategy</th>
                             <th>Members</th>
-                            {/* <th>Phone Numbers</th> */}
                             <th>Status</th>
                             <th>Description</th>
-                            {/* <th>Setting</th> */}
                             <th>Edit</th>
                             <th>Delete</th>
                           </tr>

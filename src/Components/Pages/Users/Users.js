@@ -24,18 +24,15 @@ const Users = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState();
   const [userInput, setuserInput] = useState("");
-  const [selectedOption, setSelectedOption] = useState("userName");
   const [filterUser, setFilterUser] = useState(user);
   const [loading, setLoading] = useState(true);
   const logonUser = useSelector((state) => state.loginUser);
   const [pageNumber, setPageNumber] = useState(1);
   const [onlineUser, setOnlineUSer] = useState([0]);
-  // const [changeState, setChangeState] = useState(1);
   const [popUp, setPopUp] = useState(false);
   const [error, setError] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [selectedUser, setSelectedUser] = useState(null);
-  const usersByAccount = useSelector((state) => state.usersByAccount);
   const [refreshState, setRefreshState] = useState(false);
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   useEffect(() => {
@@ -56,30 +53,9 @@ const Users = () => {
   }, []);
 
   useEffect(() => {
-    // if (usersByAccount.data && !refreshState) {
-    //   setUser(usersByAccount);
-    //   setFilterUser(usersByAccount.data);
-    //   setLoading(false);
-    //   // async function getApi() {
-    //   //   const apiData = await generalGetFunction(
-    //   //     `/user/all?page=${pageNumber}`
-    //   //   );
-    //   //   if (apiData?.status) {
-    //   //     setUser(apiData.data);
-    //   //     setFilterUser(apiData.data.data);
-    //   //     dispatch({
-    //   //       type: "SET_USERSBYACCOUNT",
-    //   //       usersByAccount: apiData.data,
-    //   //     });
-    //   //   } else {
-    //   //     navigate("/");
-    //   //   }
-    //   // }
-    //   // getApi();
-    // } else {
     setLoading(true);
     async function getApi() {
-      const apiData = await generalGetFunction(`/user/all?page=${pageNumber}`);
+      const apiData = await generalGetFunction(`/user/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}`);
       if (apiData?.status) {
         setUser(apiData.data);
         setFilterUser(apiData.data.data);
@@ -99,48 +75,17 @@ const Users = () => {
         }
       }
     }
-    getApi();
-    // }
-  }, [account, navigate, pageNumber, refreshState]);
-
-  // Filter user based on input
-  useEffect(() => {
-    if (user) {
-      if (selectedOption === "userName") {
-        setFilterUser(
-          user.data.filter((item) => item.username.includes(userInput))
-        );
-      } else if (selectedOption === "accountId") {
-        setFilterUser(
-          user.data.filter((item) =>
-            String(item.account_id).includes(userInput)
-          )
-        );
-      }
-      //  else if (selectedOption === "domain") {
-      //   setFilterUser(
-      //     user.data.filter((item) =>
-      //       item?.domain?.domain_name?.includes(userInput)
-      //     )
-      //   );
-      // }
-      else if (selectedOption === "online") {
-        setFilterUser(user.data.filter((item) => onlineUser.includes(item.id)));
-      } else if (selectedOption === "onCall") {
-      }
+    if(userInput.trim().length === 0){
+      getApi();
+    }else{
+      const timer = setTimeout(() => {
+        getApi();
+      }, 1000);
+      return () => clearTimeout(timer);
     }
-  }, [onlineUser, selectedOption, user, userInput]);
+  }, [account, navigate, pageNumber, refreshState,itemsPerPage,userInput]);
 
-  // Handle status cahnge when a user click on status
-  // async function handleStatusChange(id, status) {
-  //   const parsedData = {
-  //     status: status === "E" ? "D" : "E",
-  //   };
-  //   const apiData = await generalPutFunction(`/user/${id}`, parsedData);
-  //   if (apiData.status) {
-  //     setChangeState(changeState + 1);
-  //   }
-  // }
+ 
 
   const handleAddUserValidation = (e) => {
     e.preventDefault();
@@ -304,17 +249,6 @@ const Users = () => {
                           onChange={(e) => setuserInput(e.target.value)}
                           style={{ paddingRight: 100 }}
                         />
-                        <select
-                          className="secretSelect"
-                          value={selectedOption}
-                          onChange={(e) => setSelectedOption(e.target.value)}
-                        >
-                          <option value="userName">Username</option>
-                          <option value="accountId">Account ID</option>
-                          {/* <option value="domain">Domain</option> */}
-                          <option value="online">Online</option>
-                          <option value="onCall">On Call</option>
-                        </select>
                       </div>
                     </div>
                     <div className="tableContainer">

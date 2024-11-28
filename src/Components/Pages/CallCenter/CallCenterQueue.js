@@ -22,30 +22,48 @@ function CallCenterQueue() {
   const [callCenter, setCallCenter] = useState();
   const [error, setError] = useState("");
   const [redirectRoutes, setRedirectRoutes] = useState("");
-  const [itemsPerPage, setItemsPerPage] = useState(null);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [selectedCallCenter, setSelectedCallCenter] = useState(null);
   const account = useSelector((state) => state.account);
-
-  // const [deleteToggle, setDeleteToggle] = useState();
   const [deleteId, setDeleteId] = useState("");
   const allUser = useSelector((state) => state.allUser);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const { data: usersData = [] } = allUser;
-  // const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
-  // const callCenterState = useSelector((state) => state.callCenter);
   const [pageNumber, setPageNumber] = useState(1);
   const [refreshState, setRefreshState] = useState(0);
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
-  useEffect(() => {
-    dispatch({
-      type: "SET_ALLUSERREFRESH",
-      allUserRefresh: allUserRefresh + 1,
-    });
+  const [searchValue, setSearchValue] = useState("");
 
+
+  // const getCallCenterDashboardData = async () => {
+  //   setLoading(true);
+  //   const apidata = await generalGetFunction(
+  //     `/call-center-queues/dashboard?page=${pageNumber}&${searchType}=${searchValue}`
+  //   );
+  //   if (apidata?.status) {
+  //     setLoading(false);
+  //     setCallCenter(apidata.data);
+  //   } else {
+  //     setLoading(false);
+  //     if (apidata.response.status === 403) {
+  //       setNoPermissionToRead(true);
+  //     }
+  //   }
+  // };
+
+  // // Debounding method for 1 sec to load data based on search value
+  // useEffect(() => {
+  //   if(searchValue.trim().length === 0) return
+  //   const timer = setTimeout(() => {
+  //     getCallCenterDashboardData();
+  //   }, 1000);
+  //   return () => clearTimeout(timer);
+  // },[searchValue]);
+  useEffect(() => {
     const getCallCenterDashboardData = async () => {
       setLoading(true);
       const apidata = await generalGetFunction(
-        `/call-center-queues/dashboard?page=${pageNumber}`
+        `/call-center-queues/dashboard?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
       );
       if (apidata?.status) {
         setLoading(false);
@@ -57,8 +75,22 @@ function CallCenterQueue() {
         }
       }
     };
-    getCallCenterDashboardData();
-  }, [pageNumber, refreshState]);
+    if(searchValue.trim().length === 0){
+      getCallCenterDashboardData();
+    }else{
+      const timer = setTimeout(() => {
+        getCallCenterDashboardData();
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+    if(refreshState === 0){
+      dispatch({
+        type: "SET_ALLUSERREFRESH",
+        allUserRefresh: allUserRefresh + 1,
+      });
+    }
+   
+  }, [pageNumber, refreshState,itemsPerPage,searchValue]);
 
   const handleAddCallCenterValidation = (e) => {
     e.preventDefault();
@@ -87,7 +119,7 @@ function CallCenterQueue() {
     setLoading(true);
     setPopUp(false);
     const apiData = await generalDeleteFunction(
-      `/call-center-queue/destroy/${id}`
+      `/call-center-queues/destroy/${id}`
     );
     if (apiData?.status) {
       setLoading(false);
@@ -163,7 +195,7 @@ function CallCenterQueue() {
     };
     setPopUp(false);
     const apiData = await generalPutFunction(
-      `/call-center-queue/update/${id}`,
+      `/call-center-queues/update/${id}`,
       payload
     );
     if (apiData?.status) {
@@ -286,11 +318,12 @@ function CallCenterQueue() {
                       <div className="searchBox position-relative">
                         <label>Search:</label>
                         <input
-                          type="search"
+                          type="text"
                           name="Search"
                           placeholder="Search"
+                          value={searchValue}
                           className="formItem"
-                          onChange={() => featureUnderdevelopment()}
+                          onChange={(e) => setSearchValue(e.target.value)}
                         />
                       </div>
                     </div>
