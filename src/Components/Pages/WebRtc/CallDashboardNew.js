@@ -5,7 +5,7 @@ function CallDashboardNew() {
     return (
         <>
             <SideNavbarApp />
-            <main className="mainContentApp p-2">
+            <main className="mainContentApp p-2 me-0">
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-md-12">
@@ -15,7 +15,7 @@ function CallDashboardNew() {
                                         <select
                                             name=""
                                             id=""
-                                            className="form-select form-select-sm test-demo-border"
+                                            className="formItem "
                                         >
                                             <option value="">(513) 254 1648</option>
                                             <option value="">(513) 254 1648</option>
@@ -26,7 +26,7 @@ function CallDashboardNew() {
                                         <div className="timer">
                                             <input
                                                 type="text"
-                                                className="form-control  form-control-sm"
+                                                className=" formItem "
                                                 defaultValue=""
                                                 placeholder="Time"
                                             />
@@ -122,7 +122,7 @@ function CallDashboardNew() {
                                         <p className="font-s20">
                                             7 <span>second</span>
                                         </p>
-                                        <span>Average Response Time</span>
+                                        <span style={{ fontSize: '10px' }}>Average Response Time</span>
                                     </div>
                                     <div>
                                         <div className="bg-color-6">
@@ -153,9 +153,9 @@ function CallDashboardNew() {
                                         <div className="card  custom-card">
                                             <div className="text-paragraph">
                                                 <p className="font-s18">00:06</p>
-                                                <span>Call per minutes</span>
-                                                <br />
-                                                <span style={{ color: "#959595", fontSize: 10 }}>Today</span>
+                                                <p className='text-colors'>Call per minutes</p>
+                                              
+                                                <span style={{ color: "#959595", fontSize: 11 }}>Today</span>
                                             </div>
                                         </div>
                                     </div>
@@ -163,9 +163,10 @@ function CallDashboardNew() {
                                         <div className="card  custom-card">
                                             <div className="text-paragraph">
                                                 <p className="font-s18">06:00</p>
-                                                <span>Average Call time </span>
-                                                <br />
-                                                <span style={{ color: "#959595", fontSize: 10 }}>Today</span>
+                                                <p className='text-colors'>Average Call time </p>
+                                                
+                                         
+                                                <span style={{ color: "#959595", fontSize: 11 }}>Today</span>
                                             </div>
                                         </div>
                                     </div>
@@ -173,9 +174,10 @@ function CallDashboardNew() {
                                         <div className="card  custom-card">
                                             <div className="text-paragraph">
                                                 <p className="font-s18">00:03</p>
-                                                <span>Average Response Time</span>
-                                                <br />
-                                                <span style={{ color: "#959595", fontSize: 10 }}>Today</span>
+                                                <p className='text-colors'>Average Response Time</p>
+                                               
+                                               
+                                                <span style={{ color: "#959595", fontSize: 11 }}>Today</span>
                                             </div>
                                         </div>
                                     </div>
@@ -228,7 +230,7 @@ function CallDashboardNew() {
                                             <div className="flex-text boder-btm">
                                                 <div className="text-paragraph">
                                                     <p className="font-s18">00:00:16</p>
-                                                    <span>Average Waiting Time</span>
+                                                    <span  style={{ fontSize: '10px' }}>Average Waiting Time</span>
                                                 </div>
                                                 <div>
                                                     <div className="text-paragraph">

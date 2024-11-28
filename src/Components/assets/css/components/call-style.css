@@ -8,8 +8,8 @@
     --font-color-info: #5cddb9;
     --font-color-neutral: #6d6d6d;
     --font-color-muted: #616161;
-    --border-color-light: #e6e6e6;
-    --border-color-light-grey: #ebebeb;
+    --border-color-light: #e6e6e600;
+    --border-color-light-grey: #ebebeb00;
     --box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     --highlight-color: #0d6efd;
     --button-hover-color: #f0f0f0;
@@ -22,6 +22,13 @@
     color: var(--immortalBlack);
     font-size: 14px;
     font-weight: 500;
+    /* line-height: 21px; */
+}
+
+.text-colors{
+    color: var(--color-subtext) !important;
+    font-size: 12px !important;
+    line-height: 10px;
 }
 
 .flex-text {
@@ -76,7 +83,7 @@
 
 .bg-color-2 {
     background-color: #c7ddfa;
-    color: var(--font-color-secondary);
+    color: var(--font-color-secondary); 
     height: 30px;
     width: 30px;
     display: flex;
@@ -137,23 +144,24 @@
 .custom-card {
     padding: 10px;
     border-color: var(--border-color-light);
-    box-shadow: var(--box-shadow);
+    box-shadow: var(--box-shadow); 
     border-radius: 7px;
-    margin: 2px;
+    /* margin: 2px; */
 }
 
 .custom-card span {
     font-size: 12px;
     color: var(--color-subtext);
     font-weight: 500;
+   
 }
 
 .chats {
-    min-height: 253px;
+    min-height: 263px;
 }
 
 .chats-height {
-    min-height: 293px;
+    min-height: 304px;
 }
 
 .boder-btm {
@@ -177,7 +185,7 @@
     justify-content: space-between;
 }
 
-.zoom-in {
+/* .zoom-in {
     height: 15px;
     width: 15px;
     border: 1px solid var(--text-color-dark);
@@ -201,7 +209,7 @@
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
-}
+} */
 
 .timer {
     position: relative;
@@ -209,6 +217,22 @@
 
 .time {
     position: absolute;
-    top: 5px;
-    right: 10px;
+    top: 7px;
+    right: 15px;
+
+}
+.icons-2 i {
+    height: 15px;
+    width: 15px;
+    /* border: 1px solid var(--text-color-dark);
+    border-radius: 50px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 12px;
+    /* background-color:#616161 ; */
+    color: #3c3e46;
 }
