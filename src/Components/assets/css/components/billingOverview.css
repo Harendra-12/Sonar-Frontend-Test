@@ -47,14 +47,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     padding: 10px;
     border-radius: 10px;
 }
 
 .savedCardWrapper label {
     font-weight: 600;
-    color: #2a2a2a;
+    color: var(--form-label);
 }
 
 .savedCardWrapper.active {
@@ -71,13 +71,13 @@
 
 .billingDetails li {
     font-size: 14px;
-    color: #000;
+    color: var(--immortalBlack);
     font-weight: 700;
     margin-bottom: 5px;
 
 }
 
 .billingDetails li span {
-    color: var(--button-dark);
+    /* color: var(--button-dark); */
     font-weight: 500;
 }

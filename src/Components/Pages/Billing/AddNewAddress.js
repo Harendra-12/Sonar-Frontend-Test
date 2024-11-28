@@ -168,121 +168,113 @@ function AddNewAddress({ closePopup }) {
           </div>
 
           <div className="form-group mb-1">
-            <label className="review-label">
+            <label className="formLabel">
               Full Name
               <span style={{ color: "red" }}>*</span>
             </label>
             <input
               placeholder="Name"
               name="name"
-              className={`form-control travellerdetails ${
-                errorBilling.name ? "error-border" : ""
-              }`}
+              className={`formItem ${errorBilling.name ? "error-border" : ""
+                }`}
               onChange={(e) => billingChnage(e)}
               type="text"
             />
           </div>
           <div className="form-group mb-1">
-            <label className="review-label">
+            <label className="formLabel">
               Phone
               <span style={{ color: "red" }}>*</span>
             </label>
             <input
               placeholder="Phone number"
               name="phone"
-              className={`form-control travellerdetails ${
-                errorBilling.phone ? "error-border" : ""
-              }`}
+              className={`formItem ${errorBilling.phone ? "error-border" : ""
+                }`}
               onChange={(e) => billingChnage(e)}
               type="number"
             />
           </div>
           <div className="form-group mb-1">
-            <label className="review-label">
+            <label className="formLabel">
               Email
               <span style={{ color: "red" }}>*</span>
             </label>
             <input
               placeholder="Email Address"
               name="email"
-              className={`form-control travellerdetails ${
-                errorBilling.email ? "error-border" : ""
-              }`}
+              className={`formItem ${errorBilling.email ? "error-border" : ""
+                }`}
               onChange={(e) => billingChnage(e)}
               type="email"
             />
           </div>
           <div className="form-group mb-1">
-            <label className="review-label">
+            <label className="formLabel">
               Address
               <span style={{ color: "red" }}>*</span>
             </label>
             <input
               placeholder="Full address"
               name="address"
-              className={`form-control travellerdetails ${
-                errorBilling.address ? "error-border" : ""
-              }`}
+              className={`formItem ${errorBilling.address ? "error-border" : ""
+                }`}
               onChange={(e) => billingChnage(e)}
               type="text"
             />
           </div>
           <div className="form-group col-xl-6 mb-1">
-            <label className="review-label">
+            <label className="formLabel">
               City
               <span style={{ color: "red" }}>*</span>
             </label>
             <input
               placeholder="City"
               name="city"
-              className={`form-control travellerdetails ${
-                errorBilling.city ? "error-border" : ""
-              }`}
+              className={`formItem ${errorBilling.city ? "error-border" : ""
+                }`}
               onChange={(e) => billingChnage(e)}
               type="text"
             />
           </div>
           <div className="form-group col-xl-6 mb-1">
-            <label className="review-label">
+            <label className="formLabel">
               State
               <span style={{ color: "red" }}>*</span>
             </label>
             <input
               placeholder="State"
               name="state"
-              className={`form-control travellerdetails ${
-                errorBilling.state ? "error-border" : ""
-              }`}
+              className={`formItem ${errorBilling.state ? "error-border" : ""
+                }`}
               onChange={(e) => billingChnage(e)}
               type="text"
             />
           </div>
           <div className="form-group mb-1">
-            <label className="review-label">
+            <label className="formLabel">
               Zip Code
               <span style={{ color: "red" }}>*</span>
             </label>
             <input
               placeholder="Zip Code"
               name="zip"
-              className={`form-control travellerdetails ${
-                errorBilling.zip ? "error-border" : ""
-              }`}
+              className={`formItem ${errorBilling.zip ? "error-border" : ""
+                }`}
               onChange={(e) => billingChnage(e)}
               type="number"
             />
           </div>
           <div className="form-group mb-1">
-            <label className="review-label">
+            <label className="formLabel">
               Country
               <span style={{ color: "red" }}>*</span>
             </label>
             <input
               placeholder="Country"
               name="country"
-              className={`form-control travellerdetails ${
-                errorBilling.country ? "error-border" : ""
-              }`}
+              className={`formItem ${errorBilling.country ? "error-border" : ""
+                }`}
               onChange={(e) => billingChnage(e)}
               type="text"
             />
