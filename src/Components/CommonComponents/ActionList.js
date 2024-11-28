@@ -102,7 +102,7 @@ const ActionList = ({
     },
     {
       label: "IVR",
-      options: ivr.map((item) => ({
+      options: ivr?.data?.map((item) => ({
         value: [String(item.id), "ivr"],
         label: item.ivr_name,
       })),
@@ -120,7 +120,7 @@ const ActionList = ({
       const defaultOption = allOptionsRef.current
         // .flatMap((opt) => opt.options)
         .reduce((acc, opt) => acc.concat(opt.options), [])
-        .find((option) => option.value[0] === value);
+        .find((option) => option?.value[0] === value);
       if (defaultOption) setSelectedOption(defaultOption);
     }
   }, [value]);
