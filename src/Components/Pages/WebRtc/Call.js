@@ -472,6 +472,8 @@ function Call({
       navigate("/");
     }
   }
+
+
   return (
     <>
       {/* <SideNavbarApp /> */}
