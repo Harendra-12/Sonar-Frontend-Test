@@ -540,7 +540,7 @@ const DidConfig = () => {
                             Select the status of Sticky Agent
                           </label>
                         </div>
-                        <div className={`col-${watch().sticky_agent_enable == "true" ? "2" : "6"} pe-2 ms-auto`}>
+                        <div className={`col-${watch().sticky_agent_enable == "true" || watch().sticky_agent_enable == 1 ? "2" : "6"} pe-2 ms-auto`}>
                           <div class="formLabel">
                             <label>Status</label>
                           </div>
@@ -632,25 +632,21 @@ const DidConfig = () => {
                               </select>
                             </div>
                             {watch().spam_filter_type === "3" && <>
-                              <div className="col-4 pe-2">
-                                <div class="formLabel">
-                                    <label>
-                                      DTMF type{" "}
-                                      <span
-                                        style={{ color: "var(--color-subtext)" }}
-                                      >
-                                      </span>
-                                    </label>
+                              <div className="col-4">
+                                <div className="formLabel">
+                                  <label htmlFor="selectFormRow">
+                                    Retries
+                                  </label>
                                 </div>
                                 <select
                                   className="formItem"
                                   name=""
-                                  defaultValue="false"
                                   id="selectFormRow"
-                                  {...register("dtmf_type")}
+                                  {...register("dtmf_retries")}
                                 >
-                                  <option value="random_digit">Random Digit</option>
-                                  <option value="last_caller_id_digit">Caller last digit</option>
+                                  <option value={1}>1</option>
+                                  <option value={2}>2</option>
+                                  <option value={3}>3</option>
                                 </select>
                               </div>
                               <div className="col-4 pe-2">
@@ -679,21 +675,25 @@ const DidConfig = () => {
                                   <option value={5}>5</option>
                                 </select>
                               </div>
-                              <div className="col-4">
-                                <div className="formLabel">
-                                  <label htmlFor="selectFormRow">
-                                    Retries
+                              <div className="col-6 pe-2">
+                                <div class="formLabel">
+                                  <label>
+                                    DTMF type{" "}
+                                    <span
+                                      style={{ color: "var(--color-subtext)" }}
+                                    >
+                                    </span>
                                   </label>
                                 </div>
                                 <select
                                   className="formItem"
                                   name=""
+                                  defaultValue="false"
                                   id="selectFormRow"
-                                  {...register("dtmf_retries")}
+                                  {...register("dtmf_type")}
                                 >
-                                  <option value={1}>1</option>
-                                  <option value={2}>2</option>
-                                  <option value={3}>3</option>
+                                  <option value="random_digit">Random Digit</option>
+                                  <option value="last_caller_id_digit">Caller last digit</option>
                                 </select>
                               </div>
                               <div className="col-6">

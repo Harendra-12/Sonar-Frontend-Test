@@ -144,8 +144,8 @@ function DidListing() {
                               <th>Cname</th>
                               <th>SMS</th>
                               <th style={{ width: 80, textAlign: 'center' }}>Configure</th>
-                              <th style={{ width: 100, textAlign: 'center' }}>Reset Config</th>
-                              <th style={{ width: 125, textAlign: 'center' }}>Default Caller DID</th>
+                              <th style={{ width: 110, textAlign: 'center' }}>Reset Config</th>
+                              <th style={{ width: 135, textAlign: 'center' }}>Default Caller DID</th>
                             </tr>
                           </thead>
                           <tbody>

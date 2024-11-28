@@ -361,29 +361,29 @@ const ExtensionsEdit = () => {
             data.callblocking === "Incoming"
               ? 1
               : data.callblocking === "All"
-              ? 1
-              : 0,
+                ? 1
+                : 0,
           blockOutGoingStatus:
             data.callblocking === "Outgoing"
               ? 1
               : data.callblocking === "All"
-              ? 1
-              : 0,
+                ? 1
+                : 0,
           dnd: data.dnd,
           notregistered: data.notregistered,
           followme: data.followme,
           ...(data.followme == 1
             ? {
-                data: [
-                  {
-                    destination: callSetting.followMeDestination,
-                    delay: callSetting.followMeDelay,
-                    timeout: callSetting.followMeTimeOut,
-                    extension_id: value,
-                    prompt: callSetting.followMePrompt,
-                  },
-                ],
-              }
+              data: [
+                {
+                  destination: callSetting.followMeDestination,
+                  delay: callSetting.followMeDelay,
+                  timeout: callSetting.followMeTimeOut,
+                  extension_id: value,
+                  prompt: callSetting.followMePrompt,
+                },
+              ],
+            }
             : {}),
           password: data.password,
           ...(data.user === "" || data.user === null
@@ -433,29 +433,29 @@ const ExtensionsEdit = () => {
           dnd: data.dnd,
           ...(data.followme == 1
             ? {
-                data: [
-                  {
-                    destination: callSetting.followMeDestination,
-                    delay: callSetting.followMeDelay,
-                    timeout: callSetting.followMeTimeOut,
-                    extension_id: value,
-                    prompt: callSetting.followMePrompt,
-                  },
-                ],
-              }
+              data: [
+                {
+                  destination: callSetting.followMeDestination,
+                  delay: callSetting.followMeDelay,
+                  timeout: callSetting.followMeTimeOut,
+                  extension_id: value,
+                  prompt: callSetting.followMePrompt,
+                },
+              ],
+            }
             : {}),
           blockIncomingStatus:
             data.callblocking === "Incoming"
               ? 1
               : data.callblocking === "All"
-              ? 1
-              : 0,
+                ? 1
+                : 0,
           blockOutGoingStatus:
             data.callblocking === "Outgoing"
               ? 1
               : data.callblocking === "All"
-              ? 1
-              : 0,
+                ? 1
+                : 0,
           description: data.description,
           password: data.password,
           ...(data.user === "" || data.user === null
@@ -1566,6 +1566,7 @@ const ExtensionsEdit = () => {
                                   </div>
                                   <div className="col-12">
                                     <ActionList
+                                      title={null}
                                       getDropdownValue={actionListValue}
                                       value={watch().onbusyTo}
                                     />
