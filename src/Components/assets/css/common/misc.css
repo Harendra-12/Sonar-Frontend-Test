@@ -788,3 +788,7 @@ input[type=number] {
 .pagination_slider li button {
     color: var(--immortalBlack);
 }
+
+.card {
+    background-color: var(--ele-color);
+}
