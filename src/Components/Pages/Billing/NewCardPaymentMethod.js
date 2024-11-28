@@ -199,20 +199,20 @@ function NewCardPaymentMethod({
         !(cardDetails.cvv?.length < 3 || cardDetails.cvv?.length > 6) &&
         cardValidator.number(cardDetails.cardNumber).isValid &&
         !Object.keys(billing)?.map((item) => {
-            if (billing[item] === "") {
+          if (billing[item] === "") {
+            return true;
+          } else if (item === "phone") {
+            if (billing[item]?.length > 15 || billing[item]?.length < 8) {
               return true;
-            } else if (item === "phone") {
-              if (billing[item]?.length > 15 || billing[item]?.length < 8) {
-                return true;
-              }
-            } else if (item === "email") {
-              if (
-                !(billing[item].includes("@") || billing[item].includes("."))
-              ) {
-                return true;
-              }
             }
-          })
+          } else if (item === "email") {
+            if (
+              !(billing[item].includes("@") || billing[item].includes("."))
+            ) {
+              return true;
+            }
+          }
+        })
           .includes(true)
       ) {
         setLoading(true);
@@ -230,7 +230,7 @@ function NewCardPaymentMethod({
             exp_month: cardDetails.expiryDate.split("/")[0],
             exp_year: Number(
               String(year).slice(0, 2) +
-                String(cardDetails.expiryDate.split("/")[1])
+              String(cardDetails.expiryDate.split("/")[1])
             ),
             cvc: cardDetails.cvv,
             fullname: billing.name,
@@ -278,7 +278,7 @@ function NewCardPaymentMethod({
             exp_month: cardDetails.expiryDate.split("/")[0],
             exp_year: Number(
               String(year).slice(0, 2) +
-                String(cardDetails.expiryDate.split("/")[1])
+              String(cardDetails.expiryDate.split("/")[1])
             ),
             cvc: cardDetails.cvv,
             fullname: billing.name,
@@ -347,7 +347,7 @@ function NewCardPaymentMethod({
             exp_month: cardDetails.expiryDate.split("/")[0],
             exp_year: Number(
               String(year).slice(0, 2) +
-                String(cardDetails.expiryDate.split("/")[1])
+              String(cardDetails.expiryDate.split("/")[1])
             ),
             cvc: cardDetails.cvv,
             rate: Number(selectedDid[0].price) * selectedDid?.length,
@@ -388,7 +388,7 @@ function NewCardPaymentMethod({
             exp_month: cardDetails.expiryDate.split("/")[0],
             exp_year: Number(
               String(year).slice(0, 2) +
-                String(cardDetails.expiryDate.split("/")[1])
+              String(cardDetails.expiryDate.split("/")[1])
             ),
             cvc: cardDetails.cvv,
           };
@@ -468,121 +468,113 @@ function NewCardPaymentMethod({
               {newBilling ? (
                 <div className="row">
                   <div className="form-group mb-1">
-                    <label className="review-label">
+                    <label className="formLabel">
                       Full Name
                       <span style={{ color: "red" }}>*</span>
                     </label>
                     <input
                       placeholder="Name"
                       name="name"
-                      className={`form-control travellerdetails ${
-                        errorBilling.name ? "error-border" : ""
-                      }`}
+                      className={`formItem ${errorBilling.name ? "error-border" : ""
+                        }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
                   </div>
                   <div className="form-group mb-1">
-                    <label className="review-label">
+                    <label className="formLabel">
                       Phone
                       <span style={{ color: "red" }}>*</span>
                     </label>
                     <input
                       placeholder="Phone number"
                       name="phone"
-                      className={`form-control travellerdetails ${
-                        errorBilling.phone ? "error-border" : ""
-                      }`}
+                      className={`formItem ${errorBilling.phone ? "error-border" : ""
+                        }`}
                       onChange={(e) => billingChnage(e)}
                       type="number"
                     />
                   </div>
                   <div className="form-group mb-1">
-                    <label className="review-label">
+                    <label className="formLabel">
                       Email
                       <span style={{ color: "red" }}>*</span>
                     </label>
                     <input
                       placeholder="Email Address"
                       name="email"
-                      className={`form-control travellerdetails ${
-                        errorBilling.email ? "error-border" : ""
-                      }`}
+                      className={`formItem ${errorBilling.email ? "error-border" : ""
+                        }`}
                       onChange={(e) => billingChnage(e)}
                       type="email"
                     />
                   </div>
                   <div className="form-group mb-1">
-                    <label className="review-label">
+                    <label className="formLabel">
                       Address
                       <span style={{ color: "red" }}>*</span>
                     </label>
                     <input
                       placeholder="Full address"
                       name="address"
-                      className={`form-control travellerdetails ${
-                        errorBilling.address ? "error-border" : ""
-                      }`}
+                      className={`formItem ${errorBilling.address ? "error-border" : ""
+                        }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
                   </div>
                   <div className="form-group col-xl-6 mb-1">
-                    <label className="review-label">
+                    <label className="formLabel">
                       City
                       <span style={{ color: "red" }}>*</span>
                     </label>
                     <input
                       placeholder="City"
                       name="city"
-                      className={`form-control travellerdetails ${
-                        errorBilling.city ? "error-border" : ""
-                      }`}
+                      className={`formItem ${errorBilling.city ? "error-border" : ""
+                        }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
                   </div>
                   <div className="form-group col-xl-6 mb-1">
-                    <label className="review-label">
+                    <label className="formLabel">
                       State
                       <span style={{ color: "red" }}>*</span>
                     </label>
                     <input
                       placeholder="State"
                       name="state"
-                      className={`form-control travellerdetails ${
-                        errorBilling.state ? "error-border" : ""
-                      }`}
+                      className={`formItem ${errorBilling.state ? "error-border" : ""
+                        }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
                   </div>
                   <div className="form-group mb-1">
-                    <label className="review-label">
+                    <label className="formLabel">
                       Zip Code
                       <span style={{ color: "red" }}>*</span>
                     </label>
                     <input
                       placeholder="Zip Code"
                       name="zip"
-                      className={`form-control travellerdetails ${
-                        errorBilling.zip ? "error-border" : ""
-                      }`}
+                      className={`formItem ${errorBilling.zip ? "error-border" : ""
+                        }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
                   </div>
                   <div className="form-group mb-1">
-                    <label className="review-label">
+                    <label className="formLabel">
                       Country
                       <span style={{ color: "red" }}>*</span>
                     </label>
                     <input
                       placeholder="Country"
                       name="country"
-                      className={`form-control travellerdetails ${
-                        errorBilling.country ? "error-border" : ""
-                      }`}
+                      className={`formItem ${errorBilling.country ? "error-border" : ""
+                        }`}
                       onChange={(e) => billingChnage(e)}
                       type="text"
                     />
@@ -600,9 +592,8 @@ function NewCardPaymentMethod({
                         >
                           <div className="accordion-item">
                             <h2
-                              className={`accordion-header addressDrawer ${
-                                selectedBillId === item.id ? "active" : ""
-                              }`}
+                              className={`accordion-header addressDrawer ${selectedBillId === item.id ? "active" : ""
+                                }`}
                             >
                               <div
                                 className="d-flex flex-wrap align-items-center"
@@ -820,15 +811,14 @@ function NewCardPaymentMethod({
                   <div className="row">
                     <div className="col-xl-12">
                       <div className="form-group">
-                        <label className="review-label">
+                        <label className="formLabel">
                           Card Holder's Name
                           <span style={{ color: "red" }}>*</span>
                         </label>
                         <input
                           placeholder="Card Holder's Name"
-                          className={`form-control travellerdetails ${
-                            errorCard.cardName ? "error-border" : ""
-                          }`}
+                          className={`formItem ${errorCard.cardName ? "error-border" : ""
+                            }`}
                           name="cardName"
                           id="traveller_name_on_card"
                           type="text"
@@ -847,7 +837,7 @@ function NewCardPaymentMethod({
                     </div>
                     <div className="col-xl-12 mt-1">
                       <div className="form-group">
-                        <label className="review-label">
+                        <label className="formLabel">
                           Card Number
                           <span style={{ color: "red" }}>*</span>
                         </label>
@@ -866,9 +856,8 @@ function NewCardPaymentMethod({
                           <input
                             placeholder="Card Number"
                             maxLength={16}
-                            className={`form-control travellerdetails ${
-                              errorCard.cardNumber ? "error-border" : ""
-                            }`}
+                            className={`formItem ${errorCard.cardNumber ? "error-border" : ""
+                              }`}
                             name="cardNumber"
                             id="traveller_card_number"
                             type="text"
@@ -898,15 +887,14 @@ function NewCardPaymentMethod({
                       <div className="row">
                         <div className="col-12">
                           <div className="form-group">
-                            <label className="review-label text-nowrap">
+                            <label className="formLabel text-nowrap">
                               Expiry Date
                               <span style={{ color: "red" }}>*</span>
                             </label>
                             <input
                               placeholder="YEAR"
-                              className={`form-control travellerdetails payment_exp_date ${
-                                errorCard.expiryDate ? "error-border" : ""
-                              }`}
+                              className={`formItem payment_exp_date ${errorCard.expiryDate ? "error-border" : ""
+                                }`}
                               name="traveller_card_cvv"
                               type="number"
                               {...getExpiryDateProps({
@@ -932,16 +920,15 @@ function NewCardPaymentMethod({
                     </div>
                     <div className="col-xl-3 mt-1 mb-3">
                       <div className="form-group">
-                        <label className="review-label">
+                        <label className="formLabel">
                           CVV Code
                           <span style={{ color: "red" }}>*</span>
                         </label>
                         <div className="position-relative">
                           <input
                             placeholder="cvv"
-                            className={`form-control travellerdetails payment_exp_date ${
-                              errorCard.cvv ? "error-border" : ""
-                            }`}
+                            className={`formItem payment_exp_date ${errorCard.cvv ? "error-border" : ""
+                              }`}
                             name="cvv"
                             type="number"
                             onChange={(e) => {
@@ -973,16 +960,15 @@ function NewCardPaymentMethod({
                     ) : (
                       <div className="col-xl-6 mt-1 mb-3">
                         <div className="form-group">
-                          <label className="review-label">
+                          <label className="formLabel">
                             Amount
                             <span style={{ color: "red" }}>*</span>
                           </label>
                           <div className="position-relative">
                             <input
                               placeholder="amount"
-                              className={`form-control travellerdetails payment_exp_date ${
-                                errorCard.amount ? "error-border" : ""
-                              }`}
+                              className={`formItem payment_exp_date ${errorCard.amount ? "error-border" : ""
+                                }`}
                               name="amount"
                               type="number"
                               onChange={(e) => {

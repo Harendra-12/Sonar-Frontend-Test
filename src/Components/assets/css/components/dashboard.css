@@ -465,12 +465,16 @@
     display: flex;
     font-size: 14px;
     justify-content: space-between;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .itemWrapper .invoiceList li p {
     font-family: Roboto;
     margin-bottom: 0;
     font-weight: 600;
+    color: var(--immortalBlack);
 }
 
 .itemWrapper .invoiceList li span {

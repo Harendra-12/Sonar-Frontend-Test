@@ -351,11 +351,11 @@ function CardAndBilling() {
         <div className="container-fluid">
           <div className="row">
             <Header title="Payment Details" />
-            <div className="col-xl-12 pt-3">
+            <div className="col-xl-12 pt-4">
               <div className="row gy-3">
                 <div className="col-xl-8">
                   <div className="row gy-3">
-                    <div className="col-xl-4 pe-0 billinCardWrapper">
+                    <div className="col-xl-4 billinCardWrapper">
                       <Cards
                         className="cardWrapper row align-items-center col-12 mx-auto"
                         number={selectedCard?.[0]?.card_number}
@@ -372,7 +372,7 @@ function CardAndBilling() {
                         name={selectedCard?.[0]?.name}
                       />
                     </div>
-                    <div className="col-xl-4 pe-0">
+                    <div className="col-xl-4">
                       <div className="itemWrapper a">
                         <div className="heading">
                           <div class="d-flex flex-wrap justify-content-between align-items-center">
@@ -447,7 +447,7 @@ function CardAndBilling() {
                         </div>
                       </div>
                     </div>
-                    <div className="col-xl-4 pe-0">
+                    <div className="col-xl-4">
                       <div className="itemWrapper a">
                         <div className="heading">
                           <div className="heading">
@@ -523,93 +523,93 @@ function CardAndBilling() {
                     </div>
                   </div>
                   <div className="row pt-2">
-                    <div className="profileView pb-0 pe-0">
-                      <div className="profileDetailsHolder position-relative">
-                        <div className="col-xl-12">
-                          <div className="header d-flex align-items-center justify-content-between">
-                            <div className="col-5">Payment Method</div>
-                            <div className="col-5 text-end">
-                              <button
-                                className="panelButton m-0 ms-auto"
-                                onClick={() => setCardPopUp(true)}
-                              >
-                                <span className="text">Add</span>
-                                <span className="icon">
-                                  <i class="fa-solid fa-plus"></i>
-                                </span>
-                              </button>
+                    <div className="col-xl-6">
+                      <div className="profileView pb-0 pe-0">
+                        <div className="profileDetailsHolder position-relative">
+                          <div className="col-xl-12">
+                            <div className="header d-flex align-items-center justify-content-between">
+                              <div className="col-5">Payment Method</div>
+                              <div className="col-5 text-end">
+                                <button
+                                  className="panelButton m-0 ms-auto"
+                                  onClick={() => setCardPopUp(true)}
+                                >
+                                  <span className="text">Add</span>
+                                  <span className="icon">
+                                    <i class="fa-solid fa-plus"></i>
+                                  </span>
+                                </button>
+                              </div>
                             </div>
-                          </div>
-                          {cardList && (
-                            <div className="row px-2 pt-2 gy-3">
-                              {cardList.map((item, key) => {
-                                return (
-                                  <div className="col-xl-6" key={key}>
-                                    <div
-                                      className={`savedCardWrapper ${item.default ? "active" : ""
-                                        }`}
-                                    >
-                                      <div className="imgWrapper">
-                                        <div className="card-logo-container">
-                                          <Cards
-                                            number={item.card_number}
-                                            name=""
-                                            expiry=""
-                                            cvc=""
-                                            focused=""
-                                          />
+                            {cardList && (
+                              <>
+                                {cardList.map((item, key) => {
+                                  return (
+                                    <div className="col-xl-12 pt-3" key={key}>
+                                      <div
+                                        className={`savedCardWrapper ${item.default ? "active" : ""
+                                          }`}
+                                      >
+                                        <div className="imgWrapper">
+                                          <div className="card-logo-container">
+                                            <Cards
+                                              number={item.card_number}
+                                              name=""
+                                              expiry=""
+                                              cvc=""
+                                              focused=""
+                                            />
+                                          </div>
+                                        </div>
+                                        <div className="ms-4">
+                                          <label>
+                                            **** **** ****{" "}
+                                            {item.card_number.slice(-4)}
+                                          </label>
+                                        </div>
+                                        <div className="ms-auto">
+                                          <label className="switch">
+                                            <input
+                                              type="checkbox"
+                                              id="showAllCheck"
+                                              checked={item.default}
+                                              onChange={(e) => {
+                                                if (e.target.checked) {
+                                                  setSelectedCardId(item.id);
+                                                  setCardConfirmationPopUp(true);
+                                                  setDisableCard(false);
+                                                } else {
+                                                  setSelectedCardId(item.id);
+                                                  setCardConfirmationPopUp(true);
+                                                  setDisableCard(true);
+                                                }
+                                              }}
+                                            />
+                                            <span className="slider round"></span>
+                                          </label>
+                                        </div>
+                                        <div className="ms-3">
+                                          <button
+                                            className="clearButton"
+                                            onClick={() => {
+                                              setCardDelId(item.id);
+                                              setCardDelPopUp(true);
+                                            }}
+                                          >
+                                            <i className="fa-duotone text-danger fa-trash"></i>
+                                          </button>
                                         </div>
                                       </div>
-                                      <div className="ms-4">
-                                        <label>
-                                          **** **** ****{" "}
-                                          {item.card_number.slice(-4)}
-                                        </label>
-                                      </div>
-                                      <div className="ms-auto">
-                                        <label className="switch">
-                                          <input
-                                            type="checkbox"
-                                            id="showAllCheck"
-                                            checked={item.default}
-                                            onChange={(e) => {
-                                              if (e.target.checked) {
-                                                setSelectedCardId(item.id);
-                                                setCardConfirmationPopUp(true);
-                                                setDisableCard(false);
-                                              } else {
-                                                setSelectedCardId(item.id);
-                                                setCardConfirmationPopUp(true);
-                                                setDisableCard(true);
-                                              }
-                                            }}
-                                          />
-                                          <span className="slider round"></span>
-                                        </label>
-                                      </div>
-                                      <div className="ms-3">
-                                        <button
-                                          className="clearButton"
-                                          onClick={() => {
-                                            setCardDelId(item.id);
-                                            setCardDelPopUp(true);
-                                          }}
-                                        >
-                                          <i className="fa-duotone text-danger fa-trash"></i>
-                                        </button>
-                                      </div>
                                     </div>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          )}
+                                  );
+                                })}
+                              </>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="row gy-3 pt-2">
-                    <div className="col-xl-12 pe-0">
+                    <div className="col-xl-6">
                       <div className="profileView px-0">
                         <div className="profileDetailsHolder position-relative">
                           <div className="col-xl-12">
@@ -1006,6 +1006,11 @@ function CardAndBilling() {
                       </div>
                     </div>
                   </div>
+                  {/* <div className="row gy-3 pt-2">
+                    <div className="col-xl-12 pe-0">
+
+                    </div>
+                  </div> */}
                 </div>
                 <div className="col-xl-4">
                   <div className="col-xl-12">

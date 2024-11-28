@@ -261,7 +261,7 @@ function PhoneDashboard() {
                           <h5>Extensions</h5>
                           <p>7 October, 2024</p>
                         </div>
-                        <div class="col-2">
+                        <div class="col-2" onClick={() => navigate("/extensions")}>
                           <i class="fa-duotone fa-phone-office"></i>
                         </div>
                       </div>
@@ -298,7 +298,7 @@ function PhoneDashboard() {
                           <h5>Call Center Queue</h5>
                           <p>7 October, 2024</p>
                         </div>
-                        <div class="col-2">
+                        <div class="col-2" onClick={() => navigate("/cal-center-queue")}>
                           <i class="fa-duotone fa-clock"></i>
                         </div>
                       </div>
@@ -337,7 +337,7 @@ function PhoneDashboard() {
                           <h5>Ring Group</h5>
                           <p>7 October, 2024</p>
                         </div>
-                        <div class="col-2">
+                        <div class="col-2" onClick={() => navigate("/ring-groups")}>
                           <i class="fa-duotone fa-solid fa-bell-ring"></i>
                         </div>
                       </div>
@@ -371,7 +371,7 @@ function PhoneDashboard() {
                           <h5>Users</h5>
                           <p>7 October, 2024</p>
                         </div>
-                        <div class="col-2">
+                        <div class="col-2" onClick={() => navigate("/users")}>
                           <i class="fa-duotone fa-users"></i>
                         </div>
                       </div>

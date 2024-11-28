@@ -198,9 +198,8 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                         return (
                           <div className="col-xl-12 mb-2" key={key}>
                             <div
-                              className={`savedCardWrapper ${
-                                item.id === selectedCardId ? "active" : ""
-                              }`}
+                              className={`savedCardWrapper ${item.id === selectedCardId ? "active" : ""
+                                }`}
                             >
                               <div className="imgWrapper">
                                 <div className="card-logo-container">
@@ -284,9 +283,8 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                         >
                           <div className="accordion-item">
                             <h2
-                              className={`accordion-header addressDrawer ${
-                                item.id === selectedBillId ? "active" : ""
-                              }`}
+                              className={`accordion-header addressDrawer ${item.id === selectedBillId ? "active" : ""
+                                }`}
                             >
                               <div
                                 className="d-flex flex-wrap align-items-center"
@@ -448,14 +446,14 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                 <div className="row" style={{ padding: "5px" }}>
                   <div className="col-6">
                     <div className="form-group">
-                      <label className="review-label">
+                      <label className="formLabel">
                         Enter Your CVV Code
                         <span style={{ color: "red" }}>*</span>
                       </label>
                       <div className="position-relative">
                         <input
                           placeholder="cvv"
-                          className={`form-control travellerdetails payment_exp_date`}
+                          className={`formItem`}
                           name="CVV"
                           type="number"
                           value={cvv}
@@ -477,14 +475,14 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                   ) : (
                     <div className="col-6">
                       <div className="form-group">
-                        <label className="review-label">
+                        <label className="formLabel">
                           Enter Your Amount
                           <span style={{ color: "red" }}>*</span>
                         </label>
                         <div className="position-relative">
                           <input
                             placeholder="Amount"
-                            className={`form-control travellerdetails payment_exp_date`}
+                            className={`formItem`}
                             name="cvv"
                             type="number"
                             value={amount}

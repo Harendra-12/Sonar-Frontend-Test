@@ -107,7 +107,7 @@ function BillingCardSave({ closePopup }) {
         exp_month: Number(cardDetails.expiryDate.split("/")[0]),
         exp_year: Number(
           String(year).slice(0, 2) +
-            String(cardDetails.expiryDate.split("/")[1])
+          String(cardDetails.expiryDate.split("/")[1])
         ),
         cvc: cardDetails.cvv,
         name: cardDetails.cardName,
@@ -169,15 +169,14 @@ function BillingCardSave({ closePopup }) {
               <div className="row">
                 <div className="col-xl-12">
                   <div className="form-group">
-                    <label className="review-label">
+                    <label className="formLabel">
                       Card Holder's Name
                       <span style={{ color: "red" }}>*</span>
                     </label>
                     <input
                       placeholder="Card Holder's Name"
-                      className={`form-control travellerdetails ${
-                        errorCard.cardName ? "error-border" : ""
-                      }`}
+                      className={`formItem ${errorCard.cardName ? "error-border" : ""
+                        }`}
                       name="cardName"
                       id="traveller_name_on_card"
                       type="text"
@@ -196,7 +195,7 @@ function BillingCardSave({ closePopup }) {
                 </div>
                 <div className="col-xl-12 mt-1 mb-0">
                   <div className="form-group">
-                    <label className="review-label">
+                    <label className="formLabel">
                       Card Number
                       <span style={{ color: "red" }}>*</span>
                     </label>
@@ -215,9 +214,8 @@ function BillingCardSave({ closePopup }) {
                       <input
                         placeholder="Card Number"
                         maxLength={16}
-                        className={`form-control travellerdetails ${
-                          errorCard.cardNumber ? "error-border" : ""
-                        }`}
+                        className={`formItem ${errorCard.cardNumber ? "error-border" : ""
+                          }`}
                         name="cardNumber"
                         id="traveller_card_number"
                         type="text"
@@ -246,15 +244,14 @@ function BillingCardSave({ closePopup }) {
                   <div className="row">
                     <div className="col-12">
                       <div className="form-group">
-                        <label className="review-label text-nowrap">
+                        <label className="formLabel text-nowrap">
                           Expiry Date
                           <span style={{ color: "red" }}>*</span>
                         </label>
                         <input
                           placeholder="YEAR"
-                          className={`form-control travellerdetails payment_exp_date ${
-                            errorCard.expiryDate ? "error-border" : ""
-                          }`}
+                          className={`formItem payment_exp_date ${errorCard.expiryDate ? "error-border" : ""
+                            }`}
                           name="traveller_card_cvv"
                           type="number"
                           {...getExpiryDateProps({
@@ -280,16 +277,15 @@ function BillingCardSave({ closePopup }) {
                 </div>
                 <div className="col-xl-6 mt-1 mb-3">
                   <div className="form-group">
-                    <label className="review-label">
+                    <label className="formLabel">
                       CVV Code
                       <span style={{ color: "red" }}>*</span>
                     </label>
                     <div className="position-relative">
                       <input
                         placeholder="cvv"
-                        className={`form-control travellerdetails payment_exp_date ${
-                          errorCard.cvv ? "error-border" : ""
-                        }`}
+                        className={`formItem payment_exp_date ${errorCard.cvv ? "error-border" : ""
+                          }`}
                         name="cvv"
                         type="number"
                         onChange={(e) => {
