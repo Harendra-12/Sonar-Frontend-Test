@@ -109,6 +109,9 @@ import CallBlocking from "./Components/Pages/SpamFilter/CallBlocking";
 import ConferenceConfig from "./Components/Pages/WebRtc/ConferenceConfig";
 import ClickToCall from "./Components/Pages/ClickToCall/ClickToCall";
 import CallBlockingAdd from "./Components/Pages/SpamFilter/CallBlockingAdd";
+import Leads from "./Components/Pages/DialerModule/Leads/Leads";
+import LeadEdit from "./Components/Pages/DialerModule/Leads/LeadEdit";
+import Campaigns from "./Components/Pages/DialerModule/Campaigns/Campaigns";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -581,6 +584,20 @@ function App() {
           <Route path="/call-blocking-add" element={<CallBlockingAdd />} />
           {/* Spam Filter end */}
           <Route path="click-to-call" element={<ClickToCall />} />
+
+          {/* Dialer Modules */}
+
+          {/* ------ Leads */}
+          <Route path="/leads" element={<Leads />} />
+          <Route path="/lead-edit" element={<LeadEdit />} />
+          {/* ------ Leads */}
+
+          {/* ------ Campaigns */}
+          <Route path="/campaigns" element={<Campaigns />} />
+          {/* ------ Campaigns */}
+
+          {/* Dialer Modules */}
+
           {/* 404 Redirection */}
           <Route path="*" element={<Navigate to="/dashboard" />} />
           {/* 404 Redirection */}

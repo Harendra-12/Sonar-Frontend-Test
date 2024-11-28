@@ -1,8 +1,11 @@
 import React from 'react'
 import Header from '../../../CommonComponents/Header'
 import PaginationComponent from '../../../CommonComponents/PaginationComponent'
+import { backToTop } from '../../../GlobalFunction/globalFunction';
+import { useNavigate } from 'react-router-dom';
 
 function Leads() {
+    const navigate = useNavigate();
     return (
         <main className="mainContent">
             <section id="phonePage">
@@ -31,10 +34,10 @@ function Leads() {
                                                 <button
                                                     effect="ripple"
                                                     className="panelButton gray"
-                                                // onClick={() => {
-                                                //     navigate(-1);
-                                                //     backToTop();
-                                                // }}
+                                                    onClick={() => {
+                                                        navigate(-1);
+                                                        backToTop();
+                                                    }}
                                                 >
                                                     <span className="text">Back</span>
                                                     <span className="icon">
@@ -95,9 +98,9 @@ function Leads() {
                                                         <th>Archive</th>
                                                         <th>TPS</th>
                                                         <th>Active</th>
-                                                        <th>Download</th>
-                                                        <th>Edit</th>
-                                                        <th>Delete</th>
+                                                        <th style={{ textAlign: "center" }}>Download</th>
+                                                        <th style={{ textAlign: "center" }}>Edit</th>
+                                                        <th style={{ textAlign: "center" }}>Delete</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -110,8 +113,8 @@ function Leads() {
                                                                 <option value="">a</option>
                                                                 <option value="">b</option>
                                                                 <option value="">c </option>
-                                                                </select>
-                                                                </div>
+                                                            </select>
+                                                            </div>
                                                         </td>
                                                         <td>1200</td>
                                                         <td>0</td>
@@ -120,7 +123,6 @@ function Leads() {
                                                         <td>0</td>
                                                         <td>0</td>
                                                         <td> 0</td>
-                                                        
                                                         <td>
                                                             <div className="my-auto position-relative mx-1">
                                                                 <label className="switch">
@@ -134,21 +136,21 @@ function Leads() {
                                                         </td>
                                                         <td>
                                                             <button
-                                                                className="tableButton"
+                                                                className="tableButton mx-auto"
                                                             >
                                                                 <i class="fa-solid fa-download"></i>
                                                             </button>
                                                         </td>
                                                         <td>
                                                             <button
-                                                                className="tableButton edit"
+                                                                className="tableButton edit mx-auto"
                                                             >
                                                                 <i class="fa-solid fa-pen"></i>
                                                             </button>
                                                         </td>
                                                         <td>
                                                             <button
-                                                                className="tableButton delete"
+                                                                className="tableButton delete mx-auto"
                                                             >
                                                                 <i class="fa-solid fa-trash"></i>
                                                             </button>
