@@ -11,8 +11,6 @@ import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
-import MusicPlayer from "../../CommonComponents/MusicPlayer";
-import AudioMotionAnalyzer from "audiomotion-analyzer";
 
 function CdrReport() {
   const [loading, setLoading] = useState(true);
