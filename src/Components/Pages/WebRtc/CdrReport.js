@@ -18,7 +18,7 @@ function CdrReport() {
   const [pageNumber, setPageNumber] = useState(1);
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
-  const [currentPlaying, setCurrentPlaying] = useState(null); // For tracking the currently playing audio
+  const [currentPlaying, setCurrentPlaying] = useState(""); // For tracking the currently playing audio
   const [callDirection, setCallDirection] = useState("");
   const [callType, setCallType] = useState("");
   const [callOrigin, setCallOrigin] = useState("");
@@ -96,6 +96,7 @@ function CdrReport() {
       }
     }
   };
+
   const handleCallDestinationChange = (e) => {
     const newValue = e.target.value;
     if (/^\d*$/.test(newValue) && newValue.length <= 5) {
@@ -167,6 +168,46 @@ function CdrReport() {
     refresh,
   ]);
 
+  const getDateRange = (period) => {
+    const currentDate = new Date();
+    const formattedCurrentDate = formatDate(currentDate);
+
+    let startDate = new Date();
+
+    switch (period) {
+      case "7_days":
+        startDate.setDate(currentDate.getDate() - 7);
+        break;
+
+      case "1_month":
+        startDate.setMonth(currentDate.getMonth() - 1);
+        break;
+
+      case "3_month":
+        startDate.setMonth(currentDate.getMonth() - 3);
+        break;
+
+      default:
+        throw new Error(
+          "Invalid period. Use 'last7days', 'last1month', or 'last3months'."
+        );
+    }
+
+    const formattedStartDate = formatDate(startDate);
+    setStartDate(formattedStartDate);
+
+    setEndDate(formattedCurrentDate);
+
+    // return { currentDate: formattedCurrentDate, startDate: formattedStartDate };
+  };
+
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
   function refreshCallData() {
     setContentLoader(true);
     setRefrehsh(refresh + 1);
@@ -178,7 +219,8 @@ function CdrReport() {
       filterBy === "1_month" ||
       filterBy === "3_month"
     ) {
-      featureUnderdevelopment();
+      // featureUnderdevelopment();
+      getDateRange(filterBy);
     }
   }, [filterBy]);
 
@@ -189,9 +231,7 @@ function CdrReport() {
         thisAudioRef.current.play();
       }
     }, 200);
-  }
-
-
+  };
 
   return (
     <main className="mainContent">
@@ -383,7 +423,7 @@ function CdrReport() {
                             setCallDirection(e.target.value);
                             setPageNumber(1);
                           }}
-                        // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                          // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                         >
                           <option value={""}>All Calls</option>
                           <option value={"inbound"}>Inbound Calls</option>
@@ -526,11 +566,14 @@ function CdrReport() {
                                       <td>
                                         {item["application_state"] ===
                                           "intercept" ||
-                                          item["application_state"] === "eavesdrop"
+                                        item["application_state"] ===
+                                          "eavesdrop"
                                           ? item["other_leg_destination_number"]
                                           : item["variable_sip_to_user"]}
                                       </td>
-                                      <td>{item["application_state_to_ext"]}</td>
+                                      <td>
+                                        {item["application_state_to_ext"]}
+                                      </td>
                                       <td>
                                         {
                                           item["variable_start_stamp"].split(
@@ -546,21 +589,29 @@ function CdrReport() {
                                         }
                                       </td>
                                       <td>
-                                        {item["recording_path"] && item["variable_billsec"] > 0 && (
-                                          <button className="tableButton px-2 mx-0" onClick={() => handlePlaying(item["recording_path"])}>
-                                            <i className="fa-duotone fa-play"></i>
-                                          </button>
+                                        {item["recording_path"] &&
+                                          item["variable_billsec"] > 0 && (
+                                            <button
+                                              className="tableButton px-2 mx-0"
+                                              onClick={() =>
+                                                handlePlaying(
+                                                  item["recording_path"]
+                                                )
+                                              }
+                                            >
+                                              <i className="fa-duotone fa-play"></i>
+                                            </button>
 
-                                          // <MusicPlayer
-                                          //   audioSrc={item["recording_path"]}
-                                          //   isPlaying={
-                                          //     currentPlaying ===
-                                          //     item["recording_path"]
-                                          //   }
-                                          //   onPlay={() => setCurrentPlaying(item["recording_path"])}
-                                          //   onStop={() => setCurrentPlaying(null)}
-                                          // />
-                                        )}
+                                            // <MusicPlayer
+                                            //   audioSrc={item["recording_path"]}
+                                            //   isPlaying={
+                                            //     currentPlaying ===
+                                            //     item["recording_path"]
+                                            //   }
+                                            //   onPlay={() => setCurrentPlaying(item["recording_path"])}
+                                            //   onStop={() => setCurrentPlaying(null)}
+                                            // />
+                                          )}
                                       </td>
                                       <td>{item["variable_billsec"]}</td>
                                       <td>
@@ -568,37 +619,43 @@ function CdrReport() {
                                           ? item["Hangup-Cause"]
                                           : item["variable_DIALSTATUS"] ===
                                             "NO_USER_RESPONSE"
-                                            ? "BUSY"
-                                            : item["variable_DIALSTATUS"]}
+                                          ? "BUSY"
+                                          : item["variable_DIALSTATUS"]}
                                       </td>
                                       <td>{item["call_cost"]}</td>
                                     </tr>
-                                    {currentPlaying === item["recording_path"] && <tr>
-                                      <td colSpan={99}>
-                                        <div className="audio-container mx-2">
-                                          <audio controls={true} ref={thisAudioRef}>
-                                            <source
-                                              src={item["recording_path"]}
-                                              type="audio/mpeg"
-                                            />
-                                          </audio>
+                                    {currentPlaying ===
+                                      item["recording_path"] && (
+                                      <tr>
+                                        <td colSpan={99}>
+                                          <div className="audio-container mx-2">
+                                            <audio
+                                              controls={true}
+                                              ref={thisAudioRef}
+                                            >
+                                              <source
+                                                src={item["recording_path"]}
+                                                type="audio/mpeg"
+                                              />
+                                            </audio>
 
-                                          <button
-                                            className="audioCustomButton"
-                                          // onClick={() =>
-                                          //   handleAudioDownload(
-                                          //     clickedVoiceMail.recording_path
-                                          //   )
-                                          // }
-                                          >
-                                            <i className="fa-sharp fa-solid fa-download" />
-                                          </button>
-                                          {/* <button className="audioCustomButton ms-1">
+                                            <button
+                                              className="audioCustomButton"
+                                              // onClick={() =>
+                                              //   handleAudioDownload(
+                                              //     clickedVoiceMail.recording_path
+                                              //   )
+                                              // }
+                                            >
+                                              <i className="fa-sharp fa-solid fa-download" />
+                                            </button>
+                                            {/* <button className="audioCustomButton ms-1">
                               <i className="fa-sharp fa-solid fa-box-archive" />
                             </button> */}
-                                        </div>
-                                      </td>
-                                    </tr>}
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    )}
                                   </>
                                 );
                               })}
