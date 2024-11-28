@@ -110,6 +110,12 @@ import ConferenceConfig from "./Components/Pages/WebRtc/ConferenceConfig";
 import ClickToCall from "./Components/Pages/ClickToCall/ClickToCall";
 import CallDashboardNew from "./Components/Pages/WebRtc/CallDashboardNew";
 import Leads from "./Components/Pages/DialerModule/Leads/Leads";
+import Campaigns from "./Components/Pages/DialerModule/Campaigns/Campaigns";
+import LeadEdit from "./Components/Pages/DialerModule/Leads/LeadEdit";
+// import Campaigns from "./Components/Pages/DialerModule/Campaigns/Campaigns";
+
+
+
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -585,6 +591,11 @@ function App() {
 
           {/* Dialer Modules */}
           <Route path="/leads" element={<Leads />} />
+
+           {/* Dialer Modules */}
+           <Route path="/leadEdit" element={<LeadEdit />} />
+
+          <Route path="/campaigns" element={<Campaigns />}/>
 
           {/* Dialer Modules */}
 

@@ -2,20 +2,20 @@ import React from 'react'
 import Header from '../../../CommonComponents/Header'
 import PaginationComponent from '../../../CommonComponents/PaginationComponent'
 
-function Leads() {
+function Campaigns() {
     return (
         <main className="mainContent">
             <section id="phonePage">
                 <div className="container-fluid">
                     <div className="row">
-                        <Header title="Leads" />
+                        <Header title="Campaigns" />
                         <div className="overviewTableWrapper">
                             <div className="overviewTableChild">
                                 <div className="d-flex flex-wrap">
                                     <div className="col-12">
                                         <div className="heading">
                                             <div className="content">
-                                                <h4>Leads</h4>
+                                                <h4>Campaign</h4>
                                             </div>
                                             <div className="buttonGroup">
                                                 <button
@@ -84,18 +84,17 @@ function Leads() {
                                                 <thead>
                                                     <tr>
                                                         <th>Id</th>
-                                                        <th>List Name</th>
-                                                        <th>List Description</th>
-                                                        <th>Campaign</th>
-                                                        <th>Total</th>
-                                                        <th>Available</th>
-                                                        <th>Queued</th>
-                                                        <th>Reset Count</th>
-                                                        <th>Duplicate Count</th>
-                                                        <th>Archive</th>
-                                                        <th>TPS</th>
+                                                        <th>Campaign Name</th>
                                                         <th>Active</th>
-                                                        <th>Download</th>
+                                                        <th>Dial Method</th>
+                                                        <th>SQL Dialing</th>
+                                                        <th>Speed</th>
+                                                        <th>Logged In</th>
+                                                        <th>Talking</th>
+                                                        <th>Waiting</th>
+                                                        <th>Paused</th>
+                                                        <th>Wrap</th>
+                                                        <th>Drop Rate </th>
                                                         <th>Edit</th>
                                                         <th>Delete</th>
                                                     </tr>
@@ -104,23 +103,23 @@ function Leads() {
                                                     <tr>
                                                         <td>78</td>
                                                         <td>xyz</td>
-                                                        <td>USA CST</td>
+                                                        <td><div className="my-auto position-relative mx-1">
+                                                            <label className="switch">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    id="showAllCheck"
+                                                                />
+                                                                <span className="slider round" />
+                                                            </label>
+                                                        </div>
+                                                        </td>
                                                         <td>
                                                             <div><select name="" id="" class="formItem ">
-                                                                <option value="">a</option>
-                                                                <option value="">b</option>
-                                                                <option value="">c </option>
-                                                                </select>
-                                                                </div>
+                                                                <option value="">Auto Dial</option>
+
+                                                            </select>
+                                                            </div>
                                                         </td>
-                                                        <td>1200</td>
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                        <td> 0</td>
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                        <td> 0</td>
-                                                        
                                                         <td>
                                                             <div className="my-auto position-relative mx-1">
                                                                 <label className="switch">
@@ -133,12 +132,32 @@ function Leads() {
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <button
-                                                                className="tableButton"
-                                                            >
-                                                                <i class="fa-solid fa-download"></i>
-                                                            </button>
+                                                            <div className="slidecontainer">
+                                                                <input
+                                                                    type="range"
+                                                                    
+                                                                    // value={sliderValue}
+                                                                    // onChange={handleSliderChange}
+                                                                    className="sliders"
+                                                                    // id="myRange"
+                                                                />
+                                                                <div className='text-center'>
+                                                                <p className='p-0 mb-0'>26 </p>
+                                                                </div>
+                                                               
+                                                            </div>
+
                                                         </td>
+                                                        <td>0</td>
+                                                        <td> 0</td>
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                        <td> 0</td>
+
+                                                        <td>
+                                                            0%
+                                                        </td>
+                                                       
                                                         <td>
                                                             <button
                                                                 className="tableButton edit"
@@ -177,4 +196,4 @@ function Leads() {
     )
 }
 
-export default Leads
+export default Campaigns
