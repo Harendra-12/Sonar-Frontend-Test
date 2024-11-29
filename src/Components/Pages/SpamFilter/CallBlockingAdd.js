@@ -29,6 +29,20 @@ function CallBlockingAdd() {
                                             <p>Configure call blocking</p>
                                         </div>
                                         <div className="buttonGroup">
+                                            <div className="d-flex align-items-center">
+                                                <div className="formLabel py-0 me-2">
+                                                    <label htmlFor="selectFormRow">Enabled</label>
+                                                </div>
+                                                <div className="my-auto position-relative mx-1">
+                                                    <label className="switch">
+                                                        <input
+                                                            type="checkbox"
+                                                            id="showAllCheck"
+                                                        />
+                                                        <span className="slider round" />
+                                                    </label>
+                                                </div>
+                                            </div>
                                             <button
                                                 onClick={() => {
                                                     navigate(-1);
@@ -126,6 +140,9 @@ function CallBlockingAdd() {
                                                 className="formItem"
                                             >
                                                 <option>Reject</option>
+                                                <option>Hold</option>
+                                                <option>Busy</option>
+                                                <option>Voicemail</option>
                                             </select>
                                             {/* {errors.queue_name && (
                                                 <ErrorMessage text={errors.queue_name.message} />
@@ -152,9 +169,9 @@ function CallBlockingAdd() {
                                     </div>
                                     <div className="formRow col-xl-3">
                                         <div className="formLabel">
-                                            <label htmlFor="">Queue Name</label>
+                                            <label htmlFor="">DID</label>
                                             <label htmlFor="data" className="formItemDesc">
-                                                Enter the queue name.
+                                                Enter the DID.
                                             </label>
                                         </div>
                                         <div className="col-xl-6 col-12">
@@ -163,29 +180,6 @@ function CallBlockingAdd() {
                                                 name="extension"
                                                 className="formItem"
                                             />
-                                            {/* {errors.queue_name && (
-                                                <ErrorMessage text={errors.queue_name.message} />
-                                            )} */}
-                                        </div>
-                                    </div>
-                                    <div className="formRow col-xl-3">
-                                        <div className="formLabel">
-                                            <label htmlFor="">Enabled</label>
-                                            <label htmlFor="data" className="formItemDesc">
-                                                Set to true to enable call blocking from this number
-                                            </label>
-                                        </div>
-                                        <div className="col-xl-6 col-12">
-                                            <div className="my-auto position-relative mx-1">
-                                                <label className="switch">
-                                                    <input
-                                                        type="checkbox"
-                                                        // {...register("status")}
-                                                        id="showAllCheck"
-                                                    />
-                                                    <span className="slider round" />
-                                                </label>
-                                            </div>
                                             {/* {errors.queue_name && (
                                                 <ErrorMessage text={errors.queue_name.message} />
                                             )} */}
