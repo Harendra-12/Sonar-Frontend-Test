@@ -12,6 +12,7 @@ import Header from "../../CommonComponents/Header";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import ContentLoader from "../../Loader/ContentLoader";
 
 function Roles() {
   const dispatch = useDispatch();
@@ -54,13 +55,19 @@ function Roles() {
   // }, [refresh]);
 
   useEffect(() => {
+    if (roles.length === 0) {
+      setLoading(true);
+    }
     dispatch({
       type: "SET_ROLES_PERMISSIONREFRESH",
       rolesAndPermissionRefresh: rolesAndPermissionRefresh + 1,
     });
   }, []);
-
+  console.log("roles", roles);
   useEffect(() => {
+    if (roles.length > 0) {
+      setLoading(false);
+    }
     setRole(roles);
     setDefaultPermission(permissions);
   }, [roles, permissions, rolesAndPermissionRefresh]);
@@ -266,6 +273,7 @@ function Roles() {
       }
       `}
       </style>
+
       <main className="mainContent">
         <section id="phonePage">
           <div className="container-fluid">
@@ -273,7 +281,6 @@ function Roles() {
               <Header title="Roles" />
             </div>
           </div>
-
           <div className="col-xl-12">
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
