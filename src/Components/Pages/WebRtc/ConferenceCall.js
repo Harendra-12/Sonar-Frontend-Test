@@ -5,7 +5,7 @@ import { useSessionCall } from "react-sipjs";
 import { SessionState } from "sip.js";
 import { toast } from "react-toastify";
 
-function ConferenceCall() {
+function ConferenceCall({ setConferenceToggle }) {
   const dispatch = useDispatch();
   const [conferenceArray, setConferenceArray] = useState([
     {
@@ -108,7 +108,12 @@ function ConferenceCall() {
                 <div className="newHeader">
                   <div className="col-auto" style={{ padding: "0 10px" }}>
                     <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
-                      <button class="clearButton text-dark">
+                      <button
+                        class="clearButton text-dark"
+                        onClick={() => {
+                          setConferenceToggle(false);
+                        }}
+                      >
                         <i class="fa-solid fa-caret-left fs-4"></i>
                       </button>{" "}
                       Conference{" "}

@@ -6,6 +6,7 @@ import {
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../../Loader/CircularLoader";
+import ConferenceCall from "./ConferenceCall";
 
 const ConferenceConfig = () => {
   const [conferenceName, setConferenceName] = useState("");
@@ -19,6 +20,7 @@ const ConferenceConfig = () => {
   const [moh, setMoh] = useState([]);
   const [allConferences, setAllConferences] = useState([]);
   const [conferenceRefresh, setConferenceRefresh] = useState(0);
+  const [conferenceToggle, setConferenceToggle] = useState(false);
 
   useEffect(() => {
     async function getData() {
@@ -64,7 +66,8 @@ const ConferenceConfig = () => {
         conf_max_members: members,
         pin_retries: retryCount,
         moderator_pin: String(moderatorPin),
-        nopin: conferenceType === "public" ? "0" : "1",
+        nopin: conferenceType !== "private" ? "0" : "1",
+        conf_type: conferenceType,
         moh_sound: moh,
         participate_pin: String(participantPin),
       };
@@ -82,388 +85,420 @@ const ConferenceConfig = () => {
   }
   console.log(allConferences.data);
   return (
-    <main className="mainContent">
-      <section id="phonePage">
-        <div className="container-fluid px-0">
-          <Header title="Conference Settings" />
-        </div>
-        <div className="col-xl-12">
-          {loading ? (
-            <div colSpan={99}>
-              <CircularLoader />
+    <>
+      {conferenceToggle ? (
+        <ConferenceCall setConferenceToggle={setConferenceToggle} />
+      ) : (
+        <main className="mainContent">
+          <section id="phonePage">
+            <div className="container-fluid px-0">
+              <Header title="Conference Settings" />
             </div>
-          ) : (
-            ""
-          )}
-          <div className="overviewTableWrapper">
-            <div className="overviewTableChild">
-              <div className="d-flex flex-wrap">
-                <div className="col-12">
-                  <div className="heading">
-                    <div className="content">
-                      <h4>Create / Join a Conference</h4>
-                      <p>An extension is a destinations that can be called.</p>
+            <div className="col-xl-12">
+              {loading ? (
+                <div colSpan={99}>
+                  <CircularLoader />
+                </div>
+              ) : (
+                ""
+              )}
+              <div className="overviewTableWrapper">
+                <div className="overviewTableChild">
+                  <div className="d-flex flex-wrap">
+                    <div className="col-12">
+                      <div className="heading">
+                        <div className="content">
+                          <h4>Create / Join a Conference</h4>
+                          <p>
+                            An extension is a destinations that can be called.
+                          </p>
+                        </div>
+                        <div className="buttonGroup">
+                          <button
+                            type="button"
+                            effect="ripple"
+                            className="panelButton gray"
+                          >
+                            <span className="text">Back</span>
+                            <span className="icon">
+                              <i class="fa-solid fa-caret-left"></i>
+                            </span>
+                          </button>
+                          <button
+                            type="button"
+                            effect="ripple"
+                            className="panelButton"
+                            onClick={handleSubmit}
+                          >
+                            <span className="text">Save</span>
+                            <span className="icon">
+                              <i class="fa-solid fa-floppy-disk"></i>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                    <div className="buttonGroup">
-                      <button
-                        type="button"
-                        effect="ripple"
-                        className="panelButton gray"
-                      >
-                        <span className="text">Back</span>
-                        <span className="icon">
-                          <i class="fa-solid fa-caret-left"></i>
-                        </span>
-                      </button>
-                      <button
-                        type="button"
-                        effect="ripple"
-                        className="panelButton"
-                        onClick={handleSubmit}
-                      >
-                        <span className="text">Save</span>
-                        <span className="icon">
-                          <i class="fa-solid fa-floppy-disk"></i>
-                        </span>
-                      </button>
+                    <div
+                      className="col-12"
+                      style={{
+                        padding: "25px 23px",
+                        borderBottom: "1px solid #ddd",
+                      }}
+                    >
+                      <form action="#" className="tangoNavs">
+                        <nav>
+                          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            {allConferences?.data?.length &&
+                            allConferences?.data?.length > 0 ? (
+                              <button
+                                class="nav-link "
+                                id="nav-all-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#nav-all"
+                                type="button"
+                                role="tab"
+                                aria-controls="nav-all"
+                                aria-selected="true"
+                              >
+                                All
+                              </button>
+                            ) : (
+                              ""
+                            )}
+
+                            <button
+                              class="nav-link "
+                              id="nav-gen-tab"
+                              data-bs-toggle="tab"
+                              data-bs-target="#nav-gen"
+                              type="button"
+                              role="tab"
+                              aria-controls="nav-gen"
+                              aria-selected="true"
+                            >
+                              Create
+                            </button>
+                            <button
+                              class="nav-link "
+                              id="nav-voicemail-tab"
+                              data-bs-toggle="tab"
+                              data-bs-target="#nav-voicemail"
+                              type="button"
+                              role="tab"
+                              aria-controls="nav-voicemail"
+                              aria-selected="false"
+                            >
+                              Join
+                            </button>
+                          </div>
+                        </nav>
+                        <div class="tab-content" id="nav-tabContent">
+                          <div
+                            class="tab-pane fade"
+                            id="nav-all"
+                            role="tabpanel"
+                            aria-labelledby="nav-all"
+                            tabindex="0"
+                          >
+                            <div className="tableContainer">
+                              <table>
+                                <thead>
+                                  <tr>
+                                    <th>Conference Name</th>
+                                    <th>Max. Members</th>
+                                    <th>Conference ID</th>
+                                    <th>Moderator Pin</th>
+                                    <th>Joining Pin</th>
+                                    <th>Delete</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <>
+                                    {allConferences &&
+                                      allConferences?.data?.map((item) => {
+                                        return (
+                                          <tr>
+                                            <td>{item.conf_name}</td>
+                                            <td>{item.conf_max_members}</td>
+                                            <td>{item.conf_ext}</td>
+                                            <td>{item.moderator_pin}</td>
+                                            <td>{item.participate_pin}</td>
+                                            <td>
+                                              <button
+                                                className="tableButton delete"
+                                                onClick={() => {
+                                                  // setPopUp(true);
+                                                  // setDeleteToggle(true);
+                                                  // setDeleteId(item.id);
+                                                }}
+                                              >
+                                                <i class="fa-solid fa-trash"></i>
+                                              </button>
+                                            </td>
+                                            <td>
+                                              <button
+                                                className="tableButton bg-success p-3"
+                                                onClick={() => {
+                                                  setConferenceToggle(true);
+                                                  // setPopUp(true);
+                                                  // setDeleteToggle(true);
+                                                  // setDeleteId(item.id);
+                                                }}
+                                              >
+                                                Join
+                                                {/* <i class="fa-solid fa-trash"></i> */}
+                                              </button>
+                                            </td>
+                                          </tr>
+                                        );
+                                      })}{" "}
+                                  </>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                          <div
+                            class="tab-pane fade show active"
+                            id="nav-gen"
+                            role="tabpanel"
+                            aria-labelledby="nav-gen-tab"
+                            tabindex="0"
+                          >
+                            <form className="col-12 mx-auto">
+                              <div className="formRow col-xl-3">
+                                <div className="formLabel">
+                                  <label htmlFor="">Conference Name</label>
+                                  <label
+                                    htmlFor="data"
+                                    className="formItemDesc"
+                                  >
+                                    Name of the conference
+                                  </label>
+                                </div>
+                                <div className="col-xl-6 col-12">
+                                  <input
+                                    type="text"
+                                    name="extension"
+                                    className="formItem"
+                                    onChange={(e) =>
+                                      setConferenceName(e.target.value)
+                                    }
+                                    value={conferenceName}
+                                  />
+                                </div>
+                              </div>
+                              <div className="formRow col-xl-3">
+                                <div className="formLabel">
+                                  <label htmlFor="">Conference Type</label>
+                                  <label
+                                    htmlFor="data"
+                                    className="formItemDesc"
+                                  >
+                                    Define type for the conference so that
+                                    participants can join accordingly
+                                  </label>
+                                </div>
+                                <div className="col-xl-6 col-12">
+                                  <select
+                                    className="formItem"
+                                    onChange={(e) =>
+                                      setConferenceType(e.target.value)
+                                    }
+                                    value={conferenceType}
+                                  >
+                                    <option value="public">Public</option>
+                                    <option value="private">Private</option>
+                                    <option value="webiner">webiner</option>
+                                  </select>
+                                </div>
+                              </div>
+                              {conferenceType !== "private" ? (
+                                ""
+                              ) : (
+                                <>
+                                  <div className="formRow col-xl-3">
+                                    <div className="formLabel">
+                                      <label htmlFor="">Conference pin</label>
+                                      <label
+                                        htmlFor="data"
+                                        className="formItemDesc"
+                                      >
+                                        Share this pin with participants
+                                      </label>
+                                    </div>
+                                    <div className="col-xl-6 col-12">
+                                      <input
+                                        type="number"
+                                        name="extension"
+                                        className="formItem"
+                                        onChange={(e) =>
+                                          setParticipantPin(e.target.value)
+                                        }
+                                        value={participantPin}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="formRow col-xl-3">
+                                    <div className="formLabel">
+                                      <label htmlFor="">Retry attempts</label>
+                                      <label
+                                        htmlFor="data"
+                                        className="formItemDesc"
+                                      >
+                                        Number of times participant can retry
+                                        joining
+                                      </label>
+                                    </div>
+                                    <div className="col-xl-6 col-12">
+                                      <input
+                                        type="number"
+                                        name="extension"
+                                        className="formItem"
+                                        onChange={(e) =>
+                                          setRetryCount(e.target.value)
+                                        }
+                                        value={retryCount}
+                                      />
+                                    </div>
+                                  </div>
+                                </>
+                              )}
+                              <div className="formRow col-xl-3">
+                                <div className="formLabel">
+                                  <label htmlFor="">Music on hold</label>
+                                  <label
+                                    htmlFor="data"
+                                    className="formItemDesc"
+                                  >
+                                    Select music that will be played on hold
+                                  </label>
+                                </div>
+                                <div className="col-xl-6 col-12">
+                                  <select
+                                    type="number"
+                                    name="extension"
+                                    className="formItem"
+                                    onChange={(e) => setMoh(e.target.value)}
+                                    value={moh}
+                                  >
+                                    <option disabled value="" selected>
+                                      Select Hold Music
+                                    </option>
+                                    {holdSound &&
+                                      holdSound?.map((item, index) => {
+                                        return (
+                                          <option key={index} value={item.id}>
+                                            {item.name}
+                                          </option>
+                                        );
+                                      })}
+                                  </select>
+                                </div>
+                              </div>
+                              <div className="formRow col-xl-3">
+                                <div className="formLabel">
+                                  <label htmlFor="">Number of members</label>
+                                  <label
+                                    htmlFor="data"
+                                    className="formItemDesc"
+                                  >
+                                    Enter maximum number of members that can
+                                    join
+                                  </label>
+                                </div>
+                                <div className="col-xl-6 col-12">
+                                  <input
+                                    type="number"
+                                    name="extension"
+                                    className="formItem"
+                                    onChange={(e) => setMembers(e.target.value)}
+                                    value={members}
+                                  />
+                                </div>
+                              </div>
+                              <div className="formRow col-xl-3">
+                                <div className="formLabel">
+                                  <label htmlFor="">Moderator pin</label>
+                                  <label
+                                    htmlFor="data"
+                                    className="formItemDesc"
+                                  >
+                                    Set pin for moderators
+                                  </label>
+                                </div>
+                                <div className="col-xl-6 col-12">
+                                  <input
+                                    type="number"
+                                    name="extension"
+                                    className="formItem"
+                                    onChange={(e) =>
+                                      setModeratorPin(e.target.value)
+                                    }
+                                    value={moderatorPin}
+                                  />
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                          <div
+                            class="tab-pane fade "
+                            id="nav-voicemail"
+                            role="tabpanel"
+                            aria-labelledby="nav-voicemail-tab"
+                            tabindex="0"
+                          >
+                            <form className="col-12 mx-auto">
+                              <div className="formRow col-xl-3">
+                                <div className="formLabel">
+                                  <label htmlFor="">Conference ID</label>
+                                  <label
+                                    htmlFor="data"
+                                    className="formItemDesc"
+                                  >
+                                    Enter the conference ID to join.
+                                  </label>
+                                </div>
+                                <div className="col-xl-6 col-12">
+                                  <input
+                                    type="text"
+                                    name="extension"
+                                    className="formItem"
+                                  />
+                                </div>
+                              </div>
+                              <div className="formRow col-xl-3">
+                                <div className="formLabel">
+                                  <label htmlFor="selectFormRow">PIN</label>
+                                  <label
+                                    htmlFor="data"
+                                    className="formItemDesc"
+                                  >
+                                    Enter pin to join private conference.
+                                  </label>
+                                </div>
+                                <div className="col-xl-6 col-12">
+                                  <input
+                                    type="text"
+                                    name="extension"
+                                    className="formItem"
+                                  />
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                        <div />
+                      </form>
                     </div>
                   </div>
                 </div>
-                <div
-                  className="col-12"
-                  style={{
-                    padding: "25px 23px",
-                    borderBottom: "1px solid #ddd",
-                  }}
-                >
-                  <form action="#" className="tangoNavs">
-                    <nav>
-                      <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        {allConferences?.data?.length &&
-                          allConferences?.data?.length > 0 ? (
-                          <button
-                            class="nav-link "
-                            id="nav-all-tab"
-                            data-bs-toggle="tab"
-                            data-bs-target="#nav-all"
-                            type="button"
-                            role="tab"
-                            aria-controls="nav-all"
-                            aria-selected="true"
-                          >
-                            All
-                          </button>
-                        ) : (
-                          ""
-                        )}
-
-                        <button
-                          class="nav-link "
-                          id="nav-gen-tab"
-                          data-bs-toggle="tab"
-                          data-bs-target="#nav-gen"
-                          type="button"
-                          role="tab"
-                          aria-controls="nav-gen"
-                          aria-selected="true"
-                        >
-                          Create
-                        </button>
-                        <button
-                          class="nav-link "
-                          id="nav-voicemail-tab"
-                          data-bs-toggle="tab"
-                          data-bs-target="#nav-voicemail"
-                          type="button"
-                          role="tab"
-                          aria-controls="nav-voicemail"
-                          aria-selected="false"
-                        >
-                          Join
-                        </button>
-                      </div>
-                    </nav>
-                    <div class="tab-content" id="nav-tabContent">
-                      <div
-                        class="tab-pane fade"
-                        id="nav-all"
-                        role="tabpanel"
-                        aria-labelledby="nav-all"
-                        tabindex="0"
-                      >
-                        <div className="tableContainer">
-                          <table>
-                            <thead>
-                              <tr>
-                                <th>Conference Name</th>
-                                <th>Max. Members</th>
-                                <th>Conference ID</th>
-                                <th>Moderator Pin</th>
-                                <th>Joining Pin</th>
-                                <th>Delete</th>
-                                <th>Action</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <>
-                                {allConferences &&
-                                  allConferences?.data?.map((item) => {
-                                    return (
-                                      <tr>
-                                        <td>{item.conf_name}</td>
-                                        <td>{item.conf_max_members}</td>
-                                        <td>{item.conf_ext}</td>
-                                        <td>{item.moderator_pin}</td>
-                                        <td>{item.participate_pin}</td>
-                                        <td>
-                                          <button
-                                            className="tableButton delete"
-                                            onClick={() => {
-                                              // setPopUp(true);
-                                              // setDeleteToggle(true);
-                                              // setDeleteId(item.id);
-                                            }}
-                                          >
-                                            <i class="fa-solid fa-trash"></i>
-                                          </button>
-                                        </td>
-                                        <td>
-                                          <button
-                                            className="tableButton bg-success"
-                                            onClick={() => {
-                                              // setPopUp(true);
-                                              // setDeleteToggle(true);
-                                              // setDeleteId(item.id);
-                                            }}
-                                          >
-                                            Join
-                                            {/* <i class="fa-solid fa-trash"></i> */}
-                                          </button>
-                                        </td>
-                                      </tr>
-                                    );
-                                  })}{" "}
-                              </>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                      <div
-                        class="tab-pane fade show active"
-                        id="nav-gen"
-                        role="tabpanel"
-                        aria-labelledby="nav-gen-tab"
-                        tabindex="0"
-                      >
-                        <form className="col-12 mx-auto">
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="">Conference Name</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Name of the conference
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                                onChange={(e) =>
-                                  setConferenceName(e.target.value)
-                                }
-                                value={conferenceName}
-                              />
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="">Conference Type</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Define type for the conference so that
-                                participants can join accordingly
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <select
-                                className="formItem"
-                                onChange={(e) =>
-                                  setConferenceType(e.target.value)
-                                }
-                                value={conferenceType}
-                              >
-                                <option value="public">Public</option>
-                                <option value="private">Private</option>
-                              </select>
-                            </div>
-                          </div>
-                          {conferenceType === "public" ? (
-                            ""
-                          ) : (
-                            <>
-                              <div className="formRow col-xl-3">
-                                <div className="formLabel">
-                                  <label htmlFor="">Conference pin</label>
-                                  <label
-                                    htmlFor="data"
-                                    className="formItemDesc"
-                                  >
-                                    Share this pin with participants
-                                  </label>
-                                </div>
-                                <div className="col-xl-6 col-12">
-                                  <input
-                                    type="number"
-                                    name="extension"
-                                    className="formItem"
-                                    onChange={(e) =>
-                                      setParticipantPin(e.target.value)
-                                    }
-                                    value={participantPin}
-                                  />
-                                </div>
-                              </div>
-                              <div className="formRow col-xl-3">
-                                <div className="formLabel">
-                                  <label htmlFor="">Retry attempts</label>
-                                  <label
-                                    htmlFor="data"
-                                    className="formItemDesc"
-                                  >
-                                    Number of times participant can retry
-                                    joining
-                                  </label>
-                                </div>
-                                <div className="col-xl-6 col-12">
-                                  <input
-                                    type="number"
-                                    name="extension"
-                                    className="formItem"
-                                    onChange={(e) =>
-                                      setRetryCount(e.target.value)
-                                    }
-                                    value={retryCount}
-                                  />
-                                </div>
-                              </div>
-                            </>
-                          )}
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="">Music on hold</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Select music that will be played on hold
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <select
-                                type="number"
-                                name="extension"
-                                className="formItem"
-                                onChange={(e) => setMoh(e.target.value)}
-                                value={moh}
-                              >
-                                <option disabled value="" selected>
-                                  Select Hold Music
-                                </option>
-                                {holdSound &&
-                                  holdSound?.map((item, index) => {
-                                    return (
-                                      <option key={index} value={item.id}>
-                                        {item.name}
-                                      </option>
-                                    );
-                                  })}
-                              </select>
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="">Number of members</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter maximum number of members that can join
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <input
-                                type="number"
-                                name="extension"
-                                className="formItem"
-                                onChange={(e) => setMembers(e.target.value)}
-                                value={members}
-                              />
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="">Moderator pin</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Set pin for moderators
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <input
-                                type="number"
-                                name="extension"
-                                className="formItem"
-                                onChange={(e) =>
-                                  setModeratorPin(e.target.value)
-                                }
-                                value={moderatorPin}
-                              />
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-                      <div
-                        class="tab-pane fade "
-                        id="nav-voicemail"
-                        role="tabpanel"
-                        aria-labelledby="nav-voicemail-tab"
-                        tabindex="0"
-                      >
-                        <form className="col-12 mx-auto">
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="">Conference ID</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter the conference ID to join.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                              />
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="selectFormRow">PIN</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter pin to join private conference.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                              />
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                    <div />
-                  </form>
-                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-    </main>
+          </section>
+        </main>
+      )}
+    </>
   );
 };
 
