@@ -324,3 +324,24 @@ form.tangoNavs .nav-tabs {
 /* form.row {
     justify-content: space-between;
 } */
+.deviceProvision.formRow {
+    justify-content: start;
+}
+
+.deviceProvision .formLabel {
+    margin-left: 20px;
+}
+
+.deviceProvision .formLabel h5 {
+    margin-bottom: 5px;
+}
+
+.deviceProvision .formLabel p {
+    margin-bottom: 2px;
+}
+
+.deviceProvision img {
+    width: 100%;
+}
+
+.deviceProvisionDetails {}

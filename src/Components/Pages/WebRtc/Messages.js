@@ -192,7 +192,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
 
   // Logic to send message
   const sendMessage = () => {
-    if(messageInput.trim() === '') return
+    if (messageInput.trim() === '') return
     if (isSIPReady) {
       const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
       const userAgent = sipProvider?.sessionManager?.userAgent;
@@ -239,7 +239,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
               id: agentDetails.id,
               extension_id: agentDetails.extension_id,
               extension: recipient[0],
-              last_message_data: {message_text: messageInput, created_at: time},
+              last_message_data: { message_text: messageInput, created_at: time },
             });
           }
           setMessageInput("");
@@ -373,7 +373,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
           message?.incomingMessageRequest?.message?.getHeader("Content-Type");
 
         // Get the current time when the message is received
-         // Or use .toISOString() for UTC format
+        // Or use .toISOString() for UTC format
 
         // Check if the content is an image
 
@@ -413,7 +413,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
           }
 
           // Update contact last message
-           const contactIndex = contact.findIndex(
+          const contactIndex = contact.findIndex(
             (contact) => contact.extension === recipient[0]
           );
           if (contactIndex !== -1) {
@@ -1411,6 +1411,19 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                                 aria-selected="true"
                               >
                                 IM
+                              </button>
+                              <button
+                                class="tabLink"
+                                id="nav-sms-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#nav-whatsapp"
+                                type="button"
+                                role="tab"
+                                aria-controls="nav-whatsapp"
+                                aria-selected="false"
+                                disabled
+                              >
+                                SMS
                               </button>
                               <button
                                 class="tabLink"
