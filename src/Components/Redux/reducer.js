@@ -54,6 +54,7 @@ var deviceProvisioning = [];
 var deviceProvisioningRefresh = 0;
 var minimize = false;
 var updateBalance = 0;
+var selectedCdrFilter = "";
 
 const initialState = {
   account,
@@ -111,6 +112,7 @@ const initialState = {
   deviceProvisioningRefresh,
   minimize,
   updateBalance,
+  selectedCdrFilter,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -238,6 +240,11 @@ const counterReducer = (state = initialState, action) => {
       return {
         ...state,
         updateBalance: action.updateBalance,
+      };
+    case "SET_SELECTEDCDRFILTER":
+      return {
+        ...state,
+        selectedCdrFilter: action.selectedCdrFilter,
       };
     default:
       return state;

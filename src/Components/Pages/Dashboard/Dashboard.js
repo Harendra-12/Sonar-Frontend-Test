@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
 import React, { useEffect, useMemo, useState } from "react";
-import Clock from 'react-clock';
+import Clock from "react-clock";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
 import DoughnutChart from "../../CommonComponents/DoughnutChart";
 import GraphChart from "../../CommonComponents/GraphChart";
 import { Link, useNavigate } from "react-router-dom";
-import 'react-clock/dist/Clock.css';
+import "react-clock/dist/Clock.css";
 const Dashboard = () => {
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
@@ -392,8 +392,13 @@ const Dashboard = () => {
     }
   };
 
-  console.log(account);
-
+  const handleMissedCallClick = () => {
+    dispatch({
+      type: "SET_SELECTEDCDRFILTER",
+      selectedCdrFilter: "missed-calls",
+    });
+    navigate("/cdr-report");
+  };
 
   return (
     <main className="mainContent">
@@ -719,7 +724,8 @@ const Dashboard = () => {
                   tabIndex="0"
                 >
                   <div className="row">
-                    <div className="col-xl-3 mb-3 mb-xl-0"
+                    <div
+                      className="col-xl-3 mb-3 mb-xl-0"
                       style={{ cursor: "pointer" }}
                     >
                       <div className="itemWrapper a">
@@ -737,7 +743,7 @@ const Dashboard = () => {
                               </p>
                             </div>
                             <div className="col-2">
-                              <i className="fa-duotone fa-earth-americas" ></i>
+                              <i className="fa-duotone fa-earth-americas"></i>
                             </div>
                           </div>
                         </div>
@@ -750,13 +756,23 @@ const Dashboard = () => {
                               <p>TimeZone: {accountDetails?.timezone?.name}</p>
                             </div>
                             <div className="col-2">
-                              <Clock value={currentTime} size={50} secondHandWidth={1} renderMinuteMarks={false} hourMarksWidth={1} hourMarksLength={15} hourHandWidth={2} minuteHandWidth={1} />
+                              <Clock
+                                value={currentTime}
+                                size={50}
+                                secondHandWidth={1}
+                                renderMinuteMarks={false}
+                                hourMarksWidth={1}
+                                hourMarksLength={15}
+                                hourHandWidth={2}
+                                minuteHandWidth={1}
+                              />
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="col-xl-3 mb-3 mb-xl-0"
+                    <div
+                      className="col-xl-3 mb-3 mb-xl-0"
                       style={{ cursor: "pointer" }}
                     >
                       <div className="itemWrapper a">
@@ -766,8 +782,11 @@ const Dashboard = () => {
                               <h5>Account Info</h5>
                               <p>Click to view details</p>
                             </div>
-                            <div className="col-2" onClick={() => navigate("/my-profile")}>
-                              <i className="fa-solid fa-user" ></i>
+                            <div
+                              className="col-2"
+                              onClick={() => navigate("/my-profile")}
+                            >
+                              <i className="fa-solid fa-user"></i>
                             </div>
                           </div>
                         </div>
@@ -789,7 +808,8 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-xl-3 mb-3 mb-xl-0"
+                    <div
+                      className="col-xl-3 mb-3 mb-xl-0"
                       style={{ cursor: "pointer" }}
                     >
                       <div className="itemWrapper a">
@@ -799,8 +819,11 @@ const Dashboard = () => {
                               <h5>Package Information</h5>
                               <p>Click to view details</p>
                             </div>
-                            <div className="col-2" onClick={() => navigate('/card-details')}>
-                              <i className="fa-duotone fa-file" ></i>
+                            <div
+                              className="col-2"
+                              onClick={() => navigate("/card-details")}
+                            >
+                              <i className="fa-duotone fa-file"></i>
                             </div>
                           </div>
                         </div>
@@ -809,8 +832,13 @@ const Dashboard = () => {
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
                               <h5>{accountDetails?.package?.name}</h5>
-                              <p>{accountDetails?.package?.regular_price} / Year</p>
-                              <p>{accountDetails?.extensions?.length} Purchased Extensions / {accountDetails?.dids?.length} DIDs</p>
+                              <p>
+                                {accountDetails?.package?.regular_price} / Year
+                              </p>
+                              <p>
+                                {accountDetails?.extensions?.length} Purchased
+                                Extensions / {accountDetails?.dids?.length} DIDs
+                              </p>
                             </div>
                             <div className="col-2">
                               <img
@@ -822,7 +850,8 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-xl-3 mb-3 mb-xl-0"
+                    <div
+                      className="col-xl-3 mb-3 mb-xl-0"
                       style={{ cursor: "pointer" }}
                     >
                       <div className="itemWrapper a">
@@ -832,7 +861,7 @@ const Dashboard = () => {
                               <h5>Domain Info</h5>
                             </div>
                             <div className="col-2">
-                              <i className="fa-duotone fa-globe" ></i>
+                              <i className="fa-duotone fa-globe"></i>
                             </div>
                           </div>
                         </div>
@@ -841,7 +870,15 @@ const Dashboard = () => {
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
                               <h5>{account?.domain?.domain_name}</h5>
-                              <p>Created at: {account?.domain?.created_at?.split("T")[0]},{" "}{account?.domain?.created_at?.split("T")[1]?.split('.')[0]}</p>
+                              <p>
+                                Created at:{" "}
+                                {account?.domain?.created_at?.split("T")[0]},{" "}
+                                {
+                                  account?.domain?.created_at
+                                    ?.split("T")[1]
+                                    ?.split(".")[0]
+                                }
+                              </p>
                             </div>
                             <div className="col-2">
                               <img
@@ -864,8 +901,13 @@ const Dashboard = () => {
                                   <h5>Payment Details</h5>
                                   <p>Click to view transaction history</p>
                                 </div>
-                                <div className="col-2" onClick={() => navigate('/card-transaction-list')}>
-                                  <i class="fa-solid fa-file-invoice" ></i>
+                                <div
+                                  className="col-2"
+                                  onClick={() =>
+                                    navigate("/card-transaction-list")
+                                  }
+                                >
+                                  <i class="fa-solid fa-file-invoice"></i>
                                 </div>
                               </div>
                             </div>
@@ -874,16 +916,38 @@ const Dashboard = () => {
                                 <div className="col-12">
                                   <ul>
                                     <li>
-                                      Time of Payment <span className="float-end">{accountDetails?.subscription[0]?.updated_at?.split("T")[0]}, {" "}{accountDetails?.subscription[0]?.updated_at?.split("T")[1]?.split(".")[0]}</span>
+                                      Time of Payment{" "}
+                                      <span className="float-end">
+                                        {
+                                          accountDetails?.subscription[0]?.updated_at?.split(
+                                            "T"
+                                          )[0]
+                                        }
+                                        ,{" "}
+                                        {
+                                          accountDetails?.subscription[0]?.updated_at
+                                            ?.split("T")[1]
+                                            ?.split(".")[0]
+                                        }
+                                      </span>
                                     </li>
                                     <li>
-                                      Subscription Type <span className="float-end">{accountDetails?.package?.subscription_type ===
-                                        "annually"
-                                        ? "Annually"
-                                        : "Monthly"}</span>
+                                      Subscription Type{" "}
+                                      <span className="float-end">
+                                        {accountDetails?.package
+                                          ?.subscription_type === "annually"
+                                          ? "Annually"
+                                          : "Monthly"}
+                                      </span>
                                     </li>
                                     <li>
-                                      Transaction Id <span className="float-end">{accountDetails?.subscription[0]?.transaction_id}</span>
+                                      Transaction Id{" "}
+                                      <span className="float-end">
+                                        {
+                                          accountDetails?.subscription[0]
+                                            ?.transaction_id
+                                        }
+                                      </span>
                                     </li>
                                   </ul>
                                 </div>
@@ -899,8 +963,11 @@ const Dashboard = () => {
                                   <h5>Subscription Details</h5>
                                   <p>Click the icon to view it</p>
                                 </div>
-                                <div className="col-2" onClick={() => navigate('/card-details')}>
-                                  <i class="fa-duotone fa-money-check-dollar-pen" ></i>
+                                <div
+                                  className="col-2"
+                                  onClick={() => navigate("/card-details")}
+                                >
+                                  <i class="fa-duotone fa-money-check-dollar-pen"></i>
                                 </div>
                               </div>
                             </div>
@@ -909,13 +976,45 @@ const Dashboard = () => {
                                 <div className="col-12">
                                   <ul>
                                     <li>
-                                      Subscription Status <span className="float-end">{accountDetails?.subscription[0]?.status}</span>
+                                      Subscription Status{" "}
+                                      <span className="float-end">
+                                        {
+                                          accountDetails?.subscription[0]
+                                            ?.status
+                                        }
+                                      </span>
                                     </li>
                                     <li>
-                                      Subscription Start <span className="float-end">{accountDetails?.subscription[0]?.start_date?.split(" ")[0]},{" "}{accountDetails?.subscription[0]?.start_date?.split(" ")[1]}</span>
+                                      Subscription Start{" "}
+                                      <span className="float-end">
+                                        {
+                                          accountDetails?.subscription[0]?.start_date?.split(
+                                            " "
+                                          )[0]
+                                        }
+                                        ,{" "}
+                                        {
+                                          accountDetails?.subscription[0]?.start_date?.split(
+                                            " "
+                                          )[1]
+                                        }
+                                      </span>
                                     </li>
                                     <li>
-                                      Subscription End <span className="float-end">{accountDetails?.subscription[0]?.end_date?.split(" ")[0]},{" "}{accountDetails?.subscription[0]?.end_date?.split(" ")[1]}</span>
+                                      Subscription End{" "}
+                                      <span className="float-end">
+                                        {
+                                          accountDetails?.subscription[0]?.end_date?.split(
+                                            " "
+                                          )[0]
+                                        }
+                                        ,{" "}
+                                        {
+                                          accountDetails?.subscription[0]?.end_date?.split(
+                                            " "
+                                          )[1]
+                                        }
+                                      </span>
                                     </li>
                                   </ul>
                                 </div>
@@ -929,24 +1028,52 @@ const Dashboard = () => {
                               <div className="d-flex flex-wrap justify-content-between align-items-center">
                                 <div className="col-10">
                                   <h5>Extensions</h5>
-                                  <p>Total: {accountDetails?.extensions?.length} Registered</p>
+                                  <p>
+                                    Total: {accountDetails?.extensions?.length}{" "}
+                                    Registered
+                                  </p>
                                 </div>
-                                <div className="col-2" onClick={() => navigate('/extensions')}>
-                                  <i class="fa-duotone fa-phone-office" ></i>
+                                <div
+                                  className="col-2"
+                                  onClick={() => navigate("/extensions")}
+                                >
+                                  <i class="fa-duotone fa-phone-office"></i>
                                 </div>
                               </div>
                             </div>
                             <div className="data-number2">
                               <div className="d-flex flex-wrap justify-content-between align-items-center">
                                 <div className="col-12">
-                                  <ul style={{ overflowY: 'scroll', height: '200px', paddingRight: 10 }}>
+                                  <ul
+                                    style={{
+                                      overflowY: "scroll",
+                                      height: "200px",
+                                      paddingRight: 10,
+                                    }}
+                                  >
                                     {accountDetails?.extensions?.map(
                                       (item, index) => (
-                                        <li key={index} onClick={() => navigate(`/extensions-edit?id=${item?.id}`)}>
+                                        <li
+                                          key={index}
+                                          onClick={() =>
+                                            navigate(
+                                              `/extensions-edit?id=${item?.id}`
+                                            )
+                                          }
+                                        >
                                           {item?.extension}
-                                          <span className={onlineExtension?.includes(item?.extension) ? "float-end extensionStatus online" : "float-end extensionStatus"}></span>
+                                          <span
+                                            className={
+                                              onlineExtension?.includes(
+                                                item?.extension
+                                              )
+                                                ? "float-end extensionStatus online"
+                                                : "float-end extensionStatus"
+                                            }
+                                          ></span>
                                         </li>
-                                      ))}
+                                      )
+                                    )}
                                   </ul>
                                 </div>
                               </div>
@@ -1064,7 +1191,10 @@ const Dashboard = () => {
                               </p>
                             </div>
                             <div className="col-2">
-                              <i className="fa-duotone fa-phone-missed"></i>
+                              <i
+                                onClick={() => handleMissedCallClick()}
+                                className="fa-duotone fa-phone-missed"
+                              ></i>
                             </div>
                           </div>
                         </div>
@@ -1181,7 +1311,10 @@ const Dashboard = () => {
                         <div className="col-xl-6 mb-3 mb-xl-0">
                           <div className="wrapper">
                             <GraphChart
-                              fields={["Available Extension", "Registered Extension"]}
+                              fields={[
+                                "Available Extension",
+                                "Registered Extension",
+                              ]}
                               percentage={[
                                 accountDetails?.package?.number_of_user,
                                 extensionList,
@@ -1204,7 +1337,8 @@ const Dashboard = () => {
                   tabIndex="0"
                 >
                   <div className="row">
-                    <div className="col-xl-3 mb-3 mb-xl-0"
+                    <div
+                      className="col-xl-3 mb-3 mb-xl-0"
                       style={{ cursor: "pointer" }}
                     >
                       <div className="itemWrapper a">
@@ -1215,7 +1349,7 @@ const Dashboard = () => {
                               <p>Click to view details</p>
                             </div>
                             <div className="col-2">
-                              <i className="fa-duotone fa-cube" ></i>
+                              <i className="fa-duotone fa-cube"></i>
                             </div>
                           </div>
                         </div>
@@ -1224,8 +1358,22 @@ const Dashboard = () => {
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
                               <h5>{accountDetails?.package.name}</h5>
-                              <p>Price: ${accountDetails?.package?.regular_price} / {accountDetails?.package?.subscription_type === "annually" ? "Anually" : "Monthly"}</p>
-                              <p>Started On: {accountDetails?.subscription?.[0]?.created_at?.split("T")[0]}</p>
+                              <p>
+                                Price: ${accountDetails?.package?.regular_price}{" "}
+                                /{" "}
+                                {accountDetails?.package?.subscription_type ===
+                                "annually"
+                                  ? "Anually"
+                                  : "Monthly"}
+                              </p>
+                              <p>
+                                Started On:{" "}
+                                {
+                                  accountDetails?.subscription?.[0]?.created_at?.split(
+                                    "T"
+                                  )[0]
+                                }
+                              </p>
                             </div>
                             <div className="col-2">
                               <img
@@ -1243,10 +1391,21 @@ const Dashboard = () => {
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
                               <h5>Upcoming Transaction</h5>
-                              <p>{accountDetails?.subscription[0].end_date?.split(" ")[0]}</p>
+                              <p>
+                                {
+                                  accountDetails?.subscription[0].end_date?.split(
+                                    " "
+                                  )[0]
+                                }
+                              </p>
                             </div>
-                            <div className="col-2" onClick={() => { navigate('/card-details') }}>
-                              <i className="fa-duotone fa-money-check-dollar" ></i>
+                            <div
+                              className="col-2"
+                              onClick={() => {
+                                navigate("/card-details");
+                              }}
+                            >
+                              <i className="fa-duotone fa-money-check-dollar"></i>
                             </div>
                           </div>
                         </div>
@@ -1257,9 +1416,10 @@ const Dashboard = () => {
                               <h5>${accountDetails?.package?.regular_price}</h5>
                               <p>
                                 {accountDetails?.package?.subscription_type ===
-                                  "annually"
+                                "annually"
                                   ? "Annually"
-                                  : "Monthly"} Basis
+                                  : "Monthly"}{" "}
+                                Basis
                               </p>
                             </div>
                             <div className="col-2">
@@ -1282,8 +1442,11 @@ const Dashboard = () => {
                                 #{accountDetails?.payments[0]?.transaction_id}
                               </p>
                             </div>
-                            <div className="col-2" onClick={() => navigate('/card-transaction-list')}>
-                              <i class="fa-solid fa-dollar-sign" ></i>
+                            <div
+                              className="col-2"
+                              onClick={() => navigate("/card-transaction-list")}
+                            >
+                              <i class="fa-solid fa-dollar-sign"></i>
                             </div>
                           </div>
                         </div>
@@ -1291,8 +1454,13 @@ const Dashboard = () => {
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
-                              <h5>${accountDetails?.payments[0]?.amount_subtotal}</h5>
-                              <p>Transaction Time: {accountDetails?.payments[0]?.transaction_date}</p>
+                              <h5>
+                                ${accountDetails?.payments[0]?.amount_subtotal}
+                              </h5>
+                              <p>
+                                Transaction Time:{" "}
+                                {accountDetails?.payments[0]?.transaction_date}
+                              </p>
                             </div>
                             <div className="col-2">
                               <img
@@ -1311,10 +1479,30 @@ const Dashboard = () => {
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
                               <h5>Wallet Info</h5>
-                              {accountDetails?.balance?.created_at ? <p>Created On: {accountDetails?.balance?.created_at?.split("T")[0]},{" "}{accountDetails?.balance?.created_at?.split("T")[1]?.split(".")[0]}</p> : ""}
+                              {accountDetails?.balance?.created_at ? (
+                                <p>
+                                  Created On:{" "}
+                                  {
+                                    accountDetails?.balance?.created_at?.split(
+                                      "T"
+                                    )[0]
+                                  }
+                                  ,{" "}
+                                  {
+                                    accountDetails?.balance?.created_at
+                                      ?.split("T")[1]
+                                      ?.split(".")[0]
+                                  }
+                                </p>
+                              ) : (
+                                ""
+                              )}
                             </div>
-                            <div className="col-2" onClick={() => navigate('/card-details')}>
-                              <i className="fa-duotone fa-wallet" ></i>
+                            <div
+                              className="col-2"
+                              onClick={() => navigate("/card-details")}
+                            >
+                              <i className="fa-duotone fa-wallet"></i>
                             </div>
                           </div>
                         </div>
@@ -1323,9 +1511,24 @@ const Dashboard = () => {
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col-10">
                               <h5>${accountDetails?.balance?.amount || 0}</h5>
-                              {accountDetails?.balance?.updated_at ? <p>
-                                Last recharged: {accountDetails?.balance?.updated_at?.split("T")[0]},{" "}{accountDetails?.balance?.updated_at?.split("T")[1]?.split(".")[0]}
-                              </p> : ""}
+                              {accountDetails?.balance?.updated_at ? (
+                                <p>
+                                  Last recharged:{" "}
+                                  {
+                                    accountDetails?.balance?.updated_at?.split(
+                                      "T"
+                                    )[0]
+                                  }
+                                  ,{" "}
+                                  {
+                                    accountDetails?.balance?.updated_at
+                                      ?.split("T")[1]
+                                      ?.split(".")[0]
+                                  }
+                                </p>
+                              ) : (
+                                ""
+                              )}
                             </div>
                             <div className="col-2">
                               <img
@@ -1347,8 +1550,13 @@ const Dashboard = () => {
                                   <h5>Invoices</h5>
                                   <p>Last 5 invoices</p>
                                 </div>
-                                <div className="col-2" onClick={() => navigate('/card-transaction-list')}>
-                                  <i class="fa-duotone fa-file-invoice" ></i>
+                                <div
+                                  className="col-2"
+                                  onClick={() =>
+                                    navigate("/card-transaction-list")
+                                  }
+                                >
+                                  <i class="fa-duotone fa-file-invoice"></i>
                                 </div>
                               </div>
                             </div>
@@ -1356,10 +1564,20 @@ const Dashboard = () => {
                               <div className="d-flex flex-wrap justify-content-between align-items-center">
                                 <div className="col-12">
                                   <ul>
-                                    {accountDetails?.payments?.slice(0, 5).map(
-                                      (item, index) => (
-                                        <li key={index}>{item.transaction_date}
-                                          <span className="float-end fw-bold" onClick={() => downloadImage(item.invoice_url)}><i class="fa-solid fa-download text-warning"></i> ${item.amount_subtotal} </span>
+                                    {accountDetails?.payments
+                                      ?.slice(0, 5)
+                                      .map((item, index) => (
+                                        <li key={index}>
+                                          {item.transaction_date}
+                                          <span
+                                            className="float-end fw-bold"
+                                            onClick={() =>
+                                              downloadImage(item.invoice_url)
+                                            }
+                                          >
+                                            <i class="fa-solid fa-download text-warning"></i>{" "}
+                                            ${item.amount_subtotal}{" "}
+                                          </span>
                                         </li>
                                       ))}
                                   </ul>
@@ -1376,8 +1594,11 @@ const Dashboard = () => {
                                   <h5>Billing Address</h5>
                                   <p>Click the icon to change it</p>
                                 </div>
-                                <div className="col-2" onClick={() => navigate('/card-details')}>
-                                  <i class="fa-duotone fa-address-card" ></i>
+                                <div
+                                  className="col-2"
+                                  onClick={() => navigate("/card-details")}
+                                >
+                                  <i class="fa-duotone fa-address-card"></i>
                                 </div>
                               </div>
                             </div>
@@ -1386,25 +1607,72 @@ const Dashboard = () => {
                                 <div className="col-12">
                                   <ul>
                                     <li>
-                                      Full Name <span className="float-end">{accountDetails?.billing_address[0]?.fullname}</span>
+                                      Full Name{" "}
+                                      <span className="float-end">
+                                        {
+                                          accountDetails?.billing_address[0]
+                                            ?.fullname
+                                        }
+                                      </span>
                                     </li>
                                     <li>
-                                      Phone <span className="float-end">{accountDetails?.billing_address[0]?.contact_no}</span>
+                                      Phone{" "}
+                                      <span className="float-end">
+                                        {
+                                          accountDetails?.billing_address[0]
+                                            ?.contact_no
+                                        }
+                                      </span>
                                     </li>
                                     <li>
-                                      Email Address <span className="float-end">{accountDetails?.billing_address[0]?.email}</span>
+                                      Email Address{" "}
+                                      <span className="float-end">
+                                        {
+                                          accountDetails?.billing_address[0]
+                                            ?.email
+                                        }
+                                      </span>
                                     </li>
                                     <li>
-                                      Address <span className="float-end">{accountDetails?.billing_address[0]?.address}</span>
+                                      Address{" "}
+                                      <span className="float-end">
+                                        {
+                                          accountDetails?.billing_address[0]
+                                            ?.address
+                                        }
+                                      </span>
                                     </li>
                                     <li>
-                                      City, State<span className="float-end">{accountDetails?.billing_address[0]?.city},{" "}{accountDetails?.billing_address[0]?.state}</span>
+                                      City, State
+                                      <span className="float-end">
+                                        {
+                                          accountDetails?.billing_address[0]
+                                            ?.city
+                                        }
+                                        ,{" "}
+                                        {
+                                          accountDetails?.billing_address[0]
+                                            ?.state
+                                        }
+                                      </span>
                                     </li>
                                     <li>
-                                      Zip Code <span className="float-end">{accountDetails?.billing_address[0]?.zip}</span>
+                                      Zip Code{" "}
+                                      <span className="float-end">
+                                        {
+                                          accountDetails?.billing_address[0]
+                                            ?.zip
+                                        }
+                                      </span>
                                     </li>
                                     <li>
-                                      Country <span className="float-end">{accountDetails?.billing_address[0]?.country}</span>
+                                      Country{" "}
+                                      <span className="float-end">
+                                        {
+                                          accountDetails?.billing_address[0]
+                                            ?.country
+                                        }
+                                      </span>
                                     </li>
                                   </ul>
                                 </div>
@@ -1427,8 +1695,11 @@ const Dashboard = () => {
                                     , {new Date().getFullYear()}
                                   </p>
                                 </div>
-                                <div class="col-2" onClick={() => navigate('/card-details')}>
-                                  <i class="fa-solid fa-gauge-simple-high" ></i>
+                                <div
+                                  class="col-2"
+                                  onClick={() => navigate("/card-details")}
+                                >
+                                  <i class="fa-solid fa-gauge-simple-high"></i>
                                 </div>
                               </div>
                             </div>
@@ -1438,10 +1709,18 @@ const Dashboard = () => {
                                 label1={"Wallet"}
                                 label2={"Card"}
                                 // labels={[ "Field 1", "Field 2"]}
-                                fields={["0s", "10s", "20s", "30s", "40s", "50s", "60s"]}
+                                fields={[
+                                  "0s",
+                                  "10s",
+                                  "20s",
+                                  "30s",
+                                  "40s",
+                                  "50s",
+                                  "60s",
+                                ]}
                                 percentage={[
-                                  [10, 12, 14, 16, 24, 14, 16],  // CPU Usage
-                                  [8, 15, 20, 18, 25, 10, 12]    // Memory Usage
+                                  [10, 12, 14, 16, 24, 14, 16], // CPU Usage
+                                  [8, 15, 20, 18, 25, 10, 12], // Memory Usage
                                 ]}
                                 colors={["#f18f01", "#36A2EB"]}
                               />
