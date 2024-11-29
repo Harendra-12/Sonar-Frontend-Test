@@ -236,3 +236,18 @@
     /* background-color:#616161 ; */
     color: #3c3e46;
 }
+
+.online-cls{
+ 
+    color: #0bc242 !important;
+   
+}
+.online-cls-red{
+ 
+    color: #c20b0b !important;
+   
+}
+
+.font-small-12{
+    font-size: 12px !important;
+}

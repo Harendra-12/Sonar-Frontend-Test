@@ -112,6 +112,8 @@ import CallBlockingAdd from "./Components/Pages/SpamFilter/CallBlockingAdd";
 import Leads from "./Components/Pages/DialerModule/Leads/Leads";
 import LeadEdit from "./Components/Pages/DialerModule/Leads/LeadEdit";
 import Campaigns from "./Components/Pages/DialerModule/Campaigns/Campaigns";
+import LeadAdd from "./Components/Pages/DialerModule/Leads/leadAdd";
+import CampaignAnalytics from "./Components/Pages/DialerModule/Campaigns/CampaignAnalytics";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -590,10 +592,12 @@ function App() {
           {/* ------ Leads */}
           <Route path="/leads" element={<Leads />} />
           <Route path="/lead-edit" element={<LeadEdit />} />
+          <Route path="/lead-add" element={<LeadAdd />} />
           {/* ------ Leads */}
 
           {/* ------ Campaigns */}
           <Route path="/campaigns" element={<Campaigns />} />
+          <Route path="/campaign-analytics" element={<CampaignAnalytics />} />
           {/* ------ Campaigns */}
 
           {/* Dialer Modules */}
