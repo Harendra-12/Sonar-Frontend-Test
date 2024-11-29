@@ -102,7 +102,7 @@ const ActionList = ({
     },
     {
       label: "IVR",
-      options: ivr?.data?.map((item) => ({
+      options: ivr?.map((item) => ({
         value: [String(item.id), "ivr"],
         label: item.ivr_name,
       })),
