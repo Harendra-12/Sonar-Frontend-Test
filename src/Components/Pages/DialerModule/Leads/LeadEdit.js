@@ -22,14 +22,19 @@ function LeadEdit() {
                                                 <p>Manage the config of the lead</p>
                                             </div>
                                             <div className="buttonGroup">
-                                                <div className="my-auto position-relative mx-1">
-                                                    <label className="switch">
-                                                        <input
-                                                            type="checkbox"
-                                                            id="showAllCheck"
-                                                        />
-                                                        <span className="slider round" />
-                                                    </label>
+                                                <div className='d-flex align-items-center'>
+                                                    <div className="formLabel py-0 me-2">
+                                                        <label for="selectFormRow">Enabled</label>
+                                                    </div>
+                                                    <div className="my-auto position-relative mx-1">
+                                                        <label className="switch">
+                                                            <input
+                                                                type="checkbox"
+                                                                id="showAllCheck"
+                                                            />
+                                                            <span className="slider round" />
+                                                        </label>
+                                                    </div>
                                                 </div>
                                                 <button
                                                     effect="ripple"
