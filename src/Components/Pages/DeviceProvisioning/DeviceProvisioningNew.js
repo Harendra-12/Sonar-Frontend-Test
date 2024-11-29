@@ -82,8 +82,24 @@ function DeviceProvisioningNew() {
                                                             </label>
                                                         </div>
                                                     </div>
-                                                    <div className='col-xl-12 deviceProvisionDetails'>
-
+                                                    <div className='col-xl-12'>
+                                                        <div className='deviceProvisionDetails' data-id="1">
+                                                            <div className='title'>
+                                                                Cisco Long Schlong
+                                                            </div>
+                                                            <div className='content'>
+                                                                <p>Esse dolore in consequat laborum ea aliquip occaecat esse. Enim in tempor ut irure aute. Duis labore nisi pariatur laboris est.</p>
+                                                                <ul>
+                                                                    <li>Nisi sit sint minim culpa labore magna occaecat adipisicing excepteur non. Esse consectetur proident ex adipisicing sit Lorem veniam esse ea consectetur.</li>
+                                                                    <li>Esse cillum fugiat eiusmod tempor do incididunt commodo magna aute ut irure.</li>
+                                                                    <li>Magna amet aliquip anim consequat id sunt reprehenderit.</li>
+                                                                    <li>Amet velit ullamco sit magna cillum nostrud labore irure sit. Pariatur sunt eiusmod reprehenderit ex tempor adipisicing ullamco culpa minim reprehenderit dolor.</li>
+                                                                    <li>Deserunt anim officia aliquip enim aliqua.</li>
+                                                                    <li>Et labore voluptate dolore enim eu aliquip occaecat amet est esse laborum deserunt incididunt eiusmod.</li>
+                                                                </ul>
+                                                                <div className='clearColorButton' style={{ width: 'max-content' }}>Download Datasheet <i class="fa-solid fa-download"></i></div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
