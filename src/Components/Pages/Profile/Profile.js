@@ -6,18 +6,67 @@ import {
   backToTop,
   featureUnderdevelopment,
   generalGetFunction,
+  generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
+import CircularLoader from "../../Loader/CircularLoader";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
   const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
-  const timeZone = useSelector((state) => state.timeZone);
+  const allUser = useSelector((state) => state.allUser);
   const [timeZoneVal, setTimeZoneVal] = useState();
-  console.log("user:", account);
-  console.log("accountDetails:", accountDetails);
-  const navigate = useNavigate();
+  const timeZone = useSelector((state) => state.timeZone);
+  const extensionAll = useSelector((state) => state.extensionAll);
+  const allUserRefresh = useSelector((state) => state.allUserRefresh);
+  const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
+  // const [profileExtensionData, setProfileExtensionData] = useState(null);
+  const [selectedExtension, setSelectedExtension] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [popup, setPopup] = useState(false);
+  const [preassignedExtension, setPreassignedExtension] = useState(false);
+  const profileName = account.name;
+  const acount = useSelector((state) => state.account);
+  useEffect(() => {
+    if (allUser?.length == 0) {
+      dispatch({
+        type: "SET_ALLUSERREFRESH",
+        allUserRefresh: allUserRefresh + 1,
+      });
+    } else {
+      // setProfileExtensionData(
+      //   allUser?.data?.filter((item) => {
+      //     return item.name == profileName;
+      //   })[0]
+      // );
+      const result = allUser?.data?.find((item) => {
+        return item.name == profileName;
+      });
+      setSelectedExtension(result?.extension?.extension);
+    }
+  }, [allUser]);
+
+  useEffect(() => {
+    if (extensionAll?.length == 0) {
+      setLoading(true);
+      dispatch({
+        type: "SET_EXTENSIONALLREFRESH",
+        extensionAllRefresh: extensionAllRefresh + 1,
+      });
+    } else {
+      setLoading(false);
+    }
+  }, [extensionAll]);
+  const userWithExtension = allUser?.data
+    ?.filter((user) => user.extension && user.extension.extension) // Filter out null or undefined extensions
+    .map((user) => ({
+      name: user.name,
+      extension: user.extension.extension, // Access the nested extension value
+      id: user.id,
+    }));
 
   useEffect(() => {
     if (timeZoneRefresh > 0) {
@@ -34,8 +83,56 @@ const Profile = () => {
     }
   }, [timeZone]);
 
+  const handleUpdateExtension = async () => {
+    setLoading(true);
+    const extensionId = extensionAll?.data?.filter((item) => {
+      return item.extension === selectedExtension;
+    })[0]?.id;
+    if (!extensionId) {
+      toast.error("Extension not found");
+      return;
+    }
+
+    var parsedData = {
+      account_id: acount.account_id,
+      user: acount.id,
+      ...(preassignedExtension ? { forceUpdate: true } : { forceUpdate: true }),
+    };
+    setPopup(false);
+    const apiData = await generalPutFunction(
+      `/extension/${extensionId}`,
+      parsedData
+    );
+    if (apiData.status) {
+      dispatch({
+        type: "SET_ALLUSERREFRESH",
+        allUserRefresh: allUserRefresh + 1,
+      });
+      toast.success(apiData.message);
+      setPreassignedExtension(false);
+      setLoading(false);
+    } else {
+      setLoading(false);
+      setPreassignedExtension(false);
+    }
+  };
+
+  const handleSetExtension = () => {
+    if (selectedExtension === "") {
+      return;
+    }
+
+    const PreExisting = userWithExtension.some(
+      (item) => item.extension == selectedExtension
+    );
+    if (PreExisting) {
+      setPreassignedExtension(true);
+    }
+    setPopup(true);
+  };
   return (
     <main className="mainContent">
+      {loading && <CircularLoader />}
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row">
@@ -154,7 +251,9 @@ const Profile = () => {
                             <input
                               type="text"
                               className="formItem"
-                              value={account?.name ? account?.name : "User Name"}
+                              value={
+                                account?.name ? account?.name : "User Name"
+                              }
                               disabled
                             />
                           </div>
@@ -168,7 +267,9 @@ const Profile = () => {
                               type="text"
                               className="formItem"
                               value={
-                                account?.email ? account?.email : "user@mail.com"
+                                account?.email
+                                  ? account?.email
+                                  : "user@mail.com"
                               }
                               disabled
                             />
@@ -214,6 +315,53 @@ const Profile = () => {
                               }
                               disabled
                             />
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-12">
+                          <div className="formLabel">
+                            <label htmlFor="data">Extension</label>
+                          </div>
+                          <div className="col-6">
+                            <div className="row">
+                              <div className="col-8">
+                                <select
+                                  className="formItem me-0"
+                                  style={{ width: "100%" }}
+                                  name="delay"
+                                  id="selectFormRow"
+                                  value={selectedExtension}
+                                  onChange={(e) => {
+                                    setSelectedExtension(e.target.value);
+                                  }}
+                                >
+                                  {extensionAll?.data?.map((item, index) => {
+                                    const foundUser = userWithExtension.find(
+                                      (value) =>
+                                        value.extension === item.extension
+                                    );
+                                    return (
+                                      <>
+                                        <option value={item.extension}>
+                                          {item.extension}{" "}
+                                          {foundUser
+                                            ? `(${foundUser.name})`
+                                            : ""}
+                                        </option>
+                                      </>
+                                    );
+                                  })}
+                                </select>
+                              </div>
+                              <div className="col-4">
+                                <button
+                                  className="btn  btn-primary"
+                                  onClick={() => handleSetExtension()}
+                                  // effect="ripple"
+                                >
+                                  <span className="text">Set</span>
+                                </button>
+                              </div>
+                            </div>
                           </div>
                         </div>
                         {/* <div className="formRow col-xl-4">
@@ -321,25 +469,43 @@ const Profile = () => {
                         </Link>
                       </li>
                       <li>
-                        <Link onClick={() => featureUnderdevelopment()}>Explore Modules</Link>
+                        <Link onClick={() => featureUnderdevelopment()}>
+                          Explore Modules
+                        </Link>
                       </li>
                     </ul>
                     <p>How to AngelPBX</p>
                     <ul>
                       <li>
-                        <Link onClick={() => featureUnderdevelopment()}>Setup Guide</Link>
+                        <Link onClick={() => featureUnderdevelopment()}>
+                          Setup Guide
+                        </Link>
                       </li>
                       <li>
-                        <Link onClick={() => featureUnderdevelopment()}>Documentation</Link>
+                        <Link onClick={() => featureUnderdevelopment()}>
+                          Documentation
+                        </Link>
                       </li>
                     </ul>
                     <p>Connect With us</p>
                     <ul>
                       <li>
-                        <Link onClick={() => navigate('https://ucaas.webvio.in:3001/')}>Know about us!</Link>
+                        <Link
+                          onClick={() =>
+                            navigate("https://ucaas.webvio.in:3001/")
+                          }
+                        >
+                          Know about us!
+                        </Link>
                       </li>
                       <li>
-                        <Link onClick={() => navigate('https://ucaas.webvio.in:3001/')}>Connect with us!</Link>
+                        <Link
+                          onClick={() =>
+                            navigate("https://ucaas.webvio.in:3001/")
+                          }
+                        >
+                          Connect with us!
+                        </Link>
                       </li>
                     </ul>
                   </div>
@@ -349,6 +515,55 @@ const Profile = () => {
           </div>
         </div>
       </section>
+      {popup ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-4">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-triangle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-0">
+                  <h4>Warning!</h4>
+                  <p>
+                    {preassignedExtension
+                      ? `By Confirming this, ${selectedExtension} extension will be assigned to you and pre-assigned user will be unassigned of any extension. `
+                      : `By Confirming this, ${selectedExtension} extension will be assigned to you.`}
+                    ?
+                  </p>
+
+                  <div className="d-flex justify-content-between">
+                    <button
+                      className="panelButton m-0"
+                      onClick={() => {
+                        handleUpdateExtension();
+                      }}
+                    >
+                      <span className="text">Confirm</span>
+                      <span className="icon">
+                        <i class="fa-solid fa-check"></i>
+                      </span>
+                    </button>
+                    <button
+                      className="panelButtonWhite m-0 float-end"
+                      onClick={() => {
+                        setPopup(false);
+                        setPreassignedExtension(false);
+                      }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </main>
   );
 };
