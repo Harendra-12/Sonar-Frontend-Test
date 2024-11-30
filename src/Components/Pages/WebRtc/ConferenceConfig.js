@@ -247,7 +247,7 @@ const ConferenceConfig = () => {
                                               </td>
                                               <td>
                                                 <button
-                                                  className="tableButton bg-success p-3"
+                                                  className="tableButton edit"
                                                   onClick={() => {
                                                     setConferenceToggle(true);
                                                     // setPopUp(true);
@@ -255,8 +255,8 @@ const ConferenceConfig = () => {
                                                     // setDeleteId(item.id);
                                                   }}
                                                 >
-                                                  Join
-                                                  {/* <i class="fa-solid fa-trash"></i> */}
+
+                                                  <i class="fa-solid fa-right-to-bracket"></i>
                                                 </button>
                                               </td>
                                             </tr>
