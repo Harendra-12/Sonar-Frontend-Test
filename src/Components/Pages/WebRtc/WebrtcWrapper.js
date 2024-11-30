@@ -18,6 +18,7 @@ import ConferenceCall from "./ConferenceCall";
 import ConferenceTest from "./ConferenceTest";
 import { Rnd } from "react-rnd";
 import ConferenceConfig from "./ConferenceConfig";
+import Email from "./Email";
 
 const WebrtcWrapper = () => {
   const [size, setSize] = useState({ width: 300, height: 450 });
@@ -205,6 +206,7 @@ const WebrtcWrapper = () => {
           // <ConferenceCall />
         )}
         {/* {activePage == "videocall" && <VideoCall />} */}
+        {activePage == "email" && <Email />}
 
         <IncomingCalls
           setSelectedModule={setSelectedModule}
@@ -383,7 +385,7 @@ const WebrtcWrapper = () => {
               </div>
             </section>
             {sessions.find((session) => session.mode === "video") &&
-            callProgressId ? (
+              callProgressId ? (
               <VideoCall
                 setHangupRefresh={setHangupRefresh}
                 hangupRefresh={hangupRefresh}

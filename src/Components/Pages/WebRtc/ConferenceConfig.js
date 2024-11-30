@@ -8,6 +8,7 @@ import {
 import CircularLoader from "../../Loader/CircularLoader";
 import ConferenceCall from "./ConferenceCall";
 import ContentLoader from "../../Loader/ContentLoader";
+import { useSelector } from "react-redux";
 
 const ConferenceConfig = () => {
   const [conferenceName, setConferenceName] = useState("");
@@ -22,6 +23,7 @@ const ConferenceConfig = () => {
   const [allConferences, setAllConferences] = useState([]);
   const [conferenceRefresh, setConferenceRefresh] = useState(0);
   const [conferenceToggle, setConferenceToggle] = useState(false);
+  const sessions = useSelector((state) => state.sessions);
 
   useEffect(() => {
     async function getData() {
@@ -89,7 +91,12 @@ const ConferenceConfig = () => {
       {conferenceToggle ? (
         <ConferenceCall setConferenceToggle={setConferenceToggle} />
       ) : (
-        <main className="mainContent">
+        <main className="mainContentApp" style={{
+          marginRight:
+            sessions.length > 0 && Object.keys(sessions).length > 0
+              ? "250px"
+              : "0",
+        }}>
           <section id="phonePage">
             <div className="container-fluid px-0">
               <Header title="Conference Settings" />

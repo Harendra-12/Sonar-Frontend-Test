@@ -83,6 +83,18 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
             </div> */}
             <li >
               <div
+                // to="/call"
+                onClick={() => setactivePage("call")}
+                className={activePage === "call" ? "navItem active" : "navItem"}
+              >
+                <div className="iconHolder">
+                  <i className="fa-light fa-phone" />
+                </div>
+                <div className="itemTitle">Calls</div>
+              </div>
+            </li>
+            <li >
+              <div
                 // to="/message"
                 onClick={() => setactivePage("messages")}
                 className={
@@ -97,14 +109,16 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
             </li>
             <li >
               <div
-                // to="/call"
-                onClick={() => setactivePage("call")}
-                className={activePage === "call" ? "navItem active" : "navItem"}
+                // to="/message"
+                onClick={() => setactivePage("email")}
+                className={
+                  activePage === "email" ? "navItem active" : "navItem"
+                }
               >
                 <div className="iconHolder">
-                  <i className="fa-light fa-phone" />
+                  <i className="fa-light fa-message" />
                 </div>
-                <div className="itemTitle">Calls</div>
+                <div className="itemTitle">Email</div>
               </div>
             </li>
             <li >
