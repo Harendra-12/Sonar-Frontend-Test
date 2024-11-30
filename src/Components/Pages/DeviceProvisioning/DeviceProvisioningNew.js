@@ -109,38 +109,26 @@ function DeviceProvisioningNew() {
 
                                                                     </div>
                                                                     <div className='col-5'>
-                                                                        <div className="add-btns">
-                                                                            <button className="change-btn-colors" >
-                                                                                -
-                                                                            </button>
-                                                                            <div className="count-number" >
-                                                                                0
-                                                                            </div>
-                                                                            <button className="change-btn-colors" >
-                                                                                +
-                                                                            </button>
+                                                                        <div class="add-btnss">
+                                                                            <button class="change-btn-colorss radius-2 radius-4" >-</button>
+                                                                            <div class="count-number" id="item-count">0</div>
+                                                                            <button class="change-btn-colorss radius-1 radius-3" >+</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div className='row'>
                                                                     <div className='col-7'>
-                                                                    <div className="content">                                                                            
+                                                                        <div className="content">
                                                                             <p className='mb-0'>Additional Purchase</p>
                                                                             <p className='purchase mb-0'>$256</p>
-                                                                        </div>                                                                       
+                                                                        </div>
                                                                     </div>
                                                                     <div className='col-5'>
-                                                                        <div className="add-btns">
-                                                                            <button className="change-btn-colors" >
-                                                                                -
-                                                                            </button>
-                                                                            <div className="count-number" >
-                                                                                0
-                                                                            </div>
-                                                                            <button className="change-btn-colors" >
-                                                                                +
-                                                                            </button>
-                                                                       </div>
+                                                                        <div class="add-btnss">
+                                                                            <button class="change-btn-colorss radius-2 radius-4" >-</button>
+                                                                            <div class="count-number" id="item-count">0</div>
+                                                                            <button class="change-btn-colorss radius-1 radius-3" >+</button>
+                                                                        </div>
 
                                                                     </div>
                                                                 </div>
