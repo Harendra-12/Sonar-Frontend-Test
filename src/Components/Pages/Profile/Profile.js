@@ -323,7 +323,7 @@ const Profile = () => {
                           </div>
                           <div className="col-6">
                             <div className="row">
-                              <div className="col-8">
+                              <div className="col-7 pe-0">
                                 <select
                                   className="formItem me-0"
                                   style={{ width: "100%" }}
@@ -352,13 +352,15 @@ const Profile = () => {
                                   })}
                                 </select>
                               </div>
-                              <div className="col-4">
+                              <div className="col-5">
                                 <button
-                                  className="btn  btn-primary"
+                                  className="panelButton ms-0"
+                                  style={{height: '34px'}}
                                   onClick={() => handleSetExtension()}
                                   // effect="ripple"
                                 >
-                                  <span className="text">Set</span>
+                                  <span className="text">Save</span>
+                                  <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                                 </button>
                               </div>
                             </div>

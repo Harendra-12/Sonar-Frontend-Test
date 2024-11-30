@@ -172,7 +172,7 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/conference-join" element={<ConferenceJoin />} />
+          <Route path="/conference" element={<ConferenceJoin />} />
 
           <Route element={<ProtectedRoute />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -604,7 +604,7 @@ function App() {
           {/* Dialer Modules */}
 
           {/* 404 Redirection */}
-          <Route path="*" element={<Navigate to="/dashboard" />} />
+          <Route path="*" element={<Navigate to="/" />} />
           {/* 404 Redirection */}
         </Routes>
         <ToastContainer

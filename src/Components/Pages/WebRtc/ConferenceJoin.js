@@ -1,12 +1,17 @@
 import React from 'react'
 
 function ConferenceJoin() {
+    // getting the value of querry type
+    const urlParams = new URLSearchParams(window.location.search);
+    const conferenceId = urlParams.get('type');
+    console.log("type", conferenceId);
+
     return (
         <>
             <style>
                 {`#sidenNav{
-        display:none;
-      }`}
+                    display:none;
+                }`}
             </style>
             <main className="login">
                 <div className="container position-relative h-100">
@@ -15,26 +20,26 @@ function ConferenceJoin() {
                             <div className="loginWrapper2">
                                 <div className="col-xl-12 h-100 position-relative d-flex align-items-center">
                                     <div className="content col-xl-7 mx-auto py-5">
-                                        <h3>Get Started Now</h3>
-                                        <p>Enter your credentials to access your account</p>
+                                        <h3>Join conference</h3>
+                                        <p>Enter details to join conference</p>
                                         <div className="border-bottom my-4"></div>
                                         <form className="loginForm">
                                             <div className="col-xl-12 m-auto">
-                                                <label>Username</label>
+                                                <label>Name</label>
                                                 <div className="position-relative">
                                                     <i className="fa-thin fa-user" />
                                                     <input
                                                         type="text"
-                                                        placeholder="Enter your username"
+                                                        placeholder="Enter your name"
                                                         className="loginFormItem"
                                                     />
                                                 </div>
-                                                <label>Password</label>
+                                                <label>Number</label>
                                                 <div className="position-relative">
                                                     <i className="fa-thin fa-lock" />
                                                     <input
-                                                        type="password"
-                                                        placeholder="Enter your password"
+                                                        type="number"
+                                                        placeholder="Enter your number"
                                                         className="loginFormItem"
                                                     />
                                                 </div>

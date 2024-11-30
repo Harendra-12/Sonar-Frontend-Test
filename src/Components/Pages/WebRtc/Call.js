@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { useSIPProvider } from "react-sipjs";
 import VideoCall from "./VideoCall";
 import { featureUnderdevelopment, generalGetFunction } from "../../GlobalFunction/globalFunction";
+import ScreenRecorder from "./ScreenRecorder";
 
 function Call({
   setHangupRefresh,
@@ -494,6 +495,7 @@ function Call({
                   <div className="col-auto" style={{ padding: '0 10px' }}>
                     <h3 style={{ fontFamily: "Outfit", marginBottom: '0' }}>
                       <button class="clearButton text-dark"><i class="fa-solid fa-chevron-left fs-4"></i></button> Calls{" "}
+                      <ScreenRecorder />
                       <button class="clearButton" onClick={() => setRefreshCalls(refreshCalls + 1)}>
                         <i
                           class={loading ? "fa-regular fa-arrows-rotate fs-5 fa-spin" : "fa-regular fa-arrows-rotate fs-5 "}
