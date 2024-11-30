@@ -235,7 +235,7 @@ function ConferenceCall({ setConferenceToggle }) {
                             <div className="activeGuyName">{selectedConferenceUser?.name}</div>
                             {videoCallToggle ?
                               (
-                                <img src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
+                                <img className="videoElement" src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
                               )
                               :
                               (
@@ -369,31 +369,57 @@ const ConferenceUserTab = ({
   return (
     <>
       <div
-        className="participant"
+        className="participant p-0"
         data-mic={userMuted}
+        data-speaking={"false"}
         //   data-pin="true"
         style={{ cursor: "pointer" }}
-        onClick={() => handleSelectConferenceUser(item)}
       >
-        {videoCallToggle ? (
+        <div className="dropdown contactHeader">
+          <button className="videoConferenceButton" type="button" data-bs-toggle="dropdown" aria-expanded="true">
+            <i className="fa-solid fa-ellipsis-vertical"></i>
+          </button>
+          <ul className="dropdown-menu" data-popper-placement="top-end">
+            <li><a className="dropdown-item">Mute User</a></li>
+            <li><a className="dropdown-item">Disable Video</a></li>
+            <li><a className="dropdown-item text-danger">Kick User</a></li>
+          </ul>
+        </div>
+        {/* {videoCallToggle ? (
           <div>
             <img src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
           </div>
-        ) : (
-          <div className="participantWrapper">
-            <div className="justify-content-center h-100 d-flex align-items-center text-dark ">
-              <div className="profileHolder">
-                {/* {getInitials(item.name)} */}
-                <i class="fa-light fa-user"></i>
-              </div>
-            </div>
-            <div>
-              <p className="participantName" style={{ fontSize: "10px" }}>
-                {truncateString(item.name, 15)}
-              </p>
-            </div>
+        ) : ( */}
+        <div className="participantWrapper">
+          <div className="videoHolder h-100" onClick={() => handleSelectConferenceUser(item)}>
+            {videoCallToggle ?
+              (
+                <>
+                  <img className="videoElement" src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
+                  <div style={{ position: 'absolute', bottom: '2px', width: '100%', padding: '0 10px' }}>
+                    <p className="participantName" style={{ fontSize: "10px" }}>
+                      {truncateString(item.name, 15)}
+                    </p>
+                  </div>
+                </>
+              ) :
+              <>
+                <div className="justify-content-center h-75 d-flex align-items-center text-dark ">
+                  <div className="profileHolder">
+                    {/* {getInitials(item.name)} */}
+                    <i class="fa-light fa-user"></i>
+                  </div>
+                </div>
+                <div style={{ padding: '0 10px' }}>
+                  <p className="participantName" style={{ fontSize: "10px" }}>
+                    {truncateString(item.name, 15)}
+                  </p>
+                </div>
+              </>}
+
           </div>
-        )}
+        </div>
+        {/* )} */}
       </div>
     </>
   );

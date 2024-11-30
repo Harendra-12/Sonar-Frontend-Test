@@ -472,14 +472,18 @@
     height: 90px;
     border-radius: 15px;
     /* overflow: hidden; */
-    border: 1px solid var(--border-color);
+    border: 2px solid var(--border-color);
     padding: 5px 10px;
     background: #171717;
     margin-bottom: 10px;
     transition: 0.2s ease-in-out;
 }
 
-.videoCallWrapper .videoBody .participant img {
+.videoCallWrapper .videoBody .participant[data-speaking="true"] {
+    border-color: #1eff00;
+}
+
+.videoCallWrapper .videoBody .participant .videoElement {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -595,6 +599,13 @@
 .videoCallWrapper .videoBody .videoHolder {
     position: relative;
     height: calc(100% - 55px);
-    border-radius: 20px;
+    border-radius: 15px;
     overflow: hidden;
+}
+
+
+.videoCallWrapper .videoBody .participant .videoConferenceButton {
+    position: absolute;
+    top: 0;
+    right: 0;
 }
