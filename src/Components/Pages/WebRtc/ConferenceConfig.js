@@ -174,7 +174,7 @@ const ConferenceConfig = () => {
                             )}
 
                             <button
-                              class="nav-link "
+                              class="nav-link active"
                               id="nav-gen-tab"
                               data-bs-toggle="tab"
                               data-bs-target="#nav-gen"

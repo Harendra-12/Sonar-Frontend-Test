@@ -116,7 +116,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 }
               >
                 <div className="iconHolder">
-                  <i className="fa-light fa-message" />
+                  <i className="fa-light fa-at" />
                 </div>
                 <div className="itemTitle">Email</div>
               </div>
