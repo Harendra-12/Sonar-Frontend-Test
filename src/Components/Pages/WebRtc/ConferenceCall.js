@@ -158,116 +158,6 @@ function ConferenceCall({ setConferenceToggle }) {
               </div>
               <div className="videoCallWrapper">
                 <div className="row">
-                  <div className="col-lg-8 col-xl-8 col-12">
-                    <div className="heading">
-                      <h4>
-                        Conference <span>14:20</span>
-                      </h4>
-                      <button className="clearButton">
-                        <i class="fa-sharp fa-solid fa-circle-plus"></i> Add
-                        Participant
-                      </button>
-                    </div>
-                    <div className="videoBody overflow overflow-y-scroll">
-                      <div className="participant active ">
-                        {videoCallToggle ? (
-                          <div>
-                            <img src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
-                          </div>
-                        ) : (
-                          <div className="d-flex flex-column">
-                            <div className="justify-content-center h-100 d-flex align-items-center text-white fs-1">
-                              <div className=" rounded-circle bg-danger-subtle p-4">
-                                {getInitials(selectedConferenceUser?.name)}
-                              </div>
-                            </div>
-                            <div>
-                              <p className="text-center text-white">
-                                {selectedConferenceUser?.name}
-                              </p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                      {conferenceArray.map((item, index) => {
-                        return (
-                          <ConferenceUserTab
-                            item={item}
-                            key={index}
-                            index={index}
-                            handleSelectConferenceUser={
-                              handleSelectConferenceUser
-                            }
-                            getInitials={getInitials}
-                          />
-                        );
-                      })}
-                      <div className="activeGuyName">You</div>
-                      <div
-                        className="activeGuyName"
-                        style={{
-                          bottom: "20px",
-                          top: "inherit",
-                          width: "45px",
-                        }}
-                      >
-                        <i class="fa-sharp fa-solid fa-volume"></i>
-                      </div>
-                      {/* <div className="participant active">
-                        <img src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
-                      </div>
-                      <div className="participant" data-mic="true">
-                        <img src="https://ogletree.com/app/uploads/people/alexandre-abitbol.jpg" />
-                      </div>
-                      <div
-                        className="participant "
-                        data-mic="false"
-                        style={{ top: `120px` }}
-                      >
-                        <img src="https://ogletree.com/app/uploads/people/jerod-a-allen.jpg" />
-                      </div>
-                      <div
-                        className="participant"
-                        data-pin="true"
-                        style={{ top: `220px` }}
-                      >
-                        <img src="https://ogletree.com/app/uploads/people/janice-g-dubler.jpg" />
-                      </div>
-                      <div className="participant" style={{ top: `320px` }}>
-                        <img src="https://i.pinimg.com/736x/54/b7/58/54b758f7757dfb67d75a0b6640cb2efa.jpg" />
-                      </div> */}
-                    </div>
-                    <div className="videoControls">
-                      <button className="appPanelButtonCallerRect">
-                        <i class="fa-light fa-microphone"></i>
-                      </button>
-                      <button className="appPanelButtonCallerRect">
-                        <i class="fa-light fa-video"></i>
-                      </button>
-                      <button className="appPanelButtonCallerRect">
-                        <i class="fa-sharp fa-light fa-record-vinyl"></i>
-                      </button>
-                      <button
-                        className="appPanelButtonCallerRect"
-                        style={{
-                          fontSize: "14px",
-                          padding: "10px 20px",
-                          backgroundColor: "#e45758",
-                        }}
-                      >
-                        Leave Call
-                      </button>
-                      <button className="appPanelButtonCallerRect">
-                        <i class="fa-light fa-screencast"></i>
-                      </button>
-                      <button className="appPanelButtonCallerRect">
-                        <i class="fa-light fa-chalkboard-user"></i>
-                      </button>
-                      <button className="appPanelButtonCallerRect">
-                        <i class="fa-light fa-hand"></i>
-                      </button>
-                    </div>
-                  </div>
                   <div className="col-lg-4 col-xl-4 col-12 p-3">
                     <div className="messageOverlay">
                       <div className="contactHeader py-3">
@@ -323,6 +213,130 @@ function ConferenceCall({ setConferenceToggle }) {
                       </div>
                     </div>
                   </div>
+                  <div className="col-lg-8 col-xl-8 col-12">
+                    <div className="heading">
+                      <h4>
+                        Conference <span>14:20</span>
+                      </h4>
+                      <button className="clearButton">
+                        <i class="fa-sharp fa-solid fa-circle-plus"></i> Add
+                        Participant
+                      </button>
+                    </div>
+                    <div className="videoBody">
+                      <div className="participant active ">
+                        {/* {videoCallToggle ? (
+                          <div>
+                            <img src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
+                          </div>
+                        ) : ( */}
+                        <div className="participantWrapper">
+                          <div className="videoHolder">
+                            <div className="activeGuyName">{selectedConferenceUser?.name}</div>
+                            {videoCallToggle ?
+                              (
+                                <img src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
+                              )
+                              :
+                              (
+                                <div className="justify-content-center h-100 d-flex align-items-center text-white fs-1">
+                                  <div className="contactViewProfileHolder">
+                                    {getInitials(selectedConferenceUser?.name)}
+                                  </div>
+                                </div>
+                              )}
+                            <div
+                              className="activeGuyName"
+                              style={{
+                                bottom: "20px",
+                                top: "inherit",
+                                width: "45px",
+                              }}
+                            >
+                              <i class="fa-sharp fa-solid fa-volume"></i>
+                            </div>
+                          </div>
+                          {/* <div>
+                              <p className="text-center text-white">
+                                {selectedConferenceUser?.name}
+                              </p>
+                            </div> */}
+
+                          <div className="videoControls">
+                            <button className="appPanelButtonCallerRect">
+                              <i class="fa-light fa-microphone"></i>
+                            </button>
+                            <button className="appPanelButtonCallerRect">
+                              <i class="fa-light fa-video"></i>
+                            </button>
+                            <button className="appPanelButtonCallerRect">
+                              <i class="fa-sharp fa-light fa-record-vinyl"></i>
+                            </button>
+                            <button
+                              className="appPanelButtonCallerRect"
+                              style={{
+                                fontSize: "14px",
+                                padding: "10px 20px",
+                                backgroundColor: "#e45758",
+                              }}
+                            >
+                              Leave Call
+                            </button>
+                            <button className="appPanelButtonCallerRect">
+                              <i class="fa-light fa-screencast"></i>
+                            </button>
+                            <button className="appPanelButtonCallerRect">
+                              <i class="fa-light fa-chalkboard-user"></i>
+                            </button>
+                            <button className="appPanelButtonCallerRect">
+                              <i class="fa-light fa-hand"></i>
+                            </button>
+                          </div>
+                        </div>
+                        {/* )} */}
+                      </div>
+                      <div className="conferenceParticipantsWrapper">
+                        {conferenceArray.map((item, index) => {
+                          return (
+                            <ConferenceUserTab
+                              item={item}
+                              key={index}
+                              index={index}
+                              handleSelectConferenceUser={
+                                handleSelectConferenceUser
+                              }
+                              getInitials={getInitials}
+                            />
+                          );
+                        })}
+                      </div>
+
+                      {/* <div className="participant active">
+                        <img src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
+                      </div>
+                      <div className="participant" data-mic="true">
+                        <img src="https://ogletree.com/app/uploads/people/alexandre-abitbol.jpg" />
+                      </div>
+                      <div
+                        className="participant "
+                        data-mic="false"
+                        style={{ top: `120px` }}
+                      >
+                        <img src="https://ogletree.com/app/uploads/people/jerod-a-allen.jpg" />
+                      </div>
+                      <div
+                        className="participant"
+                        data-pin="true"
+                        style={{ top: `220px` }}
+                      >
+                        <img src="https://ogletree.com/app/uploads/people/janice-g-dubler.jpg" />
+                      </div>
+                      <div className="participant" style={{ top: `320px` }}>
+                        <img src="https://i.pinimg.com/736x/54/b7/58/54b758f7757dfb67d75a0b6640cb2efa.jpg" />
+                      </div> */}
+                    </div>
+
+                  </div>
                 </div>
               </div>
             </div>
@@ -358,7 +372,7 @@ const ConferenceUserTab = ({
         className="participant"
         data-mic={userMuted}
         //   data-pin="true"
-        style={{ top: `${120 + (index - 1) * 100}px`, cursor: "pointer" }}
+        style={{ cursor: "pointer" }}
         onClick={() => handleSelectConferenceUser(item)}
       >
         {videoCallToggle ? (
@@ -366,14 +380,15 @@ const ConferenceUserTab = ({
             <img src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
           </div>
         ) : (
-          <div className="d-flex flex-column">
+          <div className="participantWrapper">
             <div className="justify-content-center h-100 d-flex align-items-center text-dark ">
-              <div className=" rounded-circle bg-warning-subtle p-2">
-                {getInitials(item.name)}
+              <div className="profileHolder">
+                {/* {getInitials(item.name)} */}
+                <i class="fa-light fa-user"></i>
               </div>
             </div>
             <div>
-              <p className="text-center text-white" style={{ fontSize: "8px" }}>
+              <p className="participantName" style={{ fontSize: "10px" }}>
                 {truncateString(item.name, 15)}
               </p>
             </div>

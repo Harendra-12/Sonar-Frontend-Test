@@ -420,15 +420,19 @@
 }
 
 .videoCallWrapper .videoBody {
-    height: calc(100vh - 196px);
+    height: calc(100vh - 125px);
     padding: 10px;
+    padding-right: 0;
     position: relative;
     border-radius: 15px;
     overflow: hidden;
+
+    display: flex;
+    justify-content: space-between;
 }
 
 .videoCallWrapper .messageOverlay .messageList {
-    height: calc(100vh - 272px);
+    height: calc(100vh - 275px);
 }
 
 .videoCallWrapper .videoBody .activeGuyName {
@@ -447,28 +451,59 @@
     align-items: center;
 }
 
+.videoCallWrapper .videoBody .activeGuyName:hover {
+    background-color: #ffffff38;
+}
+
+.videoCallWrapper .videoBody .conferenceParticipantsWrapper {
+    overflow: hidden auto;
+    padding: 10px 20px 10px;
+}
+
+.conferenceParticipantsWrapper::-webkit-scrollbar-track {
+    display: none;
+}
+
 .videoCallWrapper .videoBody .participant {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+    position: relative;
+    /* top: 20px;
+    right: 20px; */
     width: 90px;
     height: 90px;
     border-radius: 15px;
     /* overflow: hidden; */
-    border: 2px solid #fff;
+    border: 1px solid var(--border-color);
+    padding: 5px 10px;
+    background: #171717;
+    margin-bottom: 10px;
+    transition: 0.2s ease-in-out;
+}
+
+.videoCallWrapper .videoBody .participant img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.videoCallWrapper .videoBody .participant:hover {
+    border-color: transparent;
 }
 
 .videoCallWrapper .videoBody .participant.active {
-    position: absolute;
+    /* position: absolute;
     top: 0;
-    left: 0;
+    left: 0; */
     width: 100%;
     height: 100%;
     border: none;
+    background: transparent;
+    margin-bottom: 0;
 }
 
-.videoCallWrapper .videoBody .participant.active>*,
-.videoCallWrapper .videoBody .participant>* {
+.videoCallWrapper .videoBody .participant.active .participantWrapper,
+.videoCallWrapper .videoBody .participant .participantWrapper {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -519,10 +554,24 @@
     content: '\f130' !important;
 }
 
+.videoCallWrapper .videoBody .participant .participantName {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 0;
+    text-align: center;
+    color: #fff;
+}
+
 .videoCallWrapper .videoControls {
     display: flex;
     justify-content: center;
-    padding: 15px 0;
+    padding: 10px 0 0;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .contactHeader .dropdown-menu {
@@ -541,4 +590,11 @@
 .contactHeader .dropdown-menu .dropdown-item:active {
     background-color: #dfdfdf;
 
+}
+
+.videoCallWrapper .videoBody .videoHolder {
+    position: relative;
+    height: calc(100% - 55px);
+    border-radius: 20px;
+    overflow: hidden;
 }
