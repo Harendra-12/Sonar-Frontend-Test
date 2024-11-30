@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   backToTop,
   generalDeleteFunction,
@@ -13,6 +13,7 @@ import CircularLoader from "../../Loader/CircularLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
+import Tippy from "@tippyjs/react";
 
 function Roles() {
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ function Roles() {
   const [selectedPermission, setSelectedPermission] = useState([]);
   const [defaultPermission, setDefaultPermission] = useState();
   const navigate = useNavigate();
+  const inputRefs = useRef([]);
 
   // Getting the role and permission information at the very initial state
   // useEffect(() => {
@@ -62,6 +64,16 @@ function Roles() {
       type: "SET_ROLES_PERMISSIONREFRESH",
       rolesAndPermissionRefresh: rolesAndPermissionRefresh + 1,
     });
+    if (roles.length > 0) {
+      setLoading(false);
+      setSelectedRoleId(roles[0]?.id);
+      setSelectedRole(roles[0]?.name);
+      setSelectedPermission(
+        roles[0]?.permissions?.map((item) => {
+          return item.permission_id;
+        })
+      );
+    }
   }, []);
   console.log("roles", roles);
   useEffect(() => {
@@ -408,9 +420,11 @@ function Roles() {
                                       disabled={
                                         editIndex === index ? false : true
                                       }
+                                      ref={(el) => (inputRefs.current[index] = el)}
                                     ></input>
                                   </div>
                                   <div className="col-auto d-flex justify-content-end">
+                                 
                                     <button
                                       className={
                                         editIndex === index
@@ -419,6 +433,7 @@ function Roles() {
                                       }
                                     >
                                       {editIndex === index ? (
+                                         <Tippy content="Save Updated Role title">
                                         <i
                                           className="fa-solid fa-check"
                                           onClick={() => {
@@ -427,13 +442,26 @@ function Roles() {
                                             setAddRole(false);
                                           }}
                                         ></i>
+                                        </Tippy>
                                       ) : (
+                                        <Tippy content="Edit Role title">
                                         <i
                                           className="fa-solid fa-pen-to-square"
                                           onClick={() => {
+                                            setTimeout(() => {
+                                              inputRefs.current[index]?.focus(); // Focus on the specific input
+                                            }, 0);
                                             setEditIndex(index);
+                                            setSelectedRoleId(item.id);
+                                            setSelectedRole(item.name);
+                                            setSelectedPermission(
+                                              item.permissions?.map((item) => {
+                                                return item.permission_id;
+                                              })
+                                            );
                                           }}
                                         ></i>
+                                        </Tippy>
                                       )}
                                     </button>
                                     <button className="tableButton delete mx-2">
@@ -444,6 +472,13 @@ function Roles() {
                                           setDeleteIndex(index);
                                           setEditClick(false);
                                           setAddRole(false);
+                                          setSelectedRoleId(item.id);
+                                          setSelectedRole(item.name);
+                                          setSelectedPermission(
+                                            item.permissions?.map((item) => {
+                                              return item.permission_id;
+                                            })
+                                          );
                                         }}
                                       ></i>
                                     </button>
@@ -494,20 +529,17 @@ function Roles() {
                                     {selectedRole}
                                   </span>
                                 </div>
-
-                                {selectedRole !== "Agent" && (
-                                  <div className="col-auto text-end">
-                                    <button
-                                      className="panelButton ms-auto"
-                                      onClick={handlePermissionSave}
-                                    >
-                                      <span className="text">Confirm</span>
-                                      <span className="icon">
-                                        <i class="fa-solid fa-check"></i>
-                                      </span>
-                                    </button>
-                                  </div>
-                                )}
+                                <div className="col-auto text-end">
+                                  <button
+                                    className="panelButton ms-auto"
+                                    onClick={handlePermissionSave}
+                                  >
+                                    <span className="text">Confirm</span>
+                                    <span className="icon">
+                                      <i class="fa-solid fa-check"></i>
+                                    </span>
+                                  </button>
+                                </div>
                               </div>
                             </div>
                             {selectedRole === "Agent" ? (
