@@ -27,7 +27,7 @@ function PhoneDashboard() {
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
   const [ringGroupData, setRingGroupData] = useState([]);
   const allCall = useSelector((state) => state.allCall);
-  const extension = useSelector((state) => state.extension);
+  const extension = useSelector((state) => state.extension || []);
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
   const [onlineExtension, setOnlineExtension] = useState([0]);
   const allUser = useSelector((state) => state.allUser);

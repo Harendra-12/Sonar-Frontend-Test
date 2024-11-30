@@ -3,16 +3,13 @@
 import React, { useEffect, useState } from "react";
 import Dialpad from "./Dialpad";
 import CallDetails from "./CallDetails";
-import OngoingCall from "./OngoingCall";
 import { useDispatch, useSelector } from "react-redux";
 import AddNewContactPopup from "./AddNewContactPopup";
 import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 import { toast } from "react-toastify";
 import { useSIPProvider } from "react-sipjs";
-import VideoCall from "./VideoCall";
 import { featureUnderdevelopment, generalGetFunction } from "../../GlobalFunction/globalFunction";
-import ScreenRecorder from "./ScreenRecorder";
 
 function Call({
   setHangupRefresh,
@@ -33,7 +30,6 @@ function Call({
   const [clickStatus, setClickStatus] = useState("all");
   const callProgress = useSelector((state) => state.callProgress);
   const videoCall = useSelector((state) => state.videoCall);
-  const callProgressId = useSelector((state) => state.callProgressId);
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
   const [allCalls, setAllCalls] = useState([]);
@@ -48,9 +44,6 @@ function Call({
   const [callHistory, setCallHistory] = useState([]);
   const { sessionManager, connectStatus } = useSIPProvider();
   const [refreshCalls, setRefreshCalls] = useState(0);
-  const callProgressDestination = useSelector(
-    (state) => state.callProgressDestination
-  );
   const [clickedExtension, setClickedExtension] = useState(null);
 
   function handleHideDialpad(value) {
@@ -495,7 +488,6 @@ function Call({
                   <div className="col-auto" style={{ padding: '0 10px' }}>
                     <h3 style={{ fontFamily: "Outfit", marginBottom: '0' }}>
                       <button class="clearButton text-dark"><i class="fa-solid fa-chevron-left fs-4"></i></button> Calls{" "}
-                      <ScreenRecorder />
                       <button class="clearButton" onClick={() => setRefreshCalls(refreshCalls + 1)}>
                         <i
                           class={loading ? "fa-regular fa-arrows-rotate fs-5 fa-spin" : "fa-regular fa-arrows-rotate fs-5 "}
