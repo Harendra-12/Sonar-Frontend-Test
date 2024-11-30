@@ -4,6 +4,7 @@ import { Messager, UserAgent } from "sip.js";
 import { useSIPProvider, CONNECT_STATUS } from "react-sipjs";
 import AgentSearch from "./AgentSearch";
 import {
+  featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
   generalPostFunction,
@@ -779,7 +780,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                   </h5>
                 </div>
                 <div className="col-auto" style={{ padding: "0 10px" }}>
-                  <button className="clearColorButton dark">
+                  <button className="clearColorButton dark" onClick={() => featureUnderdevelopment()}>
                     <i class="fa-light fa-pen-to-square"></i> New Chat
                   </button>
                 </div>
@@ -1415,39 +1416,39 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                               <button
                                 class="tabLink"
                                 id="nav-sms-tab"
-                                data-bs-toggle="tab"
-                                data-bs-target="#nav-whatsapp"
+                                // data-bs-toggle="tab"
+                                // data-bs-target="#nav-whatsapp"
                                 type="button"
                                 role="tab"
                                 aria-controls="nav-whatsapp"
                                 aria-selected="false"
-                                disabled
+                                onClick={() => featureUnderdevelopment()}
                               >
                                 SMS
                               </button>
                               <button
                                 class="tabLink"
                                 id="nav-whatsapp-tab"
-                                data-bs-toggle="tab"
-                                data-bs-target="#nav-whatsapp"
+                                // data-bs-toggle="tab"
+                                // data-bs-target="#nav-whatsapp"
                                 type="button"
                                 role="tab"
                                 aria-controls="nav-whatsapp"
                                 aria-selected="false"
-                                disabled
+                                onClick={() => featureUnderdevelopment()}
                               >
                                 WhatsApp
                               </button>
                               <button
                                 class="tabLink"
                                 id="nav-messenger-tab"
-                                data-bs-toggle="tab"
-                                data-bs-target="#nav-messenger"
+                                // data-bs-toggle="tab"
+                                // data-bs-target="#nav-messenger"
                                 type="button"
                                 role="tab"
                                 aria-controls="nav-messenger"
                                 aria-selected="false"
-                                disabled
+                                onClick={() => featureUnderdevelopment()}
                               >
                                 Messenger
                               </button>

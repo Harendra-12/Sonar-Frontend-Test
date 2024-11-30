@@ -420,7 +420,7 @@
 }
 
 .videoCallWrapper .videoBody {
-    height: calc(100vh - 125px);
+    height: calc(100vh - 121px);
     padding: 10px;
     padding-right: 0;
     position: relative;
@@ -472,14 +472,18 @@
     height: 90px;
     border-radius: 15px;
     /* overflow: hidden; */
-    border: 1px solid var(--border-color);
+    border: 2px solid var(--border-color);
     padding: 5px 10px;
     background: #171717;
     margin-bottom: 10px;
     transition: 0.2s ease-in-out;
 }
 
-.videoCallWrapper .videoBody .participant img {
+.videoCallWrapper .videoBody .participant[data-speaking="true"] {
+    border-color: #1eff00;
+}
+
+.videoCallWrapper .videoBody .participant .videoElement {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -530,7 +534,7 @@
     -webkit-font-smoothing: antialiased;
 }
 
-.videoCallWrapper .videoBody .participant[data-pin="true"]::after {
+.videoCallWrapper .videoBody .participant[data-pin="true"]::before {
     content: '\f08d';
     font-family: 'FontAwesome';
     background-color: #01c78e;
@@ -595,6 +599,85 @@
 .videoCallWrapper .videoBody .videoHolder {
     position: relative;
     height: calc(100% - 55px);
-    border-radius: 20px;
+    border-radius: 15px;
     overflow: hidden;
+}
+
+
+.videoCallWrapper .videoBody .participant .videoConferenceButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+}
+
+.NotificationBell {
+    position: absolute;
+    bottom: -100px;
+    left: 50px;
+    border-radius: 50px;
+    z-index: 999;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--ui-accent);
+
+    opacity: 0;
+    filter: blur(5px);
+    animation: slideFadeIn 0.3s ease-in-out forwards;
+
+}
+
+.NotificationBell i {
+    border-radius: 50%;
+    background-color: var(--ui-accent);
+    border: 2px solid #fff;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 18px;
+}
+
+.NotificationBell .content {
+    color: #fff;
+    padding: 0;
+    max-width: 0;
+    height: 0;
+    overflow: hidden;
+    animation: expandContent 0.5s ease-in-out 0.5s forwards;
+    text-wrap: nowrap;
+}
+
+@keyframes slideFadeIn {
+    0% {
+        bottom: -100px;
+        /* Off-screen */
+        opacity: 0;
+        filter: blur(5px);
+    }
+
+    100% {
+        bottom: 10px;
+        /* In view */
+        opacity: 1;
+        filter: blur(0px);
+    }
+}
+
+@keyframes expandContent {
+    0% {
+        padding: 0;
+        height: 0;
+        max-width: 0;
+    }
+
+    100% {
+        padding: 0 15px 0 10px;
+        height: auto;
+        max-width: 250px;
+    }
 }
