@@ -9,7 +9,7 @@ function ConferenceCall({ setConferenceToggle }) {
   const dispatch = useDispatch();
   const conference = useSelector((state) => state.conference);
   console.log("conference", conference);
-  
+
   const [conferenceArray, setConferenceArray] = useState([
     {
       id: 1,
@@ -41,6 +41,7 @@ function ConferenceCall({ setConferenceToggle }) {
   const [selectedConferenceUser, setSelectedConferenceUser] = useState(null);
   const callProgressId = useSelector((state) => state.callProgressId);
   const globalSession = useSelector((state) => state.sessions);
+  const [toggleMessages, setToggleMessages] = useState(false);
   //   const {
   //     isHeld,
   //     isMuted,
@@ -161,7 +162,7 @@ function ConferenceCall({ setConferenceToggle }) {
               </div>
               <div className="videoCallWrapper">
                 <div className="row">
-                  <div className="col-lg-4 col-xl-4 col-12 p-3">
+                  {toggleMessages && <div className="col-lg-4 col-xl-4 col-12 p-3">
                     <div className="messageOverlay">
                       <div className="contactHeader py-3">
                         <div>
@@ -215,8 +216,8 @@ function ConferenceCall({ setConferenceToggle }) {
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="col-lg-8 col-xl-8 col-12">
+                  </div>}
+                  <div className={`"col-lg-${toggleMessages ? "8" : "12"} col-xl-${toggleMessages ? "8" : "12"} col-12"`}>
                     <div className="heading">
                       <h4>
                         Conference <span>14:20</span>
@@ -227,6 +228,12 @@ function ConferenceCall({ setConferenceToggle }) {
                       </button>
                     </div>
                     <div className="videoBody">
+                      <div className="NotificationBell">
+                        <i className="fa-solid fa-bell"></i>
+                        <div className="content">
+                          XYZ Someone Joined
+                        </div>
+                      </div>
                       <div className="participant active ">
                         {/* {videoCallToggle ? (
                           <div>
@@ -285,8 +292,8 @@ function ConferenceCall({ setConferenceToggle }) {
                             >
                               Leave Call
                             </button>
-                            <button className="appPanelButtonCallerRect">
-                              <i class="fa-light fa-screencast"></i>
+                            <button className="appPanelButtonCallerRect" onClick={() => setToggleMessages(!toggleMessages)}>
+                              <i class="fa-light fa-messages"></i>
                             </button>
                             <button className="appPanelButtonCallerRect">
                               <i class="fa-light fa-chalkboard-user"></i>
@@ -375,7 +382,7 @@ const ConferenceUserTab = ({
         className="participant p-0"
         data-mic={userMuted}
         data-speaking={"false"}
-        //   data-pin="true"
+        // data-pin="true"
         style={{ cursor: "pointer" }}
       >
         <div className="dropdown contactHeader">
@@ -385,6 +392,7 @@ const ConferenceUserTab = ({
           <ul className="dropdown-menu" data-popper-placement="top-end">
             <li><a className="dropdown-item">Mute User</a></li>
             <li><a className="dropdown-item">Disable Video</a></li>
+            <li><a className="dropdown-item">Pin User</a></li>
             <li><a className="dropdown-item text-danger">Kick User</a></li>
           </ul>
         </div>

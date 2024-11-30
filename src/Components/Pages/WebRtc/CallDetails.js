@@ -389,16 +389,16 @@ function CallDetails({
                                 </td>
                               ) : (
                                 <td
-                                  className={`${item?.["variable_billsec"] === 0
-                                    ? "missed"
-                                    : item?.["Call-Direction"] === "voicemail"
-                                      ? "voicemail"
-                                      : ""
-                                    }`}
+                                // className={`${item?.["variable_billsec"] === 0
+                                //   ? "missed"
+                                //   : item?.["Call-Direction"] === "voicemail"
+                                //     ? "voicemail"
+                                //     : ""
+                                //   }`}
                                 >
                                   <span>
-                                    {item?.["Caller-Callee-ID-Number"]}==
-                                    <i class="fa-solid fa-angles-right"></i>
+                                    {item?.["Caller-Callee-ID-Number"]}
+                                    {item?.["variable_billsec"] > 0 ? <i class="fa-solid fa-phone mx-2" style={{ color: "var(--ui-accent)" }}></i> : <i class="fa-solid fa-phone-xmark mx-2" style={{ color: 'red' }}></i>}
                                     {item?.["Caller-Caller-ID-Number"]}
                                   </span>
                                 </td>

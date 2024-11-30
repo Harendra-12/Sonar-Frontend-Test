@@ -203,14 +203,14 @@ function Call({
       onClick={() => handleCallItemClick(item)}
       onDoubleClick={() => handleDoubleClickCall(item)}
       className={`callListItem ${item["Caller-Callee-ID-Number"] === extension &&
-        item["variable_billsec"] > 0
+        item["variable_billsec"] > 0 && !isCustomerAdmin
         ? "incoming"
-        : item["Caller-Caller-ID-Number"] === extension
+        : item["Caller-Caller-ID-Number"] === extension && !isCustomerAdmin
           ? "outgoing"
           : item["Caller-Callee-ID-Number"] === extension &&
-            item["variable_billsec"] === 0
+            item["variable_billsec"] === 0 && !isCustomerAdmin
             ? "missed"
-            : item["Call-Direction"] === "voicemail"
+            : item["Call-Direction"] === "voicemail" && !isCustomerAdmin
               ? "voicemail"
               : ""
         } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
@@ -239,7 +239,7 @@ function Call({
             <div className="col-4 my-auto ms-2 ms-xl-5" style={{ cursor: "pointer" }}>
               <h4>
                 {item["Caller-Callee-ID-Number"]}
-                ==<i class="fa-solid fa-angles-right"></i>
+                {item["variable_billsec"] > 0 ? <i class="fa-solid fa-phone mx-2" style={{ color: 'var(--ui-accent)' }}></i> : <i class="fa-solid fa-phone-xmark mx-2" style={{ color: 'red' }}></i>}
                 {item["Caller-Caller-ID-Number"]}
               </h4>
               {/* <div className="contactTags">
