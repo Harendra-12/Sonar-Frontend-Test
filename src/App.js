@@ -116,6 +116,7 @@ import LeadAdd from "./Components/Pages/DialerModule/Leads/leadAdd";
 import CampaignAnalytics from "./Components/Pages/DialerModule/Campaigns/CampaignAnalytics";
 import DeviceProvisioningNew from "./Components/Pages/DeviceProvisioning/DeviceProvisioningNew";
 import ConferenceJoin from "./Components/Pages/WebRtc/ConferenceJoin";
+import CallDashboardNew from "./Components/Pages/WebRtc/CallDashboardNew";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -349,6 +350,7 @@ function App() {
           {/* <Route path="/video-call" element={<VideoCall />} />
           <Route path="/conference-call" element={<ConferenceCall />} /> */}
           <Route path="/conference-config" element={<ConferenceConfig />} />
+          <Route path="/call-dasbboard-new" element={<CallDashboardNew />} />
           {/* WebRtc path end */}
 
           {/* Admin Packages path start */}

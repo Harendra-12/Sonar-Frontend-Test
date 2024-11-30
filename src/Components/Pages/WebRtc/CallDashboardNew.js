@@ -154,7 +154,7 @@ function CallDashboardNew() {
                                             <div className="text-paragraph">
                                                 <p className="font-s18">00:06</p>
                                                 <p className='text-colors'>Call per minutes</p>
-                                              
+
                                                 <span style={{ color: "#959595", fontSize: 11 }}>Today</span>
                                             </div>
                                         </div>
@@ -164,8 +164,8 @@ function CallDashboardNew() {
                                             <div className="text-paragraph">
                                                 <p className="font-s18">06:00</p>
                                                 <p className='text-colors'>Average Call time </p>
-                                                
-                                         
+
+
                                                 <span style={{ color: "#959595", fontSize: 11 }}>Today</span>
                                             </div>
                                         </div>
@@ -175,8 +175,8 @@ function CallDashboardNew() {
                                             <div className="text-paragraph">
                                                 <p className="font-s18">00:03</p>
                                                 <p className='text-colors'>Average Response Time</p>
-                                               
-                                               
+
+
                                                 <span style={{ color: "#959595", fontSize: 11 }}>Today</span>
                                             </div>
                                         </div>
@@ -230,7 +230,7 @@ function CallDashboardNew() {
                                             <div className="flex-text boder-btm">
                                                 <div className="text-paragraph">
                                                     <p className="font-s18">00:00:16</p>
-                                                    <span  style={{ fontSize: '10px' }}>Average Waiting Time</span>
+                                                    <span style={{ fontSize: '10px' }}>Average Waiting Time</span>
                                                 </div>
                                                 <div>
                                                     <div className="text-paragraph">
