@@ -99,6 +99,17 @@ function DeviceProvisioningNew() {
                                                                 </ul>
                                                                 <div className='clearColorButton' style={{ width: 'max-content' }}>Download Datasheet <i class="fa-solid fa-download"></i></div>
                                                             </div>
+                                                            <div className='content' style={{ borderTop: '1px solid var(--border-color)' }}>
+                                                                <div className='row'>
+                                                                    <div className='col-6'>
+                                                                        <p className='mb-0'>Select from your Account</p>
+                                                                        <p className='mb-0'>Available in your account: 0</p>
+                                                                    </div>
+                                                                    <div className='col-6'>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
