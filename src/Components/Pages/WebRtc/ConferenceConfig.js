@@ -19,7 +19,7 @@ const ConferenceConfig = () => {
   const [participantPin, setParticipantPin] = useState(1111);
   const [retryCount, setRetryCount] = useState(3);
   const [holdSound, setHoldSound] = useState([]);
-  const [moh, setMoh] = useState([]);
+  const [moh, setMoh] = useState("");
   const [allConferences, setAllConferences] = useState([]);
   const [conferenceRefresh, setConferenceRefresh] = useState(0);
   const [conferenceToggle, setConferenceToggle] = useState(false);
