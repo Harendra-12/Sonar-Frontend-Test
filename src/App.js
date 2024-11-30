@@ -114,6 +114,7 @@ import LeadEdit from "./Components/Pages/DialerModule/Leads/LeadEdit";
 import Campaigns from "./Components/Pages/DialerModule/Campaigns/Campaigns";
 import DeviceProvisioningNew from "./Components/Pages/DeviceProvisioning/DeviceProvisioningNew";
 import ConferenceJoin from "./Components/Pages/WebRtc/ConferenceJoin";
+import DummyRegistration from "./Components/Pages/WebRtc/DummyRegistration";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -173,6 +174,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/conference" element={<ConferenceJoin />} />
+          <Route path="/conference-join" element={<DummyRegistration />} />
 
           <Route element={<ProtectedRoute />} />
           <Route path="/dashboard" element={<Dashboard />} />

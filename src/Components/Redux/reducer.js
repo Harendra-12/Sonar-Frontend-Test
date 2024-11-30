@@ -56,6 +56,7 @@ var minimize = false;
 var updateBalance = 0;
 var selectedCdrFilter = "";
 var conference = [];
+var dummySession = ""
 
 const initialState = {
   account,
@@ -115,6 +116,7 @@ const initialState = {
   updateBalance,
   selectedCdrFilter,
   conference,
+  dummySession
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -252,6 +254,11 @@ const counterReducer = (state = initialState, action) => {
       return {
         ...state,
         conference: action.conference,
+      };
+    case "SET_DUMMYSION":
+      return {
+        ...state,
+        dummySession: action.dummySession,
       };
     default:
       return state;
