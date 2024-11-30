@@ -7,6 +7,9 @@ import { toast } from "react-toastify";
 
 function ConferenceCall({ setConferenceToggle }) {
   const dispatch = useDispatch();
+  const conference = useSelector((state) => state.conference);
+  console.log("conference", conference);
+  
   const [conferenceArray, setConferenceArray] = useState([
     {
       id: 1,

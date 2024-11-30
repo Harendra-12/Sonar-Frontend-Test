@@ -32,7 +32,10 @@ const Dashboard = () => {
     if (registerUser.length > 0) {
       setOnlineExtension(
         registerUser.map((item) => {
-          return item.extension;
+          if (item.account_id === account.account_id) {
+            return item.extension;
+          }
+
         })
       );
     } else {

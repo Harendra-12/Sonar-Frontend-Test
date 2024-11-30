@@ -679,7 +679,7 @@ function CdrReport() {
 
                         {!loading && cdr && cdr.data.length === 0 ? (
                           <td colSpan={99}>
-                            <EmptyPrompt name="Call" link="call" />
+                            <EmptyPrompt name="Call" link="dashboard" />
                           </td>
                         ) : (
                           ""

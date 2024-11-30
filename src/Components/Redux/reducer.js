@@ -55,6 +55,7 @@ var deviceProvisioningRefresh = 0;
 var minimize = false;
 var updateBalance = 0;
 var selectedCdrFilter = "";
+var conference = [];
 
 const initialState = {
   account,
@@ -113,6 +114,7 @@ const initialState = {
   minimize,
   updateBalance,
   selectedCdrFilter,
+  conference,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -245,6 +247,11 @@ const counterReducer = (state = initialState, action) => {
       return {
         ...state,
         selectedCdrFilter: action.selectedCdrFilter,
+      };
+    case "SET_CONFERENCE":
+      return {
+        ...state,
+        conference: action.conference,
       };
     default:
       return state;
