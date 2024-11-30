@@ -114,6 +114,8 @@ import LeadEdit from "./Components/Pages/DialerModule/Leads/LeadEdit";
 import Campaigns from "./Components/Pages/DialerModule/Campaigns/Campaigns";
 import LeadAdd from "./Components/Pages/DialerModule/Leads/leadAdd";
 import CampaignAnalytics from "./Components/Pages/DialerModule/Campaigns/CampaignAnalytics";
+import DeviceProvisioningNew from "./Components/Pages/DeviceProvisioning/DeviceProvisioningNew";
+import ConferenceJoin from "./Components/Pages/WebRtc/ConferenceJoin";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -172,6 +174,8 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/conference-join" element={<ConferenceJoin />} />
+
           <Route element={<ProtectedRoute />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/temporary-dashboard" element={<TempDashboard />} />
@@ -580,6 +584,7 @@ function App() {
             path="/device-provisioning-edit"
             element={<DeviceProvisioningEdit />}
           />
+          <Route path="/device-provisioning-new" element={<DeviceProvisioningNew />} />
           {/* Device Profisioning End  */}
           {/* Spam Filter start */}
           <Route path="/call-blocking" element={<CallBlocking />} />

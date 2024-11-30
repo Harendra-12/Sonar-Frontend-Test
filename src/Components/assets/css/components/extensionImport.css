@@ -328,3 +328,75 @@ form.tangoNavs .nav-tabs {
 /* form.row {
     justify-content: space-between;
 } */
+.deviceProvision.formRow {
+    justify-content: start;
+}
+
+.deviceProvision .formLabel {
+    margin-left: 20px;
+}
+
+.deviceProvision .formLabel h5 {
+    margin-bottom: 5px;
+}
+
+.deviceProvision .formLabel p {
+    margin-bottom: 2px;
+}
+
+.deviceProvision img {
+    width: 100%;
+}
+
+.deviceProvisionDetails {
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background-color: var(--ele-color);
+    position: relative;
+}
+
+.deviceProvisionDetails::after {
+    content: '\f2ec';
+    position: absolute;
+    top: -23px;
+    left: 180px;
+    width: 0;
+    height: 0;
+    font-family: 'Font Awesome 5 Pro';
+    font-size: 20px;
+    font-weight: 100;
+    color: var(--border-color);
+}
+
+.deviceProvisionDetails[data-id="1"]::after {
+    left: 180px;
+}
+
+.deviceProvisionDetails[data-id="2"]::after {
+    right: 180px;
+    left: auto;
+}
+
+.deviceProvisionDetails .title {
+    border-bottom: 1px solid var(--border-color);
+    padding: 15px 20px;
+    margin-bottom: 10px;
+}
+
+.deviceProvisionDetails .content {
+    padding: 10px 20px;
+    color: var(--form-input-text);
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.deviceProvisionDetails .content ul {
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+
+.deviceProvisionDetails .content ul li {
+    color: var(--form-input-text);
+    font-size: 14px;
+    margin-bottom: 5px;
+}

@@ -63,7 +63,6 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  background: red;
   border: none;
   border-radius: 5px;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
@@ -72,6 +71,10 @@
   padding: 0;
   text-decoration: none;
   margin-left: 10px;
+}
+
+.panelButton.delete {
+  background: red;
 }
 
 .panelButton.gray {
@@ -211,6 +214,7 @@
   transition: 0.3s ease-in-out;
   /* box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06); */
   border: none;
+  cursor: pointer;
 }
 
 .clearColorButton i {

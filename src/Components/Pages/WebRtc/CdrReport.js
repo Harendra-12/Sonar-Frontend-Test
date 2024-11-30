@@ -6,18 +6,20 @@ import {
   featureUnderdevelopment,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 
 function CdrReport() {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [cdr, setCdr] = useState();
   const [pageNumber, setPageNumber] = useState(1);
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
+  const selectedCdrFilter = useSelector((state) => state.selectedCdrFilter);
   const [currentPlaying, setCurrentPlaying] = useState(""); // For tracking the currently playing audio
   const [callDirection, setCallDirection] = useState("");
   const [callType, setCallType] = useState("");
@@ -38,6 +40,12 @@ function CdrReport() {
   const [refresh, setRefrehsh] = useState(1);
 
   const thisAudioRef = useRef(null);
+
+  useEffect(() => {
+    if (selectedCdrFilter == "missed-calls") {
+      setCallDirection("local");
+    }
+  }, [selectedCdrFilter]);
 
   useEffect(() => {
     if (filterBy === "date" && startDateFlag !== "") {
@@ -143,6 +151,12 @@ function CdrReport() {
           setLoading(false);
           setContentLoader(false);
           setCdr(apiData.data);
+          if (selectedCdrFilter != "") {
+            dispatch({
+              type: "SET_SELECTEDCDRFILTER",
+              selectedCdrFilter: "",
+            });
+          }
         } else {
           setLoading(false);
           setContentLoader(false);
@@ -423,6 +437,7 @@ function CdrReport() {
                             setCallDirection(e.target.value);
                             setPageNumber(1);
                           }}
+                          value={callDirection}
                           // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                         >
                           <option value={""}>All Calls</option>

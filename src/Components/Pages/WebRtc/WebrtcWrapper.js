@@ -17,6 +17,7 @@ import VideoCall from "./VideoCall";
 import ConferenceCall from "./ConferenceCall";
 import ConferenceTest from "./ConferenceTest";
 import { Rnd } from "react-rnd";
+import ConferenceConfig from "./ConferenceConfig";
 
 const WebrtcWrapper = () => {
   const [size, setSize] = useState({ width: 300, height: 450 });
@@ -200,8 +201,8 @@ const WebrtcWrapper = () => {
           />
         )}
         {activePage === "conference" && (
-          // <ConferenceConfig />
-          <ConferenceCall />
+          <ConferenceConfig />
+          // <ConferenceCall />
         )}
         {/* {activePage == "videocall" && <VideoCall />} */}
 
@@ -212,59 +213,64 @@ const WebrtcWrapper = () => {
           isVideoOn={isVideoOn}
         />
 
-
         {/* Draggable Component */}
-        {sessions.length > 0 && callProgressId && selectedModule === "onGoingCall" && sessions.find((session) => session.mode === "audio" && session.id === callProgressId) &&
-          <Rnd
-            size={{ width: size.width, height: size.height }}
-            position={{ x: position.x, y: position.y }}
-            onDragStop={(e, d) => setPosition({ x: d.x, y: d.y })}
-            onResizeStop={(e, direction, ref, delta, position) => {
-              setSize({
-                width: ref.style.width,
-                height: ref.style.height,
-              });
-              setPosition(position);
-            }}
-            minWidth={'300px'}
-            minHeight={'450px'}
-            maxWidth={'600px'}
-            maxHeight={'600px'}
-            dragHandleClassName="drag-handle" // Specify draggable area
-          >
-            <div
-              style={{
-                height: "100%",
-                width: "100%",
-                background: "transparent",
-                position: "relative",
-                zIndex: "999",
+        {sessions.length > 0 &&
+          callProgressId &&
+          selectedModule === "onGoingCall" &&
+          sessions.find(
+            (session) =>
+              session.mode === "audio" && session.id === callProgressId
+          ) && (
+            <Rnd
+              size={{ width: size.width, height: size.height }}
+              position={{ x: position.x, y: position.y }}
+              onDragStop={(e, d) => setPosition({ x: d.x, y: d.y })}
+              onResizeStop={(e, direction, ref, delta, position) => {
+                setSize({
+                  width: ref.style.width,
+                  height: ref.style.height,
+                });
+                setPosition(position);
               }}
+              minWidth={"300px"}
+              minHeight={"450px"}
+              maxWidth={"600px"}
+              maxHeight={"600px"}
+              dragHandleClassName="drag-handle" // Specify draggable area
             >
-              {/* Draggable Top Area */}
               <div
-                className="drag-handle"
                 style={{
-                  position: 'absolute',
-                  top: '35px',
-                  width: '100%',
-                  height: '105px',
-                  zIndex: '1',
-                  background: 'transparent',
-                  cursor: 'move'
+                  height: "100%",
+                  width: "100%",
+                  background: "transparent",
+                  position: "relative",
+                  zIndex: "999",
                 }}
               >
+                {/* Draggable Top Area */}
+                <div
+                  className="drag-handle"
+                  style={{
+                    position: "absolute",
+                    top: "35px",
+                    width: "100%",
+                    height: "105px",
+                    zIndex: "1",
+                    background: "transparent",
+                    cursor: "move",
+                  }}
+                ></div>
+                <OngoingCall
+                  setactivePage={setactivePage}
+                  key={callProgressId}
+                  id={callProgressId}
+                  setHangupRefresh={setHangupRefresh}
+                  hangupRefresh={hangupRefresh}
+                  setSelectedModule={setSelectedModule}
+                />
               </div>
-              <OngoingCall
-                setactivePage={setactivePage}
-                key={callProgressId}
-                id={callProgressId}
-                setHangupRefresh={setHangupRefresh}
-                hangupRefresh={hangupRefresh}
-                setSelectedModule={setSelectedModule} />
-            </div>
-          </Rnd>
-        }
+            </Rnd>
+          )}
 
         {sessions.length > 0 && Object.keys(sessions).length > 0 ? (
           <>
@@ -288,8 +294,17 @@ const WebrtcWrapper = () => {
                       Incoming Call{" "}
                       {sessions.filter(
                         (session) => session.state === "Incoming"
-                      ).length > 0 ? (<span>{sessions.filter((session) => session.state === "Incoming").length}</span>) : ""}
-                      {" "}
+                      ).length > 0 ? (
+                        <span>
+                          {
+                            sessions.filter(
+                              (session) => session.state === "Incoming"
+                            ).length
+                          }
+                        </span>
+                      ) : (
+                        ""
+                      )}{" "}
                       <i class="fa-solid fa-chevron-down"></i>
                     </h5>
                   </div>
@@ -326,8 +341,19 @@ const WebrtcWrapper = () => {
                       aria-controls="collapse2"
                     >
                       Active Call{" "}
-                      {sessions.filter((session) => session.state !== "Incoming").length ? (<span>{sessions.filter((session) => session.state !== "Incoming").length}</span>) : ""}
-                      {" "}
+                      {sessions.filter(
+                        (session) => session.state !== "Incoming"
+                      ).length ? (
+                        <span>
+                          {
+                            sessions.filter(
+                              (session) => session.state !== "Incoming"
+                            ).length
+                          }
+                        </span>
+                      ) : (
+                        ""
+                      )}{" "}
                       <i class="fa-solid fa-chevron-down"></i>
                     </h5>
                   </div>
@@ -357,7 +383,7 @@ const WebrtcWrapper = () => {
               </div>
             </section>
             {sessions.find((session) => session.mode === "video") &&
-              callProgressId ? (
+            callProgressId ? (
               <VideoCall
                 setHangupRefresh={setHangupRefresh}
                 hangupRefresh={hangupRefresh}
