@@ -75,6 +75,8 @@ const ActionList = ({
       }
       const defaultOption = { value: value, label: labelValue };
       setSelectedOption(defaultOption);
+    } else {
+      setSelectedOption("");
     }
   }, [value, labelValue, category, ivrArr]);
 
