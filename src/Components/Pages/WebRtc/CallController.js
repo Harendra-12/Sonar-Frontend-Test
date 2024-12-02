@@ -1,7 +1,9 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import { useSessionCall } from 'react-sipjs';
 
 function CallController({ id }) {
+    const navigate = useNavigate();
     console.log("idsasasas", id);
     const {
         isHeld,
@@ -14,13 +16,17 @@ function CallController({ id }) {
         unmute,
         timer,
     } = useSessionCall(id);
- 
+    
+    if (session?.["_state"] === "Terminated") {
+        navigate(-1)
+    }
     
     return (
         <div>
             <div className="videoControls">
                 <button className="appPanelButtonCallerRect">
-                    <i class="fa-light fa-microphone"></i>
+                    {isMuted? <i onClick={unmute} class="fa-light fa-microphone-slash"></i> : <i onClick={mute} class="fa-light fa-microphone"></i>}
+                   
                 </button>
                 <button className="appPanelButtonCallerRect">
                     <i class="fa-light fa-video"></i>

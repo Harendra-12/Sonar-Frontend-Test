@@ -1,30 +1,32 @@
 import React, { useState } from 'react'
 import { generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction';
 import { useNavigate } from 'react-router-dom';
+import CircularLoader from '../../Loader/CircularLoader';
+import ContentLoader from '../../Loader/ContentLoader';
 
 function ConferenceJoin() {
     // getting the value of querry type
     const urlParams = new URLSearchParams(window.location.search);
     const conferenceId = urlParams.get('type');
     console.log("type", conferenceId);
-    const [name,setName]=useState('')
+    const [name, setName] = useState('')
     const navigate = useNavigate();
-    const [loading,setLoading]=useState(false)
+    const [loading, setLoading] = useState(false)
     async function joinConference() {
         setLoading(true)
         const parsedData = {
             name: name,
-            room_id : conferenceId.split("/")[1]
+            room_id: conferenceId.split("/")[1]
         }
         const apiData = await generalPostFunction(`/conference/create`, parsedData);
-        if(apiData.status){
+        if (apiData.status) {
             setLoading(false)
-            navigate("/conference-join",{
-                state: 
+            navigate("/conference-join", {
+                state:
                     apiData.data
-                })
-          
-        }else{
+            })
+
+        } else {
             setLoading(false)
         }
     }
@@ -35,62 +37,63 @@ function ConferenceJoin() {
                     display:none;
                 }`}
             </style>
-            {}
-            <main className="login">
-                <div className="container position-relative h-100">
-                    <div className="row h-100">
-                        <div className='col-xl-6 mx-auto position-relative'>
-                            <div className="loginWrapper2">
-                                <div className="col-xl-12 h-100 position-relative d-flex align-items-center">
-                                    <div className="content col-xl-7 mx-auto py-5">
-                                        <h3>Join conference</h3>
-                                        <p>Enter details to join conference</p>
-                                        <div className="border-bottom my-4"></div>
-                                        <form className="loginForm">
-                                            <div className="col-xl-12 m-auto">
-                                                <label>Name</label>
-                                                <div className="position-relative">
-                                                    <i className="fa-thin fa-user" />
-                                                    <input
-                                                        type="text"
-                                                        placeholder="Enter your name"
-                                                        className="loginFormItem"
-                                                        value={name}
-                                                        onChange={(e) => setName(e.target.value)}
-                                                    />
+            {loading ? <ContentLoader /> :
+                <main className="login">
+                    <div className="container position-relative h-100">
+                        <div className="row h-100">
+                            <div className='col-xl-6 mx-auto position-relative'>
+                                <div className="loginWrapper2">
+                                    <div className="col-xl-12 h-100 position-relative d-flex align-items-center">
+                                        <div className="content col-xl-7 mx-auto py-5">
+                                            <h3>Join conference</h3>
+                                            <p>Enter details to join conference</p>
+                                            <div className="border-bottom my-4"></div>
+                                            <form className="loginForm">
+                                                <div className="col-xl-12 m-auto">
+                                                    <label>Name</label>
+                                                    <div className="position-relative">
+                                                        <i className="fa-thin fa-user" />
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Enter your name"
+                                                            className="loginFormItem"
+                                                            value={name}
+                                                            onChange={(e) => setName(e.target.value)}
+                                                        />
+                                                    </div>
+                                                    <label>Number</label>
+                                                    <div className="position-relative">
+                                                        <i className="fa-thin fa-lock" />
+                                                        <input
+                                                            type="number"
+                                                            placeholder="Enter your number"
+                                                            className="loginFormItem"
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <button
+                                                            className="formSubmit"
+                                                            type="button"
+                                                            effect="ripple"
+                                                            onClick={() => joinConference()}
+                                                        >
+                                                            Join
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <label>Number</label>
-                                                <div className="position-relative">
-                                                    <i className="fa-thin fa-lock" />
-                                                    <input
-                                                        type="number"
-                                                        placeholder="Enter your number"
-                                                        className="loginFormItem"
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <button
-                                                        className="formSubmit"
-                                                        type="button"
-                                                        effect="ripple"
-                                                        onClick={() => joinConference()}
-                                                    >
-                                                        Join
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
+                                            </form>
+                                        </div>
+                                        <div className="text-center position-absolute w-100" style={{ bottom: 0, left: '50%', transform: 'translate(-50%, -50%)' }}><p style={{ color: 'var(--webUtilGray)', fontSize: 12, marginBottom: 0 }}>2024 AnglePBX. All rights Reserved</p></div>
                                     </div>
-                                    <div className="text-center position-absolute w-100" style={{ bottom: 0, left: '50%', transform: 'translate(-50%, -50%)' }}><p style={{ color: 'var(--webUtilGray)', fontSize: 12, marginBottom: 0 }}>2024 AnglePBX. All rights Reserved</p></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="loginWave">
-                    <img src={require('../../assets/images/wave.png')} />
-                </div>
-            </main>
+                    <div className="loginWave">
+                        <img src={require('../../assets/images/wave.png')} />
+                    </div>
+                </main>
+            }
         </>
     )
 }

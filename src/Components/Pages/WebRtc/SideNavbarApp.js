@@ -9,8 +9,6 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
   const [popUp, setPopUp] = useState(false);
   const { connectStatus } = useSIPProvider();
   const [loading, setLoading] = useState(true); // Loading state for popup
-  // const callState = useSelector((state) => state.callState);
-  // console.log("callStatesss", callState);
   const navigate = useNavigate();
 
   const extension = account?.extension?.extension || "";
@@ -21,26 +19,16 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
     if (connectStatus !== "CONNECTED") {
       setPopUp(true);
       setLoading(true); // Show loading initially
-      setTimeout(() => setLoading(false), 1000); // Hide loading after 1 second
     } else if (connectStatus === "CONNECTED" && !isMicOn) {
       setPopUp(true);
       setLoading(true); // Show loading initially
       setTimeout(() => setLoading(false), 1000); // Hide loading after 1 second
     } else if (connectStatus === "CONNECTED" && isMicOn) {
       setPopUp(false);
+      setLoading(false);
     }
   }, [connectStatus, isMicOn]);
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      console.log("Checking connectedStatus:", connectedStatus);
-      // Add any logic you want to perform on each check
-    }, 30000);
-
-    return () => clearInterval(intervalId); // Cleanup interval on unmount
-  }, [connectedStatus]);
-
-  console.log("connectedStatus", connectedStatus);
-
+  
   return (
     <section>
       <style>

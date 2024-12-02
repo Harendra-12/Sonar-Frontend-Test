@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { SIPProvider } from "react-sipjs";
 import { DummySipRegisteration } from "./DummySipRegisteration";
 import { useLocation, useNavigate } from "react-router-dom";
-import CallController from "./CallController";
 
-function DummyRegistration({ setConferenceToggle }) {
+function DummyRegistration() {
     const location = useLocation();
     const locationState = location.state;
     console.log("locationState", locationState);

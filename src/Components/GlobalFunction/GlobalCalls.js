@@ -49,9 +49,7 @@ function GlobalCalls() {
       if (callDetailsRefresh > 0) {
         getData();
       }
-    } else {
-      navigate("/");
-    }
+    } 
   }, [account, callDetailsRefresh]);
 
   // Getting all card details
@@ -263,7 +261,10 @@ function GlobalCalls() {
         });
       }
     }
-    getData();
+    if(account){
+      getData();
+    }
+   
   }, [updateBalance]);
 
   // Getting ivr details
@@ -325,12 +326,12 @@ function GlobalCalls() {
         });
 
         localStorage.setItem("account", JSON.stringify(profile.data));
-      } else {
-        navigate("/login");
-      }
+      } 
     };
-
-    getLoginInfo();
+    if(account){
+      getLoginInfo();
+    }
+   
   }, []);
 
   return <div></div>;
