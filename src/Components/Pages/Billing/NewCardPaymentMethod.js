@@ -1001,9 +1001,8 @@ function NewCardPaymentMethod({
                       </label>
                     </div>
                     <div className="col-12">
-                      <button onClick={handleSubmit} className="payNow">
-                        {" "}
-                        Pay Now <i class="mx-2 fa-duotone fa-credit-card"></i>
+                      <button onClick={handleSubmit} className="panelButton static">
+                        <span className="text">Pay Now</span>
                       </button>
                     </div>
                   </div>

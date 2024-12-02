@@ -280,7 +280,7 @@ function AddNewAddress({ closePopup }) {
             />
           </div>
           <div className="col-12 mt-2">
-            <button className="payNow" onClick={handleSubmit}>
+            <button className="panelButton static" onClick={handleSubmit}>
               {" "}
               {loading ? (
                 <img
@@ -289,7 +289,7 @@ function AddNewAddress({ closePopup }) {
                   alt=""
                 />
               ) : (
-                "Confirm"
+                <span className="text">Confirm</span>
               )}
             </button>
           </div>

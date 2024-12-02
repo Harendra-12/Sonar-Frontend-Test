@@ -501,8 +501,8 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                     </div>
                   )}
                   <div className="col-12 mt-2">
-                    <button className="payNow" onClick={handleSubmit}>
-                      Pay Now <i className="mx-2 fa-duotone fa-credit-card"></i>
+                    <button className="panelButton static" onClick={handleSubmit}>
+                      <span className="text">Pay Now</span>
                     </button>
                   </div>
                 </div>
