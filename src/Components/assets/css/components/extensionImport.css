@@ -300,7 +300,11 @@ form.tangoNavs .nav-tabs {
     display: flex;
     justify-content: end;
 }
-
+.overviewTableWrapper .buttonGroup-1 {
+    display: flex;
+    align-items: center;
+    justify-content:flex-end;
+}
 .overviewTableWrapper .tableContainer {
     height: calc(100vh - 328px);
 }

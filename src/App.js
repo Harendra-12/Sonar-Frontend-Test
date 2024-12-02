@@ -112,8 +112,11 @@ import CallBlockingAdd from "./Components/Pages/SpamFilter/CallBlockingAdd";
 import Leads from "./Components/Pages/DialerModule/Leads/Leads";
 import LeadEdit from "./Components/Pages/DialerModule/Leads/LeadEdit";
 import Campaigns from "./Components/Pages/DialerModule/Campaigns/Campaigns";
+import LeadAdd from "./Components/Pages/DialerModule/Leads/leadAdd";
+import CampaignAnalytics from "./Components/Pages/DialerModule/Campaigns/CampaignAnalytics";
 import DeviceProvisioningNew from "./Components/Pages/DeviceProvisioning/DeviceProvisioningNew";
 import ConferenceJoin from "./Components/Pages/WebRtc/ConferenceJoin";
+import CallDashboardNew from "./Components/Pages/WebRtc/CallDashboardNew";
 import DummyRegistration from "./Components/Pages/WebRtc/DummyRegistration";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -349,6 +352,7 @@ function App() {
           {/* <Route path="/video-call" element={<VideoCall />} />
           <Route path="/conference-call" element={<ConferenceCall />} /> */}
           <Route path="/conference-config" element={<ConferenceConfig />} />
+          <Route path="/call-dasbboard-new" element={<CallDashboardNew />} />
           {/* WebRtc path end */}
 
           {/* Admin Packages path start */}
@@ -597,10 +601,12 @@ function App() {
           {/* ------ Leads */}
           <Route path="/leads" element={<Leads />} />
           <Route path="/lead-edit" element={<LeadEdit />} />
+          <Route path="/lead-add" element={<LeadAdd />} />
           {/* ------ Leads */}
 
           {/* ------ Campaigns */}
           <Route path="/campaigns" element={<Campaigns />} />
+          <Route path="/campaign-analytics" element={<CampaignAnalytics />} />
           {/* ------ Campaigns */}
 
           {/* Dialer Modules */}

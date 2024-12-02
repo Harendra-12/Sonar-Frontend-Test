@@ -71,6 +71,7 @@
   padding: 0;
   text-decoration: none;
   margin-left: 10px;
+  position: relative;
 }
 
 .panelButton.delete {
@@ -125,7 +126,7 @@
 }
 
 .panelButton:hover .icon {
-  width: 100px;
+  width: 100%;
   border-left: none;
   transform: translateX(0);
 }
@@ -136,6 +137,16 @@
 
 .panelButton:active .icon i {
   transform: scale(0.8);
+}
+
+.panelButton.static {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+
+.panelButton.static:hover .text {
+  color: #fff
 }
 
 .toggleButton {

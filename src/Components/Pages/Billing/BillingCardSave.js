@@ -313,7 +313,7 @@ function BillingCardSave({ closePopup }) {
                   </div>
                 </div>
                 <div className="col-12">
-                  <button onClick={handleSubmit} className="payNow">
+                  <button onClick={handleSubmit} className="panelButton static">
                     {" "}
                     {loading ? (
                       <img
@@ -324,8 +324,7 @@ function BillingCardSave({ closePopup }) {
                     ) : (
                       <>
                         {" "}
-                        Add Card
-                        <i className="mx-2 fa-duotone fa-credit-card"></i>
+                        <span className="text">Add Card</span>
                       </>
                     )}
                   </button>

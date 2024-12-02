@@ -101,11 +101,34 @@ function DeviceProvisioningNew() {
                                                             </div>
                                                             <div className='content' style={{ borderTop: '1px solid var(--border-color)' }}>
                                                                 <div className='row'>
-                                                                    <div className='col-6'>
-                                                                        <p className='mb-0'>Select from your Account</p>
-                                                                        <p className='mb-0'>Available in your account: 0</p>
+                                                                    <div className='col-7'>
+                                                                        <div className="content">
+                                                                            <h5 className='mb-0'>Select from your Account</h5>
+                                                                            <p className='mb-0'>Available in your account: 0</p>
+                                                                        </div>
+
                                                                     </div>
-                                                                    <div className='col-6'>
+                                                                    <div className='col-5'>
+                                                                        <div class="add-btnss">
+                                                                            <button class="change-btn-colorss radius-2 radius-4" >-</button>
+                                                                            <div class="count-number" id="item-count">0</div>
+                                                                            <button class="change-btn-colorss radius-1 radius-3" >+</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className='row'>
+                                                                    <div className='col-7'>
+                                                                        <div className="content">
+                                                                            <p className='mb-0'>Additional Purchase</p>
+                                                                            <p className='purchase mb-0'>$256</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className='col-5'>
+                                                                        <div class="add-btnss">
+                                                                            <button class="change-btn-colorss radius-2 radius-4" >-</button>
+                                                                            <div class="count-number" id="item-count">0</div>
+                                                                            <button class="change-btn-colorss radius-1 radius-3" >+</button>
+                                                                        </div>
 
                                                                     </div>
                                                                 </div>
