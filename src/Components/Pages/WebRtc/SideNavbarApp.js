@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSIPProvider } from "react-sipjs";
-import DarkModeToggle from '../../CommonComponents/DarkModeToggle';
+import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 
 function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
   const account = useSelector((state) => state.account);
@@ -81,7 +81,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 {connectStatus}
               </span>
             </div> */}
-            <li >
+            <li>
               <div
                 // to="/call"
                 onClick={() => setactivePage("call")}
@@ -93,7 +93,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Calls</div>
               </div>
             </li>
-            <li >
+            <li>
               <div
                 // to="/message"
                 onClick={() => setactivePage("messages")}
@@ -107,7 +107,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Messages</div>
               </div>
             </li>
-            <li >
+            <li>
               <div
                 // to="/message"
                 onClick={() => setactivePage("email")}
@@ -121,7 +121,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Email</div>
               </div>
             </li>
-            <li >
+            <li>
               <div
                 // to="/efax"
                 onClick={() => setactivePage("e-fax")}
@@ -135,7 +135,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">eFax</div>
               </div>
             </li>
-            <li >
+            <li>
               <div
                 onClick={() => setactivePage("all-voice-mails")}
                 // to="/all-voicemails"
@@ -151,7 +151,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Voicemails</div>
               </div>
             </li>
-            <li >
+            <li>
               <div
                 //  to="/"
                 onClick={() => setactivePage("favorites")}
@@ -165,7 +165,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Favorites</div>
               </div>
             </li>
-            <li >
+            <li>
               <div
                 // to="/all-contacts"
                 onClick={() => setactivePage("all-contacts")}
@@ -187,7 +187,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Help &amp; Feedback</div>
               </NavLink>
             </li> */}
-            <li >
+            <li>
               <div
                 // to="/"
                 onClick={() => setactivePage("settings")}
@@ -201,7 +201,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Settings</div>
               </div>
             </li>
-            <li >
+            <li>
               <div
                 // to="/call-dashboard"
                 onClick={() => setactivePage("call-dashboard")}
@@ -215,7 +215,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Call Dashboard</div>
               </div>
             </li>
-            <li >
+            <li>
               <div
                 // to="/call-center"
                 onClick={() => setactivePage("call-center")}
@@ -229,7 +229,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Call Center</div>
               </div>
             </li>
-            <li >
+            <li>
               <div
                 //  to="/"
                 onClick={() => navigate("/dashboard")}
@@ -243,7 +243,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Admin</div>
               </div>
             </li>
-            <li >
+            <li>
               <div
                 // to="/"
                 onClick={() => setactivePage("reports")}
@@ -257,7 +257,21 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Reports</div>
               </div>
             </li>
-            <li >
+            <li>
+              <div
+                // to="/"
+                onClick={() => setactivePage("mail-setting")}
+                className={
+                  activePage === "reports" ? "navItem active" : "navItem"
+                }
+              >
+                <div className="iconHolder">
+                  <i className="fa-light fa-chart-column" />
+                </div>
+                <div className="itemTitle">Mail Settings</div>
+              </div>
+            </li>
+            <li>
               <div
                 // to="/"
                 onClick={() => setactivePage("conference")}
@@ -271,7 +285,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Conference</div>
               </div>
             </li>
-            <li >
+            <li>
               <div
                 // to="/"
                 onClick={() => setactivePage("test")}
