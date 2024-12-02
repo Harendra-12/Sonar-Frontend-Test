@@ -1,11 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction';
+import { useNavigate } from 'react-router-dom';
 
 function ConferenceJoin() {
     // getting the value of querry type
     const urlParams = new URLSearchParams(window.location.search);
     const conferenceId = urlParams.get('type');
     console.log("type", conferenceId);
-
+    const [name,setName]=useState('')
+    const navigate = useNavigate();
+    const [loading,setLoading]=useState(false)
+    async function joinConference() {
+        setLoading(true)
+        const parsedData = {
+            name: name,
+            room_id : conferenceId.split("/")[1]
+        }
+        const apiData = await generalPostFunction(`/conference/create`, parsedData);
+        if(apiData.status){
+            setLoading(false)
+            navigate("/conference-join",{
+                state: 
+                    apiData.data
+                })
+          
+        }else{
+            setLoading(false)
+        }
+    }
     return (
         <>
             <style>
@@ -13,6 +35,7 @@ function ConferenceJoin() {
                     display:none;
                 }`}
             </style>
+            {}
             <main className="login">
                 <div className="container position-relative h-100">
                     <div className="row h-100">
@@ -32,6 +55,8 @@ function ConferenceJoin() {
                                                         type="text"
                                                         placeholder="Enter your name"
                                                         className="loginFormItem"
+                                                        value={name}
+                                                        onChange={(e) => setName(e.target.value)}
                                                     />
                                                 </div>
                                                 <label>Number</label>
@@ -48,6 +73,7 @@ function ConferenceJoin() {
                                                         className="formSubmit"
                                                         type="button"
                                                         effect="ripple"
+                                                        onClick={() => joinConference()}
                                                     >
                                                         Join
                                                     </button>
