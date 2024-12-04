@@ -56,7 +56,9 @@ var minimize = false;
 var updateBalance = 0;
 var selectedCdrFilter = "";
 var conference = [];
-var dummySession = ""
+var dummySession = "";
+var rolesRefresh = 0;
+var permissionRefresh = 0;
 
 const initialState = {
   account,
@@ -116,7 +118,9 @@ const initialState = {
   updateBalance,
   selectedCdrFilter,
   conference,
-  dummySession
+  dummySession,
+  rolesRefresh,
+  permissionRefresh,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -193,6 +197,10 @@ const counterReducer = (state = initialState, action) => {
         ...state,
         rolesAndPermissionRefresh: action.rolesAndPermissionRefresh,
       };
+    case "SET_ROLES_REFRESH":
+      return { ...state, rolesRefresh: action.rolesRefresh };
+    case "SET_PERMISSION_REFRESH":
+      return { ...state, permissionRefresh: action.permissionRefresh };
     case "SET_DOMAIN":
       return { ...state, domain: action.domain };
     case "SET_DOMAINREFRESH":

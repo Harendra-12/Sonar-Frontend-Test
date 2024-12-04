@@ -10,9 +10,10 @@ function AllCallsDetails() {
   const [inboundCall, setInboundCall] = useState([]);
   const [outboundCall, setOutboundCall] = useState([]);
   const [allCalls, setAllCalls] = useState([]);
-
+  const [extensionDataLoading, setExtensionDataLoading] = useState(true);
   useEffect(() => {
     if (callDetails.calls) {
+      setExtensionDataLoading(false);
       setInboundCall(
         callDetails.calls.filter((call) => call["Call-Direction"] === "inbound")
       );
@@ -39,9 +40,21 @@ function AllCallsDetails() {
               <div class="accordion" id="accordionPanelsStayOpenExample">
                 <div class="accordion-item">
                   <h2 class="accordion-header">
-                    <button class="accordion-button collapsed px-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                    <button
+                      class="accordion-button collapsed px-3"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapse1"
+                      aria-expanded="false"
+                      aria-controls="collapse1"
+                    >
                       <div className="col-12 title text-start">
                         <i className="fa-duotone fa-phone-volume" /> All Calls{" "}
+                        {extensionDataLoading && (
+                          <i
+                            class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                          ></i>
+                        )}
                       </div>
                     </button>
                   </h2>
@@ -53,8 +66,10 @@ function AllCallsDetails() {
                             <div className="heading">Total Calls</div>
                             <div className="data-number">{allCalls.length}</div>
                             <div className="label2">
-                              {((allCalls.length / allCalls.length) * 100).toFixed(2) ||
-                                0}
+                              {(
+                                (allCalls.length / allCalls.length) *
+                                100
+                              ).toFixed(2) || 0}
                               % of total calls
                             </div>
                           </div>
@@ -65,7 +80,8 @@ function AllCallsDetails() {
                             <div className="data-number">
                               {
                                 allCalls.filter(
-                                  (call) => call["variable_DIALSTATUS"] === "SUCCESS"
+                                  (call) =>
+                                    call["variable_DIALSTATUS"] === "SUCCESS"
                                 ).length
                               }
                             </div>
@@ -73,7 +89,8 @@ function AllCallsDetails() {
                               Percentage{" "}
                               {(
                                 (allCalls.filter(
-                                  (call) => call["variable_DIALSTATUS"] === "SUCCESS"
+                                  (call) =>
+                                    call["variable_DIALSTATUS"] === "SUCCESS"
                                 ).length /
                                   allCalls.length) *
                                 100
@@ -89,7 +106,8 @@ function AllCallsDetails() {
                             <div className="data-number">
                               {
                                 allCalls.filter(
-                                  (call) => call["variable_DIALSTATUS"] !== "SUCCESS"
+                                  (call) =>
+                                    call["variable_DIALSTATUS"] !== "SUCCESS"
                                 ).length
                               }
                             </div>
@@ -97,7 +115,8 @@ function AllCallsDetails() {
                               Percentage{" "}
                               {(
                                 (allCalls.filter(
-                                  (call) => call["variable_DIALSTATUS"] !== "SUCCESS"
+                                  (call) =>
+                                    call["variable_DIALSTATUS"] !== "SUCCESS"
                                 ).length /
                                   allCalls.length) *
                                 100
@@ -113,12 +132,15 @@ function AllCallsDetails() {
                             style={{ cursor: "pointer" }}
                           >
                             <div className="heading">Extensions On Calls</div>
-                            <div className="data-number">{activeCall.length}</div>
+                            <div className="data-number">
+                              {activeCall.length}
+                            </div>
                             <div className="label2">
                               Percentage{" "}
-                              {((activeCall.length / activeCall.length) * 100).toFixed(
-                                2
-                              )}
+                              {(
+                                (activeCall.length / activeCall.length) *
+                                100
+                              ).toFixed(2)}
                               %
                             </div>
                           </div>
@@ -143,13 +165,25 @@ function AllCallsDetails() {
                 </div>
                 <div class="accordion-item">
                   <h2 class="accordion-header">
-                    <button class="accordion-button collapsed px-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                    <button
+                      class="accordion-button collapsed px-3"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapse2"
+                      aria-expanded="false"
+                      aria-controls="collapse2"
+                    >
                       <div className="col-12 title text-start">
                         <i
                           className="fa-duotone fa-phone-arrow-down-left"
                           style={{ color: "var(--funky-boy3)" }}
                         />{" "}
-                        Inbound Calls
+                        Inbound Calls{" "}
+                        {extensionDataLoading && (
+                          <i
+                            class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                          ></i>
+                        )}
                       </div>
                     </button>
                   </h2>
@@ -159,7 +193,9 @@ function AllCallsDetails() {
                         <div className="col-xl-2 pe-xl-2">
                           <div className="itemWrapperb a">
                             <div className="heading">Total Inbound Calls</div>
-                            <div className="data-number">{inboundCall.length}</div>
+                            <div className="data-number">
+                              {inboundCall.length}
+                            </div>
                             <div className="label2">
                               {(
                                 (inboundCall.length / inboundCall.length) *
@@ -171,11 +207,14 @@ function AllCallsDetails() {
                         </div>
                         <div className="col-xl-2 px-xl-2">
                           <div className="itemWrapperb a">
-                            <div className="heading">Inbound Calls Completed</div>
+                            <div className="heading">
+                              Inbound Calls Completed
+                            </div>
                             <div className="data-number">
                               {
                                 inboundCall.filter(
-                                  (call) => call["variable_DIALSTATUS"] === "SUCCESS"
+                                  (call) =>
+                                    call["variable_DIALSTATUS"] === "SUCCESS"
                                 ).length
                               }
                             </div>
@@ -183,7 +222,8 @@ function AllCallsDetails() {
                               Percentage{" "}
                               {(
                                 (inboundCall.filter(
-                                  (call) => call["variable_DIALSTATUS"] === "SUCCESS"
+                                  (call) =>
+                                    call["variable_DIALSTATUS"] === "SUCCESS"
                                 ).length /
                                   inboundCall.length) *
                                 100
@@ -198,7 +238,8 @@ function AllCallsDetails() {
                             <div className="data-number">
                               {
                                 inboundCall.filter(
-                                  (call) => call["variable_DIALSTATUS"] !== "SUCCESS"
+                                  (call) =>
+                                    call["variable_DIALSTATUS"] !== "SUCCESS"
                                 ).length
                               }
                             </div>
@@ -206,7 +247,8 @@ function AllCallsDetails() {
                               Percentage{" "}
                               {(
                                 (inboundCall.filter(
-                                  (call) => call["variable_DIALSTATUS"] !== "SUCCESS"
+                                  (call) =>
+                                    call["variable_DIALSTATUS"] !== "SUCCESS"
                                 ).length /
                                   inboundCall.length) *
                                 100
@@ -262,13 +304,25 @@ function AllCallsDetails() {
                 </div>
                 <div className="accordion-item">
                   <h2 class="accordion-header">
-                    <button class="accordion-button collapsed px-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                    <button
+                      class="accordion-button collapsed px-3"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapse3"
+                      aria-expanded="false"
+                      aria-controls="collapse3"
+                    >
                       <div className="col-12 title text-start">
                         <i
                           className="fa-duotone fa-phone-arrow-up-right"
                           style={{ color: "var(--color3)" }}
                         />{" "}
-                        Outbound Calls
+                        Outbound Calls{" "}
+                        {extensionDataLoading && (
+                          <i
+                            class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                          ></i>
+                        )}
                       </div>
                     </button>
                   </h2>
@@ -277,7 +331,9 @@ function AllCallsDetails() {
                       <div className="col-xl-2 pe-xl-2">
                         <div className="itemWrapperb a">
                           <div className="heading">Total Outbound Calls</div>
-                          <div className="data-number">{outboundCall.length}</div>
+                          <div className="data-number">
+                            {outboundCall.length}
+                          </div>
                           <div className="label2">
                             {(
                               (outboundCall.length / outboundCall.length) *
@@ -289,11 +345,14 @@ function AllCallsDetails() {
                       </div>
                       <div className="col-xl-2 px-xl-2">
                         <div className="itemWrapperb a">
-                          <div className="heading">Outbound Calls Completed</div>
+                          <div className="heading">
+                            Outbound Calls Completed
+                          </div>
                           <div className="data-number">
                             {
                               outboundCall.filter(
-                                (call) => call["variable_DIALSTATUS"] === "SUCCESS"
+                                (call) =>
+                                  call["variable_DIALSTATUS"] === "SUCCESS"
                               ).length
                             }
                           </div>
@@ -301,7 +360,8 @@ function AllCallsDetails() {
                             Percentage{" "}
                             {(
                               (outboundCall.filter(
-                                (call) => call["variable_DIALSTATUS"] === "SUCCESS"
+                                (call) =>
+                                  call["variable_DIALSTATUS"] === "SUCCESS"
                               ).length /
                                 outboundCall.length) *
                               100
@@ -314,17 +374,17 @@ function AllCallsDetails() {
                         <div className="itemWrapperb a">
                           <div className="heading">Missed Outbound Calls</div>
                           <div className="data-number">
-                            {
-                              outboundCall.filter(
-                                (call) => call["variable_DIALSTATUS"] !== "SUCCESS"
-                              ).length || 0
-                            }
+                            {outboundCall.filter(
+                              (call) =>
+                                call["variable_DIALSTATUS"] !== "SUCCESS"
+                            ).length || 0}
                           </div>
                           <div className="label2">
                             Percentage{" "}
                             {(
                               (outboundCall.filter(
-                                (call) => call["variable_DIALSTATUS"] !== "SUCCESS"
+                                (call) =>
+                                  call["variable_DIALSTATUS"] !== "SUCCESS"
                               ).length /
                                 outboundCall.length) *
                               100

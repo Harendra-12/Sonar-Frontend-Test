@@ -9,7 +9,7 @@ const CallQueueDetails = () => {
   const [callQueue, setCallQueue] = useState([]);
   const activeCall = useSelector((state) => state.activeCall);
   const [activeCallData, setActiveCallData] = useState([]);
-
+  const [callCenterLoading, setCallCenterLoading] = useState(true);
   useEffect(() => {
     if (callCenterRefresh > 0) {
       const filterCallQueue = () => {
@@ -25,11 +25,11 @@ const CallQueueDetails = () => {
             }
           });
         }
-        setCallQueue(
-          filteredData.filter(
-            (data) => data && data["Call-Direction"] === "inbound"
-          )
+        const filteredCallCenter = filteredData.filter(
+          (data) => data && data["Call-Direction"] === "inbound"
         );
+        if (filteredCallCenter.length > 0) setCallCenterLoading(false);
+        setCallQueue(filteredCallCenter);
       };
       filterCallQueue();
     } else {
@@ -63,6 +63,9 @@ const CallQueueDetails = () => {
       <div className="col-12">
         <div className="col-12 title text-start">
           <i className="fa-duotone fa-code-pull-request-draft" /> Call Queue{" "}
+          {callCenterLoading && (
+            <i class="fa-regular fa-arrows-rotate fs-5 fa-spin"></i>
+          )}
         </div>
         {callQueue &&
           callCenter &&
