@@ -336,9 +336,9 @@ function IvrOptions() {
                           <button
                             type="button"
                             onClick={() => deleteOption(item.id)}
-                            className="clearButton text-danger"
+                            className="tableButton delete"
                           >
-                            <i className="fa-duotone fa-trash"></i>
+                            <i className="fa-solid fa-trash"></i>
                           </button>
                         </div>
 
@@ -393,7 +393,7 @@ function IvrOptions() {
                         </select>
                       </div>
                     </div>
-                    <div className="col-2 pe-2">
+                    <div className="col-3 pe-2">
                       <select
                         className="formItem me-0"
                         style={{ width: "100%" }}
@@ -424,7 +424,7 @@ function IvrOptions() {
                       </select>
                     </div>
                     {action_name === "pstn" ? (
-                      <div className="col-2 pe-2">
+                      <div className="col-3 pe-2">
                         <PhoneInput
                           placeholder="Enter phone number"
                           limitMaxLength={true}
@@ -433,7 +433,7 @@ function IvrOptions() {
                         />
                       </div>
                     ) : (
-                      <div className="col-2 pe-2">
+                      <div className="col-3 pe-2">
                         <ActionList
                           title={null}
                           isDisabled={
