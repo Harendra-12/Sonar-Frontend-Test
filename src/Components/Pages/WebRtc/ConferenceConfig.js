@@ -6,7 +6,7 @@ import {
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../../Loader/CircularLoader";
-import ConferenceCall from "./ConferenceCall";
+import {ConferenceCall} from "./ConferenceCall";
 import ContentLoader from "../../Loader/ContentLoader";
 import { useSelector } from "react-redux";
 
@@ -24,6 +24,9 @@ const ConferenceConfig = () => {
   const [conferenceRefresh, setConferenceRefresh] = useState(0);
   const [conferenceToggle, setConferenceToggle] = useState(false);
   const sessions = useSelector((state) => state.sessions);
+  const account = useSelector((state) => state.account);
+  const [conferenceId, setConferenceId] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function getData() {
@@ -85,11 +88,37 @@ const ConferenceConfig = () => {
       }
     }
   }
+
+  const validateAndSetConferenceId = (url) => {
+    try {
+      const urlObj = new URL(url);
+      const path = urlObj.pathname; // e.g., "/conference"
+      const query = urlObj.searchParams.get("type"); // e.g., "public/8/y03T2a"
+
+      if (path !== "/conference" || !query) {
+        throw new Error("Invalid URL format");
+      }
+
+      // Extract the conference ID (the "8" part)
+      const parts = query.split("/");
+      if (parts.length < 2 || isNaN(parts[1])) {
+        throw new Error("Invalid conference link");
+      }
+
+      setConferenceId(parts[1]); // Set "8" as the conference ID
+      setConferenceToggle(true);
+      setError(""); // Clear error if validation passes
+    } catch (err) {
+      setError(err.message);
+      setConferenceId(""); // Clear conference ID if validation fails
+    }
+  };
+
   console.log("loading", loading);
   return (
     <>
       {conferenceToggle ? (
-        <ConferenceCall setConferenceToggle={setConferenceToggle} />
+        <ConferenceCall name={account.username} extension_id={`${account?.extension?.extension}@${account.domain.domain_name}`} room_id={conferenceId} />
       ) : (
         <main className="mainContentApp" style={{
           marginRight:
@@ -460,12 +489,12 @@ const ConferenceConfig = () => {
                               <form className="col-12 mx-auto">
                                 <div className="formRow col-xl-3">
                                   <div className="formLabel">
-                                    <label htmlFor="">Conference ID</label>
+                                    <label htmlFor="">Conference link</label>
                                     <label
                                       htmlFor="data"
                                       className="formItemDesc"
                                     >
-                                      Enter the conference ID to join.
+                                      Paste conference link.
                                     </label>
                                   </div>
                                   <div className="col-xl-6 col-12">
@@ -473,10 +502,18 @@ const ConferenceConfig = () => {
                                       type="text"
                                       name="extension"
                                       className="formItem"
+                                      value={conferenceId}
+                                      onChange={(e) => setConferenceId(e.target.value)}
                                     />
+                                    {error && <p style={{ color: "red" }}>{error}</p>}
                                   </div>
+                                  <div className="panelButton" onClick={() =>
+                                    validateAndSetConferenceId(
+                                      conferenceId
+                                    )
+                                  }>JOIN</div>
                                 </div>
-                                <div className="formRow col-xl-3">
+                                {/* <div className="formRow col-xl-3">
                                   <div className="formLabel">
                                     <label htmlFor="selectFormRow">PIN</label>
                                     <label
@@ -493,7 +530,7 @@ const ConferenceConfig = () => {
                                       className="formItem"
                                     />
                                   </div>
-                                </div>
+                                </div> */}
                               </form>
                             </div>
                           </div>

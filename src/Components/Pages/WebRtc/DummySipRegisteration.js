@@ -1,17 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { useSessionCall, useSIPProvider } from "react-sipjs";
+import { useSIPProvider } from "react-sipjs";
 import MediaPermissions from "./MediaPermissions ";
 import AutoAnswer from "./AutoAnswer";
 import { generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import CallController from "./CallController";
-import { set } from "react-hook-form";
 import { toast } from "react-toastify";
-import CircularLoader from "../../Loader/CircularLoader";
 import ContentLoader from "../../Loader/ContentLoader";
 
-export const DummySipRegisteration = ({ webSocketServer, extension, password, setConferenceToggle }) => {
+export const DummySipRegisteration = ({ webSocketServer, extension, password }) => {
     const navigate = useNavigate();
     const { sessions: sipSessions, connectAndRegister } = useSIPProvider();
     const { connectStatus, registerStatus } = useSIPProvider();
@@ -20,42 +17,23 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password, se
     const location = useLocation();
     const [conferenceData, setConferenceData] = useState([])
     const locationState = location.state;
-    const [sessionId, setSessionId] = useState(null)
     const [loading, setLoading] = useState(true);
     const [confList, setConfList] = useState([])
-    const [conferenceArray, setConferenceArray] = useState([
-        {
-            id: 1,
-            name: "John Doe",
-        },
-        {
-            id: 2,
-            name: "Ruby Rai",
-        },
-        {
-            id: 3,
-            name: "Kumar Swami",
-        },
-        {
-            id: 4,
-            name: "Guarav Chattopadhyaye",
-        },
-        {
-            id: 5,
-            name: "Simran Agarwal",
-        },
-        {
-            id: 6,
-            name: "Mohan Rajput",
-        },
-    ]);
     const [videoCallToggle, setVideoCallToggle] = useState(false);
     const [toggleMessages, setToggleMessages] = useState(false);
-
     const [selectedConferenceUser, setSelectedConferenceUser] = useState(null);
+    const [currentUser, setCurrentUser] = useState([])
+    const [notification, setNotification] = useState(false)
+    const [notificationData, setNotificationData] = useState("")
+
+    // Default select the current user
+    useEffect(() => {
+        setSelectedConferenceUser(currentUser[0])
+    }, [currentUser])
     const handleSelectConferenceUser = (item) => {
         setSelectedConferenceUser(item);
     };
+
     const getInitials = (name) => {
         if (!name) return "";
         return name
@@ -66,8 +44,10 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password, se
     };
 
     useEffect(() => {
-        setSelectedConferenceUser(confList[0]);
-    }, []);
+        setSelectedConferenceUser(confList.filter((item) => item.isYou)[0]);
+    }, [loading]);
+
+    // SIP Registration for the guest user
     useEffect(() => {
         const wsUrl = webSocketServer;
         const checkWebSocket = () => {
@@ -110,6 +90,7 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password, se
         }
     }, [webSocketServer, extension, password, connectAndRegister]);
 
+    // First check weather user is registered with sip then call start conference and conference listing api
     useEffect(() => {
         setTimeout(() => {
             if (connectStatus === "WAIT_REQUEST_CONNECT") {
@@ -124,23 +105,45 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password, se
 
                     if (response.status) {
                         setLoading(false)
-                        const confList = await generalGetFunction(`/conference/${locationState.room_id}/details`)
-                        console.log("confList", JSON?.parse?.(confList?.data));
-                        
-                        if (confList.status && confList?.data!==`-ERR Conference ${locationState.room_id} not found\n`) {
-                            setConfList(JSON?.parse?.(confList?.data)?.filter((item) => item.conference_name == locationState.room_id)?.[0]?.members.map((item) => {
+                        const confLists = await generalGetFunction(`/conference/${locationState.room_id}/details`)
+                        console.log(locationState, "confListsss", JSON?.parse?.(confLists?.data));
+
+                        if (confLists.status && confLists?.data !== `-ERR Conference ${locationState.room_id} not found\n`) {
+                            setConfList(JSON?.parse?.(confLists?.data)?.filter((item) => item.conference_name == locationState.room_id)?.[0]?.members.map((item) => {
                                 return (
                                     {
                                         id: item.id,
                                         caller_id_number: item.caller_id_number,
-                                        name:item.caller_id_name,
+                                        name: item.caller_id_name,
                                         uuid: item.uuid,
                                         talking: item.flags.talking,
-                                        mute_detect: item.flags.mute_detect,
+                                        mute_detect: !(item.flags.mute_detect),
                                         hold: item.flags.hold,
+                                        isYou: item.caller_id_name === locationState.name ? true : false,
+                                        deaf: false
                                     }
                                 )
                             }))
+                            if (locationState.name) {
+                                setCurrentUser(JSON?.parse?.(confLists?.data)?.filter((item) => item.conference_name == locationState.room_id)?.[0]?.members.map((item) => {
+                                    // if (item["caller_id_number"]=== `${locationState.extension}@${locationState.domain}`) {
+                                        return (
+                                            {
+                                                id: item.id,
+                                                caller_id_number: item.caller_id_number,
+                                                name: item.caller_id_name,
+                                                uuid: item.uuid,
+                                                talking: item.flags.talking,
+                                                mute_detect: !(item.flags.mute_detect),
+                                                hold: item.flags.hold,
+                                                isYou: item.caller_id_name === locationState.name ? true : false,
+                                                deaf: false
+                                            }
+                                        )
+                                    // }
+                                   
+                                }))
+                            }
                         }
                     }
 
@@ -153,12 +156,15 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password, se
         }, [3000])
 
     }, [connectStatus, sipRegisterErrror])
+
     // Monitor incoming SIP sessions
     const incomingSessionsArray = Object.keys(sipSessions).filter(
         (id) =>
             sipSessions[id].state === "Initial" &&
             sipSessions[id].logger.category === "sip.Invitation"
     );
+
+    // Setup websocket for guest user to get real time information about other members
     const ip = "ucaas.webvio.in";
     const port = "8443";
     // const token = localStorage.getItem("token");
@@ -177,7 +183,9 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password, se
                     if (
                         JSON.parse(JSON.parse(event.data))["key"] === "Conference"
                     ) {
-                        setConferenceData(JSON.parse(JSON.parse(event.data))["result"]["Conference-Name"]==locationState.room_id && JSON.parse(JSON.parse(event.data))["result"]);
+                        console.log("Conference Data", JSON.parse(JSON.parse(event.data))["result"]);
+
+                        setConferenceData(JSON.parse(JSON.parse(event.data))["result"]["Conference-Name"] == locationState.room_id && JSON.parse(JSON.parse(event.data))["result"]);
                     }
                 } else {
                 }
@@ -208,50 +216,267 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password, se
         };
     }, [dummySession]);
 
-    useEffect(()=>{
-        if(conferenceData){
+    // Monitor incoming data from web socket accound to its action type
+    useEffect(() => {
+        if (conferenceData) {
             // Check if conferencedata.calleridname is previously present in conflist
-            if (conferenceData.Action==="add-member" && !confList.some(item => item.caller_id_number === conferenceData["Caller-Caller-ID-Number"])){
+            if (conferenceData.Action === "add-member" && !confList.some(item => item.caller_id_number === conferenceData["Channel-Presence-ID"])) {
+                setNotification(false)
+                setNotification(true)
+                setNotificationData(`${conferenceData["Caller-Caller-ID-Name"]} joined the conference`);
+                setTimeout(() => {
+                    setNotification(false)
+                }, [3000])
                 setConfList(prevList => [...prevList, {
-                    id: conferenceData["Caller-Unique-ID"],
-                    name: conferenceData["Caller-Orig-Caller-ID-Name"],
-                    caller_id_number: conferenceData["Caller-Caller-ID-Number"],
+                    id: conferenceData["Member-ID"],
+                    name: conferenceData["Caller-Caller-ID-Name"],
+                    caller_id_number: conferenceData["Channel-Presence-ID"],
                     uuid: conferenceData["Core-UUID"],
                     talking: conferenceData["Talking"],
                     mute_detect: conferenceData["Mute-Detect"],
                     hold: conferenceData["Hold"],
+                    isYou: conferenceData["Caller-Caller-ID-Name"] === locationState.name ? true : false,
+                    deaf: false
                 }]);
-            }else if(conferenceData.Action==="stop-talking" || conferenceData.Action==="start-talking"){
+                if (conferenceData["Channel-Presence-ID"] === `${locationState.extension}@${locationState.domain}`) {
+                    setCurrentUser(prevList => [...prevList, {
+                        id: conferenceData["Member-ID"],
+                        name: conferenceData["Caller-Caller-ID-Name"],
+                        caller_id_number: conferenceData["Channel-Presence-ID"],
+                        uuid: conferenceData["Core-UUID"],
+                        talking: conferenceData["Talking"],
+                        mute_detect: conferenceData["Mute-Detect"],
+                        hold: conferenceData["Hold"],
+                        isYou: conferenceData["Caller-Caller-ID-Name"] === locationState.name ? true : false,
+                        deaf: false
+                    }])
+                }
+            } else if (conferenceData.Action === "stop-talking") {
+                if(!confList.some(item => item.caller_id_number === conferenceData["Channel-Presence-ID"])){
+                    setConfList(prevList => [...prevList, {
+                        id: conferenceData["Member-ID"],
+                        name: conferenceData["Caller-Caller-ID-Name"],
+                        caller_id_number: conferenceData["Channel-Presence-ID"],
+                        uuid: conferenceData["Core-UUID"],
+                        talking: conferenceData["Talking"],
+                        mute_detect: conferenceData["Mute-Detect"],
+                        hold: conferenceData["Hold"],
+                        isYou: conferenceData["Caller-Caller-ID-Name"] === locationState.name ? true : false,
+                        deaf: false
+                    }]);
+                }
+                if (conferenceData["Channel-Presence-ID"] === `${locationState.extension}@${locationState.domain}`) {
+                    setCurrentUser(prevList => [...prevList, {
+                        id: conferenceData["Member-ID"],
+                        name: conferenceData["Caller-Caller-ID-Name"],
+                        caller_id_number: conferenceData["Channel-Presence-ID"],
+                        uuid: conferenceData["Core-UUID"],
+                        talking: conferenceData["Talking"],
+                        mute_detect: conferenceData["Mute-Detect"],
+                        hold: conferenceData["Hold"],
+                        isYou: conferenceData["Caller-Caller-ID-Name"] === locationState.name ? true : false,
+                        deaf: false
+                    }])
+                }
                 // Update the list with the updated values
                 setConfList(prevList => prevList.map(item => {
-                    if (item.caller_id_number === conferenceData["Caller-Caller-ID-Number"]) {
+                    if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
                         return {
                             ...item,
-                            talking: conferenceData["Talking"],
-                            mute_detect: conferenceData["Mute-Detect"],
-                            hold: conferenceData["Hold"],
+                            talking: false,
                         };
                     }
                     return item;
                 }));
-            }else if(conferenceData.Action==="del-member"){
-                setConfList(prevList => prevList.filter(item => item.caller_id_number !== conferenceData["Caller-Caller-ID-Number"]));
+                setCurrentUser(prevList => prevList.map(item => {
+                    if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
+                        return {
+                            ...item,
+                            talking: false,
+                        };
+                    }
+                    return item;
+                }));
+            } else if (conferenceData.Action === "start-talking") {
+                if(!confList.some(item => item.caller_id_number === conferenceData["Channel-Presence-ID"])){
+                    setConfList(prevList => [...prevList, {
+                        id: conferenceData["Member-ID"],
+                        name: conferenceData["Caller-Caller-ID-Name"],
+                        caller_id_number: conferenceData["Channel-Presence-ID"],
+                        uuid: conferenceData["Core-UUID"],
+                        talking: conferenceData["Talking"],
+                        mute_detect: conferenceData["Mute-Detect"],
+                        hold: conferenceData["Hold"],
+                        isYou: conferenceData["Caller-Caller-ID-Name"] === locationState.name ? true : false,
+                        deaf: false
+                    }]);
+                }
+                if (conferenceData["Channel-Presence-ID"] === `${locationState.extension}@${locationState.domain}`) {
+                    setCurrentUser(prevList => [...prevList, {
+                        id: conferenceData["Member-ID"],
+                        name: conferenceData["Caller-Caller-ID-Name"],
+                        caller_id_number: conferenceData["Channel-Presence-ID"],
+                        uuid: conferenceData["Core-UUID"],
+                        talking: conferenceData["Talking"],
+                        mute_detect: conferenceData["Mute-Detect"],
+                        hold: conferenceData["Hold"],
+                        isYou: conferenceData["Caller-Caller-ID-Name"] === locationState.name ? true : false,
+                        deaf: false
+                    }])
+                }
+                // Update the list with the updated values
+                setConfList(prevList => prevList.map(item => {
+                    if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
+                        return {
+                            ...item,
+                            talking: true,
+                        };
+                    }
+                    return item;
+                }));
+                setCurrentUser(prevList => prevList.map(item => {
+                    if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
+                        return {
+                            ...item,
+                            talking: true,
+                        };
+                    }
+                    return item;
+                }));
+            } else if (conferenceData.Action === "mute-member") {
+                // Update the list with the updated values
+                setConfList(prevList => prevList.map(item => {
+                    if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
+                        return {
+                            ...item,
+                            mute_detect: true,
+                            talking: false,
+                        };
+                    }
+                    return item;
+                }));
+                setCurrentUser(prevList => prevList.map(item => {
+                    if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
+                        return {
+                            ...item,
+                            mute_detect: true,
+                            talking: false,
+                        };
+                    }
+                    return item;
+                }));
+            } else if (conferenceData.Action === "unmute-member") {
+                // Update the list with the updated values
+                setConfList(prevList => prevList.map(item => {
+                    if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
+                        return {
+                            ...item,
+                            mute_detect: false
+                        };
+                    }
+                    return item;
+                }));
+                setCurrentUser(prevList => prevList.map(item => {
+                    if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
+                        return {
+                            ...item,
+                            mute_detect: false
+                        };
+                    }
+                    return item;
+                }));
+            } else if (conferenceData.Action === "deaf-member") {
+                // Update the list with the updated values
+                setConfList(prevList => prevList.map(item => {
+                    if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
+                        return {
+                            ...item,
+                            deaf: true,
+                        };
+                    }
+                    return item;
+                }));
+                setCurrentUser(prevList => prevList.map(item => {
+                    if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
+                        return {
+                            ...item,
+                            deaf: true,
+                        };
+                    }
+                    return item;
+                }));
+            } else if (conferenceData.Action === "undeaf-member") {
+                // Update the list with the updated values
+                setConfList(prevList => prevList.map(item => {
+                    if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
+                        return {
+                            ...item,
+                            deaf: false,
+                        };
+                    }
+                    return item;
+                }));
+                setCurrentUser(prevList => prevList.map(item => {
+                    if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
+                        return {
+                            ...item,
+                            deaf: false,
+                        };
+                    }
+                    return item;
+                }));
+            } else if (conferenceData.Action === "del-member" || conferenceData.Action === "hup-member") {
+                setNotification(false)
+                setNotification(true)
+                setNotificationData(`${conferenceData["Caller-Caller-ID-Name"]} has left the conference`);
+                setTimeout(() => {
+                    setNotification(false)
+                }, [3000])
+                setConfList(prevList => {
+                    const index = prevList.findIndex(
+                        item => item.caller_id_number === conferenceData["Channel-Presence-ID"]
+                    );
+                    if (index !== -1) {
+                        const newList = [...prevList];
+                        newList.splice(index, 1);
+                        return newList;
+                    }
+                    return prevList; // Return the original list if no match is found
+                });
             }
         }
-    },[conferenceData])
+    }, [conferenceData])
 
-    console.log("conferenceData", conferenceData);
-    console.log("setConfList", confList);
+    // Handle calling action for current user
+    async function callAction(action) {
+        const parsedData = {
+            action: action,
+            room_id: locationState.room_id,
+            member: String(currentUser?.[0].id)
+        }
+        generalPostFunction(`conference/action`, parsedData).then(res => {
+            if (res.status && action === "hup") {
+                navigate(-1)
+            }
+        })
+    }
 
+    // console.log("Current User", currentUser);
 
-
+    useEffect(()=>{
+        localStorage.clear();
+        sessionStorage.clear();
+        // Clean cookie as well
+        document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`); });
+        // remove all site data
+        window.localStorage.clear();
+        window.sessionStorage.clear();
+    },[])
     return (
         <div className="profileDropdowns" style={{ top: "55px", right: "-40px" }}>
-
             <MediaPermissions />
             {incomingSessionsArray.map((item, index) => {
                 return (
-
                     <AutoAnswer id={item} />
                 )
             })}
@@ -334,21 +559,18 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password, se
                                                         </button>
                                                     </div>
                                                     <div className="videoBody">
-                                                        <div className="NotificationBell">
-                                                            <i className="fa-solid fa-bell"></i>
-                                                            <div className="content">
-                                                                XYZ Someone Joined
+                                                        {notification &&
+                                                            <div className="NotificationBell">
+                                                                <i className="fa-solid fa-bell"></i>
+                                                                <div className="content">
+                                                                    {notificationData}
+                                                                </div>
                                                             </div>
-                                                        </div>
+                                                        }
                                                         <div className="participant active ">
-                                                            {/* {videoCallToggle ? (
-                          <div>
-                            <img src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
-                          </div>
-                        ) : ( */}
                                                             <div className="participantWrapper">
                                                                 <div className="videoHolder">
-                                                                    <div className="activeGuyName">{selectedConferenceUser?.name}</div>
+                                                                    <div className="activeGuyName">{selectedConferenceUser?.name===""?selectedConferenceUser?.name:locationState?.name}</div>
                                                                     {videoCallToggle ?
                                                                         (
                                                                             <img alt="" className="videoElement" src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
@@ -357,7 +579,7 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password, se
                                                                         (
                                                                             <div className="justify-content-center h-100 d-flex align-items-center text-white fs-1">
                                                                                 <div className="contactViewProfileHolder">
-                                                                                    {(selectedConferenceUser?.name)}
+                                                                                    {(selectedConferenceUser?.name===""?selectedConferenceUser?.name:locationState?.name)}
                                                                                 </div>
                                                                             </div>
                                                                         )}
@@ -368,47 +590,44 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password, se
                                                                             top: "inherit",
                                                                             width: "45px",
                                                                         }}
+                                                                        onClick={() => { callAction(confList.filter((item) => item.isYou)[0]?.deaf ? "undeaf" : "deaf") }}
                                                                     >
-                                                                        <i class="fa-sharp fa-solid fa-volume"></i>
+                                                                        {confList.filter((item) => item.isYou)[0]?.deaf ? <i class="fa-sharp fa-solid fa-volume-slash"></i> : <i class="fa-sharp fa-solid fa-volume"></i>}
+
                                                                     </div>
                                                                 </div>
-                                                                {/* <div>
-                              <p className="text-center text-white">
-                                {selectedConferenceUser?.name}
-                              </p>
-                            </div> */}
-
-                                                                {/* <div className="videoControls">
-                                                                <button className="appPanelButtonCallerRect">
-                                                                    <i class="fa-light fa-microphone"></i>
-                                                                </button>
-                                                                <button className="appPanelButtonCallerRect">
-                                                                    <i class="fa-light fa-video"></i>
-                                                                </button>
-                                                                <button className="appPanelButtonCallerRect">
-                                                                    <i class="fa-sharp fa-light fa-record-vinyl"></i>
-                                                                </button>
-                                                                <button
-                                                                    className="appPanelButtonCallerRect"
-                                                                    style={{
-                                                                        fontSize: "14px",
-                                                                        padding: "10px 20px",
-                                                                        backgroundColor: "#e45758",
-                                                                    }}
-                                                                >
-                                                                    Leave Call
-                                                                </button>
-                                                                <button className="appPanelButtonCallerRect" onClick={() => setToggleMessages(!toggleMessages)}>
-                                                                    <i class="fa-light fa-messages"></i>
-                                                                </button>
-                                                                <button className="appPanelButtonCallerRect">
-                                                                    <i class="fa-light fa-chalkboard-user"></i>
-                                                                </button>
-                                                                <button className="appPanelButtonCallerRect">
-                                                                    <i class="fa-light fa-hand"></i>
-                                                                </button>
-                                                            </div> */}
-                                                                <CallController id={dummySession} />
+                                                                <div className="videoControls">
+                                                                    <button className="appPanelButtonCallerRect" onClick={() => { callAction("tmute") }}>
+                                                                        {confList.filter((item) => item.isYou)[0]?.mute_detect ? <i class="fa-light fa-microphone-slash"></i> : <i class="fa-light fa-microphone"></i>}
+                                                                    </button>
+                                                                    <button className="appPanelButtonCallerRect">
+                                                                        <i class="fa-light fa-video"></i>
+                                                                    </button>
+                                                                    <button className="appPanelButtonCallerRect">
+                                                                        <i class="fa-sharp fa-light fa-record-vinyl"></i>
+                                                                    </button>
+                                                                    <button
+                                                                        className="appPanelButtonCallerRect"
+                                                                        style={{
+                                                                            fontSize: "14px",
+                                                                            padding: "10px 20px",
+                                                                            backgroundColor: "#e45758",
+                                                                        }}
+                                                                        onClick={() => callAction("hup")}
+                                                                    >
+                                                                        Leave Call
+                                                                    </button>
+                                                                    <button className="appPanelButtonCallerRect">
+                                                                        <i class="fa-light fa-screencast"></i>
+                                                                    </button>
+                                                                    <button className="appPanelButtonCallerRect">
+                                                                        <i class="fa-light fa-chalkboard-user"></i>
+                                                                    </button>
+                                                                    <button className="appPanelButtonCallerRect">
+                                                                        <i class="fa-light fa-hand"></i>
+                                                                    </button>
+                                                                </div>
+                                                                {/* <CallController id={dummySession} memberInfo={confList.filter((item) => item.isYou)} /> */}
                                                             </div>
                                                             {/* )} */}
                                                         </div>
@@ -427,30 +646,6 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password, se
                                                                 );
                                                             })}
                                                         </div>
-
-                                                        {/* <div className="participant active">
-                        <img src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
-                      </div>
-                      <div className="participant" data-mic="true">
-                        <img src="https://ogletree.com/app/uploads/people/alexandre-abitbol.jpg" />
-                      </div>
-                      <div
-                        className="participant "
-                        data-mic="false"
-                        style={{ top: `120px` }}
-                      >
-                        <img src="https://ogletree.com/app/uploads/people/jerod-a-allen.jpg" />
-                      </div>
-                      <div
-                        className="participant"
-                        data-pin="true"
-                        style={{ top: `220px` }}
-                      >
-                        <img src="https://ogletree.com/app/uploads/people/janice-g-dubler.jpg" />
-                      </div>
-                      <div className="participant" style={{ top: `320px` }}>
-                        <img src="https://i.pinimg.com/736x/54/b7/58/54b758f7757dfb67d75a0b6640cb2efa.jpg" />
-                      </div> */}
                                                     </div>
 
                                                 </div>
@@ -475,8 +670,8 @@ const ConferenceUserTab = ({
     const [videoCallToggle, setVideoCallToggle] = useState(false);
     const [userMuted, setUserMuted] = useState(false);
 
-    console.log("itemaaaa", item);
-    
+    // console.log("itemaaaa", item);
+
     const truncateString = (str, threshold) => {
         if (typeof str !== "string" || typeof threshold !== "number") {
             throw new Error(
@@ -491,6 +686,8 @@ const ConferenceUserTab = ({
                 className="participant"
                 data-mic={!item.mute_detect}
                 //   data-pin="true"
+                data-pin={item.deaf}
+                data-speaking={item.talking}
                 style={{ cursor: "pointer" }}
                 onClick={() => handleSelectConferenceUser(item)}
             >
