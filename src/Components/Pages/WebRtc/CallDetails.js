@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";
 import { toast } from "react-toastify";
 import { featureUnderdevelopment } from "../../GlobalFunction/globalFunction";
+import { set } from "react-hook-form";
 
 function CallDetails({
   clickedCall,
@@ -13,11 +14,14 @@ function CallDetails({
   isVideoOn,
   onCall,
   setactivePage,
+  setExtensionFromCdrMessage,
+  allContact,
 }) {
   const [callDetails, setCallDetails] = useState();
   const { connectStatus } = useSIPProvider();
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
+  const [isMessageingAvailable, setIsMessageingAvailable] = useState(false);
   useEffect(() => {
     setCallDetails(clickedCall);
   }, [clickedCall]);
@@ -52,7 +56,8 @@ function CallDetails({
     const min = Math.floor((duration / 60) % 60);
     const hour = Math.floor(duration / 3600);
     return (
-      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${sec ? sec + " sec" : ""
+      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${
+        sec ? sec + " sec" : ""
       }` || "0 sec"
     );
   };
@@ -73,14 +78,79 @@ function CallDetails({
     }
     onCall(callDetails, mode);
   };
+
+  const handleSendSMS = () => {
+    if (!isCustomerAdmin) {
+      const selectedExtension =
+        callDetails["Caller-Callee-ID-Number"] === extension
+          ? callDetails["Caller-Caller-ID-Number"]
+          : callDetails["Caller-Callee-ID-Number"];
+
+      setExtensionFromCdrMessage(selectedExtension);
+      setactivePage("messages");
+    } else {
+      const selectedCallee = callDetails["Caller-Callee-ID-Number"];
+      setExtensionFromCdrMessage(selectedCallee);
+      setactivePage("messages");
+    }
+  };
+
+  useEffect(() => {
+    if (callDetails) {
+      if (
+        callDetails.application_state == "voicemail" ||
+        callDetails.application_state == "extension"
+      ) {
+        setIsMessageingAvailable(true);
+      } else {
+        setIsMessageingAvailable(false);
+      }
+    }
+  }, [callDetails]);
+  // console.log(callDetails);
+
+  const handleSavedContactName = (callerName) => {
+    if (!isCustomerAdmin) {
+      const counterPartyExtension =
+        callDetails && callDetails?.["Caller-Callee-ID-Number"] === extension
+          ? callDetails?.["Caller-Caller-ID-Number"]
+          : callDetails?.["Caller-Callee-ID-Number"];
+      const matchingContact = allContact.find(
+        (contact) => contact.did === counterPartyExtension
+      );
+
+      // console.log(matchingContact);
+      if (matchingContact) {
+        return `${matchingContact.title} - ${matchingContact.name}`;
+      } else {
+        return callerName;
+      }
+    } else {
+      const counterPartyExtension = callDetails?.["Caller-Callee-ID-Number"];
+
+      const matchingContact = allContact.find(
+        (contact) => contact.did === counterPartyExtension
+      );
+
+      // console.log(matchingContact);
+      if (matchingContact) {
+        return `${matchingContact.title} - ${matchingContact.name}`;
+      } else {
+        return callerName;
+      }
+    }
+  };
   return (
     <>
       <div className="messageOverlay">
         <div className="contactHeader">
           <div>
-            <h4 className="mb-0">{callDetails?.caller_user?.username}</h4>
+            <h4 className="mb-0">
+              {handleSavedContactName(callDetails?.caller_user?.username)}
+            </h4>
             <p className="gray14 mb-0 mt-1">
-              Extension - {!isCustomerAdmin
+              Extension -{" "}
+              {!isCustomerAdmin
                 ? callDetails &&
                   callDetails?.["Caller-Callee-ID-Number"] === extension
                   ? callDetails?.["Caller-Caller-ID-Number"]
@@ -97,13 +167,17 @@ function CallDetails({
                 </option>
               </select>
             </div> */}
-            <button
-              className="clearButton2 xl"
-              effect="ripple"
-              onClick={() => setactivePage("messages")}
-            >
-              <i className="fa-regular fa-message-dots" />
-            </button>
+            {isMessageingAvailable && (
+              <button
+                className="clearButton2 xl"
+                effect="ripple"
+                // onClick={() => setactivePage("messages")}
+                onClick={() => handleSendSMS()}
+              >
+                <i className="fa-regular fa-message-dots" />
+              </button>
+            )}
+
             <button
               className="clearButton2 xl"
               effect="ripple"
@@ -121,13 +195,42 @@ function CallDetails({
               </button>
             )}
             <div class="dropdown">
-              <button class="clearButton2 xl" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <button
+                class="clearButton2 xl"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
                 <i class="fa-solid fa-ellipsis-vertical"></i>
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>Add to Contact</a></li>
-                <li><a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>Video Call</a></li>
-                <li><a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>Delete Contact</a></li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    onClick={() => featureUnderdevelopment()}
+                  >
+                    Add to Contact
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    onClick={() => featureUnderdevelopment()}
+                  >
+                    Video Call
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    onClick={() => featureUnderdevelopment()}
+                  >
+                    Delete Contact
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
@@ -230,48 +333,51 @@ function CallDetails({
                       )}
                     </td>
                     {!isCustomerAdmin ? (
-                      <td style={{ paddingLeft: '32px' }}
-                        className={`${callDetails?.["Caller-Callee-ID-Number"] ===
-                          extension && callDetails?.["variable_billsec"] > 0
-                          ? "incoming"
-                          : callDetails?.["Caller-Caller-ID-Number"] ===
-                            extension
+                      <td
+                        style={{ paddingLeft: "32px" }}
+                        className={`${
+                          callDetails?.["Caller-Callee-ID-Number"] ===
+                            extension && callDetails?.["variable_billsec"] > 0
+                            ? "incoming"
+                            : callDetails?.["Caller-Caller-ID-Number"] ===
+                              extension
                             ? "outgoing"
                             : callDetails?.["Caller-Callee-ID-Number"] ===
-                              extension &&
+                                extension &&
                               callDetails?.["variable_billsec"] === 0
-                              ? "missed"
-                              : callDetails?.["Call-Direction"] === "voicemail"
-                                ? "voicemail"
-                                : ""
-                          }`}
+                            ? "missed"
+                            : callDetails?.["Call-Direction"] === "voicemail"
+                            ? "voicemail"
+                            : ""
+                        }`}
                       >
                         <span>
                           {callDetails &&
-                            callDetails?.["Caller-Callee-ID-Number"] ===
+                          callDetails?.["Caller-Callee-ID-Number"] ===
                             extension &&
-                            callDetails?.["variable_billsec"] > 0
+                          callDetails?.["variable_billsec"] > 0
                             ? "Incoming"
                             : callDetails?.["Caller-Caller-ID-Number"] ===
                               extension
-                              ? "Outgoing"
-                              : callDetails?.["Caller-Callee-ID-Number"] ===
+                            ? "Outgoing"
+                            : callDetails?.["Caller-Callee-ID-Number"] ===
                                 extension &&
-                                callDetails?.["variable_billsec"] === 0
-                                ? "Missed"
-                                : callDetails?.["Call-Direction"] === "voicemail"
-                                  ? "voicemail"
-                                  : ""}
+                              callDetails?.["variable_billsec"] === 0
+                            ? "Missed"
+                            : callDetails?.["Call-Direction"] === "voicemail"
+                            ? "voicemail"
+                            : ""}
                         </span>
                       </td>
                     ) : (
                       <td
-                        className={`${callDetails?.["variable_billsec"] === 0
-                          ? "missed"
-                          : callDetails?.["Call-Direction"] === "voicemail"
+                        className={`${
+                          callDetails?.["variable_billsec"] === 0
+                            ? "missed"
+                            : callDetails?.["Call-Direction"] === "voicemail"
                             ? "voicemail"
                             : ""
-                          }`}
+                        }`}
                       >
                         <span>
                           {callDetails?.["Caller-Callee-ID-Number"]}==
@@ -309,7 +415,7 @@ function CallDetails({
                       </div>
                     </div>
                   </div>
-                  <div className="col-12" style={{ padding: '25px 20px 0px' }}>
+                  <div className="col-12" style={{ padding: "25px 20px 0px" }}>
                     <div className="callDetailsList tableContainer mt-0">
                       <table>
                         <thead>
@@ -323,9 +429,7 @@ function CallDetails({
                         <tbody>
                           {callHistory?.map((item) => (
                             <tr key={item.id}>
-                              <td>
-                                {formatDate(item.variable_start_stamp)}
-                              </td>
+                              <td>{formatDate(item.variable_start_stamp)}</td>
                               <td>{formatTime(item.variable_start_stamp)}</td>
                               {/* <td
                         className={`${
@@ -358,33 +462,41 @@ function CallDetails({
                         </span>
                       </td> */}
                               {!isCustomerAdmin ? (
-                                <td style={{ paddingLeft: '32px' }}
-                                  className={`${item?.["Caller-Callee-ID-Number"] === extension &&
+                                <td
+                                  style={{ paddingLeft: "32px" }}
+                                  className={`${
+                                    item?.["Caller-Callee-ID-Number"] ===
+                                      extension &&
                                     item?.["variable_billsec"] > 0
-                                    ? "incoming"
-                                    : item?.["Caller-Caller-ID-Number"] === extension
+                                      ? "incoming"
+                                      : item?.["Caller-Caller-ID-Number"] ===
+                                        extension
                                       ? "outgoing"
                                       : item?.["Caller-Callee-ID-Number"] ===
-                                        extension && item?.["variable_billsec"] === 0
-                                        ? "missed"
-                                        : item?.["Call-Direction"] === "voicemail"
-                                          ? "voicemail"
-                                          : ""
-                                    }`}
+                                          extension &&
+                                        item?.["variable_billsec"] === 0
+                                      ? "missed"
+                                      : item?.["Call-Direction"] === "voicemail"
+                                      ? "voicemail"
+                                      : ""
+                                  }`}
                                 >
                                   <span>
                                     {item &&
-                                      item?.["Caller-Callee-ID-Number"] === extension &&
-                                      item?.["variable_billsec"] > 0
+                                    item?.["Caller-Callee-ID-Number"] ===
+                                      extension &&
+                                    item?.["variable_billsec"] > 0
                                       ? "Incoming"
-                                      : item?.["Caller-Caller-ID-Number"] === extension
-                                        ? "Outgoing"
-                                        : item?.["Caller-Callee-ID-Number"] ===
-                                          extension && item?.["variable_billsec"] === 0
-                                          ? "Missed"
-                                          : item?.["Call-Direction"] === "voicemail"
-                                            ? "voicemail"
-                                            : ""}
+                                      : item?.["Caller-Caller-ID-Number"] ===
+                                        extension
+                                      ? "Outgoing"
+                                      : item?.["Caller-Callee-ID-Number"] ===
+                                          extension &&
+                                        item?.["variable_billsec"] === 0
+                                      ? "Missed"
+                                      : item?.["Call-Direction"] === "voicemail"
+                                      ? "voicemail"
+                                      : ""}
                                   </span>
                                 </td>
                               ) : (
@@ -398,7 +510,17 @@ function CallDetails({
                                 >
                                   <span>
                                     {item?.["Caller-Callee-ID-Number"]}
-                                    {item?.["variable_billsec"] > 0 ? <i class="fa-solid fa-phone mx-2" style={{ color: "var(--ui-accent)" }}></i> : <i class="fa-solid fa-phone-xmark mx-2" style={{ color: 'red' }}></i>}
+                                    {item?.["variable_billsec"] > 0 ? (
+                                      <i
+                                        class="fa-solid fa-phone mx-2"
+                                        style={{ color: "var(--ui-accent)" }}
+                                      ></i>
+                                    ) : (
+                                      <i
+                                        class="fa-solid fa-phone-xmark mx-2"
+                                        style={{ color: "red" }}
+                                      ></i>
+                                    )}
                                     {item?.["Caller-Caller-ID-Number"]}
                                   </span>
                                 </td>
@@ -422,10 +544,6 @@ function CallDetails({
                 </div>
               </div>
             </div>
-
-
-
-
           </div>
         </div>
       </div>

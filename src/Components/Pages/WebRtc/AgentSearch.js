@@ -3,7 +3,13 @@ import Select from "react-select";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import zIndex from "@mui/material/styles/zIndex";
 
-const AgentSearch = ({ getDropdownValue, value, getAllAgents }) => {
+const AgentSearch = ({
+  getDropdownValue,
+  value,
+  getAllAgents,
+  extensionFromCdrMessage,
+  setExtensionFromCdrMessage,
+}) => {
   const [user, setUser] = useState([]);
 
   const [selectedOption, setSelectedOption] = useState(null);
@@ -38,6 +44,20 @@ const AgentSearch = ({ getDropdownValue, value, getAllAgents }) => {
         })),
     },
   ];
+  useEffect(() => {
+    if (extensionFromCdrMessage && allOptions?.length > 0) {
+      const selectedUser = allOptions[0].options?.filter((item) => {
+        return item.value[0] == extensionFromCdrMessage;
+      });
+
+      if (selectedUser.length > 0) {
+        getDropdownValue(selectedUser[0].value);
+        setSelectedOption(selectedUser[0].value[0]);
+        setExtensionFromCdrMessage();
+      }
+    }
+  }, [extensionFromCdrMessage, allOptions]);
+  // console.log(allOptions);
   // Custom styles for react-select
   const customStyles = {
     control: (provided, state) => ({
@@ -51,7 +71,7 @@ const AgentSearch = ({ getDropdownValue, value, getAllAgents }) => {
       width: "100%",
       minHeight: "35px",
       padding: "0px 0 0 25px",
-      background: `var(--searchBg) url(${require('../../assets/images/search_b.png')}) no-repeat 7px center / 17px 17px`,
+      background: `var(--searchBg) url(${require("../../assets/images/search_b.png")}) no-repeat 7px center / 17px 17px`,
       boxShadow: state.isFocused ? "none" : provided.boxShadow,
       "&:hover": {
         borderColor: "var(--ui-accent)",
@@ -82,8 +102,10 @@ const AgentSearch = ({ getDropdownValue, value, getAllAgents }) => {
       paddingLeft: "13px",
       paddingTop: 5,
       paddingBottom: 5,
-      borderBottom: '1px solid var(--border-color)',
-      backgroundColor: state.isSelected ? "var(--ele-color)" : "var(--ele-color)",
+      borderBottom: "1px solid var(--border-color)",
+      backgroundColor: state.isSelected
+        ? "var(--ele-color)"
+        : "var(--ele-color)",
       "&:hover": {
         backgroundColor: "#0055cc",
         color: "#fff",
@@ -94,7 +116,7 @@ const AgentSearch = ({ getDropdownValue, value, getAllAgents }) => {
       ...provided,
       margin: 0,
       padding: 0,
-      zIndex: 9
+      zIndex: 9,
     }),
     menuList: (provided) => ({
       ...provided,
