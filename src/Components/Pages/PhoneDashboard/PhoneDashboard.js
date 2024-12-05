@@ -261,7 +261,10 @@ function PhoneDashboard() {
                           <h5>Extensions</h5>
                           <p>7 October, 2024</p>
                         </div>
-                        <div class="col-2" onClick={() => navigate("/extensions")}>
+                        <div
+                          class="col-2"
+                          onClick={() => navigate("/extensions")}
+                        >
                           <i class="fa-duotone fa-phone-office"></i>
                         </div>
                       </div>
@@ -270,16 +273,22 @@ function PhoneDashboard() {
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className="col-10">
                           <h5>{(extension && extension.length) || 0}</h5>
-                          <p>{activeCall.length} on Call / {(extension &&
-                            extension.length -
-                            extension.filter((extension) =>
-                              onlineExtension.includes(extension.extension)
-                            ).length) ||
-                            0}{" "}Offline / {(extension &&
+                          <p>
+                            {activeCall.length} on Call /{" "}
+                            {(extension &&
+                              extension.length -
+                                extension.filter((extension) =>
+                                  onlineExtension.includes(extension.extension)
+                                ).length) ||
+                              0}{" "}
+                            Offline /{" "}
+                            {(extension &&
                               extension.filter((extension) =>
                                 onlineExtension.includes(extension.extension)
                               ).length) ||
-                              0}{" "}Online</p>
+                              0}{" "}
+                            Online
+                          </p>
                         </div>
                         <div className="col-2">
                           <img
@@ -298,7 +307,10 @@ function PhoneDashboard() {
                           <h5>Call Center Queue</h5>
                           <p>7 October, 2024</p>
                         </div>
-                        <div class="col-2" onClick={() => navigate("/cal-center-queue")}>
+                        <div
+                          class="col-2"
+                          onClick={() => navigate("/cal-center-queue")}
+                        >
                           <i class="fa-duotone fa-clock"></i>
                         </div>
                       </div>
@@ -307,18 +319,20 @@ function PhoneDashboard() {
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className="col-10">
                           <h5>{callCenter.length}</h5>
-                          <p>{(callCenter &&
-                            callQueue &&
-                            callQueue.filter((data) =>
-                              callCenter.some(
-                                (call) =>
-                                  data["Caller-Callee-ID-Number"] ===
-                                  call.extension &&
-                                  data["variable_DIALSTATUS"] === "SUCCESS"
-                              )
-                            ).length) ||
-                            0}{" "}
-                            Inbound (Answered)</p>
+                          <p>
+                            {(callCenter &&
+                              callQueue &&
+                              callQueue.filter((data) =>
+                                callCenter.some(
+                                  (call) =>
+                                    data["Caller-Callee-ID-Number"] ===
+                                      call.extension &&
+                                    data["variable_DIALSTATUS"] === "SUCCESS"
+                                )
+                              ).length) ||
+                              0}{" "}
+                            Inbound (Answered)
+                          </p>
                         </div>
                         <div className="col-2">
                           <img
@@ -337,7 +351,10 @@ function PhoneDashboard() {
                           <h5>Ring Group</h5>
                           <p>7 October, 2024</p>
                         </div>
-                        <div class="col-2" onClick={() => navigate("/ring-groups")}>
+                        <div
+                          class="col-2"
+                          onClick={() => navigate("/ring-groups")}
+                        >
                           <i class="fa-duotone fa-solid fa-bell-ring"></i>
                         </div>
                       </div>
@@ -347,12 +364,16 @@ function PhoneDashboard() {
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className="col-10">
                           <h5>{ringGroup.length || 0}</h5>
-                          <p>{activeCall.length} Active Calls / {(ringGroupData &&
-                            ringGroupData.filter(
-                              (data) => data["variable_DIALSTATUS"] !== "SUCCESS"
-                            ).length) ||
-                            0}{" "}
-                            Calls Missed</p>
+                          <p>
+                            {activeCall.length} Active Calls /{" "}
+                            {(ringGroupData &&
+                              ringGroupData.filter(
+                                (data) =>
+                                  data["variable_DIALSTATUS"] !== "SUCCESS"
+                              ).length) ||
+                              0}{" "}
+                            Calls Missed
+                          </p>
                         </div>
                         <div className="col-2">
                           <img
@@ -380,28 +401,39 @@ function PhoneDashboard() {
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className="col-10">
                           <h5>{(allUser.data && allUser.data.length) || 0}</h5>
-                          <p>{(allUser.data &&
-                            allUser.data.filter(
-                              (user) =>
-                                user.extension !== null &&
-                                user.extension.extension !== null &&
-                                onlineUser.includes(user.extension.extension)
-                            ).length) ||
-                            0}{" "}Active Users / {(allUser.data &&
-                              allUser.data.length -
-                              allUser.data.filter((user) => {
-                                user.extension !== null &&
+                          <p>
+                            {(allUser.data &&
+                              allUser.data.filter(
+                                (user) =>
+                                  user.extension !== null &&
                                   user.extension.extension !== null &&
-                                  onlineUser.includes(user.extension.extension);
-                              }).length) ||
+                                  onlineUser.includes(
+                                    user?.extension?.extension
+                                  )
+                              ).length) ||
                               0}{" "}
-                            Idle Users / {(allUser.data &&
+                            Active Users /{" "}
+                            {(allUser.data &&
+                              allUser.data.length -
+                                allUser.data.filter((user) => {
+                                  user.extension !== null &&
+                                    user.extension.extension !== null &&
+                                    onlineUser.includes(
+                                      user?.extension?.extension
+                                    );
+                                }).length) ||
+                              0}{" "}
+                            Idle Users /{" "}
+                            {(allUser.data &&
                               allUser.data.filter((user) =>
                                 activeCall.some(
-                                  (call) => call.dest === user.extension.extension
+                                  (call) =>
+                                    call.dest === user?.extension?.extension
                                 )
                               ).length) ||
-                              0}{" "}On Call</p>
+                              0}{" "}
+                            On Call
+                          </p>
                         </div>
                         <div className="col-2">
                           <img
@@ -430,7 +462,7 @@ function PhoneDashboard() {
                         registerUser.length,
                         extensionList,
                         Number(accountDetails.package?.number_of_user) -
-                        extensionList,
+                          extensionList,
                       ]}
                       colors={["#9999", "#FF638470", "#36A2EB70"]}
                     />
@@ -439,14 +471,11 @@ function PhoneDashboard() {
                 <div className="col-xl-3">
                   <div className="wrapper">
                     <DoughnutChart
-                      fields={[
-                        "Registered Users",
-                        "Available Users",
-                      ]}
+                      fields={["Registered Users", "Available Users"]}
                       percentage={[
                         userList,
                         Number(accountDetails.package?.number_of_user) -
-                        userList,
+                          userList,
                       ]}
                       centerTitle={`${userList}/${Number(
                         accountDetails.package?.number_of_user
@@ -481,9 +510,9 @@ function PhoneDashboard() {
                         ((Number(accountDetails.package?.number_of_user) -
                           extensionList) *
                           100) /
-                        Number(accountDetails.package?.number_of_user),
+                          Number(accountDetails.package?.number_of_user),
                         (extensionList * 100) /
-                        Number(accountDetails.package?.number_of_user),
+                          Number(accountDetails.package?.number_of_user),
                       ]}
                       centerTitle={`${extensionList}/${accountDetails.package?.number_of_user}`}
                       centerDesc="Total Extensions"

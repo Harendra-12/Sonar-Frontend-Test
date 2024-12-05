@@ -27,7 +27,7 @@ const Extensions = () => {
   const dispatch = useDispatch();
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     if (registerUser.length > 0) {
@@ -36,13 +36,12 @@ const Extensions = () => {
           if (item.account_id === account.account_id) {
             return item.extension;
           }
-
         })
       );
     } else {
       setOnlineExtension([0]);
     }
-   
+    generalGetFunction("/freeswitch/checkActiveExtensionOnServer");
   }, [registerUser]);
   useEffect(() => {
     if (userList.length == 0) {
@@ -51,7 +50,6 @@ const Extensions = () => {
         allUserRefresh: allUserRefresh + 1,
       });
     }
-    generalGetFunction("/freeswitch/checkActiveExtensionOnServer");
   }, []);
 
   const userWithExtension = userList
@@ -90,7 +88,6 @@ const Extensions = () => {
       }
       getData();
     } else {
-
       async function getData() {
         setLoading(true);
         if (account && account.account_id) {
@@ -176,7 +173,11 @@ const Extensions = () => {
                     <div className="tableHeader">
                       <div className="showEntries">
                         <label>Show</label>
-                        <select className="formItem" value={itemsPerPage} onChange={(e) => setItemsPerPage(e.target.value)}>
+                        <select
+                          className="formItem"
+                          value={itemsPerPage}
+                          onChange={(e) => setItemsPerPage(e.target.value)}
+                        >
                           <option value={10}>10</option>
                           <option value={20}>20</option>
                           <option value={30}>30</option>

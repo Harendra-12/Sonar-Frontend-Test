@@ -27,9 +27,11 @@ function GlobalCalls() {
     (state) => state.deviceProvisioningRefresh
   );
 
-  const rolesAndPermissionRefresh = useSelector(
-    (state) => state.rolesAndPermissionRefresh
-  );
+  // const rolesAndPermissionRefresh = useSelector(
+  //   (state) => state.rolesAndPermissionRefresh
+  // );
+  const rolesRefresh = useSelector((state) => state.rolesRefresh);
+  const permissionRefresh = useSelector((state) => state.permissionRefresh);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -49,7 +51,7 @@ function GlobalCalls() {
       if (callDetailsRefresh > 0) {
         getData();
       }
-    } 
+    }
   }, [account, callDetailsRefresh]);
 
   // Getting all card details
@@ -231,13 +233,34 @@ function GlobalCalls() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/role/all`);
-      const permissionData = await generalGetFunction("/permission");
+      // const permissionData = await generalGetFunction("/permission");
       if (apiData?.status) {
         dispatch({
           type: "SET_ROLES",
           roles: apiData.data,
         });
       }
+      // if (permissionData?.status) {
+      //   dispatch({
+      //     type: "SET_PERMISSIONS",
+      //     permissions: permissionData.data,
+      //   });
+      // }
+    }
+    if (rolesRefresh > 0) {
+      getData();
+    }
+  }, [rolesRefresh]);
+  useEffect(() => {
+    async function getData() {
+      // const apiData = await generalGetFunction(`/role/all`);
+      const permissionData = await generalGetFunction("/permission");
+      // if (apiData?.status) {
+      //   dispatch({
+      //     type: "SET_ROLES",
+      //     roles: apiData.data,
+      //   });
+      // }
       if (permissionData?.status) {
         dispatch({
           type: "SET_PERMISSIONS",
@@ -245,10 +268,10 @@ function GlobalCalls() {
         });
       }
     }
-    if (rolesAndPermissionRefresh > 0) {
+    if (permissionRefresh > 0) {
       getData();
     }
-  }, [rolesAndPermissionRefresh]);
+  }, [permissionRefresh]);
 
   // Getting account balance
   useEffect(() => {
@@ -261,16 +284,17 @@ function GlobalCalls() {
         });
       }
     }
-    if(account){
+    if (account) {
       getData();
     }
-   
   }, [updateBalance]);
 
   // Getting ivr details
   useEffect(() => {
     async function getData() {
-      const apiData = await generalGetFunction("/ivr-master/all?row_per_page=50");
+      const apiData = await generalGetFunction(
+        "/ivr-master/all?row_per_page=50"
+      );
       if (apiData?.status) {
         dispatch({
           type: "SET_IVR",
@@ -326,12 +350,11 @@ function GlobalCalls() {
         });
 
         localStorage.setItem("account", JSON.stringify(profile.data));
-      } 
+      }
     };
-    if(account){
+    if (account) {
       getLoginInfo();
     }
-   
   }, []);
 
   return <div></div>;

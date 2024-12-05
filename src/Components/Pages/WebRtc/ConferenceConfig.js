@@ -6,7 +6,7 @@ import {
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../../Loader/CircularLoader";
-import {ConferenceCall} from "./ConferenceCall";
+import { ConferenceCall } from "./ConferenceCall";
 import ContentLoader from "../../Loader/ContentLoader";
 import { useSelector } from "react-redux";
 
@@ -27,6 +27,7 @@ const ConferenceConfig = () => {
   const account = useSelector((state) => state.account);
   const [conferenceId, setConferenceId] = useState("");
   const [error, setError] = useState("");
+  const [selectedTab, setselectedTab] = useState("");
 
   useEffect(() => {
     async function getData() {
@@ -83,6 +84,8 @@ const ConferenceConfig = () => {
       if (apiData.status) {
         setLoading(false);
         toast.success(apiData.message);
+        setConferenceRefresh(conferenceRefresh + 1);
+        setselectedTab("nav-all-tab");
       } else {
         setLoading(false);
       }
@@ -118,22 +121,27 @@ const ConferenceConfig = () => {
   return (
     <>
       {conferenceToggle ? (
-        <ConferenceCall name={account.username} extension_id={`${account?.extension?.extension}@${account.domain.domain_name}`} room_id={conferenceId} />
+        <ConferenceCall
+          name={account.username}
+          extension_id={`${account?.extension?.extension}@${account.domain.domain_name}`}
+          room_id={conferenceId}
+        />
       ) : (
-        <main className="mainContentApp" style={{
-          marginRight:
-            sessions.length > 0 && Object.keys(sessions).length > 0
-              ? "250px"
-              : "0",
-        }}>
+        <main
+          className="mainContentApp"
+          style={{
+            marginRight:
+              sessions.length > 0 && Object.keys(sessions).length > 0
+                ? "250px"
+                : "0",
+          }}
+        >
           <section id="phonePage">
             <div className="container-fluid px-0">
               <Header title="Conference Settings" />
             </div>
             <div className="col-xl-12">
-
               <div className="overviewTableWrapper">
-
                 <div className="overviewTableChild">
                   <div className="d-flex flex-wrap">
                     <div className="col-12">
@@ -180,9 +188,11 @@ const ConferenceConfig = () => {
                         <nav>
                           <div class="nav nav-tabs" id="nav-tab" role="tablist">
                             {allConferences?.data?.length &&
-                              allConferences?.data?.length > 0 ? (
+                            allConferences?.data?.length > 0 ? (
                               <button
-                                class="nav-link "
+                                className={`nav-link ${
+                                  selectedTab == "nav-all-tab" ? "active" : ""
+                                } `}
                                 id="nav-all-tab"
                                 data-bs-toggle="tab"
                                 data-bs-target="#nav-all"
@@ -190,6 +200,7 @@ const ConferenceConfig = () => {
                                 role="tab"
                                 aria-controls="nav-all"
                                 aria-selected="false"
+                                onClick={() => setselectedTab("nav-all-tab")}
                               >
                                 All
                               </button>
@@ -198,7 +209,9 @@ const ConferenceConfig = () => {
                             )}
 
                             <button
-                              class="nav-link active"
+                              className={`nav-link ${
+                                selectedTab == "nav-gen-tab" ? "active" : ""
+                              } `}
                               id="nav-gen-tab"
                               data-bs-toggle="tab"
                               data-bs-target="#nav-gen"
@@ -206,11 +219,16 @@ const ConferenceConfig = () => {
                               role="tab"
                               aria-controls="nav-gen"
                               aria-selected="true"
+                              onClick={() => setselectedTab("nav-gen-tab")}
                             >
                               Create
                             </button>
                             <button
-                              class="nav-link "
+                              className={`nav-link ${
+                                selectedTab == "nav-voicemail-tab"
+                                  ? "active"
+                                  : ""
+                              } `}
                               id="nav-voicemail-tab"
                               data-bs-toggle="tab"
                               data-bs-target="#nav-voicemail"
@@ -218,6 +236,9 @@ const ConferenceConfig = () => {
                               role="tab"
                               aria-controls="nav-voicemail"
                               aria-selected="false"
+                              onClick={() =>
+                                setselectedTab("nav-voicemail-tab")
+                              }
                             >
                               Join
                             </button>
@@ -230,7 +251,11 @@ const ConferenceConfig = () => {
                         ) : (
                           <div class="tab-content" id="nav-tabContent">
                             <div
-                              class="tab-pane fade"
+                              className={`tab-pane fade ${
+                                selectedTab == "nav-all-tab"
+                                  ? "show active"
+                                  : ""
+                              }`}
                               id="nav-all"
                               role="tabpanel"
                               aria-labelledby="nav-all"
@@ -284,7 +309,6 @@ const ConferenceConfig = () => {
                                                     // setDeleteId(item.id);
                                                   }}
                                                 >
-
                                                   <i class="fa-solid fa-right-to-bracket"></i>
                                                 </button>
                                               </td>
@@ -297,7 +321,9 @@ const ConferenceConfig = () => {
                               </div>
                             </div>
                             <div
-                              class="tab-pane fade show active"
+                              className={`tab-pane fade ${
+                                selectedTab == "nav-gen-tab" ? " active" : ""
+                              }`}
                               id="nav-gen"
                               role="tabpanel"
                               aria-labelledby="nav-gen-tab"
@@ -450,7 +476,9 @@ const ConferenceConfig = () => {
                                       type="number"
                                       name="extension"
                                       className="formItem"
-                                      onChange={(e) => setMembers(e.target.value)}
+                                      onChange={(e) =>
+                                        setMembers(e.target.value)
+                                      }
                                       value={members}
                                     />
                                   </div>
@@ -480,7 +508,11 @@ const ConferenceConfig = () => {
                               </form>
                             </div>
                             <div
-                              class="tab-pane fade "
+                              className={`tab-pane fade ${
+                                selectedTab == "nav-voicemail-tab"
+                                  ? " active"
+                                  : ""
+                              }`}
                               id="nav-voicemail"
                               role="tabpanel"
                               aria-labelledby="nav-voicemail-tab"
@@ -503,15 +535,22 @@ const ConferenceConfig = () => {
                                       name="extension"
                                       className="formItem"
                                       value={conferenceId}
-                                      onChange={(e) => setConferenceId(e.target.value)}
+                                      onChange={(e) =>
+                                        setConferenceId(e.target.value)
+                                      }
                                     />
-                                    {error && <p style={{ color: "red" }}>{error}</p>}
+                                    {error && (
+                                      <p style={{ color: "red" }}>{error}</p>
+                                    )}
                                   </div>
-                                  <div className="panelButton" onClick={() =>
-                                    validateAndSetConferenceId(
-                                      conferenceId
-                                    )
-                                  }>JOIN</div>
+                                  <div
+                                    className="panelButton"
+                                    onClick={() =>
+                                      validateAndSetConferenceId(conferenceId)
+                                    }
+                                  >
+                                    JOIN
+                                  </div>
                                 </div>
                                 {/* <div className="formRow col-xl-3">
                                   <div className="formLabel">

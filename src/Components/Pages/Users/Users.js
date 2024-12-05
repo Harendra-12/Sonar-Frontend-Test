@@ -18,9 +18,10 @@ const Users = () => {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const roles = useSelector((state) => state.roles);
-  const rolesAndPermissionRefresh = useSelector(
-    (state) => state.rolesAndPermissionRefresh
-  );
+  // const rolesAndPermissionRefresh = useSelector(
+  //   (state) => state.rolesAndPermissionRefresh
+  // );
+  const rolesRefresh = useSelector((state) => state.rolesRefresh);
   const navigate = useNavigate();
   const [user, setUser] = useState();
   const [userInput, setuserInput] = useState("");
@@ -47,8 +48,8 @@ const Users = () => {
 
   useEffect(() => {
     dispatch({
-      type: "SET_ROLES_PERMISSIONREFRESH",
-      rolesAndPermissionRefresh: rolesAndPermissionRefresh + 1,
+      type: "SET_ROLES_REFRESH",
+      rolesRefresh: rolesRefresh + 1,
     });
   }, []);
 
