@@ -49,13 +49,13 @@ function ConferenceJoin() {
             {loading ? <ContentLoader /> :
                 <main className="login">
                     <div className="container position-relative h-100">
-                        <div className="row h-100">
-                            <div className='col-xl-6 mx-auto position-relative'>
-                                <div className="loginWrapper2">
+                        <div className="loginWrapper2">
+                            <div className="row h-100 justify-content-evenly">
+                                <div className='col-xl-5 position-relative'>
                                     <div className="col-xl-12 h-100 position-relative d-flex align-items-center">
                                         <div className="content col-xl-7 mx-auto py-5">
                                             <h3>Join conference</h3>
-                                            <p>Enter details to join conference</p>
+                                            <p>Enter your name to join conference</p>
                                             <div className="border-bottom my-4"></div>
                                             <form className="loginForm">
                                                 <div className="col-xl-12 m-auto">
@@ -68,15 +68,6 @@ function ConferenceJoin() {
                                                             className="loginFormItem"
                                                             value={name}
                                                             onChange={(e) => setName(e.target.value)}
-                                                        />
-                                                    </div>
-                                                    <label>Number</label>
-                                                    <div className="position-relative">
-                                                        <i className="fa-thin fa-lock" />
-                                                        <input
-                                                            type="number"
-                                                            placeholder="Enter your number"
-                                                            className="loginFormItem"
                                                         />
                                                     </div>
                                                     <div>
@@ -93,6 +84,25 @@ function ConferenceJoin() {
                                             </form>
                                         </div>
                                         <div className="text-center position-absolute w-100" style={{ bottom: 0, left: '50%', transform: 'translate(-50%, -50%)' }}><p style={{ color: 'var(--webUtilGray)', fontSize: 12, marginBottom: 0 }}>2024 AnglePBX. All rights Reserved</p></div>
+                                    </div>
+                                </div>
+                                <div className='col-xl-6 d-xl-block d-none my-auto'>
+                                    <div className="loginImgWrapper h-auto bg-transparent">
+                                        <div className="content" style={{ padding: '25px' }}>
+                                            <div className='conferenceJoinVideo'>
+                                                <video autoPlay={true} loop={true} muted={true}>
+                                                    <source src={require('../../assets/images/testvideo.mp4')} type="video/mp4" />
+                                                </video>
+                                                <div className='buttonGroup' >
+                                                    <button className='clearButton2 xl white'>
+                                                        <i class="fa-light fa-microphone"></i>
+                                                    </button>
+                                                    <button className='clearButton2 xl white ms-3'>
+                                                        <i class="fa-light fa-camera"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
