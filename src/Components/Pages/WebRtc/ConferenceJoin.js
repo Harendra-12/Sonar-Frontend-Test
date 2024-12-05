@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction';
 import { useNavigate } from 'react-router-dom';
 import CircularLoader from '../../Loader/CircularLoader';
@@ -30,6 +30,15 @@ function ConferenceJoin() {
             setLoading(false)
         }
     }
+
+    // window.addEventListener("beforeunload", (event) => {
+    //     // Custom logic before showing the confirmation
+    //     // callAction("hup");
+    
+    //     // Set a generic confirmation dialog
+    //     event.preventDefault();
+    //     event.returnValue = ""; // Required for most browsers to show the dialog
+    // });
     return (
         <>
             <style>
