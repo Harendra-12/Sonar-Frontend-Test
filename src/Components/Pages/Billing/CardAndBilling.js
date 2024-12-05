@@ -948,20 +948,19 @@ function CardAndBilling() {
                                             {editBillId === item.id ? (
                                               <div className="me-3">
                                                 <button
-                                                  className="clearButton fw-medium ps-0"
+                                                  className="tableButton edit"
                                                   onClick={() => {
                                                     handleSubmit();
                                                     // setEditBillId()
                                                   }}
                                                 >
-                                                  <i className="fa-duotone fa-pen-to-square me-1"></i>{" "}
-                                                  Save
+                                                  <i className="fa-solid fa-check"></i>{" "}
                                                 </button>
                                               </div>
                                             ) : (
                                               <div className="me-3">
                                                 <button
-                                                  className="clearButton fw-medium ps-0"
+                                                  className="tableButton"
                                                   onClick={() => {
                                                     setEditBillId(item.id);
                                                     setBilling((prevData) => ({
@@ -977,21 +976,19 @@ function CardAndBilling() {
                                                     }));
                                                   }}
                                                 >
-                                                  <i className="fa-duotone fa-pen-to-square me-1"></i>{" "}
-                                                  Edit
+                                                  <i className="fa-solid fa-pen-to-square"></i>{" "}
                                                 </button>
                                               </div>
                                             )}
                                             <div>
                                               <button
-                                                className="clearButton fw-medium text-danger"
+                                                className="tableButton delete"
                                                 onClick={() => {
                                                   setDelBillId(item.id);
                                                   setBillDelPopUp(true);
                                                 }}
                                               >
-                                                <i className="fa-duotone fa-trash me-1"></i>{" "}
-                                                Delete
+                                                <i className="fa-solid fa-trash"></i>{" "}
                                               </button>
                                             </div>
                                           </div>

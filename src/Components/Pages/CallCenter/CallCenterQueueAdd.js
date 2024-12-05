@@ -906,8 +906,8 @@ function CallCenterQueueAdd() {
                             >
                               <label>{index + 1}.</label>
                             </div>
-                            <div className={`row col-${advance.includes(item.id) ? "11" : "9"}`}>
-                              <div className={`col-${advance.includes(item.id) ? "2" : "3"} ps-0 pe-2`}>
+                            <div className={`row col-${advance.includes(item.id) ? "11" : "6"}`}>
+                              <div className={`col-${advance.includes(item.id) ? "2" : "4"} ps-0 pe-2`}>
                                 <div className="formLabel">
                                   {index === 0 ? (
                                     <label htmlFor="">Agent Name</label>
@@ -958,7 +958,7 @@ function CallCenterQueueAdd() {
                                   </select>
                                 </div>
                               </div>
-                              <div className={`col-${advance.includes(item.id) ? "2" : "3"} ps-0 pe-2`}>
+                              <div className={`col-${advance.includes(item.id) ? "2" : "4"} ps-0 pe-2`}>
                                 <div className="formLabel">
                                   {index === 0 ? (
                                     <label htmlFor="">Password</label>
@@ -977,7 +977,7 @@ function CallCenterQueueAdd() {
                                   />
                                 </div>
                               </div>
-                              <div className={`col-${advance.includes(item.id) ? "1" : "3"} ps-0 pe-2`}>
+                              <div className={`col-${advance.includes(item.id) ? "1" : "2"} ps-0 pe-2`}>
                                 <div className="formLabel">
                                   {index === 0 ? (
                                     <label htmlFor="">Tier Level</label>
@@ -1005,7 +1005,7 @@ function CallCenterQueueAdd() {
                                   <option value={9}>9</option>
                                 </select>
                               </div>
-                              <div className={`col-${advance.includes(item.id) ? "1" : "3"} ps-0 pe-2`}>
+                              <div className={`col-${advance.includes(item.id) ? "1" : "2"} ps-0 pe-2`}>
                                 <div className="formLabel">
                                   {index === 0 ? (
                                     <label htmlFor="">Tier Position</label>
@@ -1225,12 +1225,25 @@ function CallCenterQueueAdd() {
                             </div>
 
                             <div className="row col">
+                              {<div
+                                onClick={() => handleAdvance(item.id)}
+                                className="col-auto px-0 mt-auto"
+                              >
+                                <button
+                                  type="button"
+                                  className="tableButton edit my-auto"
+                                >
+
+                                  <i className={`fa-solid fa-${advance.includes(item.id) ? "gear" : "gears"}`}></i>
+                                </button>
+                              </div>}
+
                               {agent.length === 1 ? (
                                 ""
                               ) : (
                                 <div
                                   onClick={() => removeAgenet(item.id)}
-                                  className="col-auto ps-0 pe-2 mt-auto"
+                                  className="col-auto px-0 mt-auto mx-2"
                                 >
                                   <button
                                     type="button"
@@ -1245,30 +1258,20 @@ function CallCenterQueueAdd() {
                                 index !== (user && user.length - 1) ? (
                                 <div
                                   onClick={addNewAgent}
-                                  className="col-auto px-0 mt-auto me-2"
+                                  className="col-auto  px-0 mt-auto"
                                 >
                                   <button
                                     type="button"
-                                    className="tableButton my-auto"
+                                    className="panelButton my-auto ms-0"
                                   >
-                                    <i class="fa-solid fa-plus"></i>
+                                    <span className="text">Add</span>
+                                    <span className="icon"> <i class="fa-solid fa-plus"></i></span>
                                   </button>
                                 </div>
                               ) : (
                                 ""
                               )}
-                              {<div
-                                onClick={() => handleAdvance(item.id)}
-                                className="col-auto px-0 mt-auto"
-                              >
-                                <button
-                                  type="button"
-                                  className="panelButton my-auto ms-0"
-                                >
-                                  <span className="text">{advance.includes(item.id) ? "Less" : "More"}</span>
-                                  <span className="icon"><i class={`fa-solid fa-${advance.includes(item.id) ? "minus" : "plus"}`}></i></span>
-                                </button>
-                              </div>}
+
                             </div>
                           </div>
                         );

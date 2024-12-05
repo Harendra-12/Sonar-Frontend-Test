@@ -798,3 +798,24 @@ input[type=number] {
 .card {
     background-color: var(--ele-color);
 }
+
+.PhoneInput {
+    border: 1px solid var(--border-color);
+    padding: 5px 10px;
+    border-radius: 3px;
+    height: 34px;
+    transition: all 0.3s ease-in-out;
+}
+
+.PhoneInput:hover {
+    border-color: var(--ui-accent);
+}
+
+.PhoneInput input {
+    background-color: var(--ele-color);
+    border: none;
+    color: var(--form-input-text);
+    outline: none;
+    font-size: 14px;
+    font-weight: 700;
+}
