@@ -375,7 +375,7 @@ function CardAndBilling() {
                     <div className="col-xl-4">
                       <div className="itemWrapper a">
                         <div className="heading">
-                          <div class="d-flex flex-wrap justify-content-between align-items-center">
+                          <div class="d-flex flex-wrap justify-content-between">
                             <div class="col-10">
                               <h5>Upcoming Transaction</h5>
                               {/* <p>16-01-2024</p> */}
@@ -451,7 +451,7 @@ function CardAndBilling() {
                       <div className="itemWrapper a">
                         <div className="heading">
                           <div className="heading">
-                            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                            <div class="d-flex flex-wrap justify-content-between">
                               <div class="col-10">
                                 <h5>Wallet Balance</h5>
                                 <p>Created On: {accountDetails?.balance?.created_at?.split("T")[0]}</p>
