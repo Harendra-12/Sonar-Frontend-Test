@@ -63,7 +63,7 @@ function AllCallsDetails() {
                       <div id="collapse1" class="accordion-collapse collapse pb-1">
                         <div className="accordion-body">
                           <div class="row col-12 mx-auto">
-                            <div className="col-xl-4 px-2 mt-2">
+                            <div className="col-xl-6 col-xxl-4 px-2 mt-2">
                               <div className="itemWrapperb a">
                                 <div className="heading">Total Calls</div>
                                 <div className="data-number">{allCalls.length}</div>
@@ -76,7 +76,7 @@ function AllCallsDetails() {
                                 </div>
                               </div>
                             </div>
-                            <div className="col-xl-4 px-2 mt-2">
+                            <div className="col-xl-6 col-xxl-4 px-2 mt-2">
                               <div className="itemWrapperb a">
                                 <div className="heading">Total Calls Completed</div>
                                 <div className="data-number">
@@ -101,7 +101,7 @@ function AllCallsDetails() {
                                 </div>
                               </div>
                             </div>
-                            <div className="col-xl-4 px-2 mt-2">
+                            <div className="col-xl-6 col-xxl-4 px-2 mt-2">
                               <div className="itemWrapperb a">
                                 <div className="heading">Missed Calls</div>
                                 {/* <div className="data-number">{callDetails.missed}</div> */}
@@ -127,7 +127,7 @@ function AllCallsDetails() {
                                 </div>
                               </div>
                             </div>
-                            <div className="col-xl-4 px-2 mt-2">
+                            <div className="col-xl-6 col-xxl-4 px-2 mt-2">
                               <div
                                 className="itemWrapperb a"
                                 onClick={() => navigate("/active-calls")}
@@ -147,14 +147,14 @@ function AllCallsDetails() {
                                 </div>
                               </div>
                             </div>
-                            <div className="col-xl-4 px-2 mt-2">
+                            <div className="col-xl-6 col-xxl-4 px-2 mt-2">
                               <div className="itemWrapperb a">
                                 <div className="heading">Average Talk Time</div>
                                 <div className="data-number">00.00.00</div>
                                 <div className="label2">Total 00.00.00</div>
                               </div>
                             </div>
-                            <div className="col-xl-4 px-2 mt-2">
+                            <div className="col-xl-6 col-xxl-4 px-2 mt-2">
                               <div className="itemWrapperb a">
                                 <div className="heading">Total Spent</div>
                                 <div className="data-number">$0.00</div>
@@ -194,7 +194,7 @@ function AllCallsDetails() {
                       <div id="collapse2" class="accordion-collapse collapse pb-1">
                         <div class="accordion-body">
                           <div className="row col-12 mx-auto">
-                            <div className="col-xl-4 px-2 mt-2">
+                            <div className="col-xl-6 col-xxl-4 px-2 mt-2">
                               <div className="itemWrapperb a">
                                 <div className="heading">Total Inbound Calls</div>
                                 <div className="data-number">
@@ -209,7 +209,7 @@ function AllCallsDetails() {
                                 </div>
                               </div>
                             </div>
-                            <div className="col-xl-4 px-2 mt-2">
+                            <div className="col-xl-6 col-xxl-4 px-2 mt-2">
                               <div className="itemWrapperb a">
                                 <div className="heading">
                                   Inbound Calls Completed
@@ -236,7 +236,7 @@ function AllCallsDetails() {
                                 </div>
                               </div>
                             </div>
-                            <div className="col-xl-4 px-2 mt-2">
+                            <div className="col-xl-6 col-xxl-4 px-2 mt-2">
                               <div className="itemWrapperb a">
                                 <div className="heading">Missed Inbound Calls</div>
                                 <div className="data-number">
@@ -261,7 +261,7 @@ function AllCallsDetails() {
                                 </div>
                               </div>
                             </div>
-                            <div className="col-xl-4 px-2 mt-2">
+                            <div className="col-xl-6 col-xxl-4 px-2 mt-2">
                               <div
                                 className="itemWrapperb a"
                                 onClick={() => navigate("/active-calls")}
@@ -288,14 +288,14 @@ function AllCallsDetails() {
                                 </div>
                               </div>
                             </div>
-                            <div className="col-xl-4 px-2 mt-2">
+                            <div className="col-xl-6 col-xxl-4 px-2 mt-2">
                               <div className="itemWrapperb a">
                                 <div className="heading">Average Talk Time</div>
                                 <div className="data-number">00.00.00</div>
                                 <div className="label2">Total 00.00.00</div>
                               </div>
                             </div>
-                            <div className="col-xl-4 px-2 mt-2">
+                            <div className="col-xl-6 col-xxl-4 px-2 mt-2">
                               <div className="itemWrapperb a">
                                 <div className="heading">Total Spent</div>
                                 <div className="data-number">$0.00</div>
@@ -335,7 +335,7 @@ function AllCallsDetails() {
                       <div id="collapse3" class="accordion-collapse collapse pb-1">
                         <div className="accordion-body">
                           <div className="row col-12 mx-auto">
-                            <div className="col-xl-4 px-2 mt-2">
+                            <div className="col-xl-6 col-xxl-4 px-2 mt-2">
                               <div className="itemWrapperb a">
                                 <div className="heading">Total Outbound Calls</div>
                                 <div className="data-number">
@@ -350,7 +350,7 @@ function AllCallsDetails() {
                                 </div>
                               </div>
                             </div>
-                            <div className="col-xl-4 px-2 mt-2">
+                            <div className="col-xl-6 col-xxl-4 px-2 mt-2">
                               <div className="itemWrapperb a">
                                 <div className="heading">
                                   Outbound Calls Completed
@@ -377,7 +377,7 @@ function AllCallsDetails() {
                                 </div>
                               </div>
                             </div>
-                            <div className="col-xl-4 px-2 mt-2">
+                            <div className="col-xl-6 col-xxl-4 px-2 mt-2">
                               <div className="itemWrapperb a">
                                 <div className="heading">Missed Outbound Calls</div>
                                 <div className="data-number">
@@ -400,7 +400,7 @@ function AllCallsDetails() {
                                 </div>
                               </div>
                             </div>
-                            <div className="col-xl-4 px-2 mt-2">
+                            <div className="col-xl-6 col-xxl-4 px-2 mt-2">
                               <div className="itemWrapperb a">
                                 <div className="heading">Extensions On Calls</div>
                                 <div className="data-number">
@@ -421,14 +421,14 @@ function AllCallsDetails() {
                                 </div>
                               </div>
                             </div>
-                            <div className="col-xl-4 px-2 mt-2">
+                            <div className="col-xl-6 col-xxl-4 px-2 mt-2">
                               <div className="itemWrapperb a">
                                 <div className="heading">Average Talk Time</div>
                                 <div className="data-number">00.00.00</div>
                                 <div className="label2">Total 00.00.00</div>
                               </div>
                             </div>
-                            <div className="col-xl-4 px-2 mt-2">
+                            <div className="col-xl-6 col-xxl-4 px-2 mt-2">
                               <div className="itemWrapperb a">
                                 <div className="heading">Total Spent</div>
                                 <div className="data-number">$0.00</div>
