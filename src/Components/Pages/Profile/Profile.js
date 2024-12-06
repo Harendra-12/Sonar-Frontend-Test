@@ -137,7 +137,7 @@ const Profile = () => {
         <div className="container-fluid">
           <div className="row">
             <Header title="My Profile" />
-            <div className="col-12 mt-2">
+            <div className="col-12 mt-3">
               {/* <div className="row px-xl-3 py-2" id="detailsHeader">
                 <div className="col-xl-2 col-4 d-flex align-items-center">
                   <h4 className="my-auto">My Profile</h4>
@@ -161,7 +161,7 @@ const Profile = () => {
                 </div>
               </div> */}
             </div>
-            <div className="col-xl-5">
+            <div className="col-xl-5 pe-xl-0">
               <div className="profileView">
                 <div className="profileDetailsHolder">
                   <div className="baseDetails">
@@ -322,7 +322,7 @@ const Profile = () => {
                             </div>
                             <div className="col-6">
                               <div className="row">
-                                <div className="col-12 ">
+                                <div className="col-8">
                                   <select
                                     className="formItem me-0"
                                     style={{ width: "100%" }}
@@ -351,25 +351,19 @@ const Profile = () => {
                                     })}
                                   </select>
                                 </div>
-
+                                <div className="col-4 ps-0">
+                                  <button
+                                    className="panelButton ms-0"
+                                    style={{ height: '34px' }}
+                                    onClick={() => handleSetExtension()}
+                                  // effect="ripple"
+                                  >
+                                    <span className="text">Save</span>
+                                    <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                                  </button>
+                                </div>
                               </div>
                             </div>
-
-                          </div>
-                          <div className="formRows   col-xl-12">
-                            <div className="float-end mt-3">
-                              <button
-                                className="panelButton ms-0"
-                                style={{ height: '34px' }}
-                                onClick={() => handleSetExtension()}
-                              // effect="ripple"
-                              >
-                                <span className="text">Save</span>
-                                <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
-                              </button>
-
-                            </div>
-
                           </div>
                           {/* <div className="formRow col-xl-4">
                       <div className="formLabel">
@@ -398,48 +392,48 @@ const Profile = () => {
                 </div>
               </div>
             </div>
-            <div className="col-xl-4">
+            <div className="col-xl-4 pe-xl-0">
               <div className="row">
                 <div className="col-md-12">
-                <div className="profileView ">
-                <div className="profileDetailsHolder  baseDetails">
-                <div className="content">
-                <h5 className=" me-2">All details</h5>
-                    <div className="mt-2">
-                      <div className=" d-flex align-items-center justify-content-start ">
-                        <p className=" me-2">Country:</p>
+                  <div className="profileView ">
+                    <div className="profileDetailsHolder  baseDetails">
+                      <div className="content">
+                        <h5 className=" me-2">All details</h5>
+                        <div className="mt-2">
+                          <div className=" d-flex align-items-center justify-content-start ">
+                            <p className=" me-2">Country:</p>
 
-                        <p className="imgwidth d-flex ms-2 me-2">
-                          <img
-                            src={`https://flagsapi.com/${accountDetails?.billing_address[0].country}/flat/16.png`}
-                          ></img>
-                          &nbsp;&nbsp;
-                          {accountDetails?.billing_address[0].country}
-                        </p>
+                            <p className="imgwidth d-flex ms-2 me-2">
+                              <img
+                                src={`https://flagsapi.com/${accountDetails?.billing_address[0].country}/flat/16.png`}
+                              ></img>
+                              &nbsp;&nbsp;
+                              {accountDetails?.billing_address[0].country}
+                            </p>
 
-                      </div>
-                      <div className=" d-flex align-items-center justify-content-start ">
-                        <p className=" me-2">Language:</p>
-                        <div >
-                          <p className="imgwidth d-flex  ms-2 me-2">
-                            <img
-                              src={`https://flagsapi.com/GB/flat/16.png`}
-                            ></img>
-                            &nbsp;&nbsp;{account?.language && account?.language}
-                          </p>
-                         </div>
+                          </div>
+                          <div className=" d-flex align-items-center justify-content-start ">
+                            <p className=" me-2">Language:</p>
+                            <div >
+                              <p className="imgwidth d-flex  ms-2 me-2">
+                                <img
+                                  src={`https://flagsapi.com/GB/flat/16.png`}
+                                ></img>
+                                &nbsp;&nbsp;{account?.language && account?.language}
+                              </p>
+                            </div>
 
-                      </div>
-                      <div className=" d-flex align-items-center justify-content-start ">
-                        <p className=" me-2">TimeZone:</p>
+                          </div>
+                          <div className=" d-flex align-items-center justify-content-start ">
+                            <p className=" me-2">TimeZone:</p>
 
-                        <p className=" ms-2 me-2">{timeZoneVal && timeZoneVal[0].name}</p>
+                            <p className=" ms-2 me-2">{timeZoneVal && timeZoneVal[0].name}</p>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-                 
+
                 </div>
               </div>
               <div className="row">
