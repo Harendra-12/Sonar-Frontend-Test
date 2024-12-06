@@ -23,6 +23,30 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
     const [videoCallToggle, setVideoCallToggle] = useState(false);
     const [toggleMessages, setToggleMessages] = useState(false);
     const [selectedConferenceUser, setSelectedConferenceUser] = useState(null);
+    const [seconds, setSeconds] = useState(0);
+    const [minutes, setMinutes] = useState(0);
+    const [hours, setHours] = useState(0);
+  
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setSeconds((prevSeconds) => {
+          if (prevSeconds === 59) {
+            setMinutes((prevMinutes) => {
+              if (prevMinutes === 59) {
+                setHours((prevHours) => prevHours + 1);
+                return 0;
+              }
+              return prevMinutes + 1;
+            });
+            return 0;
+          }
+          return prevSeconds + 1;
+        });
+      }, 1000);
+  
+      // Cleanup the interval on component unmount
+      return () => clearInterval(interval);
+    }, []);
     const [currentUser, setCurrentUser] = useState({
         id: "",
         caller_id_number: `${locationState.extension}@${locationState.domainName}`,
@@ -510,9 +534,9 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                                                 </div>}
                                                 <div className={`"col-lg-${toggleMessages ? "8" : "12"} col-xl-${toggleMessages ? "8" : "12"} col-12"`}>
                                                     <div className="heading">
-                                                        {/* <h4>
-                                                            Conference <span>14:20</span>
-                                                        </h4> */}
+                                                        <h4>
+                                                            Conference <span>{hours===0?"":`${hours}:`}{minutes}:{seconds}</span>
+                                                        </h4>
                                                         {/* <button className="clearButton">
                                                             <i class="fa-sharp fa-solid fa-circle-plus"></i> Add
                                                             Participant

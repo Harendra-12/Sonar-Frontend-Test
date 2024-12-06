@@ -24,12 +24,31 @@ export const ConferenceCall = ({ room_id, extension_id, name,setactivePage }) =>
   const [currentUser, setCurrentUser] = useState([])
   const [notification, setNotification] = useState(false)
   const [notificationData, setNotificationData] = useState("")
-  console.log("cccccccc", room_id, extension_id, name);
-  console.log("conferenceDataaaa", conferenceData);
-  
+  const [seconds, setSeconds] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [hours, setHours] = useState(0);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSeconds((prevSeconds) => {
+        if (prevSeconds === 59) {
+          setMinutes((prevMinutes) => {
+            if (prevMinutes === 59) {
+              setHours((prevHours) => prevHours + 1);
+              return 0;
+            }
+            return prevMinutes + 1;
+          });
+          return 0;
+        }
+        return prevSeconds + 1;
+      });
+    }, 1000);
 
-  // Default select the current user
+    // Cleanup the interval on component unmount
+    return () => clearInterval(interval);
+  }, []);
+
   useEffect(() => {
     setSelectedConferenceUser(currentUser[0])
   }, [currentUser])
@@ -412,9 +431,9 @@ window.addEventListener("beforeunload", (event) => {
                         </div>}
                         <div className={`"col-lg-${toggleMessages ? "8" : "12"} col-xl-${toggleMessages ? "8" : "12"} col-12"`}>
                           <div className="heading">
-                            {/* <h4>
-                                                            Conference <span>14:20</span>
-                                                        </h4> */}
+                            <h4>
+                                                            Conference <span>{hours===0?"":`${hours}:`}{minutes}:{seconds}</span>
+                                                        </h4>
                             {/* <button className="clearButton">
                                                             <i class="fa-sharp fa-solid fa-circle-plus"></i> Add
                                                             Participant
