@@ -38,394 +38,404 @@ function AllCallsDetails() {
               style={{ height: "auto" }}
             >
               <div class="accordion" id="accordionPanelsStayOpenExample">
-                <div class="accordion-item">
-                  <h2 class="accordion-header">
-                    <button
-                      class="accordion-button collapsed px-3"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapse1"
-                      aria-expanded="false"
-                      aria-controls="collapse1"
-                    >
-                      <div className="col-12 title text-start">
-                        <i className="fa-duotone fa-phone-volume" /> All Calls{" "}
-                        {extensionDataLoading && (
-                          <i
-                            class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
-                          ></i>
-                        )}
-                      </div>
-                    </button>
-                  </h2>
-                  <div id="collapse1" class="accordion-collapse collapse py-2">
-                    <div className="accordion-body">
-                      <div class="row col-12 mx-auto">
-                        <div className="col-xl-2 pe-xl-2">
-                          <div className="itemWrapperb a">
-                            <div className="heading">Total Calls</div>
-                            <div className="data-number">{allCalls.length}</div>
-                            <div className="label2">
-                              {(
-                                (allCalls.length / allCalls.length) *
-                                100
-                              ).toFixed(2) || 0}
-                              % of total calls
-                            </div>
+                <div className="row">
+                  <div className="col-4">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button
+                          class="accordion-button collapsed px-3"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapse1"
+                          aria-expanded="false"
+                          aria-controls="collapse1"
+                        >
+                          <div className="col-12 title text-start">
+                            <i className="fa-duotone fa-phone-volume" /> All Calls{" "}
+                            {extensionDataLoading && (
+                              <i
+                                class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                              ></i>
+                            )}
                           </div>
-                        </div>
-                        <div className="col-xl-2 px-xl-2">
-                          <div className="itemWrapperb a">
-                            <div className="heading">Total Calls Completed</div>
-                            <div className="data-number">
-                              {
-                                allCalls.filter(
-                                  (call) =>
-                                    call["variable_DIALSTATUS"] === "SUCCESS"
-                                ).length
-                              }
+                        </button>
+                      </h2>
+                      <div id="collapse1" class="accordion-collapse collapse pb-1">
+                        <div className="accordion-body">
+                          <div class="row col-12 mx-auto">
+                            <div className="col-xl-4 px-2 mt-2">
+                              <div className="itemWrapperb a">
+                                <div className="heading">Total Calls</div>
+                                <div className="data-number">{allCalls.length}</div>
+                                <div className="label2">
+                                  {(
+                                    (allCalls.length / allCalls.length) *
+                                    100
+                                  ).toFixed(2) || 0}
+                                  % of total calls
+                                </div>
+                              </div>
                             </div>
-                            <div className="label2">
-                              Percentage{" "}
-                              {(
-                                (allCalls.filter(
-                                  (call) =>
-                                    call["variable_DIALSTATUS"] === "SUCCESS"
-                                ).length /
-                                  allCalls.length) *
-                                100
-                              ).toFixed(2)}
-                              %
+                            <div className="col-xl-4 px-2 mt-2">
+                              <div className="itemWrapperb a">
+                                <div className="heading">Total Calls Completed</div>
+                                <div className="data-number">
+                                  {
+                                    allCalls.filter(
+                                      (call) =>
+                                        call["variable_DIALSTATUS"] === "SUCCESS"
+                                    ).length
+                                  }
+                                </div>
+                                <div className="label2">
+                                  Percentage{" "}
+                                  {(
+                                    (allCalls.filter(
+                                      (call) =>
+                                        call["variable_DIALSTATUS"] === "SUCCESS"
+                                    ).length /
+                                      allCalls.length) *
+                                    100
+                                  ).toFixed(2)}
+                                  %
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                        <div className="col-xl-2 px-xl-2">
-                          <div className="itemWrapperb a">
-                            <div className="heading">Missed Calls</div>
-                            {/* <div className="data-number">{callDetails.missed}</div> */}
-                            <div className="data-number">
-                              {
-                                allCalls.filter(
-                                  (call) =>
-                                    call["variable_DIALSTATUS"] !== "SUCCESS"
-                                ).length
-                              }
+                            <div className="col-xl-4 px-2 mt-2">
+                              <div className="itemWrapperb a">
+                                <div className="heading">Missed Calls</div>
+                                {/* <div className="data-number">{callDetails.missed}</div> */}
+                                <div className="data-number">
+                                  {
+                                    allCalls.filter(
+                                      (call) =>
+                                        call["variable_DIALSTATUS"] !== "SUCCESS"
+                                    ).length
+                                  }
+                                </div>
+                                <div className="label2">
+                                  Percentage{" "}
+                                  {(
+                                    (allCalls.filter(
+                                      (call) =>
+                                        call["variable_DIALSTATUS"] !== "SUCCESS"
+                                    ).length /
+                                      allCalls.length) *
+                                    100
+                                  ).toFixed(2)}
+                                  %
+                                </div>
+                              </div>
                             </div>
-                            <div className="label2">
-                              Percentage{" "}
-                              {(
-                                (allCalls.filter(
-                                  (call) =>
-                                    call["variable_DIALSTATUS"] !== "SUCCESS"
-                                ).length /
-                                  allCalls.length) *
-                                100
-                              ).toFixed(2)}
-                              %
+                            <div className="col-xl-4 px-2 mt-2">
+                              <div
+                                className="itemWrapperb a"
+                                onClick={() => navigate("/active-calls")}
+                                style={{ cursor: "pointer" }}
+                              >
+                                <div className="heading">Extensions On Calls</div>
+                                <div className="data-number">
+                                  {activeCall.length}
+                                </div>
+                                <div className="label2">
+                                  Percentage{" "}
+                                  {(
+                                    (activeCall.length / activeCall.length) *
+                                    100
+                                  ).toFixed(2)}
+                                  %
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                        <div className="col-xl-2 px-xl-2">
-                          <div
-                            className="itemWrapperb a"
-                            onClick={() => navigate("/active-calls")}
-                            style={{ cursor: "pointer" }}
-                          >
-                            <div className="heading">Extensions On Calls</div>
-                            <div className="data-number">
-                              {activeCall.length}
+                            <div className="col-xl-4 px-2 mt-2">
+                              <div className="itemWrapperb a">
+                                <div className="heading">Average Talk Time</div>
+                                <div className="data-number">00.00.00</div>
+                                <div className="label2">Total 00.00.00</div>
+                              </div>
                             </div>
-                            <div className="label2">
-                              Percentage{" "}
-                              {(
-                                (activeCall.length / activeCall.length) *
-                                100
-                              ).toFixed(2)}
-                              %
+                            <div className="col-xl-4 px-2 mt-2">
+                              <div className="itemWrapperb a">
+                                <div className="heading">Total Spent</div>
+                                <div className="data-number">$0.00</div>
+                                <div className="label2">N/A</div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                        <div className="col-xl-2 px-xl-2">
-                          <div className="itemWrapperb a">
-                            <div className="heading">Average Talk Time</div>
-                            <div className="data-number">00.00.00</div>
-                            <div className="label2">Total 00.00.00</div>
-                          </div>
-                        </div>
-                        <div className="col-xl-2 ps-xl-2">
-                          <div className="itemWrapperb a">
-                            <div className="heading">Total Spent</div>
-                            <div className="data-number">$0.00</div>
-                            <div className="label2">N/A</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="accordion-item">
-                  <h2 class="accordion-header">
-                    <button
-                      class="accordion-button collapsed px-3"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapse2"
-                      aria-expanded="false"
-                      aria-controls="collapse2"
-                    >
-                      <div className="col-12 title text-start">
-                        <i
-                          className="fa-duotone fa-phone-arrow-down-left"
-                          style={{ color: "var(--funky-boy3)" }}
-                        />{" "}
-                        Inbound Calls{" "}
-                        {extensionDataLoading && (
-                          <i
-                            class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
-                          ></i>
-                        )}
-                      </div>
-                    </button>
-                  </h2>
-                  <div id="collapse2" class="accordion-collapse collapse py-2">
-                    <div class="accordion-body">
-                      <div className="row col-12 mx-auto">
-                        <div className="col-xl-2 pe-xl-2">
-                          <div className="itemWrapperb a">
-                            <div className="heading">Total Inbound Calls</div>
-                            <div className="data-number">
-                              {inboundCall.length}
-                            </div>
-                            <div className="label2">
-                              {(
-                                (inboundCall.length / inboundCall.length) *
-                                100
-                              ).toFixed(2)}
-                              % of total calls
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-xl-2 px-xl-2">
-                          <div className="itemWrapperb a">
-                            <div className="heading">
-                              Inbound Calls Completed
-                            </div>
-                            <div className="data-number">
-                              {
-                                inboundCall.filter(
-                                  (call) =>
-                                    call["variable_DIALSTATUS"] === "SUCCESS"
-                                ).length
-                              }
-                            </div>
-                            <div className="label2">
-                              Percentage{" "}
-                              {(
-                                (inboundCall.filter(
-                                  (call) =>
-                                    call["variable_DIALSTATUS"] === "SUCCESS"
-                                ).length /
-                                  inboundCall.length) *
-                                100
-                              ).toFixed(2)}
-                              %
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-xl-2 px-xl-2">
-                          <div className="itemWrapperb a">
-                            <div className="heading">Missed Inbound Calls</div>
-                            <div className="data-number">
-                              {
-                                inboundCall.filter(
-                                  (call) =>
-                                    call["variable_DIALSTATUS"] !== "SUCCESS"
-                                ).length
-                              }
-                            </div>
-                            <div className="label2">
-                              Percentage{" "}
-                              {(
-                                (inboundCall.filter(
-                                  (call) =>
-                                    call["variable_DIALSTATUS"] !== "SUCCESS"
-                                ).length /
-                                  inboundCall.length) *
-                                100
-                              ).toFixed(2)}
-                              %
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-xl-2 px-xl-2">
-                          <div
-                            className="itemWrapperb a"
-                            onClick={() => navigate("/active-calls")}
-                            style={{ cursor: "pointer" }}
-                          >
-                            <div className="heading">Extensions On Calls</div>
-                            <div className="data-number">
-                              {
-                                activeCall.filter(
-                                  (call) => call.direction === "inbound"
-                                ).length
-                              }
-                            </div>
-                            <div className="label2">
-                              Percentage{" "}
-                              {(
-                                (activeCall.filter(
-                                  (call) => call.direction === "inbound"
-                                ).length /
-                                  activeCall.length) *
-                                100
-                              ).toFixed(2)}
-                              %
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-xl-2 px-xl-2">
-                          <div className="itemWrapperb a">
-                            <div className="heading">Average Talk Time</div>
-                            <div className="data-number">00.00.00</div>
-                            <div className="label2">Total 00.00.00</div>
-                          </div>
-                        </div>
-                        <div className="col-xl-2 ps-xl-2">
-                          <div className="itemWrapperb a">
-                            <div className="heading">Total Spent</div>
-                            <div className="data-number">$0.00</div>
-                            <div className="label2">N/A</div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="accordion-item">
-                  <h2 class="accordion-header">
-                    <button
-                      class="accordion-button collapsed px-3"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapse3"
-                      aria-expanded="false"
-                      aria-controls="collapse3"
-                    >
-                      <div className="col-12 title text-start">
-                        <i
-                          className="fa-duotone fa-phone-arrow-up-right"
-                          style={{ color: "var(--color3)" }}
-                        />{" "}
-                        Outbound Calls{" "}
-                        {extensionDataLoading && (
-                          <i
-                            class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
-                          ></i>
-                        )}
-                      </div>
-                    </button>
-                  </h2>
-                  <div id="collapse3" class="accordion-collapse collapse py-2">
-                    <div className="row col-12 mx-auto">
-                      <div className="col-xl-2 pe-xl-2">
-                        <div className="itemWrapperb a">
-                          <div className="heading">Total Outbound Calls</div>
-                          <div className="data-number">
-                            {outboundCall.length}
+                  <div className="col-4 px-0">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button
+                          class="accordion-button collapsed px-3"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapse2"
+                          aria-expanded="false"
+                          aria-controls="collapse2"
+                        >
+                          <div className="col-12 title text-start">
+                            <i
+                              className="fa-duotone fa-phone-arrow-down-left"
+                              style={{ color: "var(--funky-boy3)" }}
+                            />{" "}
+                            Inbound Calls{" "}
+                            {extensionDataLoading && (
+                              <i
+                                class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                              ></i>
+                            )}
                           </div>
-                          <div className="label2">
-                            {(
-                              (outboundCall.length / outboundCall.length) *
-                              100
-                            ).toFixed(2) || 0}
-                            % of total calls
+                        </button>
+                      </h2>
+                      <div id="collapse2" class="accordion-collapse collapse pb-1">
+                        <div class="accordion-body">
+                          <div className="row col-12 mx-auto">
+                            <div className="col-xl-4 px-2 mt-2">
+                              <div className="itemWrapperb a">
+                                <div className="heading">Total Inbound Calls</div>
+                                <div className="data-number">
+                                  {inboundCall.length}
+                                </div>
+                                <div className="label2">
+                                  {(
+                                    (inboundCall.length / inboundCall.length) *
+                                    100
+                                  ).toFixed(2)}
+                                  % of total calls
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-xl-4 px-2 mt-2">
+                              <div className="itemWrapperb a">
+                                <div className="heading">
+                                  Inbound Calls Completed
+                                </div>
+                                <div className="data-number">
+                                  {
+                                    inboundCall.filter(
+                                      (call) =>
+                                        call["variable_DIALSTATUS"] === "SUCCESS"
+                                    ).length
+                                  }
+                                </div>
+                                <div className="label2">
+                                  Percentage{" "}
+                                  {(
+                                    (inboundCall.filter(
+                                      (call) =>
+                                        call["variable_DIALSTATUS"] === "SUCCESS"
+                                    ).length /
+                                      inboundCall.length) *
+                                    100
+                                  ).toFixed(2)}
+                                  %
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-xl-4 px-2 mt-2">
+                              <div className="itemWrapperb a">
+                                <div className="heading">Missed Inbound Calls</div>
+                                <div className="data-number">
+                                  {
+                                    inboundCall.filter(
+                                      (call) =>
+                                        call["variable_DIALSTATUS"] !== "SUCCESS"
+                                    ).length
+                                  }
+                                </div>
+                                <div className="label2">
+                                  Percentage{" "}
+                                  {(
+                                    (inboundCall.filter(
+                                      (call) =>
+                                        call["variable_DIALSTATUS"] !== "SUCCESS"
+                                    ).length /
+                                      inboundCall.length) *
+                                    100
+                                  ).toFixed(2)}
+                                  %
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-xl-4 px-2 mt-2">
+                              <div
+                                className="itemWrapperb a"
+                                onClick={() => navigate("/active-calls")}
+                                style={{ cursor: "pointer" }}
+                              >
+                                <div className="heading">Extensions On Calls</div>
+                                <div className="data-number">
+                                  {
+                                    activeCall.filter(
+                                      (call) => call.direction === "inbound"
+                                    ).length
+                                  }
+                                </div>
+                                <div className="label2">
+                                  Percentage{" "}
+                                  {(
+                                    (activeCall.filter(
+                                      (call) => call.direction === "inbound"
+                                    ).length /
+                                      activeCall.length) *
+                                    100
+                                  ).toFixed(2)}
+                                  %
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-xl-4 px-2 mt-2">
+                              <div className="itemWrapperb a">
+                                <div className="heading">Average Talk Time</div>
+                                <div className="data-number">00.00.00</div>
+                                <div className="label2">Total 00.00.00</div>
+                              </div>
+                            </div>
+                            <div className="col-xl-4 px-2 mt-2">
+                              <div className="itemWrapperb a">
+                                <div className="heading">Total Spent</div>
+                                <div className="data-number">$0.00</div>
+                                <div className="label2">N/A</div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                      <div className="col-xl-2 px-xl-2">
-                        <div className="itemWrapperb a">
-                          <div className="heading">
-                            Outbound Calls Completed
+                    </div>
+                  </div>
+                  <div className="col-4">
+                    <div className="accordion-item">
+                      <h2 class="accordion-header">
+                        <button
+                          class="accordion-button collapsed px-3"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapse3"
+                          aria-expanded="false"
+                          aria-controls="collapse3"
+                        >
+                          <div className="col-12 title text-start">
+                            <i
+                              className="fa-duotone fa-phone-arrow-up-right"
+                              style={{ color: "var(--color3)" }}
+                            />{" "}
+                            Outbound Calls{" "}
+                            {extensionDataLoading && (
+                              <i
+                                class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                              ></i>
+                            )}
                           </div>
-                          <div className="data-number">
-                            {
-                              outboundCall.filter(
-                                (call) =>
-                                  call["variable_DIALSTATUS"] === "SUCCESS"
-                              ).length
-                            }
+                        </button>
+                      </h2>
+                      <div id="collapse3" class="accordion-collapse collapse pb-1">
+                        <div className="accordion-body">
+                          <div className="row col-12 mx-auto">
+                            <div className="col-xl-4 px-2 mt-2">
+                              <div className="itemWrapperb a">
+                                <div className="heading">Total Outbound Calls</div>
+                                <div className="data-number">
+                                  {outboundCall.length}
+                                </div>
+                                <div className="label2">
+                                  {(
+                                    (outboundCall.length / outboundCall.length) *
+                                    100
+                                  ).toFixed(2) || 0}
+                                  % of total calls
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-xl-4 px-2 mt-2">
+                              <div className="itemWrapperb a">
+                                <div className="heading">
+                                  Outbound Calls Completed
+                                </div>
+                                <div className="data-number">
+                                  {
+                                    outboundCall.filter(
+                                      (call) =>
+                                        call["variable_DIALSTATUS"] === "SUCCESS"
+                                    ).length
+                                  }
+                                </div>
+                                <div className="label2">
+                                  Percentage{" "}
+                                  {(
+                                    (outboundCall.filter(
+                                      (call) =>
+                                        call["variable_DIALSTATUS"] === "SUCCESS"
+                                    ).length /
+                                      outboundCall.length) *
+                                    100
+                                  ).toFixed(2) || 0}
+                                  %
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-xl-4 px-2 mt-2">
+                              <div className="itemWrapperb a">
+                                <div className="heading">Missed Outbound Calls</div>
+                                <div className="data-number">
+                                  {outboundCall.filter(
+                                    (call) =>
+                                      call["variable_DIALSTATUS"] !== "SUCCESS"
+                                  ).length || 0}
+                                </div>
+                                <div className="label2">
+                                  Percentage{" "}
+                                  {(
+                                    (outboundCall.filter(
+                                      (call) =>
+                                        call["variable_DIALSTATUS"] !== "SUCCESS"
+                                    ).length /
+                                      outboundCall.length) *
+                                    100
+                                  ).toFixed(2) || 0}
+                                  %
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-xl-4 px-2 mt-2">
+                              <div className="itemWrapperb a">
+                                <div className="heading">Extensions On Calls</div>
+                                <div className="data-number">
+                                  {
+                                    activeCall.filter(
+                                      (call) => call.direction === "outbound"
+                                    ).length
+                                  }
+                                </div>
+                                <div className="label2">
+                                  Percentage{" "}
+                                  {
+                                    activeCall.filter(
+                                      (call) => call.direction === "outbound"
+                                    ).length
+                                  }
+                                  %
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-xl-4 px-2 mt-2">
+                              <div className="itemWrapperb a">
+                                <div className="heading">Average Talk Time</div>
+                                <div className="data-number">00.00.00</div>
+                                <div className="label2">Total 00.00.00</div>
+                              </div>
+                            </div>
+                            <div className="col-xl-4 px-2 mt-2">
+                              <div className="itemWrapperb a">
+                                <div className="heading">Total Spent</div>
+                                <div className="data-number">$0.00</div>
+                                <div className="label2">N/A</div>
+                              </div>
+                            </div>
                           </div>
-                          <div className="label2">
-                            Percentage{" "}
-                            {(
-                              (outboundCall.filter(
-                                (call) =>
-                                  call["variable_DIALSTATUS"] === "SUCCESS"
-                              ).length /
-                                outboundCall.length) *
-                              100
-                            ).toFixed(2) || 0}
-                            %
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-xl-2 px-xl-2">
-                        <div className="itemWrapperb a">
-                          <div className="heading">Missed Outbound Calls</div>
-                          <div className="data-number">
-                            {outboundCall.filter(
-                              (call) =>
-                                call["variable_DIALSTATUS"] !== "SUCCESS"
-                            ).length || 0}
-                          </div>
-                          <div className="label2">
-                            Percentage{" "}
-                            {(
-                              (outboundCall.filter(
-                                (call) =>
-                                  call["variable_DIALSTATUS"] !== "SUCCESS"
-                              ).length /
-                                outboundCall.length) *
-                              100
-                            ).toFixed(2) || 0}
-                            %
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-xl-2 px-xl-2">
-                        <div className="itemWrapperb a">
-                          <div className="heading">Extensions On Calls</div>
-                          <div className="data-number">
-                            {
-                              activeCall.filter(
-                                (call) => call.direction === "outbound"
-                              ).length
-                            }
-                          </div>
-                          <div className="label2">
-                            Percentage{" "}
-                            {
-                              activeCall.filter(
-                                (call) => call.direction === "outbound"
-                              ).length
-                            }
-                            %
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-xl-2 px-xl-2">
-                        <div className="itemWrapperb a">
-                          <div className="heading">Average Talk Time</div>
-                          <div className="data-number">00.00.00</div>
-                          <div className="label2">Total 00.00.00</div>
-                        </div>
-                      </div>
-                      <div className="col-xl-2 ps-xl-2">
-                        <div className="itemWrapperb a">
-                          <div className="heading">Total Spent</div>
-                          <div className="data-number">$0.00</div>
-                          <div className="label2">N/A</div>
                         </div>
                       </div>
                     </div>
