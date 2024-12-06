@@ -20,6 +20,7 @@ import { Rnd } from "react-rnd";
 import ConferenceConfig from "./ConferenceConfig";
 import Email from "./Email";
 import MailSettings from "../MailSettings/MailSettings";
+import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 
 const WebrtcWrapper = () => {
   const [size, setSize] = useState({ width: 300, height: 450 });
@@ -40,8 +41,12 @@ const WebrtcWrapper = () => {
   const [isVideoOn, setIsVideoOn] = useState(false); // State to track video status
   const [reconnecting, setReconnecting] = useState(0);
   const callProgress = useSelector((state) => state.callProgress);
+  const addContactRefresh = useSelector((state) => state.addContactRefresh);
+  const [allContactLoading, setAllContactLoading] = useState(false);
   console.log(sipSessions);
   const [closeVideoCall, setCloseVideoCall] = useState(false);
+  const [allContact, setAllContact] = useState([]);
+  const [extensionFromCdrMessage, setExtensionFromCdrMessage] = useState();
   const useWebSocketErrorHandling = (options) => {
     const retryCountRef = useRef(0);
     const connectWebSocket = (retryCount = 0) => {
@@ -160,6 +165,19 @@ const WebrtcWrapper = () => {
     });
   }, [activePage]);
 
+  useEffect(() => {
+    const getContact = async () => {
+      setAllContactLoading(true);
+      const apiData = await generalGetFunction("/contact/all");
+      if (apiData?.status) {
+        setAllContact(apiData.data);
+        setAllContactLoading(false);
+      } else {
+        setAllContactLoading(false);
+      }
+    };
+    getContact();
+  }, [addContactRefresh]);
   return (
     <>
       <SIPProvider options={options}>
@@ -184,9 +202,18 @@ const WebrtcWrapper = () => {
             isVideoOn={isVideoOn}
             activePage={activePage}
             setactivePage={setactivePage}
+            allContact={allContact}
+            setExtensionFromCdrMessage={setExtensionFromCdrMessage}
           />
         )}
-        {activePage === "all-contacts" && <AllContact />}
+        {activePage === "all-contacts" && (
+          <AllContact
+            allContact={allContact}
+            setAllContact={setAllContact}
+            allContactLoading={allContactLoading}
+            setAllContactLoading={setAllContactLoading}
+          />
+        )}
         {activePage === "call-center" && <CallCenter />}
         {activePage === "test" && <ConferenceTest />}
         {activePage === "all-voice-mails" && (
@@ -200,6 +227,8 @@ const WebrtcWrapper = () => {
             setSelectedModule={setSelectedModule}
             isMicOn={isMicOn}
             isVideoOn={isVideoOn}
+            extensionFromCdrMessage={extensionFromCdrMessage}
+            setExtensionFromCdrMessage={setExtensionFromCdrMessage}
           />
         )}
         {activePage === "conference" && <ConferenceConfig setactivePage={setactivePage} />}

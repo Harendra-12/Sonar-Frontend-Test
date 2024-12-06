@@ -12,13 +12,18 @@ import { toast } from "react-toastify";
 import ContentLoader from "../../Loader/ContentLoader";
 import { useNavigate } from "react-router-dom";
 
-function AllContact() {
+function AllContact({
+  allContact,
+  setAllContact,
+  allContactLoading,
+  setAllContactLoading,
+}) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const sessions = useSelector((state) => state.sessions);
   const addContactRefresh = useSelector((state) => state.addContactRefresh);
-  const [contact, setContact] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [contact, setContact] = useState([]);
+  // const [loading, setLoading] = useState(true);
   const [selectedDeleteId, setSelectedDeleteId] = useState(null);
   const [selectedEditContact, setSelectedEditContact] = useState(null);
   const [editContactToggle, setEditContactToggle] = useState(false);
@@ -27,18 +32,18 @@ function AllContact() {
   const [popUp, setPopUp] = useState(false);
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
-  useEffect(() => {
-    const getContact = async () => {
-      const apiData = await generalGetFunction("/contact/all");
-      if (apiData?.status) {
-        setContact(apiData.data);
-        setLoading(false);
-      } else {
-        setLoading(false);
-      }
-    };
-    getContact();
-  }, [addContactRefresh]);
+  // useEffect(() => {
+  //   const getContact = async () => {
+  //     const apiData = await generalGetFunction("/contact/all");
+  //     if (apiData?.status) {
+  //       setContact(apiData.data);
+  //       setLoading(false);
+  //     } else {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   getContact();
+  // }, [addContactRefresh]);
 
   const groupContactsByInitial = (contacts) => {
     return contacts.reduce((acc, contact) => {
@@ -52,36 +57,36 @@ function AllContact() {
   };
 
   useEffect(() => {
-    const grouped = groupContactsByInitial(contact);
+    const grouped = groupContactsByInitial(allContact);
     setGroupedContacts(grouped);
-  }, [contact]);
+  }, [allContact]);
 
   const deleteContactByIt = async (id) => {
     setPopUp(false);
-    setLoading(true);
+    setAllContactLoading(true);
     const apiData = await generalDeleteFunction(`/contact/destroy/${id}`);
 
     if (apiData?.status) {
-      const updatedContact = contact.filter((contact) => contact.id !== id);
-      setContact(updatedContact);
-      setLoading(false);
+      const updatedContact = allContact?.filter((contact) => contact.id !== id);
+      setAllContact(updatedContact);
+      setAllContactLoading(false);
       toast.success(apiData.message);
     } else {
-      setLoading(false);
+      setAllContactLoading(false);
     }
   };
 
   const handleEditContact = async (contactId) => {
-    setLoading(true);
+    setAllContactLoading(true);
     // setSelectedEditContact(contact);
     const apiData = await generalGetFunction(`/contact/show/${contactId}`);
     if (apiData.status) {
       setEditContactToggle(true);
       setAddContactToggle(true);
       setSelectedEditContact(apiData.data);
-      setLoading(false);
+      setAllContactLoading(false);
     } else {
-      setLoading(false);
+      setAllContactLoading(false);
     }
   };
 
@@ -99,7 +104,7 @@ function AllContact() {
   }
 
   const handleContactRefresh = () => {
-    setLoading(true);
+    setAllContactLoading(true);
     dispatch({
       type: "SET_ADDCONTACTREFRESH",
       addContactRefresh: addContactRefresh + 1,
@@ -134,7 +139,7 @@ function AllContact() {
                       >
                         <i
                           class={
-                            loading
+                            allContactLoading
                               ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                               : "fa-regular fa-arrows-rotate fs-5"
                           }
@@ -262,7 +267,7 @@ function AllContact() {
                       className="callList"
                       style={{ height: "calc(100vh - 215px)" }}
                     >
-                      {loading ? (
+                      {allContactLoading ? (
                         <div colSpan={99}>
                           <ContentLoader />
                         </div>
@@ -810,9 +815,9 @@ function AllContact() {
           editContactToggle={editContactToggle}
           setEditContactToggle={setEditContactToggle}
           selectedEditContact={selectedEditContact}
-          setLoading={setLoading}
+          setLoading={setAllContactLoading}
           setSelectedEditContact={setSelectedEditContact}
-          loading={loading}
+          loading={allContactLoading}
         />
       )}
       {popUp ? (

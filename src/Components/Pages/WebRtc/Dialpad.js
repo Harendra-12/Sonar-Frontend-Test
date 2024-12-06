@@ -4,13 +4,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";
 import { toast } from "react-toastify";
 
-function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
+function Dialpad({
+  hideDialpad,
+  setSelectedModule,
+  isMicOn,
+  isVideoOn,
+  allContact,
+}) {
   const account = useSelector((state) => state.account);
   const globalSession = useSelector((state) => state.sessions);
   const dispatch = useDispatch();
   const { sessionManager, connectStatus } = useSIPProvider();
   const [destNumber, setDestNumber] = useState("");
   const extension = account?.extension?.extension || "";
+  const [savedContactShow, setSavedContactShow] = useState(false);
   const dialpadRef = useRef();
   const handleInputChange = (e) => {
     const { value } = e.target;
@@ -22,8 +29,6 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
       }
     }
   };
-
-  console.log("connectstatus form dialpad", connectStatus);
 
   async function onSubmit(mode) {
     if (!isMicOn) {
@@ -75,13 +80,13 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
               mode === "audio"
                 ? true
                 : {
-                  mandatory: {
-                    minWidth: 1280,
-                    minHeight: 720,
-                    minFrameRate: 30,
+                    mandatory: {
+                      minWidth: 1280,
+                      minHeight: 720,
+                      minFrameRate: 30,
+                    },
+                    optional: [{ facingMode: "user" }],
                   },
-                  optional: [{ facingMode: "user" }],
-                },
           },
         }
       );
@@ -123,8 +128,8 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
 
   // Dialpad Input Field will remain focused when this component mounts.
   useEffect(() => {
-    dialpadRef.current.focus();
-  }, [])
+    dialpadRef?.current?.focus();
+  }, []);
 
   return (
     <>
@@ -133,7 +138,6 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
           <div className="row align-items-center justify-content-center h-100">
             <div className="col-xl-3 col-md-6 col-11 dialPadContainer p-2">
               <div className="d-flex justify-content-between pt-3 pb-1 px-2">
-
                 <div>
                   <h3>Dial Number</h3>
                 </div>
@@ -144,28 +148,62 @@ function Dialpad({ hideDialpad, setSelectedModule, isMicOn, isVideoOn }) {
                   <i className="fa-regular fa-xmark fs-5 text-white" />
                 </div>
               </div>
-              <div className="mb-2">
-                {/* <span>Outbound ID: (999) 999-9999</span> */}
-              </div>
-              <div className="d-flex justify-content-between align-items-center" style={{ width: '75%', margin: 'auto' }}>
-                <input
-                  type="text"
-                  placeholder="Dial"
-                  className="dialerInput"
-                  ref={dialpadRef}
-                  value={destNumber}
-                  // onChange={(e) => setDestNumber(e.target.value)}
-                  onChange={handleInputChange}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      onSubmit("audio");
-                    }
-                  }}
-                />
-                <div className="ms-3 d-flex align-items-center">
-                  <i className="fa-light fa-address-book fs-4 text-white" />
+              <div className="mb-2"></div>
+              {savedContactShow ? (
+                <div className="d-flex">
+                  <select
+                    defaultValue={""}
+                    className="formItem"
+                    onChange={(e) => {
+                      setDestNumber(e.target.value);
+                    }}
+                  >
+                    <option disabled value={""}>
+                      Select
+                    </option>
+                    {allContact?.map((contact) => (
+                      <option
+                        value={contact.did}
+                      >{`${contact.title} ${contact.name} (${contact.did})`}</option>
+                    ))}
+                  </select>
+                  <div
+                    className="px-2 d-flex align-items-center"
+                    onClick={() => setSavedContactShow(false)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <i className="fa fa-times fs-4 text-white" />
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                  style={{ width: "75%", margin: "auto" }}
+                >
+                  <input
+                    type="text"
+                    placeholder="Dial"
+                    className="dialerInput"
+                    ref={dialpadRef}
+                    value={destNumber}
+                    // onChange={(e) => setDestNumber(e.target.value)}
+                    onChange={handleInputChange}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        onSubmit("audio");
+                      }
+                    }}
+                  />
+                  <div
+                    className="ms-3 d-flex align-items-center"
+                    onClick={() => setSavedContactShow(true)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <i className="fa-light fa-address-book fs-4 text-white" />
+                  </div>
+                </div>
+              )}
+
               <div className="dialerWrap mt-2">
                 <div
                   className="col-4"

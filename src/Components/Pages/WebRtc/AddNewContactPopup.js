@@ -96,8 +96,15 @@ function AddNewContactPopup({
         <div className="row">
           <div className="col-12 heading">
             <i class="fa-light fa-user-plus"></i>
-            <h5>{editContactToggle ? "Edit People in Contact Lists" : "Add People to Contact Lists"}</h5>
-            <p>Add people to your contact list effortlessly, keeping your connections organized and relationships stronger</p>
+            <h5>
+              {editContactToggle
+                ? "Edit People in Contact Lists"
+                : "Add People to Contact Lists"}
+            </h5>
+            <p>
+              Add people to your contact list effortlessly, keeping your
+              connections organized and relationships stronger
+            </p>
             <div className="border-bottom col-12" />
           </div>
           <div class="col-xl-12">
@@ -109,7 +116,10 @@ function AddNewContactPopup({
                 type="text"
                 class="formItem"
                 placeholder="Full Name"
-                {...register("name", { ...requiredValidator, ...nameValidator })}
+                {...register("name", {
+                  ...requiredValidator,
+                  ...nameValidator,
+                })}
               />
 
               {errors.name && <ErrorMessage text={errors.name.message} />}
@@ -145,7 +155,9 @@ function AddNewContactPopup({
                 }}
               >
                 <span className="text">Cancel</span>
-                <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                <span className="icon">
+                  <i class="fa-solid fa-caret-left"></i>
+                </span>
               </button>
               <button
                 disabled={loading}
@@ -158,9 +170,16 @@ function AddNewContactPopup({
                   }
                 }}
               >
-
-                <span className="text">{editContactToggle ? "Save" : "Create"}</span>
-                <span className="icon"><i class={`fa-solid fa-${editContactToggle ? "floppy-disk" : "check"}`}></i></span>
+                <span className="text">
+                  {editContactToggle ? "Save" : "Create"}
+                </span>
+                <span className="icon">
+                  <i
+                    class={`fa-solid fa-${
+                      editContactToggle ? "floppy-disk" : "check"
+                    }`}
+                  ></i>
+                </span>
               </button>
             </div>
           </div>

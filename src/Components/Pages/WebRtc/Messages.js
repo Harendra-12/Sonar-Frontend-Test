@@ -14,7 +14,13 @@ import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useNavigate } from "react-router-dom";
 
-function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
+function Messages({
+  setSelectedModule,
+  isMicOn,
+  isVideoOn,
+  extensionFromCdrMessage,
+  setExtensionFromCdrMessage,
+}) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { sessionManager, connectStatus } = useSIPProvider();
@@ -85,9 +91,12 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
     async function getData() {
       const apiData = await generalGetFunction(`/message/contacts`);
       const tagData = await generalGetFunction("/tags/all");
+
       if (apiData?.status && apiData.data.length > 0) {
         setContact(apiData.data);
-        setRecipient([apiData.data[0].extension, apiData.data[0].id]);
+        if (!extensionFromCdrMessage) {
+          setRecipient([apiData.data[0].extension, apiData.data[0].id]);
+        }
         setLoading(false);
       }
       if (tagData?.status) {
@@ -98,7 +107,6 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
     }
     getData();
   }, [contactRefresh]);
-
 
   useEffect(() => {
     if (sipProvider && sipProvider.connectStatus === CONNECT_STATUS.CONNECTED) {
@@ -179,7 +187,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
         if (
           chatHistory[recipient[0]]?.total &&
           chatHistory[recipient[0]].pageNumber * 40 <
-          chatHistory[recipient[0]].total
+            chatHistory[recipient[0]].total
         ) {
           getData(chatHistory[recipient[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
@@ -193,7 +201,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
 
   // Logic to send message
   const sendMessage = () => {
-    if (messageInput.trim() === '') return
+    if (messageInput.trim() === "") return;
     if (isSIPReady) {
       const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
       const userAgent = sipProvider?.sessionManager?.userAgent;
@@ -240,18 +248,21 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
               id: agentDetails.id,
               extension_id: agentDetails.extension_id,
               extension: recipient[0],
-              last_message_data: { message_text: messageInput, created_at: time },
+              last_message_data: {
+                message_text: messageInput,
+                created_at: time,
+              },
             });
           }
           setMessageInput("");
 
           console.log("Message sent to:", targetURI);
         } catch (error) {
-          setMessageInput("")
+          setMessageInput("");
           console.error("Error sending message:", error);
         }
       } else {
-        setMessageInput("")
+        setMessageInput("");
         console.error("Invalid recipient address.");
       }
     } else {
@@ -342,8 +353,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
         );
         if (contactIndex !== -1) {
           const newContact = [...contact];
-          newContact[contactIndex].last_message_data.message_text =
-            body;
+          newContact[contactIndex].last_message_data.message_text = body;
           newContact[contactIndex].last_message_data.created_at = time;
           setContact(newContact);
         }
@@ -364,8 +374,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
           const extensionObject = contact.splice(index, 1)[0];
           contact.unshift(extensionObject);
           const newContact = [...contact];
-          newContact[index].last_message_data.message_text =
-            body;
+          newContact[index].last_message_data.message_text = body;
           newContact[index].last_message_data.created_at = time;
           setContact(newContact);
         }
@@ -419,7 +428,8 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
           );
           if (contactIndex !== -1) {
             const newContact = [...contact];
-            newContact[contactIndex].last_message_data.message_text = messageInput;
+            newContact[contactIndex].last_message_data.message_text =
+              messageInput;
             newContact[contactIndex].last_message_data.created_at = time;
             setContact(newContact);
           }
@@ -515,13 +525,13 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
               mode === "audio"
                 ? true
                 : {
-                  mandatory: {
-                    minWidth: 1280,
-                    minHeight: 720,
-                    minFrameRate: 30,
+                    mandatory: {
+                      minWidth: 1280,
+                      minHeight: 720,
+                      minFrameRate: 30,
+                    },
+                    optional: [{ facingMode: "user" }],
                   },
-                  optional: [{ facingMode: "user" }],
-                },
           },
         }
       );
@@ -614,7 +624,7 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
       }
     }
   }
-
+  console.log("testingData", unreadMessage, recipient);
   // Delete tag
   async function handleDeleteTag(id) {
     setLoading(true);
@@ -761,7 +771,10 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
 
               <div
                 className="col-12 col-xl-4 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-between py-3 px-xl-0"
-                style={{ height: "100%", borderRight: '1px solid var(--border-color)' }}
+                style={{
+                  height: "100%",
+                  borderRight: "1px solid var(--border-color)",
+                }}
               >
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
@@ -780,7 +793,10 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                   </h5>
                 </div>
                 <div className="col-auto" style={{ padding: "0 10px" }}>
-                  <button className="clearColorButton dark" onClick={() => featureUnderdevelopment()}>
+                  <button
+                    className="clearColorButton dark"
+                    onClick={() => featureUnderdevelopment()}
+                  >
                     <i class="fa-light fa-pen-to-square"></i> New Chat
                   </button>
                 </div>
@@ -788,6 +804,8 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                   <AgentSearch
                     getDropdownValue={setRecipient}
                     getAllAgents={setAgents}
+                    extensionFromCdrMessage={extensionFromCdrMessage}
+                    setExtensionFromCdrMessage={setExtensionFromCdrMessage}
                   />
                 </div>
                 <div className="col-12">
@@ -891,7 +909,9 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                         <div
                           class="collapse show"
                           id="collapse2"
-                          style={{ borderBottom: "1px solid var(--border-color)" }}
+                          style={{
+                            borderBottom: "1px solid var(--border-color)",
+                          }}
                         >
                           {contact.map((item) => {
                             return (
@@ -959,9 +979,9 @@ function Messages({ setSelectedModule, isMicOn, isVideoOn }) {
                                       <p className="timeAgo">
                                         {item?.last_message_data
                                           ? formatRelativeTime(
-                                            item?.last_message_data
-                                              ?.created_at
-                                          )
+                                              item?.last_message_data
+                                                ?.created_at
+                                            )
                                           : ""}
                                       </p>
                                     </div>
