@@ -23,9 +23,18 @@
   padding: 0;
 }
 
+.clearButton2.white {
+  background-color: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  width: 50px;
+  height: 50px;
+}
+
 .clearButton2:hover {
   background-color: #e7e7e7;
   color: #000;
+  border-color: transparent;
 }
 
 .xl {
@@ -467,7 +476,7 @@
   /* height: 35px; */
   margin-right: 10px;
   min-width: 45px;
-  min-height: 45px;
+  height: 45px;
   padding: 10px;
   border-radius: 10px;
   display: flex;
@@ -511,11 +520,11 @@
 }
 
 .tableLabel.success {
-  background-color: #00ab2b;
+  background-color: #008b23;
 }
 
 .tableLabel.fail {
-  background-color: #ff0000;
+  background-color: #ff4343;
 }
 
 .tableLabel.pending {

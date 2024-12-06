@@ -16,12 +16,14 @@
     box-shadow: none;
 }
 
-.accordion-button:not(.collapsed) {
+.accordion .accordion-button:not(.collapsed) {
     /* color: var(--color1); */
-    background-color: #a2e1ff3d;
+    background: var(--accordion-active);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: none;
 }
 
-.accordion-button:not(.collapsed)::after {
+.accordion .accordion-button:not(.collapsed)::after {
     background-image: var(--bs-accordion-btn-icon) !important;
 }
 

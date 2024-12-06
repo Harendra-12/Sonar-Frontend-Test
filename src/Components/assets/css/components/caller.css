@@ -164,6 +164,7 @@
 .incomingCallPopup.minimized .userInfo h4 {
     font-size: 16px !important;
     /* margin-bottom: 5px; */
+    color: var(--bs-heading-color);
 }
 
 .incomingCallPopup.minimized .userInfo h5 {

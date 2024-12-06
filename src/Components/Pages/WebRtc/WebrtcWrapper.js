@@ -14,12 +14,13 @@ import { SipRegister } from "./SipRegister";
 import SideNavbarApp from "./SideNavbarApp";
 import Messages from "./Messages";
 import VideoCall from "./VideoCall";
-import ConferenceCall from "./ConferenceCall";
+import {ConferenceCall} from "./ConferenceCall";
 import ConferenceTest from "./ConferenceTest";
 import { Rnd } from "react-rnd";
 import ConferenceConfig from "./ConferenceConfig";
 import Email from "./Email";
 import MailSettings from "../MailSettings/MailSettings";
+import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 
 const WebrtcWrapper = () => {
   const [size, setSize] = useState({ width: 300, height: 450 });
@@ -40,8 +41,17 @@ const WebrtcWrapper = () => {
   const [isVideoOn, setIsVideoOn] = useState(false); // State to track video status
   const [reconnecting, setReconnecting] = useState(0);
   const callProgress = useSelector((state) => state.callProgress);
+  const addContactRefresh = useSelector((state) => state.addContactRefresh);
+  const [allContactLoading, setAllContactLoading] = useState(false);
   console.log(sipSessions);
   const [closeVideoCall, setCloseVideoCall] = useState(false);
+  const [allContact, setAllContact] = useState([]);
+  const [extensionFromCdrMessage, setExtensionFromCdrMessage] = useState();
+  const [conferenceToggle, setConferenceToggle] = useState(false);
+  const [conferenceId, setConferenceId] = useState("");
+  const memberId = useSelector((state) => state.memberId);
+  console.log("Activepage", activePage,activePage==="conference");
+  
   const useWebSocketErrorHandling = (options) => {
     const retryCountRef = useRef(0);
     const connectWebSocket = (retryCount = 0) => {
@@ -160,6 +170,22 @@ const WebrtcWrapper = () => {
     });
   }, [activePage]);
 
+  useEffect(() => {
+    const getContact = async () => {
+      setAllContactLoading(true);
+      const apiData = await generalGetFunction("/contact/all");
+      if (apiData?.status) {
+        setAllContact(apiData.data);
+        setAllContactLoading(false);
+      } else {
+        setAllContactLoading(false);
+      }
+    };
+    getContact();
+  }, [addContactRefresh]);
+
+  console.log("conferenceccc",conferenceToggle || memberId,memberId);
+  
   return (
     <>
       <SIPProvider options={options}>
@@ -184,9 +210,18 @@ const WebrtcWrapper = () => {
             isVideoOn={isVideoOn}
             activePage={activePage}
             setactivePage={setactivePage}
+            allContact={allContact}
+            setExtensionFromCdrMessage={setExtensionFromCdrMessage}
           />
         )}
-        {activePage === "all-contacts" && <AllContact />}
+        {activePage === "all-contacts" && (
+          <AllContact
+            allContact={allContact}
+            setAllContact={setAllContact}
+            allContactLoading={allContactLoading}
+            setAllContactLoading={setAllContactLoading}
+          />
+        )}
         {activePage === "call-center" && <CallCenter />}
         {activePage === "test" && <ConferenceTest />}
         {activePage === "all-voice-mails" && (
@@ -200,9 +235,11 @@ const WebrtcWrapper = () => {
             setSelectedModule={setSelectedModule}
             isMicOn={isMicOn}
             isVideoOn={isVideoOn}
+            extensionFromCdrMessage={extensionFromCdrMessage}
+            setExtensionFromCdrMessage={setExtensionFromCdrMessage}
           />
         )}
-        {activePage === "conference" && <ConferenceConfig />}
+        {activePage === "conference" && <ConferenceConfig setactivePage={setactivePage} setConferenceId={setConferenceId} setConferenceToggle={setConferenceToggle} conferenceId={conferenceId} conferenceToggle={conferenceToggle} />}
         {/* {activePage == "videocall" && <VideoCall />} */}
         {activePage == "email" && <Email />}
         {activePage == "mail-setting" && <MailSettings />}
@@ -398,6 +435,17 @@ const WebrtcWrapper = () => {
         ) : (
           ""
         )}
+
+        {(conferenceToggle || memberId)  ?
+        <ConferenceCall
+          name={account.username}
+          extension_id={`${account?.extension?.extension}@${account.domain.domain_name}`}
+          room_id={conferenceId}
+          setactivePage={setactivePage}
+          activePage={activePage}
+          setConferenceToggle={setConferenceToggle}
+        />
+        :""}
       </SIPProvider>
     </>
   );

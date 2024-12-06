@@ -28,12 +28,12 @@ function MediaPermissions() {
       console.log('Sound permission denied');
     });
   }
- 
+
 
 
   useEffect(() => {
     if (permission === "request") {
-     
+
       dispatch({
         type: "SET_MICROPHONEPERMISSION",
         microPhonePermission: false,
@@ -56,7 +56,7 @@ function MediaPermissions() {
     }
   }, [permission, dispatch]);
   return (
-    <div className="invisible">
+    <div className="invisible d-none">
       {permission === "denied" ? (
         <div>
           Permission denied{" "}

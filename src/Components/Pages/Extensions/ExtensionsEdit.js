@@ -1513,7 +1513,7 @@ const ExtensionsEdit = () => {
                           }}
                         >
                           <form className="row">
-                            <div className="formRow col-xl-3 ">
+                            <div className="formRow col-xl-3">
                               <div className="formLabel">
                                 <label className="text-dark">On Busy</label>
                                 <label htmlFor="data" className="formItemDesc">
@@ -1525,7 +1525,7 @@ const ExtensionsEdit = () => {
                                 className={
                                   watch().onbusy == 0
                                     ? "col-6"
-                                    : "col-2 pe-2 ms-auto"
+                                    : "col-3 pe-2 ms-auto"
                                 }
                               >
                                 <div class="formLabel">
@@ -1552,7 +1552,7 @@ const ExtensionsEdit = () => {
                               {watch().onbusy == 0 ? (
                                 ""
                               ) : (
-                                <div className="col-4">
+                                <div className="col-3">
                                   <div className="formLabel">
                                     <label htmlFor="">Destinations</label>
 
@@ -1692,7 +1692,7 @@ const ExtensionsEdit = () => {
                                 className={
                                   watch().notregistered == 0
                                     ? "col-6"
-                                    : "col-2 pe-2 ms-auto"
+                                    : "col-3 pe-2 ms-auto"
                                 }
                               >
                                 <div class="formLabel">
@@ -1721,7 +1721,7 @@ const ExtensionsEdit = () => {
                               {watch().notregistered == 0 ? (
                                 ""
                               ) : (
-                                <div className="col-4">
+                                <div className="col-3">
                                   <div className="formLabel">
                                     <label htmlFor="">Destinations</label>
                                     {errors.notregisteredTo ? (
@@ -1734,6 +1734,8 @@ const ExtensionsEdit = () => {
                                   </div>
                                   <div className="col-12">
                                     <ActionList
+                                      label={null}
+                                      title={null}
                                       getDropdownValue={actionListValue2}
                                       value={watch().notregisteredTo}
                                     />

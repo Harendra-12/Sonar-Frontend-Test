@@ -500,7 +500,7 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                       </div>
                     </div>
                   )}
-                  <div className="col-12 mt-2">
+                  <div className={`col-${rechargeType === "buyDid" ? 6 : 12} mt-${rechargeType === "buyDid" ? 'auto' : '2'}`}>
                     <button className="panelButton static" onClick={handleSubmit}>
                       <span className="text">Pay Now</span>
                     </button>

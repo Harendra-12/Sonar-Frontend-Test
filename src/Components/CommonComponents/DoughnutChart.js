@@ -17,6 +17,7 @@ const DoughnutChart = ({ fields, percentage, centerTitle, centerDesc, colors }) 
         data: percentage,
         backgroundColor: colors,
         hoverBackgroundColor: colors,
+        borderColor: 'transparent',
       },
     ],
   };
@@ -29,11 +30,24 @@ const DoughnutChart = ({ fields, percentage, centerTitle, centerDesc, colors }) 
     plugins: {
       legend: {
         position: 'bottom',
+        labels: {
+          color: "#767676",
+        }
       },
       tooltip: {
         enabled: true,
       },
     },
+    scales: {
+      r: {
+        // Customize the radial scale
+        grid: {
+          color: 'rgba(128, 128, 128, 0.2)', // Set the color of the grid lines
+          lineWidth: 1 // Set the width of the grid lines
+        },
+      }
+    },
+
   };
 
   return (

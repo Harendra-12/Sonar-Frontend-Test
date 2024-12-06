@@ -4,30 +4,68 @@ import MediaPermissions from "./MediaPermissions ";
 import AutoAnswer from "./AutoAnswer";
 import { generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import ContentLoader from "../../Loader/ContentLoader";
 
-export const ConferenceCall = ({ room_id,extension_id,name }) => {
+export const ConferenceCall = ({ room_id, extension_id, name, setactivePage,activePage,setConferenceToggle }) => {
   const navigate = useNavigate();
   const { sessions: sipSessions, connectAndRegister } = useSIPProvider();
   const { connectStatus, registerStatus } = useSIPProvider();
   const [sipRegisterErrror, setSipRegisterError] = useState(false);
   const dummySession = useSelector((state) => state.dummySession);
   const conference = useSelector((state) => state.conference);
-  const [conferenceData, setConferenceData] = useState(conference)
+  const conferenceData = useSelector((state) => state.conference)
   const [loading, setLoading] = useState(true);
   const [confList, setConfList] = useState([])
   const [videoCallToggle, setVideoCallToggle] = useState(false);
-  const [toggleMessages, setToggleMessages] = useState(false);
+  const [toggleMessages, setToggleMessages] = useState(true);
+  const [participantMiniview, setParticipantMiniview] = useState(true);
+  const [participantList, setParticipantList] = useState(true);
   const [selectedConferenceUser, setSelectedConferenceUser] = useState(null);
   const [currentUser, setCurrentUser] = useState([])
   const [notification, setNotification] = useState(false)
   const [notificationData, setNotificationData] = useState("")
-  console.log("cccccccc",room_id,extension_id,name);
-  
+  const [seconds, setSeconds] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [hours, setHours] = useState(0);
+  const account = useSelector((state) => state.account);
+  const sessions = useSelector((state) => state.sessions);
+  const memeber_id = useSelector((state) => state.memberId);
+  const [numberOfTimeUserVisit, setNumberOfTimeUserVisit] = useState(0)
 
-  // Default select the current user
+  useEffect(() => {
+    if(activePage === "conference"){
+      setNumberOfTimeUserVisit(numberOfTimeUserVisit + 1)
+    }
+   
+  },[activePage])
+
+  const extension = account?.extension?.extension || "";
+  const dispatch = useDispatch();
+
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSeconds((prevSeconds) => {
+        if (prevSeconds === 59) {
+          setMinutes((prevMinutes) => {
+            if (prevMinutes === 59) {
+              setHours((prevHours) => prevHours + 1);
+              return 0;
+            }
+            return prevMinutes + 1;
+          });
+          return 0;
+        }
+        return prevSeconds + 1;
+      });
+    }, 1000);
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(interval);
+  }, []);
+
   useEffect(() => {
     setSelectedConferenceUser(currentUser[0])
   }, [currentUser])
@@ -59,12 +97,12 @@ export const ConferenceCall = ({ room_id,extension_id,name }) => {
         navigate(-1)
       } else if (connectStatus === "CONNECTED") {
         async function startConference() {
-          const response = await generalPostFunction("/conference/start", { id: extension_id, name: name })
+          const response = await generalPostFunction("/conference/start", { user: `user/${extension_id}`, name: name, roomId: room_id, is_guest: 0 })
 
           if (response.status) {
             setLoading(false)
             const confLists = await generalGetFunction(`/conference/${room_id}/details`)
-            // console.log("confList", JSON?.parse?.(confLists?.data));
+            // console.log(locationState, "confListsss", JSON?.parse?.(confLists?.data));
 
             if (confLists.status && confLists?.data !== `-ERR Conference ${room_id} not found\n`) {
               setConfList(JSON?.parse?.(confLists?.data)?.filter((item) => item.conference_name == room_id)?.[0]?.members.map((item) => {
@@ -75,35 +113,20 @@ export const ConferenceCall = ({ room_id,extension_id,name }) => {
                     name: item.caller_id_name,
                     uuid: item.uuid,
                     talking: item.flags.talking,
-                    mute_detect: item.flags.mute_detect,
+                    mute_detect: (item.flags.mute_detect),
                     hold: item.flags.hold,
                     isYou: item.caller_id_name === name ? true : false,
                     deaf: false
                   }
                 )
               }))
-              if (name) {
-                setCurrentUser(JSON?.parse?.(confLists?.data)?.filter((item) => item.conference_name == room_id)?.[0]?.members.map((item) => {
-                  return (
-                    {
-                      id: item.id,
-                      caller_id_number: item.caller_id_number,
-                      name: item.caller_id_name,
-                      uuid: item.uuid,
-                      talking: item.flags.talking,
-                      mute_detect: item.flags.mute_detect,
-                      hold: item.flags.hold,
-                      isYou: item.caller_id_name === name ? true : false,
-                      deaf: false
-                    }
-                  )
-                }))
-              }
             }
           }
 
         }
-        startConference()
+        // if(numberOfTimeUserVisit === 0 && activePage === "conference"){
+          startConference()
+        // }
       } else {
         toast.error("Not connected with server please try again later.");
         navigate(-1)
@@ -119,45 +142,63 @@ export const ConferenceCall = ({ room_id,extension_id,name }) => {
       sipSessions[id].logger.category === "sip.Invitation"
   );
 
+
   // Monitor incoming data from web socket accound to its action type
   useEffect(() => {
     if (conferenceData) {
       // Check if conferencedata.calleridname is previously present in conflist
-      if (conferenceData.Action === "add-member" && !confList.some(item => item.caller_id_number === conferenceData["Caller-Caller-ID-Number"])) {
+      if (conferenceData.Action === "add-member" && !confList.some(item => item.caller_id_number === conferenceData["Channel-Presence-ID"])) {
         setNotification(false)
         setNotification(true)
-        setNotificationData(`${conferenceData["Caller-ANI"]} joined the conference`);
+        setNotificationData(`${conferenceData["Caller-Caller-ID-Name"]} joined the conference`);
         setTimeout(() => {
           setNotification(false)
         }, [3000])
         setConfList(prevList => [...prevList, {
           id: conferenceData["Member-ID"],
-          name: conferenceData["Caller-ANI"],
-          caller_id_number: conferenceData["Caller-Caller-ID-Number"],
+          name: conferenceData["Caller-Caller-ID-Name"],
+          caller_id_number: conferenceData["Channel-Presence-ID"],
           uuid: conferenceData["Core-UUID"],
           talking: conferenceData["Talking"],
           mute_detect: conferenceData["Mute-Detect"],
           hold: conferenceData["Hold"],
-          isYou: conferenceData["Caller-ANI"] === name ? true : false,
+          isYou: conferenceData["Caller-Caller-ID-Name"] === name ? true : false,
           deaf: false
         }]);
-        if (conferenceData["Caller-ANI"] === name) {
-          setCurrentUser(prevList => [...prevList, {
+
+        // Here i want to change the id on current user
+        if (conferenceData["Channel-Presence-ID"] === extension_id) {
+          setCurrentUser((prevState) => ({
+            ...prevState,
+            id: conferenceData["Member-ID"]
+          }));
+        }
+
+
+      } else if (conferenceData.Action === "stop-talking") {
+        if (!confList.some(item => item.caller_id_number === conferenceData["Channel-Presence-ID"])) {
+          setConfList(prevList => [...prevList, {
             id: conferenceData["Member-ID"],
-            name: conferenceData["Caller-ANI"],
-            caller_id_number: conferenceData["Caller-Caller-ID-Number"],
+            name: conferenceData["Caller-Caller-ID-Name"],
+            caller_id_number: conferenceData["Channel-Presence-ID"],
             uuid: conferenceData["Core-UUID"],
             talking: conferenceData["Talking"],
             mute_detect: conferenceData["Mute-Detect"],
             hold: conferenceData["Hold"],
-            isYou: conferenceData["Caller-ANI"] === name ? true : false,
+            isYou: conferenceData["Caller-Caller-ID-Name"] === name ? true : false,
             deaf: false
-          }])
+          }]);
         }
-      } else if (conferenceData.Action === "stop-talking") {
+
+        if (conferenceData["Channel-Presence-ID"] === extension_id) {
+          setCurrentUser((prevState) => ({
+            ...prevState,
+            id: conferenceData["Member-ID"]
+          }));
+        }
         // Update the list with the updated values
         setConfList(prevList => prevList.map(item => {
-          if (item.caller_id_number === conferenceData["Caller-Caller-ID-Number"]) {
+          if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
             return {
               ...item,
               talking: false,
@@ -165,19 +206,31 @@ export const ConferenceCall = ({ room_id,extension_id,name }) => {
           }
           return item;
         }));
-        setCurrentUser(prevList => prevList.map(item => {
-          if (item.caller_id_number === conferenceData["Caller-Caller-ID-Number"]) {
-            return {
-              ...item,
-              talking: false,
-            };
-          }
-          return item;
-        }));
+
       } else if (conferenceData.Action === "start-talking") {
+        if (!confList.some(item => item.caller_id_number === conferenceData["Channel-Presence-ID"])) {
+          setConfList(prevList => [...prevList, {
+            id: conferenceData["Member-ID"],
+            name: conferenceData["Caller-Caller-ID-Name"],
+            caller_id_number: conferenceData["Channel-Presence-ID"],
+            uuid: conferenceData["Core-UUID"],
+            talking: conferenceData["Talking"],
+            mute_detect: conferenceData["Mute-Detect"],
+            hold: conferenceData["Hold"],
+            isYou: conferenceData["Caller-Caller-ID-Name"] === name ? true : false,
+            deaf: false
+          }]);
+        }
+
+        if (conferenceData["Channel-Presence-ID"] === extension_id) {
+          setCurrentUser((prevState) => ({
+            ...prevState,
+            id: conferenceData["Member-ID"]
+          }));
+        }
         // Update the list with the updated values
         setConfList(prevList => prevList.map(item => {
-          if (item.caller_id_number === conferenceData["Caller-Caller-ID-Number"]) {
+          if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
             return {
               ...item,
               talking: true,
@@ -185,19 +238,11 @@ export const ConferenceCall = ({ room_id,extension_id,name }) => {
           }
           return item;
         }));
-        setCurrentUser(prevList => prevList.map(item => {
-          if (item.caller_id_number === conferenceData["Caller-Caller-ID-Number"]) {
-            return {
-              ...item,
-              talking: true,
-            };
-          }
-          return item;
-        }));
+
       } else if (conferenceData.Action === "mute-member") {
         // Update the list with the updated values
         setConfList(prevList => prevList.map(item => {
-          if (item.caller_id_number === conferenceData["Caller-Caller-ID-Number"]) {
+          if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
             return {
               ...item,
               mute_detect: true,
@@ -206,20 +251,17 @@ export const ConferenceCall = ({ room_id,extension_id,name }) => {
           }
           return item;
         }));
-        setCurrentUser(prevList => prevList.map(item => {
-          if (item.caller_id_number === conferenceData["Caller-Caller-ID-Number"]) {
-            return {
-              ...item,
-              mute_detect: true,
-              talking: false,
-            };
-          }
-          return item;
-        }));
+        if (conferenceData["Channel-Presence-ID"] === extension_id) {
+          setCurrentUser((prevState) => ({
+            ...prevState,
+            id: conferenceData["Member-ID"],
+            mute_detect: true
+          }));
+        }
       } else if (conferenceData.Action === "unmute-member") {
         // Update the list with the updated values
         setConfList(prevList => prevList.map(item => {
-          if (item.caller_id_number === conferenceData["Caller-Caller-ID-Number"]) {
+          if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
             return {
               ...item,
               mute_detect: false
@@ -227,19 +269,17 @@ export const ConferenceCall = ({ room_id,extension_id,name }) => {
           }
           return item;
         }));
-        setCurrentUser(prevList => prevList.map(item => {
-          if (item.caller_id_number === conferenceData["Caller-Caller-ID-Number"]) {
-            return {
-              ...item,
-              mute_detect: false
-            };
-          }
-          return item;
-        }));
+        if (conferenceData["Channel-Presence-ID"] === extension_id) {
+          setCurrentUser((prevState) => ({
+            ...prevState,
+            id: conferenceData["Member-ID"],
+            mute_detect: false
+          }));
+        }
       } else if (conferenceData.Action === "deaf-member") {
         // Update the list with the updated values
         setConfList(prevList => prevList.map(item => {
-          if (item.caller_id_number === conferenceData["Caller-Caller-ID-Number"]) {
+          if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
             return {
               ...item,
               deaf: true,
@@ -247,19 +287,16 @@ export const ConferenceCall = ({ room_id,extension_id,name }) => {
           }
           return item;
         }));
-        setCurrentUser(prevList => prevList.map(item => {
-          if (item.caller_id_number === conferenceData["Caller-Caller-ID-Number"]) {
-            return {
-              ...item,
-              deaf: true,
-            };
-          }
-          return item;
-        }));
+        if (conferenceData["Channel-Presence-ID"] === extension_id) {
+          setCurrentUser((prevState) => ({
+            ...prevState,
+            id: conferenceData["Member-ID"]
+          }));
+        }
       } else if (conferenceData.Action === "undeaf-member") {
         // Update the list with the updated values
         setConfList(prevList => prevList.map(item => {
-          if (item.caller_id_number === conferenceData["Caller-Caller-ID-Number"]) {
+          if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
             return {
               ...item,
               deaf: false,
@@ -267,23 +304,30 @@ export const ConferenceCall = ({ room_id,extension_id,name }) => {
           }
           return item;
         }));
-        setCurrentUser(prevList => prevList.map(item => {
-          if (item.caller_id_number === conferenceData["Caller-Caller-ID-Number"]) {
-            return {
-              ...item,
-              deaf: false,
-            };
-          }
-          return item;
-        }));
-      } else if (conferenceData.Action === "del-member") {
+        if (conferenceData["Channel-Presence-ID"] === extension_id) {
+          setCurrentUser((prevState) => ({
+            ...prevState,
+            id: conferenceData["Member-ID"]
+          }));
+        }
+      } else if (conferenceData.Action === "del-member" || conferenceData.Action === "hup-member") {
         setNotification(false)
         setNotification(true)
-        setNotificationData(`${conferenceData["Caller-ANI"]} has left the conference`);
+        setNotificationData(`${conferenceData["Caller-Caller-ID-Name"]} has left the conference`);
         setTimeout(() => {
           setNotification(false)
         }, [3000])
-        setConfList(prevList => prevList.filter(item => item.caller_id_number !== conferenceData["Caller-Caller-ID-Number"]));
+        setConfList(prevList => {
+          const index = prevList.findIndex(
+            item => item.caller_id_number === conferenceData["Channel-Presence-ID"]
+          );
+          if (index !== -1) {
+            const newList = [...prevList];
+            newList.splice(index, 1);
+            return newList;
+          }
+          return prevList; // Return the original list if no match is found
+        });
       }
     }
   }, [conferenceData])
@@ -293,19 +337,82 @@ export const ConferenceCall = ({ room_id,extension_id,name }) => {
     const parsedData = {
       action: action,
       room_id: room_id,
-      member: String(currentUser[0].id)
+      member: String(currentUser?.id)
     }
     generalPostFunction(`conference/action`, parsedData).then(res => {
       if (res.status && action === "hup") {
-        navigate(-1)
+        localStorage.removeItem("memberId")
+        dispatch({
+          type: "SET_MEMBERID",
+          memberId: null
+        })
+        setConferenceToggle(false);
+        setactivePage("call")
       }
     })
+    if (action === "deaf") {
+      //    update current user state
+      setCurrentUser((prevState) => ({
+        ...prevState,
+        deaf: true
+      }));
+    } else if (action === "undeaf") {
+      setCurrentUser((prevState) => ({
+        ...prevState,
+        deaf: false
+      }));
+    } else if (action === "tmute") {
+      setCurrentUser((prevState) => ({
+        ...prevState,
+        mute_detect: !(currentUser.mute_detect)
+      }));
+    }
   }
 
-  console.log("Current User", currentUser);
+  async function logOut() {
+    const apiData = await generalGetFunction("/logout");
+    localStorage.clear();
+    if (apiData?.data) {
+      localStorage.clear();
+      dispatch({
+        action: "SET_ACCOUNT",
+        account: null,
+      });
+      navigate("/");
+    }
+  }
 
+  // Store memeber ID in local storage so that we can access it later
+  useEffect(() => {
+    if(currentUser.id!=="" && currentUser.id!==null && currentUser.id!==undefined){
+      localStorage.setItem("memberId", currentUser?.id);
+      dispatch({
+        type: "SET_MEMBERID",
+        memberId: currentUser?.id
+      })
+    }
+   
+  },[currentUser.id])
+
+  // Check if there is any previous memeber is present if yes then first hangup it
+  useEffect(() => {
+    if (memeber_id && room_id!=="") {
+      const parsedData = {
+        action: "hup",
+        room_id: room_id,
+        member: String(memeber_id)
+      }
+      generalPostFunction(`conference/action`, parsedData).then(res => {
+        localStorage.removeItem("memberId")
+        dispatch({
+          type: "SET_MEMBERID",
+          memberId: null
+        })
+      })
+    }
+  },[])
   return (
-    <div className="profileDropdowns" style={{ top: "55px", right: "-40px" }}>
+    <div className="profileDropdowns" style={{ top: "55px", right: "-40px",display:activePage!=="conference"?"none":"" }}>
       <MediaPermissions />
       {incomingSessionsArray.map((item, index) => {
         return (
@@ -317,15 +424,83 @@ export const ConferenceCall = ({ room_id,extension_id,name }) => {
           <ContentLoader /> :
           dummySession && <>
             <main
-              className="mainContentApp"
+              className="mainContentApp position-absolute"
+              style={{
+                top: "0",
+                left : "0px",
+                // width: "calc(100% - 210px)",
+                height: "100%",
+                marginRight:
+                  sessions.length > 0 && Object.keys(sessions).length > 0
+                    ? "250px"
+                    : "0",
+              }}
             >
               <section>
                 <div className="container-fluid">
                   <div className="row">
-
+                    <div className="col-12 ps-xl-0">
+                      <div className="newHeader">
+                        <div className="col-auto" style={{ padding: "0 10px" }}>
+                          <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
+                            <button class="clearButton text-dark">
+                              <i class="fa-solid fa-chevron-left fs-4"></i>
+                            </button>{" "}
+                            Conference{" "}
+                          </h3>
+                        </div>
+                        <div className="d-flex justify-content-end align-items-center">
+                          <div className="col-9">
+                            <input
+                              type="search"
+                              name="Search"
+                              placeholder="Search users, groups or chat"
+                              class="formItem fw-normal"
+                              style={{ backgroundColor: "var(--searchBg)" }}
+                            />
+                          </div>
+                          <div className="col-auto mx-2">
+                            <button className="clearButton2 xl" effect="ripple">
+                              <i className="fa-regular fa-bell" />
+                            </button>
+                          </div>
+                          <div className="col-auto">
+                            <div class="dropdown">
+                              <div
+                                className="myProfileWidget"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                              >
+                                <div class="profileHolder" id="profileOnlineNav">
+                                  <img
+                                    src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
+                                    alt="profile"
+                                  />
+                                </div>
+                                <div class="profileName">
+                                  {account.username}{" "}
+                                  <span className="status">Available</span>
+                                </div>
+                              </div>
+                              <ul class="dropdown-menu" onClick={logOut}>
+                                <li>
+                                  <div
+                                    class="dropdown-item"
+                                    style={{ cursor: "pointer" }}
+                                  >
+                                    Logout
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     <div className="videoCallWrapper">
                       <div className="row">
-                        {toggleMessages && <div className="col-lg-4 col-xl-4 col-12 p-3">
+                        {toggleMessages && <div className="col-lg-3 col-xl-3 col-12 p-3">
                           <div className="messageOverlay">
                             <div className="contactHeader py-3">
                               <div>
@@ -354,7 +529,7 @@ export const ConferenceCall = ({ room_id,extension_id,name }) => {
                                   defaultValue={""}
                                   rows={2}
                                 />
-                                <div className="col-12 d-flex justify-content-between align-items-center">
+                                <div className="col-12 d-flex justify-content-between align-items-center pt-2">
                                   <div className="d-flex">
                                     <button className="clearButton2">
                                       <i className="fa-regular fa-image" />
@@ -380,17 +555,8 @@ export const ConferenceCall = ({ room_id,extension_id,name }) => {
                             </div>
                           </div>
                         </div>}
-                        <div className={`"col-lg-${toggleMessages ? "8" : "12"} col-xl-${toggleMessages ? "8" : "12"} col-12"`}>
-                          <div className="heading">
-                            <h4>
-                              Conference <span>14:20</span>
-                            </h4>
-                            <button className="clearButton">
-                              <i class="fa-sharp fa-solid fa-circle-plus"></i> Add
-                              Participant
-                            </button>
-                          </div>
-                          <div className="videoBody">
+                        <div className={`"col-lg-${toggleMessages ? "9" : "12"} col-xl-${toggleMessages ? "9" : "12"} col-12" px-0`}>
+                          <div className="videoBody py-0">
                             {notification &&
                               <div className="NotificationBell">
                                 <i className="fa-solid fa-bell"></i>
@@ -400,9 +566,18 @@ export const ConferenceCall = ({ room_id,extension_id,name }) => {
                               </div>
                             }
                             <div className="participant active ">
-                              <div className="participantWrapper">
+                              <div className="heading">
+                                <h4>
+                                  Conference <span>{hours === 0 ? "" : `${hours}:`}{minutes}:{seconds}</span>
+                                </h4>
+                                {/* <button className="clearButton">
+                                                            <i class="fa-sharp fa-solid fa-circle-plus"></i> Add
+                                                            Participant
+                                                        </button> */}
+                              </div>
+                              <div className="participantWrapper pb-2">
                                 <div className="videoHolder">
-                                  <div className="activeGuyName">{selectedConferenceUser?.name}</div>
+                                  <div className="activeGuyName">{selectedConferenceUser?.name === "" ? selectedConferenceUser?.name : name}</div>
                                   {videoCallToggle ?
                                     (
                                       <img alt="" className="videoElement" src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
@@ -411,7 +586,7 @@ export const ConferenceCall = ({ room_id,extension_id,name }) => {
                                     (
                                       <div className="justify-content-center h-100 d-flex align-items-center text-white fs-1">
                                         <div className="contactViewProfileHolder">
-                                          {(selectedConferenceUser?.name)}
+                                          {(selectedConferenceUser?.name === "" ? selectedConferenceUser?.name : name)}
                                         </div>
                                       </div>
                                     )}
@@ -422,15 +597,15 @@ export const ConferenceCall = ({ room_id,extension_id,name }) => {
                                       top: "inherit",
                                       width: "45px",
                                     }}
-                                    onClick={() => { callAction(currentUser?.[0]?.deaf ? "undeaf" : "deaf") }}
+                                    onClick={() => { callAction(confList.filter((item) => item.isYou)[0]?.deaf ? "undeaf" : "deaf") }}
                                   >
-                                    {currentUser?.[0]?.deaf ? <i class="fa-sharp fa-solid fa-volume-slash"></i> : <i class="fa-sharp fa-solid fa-volume"></i>}
+                                    {currentUser?.deaf ? <i class="fa-sharp fa-solid fa-volume-slash"></i> : <i class="fa-sharp fa-solid fa-volume"></i>}
 
                                   </div>
                                 </div>
                                 <div className="videoControls">
                                   <button className="appPanelButtonCallerRect" onClick={() => { callAction("tmute") }}>
-                                    {currentUser?.[0]?.mute_detect ? <i class="fa-light fa-microphone-slash"></i> : <i class="fa-light fa-microphone"></i>}
+                                    {currentUser?.mute_detect ? <i class="fa-light fa-microphone-slash"></i> : <i class="fa-light fa-microphone"></i>}
                                   </button>
                                   <button className="appPanelButtonCallerRect">
                                     <i class="fa-light fa-video"></i>
@@ -449,11 +624,11 @@ export const ConferenceCall = ({ room_id,extension_id,name }) => {
                                   >
                                     Leave Call
                                   </button>
-                                  <button className="appPanelButtonCallerRect">
-                                    <i class="fa-light fa-screencast"></i>
+                                  <button className="appPanelButtonCallerRect" onClick={() => setToggleMessages(!toggleMessages)}>
+                                    <i class="fa-light fa-messages"></i>
                                   </button>
-                                  <button className="appPanelButtonCallerRect">
-                                    <i class="fa-light fa-chalkboard-user"></i>
+                                  <button className="appPanelButtonCallerRect" onClick={() => setParticipantList(!participantList)}>
+                                    <i class="fa-light fa-users"></i>
                                   </button>
                                   <button className="appPanelButtonCallerRect">
                                     <i class="fa-light fa-hand"></i>
@@ -463,23 +638,100 @@ export const ConferenceCall = ({ room_id,extension_id,name }) => {
                               </div>
                               {/* )} */}
                             </div>
-                            <div className="conferenceParticipantsWrapper">
-                              {confList.map((item, index) => {
-                                return (
-                                  <ConferenceUserTab
-                                    item={item}
-                                    key={index}
-                                    index={index}
-                                    handleSelectConferenceUser={
-                                      handleSelectConferenceUser
-                                    }
-                                    getInitials={getInitials}
-                                  />
-                                );
-                              })}
-                            </div>
-                          </div>
+                            <div className={`conferenceParticipantsWrapper ${participantMiniview ? "" : "hidden"}`}>
+                              <div className="py-2 px-3 pe-2">
+                                <button onClick={() => setParticipantMiniview(!participantMiniview)} className="clearButton2 xl position-absolute" style={{ left: '-20px', top: '50%', transform: 'translateY(-50%)', zIndex: '9' }}>
+                                  <i class={`fa-regular fa-chevron-${participantMiniview ? "right" : "left"}`}></i>
+                                </button>
 
+                                {confList.map((item, index) => {
+                                  return (
+                                    <ConferenceUserTab
+                                      item={item}
+                                      key={index}
+                                      index={index}
+                                      handleSelectConferenceUser={
+                                        handleSelectConferenceUser
+                                      }
+                                      getInitials={getInitials}
+                                    />
+                                  );
+                                })}
+                              </div>
+                            </div>
+                            {participantList && <div className="participantMemberList">
+                              <div className="mb-3">
+                                <button className="clearButton2 xl ms-auto" onClick={() => setParticipantList(false)}><i class={`fa-regular fa-xmark`}></i></button>
+                              </div>
+                              <div>
+                                <div style={{ color: 'rgb(194, 194, 194)', fontSize: '14px', fontWeight: '600', marginBottom: '16px' }}>Meeting Participants (3)</div>
+                                <button className="panelButton static">
+                                  <span className="text"><i class="fa-solid fa-circle-plus"></i> Add Participant</span>
+                                </button>
+                              </div>
+                              <div class="col-12 mt-3">
+                                <input type="search" name="Search" id="headerSearch" placeholder="Search" style={{ backgroundColor: 'transparent', color: '#f5f5f5' }} />
+                              </div>
+                              <ul>
+                                <li>
+                                  <div className="d-flex align-items-center">
+                                    <div className="profileHolder">
+                                      {/* {getInitials(item.name)} */}
+                                      <i class="fa-light fa-user"></i>
+                                    </div>
+                                    <span className="ms-2">Test Name</span>
+                                  </div>
+                                  <div className="d-flex">
+                                    <button className="clearButton2 me-2" style={{ width: '30px', height: '30px', fontSize: '16px' }}><i class="fa-light fa-microphone-slash"></i></button>
+                                    <button className="clearButton2" style={{ width: '30px', height: '30px', fontSize: '16px' }}><i class="fa-light fa-camera-slash"></i></button>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div className="d-flex align-items-center">
+                                    <div className="profileHolder">
+                                      {/* {getInitials(item.name)} */}
+                                      <i class="fa-light fa-user"></i>
+                                    </div>
+                                    <span className="ms-2">Test Name</span>
+                                  </div>
+                                  <div className="d-flex">
+                                    <button className="clearButton2 me-2" style={{ width: '30px', height: '30px', fontSize: '16px' }}><i class="fa-light fa-microphone-slash"></i></button>
+                                    <button className="clearButton2" style={{ width: '30px', height: '30px', fontSize: '16px' }}><i class="fa-light fa-camera-slash"></i></button>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div className="d-flex align-items-center">
+                                    <div className="profileHolder">
+                                      {/* {getInitials(item.name)} */}
+                                      <i class="fa-light fa-user"></i>
+                                    </div>
+                                    <span className="ms-2">Test Name</span>
+                                  </div>
+                                  <div className="d-flex">
+                                    <button className="clearButton2 me-2" style={{ width: '30px', height: '30px', fontSize: '16px' }}><i class="fa-light fa-microphone-slash"></i></button>
+                                    <button className="clearButton2" style={{ width: '30px', height: '30px', fontSize: '16px' }}><i class="fa-light fa-camera-slash"></i></button>
+                                  </div>
+                                </li>
+                              </ul>
+                              <div className="position-absolute d-flex" style={{ bottom: 20, right: 10 }}>
+                                <button className="toggleButton">Mute All</button>
+                                <div className="dropdown contactHeader" type="button" data-bs-toggle="dropdown" aria-expanded="true">
+                                  <button className="ms-3 toggleButton"><i class="fa-solid fa-ellipsis"></i></button>
+                                  <ul className="dropdown-menu" data-popper-placement="top-end">
+                                    <li><a className="dropdown-item">Stop everyone's video</a></li>
+                                    <li className="d-block">
+                                      <p className="my-0" style={{ padding: '5px 10px', fontSize: '13px' }}>Allow attendees to: </p>
+                                      <ul className="my-0">
+                                        <li className="dropdown-item d-block"><i className="fa-solid fa-check me-2"></i>Unmute themselves</li>
+                                        <li className="dropdown-item d-block"><i className="fa-solid fa-check me-2"></i>Start their video</li>
+                                      </ul>
+                                    </li>
+                                    <li><a className="dropdown-item text-danger">Kick User</a></li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -499,10 +751,9 @@ const ConferenceUserTab = ({
   handleSelectConferenceUser,
   getInitials,
 }) => {
-  const [videoCallToggle, setVideoCallToggle] = useState(false);
-  const [userMuted, setUserMuted] = useState(false);
+  const [videoCallToggle] = useState(false);
 
-  console.log("itemaaaa", item);
+  // console.log("itemaaaa", item);
 
   const truncateString = (str, threshold) => {
     if (typeof str !== "string" || typeof threshold !== "number") {
@@ -518,14 +769,14 @@ const ConferenceUserTab = ({
         className="participant"
         data-mic={!item.mute_detect}
         //   data-pin="true"
-        data-pin={item.deaf}
+        data-speaker={!(item.deaf)}
         data-speaking={item.talking}
         style={{ cursor: "pointer" }}
         onClick={() => handleSelectConferenceUser(item)}
       >
         {videoCallToggle ? (
           <div>
-            <img src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
+            <img alt="" src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
           </div>
         ) : (
           <div className="participantWrapper">
@@ -546,3 +797,4 @@ const ConferenceUserTab = ({
     </>
   );
 };
+

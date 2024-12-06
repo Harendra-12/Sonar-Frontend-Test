@@ -4,9 +4,10 @@ import MediaPermissions from "./MediaPermissions ";
 import AutoAnswer from "./AutoAnswer";
 import { generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import ContentLoader from "../../Loader/ContentLoader";
+import { act } from "react";
 
 export const DummySipRegisteration = ({ webSocketServer, extension, password }) => {
     const navigate = useNavigate();
@@ -20,15 +21,53 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
     const [loading, setLoading] = useState(true);
     const [confList, setConfList] = useState([])
     const [videoCallToggle, setVideoCallToggle] = useState(false);
-    const [toggleMessages, setToggleMessages] = useState(false);
+    const [toggleMessages, setToggleMessages] = useState(true);
+    const [participantMiniview, setParticipantMiniview] = useState(true);
+    const [participantList, setParticipantList] = useState(true);
     const [selectedConferenceUser, setSelectedConferenceUser] = useState(null);
-    const [currentUser, setCurrentUser] = useState([])
+    const [seconds, setSeconds] = useState(0);
+    const [minutes, setMinutes] = useState(0);
+    const [hours, setHours] = useState(0);
+    const account = useSelector((state) => state.account);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setSeconds((prevSeconds) => {
+                if (prevSeconds === 59) {
+                    setMinutes((prevMinutes) => {
+                        if (prevMinutes === 59) {
+                            setHours((prevHours) => prevHours + 1);
+                            return 0;
+                        }
+                        return prevMinutes + 1;
+                    });
+                    return 0;
+                }
+                return prevSeconds + 1;
+            });
+        }, 1000);
+
+        // Cleanup the interval on component unmount
+        return () => clearInterval(interval);
+    }, []);
+    const [currentUser, setCurrentUser] = useState({
+        id: "",
+        caller_id_number: `${locationState.extension}@${locationState.domainName}`,
+        name: locationState.name,
+        uuid: "item.uuid",
+        talking: true,
+        mute_detect: false,
+        hold: false,
+        isYou: true,
+        deaf: false
+    })
     const [notification, setNotification] = useState(false)
     const [notificationData, setNotificationData] = useState("")
 
     // Default select the current user
     useEffect(() => {
-        setSelectedConferenceUser(currentUser[0])
+        setSelectedConferenceUser(currentUser)
     }, [currentUser])
     const handleSelectConferenceUser = (item) => {
         setSelectedConferenceUser(item);
@@ -55,7 +94,7 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                 const ws = new WebSocket(wsUrl);
 
                 ws.onopen = () => {
-                    console.log("WebSocket connection successful.");
+                    // console.log("WebSocket connection successful.");
                     ws.close();
                     resolve(true);
                 };
@@ -101,12 +140,12 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                 navigate(-1)
             } else if (connectStatus === "CONNECTED") {
                 async function startConference() {
-                    const response = await generalPostFunction("/conference/start", { id: locationState.extension_id, name: locationState.name })
+                    const response = await generalPostFunction("/conference/start", { id: locationState.extension_id, name: locationState.name, is_guest: 1 })
 
                     if (response.status) {
                         setLoading(false)
                         const confLists = await generalGetFunction(`/conference/${locationState.room_id}/details`)
-                        console.log(locationState, "confListsss", JSON?.parse?.(confLists?.data));
+                        // console.log(locationState, "confListsss", JSON?.parse?.(confLists?.data));
 
                         if (confLists.status && confLists?.data !== `-ERR Conference ${locationState.room_id} not found\n`) {
                             setConfList(JSON?.parse?.(confLists?.data)?.filter((item) => item.conference_name == locationState.room_id)?.[0]?.members.map((item) => {
@@ -117,33 +156,13 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                                         name: item.caller_id_name,
                                         uuid: item.uuid,
                                         talking: item.flags.talking,
-                                        mute_detect: !(item.flags.mute_detect),
+                                        mute_detect: (item.flags.mute_detect),
                                         hold: item.flags.hold,
                                         isYou: item.caller_id_name === locationState.name ? true : false,
                                         deaf: false
                                     }
                                 )
                             }))
-                            if (locationState.name) {
-                                setCurrentUser(JSON?.parse?.(confLists?.data)?.filter((item) => item.conference_name == locationState.room_id)?.[0]?.members.map((item) => {
-                                    // if (item["caller_id_number"]=== `${locationState.extension}@${locationState.domain}`) {
-                                        return (
-                                            {
-                                                id: item.id,
-                                                caller_id_number: item.caller_id_number,
-                                                name: item.caller_id_name,
-                                                uuid: item.uuid,
-                                                talking: item.flags.talking,
-                                                mute_detect: !(item.flags.mute_detect),
-                                                hold: item.flags.hold,
-                                                isYou: item.caller_id_name === locationState.name ? true : false,
-                                                deaf: false
-                                            }
-                                        )
-                                    // }
-                                   
-                                }))
-                            }
                         }
                     }
 
@@ -175,7 +194,7 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
             const socket = new WebSocket(`wss://${ip}:${port}?type=admin`);
 
             socket.onopen = () => {
-                console.log("WebSocket connection successful.");
+                // console.log("WebSocket connection successful.");
             };
             socket.onmessage = (event) => {
                 // console.log(JSON.parse(event.data));
@@ -183,7 +202,7 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                     if (
                         JSON.parse(JSON.parse(event.data))["key"] === "Conference"
                     ) {
-                        console.log("Conference Data", JSON.parse(JSON.parse(event.data))["result"]);
+                        // console.log("Conference Data", JSON.parse(JSON.parse(event.data))["result"]);
 
                         setConferenceData(JSON.parse(JSON.parse(event.data))["result"]["Conference-Name"] == locationState.room_id && JSON.parse(JSON.parse(event.data))["result"]);
                     }
@@ -195,7 +214,7 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                 console.error("WebSocket error:", error);
             };
             socket.onclose = () => {
-                console.log("WebSocket connection closed. Reconnecting...");
+                // console.log("WebSocket connection closed. Reconnecting...");
                 if (reconnectValue < 5) {
                     reconnectValue = reconnectValue + 1;
                     setTimeout(connectWebSocket, 5000); // Retry after 3 seconds
@@ -238,21 +257,18 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                     isYou: conferenceData["Caller-Caller-ID-Name"] === locationState.name ? true : false,
                     deaf: false
                 }]);
-                if (conferenceData["Channel-Presence-ID"] === `${locationState.extension}@${locationState.domain}`) {
-                    setCurrentUser(prevList => [...prevList, {
-                        id: conferenceData["Member-ID"],
-                        name: conferenceData["Caller-Caller-ID-Name"],
-                        caller_id_number: conferenceData["Channel-Presence-ID"],
-                        uuid: conferenceData["Core-UUID"],
-                        talking: conferenceData["Talking"],
-                        mute_detect: conferenceData["Mute-Detect"],
-                        hold: conferenceData["Hold"],
-                        isYou: conferenceData["Caller-Caller-ID-Name"] === locationState.name ? true : false,
-                        deaf: false
-                    }])
+
+                // Here i want to change the id on current user
+                if (conferenceData["Channel-Presence-ID"] === `${locationState.extension}@${locationState.domainName}`) {
+                    setCurrentUser((prevState) => ({
+                        ...prevState,
+                        id: conferenceData["Member-ID"]
+                    }));
                 }
+
+
             } else if (conferenceData.Action === "stop-talking") {
-                if(!confList.some(item => item.caller_id_number === conferenceData["Channel-Presence-ID"])){
+                if (!confList.some(item => item.caller_id_number === conferenceData["Channel-Presence-ID"])) {
                     setConfList(prevList => [...prevList, {
                         id: conferenceData["Member-ID"],
                         name: conferenceData["Caller-Caller-ID-Name"],
@@ -265,18 +281,12 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                         deaf: false
                     }]);
                 }
-                if (conferenceData["Channel-Presence-ID"] === `${locationState.extension}@${locationState.domain}`) {
-                    setCurrentUser(prevList => [...prevList, {
-                        id: conferenceData["Member-ID"],
-                        name: conferenceData["Caller-Caller-ID-Name"],
-                        caller_id_number: conferenceData["Channel-Presence-ID"],
-                        uuid: conferenceData["Core-UUID"],
-                        talking: conferenceData["Talking"],
-                        mute_detect: conferenceData["Mute-Detect"],
-                        hold: conferenceData["Hold"],
-                        isYou: conferenceData["Caller-Caller-ID-Name"] === locationState.name ? true : false,
-                        deaf: false
-                    }])
+
+                if (conferenceData["Channel-Presence-ID"] === `${locationState.extension}@${locationState.domainName}`) {
+                    setCurrentUser((prevState) => ({
+                        ...prevState,
+                        id: conferenceData["Member-ID"]
+                    }));
                 }
                 // Update the list with the updated values
                 setConfList(prevList => prevList.map(item => {
@@ -288,17 +298,9 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                     }
                     return item;
                 }));
-                setCurrentUser(prevList => prevList.map(item => {
-                    if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
-                        return {
-                            ...item,
-                            talking: false,
-                        };
-                    }
-                    return item;
-                }));
+
             } else if (conferenceData.Action === "start-talking") {
-                if(!confList.some(item => item.caller_id_number === conferenceData["Channel-Presence-ID"])){
+                if (!confList.some(item => item.caller_id_number === conferenceData["Channel-Presence-ID"])) {
                     setConfList(prevList => [...prevList, {
                         id: conferenceData["Member-ID"],
                         name: conferenceData["Caller-Caller-ID-Name"],
@@ -311,18 +313,12 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                         deaf: false
                     }]);
                 }
-                if (conferenceData["Channel-Presence-ID"] === `${locationState.extension}@${locationState.domain}`) {
-                    setCurrentUser(prevList => [...prevList, {
-                        id: conferenceData["Member-ID"],
-                        name: conferenceData["Caller-Caller-ID-Name"],
-                        caller_id_number: conferenceData["Channel-Presence-ID"],
-                        uuid: conferenceData["Core-UUID"],
-                        talking: conferenceData["Talking"],
-                        mute_detect: conferenceData["Mute-Detect"],
-                        hold: conferenceData["Hold"],
-                        isYou: conferenceData["Caller-Caller-ID-Name"] === locationState.name ? true : false,
-                        deaf: false
-                    }])
+
+                if (conferenceData["Channel-Presence-ID"] === `${locationState.extension}@${locationState.domainName}`) {
+                    setCurrentUser((prevState) => ({
+                        ...prevState,
+                        id: conferenceData["Member-ID"]
+                    }));
                 }
                 // Update the list with the updated values
                 setConfList(prevList => prevList.map(item => {
@@ -334,15 +330,7 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                     }
                     return item;
                 }));
-                setCurrentUser(prevList => prevList.map(item => {
-                    if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
-                        return {
-                            ...item,
-                            talking: true,
-                        };
-                    }
-                    return item;
-                }));
+
             } else if (conferenceData.Action === "mute-member") {
                 // Update the list with the updated values
                 setConfList(prevList => prevList.map(item => {
@@ -355,16 +343,13 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                     }
                     return item;
                 }));
-                setCurrentUser(prevList => prevList.map(item => {
-                    if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
-                        return {
-                            ...item,
-                            mute_detect: true,
-                            talking: false,
-                        };
-                    }
-                    return item;
-                }));
+                if (conferenceData["Channel-Presence-ID"] === `${locationState.extension}@${locationState.domainName}`) {
+                    setCurrentUser((prevState) => ({
+                        ...prevState,
+                        id: conferenceData["Member-ID"],
+                        mute_detect: true
+                    }));
+                }
             } else if (conferenceData.Action === "unmute-member") {
                 // Update the list with the updated values
                 setConfList(prevList => prevList.map(item => {
@@ -376,15 +361,13 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                     }
                     return item;
                 }));
-                setCurrentUser(prevList => prevList.map(item => {
-                    if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
-                        return {
-                            ...item,
-                            mute_detect: false
-                        };
-                    }
-                    return item;
-                }));
+                if (conferenceData["Channel-Presence-ID"] === `${locationState.extension}@${locationState.domainName}`) {
+                    setCurrentUser((prevState) => ({
+                        ...prevState,
+                        id: conferenceData["Member-ID"],
+                        mute_detect: false
+                    }));
+                }
             } else if (conferenceData.Action === "deaf-member") {
                 // Update the list with the updated values
                 setConfList(prevList => prevList.map(item => {
@@ -396,15 +379,12 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                     }
                     return item;
                 }));
-                setCurrentUser(prevList => prevList.map(item => {
-                    if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
-                        return {
-                            ...item,
-                            deaf: true,
-                        };
-                    }
-                    return item;
-                }));
+                if (conferenceData["Channel-Presence-ID"] === `${locationState.extension}@${locationState.domainName}`) {
+                    setCurrentUser((prevState) => ({
+                        ...prevState,
+                        id: conferenceData["Member-ID"]
+                    }));
+                }
             } else if (conferenceData.Action === "undeaf-member") {
                 // Update the list with the updated values
                 setConfList(prevList => prevList.map(item => {
@@ -416,15 +396,12 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                     }
                     return item;
                 }));
-                setCurrentUser(prevList => prevList.map(item => {
-                    if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
-                        return {
-                            ...item,
-                            deaf: false,
-                        };
-                    }
-                    return item;
-                }));
+                if (conferenceData["Channel-Presence-ID"] === `${locationState.extension}@${locationState.domainName}`) {
+                    setCurrentUser((prevState) => ({
+                        ...prevState,
+                        id: conferenceData["Member-ID"]
+                    }));
+                }
             } else if (conferenceData.Action === "del-member" || conferenceData.Action === "hup-member") {
                 setNotification(false)
                 setNotification(true)
@@ -452,26 +429,50 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
         const parsedData = {
             action: action,
             room_id: locationState.room_id,
-            member: String(currentUser?.[0].id)
+            member: String(currentUser?.id)
         }
         generalPostFunction(`conference/action`, parsedData).then(res => {
             if (res.status && action === "hup") {
                 navigate(-1)
             }
         })
+        if (action === "deaf") {
+            //    update current user state
+            setCurrentUser((prevState) => ({
+                ...prevState,
+                deaf: true
+            }));
+        } else if (action === "undeaf") {
+            setCurrentUser((prevState) => ({
+                ...prevState,
+                deaf: false
+            }));
+        } else if (action === "tmute") {
+            setCurrentUser((prevState) => ({
+                ...prevState,
+                mute_detect: !(currentUser.mute_detect)
+            }));
+        }
+    }
+
+    window.addEventListener("beforeunload", (event) => {
+        callAction("hup");
+    });
+
+    async function logOut() {
+        const apiData = await generalGetFunction("/logout");
+        localStorage.clear();
+        if (apiData?.data) {
+            localStorage.clear();
+            dispatch({
+                action: "SET_ACCOUNT",
+                account: null,
+            });
+            navigate("/");
+        }
     }
 
     // console.log("Current User", currentUser);
-
-    useEffect(()=>{
-        localStorage.clear();
-        sessionStorage.clear();
-        // Clean cookie as well
-        document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`); });
-        // remove all site data
-        window.localStorage.clear();
-        window.sessionStorage.clear();
-    },[])
     return (
         <div className="profileDropdowns" style={{ top: "55px", right: "-40px" }}>
             <MediaPermissions />
@@ -485,15 +486,73 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                     <ContentLoader /> :
                     dummySession && <>
                         <main
-                            className="mainConte"
+                            className="mainContentApp"
                         >
                             <section>
                                 <div className="container-fluid">
                                     <div className="row">
-
+                                        <div className="col-12 ps-xl-0">
+                                            <div className="newHeader">
+                                                <div className="col-auto" style={{ padding: "0 10px" }}>
+                                                    <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
+                                                        <button class="clearButton text-dark">
+                                                            <i class="fa-solid fa-chevron-left fs-4"></i>
+                                                        </button>{" "}
+                                                        Conference{" "}
+                                                    </h3>
+                                                </div>
+                                                <div className="d-flex justify-content-end align-items-center">
+                                                    <div className="col-9">
+                                                        <input
+                                                            type="search"
+                                                            name="Search"
+                                                            placeholder="Search users, groups or chat"
+                                                            class="formItem fw-normal"
+                                                            style={{ backgroundColor: "var(--searchBg)" }}
+                                                        />
+                                                    </div>
+                                                    <div className="col-auto mx-2">
+                                                        <button className="clearButton2 xl" effect="ripple">
+                                                            <i className="fa-regular fa-bell" />
+                                                        </button>
+                                                    </div>
+                                                    <div className="col-auto">
+                                                        <div class="dropdown">
+                                                            <div
+                                                                className="myProfileWidget"
+                                                                type="button"
+                                                                data-bs-toggle="dropdown"
+                                                                aria-expanded="false"
+                                                            >
+                                                                <div class="profileHolder" id="profileOnlineNav">
+                                                                    <img
+                                                                        src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
+                                                                        alt="profile"
+                                                                    />
+                                                                </div>
+                                                                <div class="profileName">
+                                                                    {account.username}{" "}
+                                                                    <span className="status">Available</span>
+                                                                </div>
+                                                            </div>
+                                                            <ul class="dropdown-menu" onClick={logOut}>
+                                                                <li>
+                                                                    <div
+                                                                        class="dropdown-item"
+                                                                        style={{ cursor: "pointer" }}
+                                                                    >
+                                                                        Logout
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div className="videoCallWrapper">
                                             <div className="row">
-                                                {toggleMessages && <div className="col-lg-4 col-xl-4 col-12 p-3">
+                                                {toggleMessages && <div className="col-lg-3 col-xl-3 col-12 p-3">
                                                     <div className="messageOverlay">
                                                         <div className="contactHeader py-3">
                                                             <div>
@@ -548,16 +607,7 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                                                         </div>
                                                     </div>
                                                 </div>}
-                                                <div className={`"col-lg-${toggleMessages ? "8" : "12"} col-xl-${toggleMessages ? "8" : "12"} col-12"`}>
-                                                    <div className="heading">
-                                                        <h4>
-                                                            Conference <span>14:20</span>
-                                                        </h4>
-                                                        <button className="clearButton">
-                                                            <i class="fa-sharp fa-solid fa-circle-plus"></i> Add
-                                                            Participant
-                                                        </button>
-                                                    </div>
+                                                <div className={`"col-lg-${toggleMessages ? "9" : "12"} col-xl-${toggleMessages ? "9" : "12"} col-12" px-0`}>
                                                     <div className="videoBody">
                                                         {notification &&
                                                             <div className="NotificationBell">
@@ -568,9 +618,18 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                                                             </div>
                                                         }
                                                         <div className="participant active ">
-                                                            <div className="participantWrapper">
+                                                            <div className="heading">
+                                                                <h4>
+                                                                    Conference <span>{hours === 0 ? "" : `${hours}:`}{minutes}:{seconds}</span>
+                                                                </h4>
+                                                                {/* <button className="clearButton">
+                                                            <i class="fa-sharp fa-solid fa-circle-plus"></i> Add
+                                                            Participant
+                                                        </button> */}
+                                                            </div>
+                                                            <div className="participantWrapper pb-2">
                                                                 <div className="videoHolder">
-                                                                    <div className="activeGuyName">{selectedConferenceUser?.name===""?selectedConferenceUser?.name:locationState?.name}</div>
+                                                                    <div className="activeGuyName">{selectedConferenceUser?.name === "" ? selectedConferenceUser?.name : locationState?.name}</div>
                                                                     {videoCallToggle ?
                                                                         (
                                                                             <img alt="" className="videoElement" src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
@@ -579,7 +638,7 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                                                                         (
                                                                             <div className="justify-content-center h-100 d-flex align-items-center text-white fs-1">
                                                                                 <div className="contactViewProfileHolder">
-                                                                                    {(selectedConferenceUser?.name===""?selectedConferenceUser?.name:locationState?.name)}
+                                                                                    {(selectedConferenceUser?.name === "" ? selectedConferenceUser?.name : locationState?.name)}
                                                                                 </div>
                                                                             </div>
                                                                         )}
@@ -592,13 +651,13 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                                                                         }}
                                                                         onClick={() => { callAction(confList.filter((item) => item.isYou)[0]?.deaf ? "undeaf" : "deaf") }}
                                                                     >
-                                                                        {confList.filter((item) => item.isYou)[0]?.deaf ? <i class="fa-sharp fa-solid fa-volume-slash"></i> : <i class="fa-sharp fa-solid fa-volume"></i>}
+                                                                        {currentUser?.deaf ? <i class="fa-sharp fa-solid fa-volume-slash"></i> : <i class="fa-sharp fa-solid fa-volume"></i>}
 
                                                                     </div>
                                                                 </div>
                                                                 <div className="videoControls">
                                                                     <button className="appPanelButtonCallerRect" onClick={() => { callAction("tmute") }}>
-                                                                        {confList.filter((item) => item.isYou)[0]?.mute_detect ? <i class="fa-light fa-microphone-slash"></i> : <i class="fa-light fa-microphone"></i>}
+                                                                        {currentUser?.mute_detect ? <i class="fa-light fa-microphone-slash"></i> : <i class="fa-light fa-microphone"></i>}
                                                                     </button>
                                                                     <button className="appPanelButtonCallerRect">
                                                                         <i class="fa-light fa-video"></i>
@@ -617,11 +676,11 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                                                                     >
                                                                         Leave Call
                                                                     </button>
-                                                                    <button className="appPanelButtonCallerRect">
-                                                                        <i class="fa-light fa-screencast"></i>
+                                                                    <button className="appPanelButtonCallerRect" onClick={() => setToggleMessages(!toggleMessages)}>
+                                                                        <i class="fa-light fa-messages"></i>
                                                                     </button>
-                                                                    <button className="appPanelButtonCallerRect">
-                                                                        <i class="fa-light fa-chalkboard-user"></i>
+                                                                    <button className="appPanelButtonCallerRect" onClick={() => setParticipantList(!participantList)}>
+                                                                        <i class="fa-light fa-users"></i>
                                                                     </button>
                                                                     <button className="appPanelButtonCallerRect">
                                                                         <i class="fa-light fa-hand"></i>
@@ -632,22 +691,98 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                                                             {/* )} */}
                                                         </div>
                                                         <div className="conferenceParticipantsWrapper">
-                                                            {confList.map((item, index) => {
-                                                                return (
-                                                                    <ConferenceUserTab
-                                                                        item={item}
-                                                                        key={index}
-                                                                        index={index}
-                                                                        handleSelectConferenceUser={
-                                                                            handleSelectConferenceUser
-                                                                        }
-                                                                        getInitials={getInitials}
-                                                                    />
-                                                                );
-                                                            })}
+                                                            <div className="py-2 px-3 pe-2">
+                                                                <button onClick={() => setParticipantMiniview(!participantMiniview)} className="clearButton2 xl position-absolute" style={{ left: '-20px', top: '50%', transform: 'translateY(-50%)', zIndex: '9' }}>
+                                                                    <i class={`fa-regular fa-chevron-${participantMiniview ? "right" : "left"}`}></i>
+                                                                </button>
+                                                                {confList.map((item, index) => {
+                                                                    return (
+                                                                        <ConferenceUserTab
+                                                                            item={item}
+                                                                            key={index}
+                                                                            index={index}
+                                                                            handleSelectConferenceUser={
+                                                                                handleSelectConferenceUser
+                                                                            }
+                                                                            getInitials={getInitials}
+                                                                        />
+                                                                    );
+                                                                })}
+                                                            </div>
                                                         </div>
+                                                        {participantList && <div className="participantMemberList">
+                                                            <div className="mb-3">
+                                                                <button className="clearButton2 xl ms-auto" onClick={() => setParticipantList(false)}><i class={`fa-regular fa-xmark`}></i></button>
+                                                            </div>
+                                                            <div>
+                                                                <div style={{ color: 'rgb(194, 194, 194)', fontSize: '14px', fontWeight: '600', marginBottom: '16px' }}>Meeting Participants (3)</div>
+                                                                <button className="panelButton static">
+                                                                    <span className="text"><i class="fa-solid fa-circle-plus"></i> Add Participant</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="col-12 mt-3">
+                                                                <input type="search" name="Search" id="headerSearch" placeholder="Search" style={{ backgroundColor: 'transparent', color: '#f5f5f5' }} />
+                                                            </div>
+                                                            <ul>
+                                                                <li>
+                                                                    <div className="d-flex align-items-center">
+                                                                        <div className="profileHolder">
+                                                                            {/* {getInitials(item.name)} */}
+                                                                            <i class="fa-light fa-user"></i>
+                                                                        </div>
+                                                                        <span className="ms-2">Test Name</span>
+                                                                    </div>
+                                                                    <div className="d-flex">
+                                                                        <button className="clearButton2 me-2" style={{ width: '30px', height: '30px', fontSize: '16px' }}><i class="fa-light fa-microphone-slash"></i></button>
+                                                                        <button className="clearButton2" style={{ width: '30px', height: '30px', fontSize: '16px' }}><i class="fa-light fa-camera-slash"></i></button>
+                                                                    </div>
+                                                                </li>
+                                                                <li>
+                                                                    <div className="d-flex align-items-center">
+                                                                        <div className="profileHolder">
+                                                                            {/* {getInitials(item.name)} */}
+                                                                            <i class="fa-light fa-user"></i>
+                                                                        </div>
+                                                                        <span className="ms-2">Test Name</span>
+                                                                    </div>
+                                                                    <div className="d-flex">
+                                                                        <button className="clearButton2 me-2" style={{ width: '30px', height: '30px', fontSize: '16px' }}><i class="fa-light fa-microphone-slash"></i></button>
+                                                                        <button className="clearButton2" style={{ width: '30px', height: '30px', fontSize: '16px' }}><i class="fa-light fa-camera-slash"></i></button>
+                                                                    </div>
+                                                                </li>
+                                                                <li>
+                                                                    <div className="d-flex align-items-center">
+                                                                        <div className="profileHolder">
+                                                                            {/* {getInitials(item.name)} */}
+                                                                            <i class="fa-light fa-user"></i>
+                                                                        </div>
+                                                                        <span className="ms-2">Test Name</span>
+                                                                    </div>
+                                                                    <div className="d-flex">
+                                                                        <button className="clearButton2 me-2" style={{ width: '30px', height: '30px', fontSize: '16px' }}><i class="fa-light fa-microphone-slash"></i></button>
+                                                                        <button className="clearButton2" style={{ width: '30px', height: '30px', fontSize: '16px' }}><i class="fa-light fa-camera-slash"></i></button>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                            <div className="position-absolute d-flex" style={{ bottom: 20, right: 10 }}>
+                                                                <button className="toggleButton">Mute All</button>
+                                                                <div className="dropdown contactHeader" type="button" data-bs-toggle="dropdown" aria-expanded="true">
+                                                                    <button className="ms-3 toggleButton"><i class="fa-solid fa-ellipsis"></i></button>
+                                                                    <ul className="dropdown-menu" data-popper-placement="top-end">
+                                                                        <li><a className="dropdown-item">Stop everyone's video</a></li>
+                                                                        <li className="d-block">
+                                                                            <p className="my-0" style={{ padding: '5px 10px', fontSize: '13px' }}>Allow attendees to: </p>
+                                                                            <ul className="my-0">
+                                                                                <li className="dropdown-item d-block"><i className="fa-solid fa-check me-2"></i>Unmute themselves</li>
+                                                                                <li className="dropdown-item d-block"><i className="fa-solid fa-check me-2"></i>Start their video</li>
+                                                                            </ul>
+                                                                        </li>
+                                                                        <li><a className="dropdown-item text-danger">Kick User</a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>}
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -667,8 +802,7 @@ const ConferenceUserTab = ({
     handleSelectConferenceUser,
     getInitials,
 }) => {
-    const [videoCallToggle, setVideoCallToggle] = useState(false);
-    const [userMuted, setUserMuted] = useState(false);
+    const [videoCallToggle] = useState(false);
 
     // console.log("itemaaaa", item);
 
@@ -686,14 +820,14 @@ const ConferenceUserTab = ({
                 className="participant"
                 data-mic={!item.mute_detect}
                 //   data-pin="true"
-                data-pin={item.deaf}
+                data-speaker={!(item.deaf)}
                 data-speaking={item.talking}
                 style={{ cursor: "pointer" }}
                 onClick={() => handleSelectConferenceUser(item)}
             >
                 {videoCallToggle ? (
                     <div>
-                        <img src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
+                        <img alt="" src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
                     </div>
                 ) : (
                     <div className="participantWrapper">

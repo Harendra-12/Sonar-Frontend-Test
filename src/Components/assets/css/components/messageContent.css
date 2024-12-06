@@ -431,7 +431,7 @@
 }
 
 .videoCallWrapper .messageOverlay .messageList {
-    height: calc(100vh - 275px);
+    height: calc(100vh - 283px);
 }
 
 .videoCallWrapper .videoBody .activeGuyName {
@@ -462,7 +462,7 @@
 
 .videoCallWrapper .videoBody .conferenceParticipantsWrapper.hidden {
     /* transform: translateX(125px); */
-    max-width: 10px;
+    max-width: 8px;
 }
 
 .videoCallWrapper .videoBody .conferenceParticipantsWrapper:hover {
@@ -553,6 +553,7 @@
     border: none;
     background: transparent;
     margin-bottom: 0;
+    padding: 10px;
 }
 
 .videoCallWrapper .videoBody .participant.active .participantWrapper,
@@ -585,8 +586,27 @@
     -webkit-font-smoothing: antialiased;
 }
 
-.videoCallWrapper .videoBody .participant[data-pin="true"]::before {
-    content: '\f08d';
+.videoCallWrapper .videoBody .participant[data-speaker="true"]::before {
+    content: '\f6a8';
+    font-family: 'FontAwesome';
+    background-color: #01c78e;
+    color: #fff;
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    bottom: -4px;
+    left: -10px;
+    z-index: 1;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    -webkit-font-smoothing: antialiased;
+}
+
+.videoCallWrapper .videoBody .participant[data-speaker="false"]::before {
+    content: '\f2e2';
     font-family: 'FontAwesome';
     background-color: #01c78e;
     color: #fff;
@@ -623,10 +643,11 @@
     display: flex;
     justify-content: center;
     padding: 10px 0 0;
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    /* position: absolute; */
+    /* bottom: 0; */
+    /* left: 50%; */
+    /* transform: translateX(-50%); */
+    width: 100%;
 }
 
 .contactHeader .dropdown-menu {
@@ -654,7 +675,7 @@
 
 .videoCallWrapper .videoBody .videoHolder {
     position: relative;
-    height: calc(100% - 95px);
+    height: calc(100% - 105px);
     border-radius: 15px;
     overflow: hidden;
 }
@@ -738,4 +759,29 @@
         height: auto;
         max-width: 170px;
     }
+}
+
+.conferenceJoinVideo {
+    width: 100%;
+    height: 400px;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    background: radial-gradient(circle, rgba(43, 43, 43, 1) 0%, rgba(0, 0, 0, 1) 100%);
+}
+
+.conferenceJoinVideo video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+}
+
+.conferenceJoinVideo .buttonGroup {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    position: absolute;
+    bottom: 10px;
+    left: 0;
 }

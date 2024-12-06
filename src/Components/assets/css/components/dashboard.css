@@ -437,7 +437,7 @@
 }
 
 .chartWrapper .wrapper {
-    border: 1px solid #c9c9c970;
+    /* border: 1px solid #c9c9c970; */
     border-radius: 10px;
     background-color: var(--ele-color);
     padding: 15px;

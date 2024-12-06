@@ -6,7 +6,7 @@ import { styled } from '@mui/material';
 // Register necessary components
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement);
 
-const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, colors, chartType,label1,label2 }) => {
+const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, colors, chartType, label1, label2 }) => {
 
   // Define the data for the chart
   const data = {
@@ -17,6 +17,7 @@ const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, color
         data: percentage,
         backgroundColor: colors,
         hoverBackgroundColor: colors,
+        borderColor: colors,
       },
     ],
   };
@@ -52,6 +53,18 @@ const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, color
         enabled: true,
       },
     },
+    scales: {
+      x: {
+        grid: {
+          color: 'rgba(128, 128, 128, 0.2)',
+        }
+      },
+      y: {
+        grid: {
+          color: 'rgba(128, 128, 128, 0.2)',
+        }
+      }
+    }
   };
 
   return (
