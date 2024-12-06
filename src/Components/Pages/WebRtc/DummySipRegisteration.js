@@ -112,7 +112,7 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                 navigate(-1)
             } else if (connectStatus === "CONNECTED") {
                 async function startConference() {
-                    const response = await generalPostFunction("/conference/start", { id: locationState.extension_id, name: locationState.name })
+                    const response = await generalPostFunction("/conference/start", { id: locationState.extension_id, name: locationState.name, is_guest: 1 })
 
                     if (response.status) {
                         setLoading(false)
@@ -229,18 +229,18 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                     isYou: conferenceData["Caller-Caller-ID-Name"] === locationState.name ? true : false,
                     deaf: false
                 }]);
-                
+
                 // Here i want to change the id on current user
-                if(conferenceData["Channel-Presence-ID"]=== `${locationState.extension}@${locationState.domainName}`){
+                if (conferenceData["Channel-Presence-ID"] === `${locationState.extension}@${locationState.domainName}`) {
                     setCurrentUser((prevState) => ({
-                        ...prevState, 
-                        id: conferenceData["Member-ID"] 
+                        ...prevState,
+                        id: conferenceData["Member-ID"]
                     }));
                 }
-               
-                
+
+
             } else if (conferenceData.Action === "stop-talking") {
-                if(!confList.some(item => item.caller_id_number === conferenceData["Channel-Presence-ID"])){
+                if (!confList.some(item => item.caller_id_number === conferenceData["Channel-Presence-ID"])) {
                     setConfList(prevList => [...prevList, {
                         id: conferenceData["Member-ID"],
                         name: conferenceData["Caller-Caller-ID-Name"],
@@ -253,11 +253,11 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                         deaf: false
                     }]);
                 }
-               
-                if(conferenceData["Channel-Presence-ID"]=== `${locationState.extension}@${locationState.domainName}`){
+
+                if (conferenceData["Channel-Presence-ID"] === `${locationState.extension}@${locationState.domainName}`) {
                     setCurrentUser((prevState) => ({
-                        ...prevState, 
-                        id: conferenceData["Member-ID"] 
+                        ...prevState,
+                        id: conferenceData["Member-ID"]
                     }));
                 }
                 // Update the list with the updated values
@@ -270,9 +270,9 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                     }
                     return item;
                 }));
-               
+
             } else if (conferenceData.Action === "start-talking") {
-                if(!confList.some(item => item.caller_id_number === conferenceData["Channel-Presence-ID"])){
+                if (!confList.some(item => item.caller_id_number === conferenceData["Channel-Presence-ID"])) {
                     setConfList(prevList => [...prevList, {
                         id: conferenceData["Member-ID"],
                         name: conferenceData["Caller-Caller-ID-Name"],
@@ -285,11 +285,11 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                         deaf: false
                     }]);
                 }
-               
-                if(conferenceData["Channel-Presence-ID"]=== `${locationState.extension}@${locationState.domainName}`){
+
+                if (conferenceData["Channel-Presence-ID"] === `${locationState.extension}@${locationState.domainName}`) {
                     setCurrentUser((prevState) => ({
-                        ...prevState, 
-                        id: conferenceData["Member-ID"] 
+                        ...prevState,
+                        id: conferenceData["Member-ID"]
                     }));
                 }
                 // Update the list with the updated values
@@ -302,7 +302,7 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                     }
                     return item;
                 }));
-               
+
             } else if (conferenceData.Action === "mute-member") {
                 // Update the list with the updated values
                 setConfList(prevList => prevList.map(item => {
@@ -315,10 +315,10 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                     }
                     return item;
                 }));
-                if(conferenceData["Channel-Presence-ID"]=== `${locationState.extension}@${locationState.domainName}`){
+                if (conferenceData["Channel-Presence-ID"] === `${locationState.extension}@${locationState.domainName}`) {
                     setCurrentUser((prevState) => ({
-                        ...prevState, 
-                        id: conferenceData["Member-ID"] ,
+                        ...prevState,
+                        id: conferenceData["Member-ID"],
                         mute_detect: true
                     }));
                 }
@@ -333,10 +333,10 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                     }
                     return item;
                 }));
-                if(conferenceData["Channel-Presence-ID"]=== `${locationState.extension}@${locationState.domainName}`){
+                if (conferenceData["Channel-Presence-ID"] === `${locationState.extension}@${locationState.domainName}`) {
                     setCurrentUser((prevState) => ({
-                        ...prevState, 
-                        id: conferenceData["Member-ID"] ,
+                        ...prevState,
+                        id: conferenceData["Member-ID"],
                         mute_detect: false
                     }));
                 }
@@ -351,10 +351,10 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                     }
                     return item;
                 }));
-                if(conferenceData["Channel-Presence-ID"]=== `${locationState.extension}@${locationState.domainName}`){
+                if (conferenceData["Channel-Presence-ID"] === `${locationState.extension}@${locationState.domainName}`) {
                     setCurrentUser((prevState) => ({
-                        ...prevState, 
-                        id: conferenceData["Member-ID"] 
+                        ...prevState,
+                        id: conferenceData["Member-ID"]
                     }));
                 }
             } else if (conferenceData.Action === "undeaf-member") {
@@ -368,10 +368,10 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                     }
                     return item;
                 }));
-                if(conferenceData["Channel-Presence-ID"]=== `${locationState.extension}@${locationState.domainName}`){
+                if (conferenceData["Channel-Presence-ID"] === `${locationState.extension}@${locationState.domainName}`) {
                     setCurrentUser((prevState) => ({
-                        ...prevState, 
-                        id: conferenceData["Member-ID"] 
+                        ...prevState,
+                        id: conferenceData["Member-ID"]
                     }));
                 }
             } else if (conferenceData.Action === "del-member" || conferenceData.Action === "hup-member") {
@@ -408,35 +408,27 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                 navigate(-1)
             }
         })
-        if(action === "deaf"){
-        //    update current user state
+        if (action === "deaf") {
+            //    update current user state
             setCurrentUser((prevState) => ({
-                ...prevState, 
+                ...prevState,
                 deaf: true
             }));
-        }else if(action === "undeaf"){
+        } else if (action === "undeaf") {
             setCurrentUser((prevState) => ({
-                ...prevState, 
+                ...prevState,
                 deaf: false
             }));
-        }else if(action === "tmute"){
+        } else if (action === "tmute") {
             setCurrentUser((prevState) => ({
-                ...prevState, 
-                mute_detect : !(currentUser.mute_detect)
+                ...prevState,
+                mute_detect: !(currentUser.mute_detect)
             }));
         }
     }
 
-    // window.addEventListener("beforeunload", (event) => {
-    //     callAction("hup");
-    // });
     window.addEventListener("beforeunload", (event) => {
-        // Custom logic before showing the confirmation
         callAction("hup");
-    
-        // Set a generic confirmation dialog
-        event.preventDefault();
-        event.returnValue = ""; // Required for most browsers to show the dialog
     });
     
     // console.log("Current User", currentUser);
@@ -538,7 +530,7 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                                                         <div className="participant active ">
                                                             <div className="participantWrapper">
                                                                 <div className="videoHolder">
-                                                                    <div className="activeGuyName">{selectedConferenceUser?.name===""?selectedConferenceUser?.name:locationState?.name}</div>
+                                                                    <div className="activeGuyName">{selectedConferenceUser?.name === "" ? selectedConferenceUser?.name : locationState?.name}</div>
                                                                     {videoCallToggle ?
                                                                         (
                                                                             <img alt="" className="videoElement" src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
@@ -547,7 +539,7 @@ export const DummySipRegisteration = ({ webSocketServer, extension, password }) 
                                                                         (
                                                                             <div className="justify-content-center h-100 d-flex align-items-center text-white fs-1">
                                                                                 <div className="contactViewProfileHolder">
-                                                                                    {(selectedConferenceUser?.name===""?selectedConferenceUser?.name:locationState?.name)}
+                                                                                    {(selectedConferenceUser?.name === "" ? selectedConferenceUser?.name : locationState?.name)}
                                                                                 </div>
                                                                             </div>
                                                                         )}

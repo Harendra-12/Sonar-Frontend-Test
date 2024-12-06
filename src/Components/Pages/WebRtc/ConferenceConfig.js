@@ -10,7 +10,7 @@ import { ConferenceCall } from "./ConferenceCall";
 import ContentLoader from "../../Loader/ContentLoader";
 import { useSelector } from "react-redux";
 
-const ConferenceConfig = () => {
+const ConferenceConfig = ({setactivePage}) => {
   const [conferenceName, setConferenceName] = useState("");
   const [conferenceType, setConferenceType] = useState("public");
   const [loading, setLoading] = useState(false);
@@ -125,6 +125,7 @@ const ConferenceConfig = () => {
           name={account.username}
           extension_id={`${account?.extension?.extension}@${account.domain.domain_name}`}
           room_id={conferenceId}
+          setactivePage={setactivePage}
         />
       ) : (
         <main

@@ -202,7 +202,7 @@ const WebrtcWrapper = () => {
             isVideoOn={isVideoOn}
           />
         )}
-        {activePage === "conference" && <ConferenceConfig />}
+        {activePage === "conference" && <ConferenceConfig setactivePage={setactivePage} />}
         {/* {activePage == "videocall" && <VideoCall />} */}
         {activePage == "email" && <Email />}
         {activePage == "mail-setting" && <MailSettings />}
