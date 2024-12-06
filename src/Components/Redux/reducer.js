@@ -59,6 +59,7 @@ var conference = [];
 var dummySession = "";
 var rolesRefresh = 0;
 var permissionRefresh = 0;
+var memberId = null;
 
 const initialState = {
   account,
@@ -121,6 +122,7 @@ const initialState = {
   dummySession,
   rolesRefresh,
   permissionRefresh,
+  memberId,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -267,6 +269,11 @@ const counterReducer = (state = initialState, action) => {
       return {
         ...state,
         dummySession: action.dummySession,
+      };
+      case "SET_MEMBERID":
+      return {
+        ...state,
+        memberId: action.memberId,
       };
     default:
       return state;

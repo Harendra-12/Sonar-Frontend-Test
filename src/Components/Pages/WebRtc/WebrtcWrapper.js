@@ -14,7 +14,7 @@ import { SipRegister } from "./SipRegister";
 import SideNavbarApp from "./SideNavbarApp";
 import Messages from "./Messages";
 import VideoCall from "./VideoCall";
-import ConferenceCall from "./ConferenceCall";
+import {ConferenceCall} from "./ConferenceCall";
 import ConferenceTest from "./ConferenceTest";
 import { Rnd } from "react-rnd";
 import ConferenceConfig from "./ConferenceConfig";
@@ -47,6 +47,11 @@ const WebrtcWrapper = () => {
   const [closeVideoCall, setCloseVideoCall] = useState(false);
   const [allContact, setAllContact] = useState([]);
   const [extensionFromCdrMessage, setExtensionFromCdrMessage] = useState();
+  const [conferenceToggle, setConferenceToggle] = useState(false);
+  const [conferenceId, setConferenceId] = useState("");
+  const memberId = useSelector((state) => state.memberId);
+  console.log("Activepage", activePage,activePage==="conference");
+  
   const useWebSocketErrorHandling = (options) => {
     const retryCountRef = useRef(0);
     const connectWebSocket = (retryCount = 0) => {
@@ -178,6 +183,9 @@ const WebrtcWrapper = () => {
     };
     getContact();
   }, [addContactRefresh]);
+
+  console.log("conferenceccc",conferenceToggle || memberId,memberId);
+  
   return (
     <>
       <SIPProvider options={options}>
@@ -231,7 +239,7 @@ const WebrtcWrapper = () => {
             setExtensionFromCdrMessage={setExtensionFromCdrMessage}
           />
         )}
-        {activePage === "conference" && <ConferenceConfig setactivePage={setactivePage} />}
+        {activePage === "conference" && <ConferenceConfig setactivePage={setactivePage} setConferenceId={setConferenceId} setConferenceToggle={setConferenceToggle} conferenceId={conferenceId} conferenceToggle={conferenceToggle} />}
         {/* {activePage == "videocall" && <VideoCall />} */}
         {activePage == "email" && <Email />}
         {activePage == "mail-setting" && <MailSettings />}
@@ -427,6 +435,17 @@ const WebrtcWrapper = () => {
         ) : (
           ""
         )}
+
+        {(conferenceToggle || memberId)  ?
+        <ConferenceCall
+          name={account.username}
+          extension_id={`${account?.extension?.extension}@${account.domain.domain_name}`}
+          room_id={conferenceId}
+          setactivePage={setactivePage}
+          activePage={activePage}
+          setConferenceToggle={setConferenceToggle}
+        />
+        :""}
       </SIPProvider>
     </>
   );

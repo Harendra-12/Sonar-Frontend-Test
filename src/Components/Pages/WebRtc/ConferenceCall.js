@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import ContentLoader from "../../Loader/ContentLoader";
 
-export const ConferenceCall = ({ room_id, extension_id, name, setactivePage }) => {
+export const ConferenceCall = ({ room_id, extension_id, name, setactivePage,activePage,setConferenceToggle }) => {
   const navigate = useNavigate();
   const { sessions: sipSessions, connectAndRegister } = useSIPProvider();
   const { connectStatus, registerStatus } = useSIPProvider();
@@ -30,6 +30,17 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage }) =
   const [minutes, setMinutes] = useState(0);
   const [hours, setHours] = useState(0);
   const account = useSelector((state) => state.account);
+  const sessions = useSelector((state) => state.sessions);
+  const memeber_id = useSelector((state) => state.memberId);
+  const [numberOfTimeUserVisit, setNumberOfTimeUserVisit] = useState(0)
+
+  useEffect(() => {
+    if(activePage === "conference"){
+      setNumberOfTimeUserVisit(numberOfTimeUserVisit + 1)
+    }
+   
+  },[activePage])
+
   const extension = account?.extension?.extension || "";
   const dispatch = useDispatch();
 
@@ -113,7 +124,9 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage }) =
           }
 
         }
-        startConference()
+        // if(numberOfTimeUserVisit === 0 && activePage === "conference"){
+          startConference()
+        // }
       } else {
         toast.error("Not connected with server please try again later.");
         navigate(-1)
@@ -328,6 +341,12 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage }) =
     }
     generalPostFunction(`conference/action`, parsedData).then(res => {
       if (res.status && action === "hup") {
+        localStorage.removeItem("memberId")
+        dispatch({
+          type: "SET_MEMBERID",
+          memberId: null
+        })
+        setConferenceToggle(false);
         setactivePage("call")
       }
     })
@@ -350,15 +369,6 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage }) =
     }
   }
 
-  window.addEventListener("beforeunload", (event) => {
-    event.preventDefault();
-    event.returnValue = ""; // Trigger the confirmation dialog
-
-    // Send your API call reliably
-    const data = JSON.stringify({ action: "hup" });
-    navigator.sendBeacon("/api/callAction", data);
-  });
-
   async function logOut() {
     const apiData = await generalGetFunction("/logout");
     localStorage.clear();
@@ -372,8 +382,37 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage }) =
     }
   }
 
+  // Store memeber ID in local storage so that we can access it later
+  useEffect(() => {
+    if(currentUser.id!=="" && currentUser.id!==null && currentUser.id!==undefined){
+      localStorage.setItem("memberId", currentUser?.id);
+      dispatch({
+        type: "SET_MEMBERID",
+        memberId: currentUser?.id
+      })
+    }
+   
+  },[currentUser.id])
+
+  // Check if there is any previous memeber is present if yes then first hangup it
+  useEffect(() => {
+    if (memeber_id && room_id!=="") {
+      const parsedData = {
+        action: "hup",
+        room_id: room_id,
+        member: String(memeber_id)
+      }
+      generalPostFunction(`conference/action`, parsedData).then(res => {
+        localStorage.removeItem("memberId")
+        dispatch({
+          type: "SET_MEMBERID",
+          memberId: null
+        })
+      })
+    }
+  },[])
   return (
-    <div className="profileDropdowns" style={{ top: "55px", right: "-40px" }}>
+    <div className="profileDropdowns" style={{ top: "55px", right: "-40px",display:activePage!=="conference"?"none":"" }}>
       <MediaPermissions />
       {incomingSessionsArray.map((item, index) => {
         return (
@@ -385,7 +424,17 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage }) =
           <ContentLoader /> :
           dummySession && <>
             <main
-              className="mainContentApp"
+              className="mainContentApp position-absolute"
+              style={{
+                top: "0",
+                left : "0px",
+                // width: "calc(100% - 210px)",
+                height: "100%",
+                marginRight:
+                  sessions.length > 0 && Object.keys(sessions).length > 0
+                    ? "250px"
+                    : "0",
+              }}
             >
               <section>
                 <div className="container-fluid">
