@@ -63,7 +63,6 @@ function Navbar() {
                       to="/temporary-dashboard"
                       onClick={backToTop}
                       type="button"
-
                     >
                       <div className="iconHolder">
                         <i class="fa-regular fa-user"></i>
@@ -76,7 +75,10 @@ function Navbar() {
                 <>
                   <li className="dashboard d-flex align-items-center">
                     <div className="d-xl-none d-block">
-                      <button className="clearButton d-flex align-items-center" onClick={toggleSideNav}>
+                      <button
+                        className="clearButton d-flex align-items-center"
+                        onClick={toggleSideNav}
+                      >
                         <i className="fa-light fa-bars fs-5 text-white" />
                       </button>
                     </div>
@@ -90,12 +92,7 @@ function Navbar() {
                     </Link>
                   </li>
                   <li className="dashboard ">
-                    <NavLink
-                      to="/dashboard"
-                      onClick={backToTop}
-                      type="button"
-
-                    >
+                    <NavLink to="/dashboard" onClick={backToTop} type="button">
                       <div className="iconHolder">
                         <i class="fa-regular fa-house"></i>
                       </div>
@@ -107,9 +104,12 @@ function Navbar() {
                     <button
                       data-bs-toggle="collapse"
                       data-bs-target="#collapse8"
-                      aria-expanded={isChildActive(["/my-profile", "/change-password"]) ? "true" : "false"}
+                      aria-expanded={
+                        isChildActive(["/my-profile", "/change-password"])
+                          ? "true"
+                          : "false"
+                      }
                       aria-controls="collapse5"
-
                     >
                       <div className="iconHolder">
                         <i class="fa-regular fa-user"></i>
@@ -118,13 +118,17 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse8"
-                      className={`accordion-collapse collapse ${isChildActive(["/my-profile", "/change-password"]) ? "show" : ""}`}
+                      className={`accordion-collapse collapse ${
+                        isChildActive(["/my-profile", "/change-password"])
+                          ? "show"
+                          : ""
+                      }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
                           {account?.permissions?.includes(8) && (
-                            <li className="tabItem" >
+                            <li className="tabItem">
                               <NavLink
                                 to="/my-profile"
                                 onClick={backToTop}
@@ -151,7 +155,7 @@ function Navbar() {
                             </NavLink>
                           </li> */}
 
-                          <li className="tabItem" >
+                          <li className="tabItem">
                             <NavLink
                               to="/change-password"
                               onClick={backToTop}
@@ -172,9 +176,17 @@ function Navbar() {
                     <button
                       data-bs-toggle="collapse"
                       data-bs-target="#collapse5"
-                      aria-expanded={isChildActive(["/master", "/roles", "/mail-settings", "/admin/package"]) ? "true" : "false"}
+                      aria-expanded={
+                        isChildActive([
+                          "/master",
+                          "/roles",
+                          "/mail-settings",
+                          "/admin/package",
+                        ])
+                          ? "true"
+                          : "false"
+                      }
                       aria-controls="collapse5"
-
                     >
                       <div className="iconHolder">
                         <i class="fa-regular fa-sliders"></i>
@@ -183,13 +195,22 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse5"
-                      className={`accordion-collapse collapse ${isChildActive(["/master", "/roles", "/mail-settings", "/admin/package"]) ? "show" : ""}`}
+                      className={`accordion-collapse collapse ${
+                        isChildActive([
+                          "/master",
+                          "/roles",
+                          "/mail-settings",
+                          "/admin/package",
+                        ])
+                          ? "show"
+                          : ""
+                      }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
                           {userType === "SupreAdmin" ? (
-                            <li className="tabItem" >
+                            <li className="tabItem">
                               <NavLink
                                 to="/master"
                                 onClick={backToTop}
@@ -206,8 +227,8 @@ function Navbar() {
                           )}
 
                           {account?.permissions?.includes(350) ||
-                            account?.permissions?.includes(352) ? (
-                            <li className="tabItem" >
+                          account?.permissions?.includes(352) ? (
+                            <li className="tabItem">
                               <NavLink
                                 to="/roles"
                                 onClick={backToTop}
@@ -238,14 +259,20 @@ function Navbar() {
                             </NavLink>
                           </li> */}
                           {account?.permissions?.includes(248) ||
-                            account?.permissions?.includes(250) ? (
+                          account?.permissions?.includes(250) ? (
                             <li className="tabItem ">
                               <NavLink
                                 to="/mail-settings"
                                 onClick={backToTop}
                                 type="button"
                                 className={({ isActive }) =>
-                                  isActive || ["/mail-settings-add", "/mail-settings-edit"].some((path) => window.location.pathname.includes(path))
+                                  isActive ||
+                                  [
+                                    "/mail-settings-add",
+                                    "/mail-settings-edit",
+                                  ].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -259,7 +286,7 @@ function Navbar() {
                           ) : null}
 
                           {userType === "SupreAdmin" ? (
-                            <li className="tabItem" >
+                            <li className="tabItem">
                               <NavLink
                                 to="/admin/package"
                                 onClick={backToTop}
@@ -284,9 +311,19 @@ function Navbar() {
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#collapseOne"
-                      aria-expanded={isChildActive(["/phone-dashboard", "/extensions", "/voice-music", "/extensions-edit", "/extensions-add", "/device-provisioning-add"]) ? "true" : "false"}
+                      aria-expanded={
+                        isChildActive([
+                          "/phone-dashboard",
+                          "/extensions",
+                          "/voice-music",
+                          "/extensions-edit",
+                          "/extensions-add",
+                          "/device-provisioning-add",
+                        ])
+                          ? "true"
+                          : "false"
+                      }
                       aria-controls="collapseOne"
-
                     >
                       <div className="iconHolder">
                         <i class="fa-regular fa-phone-intercom"></i>
@@ -295,12 +332,23 @@ function Navbar() {
                     </button>
                     <div
                       id="collapseOne"
-                      className={`accordion-collapse collapse ${isChildActive(["/phone-dashboard", "/extensions", "/voice-music", "/extensions-edit", "/extensions-add", "/device-provisioning-add"]) ? "show" : ""}`}
+                      className={`accordion-collapse collapse ${
+                        isChildActive([
+                          "/phone-dashboard",
+                          "/extensions",
+                          "/voice-music",
+                          "/extensions-edit",
+                          "/extensions-add",
+                          "/device-provisioning-add",
+                        ])
+                          ? "show"
+                          : ""
+                      }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
-                          <li className="tabItem " >
+                          <li className="tabItem ">
                             <NavLink to="/phone-dashboard">
                               {/* <div className="iconHolder">
                                 <i className="fa-regular fa-regular fa-list-dropdown"></i>
@@ -309,13 +357,20 @@ function Navbar() {
                             </NavLink>
                           </li>
                           {account?.permissions?.includes(176) ||
-                            account?.permissions?.includes(178) ? (
-                            <li className="tabItem " >
-                              <NavLink to="/extensions" className={({ isActive }) =>
-                                isActive || ["/extensions-add", "/extensions-edit"].some((path) => window.location.pathname.includes(path))
-                                  ? "nav-link active"
-                                  : "nav-link"
-                              }>
+                          account?.permissions?.includes(178) ? (
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/extensions"
+                                className={({ isActive }) =>
+                                  isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
                                 {/* <div className="iconHolder">
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
@@ -324,7 +379,7 @@ function Navbar() {
                             </li>
                           ) : null}
 
-                          <li className="tabItem " >
+                          <li className="tabItem ">
                             <NavLink to="/voice-music">
                               {/* <div className="iconHolder">
                                 <i class="fa-regular fa-user-music"></i>
@@ -421,9 +476,10 @@ function Navbar() {
                       <button
                         data-bs-toggle="collapse"
                         data-bs-target="#collapse4"
-                        aria-expanded={isChildActive(["/cdr-report"]) ? "true" : "false"}
+                        aria-expanded={
+                          isChildActive(["/cdr-report"]) ? "true" : "false"
+                        }
                         aria-controls="collapse4"
-
                       >
                         <div className="iconHolder">
                           <i class="fa-regular fa-chart-line-up"></i>
@@ -432,7 +488,9 @@ function Navbar() {
                       </button>
                       <div
                         id="collapse4"
-                        className={`accordion-collapse collapse ${isChildActive(["/cdr-report"]) ? "show" : ""}`}
+                        className={`accordion-collapse collapse ${
+                          isChildActive(["/cdr-report"]) ? "show" : ""
+                        }`}
                         data-bs-parent="#sidenNav"
                       >
                         <div className="menuWrapper">
@@ -450,7 +508,7 @@ function Navbar() {
                             </NavLink>
                           </li> */}
                             {account?.permissions?.includes(86) ? (
-                              <li className="tabItem" >
+                              <li className="tabItem">
                                 <NavLink
                                   to="/cdr-report"
                                   onClick={backToTop}
@@ -473,9 +531,20 @@ function Navbar() {
                     <button
                       data-bs-toggle="collapse"
                       data-bs-target="#collapse10"
-                      aria-expanded={isChildActive(["/get-did", "/did-listing", "/port-number", "/did-config", "/did-add", "/port-number-add", "/port-number-edit"]) ? "true" : "false"}
+                      aria-expanded={
+                        isChildActive([
+                          "/get-did",
+                          "/did-listing",
+                          "/port-number",
+                          "/did-config",
+                          "/did-add",
+                          "/port-number-add",
+                          "/port-number-edit",
+                        ])
+                          ? "true"
+                          : "false"
+                      }
                       aria-controls="collapse10"
-
                     >
                       <div className="iconHolder">
                         <i class="fa-regular fa-hashtag"></i>
@@ -484,12 +553,24 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse10"
-                      className={`accordion-collapse collapse ${isChildActive(["/get-did", "/did-listing", "/port-number", "/did-config", "/did-add", "/port-number-add", "/port-number-edit"]) ? "show" : ""}`}
+                      className={`accordion-collapse collapse ${
+                        isChildActive([
+                          "/get-did",
+                          "/did-listing",
+                          "/port-number",
+                          "/did-config",
+                          "/did-add",
+                          "/port-number-add",
+                          "/port-number-edit",
+                        ])
+                          ? "show"
+                          : ""
+                      }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
-                          <li className="tabItem" >
+                          <li className="tabItem">
                             <NavLink
                               to="/get-did"
                               onClick={backToTop}
@@ -501,12 +582,15 @@ function Navbar() {
                               <div className="itemTitle">Get DID</div>
                             </NavLink>
                           </li>
-                          <li className="tabItem" >
+                          <li className="tabItem">
                             <NavLink
                               to="/did-listing"
                               onClick={backToTop}
                               className={({ isActive }) =>
-                                isActive || ["/did-add", "/did-config"].some((path) => window.location.pathname.includes(path))
+                                isActive ||
+                                ["/did-add", "/did-config"].some((path) =>
+                                  window.location.pathname.includes(path)
+                                )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -518,13 +602,19 @@ function Navbar() {
                             </NavLink>
                           </li>
                           {account?.permissions?.includes(308) ||
-                            account?.permissions?.includes(310) ? (
-                            <li className="tabItem" >
+                          account?.permissions?.includes(310) ? (
+                            <li className="tabItem">
                               <NavLink
                                 to="/port-number"
                                 onClick={backToTop}
                                 className={({ isActive }) =>
-                                  isActive || ["/port-number-add", "/port-number-edit"].some((path) => window.location.pathname.includes(path))
+                                  isActive ||
+                                  [
+                                    "/port-number-add",
+                                    "/port-number-edit",
+                                  ].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -545,9 +635,16 @@ function Navbar() {
                     <button
                       data-bs-toggle="collapse"
                       data-bs-target="#collapse9"
-                      aria-expanded={isChildActive(["/card-details", "/card-transaction-list", "/wallet-transaction-list"]) ? "true" : "false"}
+                      aria-expanded={
+                        isChildActive([
+                          "/card-details",
+                          "/card-transaction-list",
+                          "/wallet-transaction-list",
+                        ])
+                          ? "true"
+                          : "false"
+                      }
                       aria-controls="collapse9"
-
                     >
                       <div className="iconHolder">
                         <i class="fa-regular fa-file-invoice-dollar"></i>
@@ -556,14 +653,22 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse9"
-                      className={`accordion-collapse collapse ${isChildActive(["/card-details", "/card-transaction-list", "/wallet-transaction-list"]) ? "show" : ""}`}
+                      className={`accordion-collapse collapse ${
+                        isChildActive([
+                          "/card-details",
+                          "/card-transaction-list",
+                          "/wallet-transaction-list",
+                        ])
+                          ? "show"
+                          : ""
+                      }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
                           {account?.permissions?.includes(470) ||
-                            account?.permissions?.includes(470) ? (
-                            <li className="tabItem" >
+                          account?.permissions?.includes(470) ? (
+                            <li className="tabItem">
                               <NavLink
                                 to="/card-details"
                                 onClick={backToTop}
@@ -602,8 +707,8 @@ function Navbar() {
                             </NavLink>
                           </li> */}
                           {account?.permissions?.includes(80) ||
-                            account?.permissions?.includes(82) ? (
-                            <li className="tabItem" >
+                          account?.permissions?.includes(82) ? (
+                            <li className="tabItem">
                               <NavLink
                                 to="/card-transaction-list"
                                 onClick={backToTop}
@@ -620,8 +725,8 @@ function Navbar() {
                           ) : null}
 
                           {account?.permissions?.includes(470) ||
-                            account?.permissions?.includes(472) ? (
-                            <li className="tabItem" >
+                          account?.permissions?.includes(472) ? (
+                            <li className="tabItem">
                               <NavLink
                                 to="/wallet-transaction-list"
                                 onClick={backToTop}
@@ -641,14 +746,17 @@ function Navbar() {
                     </div>
                   </li>
                   {account?.permissions?.includes(344) ||
-                    account?.permissions?.includes(346) ? (
+                  account?.permissions?.includes(346) ? (
                     <li className="dashboard ">
                       <NavLink
                         to="/ring-groups"
                         onClick={backToTop}
                         type="button"
                         className={({ isActive }) =>
-                          isActive || ["/ring-groups-add", "/ring-groups-edit"].some((path) => window.location.pathname.includes(path))
+                          isActive ||
+                          ["/ring-groups-add", "/ring-groups-edit"].some(
+                            (path) => window.location.pathname.includes(path)
+                          )
                             ? "nav-link active"
                             : "nav-link"
                         }
@@ -661,14 +769,17 @@ function Navbar() {
                     </li>
                   ) : null}
                   {account?.permissions?.includes(440) ||
-                    account?.permissions?.includes(442) ? (
+                  account?.permissions?.includes(442) ? (
                     <li className="dashboard ">
                       <NavLink
                         to="/users"
                         onClick={backToTop}
                         type="button"
                         className={({ isActive }) =>
-                          isActive || ["/users-add", "/users-edit"].some((path) => window.location.pathname.includes(path))
+                          isActive ||
+                          ["/users-add", "/users-edit"].some((path) =>
+                            window.location.pathname.includes(path)
+                          )
                             ? "nav-link active"
                             : "nav-link"
                         }
@@ -682,19 +793,25 @@ function Navbar() {
                   ) : null}
 
                   {account?.permissions?.includes(62) ||
-                    account?.permissions?.includes(64) ? (
+                  account?.permissions?.includes(64) ? (
                     <li className="dashboard ">
                       <NavLink
                         to="/cal-center-queue"
                         onClick={backToTop}
                         type="button"
                         className={({ isActive }) =>
-                          isActive || ["/cal-center-queue-add", "/cal-center-queue-edit"].some((path) => window.location.pathname.includes(path))
+                          isActive ||
+                          [
+                            "/cal-center-queue-add",
+                            "/cal-center-queue-edit",
+                          ].some((path) =>
+                            window.location.pathname.includes(path)
+                          )
                             ? "nav-link active"
                             : "nav-link"
                         }
                       >
-                        <div className="iconHolder" >
+                        <div className="iconHolder">
                           <i class="fa-regular fa-users-rectangle"></i>
                         </div>
                         <div className="itemTitle">Call Center</div>
@@ -713,14 +830,17 @@ function Navbar() {
                     </NavLink>
                   </li> */}
                   {account?.permissions?.includes(230) ||
-                    account?.permissions?.includes(232) ? (
+                  account?.permissions?.includes(232) ? (
                     <li className="dashboard ">
                       <NavLink
                         to="/ivr"
                         onClick={backToTop}
                         type="button"
                         className={({ isActive }) =>
-                          isActive || ["/ivr-add", "/ivr-edit"].some((path) => window.location.pathname.includes(path))
+                          isActive ||
+                          ["/ivr-add", "/ivr-edit"].some((path) =>
+                            window.location.pathname.includes(path)
+                          )
                             ? "nav-link active"
                             : "nav-link"
                         }
@@ -748,7 +868,6 @@ function Navbar() {
                       to="/call-blocking"
                       onClick={backToTop}
                       type="button"
-
                     >
                       <div className="iconHolder">
                         <i class="fa-regular fa-block-brick-fire"></i>
@@ -763,7 +882,6 @@ function Navbar() {
                         target="_blank"
                         // onClick={backToTop}
                         type="button"
-
                       >
                         <div className="iconHolder">
                           <i class="fa-regular fa-headset"></i>
@@ -779,7 +897,6 @@ function Navbar() {
                       to="/click-to-call"
                       onClick={backToTop}
                       type="button"
-
                     >
                       <div className="iconHolder">
                         <i class="fa-regular fa-bullseye-pointer"></i>
@@ -793,12 +910,7 @@ function Navbar() {
                     </a>
                   </li>
                   <li className="dashboard ">
-                    <NavLink
-                      to="/"
-                      onClick={logOut}
-                      type="button"
-
-                    >
+                    <NavLink to="/" onClick={logOut} type="button">
                       <div className="iconHolder">
                         <i class="fa-regular fa-power-off"></i>
                       </div>

@@ -27,7 +27,7 @@ const ConferenceConfig = ({setactivePage,setConferenceToggle,setConferenceId,con
   const account = useSelector((state) => state.account);
   // const [conferenceId, setConferenceId] = useState("");
   const [error, setError] = useState("");
-  const [selectedTab, setselectedTab] = useState("");
+  const [selectedTab, setselectedTab] = useState("nav-gen-tab");
 
   useEffect(() => {
     async function getData() {
@@ -117,7 +117,6 @@ const ConferenceConfig = ({setactivePage,setConferenceToggle,setConferenceId,con
     }
   };
 
-  console.log("loading", loading);
   return (
     <>
      
@@ -316,7 +315,9 @@ const ConferenceConfig = ({setactivePage,setConferenceToggle,setConferenceId,con
                             </div>
                             <div
                               className={`tab-pane fade ${
-                                selectedTab == "nav-gen-tab" ? " active" : ""
+                                selectedTab == "nav-gen-tab"
+                                  ? "show active"
+                                  : ""
                               }`}
                               id="nav-gen"
                               role="tabpanel"
@@ -504,7 +505,7 @@ const ConferenceConfig = ({setactivePage,setConferenceToggle,setConferenceId,con
                             <div
                               className={`tab-pane fade ${
                                 selectedTab == "nav-voicemail-tab"
-                                  ? " active"
+                                  ? "show active"
                                   : ""
                               }`}
                               id="nav-voicemail"

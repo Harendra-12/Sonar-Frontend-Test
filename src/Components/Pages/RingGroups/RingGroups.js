@@ -34,7 +34,6 @@ const RingGroups = () => {
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [searchValue, setSearchValue] = useState("");
 
-  
   useEffect(() => {
     const getRingGroupDashboardData = async () => {
       if (account && account.id) {
@@ -55,22 +54,21 @@ const RingGroups = () => {
         navigate("/");
       }
     };
-    if(searchValue.trim().length === 0){
+    if (searchValue.trim().length === 0) {
       getRingGroupDashboardData();
-    }else{
+    } else {
       const timer = setTimeout(() => {
         getRingGroupDashboardData();
       }, 1000);
       return () => clearTimeout(timer);
     }
-    if(refreshState === 0){
+    if (refreshState === 0) {
       dispatch({
         type: "SET_ALLUSERREFRESH",
         allUserRefresh: allUserRefresh + 1,
       });
     }
-   
-  }, [pageNumber, refreshState,itemsPerPage,searchValue]);
+  }, [pageNumber, refreshState, itemsPerPage, searchValue]);
 
   const handleRingGroupAddValidation = (e) => {
     e.preventDefault();
@@ -191,6 +189,7 @@ const RingGroups = () => {
                           effect="ripple"
                           className="panelButton ms-0"
                           onClick={() => setRefreshState(refreshState + 1)}
+                          disabled={loading}
                         >
                           <span className="text">Refresh</span>
                           <span className="icon">

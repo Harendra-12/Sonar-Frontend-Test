@@ -57,7 +57,10 @@ function Header(props) {
     <div id="detailsHeader" style={props.style}>
       <div className="col-4 d-flex align-items-center">
         <div className="d-xl-none d-block me-3">
-          <button className="clearButton d-flex align-items-center" onClick={toggleSideNav}>
+          <button
+            className="clearButton d-flex align-items-center"
+            onClick={toggleSideNav}
+          >
             <i className="fa-light fa-bars fs-5" />
           </button>
         </div>
@@ -79,7 +82,9 @@ function Header(props) {
                   className="clearColorButton"
                 >
                   <i className="fa-regular fa-wallet" />{" "}
-                  <span className="d-none d-xl-inline-block">${balance.balance || 0}</span>
+                  <span className="d-none d-xl-inline-block">
+                    ${balance.balance || 0}
+                  </span>
                 </div>
               </Tippy>
             </div>
@@ -111,11 +116,29 @@ function Header(props) {
               </label>
               <Link to="/my-profile">My Profile</Link>
             </div> */}
-            <div onClick={() => navigate("/change-password")}>
+            {/* <div onClick={() => navigate("/change-password")}>
               <label className="me-2">
                 <i className="fa-duotone fa-lock"></i>
               </label>
               <Link to={"/change-password"}>Change Password</Link>
+            </div> */}
+            <div className="d-flex justify-content-center mb-1">
+              <Link
+                to={"/change-password"}
+                className="btn btn-primary w-100 gap-3 d-flex align-items-center justify-content-center"
+              >
+                <i className="fa-duotone fa-lock"></i>
+                Change Password
+              </Link>
+            </div>
+            <div className="d-flex justify-content-center">
+              <Link
+                to={"/my-profile"}
+                className="btn btn-primary w-100 gap-3 d-flex align-items-center justify-content-center"
+              >
+                <i class="fa fa-user" aria-hidden="true"></i>
+                Profile
+              </Link>
             </div>
             <div onClick={logOut} className="d-flex justify-content-center">
               <Link to={"/"} className="logoutBtn">
@@ -135,10 +158,10 @@ export default Header;
 
 export const toggleSideNav = () => {
   const sideNav = document.getElementById("sidenNav");
-  const sideNavStyles = getComputedStyle(sideNav)
+  const sideNavStyles = getComputedStyle(sideNav);
   if (sideNavStyles.left === "-1000px") {
     sideNav.style.left = "0";
   } else {
     sideNav.style.left = "-1000px";
   }
-}
+};

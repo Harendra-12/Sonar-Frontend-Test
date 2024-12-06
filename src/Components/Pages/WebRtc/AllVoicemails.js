@@ -146,8 +146,9 @@ function AllVoicemails({ isCustomerAdmin }) {
 
   const renderCallItem = (item) => (
     <div
-      className={`callListItem ${clickedVoiceMail?.id === item?.id ? "selected" : ""
-        }`}
+      className={`callListItem ${
+        clickedVoiceMail?.id === item?.id ? "selected" : ""
+      }`}
       onClick={() => handleVoiceMailClick(item)}
     >
       <div className="row justify-content-between align-items-center">
@@ -180,7 +181,7 @@ function AllVoicemails({ isCustomerAdmin }) {
           </div>
           <div class="col-3 mx-auto">
             <div class="contactTags">
-              <span data-id="2">Duration:  {item.duration}</span>
+              <span data-id="2">Duration: {item.duration}</span>
             </div>
           </div>
           <div className="col-1 text-end ms-auto">
@@ -243,7 +244,7 @@ function AllVoicemails({ isCustomerAdmin }) {
     if (!isCustomerAdmin) {
       return (
         item.dest ==
-        getSourceName(clickedVoiceMail.src, clickedVoiceMail.dest) ||
+          getSourceName(clickedVoiceMail.src, clickedVoiceMail.dest) ||
         item.src == getSourceName(clickedVoiceMail.src, clickedVoiceMail.dest)
       );
     } else {
@@ -280,15 +281,27 @@ function AllVoicemails({ isCustomerAdmin }) {
         <section className="callPage">
           <div className="container-fluid">
             <div className="row">
-
               <div className="col-12 ps-xl-0">
                 <div className="newHeader">
-                  <div className="col-auto" style={{ padding: '0 10px' }}>
-                    <h3 style={{ fontFamily: "Outfit", marginBottom: '0' }}>
-                      <button class="clearButton text-dark"><i class="fa-solid fa-chevron-left fs-4"></i></button> Voicemails{" "}
-                      <button class="clearButton" onClick={() => setVoiceMailRefresh(voiceMailRefresh + 1)}>
+                  <div className="col-auto" style={{ padding: "0 10px" }}>
+                    <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
+                      <button class="clearButton text-dark">
+                        <i class="fa-solid fa-chevron-left fs-4"></i>
+                      </button>{" "}
+                      Voicemails{" "}
+                      <button
+                        class="clearButton"
+                        onClick={() =>
+                          setVoiceMailRefresh(voiceMailRefresh + 1)
+                        }
+                        disabled={loading}
+                      >
                         <i
-                          class={loading ? "fa-regular fa-arrows-rotate fs-5 fa-spin" : "fa-regular fa-arrows-rotate fs-5 "}
+                          class={
+                            loading
+                              ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                              : "fa-regular fa-arrows-rotate fs-5 "
+                          }
                           style={{ color: "var(--webUtilGray)" }}
                         ></i>
                       </button>
@@ -296,7 +309,14 @@ function AllVoicemails({ isCustomerAdmin }) {
                   </div>
                   <div className="d-flex justify-content-end align-items-center">
                     <div className="col-9">
-                      <input type="search" name="Search" placeholder="Search users, groups or chat" class="formItem fw-normal" style={{ backgroundColor: 'var(--searchBg)' }} onChange={() => featureUnderdevelopment()} />
+                      <input
+                        type="search"
+                        name="Search"
+                        placeholder="Search users, groups or chat"
+                        class="formItem fw-normal"
+                        style={{ backgroundColor: "var(--searchBg)" }}
+                        onChange={() => featureUnderdevelopment()}
+                      />
                     </div>
                     <div className="col-auto mx-2">
                       <button
@@ -309,14 +329,40 @@ function AllVoicemails({ isCustomerAdmin }) {
                     </div>
                     <div className="col-auto">
                       <div class="dropdown">
-                        <div className="myProfileWidget" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div
+                          className="myProfileWidget"
+                          type="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
                           <div class="profileHolder" id="profileOnlineNav">
-                            <img src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg" alt="profile" />
+                            <img
+                              src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
+                              alt="profile"
+                            />
                           </div>
-                          <div class="profileName">{account.username} <span className="status">Available</span></div>
+                          <div class="profileName">
+                            {account.username}{" "}
+                            <span className="status">Available</span>
+                          </div>
                         </div>
-                        <ul class="dropdown-menu" onClick={logOut}>
-                          <li><div class="dropdown-item" style={{ cursor: 'pointer' }} >Logout</div></li>
+                        <ul class="dropdown-menu">
+                          <li onClick={logOut}>
+                            <div
+                              class="dropdown-item"
+                              style={{ cursor: "pointer" }}
+                            >
+                              Logout
+                            </div>
+                          </li>
+                          <li onClick={() => navigate("/my-profile")}>
+                            <div
+                              class="dropdown-item"
+                              style={{ cursor: "pointer" }}
+                            >
+                              Profile
+                            </div>
+                          </li>
                         </ul>
                       </div>
                     </div>
@@ -324,9 +370,8 @@ function AllVoicemails({ isCustomerAdmin }) {
                 </div>
               </div>
 
-
               <div className="col-xl-6 allCallHistory pb-0">
-                <div className="col-auto" style={{ padding: '0 10px' }}>
+                <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
                     Viewing As:
                     <span>
@@ -342,12 +387,15 @@ function AllVoicemails({ isCustomerAdmin }) {
                     </span>
                   </h5>
                 </div>
-                <div className="col-auto" style={{ padding: '0 10px' }}>
-                  <button className="clearColorButton dark" onClick={() => featureUnderdevelopment()}>
+                <div className="col-auto" style={{ padding: "0 10px" }}>
+                  <button
+                    className="clearColorButton dark"
+                    onClick={() => featureUnderdevelopment()}
+                  >
                     <i className="fa-light fa-mobile-retro" /> Dial Number
                   </button>
                 </div>
-                <div className="col-12 mt-3" style={{ padding: '0 10px' }}>
+                <div className="col-12 mt-3" style={{ padding: "0 10px" }}>
                   <input
                     type="search"
                     name="Search"
@@ -358,7 +406,10 @@ function AllVoicemails({ isCustomerAdmin }) {
                 </div>
                 <div className="col-12">
                   <nav className="mt-3">
-                    <div className="nav nav-tabs" style={{ borderBottom: '1px solid var(--border-color)' }}>
+                    <div
+                      className="nav nav-tabs"
+                      style={{ borderBottom: "1px solid var(--border-color)" }}
+                    >
                       {/* <button
                         className="tabLink active"
                         effect="ripple"
@@ -382,10 +433,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                       ) : Object.keys(groupedVoiceMails).length > 0 ? (
                         sortKeys(Object.keys(groupedVoiceMails)).map((date) => (
                           <>
-                            <div
-                              key={date}
-                              className="dateHeader"
-                            >
+                            <div key={date} className="dateHeader">
                               <p>{date}</p>
                             </div>
                             {sortedVoiceMails[date].map(renderCallItem)}
@@ -400,7 +448,11 @@ function AllVoicemails({ isCustomerAdmin }) {
                             ></img>
                             <div>
                               <h5>
-                                No <span><b>voicemails</b></span> available
+                                No{" "}
+                                <span>
+                                  <b>voicemails</b>
+                                </span>{" "}
+                                available
                               </h5>
                             </div>
                           </div>
@@ -433,13 +485,13 @@ function AllVoicemails({ isCustomerAdmin }) {
                   style={{ height: "100%" }}
                   id="callDetails"
                 >
-
                   <div className="messageOverlay">
                     <div className="contactHeader">
                       <div>
                         <h4 className="mb-0">Test User</h4>
                         <p className="gray14 mb-0 mt-1">
-                          Extension - {getSourceName(
+                          Extension -{" "}
+                          {getSourceName(
                             clickedVoiceMail.src,
                             clickedVoiceMail.dest
                           )}
@@ -476,13 +528,42 @@ function AllVoicemails({ isCustomerAdmin }) {
                           <i className="fa-regular fa-video" />
                         </button>
                         <div class="dropdown">
-                          <button class="clearButton2 xl" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          <button
+                            class="clearButton2 xl"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
                             <i class="fa-solid fa-ellipsis-vertical"></i>
                           </button>
                           <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>Add to Contact</a></li>
-                            <li><a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>Video Call</a></li>
-                            <li><a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>Delete Contact</a></li>
+                            <li>
+                              <a
+                                class="dropdown-item"
+                                href="#"
+                                onClick={() => featureUnderdevelopment()}
+                              >
+                                Add to Contact
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                class="dropdown-item"
+                                href="#"
+                                onClick={() => featureUnderdevelopment()}
+                              >
+                                Video Call
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                class="dropdown-item"
+                                href="#"
+                                onClick={() => featureUnderdevelopment()}
+                              >
+                                Delete Contact
+                              </a>
+                            </li>
                           </ul>
                         </div>
                       </div>
@@ -523,10 +604,20 @@ function AllVoicemails({ isCustomerAdmin }) {
                             </div>
                           </div>
                         </div>
-                        <div className="col-12" style={{ padding: '0px 20px 0px' }}>
+                        <div
+                          className="col-12"
+                          style={{ padding: "0px 20px 0px" }}
+                        >
                           <div className="mt-2">
                             <nav className="mb-2">
-                              <div className="nav nav-tabs" id="nav-tab" role="tablist" style={{ borderBottom: '1px solid var(--border-color)' }}>
+                              <div
+                                className="nav nav-tabs"
+                                id="nav-tab"
+                                role="tablist"
+                                style={{
+                                  borderBottom: "1px solid var(--border-color)",
+                                }}
+                              >
                                 <button
                                   className="tabLink active"
                                   effect="ripple"
@@ -561,7 +652,10 @@ function AllVoicemails({ isCustomerAdmin }) {
                                 aria-labelledby="nav-home-tab"
                                 tabIndex={0}
                               >
-                                <div className="callDetailsList tableContainer mt-0" style={{ height: 'calc(100vh - 311px)' }}>
+                                <div
+                                  className="callDetailsList tableContainer mt-0"
+                                  style={{ height: "calc(100vh - 311px)" }}
+                                >
                                   <table>
                                     <thead>
                                       <tr>
@@ -574,10 +668,14 @@ function AllVoicemails({ isCustomerAdmin }) {
                                     <tbody>
                                       <tr>
                                         <td>
-                                          {formatDate(clickedVoiceMail.created_at)}
+                                          {formatDate(
+                                            clickedVoiceMail.created_at
+                                          )}
                                         </td>
                                         <td>
-                                          {formatTime(clickedVoiceMail.created_at)}
+                                          {formatTime(
+                                            clickedVoiceMail.created_at
+                                          )}
                                         </td>
                                         <td
                                           style={{
@@ -594,7 +692,8 @@ function AllVoicemails({ isCustomerAdmin }) {
                                           {isCustomerAdmin ? (
                                             <span>
                                               {clickedVoiceMail.src}
-                                              ==<i class="fa-solid fa-angles-right"></i>
+                                              ==
+                                              <i class="fa-solid fa-angles-right"></i>
                                               {clickedVoiceMail.dest}
                                             </span>
                                           ) : (
@@ -651,7 +750,10 @@ function AllVoicemails({ isCustomerAdmin }) {
                                 aria-labelledby="nav-profile-tab"
                                 tabIndex={0}
                               >
-                                <div className="callDetailsList tableContainer mt-0" style={{ height: 'calc(100vh - 311px)' }}>
+                                <div
+                                  className="callDetailsList tableContainer mt-0"
+                                  style={{ height: "calc(100vh - 311px)" }}
+                                >
                                   <table>
                                     <thead>
                                       <tr>
@@ -664,7 +766,8 @@ function AllVoicemails({ isCustomerAdmin }) {
                                     </thead>
                                     <tbody>
                                       {selectedVoiceMailExtensionList &&
-                                        selectedVoiceMailExtensionList.length > 0 &&
+                                        selectedVoiceMailExtensionList.length >
+                                          0 &&
                                         selectedVoiceMailExtensionList.map(
                                           (item, index) => {
                                             return (
@@ -675,9 +778,15 @@ function AllVoicemails({ isCustomerAdmin }) {
                                                   role="button"
                                                 >
                                                   <td>
-                                                    {formatDate(item.created_at)}
+                                                    {formatDate(
+                                                      item.created_at
+                                                    )}
                                                   </td>
-                                                  <td>{formatTime(item.created_at)}</td>
+                                                  <td>
+                                                    {formatTime(
+                                                      item.created_at
+                                                    )}
+                                                  </td>
                                                   <td
                                                     style={{
                                                       display: "flex",
@@ -707,7 +816,12 @@ function AllVoicemails({ isCustomerAdmin }) {
                                                     )}
                                                   </td>
                                                   {/* <td>{item.dest}</td> */}
-                                                  <td style={{ color: "var(--color-subtext)" }}>
+                                                  <td
+                                                    style={{
+                                                      color:
+                                                        "var(--color-subtext)",
+                                                    }}
+                                                  >
                                                     {item.duration}
                                                   </td>
                                                 </tr>
@@ -727,7 +841,8 @@ function AllVoicemails({ isCustomerAdmin }) {
                                                         />
                                                         <source
                                                           src={
-                                                            item.recording_path || ""
+                                                            item.recording_path ||
+                                                            ""
                                                           }
                                                           type="audio/mpeg"
                                                         />
@@ -756,8 +871,6 @@ function AllVoicemails({ isCustomerAdmin }) {
                       </div>
                     </div>
                   </div>
-
-
                 </div>
               )}
             </div>
