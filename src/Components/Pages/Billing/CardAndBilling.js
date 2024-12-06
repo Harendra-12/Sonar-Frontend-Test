@@ -353,7 +353,7 @@ function CardAndBilling() {
             <Header title="Payment Details" />
             <div className="col-xl-12" style={{ padding: "30px 20px" }}>
               <div className="row gy-3">
-                <div className="col-xl-8">
+                <div className="col-xxl-8 col-xl-9">
                   <div className="row gy-3">
                     <div className="col-xl-4 billinCardWrapper">
                       <Cards
@@ -454,7 +454,7 @@ function CardAndBilling() {
                             <div class="d-flex flex-wrap justify-content-between align-items-center">
                               <div class="col-10">
                                 <h5>Wallet Balance</h5>
-                                <p>Created On: {accountDetails?.balance?.created_at?.split("T")[0]},{" "}{accountDetails?.balance?.created_at?.split("T")[1]?.split(".")[0]}</p>
+                                <p>Created On: {accountDetails?.balance?.created_at?.split("T")[0]}</p>
                               </div>
                               <div
                                 class="col-2"
@@ -1009,7 +1009,7 @@ function CardAndBilling() {
                     </div>
                   </div> */}
                 </div>
-                <div className="col-xl-4">
+                <div className="col-xxl-4 col-xl-3">
                   <div className="col-xl-12">
                     <div className="itemWrapper a h-100">
                       <div className="heading">
@@ -1035,15 +1035,15 @@ function CardAndBilling() {
                         {accountDetails.payments.map((item, key) => {
                           return (
                             <li key={key}>
-                              <div className="col-7">
+                              <div className="col-xxl-7 col-xl-6">
                                 <p>{item.transaction_date}</p>
-                                <span>#{item.transaction_id}</span>
                               </div>
                               <div className="me-2" style={{ width: 55 }}>
                                 <p>${item.amount_subtotal}</p>
                               </div>
                               <div
                                 style={{ cursor: "pointer", fontWeight: "500" }}
+                                className="tableButton"
                                 onClick={() =>
                                   downloadImage(
                                     item.invoice_url,
@@ -1052,8 +1052,10 @@ function CardAndBilling() {
                                   )
                                 }
                               >
-                                <i className="fa-solid fa-download me-1 text-warning"></i>{" "}
-                                PDF
+                                <i className="fa-solid fa-download"></i>{" "}
+                              </div>
+                              <div className="col-12">
+                                <span>#{item.transaction_id}</span>
                               </div>
                             </li>
                           );
