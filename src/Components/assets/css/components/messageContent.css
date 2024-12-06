@@ -462,7 +462,7 @@
 
 .videoCallWrapper .videoBody .conferenceParticipantsWrapper.hidden {
     /* transform: translateX(125px); */
-    max-width: 10px;
+    max-width: 8px;
 }
 
 .videoCallWrapper .videoBody .conferenceParticipantsWrapper:hover {

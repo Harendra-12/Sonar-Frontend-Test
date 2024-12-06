@@ -162,7 +162,16 @@
 @media (max-width: 1366px) {
 
     .formLabel {
+        font-size: 11px;
+        max-width: 200px;
+    }
+
+    .itemWrapperb .heading {
         font-size: 10px;
+    }
+
+    .mainContent .itemWrapper {
+        padding: 12px;
     }
 
 }
