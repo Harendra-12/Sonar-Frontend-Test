@@ -431,7 +431,7 @@
 }
 
 .videoCallWrapper .messageOverlay .messageList {
-    height: calc(100vh - 275px);
+    height: calc(100vh - 283px);
 }
 
 .videoCallWrapper .videoBody .activeGuyName {
@@ -553,6 +553,7 @@
     border: none;
     background: transparent;
     margin-bottom: 0;
+    padding: 10px;
 }
 
 .videoCallWrapper .videoBody .participant.active .participantWrapper,
@@ -642,10 +643,11 @@
     display: flex;
     justify-content: center;
     padding: 10px 0 0;
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    /* position: absolute; */
+    /* bottom: 0; */
+    /* left: 50%; */
+    /* transform: translateX(-50%); */
+    width: 100%;
 }
 
 .contactHeader .dropdown-menu {
@@ -673,7 +675,7 @@
 
 .videoCallWrapper .videoBody .videoHolder {
     position: relative;
-    height: calc(100% - 95px);
+    height: calc(100% - 105px);
     border-radius: 15px;
     overflow: hidden;
 }

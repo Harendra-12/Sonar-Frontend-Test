@@ -476,7 +476,7 @@
   /* height: 35px; */
   margin-right: 10px;
   min-width: 45px;
-  min-height: 45px;
+  height: 45px;
   padding: 10px;
   border-radius: 10px;
   display: flex;
