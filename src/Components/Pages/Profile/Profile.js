@@ -165,7 +165,7 @@ const Profile = () => {
           <div className="row" style={{ padding: '20px 10px' }}>
             <div className="col-xl-5 pe-xl-0">
               <div className="profileView">
-                <div className="profileDetailsHolder">
+                <div className="profileDetailsHolder p-0">
                   <div className="baseDetails">
                     <div className="col-sm-4">
                       <div className="profilePicHolder">
@@ -229,7 +229,7 @@ const Profile = () => {
               <div className="row">
                 <div className="col-md-12">
                   <div className="profileView">
-                    <div className="profileDetailsHolder">
+                    <div className="profileDetailsHolder p-0">
                       <div className="profileView mt-xl-2">
                         <div className="  d-flex align-items-center">
                           {/* <div className="ribbon-left ">Account Details</div> */}
@@ -391,7 +391,7 @@ const Profile = () => {
               <div className="row">
                 <div className="col-md-12">
                   <div className="profileView ">
-                    <div className="profileDetailsHolder  baseDetails">
+                    <div className="profileDetailsHolder baseDetails">
                       <div className="content">
                         <h5 className=" me-2">All details</h5>
                         <div className="mt-2">
@@ -434,71 +434,62 @@ const Profile = () => {
               <div className="row">
                 <div className="col-md-12">
                   <div className="profileView mt-2">
-                    <div className="profileDetailsHolder">
-
-                      <div className="profileDetailsHolder0 position-relative">
-
-
-                        {/* <div className="ribbon">Subscription Details</div> */}
-
-
-                        <div className="row0" style={{ padding: "15px" }}>
-                          <div className="col-12 header">Subscription Details</div>
-                          <div className="wrapper0">
-                            <ul>
-                              <li className="d-flex justify-content-between border-bottom py-1">
-                                <label className="formLabel">Package Name</label>{" "}
-                                <label className="formLabel details">
-                                  {accountDetails.package.name}
-                                </label>
-                              </li>
-                              <li className="d-flex justify-content-between border-bottom py-1">
-                                <label className="formLabel">Package Price</label>{" "}
-                                <label className="formLabel details">
-                                  ${accountDetails.package.offer_price}
-                                </label>
-                              </li>
-                              <li className="d-flex justify-content-between border-bottom py-1">
-                                <label className="formLabel">Package Type</label>{" "}
-                                <label className="formLabel details">
-                                  {accountDetails.package.subscription_type}
-                                </label>
-                              </li>
-                              <li className="d-flex justify-content-between border-bottom py-1">
-                                <label className="formLabel">Subscription Start</label>{" "}
-                                <label className="formLabel details">
-                                  {accountDetails?.subscription?.[0].start_date}
-                                </label>
-                              </li>
-                              <li className="d-flex justify-content-between border-bottom py-1">
-                                <label className="formLabel">Subscription End</label>{" "}
-                                <label className="formLabel details">
-                                  {accountDetails?.subscription?.[0].end_date}
-                                </label>
-                              </li>
-                              <li className="d-flex justify-content-between border-bottom py-1">
-                                <label className="formLabel">Time of Payment</label>{" "}
-                                <label className="formLabel details">
-                                  {accountDetails?.payments[0].transaction_date}
-                                </label>
-                              </li>
-                              <li className="d-flex justify-content-between border-bottom py-1">
-                                <label className="formLabel">Payment Status</label>{" "}
-                                <label className="formLabel details">
-                                  {accountDetails?.payments[0].payment_status}
-                                </label>
-                              </li>
-                              <li className="d-flex justify-content-between border-bottom py-2">
-                                <label className="formLabel">Transaction Id</label>{" "}
-                                <label className="formLabel details">
-                                  {accountDetails?.payments[0].transaction_id}
-                                </label>
-                              </li>
-                            </ul>
-                          </div>
+                    <div className="profileDetailsHolder p-0">
+                      {/* <div className="ribbon">Subscription Details</div> */}
+                      <div className="row" style={{ padding: "15px" }}>
+                        <div className="col-12 header">Subscription Details</div>
+                        <div className="wrapper0">
+                          <ul>
+                            <li className="d-flex justify-content-between border-bottom py-1">
+                              <label className="formLabel">Package Name</label>{" "}
+                              <label className="formLabel details">
+                                {accountDetails.package.name}
+                              </label>
+                            </li>
+                            <li className="d-flex justify-content-between border-bottom py-1">
+                              <label className="formLabel">Package Price</label>{" "}
+                              <label className="formLabel details">
+                                ${accountDetails.package.offer_price}
+                              </label>
+                            </li>
+                            <li className="d-flex justify-content-between border-bottom py-1">
+                              <label className="formLabel">Package Type</label>{" "}
+                              <label className="formLabel details">
+                                {accountDetails.package.subscription_type}
+                              </label>
+                            </li>
+                            <li className="d-flex justify-content-between border-bottom py-1">
+                              <label className="formLabel">Subscription Start</label>{" "}
+                              <label className="formLabel details">
+                                {accountDetails?.subscription?.[0].start_date}
+                              </label>
+                            </li>
+                            <li className="d-flex justify-content-between border-bottom py-1">
+                              <label className="formLabel">Subscription End</label>{" "}
+                              <label className="formLabel details">
+                                {accountDetails?.subscription?.[0].end_date}
+                              </label>
+                            </li>
+                            <li className="d-flex justify-content-between border-bottom py-1">
+                              <label className="formLabel">Time of Payment</label>{" "}
+                              <label className="formLabel details">
+                                {accountDetails?.payments[0].transaction_date}
+                              </label>
+                            </li>
+                            <li className="d-flex justify-content-between border-bottom py-1">
+                              <label className="formLabel">Payment Status</label>{" "}
+                              <label className="formLabel details">
+                                {accountDetails?.payments[0].payment_status}
+                              </label>
+                            </li>
+                            <li className="d-flex justify-content-between border-bottom py-2">
+                              <label className="formLabel">Transaction Id</label>{" "}
+                              <label className="formLabel details">
+                                {accountDetails?.payments[0].transaction_id}
+                              </label>
+                            </li>
+                          </ul>
                         </div>
-
-
                       </div>
                     </div>
                   </div>
@@ -511,7 +502,7 @@ const Profile = () => {
             <div className="col-xl-3">
               <div className="profileView " style={{ height: "100%" }}>
                 <div
-                  className="profileDetailsHolder"
+                  className="profileDetailsHolder p-0"
                   style={{ position: "sticky", top: 0 }}
                 >
                   <div className="qLinkContent">
