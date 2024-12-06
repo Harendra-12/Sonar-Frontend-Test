@@ -137,8 +137,8 @@ const Profile = () => {
         <div className="container-fluid">
           <div className="row">
             <Header title="My Profile" />
-            <div className="col-12 mt-3">
-              {/* <div className="row px-xl-3 py-2" id="detailsHeader">
+            {/* <div className="col-12 mt-3">
+               <div className="row px-xl-3 py-2" id="detailsHeader">
                 <div className="col-xl-2 col-4 d-flex align-items-center">
                   <h4 className="my-auto">My Profile</h4>
                 </div>
@@ -159,66 +159,61 @@ const Profile = () => {
                     </button>
                   </div>
                 </div>
-              </div> */}
-            </div>
+              </div> 
+            </div> */}
+          </div>
+          <div className="row" style={{ padding: '20px 10px' }}>
             <div className="col-xl-5 pe-xl-0">
               <div className="profileView">
                 <div className="profileDetailsHolder">
                   <div className="baseDetails">
-
-                    <div className="row">
-                      <div className="col-sm-4">
-
-                        <div className="profilePicHolder">
-                          <img
-                            src={
-                              account?.profile_pic
-                                ? account?.profile_pic
-                                : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                            }
-                            alt="img"
-                          />
-                        </div>
-
-
+                    <div className="col-sm-4">
+                      <div className="profilePicHolder">
+                        <img
+                          src={
+                            account?.profile_pic
+                              ? account?.profile_pic
+                              : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                          }
+                          alt="img"
+                        />
                       </div>
-                      <div className="col-sm-8 ">
-                        <div className="mt-3">
-                          <div className="content profileicons mt-1  d-flex align-items-center justify-content-start" >
-                            <span>
-                              <i class="fa-regular me-3 fa-user"></i>
-                            </span>
-                            <h5>{account?.name ? account?.name : "User Name"}</h5>
-                          </div>
-                          <div className="content profileicons mt-1  d-flex align-items-center justify-content-start" >
-                            <span>
-                              <i class="fa-regular me-3 fa-envelope"></i>
-                            </span>
-                            <p> {account?.email ? account?.email : "user@mail.com"}
-                            </p>
+                    </div>
+                    <div className="col-sm-8 my-auto">
+                      <div>
+                        <div className="content profileicons mt-1 d-flex align-items-center justify-content-start" >
+                          <span>
+                            <i class="fa-regular me-3 fa-user"></i>
+                          </span>
+                          <h5 className="mb-0">{account?.name ? account?.name : "User Name"}</h5>
+                        </div>
+                        <div className="content profileicons mt-1  d-flex align-items-center justify-content-start" >
+                          <span>
+                            <i class="fa-regular me-3 fa-envelope"></i>
+                          </span>
+                          <p className="mb-0"> {account?.email ? account?.email : "user@mail.com"}
+                          </p>
 
-                            {/* <p >
+                          {/* <p >
                         <span>
                           <i className="fa-duotone fa-location-dot"></i>
                         </span>{" "}
                         {accountDetails?.billing_address &&
                           accountDetails?.billing_address[0].address}
                       </p> */}
-                          </div>
-
-
-                          <div className="content profileicons mt-1 d-flex align-items-center justify-content-start" >
-                            <span>
-                              <i class="fa-solid me-3 fa-location-dot"></i>
-                            </span>
-                            <p>{accountDetails?.billing_address && accountDetails?.billing_address[0].address}
-                            </p>
-                          </div>
                         </div>
 
-                      </div>
-                    </div>
 
+                        <div className="content profileicons mt-1 d-flex align-items-center justify-content-start" >
+                          <span>
+                            <i class="fa-solid me-3 fa-location-dot"></i>
+                          </span>
+                          <p className="mb-0">{accountDetails?.billing_address && accountDetails?.billing_address[0].address}
+                          </p>
+                        </div>
+                      </div>
+
+                    </div>
                     {accountDetails.summery && (
                       <div className="summaryDetails">
                         <div className="content ms-0">
@@ -353,13 +348,13 @@ const Profile = () => {
                                 </div>
                                 <div className="col-4 ps-0">
                                   <button
-                                    className="panelButton ms-0"
+                                    className="panelButton static ms-0 w-100"
                                     style={{ height: '34px' }}
                                     onClick={() => handleSetExtension()}
                                   // effect="ripple"
                                   >
                                     <span className="text">Save</span>
-                                    <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                                    {/* <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span> */}
                                   </button>
                                 </div>
                               </div>
