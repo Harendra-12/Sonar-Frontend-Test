@@ -166,4 +166,7 @@
         max-width: 200px;
     }
 
+    .itemWrapperb .heading {
+        font-size: 10px;
+    }
 }
