@@ -34,7 +34,6 @@ function CallCenterQueue() {
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [searchValue, setSearchValue] = useState("");
 
-
   // const getCallCenterDashboardData = async () => {
   //   setLoading(true);
   //   const apidata = await generalGetFunction(
@@ -75,22 +74,21 @@ function CallCenterQueue() {
         }
       }
     };
-    if(searchValue.trim().length === 0){
+    if (searchValue.trim().length === 0) {
       getCallCenterDashboardData();
-    }else{
+    } else {
       const timer = setTimeout(() => {
         getCallCenterDashboardData();
       }, 1000);
       return () => clearTimeout(timer);
     }
-    if(refreshState === 0){
+    if (refreshState === 0) {
       dispatch({
         type: "SET_ALLUSERREFRESH",
         allUserRefresh: allUserRefresh + 1,
       });
     }
-   
-  }, [pageNumber, refreshState,itemsPerPage,searchValue]);
+  }, [pageNumber, refreshState, itemsPerPage, searchValue]);
 
   const handleAddCallCenterValidation = (e) => {
     e.preventDefault();
@@ -242,6 +240,7 @@ function CallCenterQueue() {
                           effect="ripple"
                           className="panelButton ms-0"
                           onClick={() => setRefreshState(refreshState + 1)}
+                          disabled={loading}
                         >
                           <span className="text">Refresh</span>
                           <span className="icon">
@@ -479,7 +478,7 @@ function CallCenterQueue() {
                                       );
                                     })}
                                   {callCenter &&
-                                    callCenter.data.length === 0 ? (
+                                  callCenter.data.length === 0 ? (
                                     <td colSpan={99}>
                                       <EmptyPrompt
                                         name="Call Center"
@@ -533,7 +532,8 @@ function CallCenterQueue() {
                       ? error
                       : "Are you sure you want to delete this queue?"}
                     {selectedCallCenter?.id &&
-                      `Are you sure you want to ${selectedCallCenter?.status == 1 ? "disable" : "enable"
+                      `Are you sure you want to ${
+                        selectedCallCenter?.status == 1 ? "disable" : "enable"
                       } the queue ${selectedCallCenter?.queue_name}?`}
                   </p>
                   <div className="mt-2 d-flex justify-content-between">

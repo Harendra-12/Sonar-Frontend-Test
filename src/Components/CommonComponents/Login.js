@@ -41,14 +41,31 @@ function Login() {
                     <div className="border-bottom my-4"></div>
                     <LoginComponent />
                   </div>
-                  <div className="text-center position-absolute w-100" style={{ bottom: 0, left: '50%', transform: 'translate(-50%, -50%)' }}><p style={{ color: 'var(--webUtilGray)', fontSize: 12, marginBottom: 0 }}>2024 AnglePBX. All rights Reserved</p></div>
+                  <div
+                    className="text-center position-absolute w-100"
+                    style={{
+                      bottom: 0,
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  >
+                    <p
+                      style={{
+                        color: "var(--webUtilGray)",
+                        fontSize: 12,
+                        marginBottom: 0,
+                      }}
+                    >
+                      2024 AnglePBX. All rights Reserved
+                    </p>
+                  </div>
                 </div>
                 <div className="col-xl-6 d-xl-block d-none">
                   <div className="loginImgWrapper">
                     <div className="content">
                       <h3>The simplest way to manage your workforce</h3>
                       <p>Enter your credentials to access your control</p>
-                      <img src={require('../assets/images/logindash.png')} />
+                      <img src={require("../assets/images/logindash.png")} />
                       {/* <img className="comp" src={require('../assets/images/temp.png')} /> */}
                     </div>
                   </div>
@@ -57,7 +74,7 @@ function Login() {
             </div>
           </div>
           <div className="loginWave">
-            <img src={require('../assets/images/wave.png')} />
+            <img src={require("../assets/images/wave.png")} />
           </div>
         </main>
       </div>
@@ -153,13 +170,11 @@ export function LoginComponent() {
                     window.scrollTo(0, 0);
                     navigate("/webrtc");
                   }
-
                 } else {
                   setLoading(false);
                   window.scrollTo(0, 0);
                   navigate("/dashboard");
                 }
-
               }
             } else {
               setLoading(false);
@@ -228,6 +243,7 @@ export function LoginComponent() {
         </div>
         <div onClick={backToTop}>
           <button
+            disabled={loading}
             className="formSubmit"
             type="button"
             effect="ripple"

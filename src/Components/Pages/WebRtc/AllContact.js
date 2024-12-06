@@ -136,6 +136,7 @@ function AllContact({
                       <button
                         class="clearButton"
                         onClick={() => handleContactRefresh()}
+                        disabled={allContactLoading}
                       >
                         <i
                           class={
@@ -183,13 +184,21 @@ function AllContact({
                             <span className="status">Available</span>
                           </div>
                         </div>
-                        <ul class="dropdown-menu" onClick={logOut}>
-                          <li>
+                        <ul class="dropdown-menu">
+                          <li onClick={logOut}>
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
                               Logout
+                            </div>
+                          </li>
+                          <li onClick={() => navigate("/my-profile")}>
+                            <div
+                              class="dropdown-item"
+                              style={{ cursor: "pointer" }}
+                            >
+                              Profile
                             </div>
                           </li>
                         </ul>

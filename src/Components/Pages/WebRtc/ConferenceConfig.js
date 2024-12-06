@@ -10,7 +10,7 @@ import { ConferenceCall } from "./ConferenceCall";
 import ContentLoader from "../../Loader/ContentLoader";
 import { useSelector } from "react-redux";
 
-const ConferenceConfig = ({setactivePage}) => {
+const ConferenceConfig = ({ setactivePage }) => {
   const [conferenceName, setConferenceName] = useState("");
   const [conferenceType, setConferenceType] = useState("public");
   const [loading, setLoading] = useState(false);
@@ -27,7 +27,7 @@ const ConferenceConfig = ({setactivePage}) => {
   const account = useSelector((state) => state.account);
   const [conferenceId, setConferenceId] = useState("");
   const [error, setError] = useState("");
-  const [selectedTab, setselectedTab] = useState("");
+  const [selectedTab, setselectedTab] = useState("nav-gen-tab");
 
   useEffect(() => {
     async function getData() {
@@ -117,7 +117,6 @@ const ConferenceConfig = ({setactivePage}) => {
     }
   };
 
-  console.log("loading", loading);
   return (
     <>
       {conferenceToggle ? (
@@ -323,7 +322,9 @@ const ConferenceConfig = ({setactivePage}) => {
                             </div>
                             <div
                               className={`tab-pane fade ${
-                                selectedTab == "nav-gen-tab" ? " active" : ""
+                                selectedTab == "nav-gen-tab"
+                                  ? "show active"
+                                  : ""
                               }`}
                               id="nav-gen"
                               role="tabpanel"
@@ -511,7 +512,7 @@ const ConferenceConfig = ({setactivePage}) => {
                             <div
                               className={`tab-pane fade ${
                                 selectedTab == "nav-voicemail-tab"
-                                  ? " active"
+                                  ? "show active"
                                   : ""
                               }`}
                               id="nav-voicemail"
