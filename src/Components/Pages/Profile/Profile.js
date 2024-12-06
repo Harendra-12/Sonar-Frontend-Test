@@ -137,7 +137,7 @@ const Profile = () => {
         <div className="container-fluid">
           <div className="row">
             <Header title="My Profile" />
-            <div className="col-12">
+            <div className="col-12 mt-2">
               {/* <div className="row px-xl-3 py-2" id="detailsHeader">
                 <div className="col-xl-2 col-4 d-flex align-items-center">
                   <h4 className="my-auto">My Profile</h4>
@@ -161,71 +161,64 @@ const Profile = () => {
                 </div>
               </div> */}
             </div>
-            <div className="col-xl-9">
-              <div className="profileView mt-3">
+            <div className="col-xl-5">
+              <div className="profileView">
                 <div className="profileDetailsHolder">
-                  <div className="baseDetails row">
-                    <div className="col-auto my-auto">
-                      <div className="profilePicHolder">
-                        <img
-                          src={
-                            account?.profile_pic
-                              ? account?.profile_pic
-                              : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                          }
-                          alt="img"
-                        />
+                  <div className="baseDetails">
+
+                    <div className="row">
+                      <div className="col-sm-4">
+
+                        <div className="profilePicHolder">
+                          <img
+                            src={
+                              account?.profile_pic
+                                ? account?.profile_pic
+                                : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                            }
+                            alt="img"
+                          />
+                        </div>
+
+
                       </div>
-                    </div>
-                    <div className="content col-xl-6 col-8 my-auto pe-0">
-                      <h5>{account?.name ? account?.name : "User Name"}</h5>
-                      <p>
-                        <span>
-                          <i className="fa-duotone fa-globe"></i>
-                        </span>{" "}
-                        {account?.email ? account?.email : "user@mail.com"}
-                      </p>
-                      {/* <p>
-                        <span>
-                          <i className="fa-duotone fa-server"></i>
-                        </span>{" "}
-                        {account?.domain?.domain_name
-                          ? account?.domain?.domain_name
-                          : "https://www.webviotechnologies.com/"}
-                      </p> */}
-                      <p>
+                      <div className="col-sm-8 ">
+                        <div className="mt-3">
+                          <div className="content profileicons mt-1  d-flex align-items-center justify-content-start" >
+                            <span>
+                              <i class="fa-regular me-3 fa-user"></i>
+                            </span>
+                            <h5>{account?.name ? account?.name : "User Name"}</h5>
+                          </div>
+                          <div className="content profileicons mt-1  d-flex align-items-center justify-content-start" >
+                            <span>
+                              <i class="fa-regular me-3 fa-envelope"></i>
+                            </span>
+                            <p> {account?.email ? account?.email : "user@mail.com"}
+                            </p>
+
+                            {/* <p >
                         <span>
                           <i className="fa-duotone fa-location-dot"></i>
                         </span>{" "}
                         {accountDetails?.billing_address &&
                           accountDetails?.billing_address[0].address}
-                      </p>
-                    </div>
-                    <div className="content ms-xl-auto col-xl-auto my-xl-auto mt-2">
-                      <div className="d-flex justify-content-xl-between gap-2">
-                        <div>
-                          <p className="fw-light">Country:</p>
-                          <p className="fw-light">Language:</p>
-                          <p className="fw-light">TimeZone:</p>
+                      </p> */}
+                          </div>
+
+
+                          <div className="content profileicons mt-1 d-flex align-items-center justify-content-start" >
+                            <span>
+                              <i class="fa-solid me-3 fa-location-dot"></i>
+                            </span>
+                            <p>{accountDetails?.billing_address && accountDetails?.billing_address[0].address}
+                            </p>
+                          </div>
                         </div>
-                        <div className="">
-                          <p>
-                            <img
-                              src={`https://flagsapi.com/${accountDetails?.billing_address[0].country}/flat/16.png`}
-                            ></img>
-                            &nbsp;&nbsp;
-                            {accountDetails?.billing_address[0].country}
-                          </p>
-                          <p>
-                            <img
-                              src={`https://flagsapi.com/GB/flat/16.png`}
-                            ></img>
-                            &nbsp;&nbsp;{account?.language && account?.language}
-                          </p>
-                          <p>{timeZoneVal && timeZoneVal[0].name}</p>
-                        </div>
+
                       </div>
                     </div>
+
                     {accountDetails.summery && (
                       <div className="summaryDetails">
                         <div className="content ms-0">
@@ -237,45 +230,51 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-              <div className="profileView mt-xl-2">
-                <div className="row">
-                  <div className="col-xl-6">
+
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="profileView">
                     <div className="profileDetailsHolder">
-                      <div className="header">Account Details</div>
-                      <div className="row" style={{ padding: 5 }}>
-                        <div className="formRow col-xl-12">
-                          <div className="formLabel">
-                            <label htmlFor="data">Profile Name</label>
-                          </div>
-                          <div className="col-6">
-                            <input
-                              type="text"
-                              className="formItem"
-                              value={
-                                account?.name ? account?.name : "User Name"
-                              }
-                              disabled
-                            />
-                          </div>
+                      <div className="profileView mt-xl-2">
+                        <div className="  d-flex align-items-center">
+                          {/* <div className="ribbon-left ">Account Details</div> */}
                         </div>
-                        <div className="formRow col-xl-12">
-                          <div className="formLabel">
-                            <label htmlFor="data">Email</label>
+
+                        <div className="row" style={{ padding: 5 }}>
+                          <div className="header">Account Details</div>
+                          <div className="formRow col-xl-12">
+                            <div className="formLabel">
+                              <label htmlFor="data">Profile Name</label>
+                            </div>
+                            <div className="col-6">
+                              <input
+                                type="text"
+                                className="formItem"
+                                value={
+                                  account?.name ? account?.name : "User Name"
+                                }
+                                disabled
+                              />
+                            </div>
                           </div>
-                          <div className="col-6">
-                            <input
-                              type="text"
-                              className="formItem"
-                              value={
-                                account?.email
-                                  ? account?.email
-                                  : "user@mail.com"
-                              }
-                              disabled
-                            />
+                          <div className="formRow col-xl-12">
+                            <div className="formLabel">
+                              <label htmlFor="data">Email</label>
+                            </div>
+                            <div className="col-6">
+                              <input
+                                type="text"
+                                className="formItem"
+                                value={
+                                  account?.email
+                                    ? account?.email
+                                    : "user@mail.com"
+                                }
+                                disabled
+                              />
+                            </div>
                           </div>
-                        </div>
-                        {/* <div className="formRow col-xl-4">
+                          {/* <div className="formRow col-xl-4">
                       <div className="formLabel">
                         <label htmlFor="data">Password</label>
                       </div>
@@ -288,7 +287,7 @@ const Profile = () => {
                         />
                       </div>
                     </div> */}
-                        {/* <div className="formRow col-xl-4">
+                          {/* <div className="formRow col-xl-4">
                       <div className="formLabel">
                         <label htmlFor="data">Country Code</label>
                       </div>
@@ -301,72 +300,78 @@ const Profile = () => {
                         />
                       </div>
                     </div> */}
-                        <div className="formRow col-xl-12">
-                          <div className="formLabel">
-                            <label htmlFor="data">Phone Number</label>
-                          </div>
-                          <div className="col-6">
-                            <input
-                              type="text"
-                              className="formItem"
-                              value={
-                                accountDetails?.contact_no &&
-                                accountDetails?.contact_no
-                              }
-                              disabled
-                            />
-                          </div>
-                        </div>
-                        <div className="formRow col-xl-12">
-                          <div className="formLabel">
-                            <label htmlFor="data">Extension</label>
-                          </div>
-                          <div className="col-6">
-                            <div className="row">
-                              <div className="col-7 pe-0">
-                                <select
-                                  className="formItem me-0"
-                                  style={{ width: "100%" }}
-                                  name="delay"
-                                  id="selectFormRow"
-                                  value={selectedExtension}
-                                  onChange={(e) => {
-                                    setSelectedExtension(e.target.value);
-                                  }}
-                                >
-                                  {extensionAll?.data?.map((item, index) => {
-                                    const foundUser = userWithExtension.find(
-                                      (value) =>
-                                        value.extension === item.extension
-                                    );
-                                    return (
-                                      <>
-                                        <option value={item.extension}>
-                                          {item.extension}{" "}
-                                          {foundUser
-                                            ? `(${foundUser.name})`
-                                            : ""}
-                                        </option>
-                                      </>
-                                    );
-                                  })}
-                                </select>
-                              </div>
-                              <div className="col-5">
-                                <button
-                                  className="panelButton ms-0"
-                                  style={{ height: '34px' }}
-                                  onClick={() => handleSetExtension()}
-                                // effect="ripple"
-                                >
-                                  <span className="text">Save</span>
-                                  <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
-                                </button>
-                              </div>
+                          <div className="formRow col-xl-12">
+                            <div className="formLabel">
+                              <label htmlFor="data">Phone Number</label>
+                            </div>
+                            <div className="col-6">
+                              <input
+                                type="text"
+                                className="formItem"
+                                value={
+                                  accountDetails?.contact_no &&
+                                  accountDetails?.contact_no
+                                }
+                                disabled
+                              />
                             </div>
                           </div>
-                        </div>
-                        {/* <div className="formRow col-xl-4">
+                          <div className="formRow col-xl-12">
+                            <div className="formLabel">
+                              <label htmlFor="data">Extension</label>
+                            </div>
+                            <div className="col-6">
+                              <div className="row">
+                                <div className="col-12 ">
+                                  <select
+                                    className="formItem me-0"
+                                    style={{ width: "100%" }}
+                                    name="delay"
+                                    id="selectFormRow"
+                                    value={selectedExtension}
+                                    onChange={(e) => {
+                                      setSelectedExtension(e.target.value);
+                                    }}
+                                  >
+                                    {extensionAll?.data?.map((item, index) => {
+                                      const foundUser = userWithExtension.find(
+                                        (value) =>
+                                          value.extension === item.extension
+                                      );
+                                      return (
+                                        <>
+                                          <option value={item.extension}>
+                                            {item.extension}{" "}
+                                            {foundUser
+                                              ? `(${foundUser.name})`
+                                              : ""}
+                                          </option>
+                                        </>
+                                      );
+                                    })}
+                                  </select>
+                                </div>
+
+                              </div>
+                            </div>
+
+                          </div>
+                          <div className="formRows   col-xl-12">
+                            <div className="float-end mt-3">
+                              <button
+                                className="panelButton ms-0"
+                                style={{ height: '34px' }}
+                                onClick={() => handleSetExtension()}
+                              // effect="ripple"
+                              >
+                                <span className="text">Save</span>
+                                <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                              </button>
+
+                            </div>
+
+                          </div>
+                          {/* <div className="formRow col-xl-4">
                       <div className="formLabel">
                         <label htmlFor="data">Two Factor Authentication</label>
                       </div>
@@ -383,75 +388,139 @@ const Profile = () => {
                         </select>
                       </div>
                     </div> */}
+                        </div>
                       </div>
                     </div>
+
+
+
                   </div>
-                  <div className="col-xl-6 mt-xl-0 mt-3">
-                    <div className="profileDetailsHolder position-relative">
-                      <div className="header d-flex align-items-center">
-                        <div className="col-12">Subscription Details</div>
+                </div>
+              </div>
+            </div>
+            <div className="col-xl-4">
+              <div className="row">
+                <div className="col-md-12">
+                <div className="profileView ">
+                <div className="profileDetailsHolder  baseDetails">
+                <div className="content">
+                <h5 className=" me-2">All details</h5>
+                    <div className="mt-2">
+                      <div className=" d-flex align-items-center justify-content-start ">
+                        <p className=" me-2">Country:</p>
+
+                        <p className="imgwidth d-flex ms-2 me-2">
+                          <img
+                            src={`https://flagsapi.com/${accountDetails?.billing_address[0].country}/flat/16.png`}
+                          ></img>
+                          &nbsp;&nbsp;
+                          {accountDetails?.billing_address[0].country}
+                        </p>
+
                       </div>
-                      <div className="row" style={{ padding: "5px" }}>
-                        <div className="wrapper">
-                          <ul>
-                            <li className="d-flex justify-content-between border-bottom py-2">
-                              <label className="formLabel">Package Name</label>{" "}
-                              <label className="formLabel details">
-                                {accountDetails.package.name}
-                              </label>
-                            </li>
-                            <li className="d-flex justify-content-between border-bottom py-2">
-                              <label className="formLabel">Package Price</label>{" "}
-                              <label className="formLabel details">
-                                ${accountDetails.package.offer_price}
-                              </label>
-                            </li>
-                            <li className="d-flex justify-content-between border-bottom py-2">
-                              <label className="formLabel">Package Type</label>{" "}
-                              <label className="formLabel details">
-                                {accountDetails.package.subscription_type}
-                              </label>
-                            </li>
-                            <li className="d-flex justify-content-between border-bottom py-2">
-                              <label className="formLabel">Subscription Start</label>{" "}
-                              <label className="formLabel details">
-                                {accountDetails?.subscription?.[0].start_date}
-                              </label>
-                            </li>
-                            <li className="d-flex justify-content-between border-bottom py-2">
-                              <label className="formLabel">Subscription End</label>{" "}
-                              <label className="formLabel details">
-                                {accountDetails?.subscription?.[0].end_date}
-                              </label>
-                            </li>
-                            <li className="d-flex justify-content-between border-bottom py-2">
-                              <label className="formLabel">Time of Payment</label>{" "}
-                              <label className="formLabel details">
-                                {accountDetails?.payments[0].transaction_date}
-                              </label>
-                            </li>
-                            <li className="d-flex justify-content-between border-bottom py-2">
-                              <label className="formLabel">Payment Status</label>{" "}
-                              <label className="formLabel details">
-                                {accountDetails?.payments[0].payment_status}
-                              </label>
-                            </li>
-                            <li className="d-flex justify-content-between border-bottom py-2">
-                              <label className="formLabel">Transaction Id</label>{" "}
-                              <label className="formLabel details">
-                                {accountDetails?.payments[0].transaction_id}
-                              </label>
-                            </li>
-                          </ul>
-                        </div>
+                      <div className=" d-flex align-items-center justify-content-start ">
+                        <p className=" me-2">Language:</p>
+                        <div >
+                          <p className="imgwidth d-flex  ms-2 me-2">
+                            <img
+                              src={`https://flagsapi.com/GB/flat/16.png`}
+                            ></img>
+                            &nbsp;&nbsp;{account?.language && account?.language}
+                          </p>
+                         </div>
+
+                      </div>
+                      <div className=" d-flex align-items-center justify-content-start ">
+                        <p className=" me-2">TimeZone:</p>
+
+                        <p className=" ms-2 me-2">{timeZoneVal && timeZoneVal[0].name}</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+                 
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="profileView mt-2">
+                    <div className="profileDetailsHolder">
+
+                      <div className="profileDetailsHolder0 position-relative">
+
+
+                        {/* <div className="ribbon">Subscription Details</div> */}
+
+
+                        <div className="row0" style={{ padding: "15px" }}>
+                          <div className="col-12 header">Subscription Details</div>
+                          <div className="wrapper0">
+                            <ul>
+                              <li className="d-flex justify-content-between border-bottom py-1">
+                                <label className="formLabel">Package Name</label>{" "}
+                                <label className="formLabel details">
+                                  {accountDetails.package.name}
+                                </label>
+                              </li>
+                              <li className="d-flex justify-content-between border-bottom py-1">
+                                <label className="formLabel">Package Price</label>{" "}
+                                <label className="formLabel details">
+                                  ${accountDetails.package.offer_price}
+                                </label>
+                              </li>
+                              <li className="d-flex justify-content-between border-bottom py-1">
+                                <label className="formLabel">Package Type</label>{" "}
+                                <label className="formLabel details">
+                                  {accountDetails.package.subscription_type}
+                                </label>
+                              </li>
+                              <li className="d-flex justify-content-between border-bottom py-1">
+                                <label className="formLabel">Subscription Start</label>{" "}
+                                <label className="formLabel details">
+                                  {accountDetails?.subscription?.[0].start_date}
+                                </label>
+                              </li>
+                              <li className="d-flex justify-content-between border-bottom py-1">
+                                <label className="formLabel">Subscription End</label>{" "}
+                                <label className="formLabel details">
+                                  {accountDetails?.subscription?.[0].end_date}
+                                </label>
+                              </li>
+                              <li className="d-flex justify-content-between border-bottom py-1">
+                                <label className="formLabel">Time of Payment</label>{" "}
+                                <label className="formLabel details">
+                                  {accountDetails?.payments[0].transaction_date}
+                                </label>
+                              </li>
+                              <li className="d-flex justify-content-between border-bottom py-1">
+                                <label className="formLabel">Payment Status</label>{" "}
+                                <label className="formLabel details">
+                                  {accountDetails?.payments[0].payment_status}
+                                </label>
+                              </li>
+                              <li className="d-flex justify-content-between border-bottom py-2">
+                                <label className="formLabel">Transaction Id</label>{" "}
+                                <label className="formLabel details">
+                                  {accountDetails?.payments[0].transaction_id}
+                                </label>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
             </div>
+
             <div className="col-xl-3">
-              <div className="profileView mt-xl-3" style={{ height: "100%" }}>
+              <div className="profileView " style={{ height: "100%" }}>
                 <div
                   className="profileDetailsHolder"
                   style={{ position: "sticky", top: 0 }}
@@ -462,17 +531,29 @@ const Profile = () => {
                     <ul>
                       <li>
                         <Link to="/extensions" onClick={backToTop}>
-                          Buy Extensions
+                          <div className="arrowicon me-1">
+                            <i class="fa-solid me-1 fa-arrow-right"></i>
+                            Buy Extensions
+                          </div>
+
                         </Link>
                       </li>
                       <li>
                         <Link to="/users" onClick={backToTop}>
-                          Increase Users
+                          <div className="arrowicon me-1">
+                            <i class="fa-solid me-1 fa-arrow-right"></i>
+                            Increase Users
+                          </div>
+
                         </Link>
                       </li>
                       <li>
                         <Link onClick={() => featureUnderdevelopment()}>
-                          Explore Modules
+                          <div className="arrowicon me-1">
+                            <i class="fa-solid me-1 fa-arrow-right"></i>
+                            Explore Modules
+                          </div>
+
                         </Link>
                       </li>
                     </ul>
@@ -480,12 +561,20 @@ const Profile = () => {
                     <ul>
                       <li>
                         <Link onClick={() => featureUnderdevelopment()}>
-                          Setup Guide
+                          <div className="arrowicon me-1">
+                            <i class="fa-solid me-1 fa-arrow-right"></i>
+                            Setup Guide
+                          </div>
+
                         </Link>
                       </li>
                       <li>
                         <Link onClick={() => featureUnderdevelopment()}>
-                          Documentation
+                          <div className="arrowicon me-1">
+                            <i class="fa-solid me-1 fa-arrow-right"></i>
+                            Documentation
+                          </div>
+
                         </Link>
                       </li>
                     </ul>
@@ -497,7 +586,11 @@ const Profile = () => {
                             navigate("https://ucaas.webvio.in:3001/")
                           }
                         >
-                          Know about us!
+                          <div className="arrowicon me-1">
+                            <i class="fa-solid me-1 fa-arrow-right"></i>
+                            Know about us!
+                          </div>
+
                         </Link>
                       </li>
                       <li>
@@ -506,7 +599,11 @@ const Profile = () => {
                             navigate("https://ucaas.webvio.in:3001/")
                           }
                         >
-                          Connect with us!
+                          <div className="arrowicon me-1">
+                            <i class="fa-solid me-1 fa-arrow-right"></i>
+                            Connect with us!
+                          </div>
+
                         </Link>
                       </li>
                     </ul>
@@ -517,56 +614,58 @@ const Profile = () => {
           </div>
         </div>
       </section>
-      {popup ? (
-        <div className="popup">
-          <div className="container h-100">
-            <div className="row h-100 justify-content-center align-items-center">
-              <div className="row content col-xl-4">
-                <div className="col-2 px-0">
-                  <div className="iconWrapper">
-                    <i className="fa-duotone fa-triangle-exclamation"></i>
+      {
+        popup ? (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <div className="row content col-xl-4">
+                  <div className="col-2 px-0">
+                    <div className="iconWrapper">
+                      <i className="fa-duotone fa-triangle-exclamation"></i>
+                    </div>
                   </div>
-                </div>
-                <div className="col-10 ps-0">
-                  <h4>Warning!</h4>
-                  <p>
-                    {preassignedExtension
-                      ? `By Confirming this, ${selectedExtension} extension will be assigned to you and pre-assigned user will be unassigned of any extension. `
-                      : `By Confirming this, ${selectedExtension} extension will be assigned to you.`}
-                    ?
-                  </p>
+                  <div className="col-10 ps-0">
+                    <h4>Warning!</h4>
+                    <p>
+                      {preassignedExtension
+                        ? `By Confirming this, ${selectedExtension} extension will be assigned to you and pre-assigned user will be unassigned of any extension. `
+                        : `By Confirming this, ${selectedExtension} extension will be assigned to you.`}
+                      ?
+                    </p>
 
-                  <div className="d-flex justify-content-between">
-                    <button
-                      className="panelButton m-0"
-                      onClick={() => {
-                        handleUpdateExtension();
-                      }}
-                    >
-                      <span className="text">Confirm</span>
-                      <span className="icon">
-                        <i class="fa-solid fa-check"></i>
-                      </span>
-                    </button>
-                    <button
-                      className="panelButtonWhite m-0 float-end"
-                      onClick={() => {
-                        setPopup(false);
-                        setPreassignedExtension(false);
-                      }}
-                    >
-                      Cancel
-                    </button>
+                    <div className="d-flex justify-content-between">
+                      <button
+                        className="panelButton m-0"
+                        onClick={() => {
+                          handleUpdateExtension();
+                        }}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-check"></i>
+                        </span>
+                      </button>
+                      <button
+                        className="panelButtonWhite m-0 float-end"
+                        onClick={() => {
+                          setPopup(false);
+                          setPreassignedExtension(false);
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        ""
-      )}
-    </main>
+        ) : (
+          ""
+        )
+      }
+    </main >
   );
 };
 

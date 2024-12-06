@@ -4,24 +4,51 @@
 
 .profileView .profileDetailsHolder {
     /* border: 1px solid #c9c9c970; */
-    padding: 10px;
+    /* padding: 9px 0px 0px 0px; */
     border-radius: 10px;
     background-color: var(--ele-color);
     /* box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 5px; */
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
+    box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
+   
 }
 
 .profileView .baseDetails {
     display: flex;
-    padding: 5px;
+    padding: 15px;
     flex-wrap: wrap;
 }
 
+.profilenames {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* position: absolute;
+    bottom: 3px;
+    left: 127px; */
+}
+
+.profileicons span i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ui-accent);
+    background-color: #e7f2ff;
+    height: 20px;
+    width: 20px;
+    font-size: 10px;
+    border-radius: 50px
+
+}
+
 .profileView .baseDetails .profilePicHolder {
-    width: 80px;
-    height: 80px;
-    border-radius: 10px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
     overflow: hidden;
+    position: relative;
+    /* bottom: 49px; */
+    border: 9px solid #e3e3e3;
 }
 
 .profileView .baseDetails .profilePicHolder img {
@@ -35,14 +62,14 @@
 } */
 
 .profileView .baseDetails .content h5 {
-    font-size: 19px !important;
+    font-size: 17px !important;
     margin-bottom: 5px;
 }
 
 .profileView .baseDetails .content p {
     margin-bottom: 0;
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 13px;
+    font-weight: 400;
     color: var(--color-subtext);
 }
 
@@ -52,9 +79,19 @@
 }
 
 .profileView .baseDetails .content p span {
-    width: 18px;
-    display: inline-block;
+    /* display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--ui-accent);
+    background-color:#e7f2ff ;
+    height: 30px;
+    width: 30px;
+    border-radius: 50px; */
+}
+
+
+.imgwidth img {
+    width: 25px;
 }
 
 .profileView .baseDetails .summaryDetails {
@@ -66,7 +103,7 @@
 }
 
 .profileView .profileDetailsHolder .qLinkContent {
-    /* padding: 5px; */
+    padding: 15px;
 }
 
 .profileDetailsHolder .qLinkContent ul {
@@ -76,9 +113,13 @@
 
 .qLinkContent ul li a {
     text-decoration: none;
-    color: var(--color-subtext);
-    font-size: 15px;
+    color: #449fff;
+    font-size: 12px;
     font-weight: 400;
+}
+
+.arrowicon i{
+    color: var(--color-subtext);
 }
 
 .qLinkContent h5 {
@@ -93,15 +134,22 @@
 }
 
 .profileView .profileDetailsHolder .header {
+    /* border-right: 4px solid var(--ui-accent); */
+    /* margin-left: -10px; */
+    /* padding: 5px 10px; */
+    font-weight: 600;
+
+    
+}
+
+.profileView .profileDetailsHolder .header-left {
     border-left: 4px solid var(--ui-accent);
-    margin-left: -10px;
-    padding: 5px 10px;
     font-weight: 500;
 }
 
-.profileView .permissionListWrapper .header {
+/* .profileView .permissionListWrapper .header {
     padding: 5px 13px;
-}
+} */
 
 /* Progress Bar Start */
 
@@ -225,3 +273,93 @@
 }
 
 /* Progress Bar End */
+
+/* ribbon */
+
+/* HTML: <div class="ribbon">Your text content</div> */
+/* .ribbon {
+    font-size: 22px;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+}
+
+.ribbon {
+    --r: 0.8em;
+    border-block: .5em solid #0000;
+    padding-inline: calc(var(--r) + 0.25em) 3.5em;
+    line-height: 1.8;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 calc(100% - .25em), var(--r) 50%, 0 .25em);
+    background: radial-gradient(.2em 50% at right, #000a, #0000) border-box, #3e8ef7 padding-box;
+    width: -moz-fit-content;
+    width: 100%
+} */
+
+/* .ribbon-left {
+    font-size: 22px;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+}
+
+.ribbon-left {
+    --r: .8em;
+
+
+    border-block: .5em solid #0000;
+    padding-inline: .5em calc(var(--r) + .25em);
+    line-height: 1.8;
+    clip-path: polygon(100% 0, 0 0, 0 100%, 100% 100%, 100% calc(100% - .25em), calc(100% - var(--r)) 50%, 100% .25em);
+    background:
+        radial-gradient(.2em 50% at left, #000a, #0000) border-box,
+        #3e8ef7 padding-box;
+   
+    width: 100%;
+} */
+
+/* 
+.badge-promo {
+    position: relative;
+    overflow: hidden;
+    max-height: 60px;
+    margin-bottom: -8px;
+    z-index: 1;
+    padding: 12px 14px;
+    border-radius: 2px 2px 0 0;
+    color: #fff;
+    text-align: left;
+  
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  
+   
+  
+    &:after {
+        background: #1da2ff;
+        height: 100%;
+        width: 110%;
+      
+    }
+  }
+  
+  .badge-promo-content {
+    position: relative;
+    z-index: 1;
+    font-family: sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+  } */
+
+
+.float-end {
+    text-align: end;
+}
+
+.no-wrap-text{
+    text-wrap: nowrap;
+}
