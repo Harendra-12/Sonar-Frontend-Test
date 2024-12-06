@@ -10,7 +10,7 @@ import { ConferenceCall } from "./ConferenceCall";
 import ContentLoader from "../../Loader/ContentLoader";
 import { useSelector } from "react-redux";
 
-const ConferenceConfig = ({setactivePage}) => {
+const ConferenceConfig = ({setactivePage,setConferenceToggle,setConferenceId,conferenceId,conferenceToggle}) => {
   const [conferenceName, setConferenceName] = useState("");
   const [conferenceType, setConferenceType] = useState("public");
   const [loading, setLoading] = useState(false);
@@ -22,10 +22,10 @@ const ConferenceConfig = ({setactivePage}) => {
   const [moh, setMoh] = useState("");
   const [allConferences, setAllConferences] = useState([]);
   const [conferenceRefresh, setConferenceRefresh] = useState(0);
-  const [conferenceToggle, setConferenceToggle] = useState(false);
+  // const [conferenceToggle, setConferenceToggle] = useState(false);
   const sessions = useSelector((state) => state.sessions);
   const account = useSelector((state) => state.account);
-  const [conferenceId, setConferenceId] = useState("");
+  // const [conferenceId, setConferenceId] = useState("");
   const [error, setError] = useState("");
   const [selectedTab, setselectedTab] = useState("");
 
@@ -120,14 +120,7 @@ const ConferenceConfig = ({setactivePage}) => {
   console.log("loading", loading);
   return (
     <>
-      {conferenceToggle ? (
-        <ConferenceCall
-          name={account.username}
-          extension_id={`${account?.extension?.extension}@${account.domain.domain_name}`}
-          room_id={conferenceId}
-          setactivePage={setactivePage}
-        />
-      ) : (
+     
         <main
           className="mainContentApp"
           style={{
@@ -550,7 +543,8 @@ const ConferenceConfig = ({setactivePage}) => {
                                       validateAndSetConferenceId(conferenceId)
                                     }
                                   >
-                                    JOIN
+                                    <span className="text">JOIN</span>
+                                    <span className="icon"><i className="fa-solid fa-right-to-bracket"></i></span>
                                   </div>
                                 </div>
                                 {/* <div className="formRow col-xl-3">
@@ -585,7 +579,7 @@ const ConferenceConfig = ({setactivePage}) => {
             </div>
           </section>
         </main>
-      )}
+    
     </>
   );
 };
