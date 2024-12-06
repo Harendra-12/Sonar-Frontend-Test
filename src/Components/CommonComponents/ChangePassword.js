@@ -103,7 +103,7 @@ function ChangePassword() {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <div>
-                      <label className="text-dark">Current Password</label>
+                      <label className="text-dark">Current Password : </label>
                       {errorOldPassword ? (
                         <label className="status missing">Field Missing</label>
                       ) : (
@@ -133,7 +133,7 @@ function ChangePassword() {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <div>
-                      <label className="text-dark">New Password</label>
+                      <label className="text-dark">New Password : </label>
                       {errorNewPassword ? (
                         <label className="status missing">
                           Password must be at least 6 characters
@@ -165,7 +165,7 @@ function ChangePassword() {
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <div>
-                      <label className="text-dark">Confirm Password</label>
+                      <label className="text-dark">Confirm Password :</label>
                       {errorConfirm ? (
                         <label className="status missing">
                           Password do not matched
