@@ -34,7 +34,7 @@ function ConferenceJoin() {
     // window.addEventListener("beforeunload", (event) => {
     //     // Custom logic before showing the confirmation
     //     // callAction("hup");
-    
+
     //     // Set a generic confirmation dialog
     //     event.preventDefault();
     //     event.returnValue = ""; // Required for most browsers to show the dialog
