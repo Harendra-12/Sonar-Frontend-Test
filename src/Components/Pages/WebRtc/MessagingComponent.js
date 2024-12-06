@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useSIPProvider, useSessionCall, CONNECT_STATUS } from 'react-sipjs';
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useSIPProvider, useSessionCall, CONNECT_STATUS } from "react-sipjs";
 
 const MessagingComponent = () => {
-    const account = useSelector((state) => state.account);
+  const account = useSelector((state) => state.account);
   const [selectedExtension, setSelectedExtension] = useState(null); // Track the selected extension
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [receivedMessages, setReceivedMessages] = useState([]);
   const [session, setSession] = useState(null); // Track the active SIP session
   const sipProvider = useSIPProvider(); // Get SIP provider for managing messages
@@ -39,7 +39,7 @@ const MessagingComponent = () => {
       setSession(newSession); // Store the session in state
 
       // Listen for messages on this session
-      newSession.on('message', (messageEvent) => {
+      newSession.on("message", (messageEvent) => {
         setReceivedMessages((prevMessages) => [
           ...prevMessages,
           messageEvent.body,
@@ -47,11 +47,11 @@ const MessagingComponent = () => {
       });
 
       // Handle session end
-      newSession.on('bye', () => {
+      newSession.on("bye", () => {
         setSession(null); // Clear session when the call ends
       });
     } else {
-      console.error('SIP provider is not ready for creating a session.');
+      console.error("SIP provider is not ready for creating a session.");
     }
   };
 
@@ -59,9 +59,9 @@ const MessagingComponent = () => {
   const handleSendMessage = () => {
     if (session) {
       session.sendMessage(message);
-      setMessage(''); // Clear the input field after sending
+      setMessage(""); // Clear the input field after sending
     } else {
-      console.error('No active SIP session to send the message.');
+      console.error("No active SIP session to send the message.");
     }
   };
 
@@ -85,7 +85,7 @@ const MessagingComponent = () => {
             placeholder="Type your message"
           />
           <button onClick={handleSendMessage} disabled={!session}>
-            {session ? 'Send' : 'No Active Session'}
+            {session ? "Send" : "No Active Session"}
           </button>
 
           <h3>Received Messages</h3>

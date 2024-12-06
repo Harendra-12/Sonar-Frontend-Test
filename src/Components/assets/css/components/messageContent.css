@@ -585,8 +585,27 @@
     -webkit-font-smoothing: antialiased;
 }
 
-.videoCallWrapper .videoBody .participant[data-pin="true"]::before {
-    content: '\f08d';
+.videoCallWrapper .videoBody .participant[data-speaker="true"]::before {
+    content: '\f6a8';
+    font-family: 'FontAwesome';
+    background-color: #01c78e;
+    color: #fff;
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    bottom: -4px;
+    left: -10px;
+    z-index: 1;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    -webkit-font-smoothing: antialiased;
+}
+
+.videoCallWrapper .videoBody .participant[data-speaker="false"]::before {
+    content: '\f2e2';
     font-family: 'FontAwesome';
     background-color: #01c78e;
     color: #fff;
