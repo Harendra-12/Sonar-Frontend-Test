@@ -520,11 +520,11 @@
 }
 
 .tableLabel.success {
-  background-color: #00ab2b;
+  background-color: #008b23;
 }
 
 .tableLabel.fail {
-  background-color: #ff0000;
+  background-color: #ff4343;
 }
 
 .tableLabel.pending {

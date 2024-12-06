@@ -535,9 +535,8 @@ function GetDid() {
                             <span className="checkmark"></span>
                           </li>
                         </ul>
-                        <button className="payNow" onClick={handlePayment}>
-                          Pay Now{" "}
-                          <i class="fa-sharp fa-solid fa-arrow-right"></i>
+                        <button className="panelButton static" onClick={handlePayment}>
+                          <span class="text">Pay Now</span>
                         </button>
                       </div>
                     </div>

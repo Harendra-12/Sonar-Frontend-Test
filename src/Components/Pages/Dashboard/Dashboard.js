@@ -1366,7 +1366,7 @@ const Dashboard = () => {
                                 Price: ${accountDetails?.package?.regular_price}{" "}
                                 /{" "}
                                 {accountDetails?.package?.subscription_type ===
-                                "annually"
+                                  "annually"
                                   ? "Anually"
                                   : "Monthly"}
                               </p>
@@ -1420,7 +1420,7 @@ const Dashboard = () => {
                               <h5>${accountDetails?.package?.regular_price}</h5>
                               <p>
                                 {accountDetails?.package?.subscription_type ===
-                                "annually"
+                                  "annually"
                                   ? "Annually"
                                   : "Monthly"}{" "}
                                 Basis
