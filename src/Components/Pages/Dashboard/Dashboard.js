@@ -8,6 +8,7 @@ import DoughnutChart from "../../CommonComponents/DoughnutChart";
 import GraphChart from "../../CommonComponents/GraphChart";
 import { Link, useNavigate } from "react-router-dom";
 import "react-clock/dist/Clock.css";
+import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 const Dashboard = () => {
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
@@ -32,12 +33,15 @@ const Dashboard = () => {
     if (registerUser.length > 0) {
       setOnlineExtension(
         registerUser.map((item) => {
-          return item.extension;
+          if (item.account_id === account.account_id) {
+            return item.extension;
+          }
         })
       );
     } else {
       setOnlineExtension([0]);
     }
+    generalGetFunction("/freeswitch/checkActiveExtensionOnServer");
   }, [registerUser]);
   console.log(permissions);
 

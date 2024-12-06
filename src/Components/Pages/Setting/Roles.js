@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   backToTop,
   generalDeleteFunction,
@@ -6,20 +6,23 @@ import {
   generalPostFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import Header from "../../CommonComponents/Header";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import ContentLoader from "../../Loader/ContentLoader";
+
+import Tippy from "@tippyjs/react";
 
 function Roles() {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
-  const rolesAndPermissionRefresh = useSelector(
-    (state) => state.rolesAndPermissionRefresh
-  );
+  // const rolesAndPermissionRefresh = useSelector(
+  //   (state) => state.rolesAndPermissionRefresh
+  // );
+  const rolesRefresh = useSelector((state) => state.rolesRefresh);
+  const permissionRefresh = useSelector((state) => state.permissionRefresh);
   const roles = useSelector((state) => state.roles);
   const permissions = useSelector((state) => state.permissions);
   const [role, setRole] = useState();
@@ -31,46 +34,56 @@ function Roles() {
   const [newRole, setNewRole] = useState("");
   const [addRole, setAddRole] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState();
-  const [refresh, setRefresh] = useState(0);
   const [loading, setLoading] = useState(false);
   const [selectedRoleId, setSelectedRoleId] = useState();
   const [selectedRole, setSelectedRole] = useState();
   const [selectedPermission, setSelectedPermission] = useState([]);
   const [defaultPermission, setDefaultPermission] = useState();
   const navigate = useNavigate();
-
-  // Getting the role and permission information at the very initial state
-  // useEffect(() => {
-  //   async function getData() {
-  //     const apiData = await generalGetFunction(`/role/all`);
-  //     const permissionData = await generalGetFunction("/permission");
-  //     if (apiData.status) {
-  //       setRole(apiData.data);
-  //     }
-  //     if (permissionData.status) {
-  //       setDefaultPermission(permissionData.data);
-  //     }
-  //   }
-  //   getData();
-  // }, [refresh]);
+  const inputRefs = useRef([]);
 
   useEffect(() => {
     if (roles.length === 0) {
       setLoading(true);
     }
+    // dispatch({
+    //   type: "SET_ROLES_PERMISSIONREFRESH",
+    //   rolesAndPermissionRefresh: rolesAndPermissionRefresh + 1,
+    // });
     dispatch({
-      type: "SET_ROLES_PERMISSIONREFRESH",
-      rolesAndPermissionRefresh: rolesAndPermissionRefresh + 1,
+      type: "SET_ROLES_REFRESH",
+      rolesRefresh: rolesRefresh + 1,
     });
+    dispatch({
+      type: "SET_PERMISSION_REFRESH",
+      permissionRefresh: permissionRefresh + 1,
+    });
+    if (roles.length > 0) {
+      setLoading(false);
+      setSelectedRoleId(roles[0]?.id);
+      setSelectedRole(roles[0]?.name);
+      setSelectedPermission(
+        roles[0]?.permissions?.map((item) => {
+          return item.permission_id;
+        })
+      );
+    }
   }, []);
-  console.log("roles", roles);
+
   useEffect(() => {
     if (roles.length > 0) {
       setLoading(false);
+      setSelectedRoleId(roles[0]?.id);
+      setSelectedRole(roles[0]?.name);
+      setSelectedPermission(
+        roles[0]?.permissions?.map((item) => {
+          return item.permission_id;
+        })
+      );
     }
     setRole(roles);
     setDefaultPermission(permissions);
-  }, [roles, permissions, rolesAndPermissionRefresh]);
+  }, [roles, permissions, rolesRefresh, permissionRefresh]);
 
   // Handle Role pop up confirm click
   async function handleSubmit() {
@@ -89,8 +102,8 @@ function Roles() {
           setLoading(false);
           // setRefresh(refresh + 1);
           dispatch({
-            type: "SET_ROLES_PERMISSIONREFRESH",
-            rolesAndPermissionRefresh: rolesAndPermissionRefresh + 1,
+            type: "SET_ROLES_REFRESH",
+            rolesRefresh: rolesRefresh + 1,
           });
           toast.success(apiData.message);
           setPopup(false);
@@ -138,9 +151,11 @@ function Roles() {
         toast.success(apiData.success);
         setLoading(false);
         dispatch({
-          type: "SET_ROLES_PERMISSIONREFRESH",
-          rolesAndPermissionRefresh: rolesAndPermissionRefresh + 1,
+          type: "SET_ROLES_REFRESH",
+          rolesRefresh: rolesRefresh + 1,
         });
+        setSelectedRole();
+        setSelectedRoleId();
       } else {
         setLoading(false);
         // const errorMessage = Object.keys(apiData.errors);
@@ -173,8 +188,8 @@ function Roles() {
       setLoading(false);
       toast.success(apiData.message);
       dispatch({
-        type: "SET_ROLES_PERMISSIONREFRESH",
-        rolesAndPermissionRefresh: rolesAndPermissionRefresh + 1,
+        type: "SET_ROLES_REFRESH",
+        rolesRefresh: rolesRefresh + 1,
       });
     } else {
       setLoading(false);
@@ -408,6 +423,9 @@ function Roles() {
                                       disabled={
                                         editIndex === index ? false : true
                                       }
+                                      ref={(el) =>
+                                        (inputRefs.current[index] = el)
+                                      }
                                     ></input>
                                   </div>
                                   <div className="col-auto d-flex justify-content-end">
@@ -419,21 +437,39 @@ function Roles() {
                                       }
                                     >
                                       {editIndex === index ? (
-                                        <i
-                                          className="fa-solid fa-check"
-                                          onClick={() => {
-                                            setPopup(true);
-                                            setEditClick(true);
-                                            setAddRole(false);
-                                          }}
-                                        ></i>
+                                        <Tippy content="Save Updated Role title">
+                                          <i
+                                            className="fa-solid fa-check"
+                                            onClick={() => {
+                                              setPopup(true);
+                                              setEditClick(true);
+                                              setAddRole(false);
+                                            }}
+                                          ></i>
+                                        </Tippy>
                                       ) : (
-                                        <i
-                                          className="fa-solid fa-pen-to-square"
-                                          onClick={() => {
-                                            setEditIndex(index);
-                                          }}
-                                        ></i>
+                                        <Tippy content="Edit Role title">
+                                          <i
+                                            className="fa-solid fa-pen-to-square"
+                                            onClick={() => {
+                                              setTimeout(() => {
+                                                inputRefs.current[
+                                                  index
+                                                ]?.focus(); // Focus on the specific input
+                                              }, 0);
+                                              setEditIndex(index);
+                                              setSelectedRoleId(item.id);
+                                              setSelectedRole(item.name);
+                                              setSelectedPermission(
+                                                item.permissions?.map(
+                                                  (item) => {
+                                                    return item.permission_id;
+                                                  }
+                                                )
+                                              );
+                                            }}
+                                          ></i>
+                                        </Tippy>
                                       )}
                                     </button>
                                     <button className="tableButton delete mx-2">
@@ -444,6 +480,13 @@ function Roles() {
                                           setDeleteIndex(index);
                                           setEditClick(false);
                                           setAddRole(false);
+                                          setSelectedRoleId(item.id);
+                                          setSelectedRole(item.name);
+                                          setSelectedPermission(
+                                            item.permissions?.map((item) => {
+                                              return item.permission_id;
+                                            })
+                                          );
                                         }}
                                       ></i>
                                     </button>
@@ -494,20 +537,17 @@ function Roles() {
                                     {selectedRole}
                                   </span>
                                 </div>
-
-                                {selectedRole !== "Agent" && (
-                                  <div className="col-auto text-end">
-                                    <button
-                                      className="panelButton ms-auto"
-                                      onClick={handlePermissionSave}
-                                    >
-                                      <span className="text">Confirm</span>
-                                      <span className="icon">
-                                        <i class="fa-solid fa-check"></i>
-                                      </span>
-                                    </button>
-                                  </div>
-                                )}
+                                <div className="col-auto text-end">
+                                  <button
+                                    className="panelButton ms-auto"
+                                    onClick={handlePermissionSave}
+                                  >
+                                    <span className="text">Confirm</span>
+                                    <span className="icon">
+                                      <i class="fa-solid fa-check"></i>
+                                    </span>
+                                  </button>
+                                </div>
                               </div>
                             </div>
                             {selectedRole === "Agent" ? (

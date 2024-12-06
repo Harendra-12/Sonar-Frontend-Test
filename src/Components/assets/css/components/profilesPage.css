@@ -54,7 +54,7 @@
 .profileView .baseDetails .content p span {
     width: 18px;
     display: inline-block;
-    color: var(--ui-icon);
+    color: var(--ui-accent);
 }
 
 .profileView .baseDetails .summaryDetails {

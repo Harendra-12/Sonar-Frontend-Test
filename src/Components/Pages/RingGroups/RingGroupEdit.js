@@ -1378,11 +1378,11 @@ const RingGroupEdit = () => {
                           {destination.length === 1 ? (
                             ""
                           ) : (
-                            <div className="col-auto h-100 my-auto">
+                            <div className={`col-auto h-100 m${index === 0 ? "t" : "y"}-auto`}>
                               <button
                                 type="button"
                                 onClick={() => deleteDestination(item.id)}
-                                className="tableButton text-danger"
+                                className="tableButton delete"
                               >
                                 <i className="fa-solid fa-trash"></i>
                               </button>

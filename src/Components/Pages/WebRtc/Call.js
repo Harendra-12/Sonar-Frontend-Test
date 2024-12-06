@@ -3,14 +3,12 @@
 import React, { useEffect, useState } from "react";
 import Dialpad from "./Dialpad";
 import CallDetails from "./CallDetails";
-import OngoingCall from "./OngoingCall";
 import { useDispatch, useSelector } from "react-redux";
 import AddNewContactPopup from "./AddNewContactPopup";
 import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 import { toast } from "react-toastify";
 import { useSIPProvider } from "react-sipjs";
-import VideoCall from "./VideoCall";
 import { featureUnderdevelopment, generalGetFunction } from "../../GlobalFunction/globalFunction";
 
 function Call({
@@ -32,7 +30,6 @@ function Call({
   const [clickStatus, setClickStatus] = useState("all");
   const callProgress = useSelector((state) => state.callProgress);
   const videoCall = useSelector((state) => state.videoCall);
-  const callProgressId = useSelector((state) => state.callProgressId);
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
   const [allCalls, setAllCalls] = useState([]);
@@ -47,9 +44,6 @@ function Call({
   const [callHistory, setCallHistory] = useState([]);
   const { sessionManager, connectStatus } = useSIPProvider();
   const [refreshCalls, setRefreshCalls] = useState(0);
-  const callProgressDestination = useSelector(
-    (state) => state.callProgressDestination
-  );
   const [clickedExtension, setClickedExtension] = useState(null);
 
   function handleHideDialpad(value) {
@@ -209,14 +203,14 @@ function Call({
       onClick={() => handleCallItemClick(item)}
       onDoubleClick={() => handleDoubleClickCall(item)}
       className={`callListItem ${item["Caller-Callee-ID-Number"] === extension &&
-        item["variable_billsec"] > 0
+        item["variable_billsec"] > 0 && !isCustomerAdmin
         ? "incoming"
-        : item["Caller-Caller-ID-Number"] === extension
+        : item["Caller-Caller-ID-Number"] === extension && !isCustomerAdmin
           ? "outgoing"
           : item["Caller-Callee-ID-Number"] === extension &&
-            item["variable_billsec"] === 0
+            item["variable_billsec"] === 0 && !isCustomerAdmin
             ? "missed"
-            : item["Call-Direction"] === "voicemail"
+            : item["Call-Direction"] === "voicemail" && !isCustomerAdmin
               ? "voicemail"
               : ""
         } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
@@ -245,7 +239,7 @@ function Call({
             <div className="col-4 my-auto ms-2 ms-xl-5" style={{ cursor: "pointer" }}>
               <h4>
                 {item["Caller-Callee-ID-Number"]}
-                ==<i class="fa-solid fa-angles-right"></i>
+                {item["variable_billsec"] > 0 ? <i class="fa-solid fa-phone mx-2" style={{ color: 'var(--ui-accent)' }}></i> : <i class="fa-solid fa-phone-xmark mx-2" style={{ color: 'red' }}></i>}
                 {item["Caller-Caller-ID-Number"]}
               </h4>
               {/* <div className="contactTags">

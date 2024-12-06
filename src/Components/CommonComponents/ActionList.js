@@ -75,6 +75,8 @@ const ActionList = ({
       }
       const defaultOption = { value: value, label: labelValue };
       setSelectedOption(defaultOption);
+    } else {
+      setSelectedOption("");
     }
   }, [value, labelValue, category, ivrArr]);
 
@@ -146,6 +148,7 @@ const ActionList = ({
       // border: '1px solid var(--color4)',
       border: "1px solid var(--color4);",
       borderRadius: "5px",
+      backgroundColor: 'var(--ele-color)',
       outline: "none",
       fontSize: "14px",
       width: "100%",
@@ -161,9 +164,14 @@ const ActionList = ({
       height: "32px",
       padding: "0 6px",
     }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: 'var(--form-input-text)'
+    }),
     input: (provided) => ({
       ...provided,
       margin: "0",
+      color: 'var(--form-input-text)'
     }),
     indicatorSeparator: (provided) => ({
       display: "none",
@@ -174,9 +182,9 @@ const ActionList = ({
     }),
     dropdownIndicator: (provided) => ({
       ...provided,
-      color: "#202020",
+      color: "var(--form-input-text)",
       "&:hover": {
-        color: "#202020",
+        color: "var(--ui-accent)",
       },
     }),
     option: (provided, state) => ({
@@ -195,6 +203,7 @@ const ActionList = ({
       ...provided,
       margin: 0,
       padding: 0,
+      backgroundColor: "var(--ele-color)",
     }),
     menuList: (provided) => ({
       ...provided,
@@ -202,6 +211,7 @@ const ActionList = ({
       margin: 0,
       maxHeight: "150px",
       overflowY: "auto",
+      color: 'var(--form-input-text)'
     }),
   };
 

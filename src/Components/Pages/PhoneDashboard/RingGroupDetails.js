@@ -10,7 +10,7 @@ const RingGroup = () => {
   const [ringGroupData, setRingGroupData] = useState([]);
   const activeCall = useSelector((state) => state.activeCall);
   const [activeCallData, setActiveCallData] = useState([]);
-
+  const [ringGroupDataLoading, setRingGroupDataLoading] = useState(true);
   useEffect(() => {
     if (ringGroupRefresh > 0) {
       const filterRinggroup = () => {
@@ -26,11 +26,13 @@ const RingGroup = () => {
             }
           });
         }
-        setRingGroupData(
-          filteredData.filter(
-            (data) => data && data["Call-Direction"] === "inbound"
-          )
+        const filteredRingGroup = filteredData.filter(
+          (data) => data && data["Call-Direction"] === "inbound"
         );
+        if (filteredRingGroup.length > 0) {
+          setRingGroupDataLoading(false);
+        }
+        setRingGroupData(filteredRingGroup);
       };
       filterRinggroup();
     } else {
@@ -63,11 +65,14 @@ const RingGroup = () => {
     <div
       className="tabGroupDetails"
       data-id={2}
-    // style={{ display: "none" }}
+      // style={{ display: "none" }}
     >
       <div className="col-12">
         <div className="col-12 title text-start">
           <i className="fa-duotone fa-ball-pile" /> Ring Group{" "}
+          {ringGroupDataLoading && (
+            <i class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}></i>
+          )}
         </div>
         {ringGroupData &&
           ringGroup &&

@@ -71,6 +71,7 @@
   padding: 0;
   text-decoration: none;
   margin-left: 10px;
+  position: relative;
 }
 
 .panelButton.delete {
@@ -125,7 +126,7 @@
 }
 
 .panelButton:hover .icon {
-  width: 100px;
+  width: 100%;
   border-left: none;
   transform: translateX(0);
 }
@@ -138,23 +139,32 @@
   transform: scale(0.8);
 }
 
+.panelButton.static {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+
+.panelButton.static:hover .text {
+  color: #fff
+}
+
 .toggleButton {
   border: none;
-  padding: 5px 10px;
-  margin: 5px 5px;
-  border-radius: 3px;
-  font-size: 13px !important;
+  padding: 0px 16px;
+  height: 37px;
+  border-radius: 5px;
+  font-size: 14px !important;
   font-weight: 500 !important;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;
   text-decoration: none;
-  color: var(--button-dark);
+  color: #000;
   background-color: #fff;
-  border: 1px solid #868686;
+  transition: 0.2s;
 }
 
-.toggleButton.active {
-  background: var(--button-dark);
-  border: 1px solid var(--button-dark);
+.toggleButton:active {
+  background: #474747;
   color: #fff;
 }
 
@@ -715,4 +725,22 @@
     transform: scale(2);
     background-color: rgba(245, 0, 182, 0);
   }
+}
+
+.videoConferenceButton {
+  background-color: transparent;
+  border: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: 0.2s ease-in-out;
+}
+
+.videoConferenceButton:hover {
+  background-color: #e7e7e7;
+  color: #000;
 }

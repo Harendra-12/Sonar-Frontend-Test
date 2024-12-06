@@ -420,15 +420,18 @@
 }
 
 .videoCallWrapper .videoBody {
-    height: calc(100vh - 196px);
-    padding: 10px;
+    height: calc(100vh - 65px);
+    padding: 10px 0;
     position: relative;
     border-radius: 15px;
     overflow: hidden;
+
+    display: flex;
+    justify-content: space-between;
 }
 
 .videoCallWrapper .messageOverlay .messageList {
-    height: calc(100vh - 272px);
+    height: calc(100vh - 275px);
 }
 
 .videoCallWrapper .videoBody .activeGuyName {
@@ -447,28 +450,115 @@
     align-items: center;
 }
 
+.videoCallWrapper .videoBody .activeGuyName:hover {
+    background-color: #ffffff38;
+}
+
+.videoCallWrapper .videoBody .conferenceParticipantsWrapper {
+    transition: background 0.2s ease-in-out, max-width 1s ease-in-out;
+    position: relative;
+    max-width: 135px;
+}
+
+.videoCallWrapper .videoBody .conferenceParticipantsWrapper.hidden {
+    /* transform: translateX(125px); */
+    max-width: 10px;
+}
+
+.videoCallWrapper .videoBody .conferenceParticipantsWrapper:hover {
+    background: rgba(51, 51, 51, 0.5);
+}
+
+.conferenceParticipantsWrapper .participantList {
+    overflow: hidden auto;
+    padding: 10px 20px;
+    height: 100%;
+}
+
+.conferenceParticipantsWrapper .participantList::-webkit-scrollbar-track {
+    display: none;
+}
+
+.conferenceParticipantsWrapper .participantList::-webkit-scrollbar-thumb {
+    background: #000;
+}
+
+.participantMemberList {
+    width: 300px;
+    padding: 15px;
+    background: rgba(20, 20, 20, 1);
+    position: relative;
+    z-index: 1;
+}
+
+.participantMemberList ul {
+    margin: 25px 0;
+}
+
+.participantMemberList ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ffffff38;
+    margin-bottom: 13px;
+    padding-bottom: 13px;
+}
+
+.participantMemberList ul li span {
+    color: #f5f5f5;
+    font-size: 14px;
+}
+
+.participantMemberList ul li .profileHolder {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+}
+
 .videoCallWrapper .videoBody .participant {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+    position: relative;
+    /* top: 20px;
+    right: 20px; */
     width: 90px;
     height: 90px;
     border-radius: 15px;
     /* overflow: hidden; */
-    border: 2px solid #fff;
+    border: 2px solid transparent;
+    padding: 5px 10px;
+    background: #171717;
+    margin-bottom: 10px;
+    transition: 0.2s ease-in-out;
+}
+
+.videoCallWrapper .videoBody .participant[data-speaking="true"] {
+    border-color: #1eff00;
+}
+
+.videoCallWrapper .videoBody .participant .videoElement {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.videoCallWrapper .videoBody .participant:hover {
+    border-color: transparent;
 }
 
 .videoCallWrapper .videoBody .participant.active {
-    position: absolute;
+    /* position: absolute;
     top: 0;
-    left: 0;
+    left: 0; */
     width: 100%;
     height: 100%;
     border: none;
+    background: transparent;
+    margin-bottom: 0;
 }
 
-.videoCallWrapper .videoBody .participant.active>*,
-.videoCallWrapper .videoBody .participant>* {
+.videoCallWrapper .videoBody .participant.active .participantWrapper,
+.videoCallWrapper .videoBody .participant .participantWrapper {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -495,7 +585,7 @@
     -webkit-font-smoothing: antialiased;
 }
 
-.videoCallWrapper .videoBody .participant[data-pin="true"]::after {
+.videoCallWrapper .videoBody .participant[data-pin="true"]::before {
     content: '\f08d';
     font-family: 'FontAwesome';
     background-color: #01c78e;
@@ -519,15 +609,30 @@
     content: '\f130' !important;
 }
 
+.videoCallWrapper .videoBody .participant .participantName {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 0;
+    text-align: center;
+    color: #fff;
+}
+
 .videoCallWrapper .videoControls {
     display: flex;
     justify-content: center;
-    padding: 15px 0;
+    padding: 10px 0 0;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .contactHeader .dropdown-menu {
     padding: 5px 0;
     background-color: var(--ele-color);
+
 }
 
 .contactHeader .dropdown-menu .dropdown-item {
@@ -540,5 +645,97 @@
 
 .contactHeader .dropdown-menu .dropdown-item:active {
     background-color: #dfdfdf;
+}
 
+.contactHeader .dropdown-menu li {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.videoCallWrapper .videoBody .videoHolder {
+    position: relative;
+    height: calc(100% - 95px);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+
+.videoCallWrapper .videoBody .participant .videoConferenceButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+}
+
+.NotificationBell {
+    position: absolute;
+    bottom: -100px;
+    left: 10px;
+    border-radius: 50px;
+    z-index: 999;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--ui-accent);
+
+    opacity: 0;
+    filter: blur(5px);
+    animation: slideFadeIn 0.3s ease-in-out forwards;
+
+}
+
+.NotificationBell i {
+    border-radius: 50%;
+    background-color: var(--ui-accent);
+    border: 2px solid #fff;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 16px;
+}
+
+.NotificationBell .content {
+    color: #fff;
+    padding: 0;
+    max-width: 0;
+    height: 0;
+    overflow: hidden;
+    animation: expandContent 0.5s ease-in-out 0.5s forwards;
+    text-wrap: nowrap;
+    font-size: 14px;
+    text-overflow: ellipsis;
+}
+
+@keyframes slideFadeIn {
+    0% {
+        bottom: -100px;
+        /* Off-screen */
+        opacity: 0;
+        filter: blur(5px);
+    }
+
+    100% {
+        bottom: 10px;
+        /* In view */
+        opacity: 1;
+        filter: blur(0px);
+    }
+}
+
+@keyframes expandContent {
+    0% {
+        padding: 0;
+        height: 0;
+        max-width: 0;
+    }
+
+    100% {
+        padding: 0 15px 0 10px;
+        height: auto;
+        max-width: 170px;
+    }
 }

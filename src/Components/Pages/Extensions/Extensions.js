@@ -27,19 +27,21 @@ const Extensions = () => {
   const dispatch = useDispatch();
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [searchValue,setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     if (registerUser.length > 0) {
       setOnlineExtension(
         registerUser.map((item) => {
-          return item.extension;
+          if (item.account_id === account.account_id) {
+            return item.extension;
+          }
         })
       );
     } else {
       setOnlineExtension([0]);
     }
-    // generalGetFunction("/freeswitch/checkActiveExtensionOnServer");
+    generalGetFunction("/freeswitch/checkActiveExtensionOnServer");
   }, [registerUser]);
   useEffect(() => {
     if (userList.length == 0) {
@@ -76,9 +78,9 @@ const Extensions = () => {
           setLoading(false);
         }
       }
-      if(searchValue.trim().length === 0){
+      if (searchValue.trim().length === 0) {
         getData();
-      }else{
+      } else {
         const timer = setTimeout(() => {
           getData();
         }, 1000);
@@ -86,7 +88,6 @@ const Extensions = () => {
       }
       getData();
     } else {
-      
       async function getData() {
         setLoading(true);
         if (account && account.account_id) {
@@ -110,16 +111,16 @@ const Extensions = () => {
           setLoading(false);
         }
       }
-      if(searchValue.trim().length === 0){
+      if (searchValue.trim().length === 0) {
         getData();
-      }else{
+      } else {
         const timer = setTimeout(() => {
           getData();
         }, 1000);
         return () => clearTimeout(timer);
       }
     }
-  }, [navigate, pageNumber, account,itemsPerPage,searchValue]);
+  }, [navigate, pageNumber, account, itemsPerPage, searchValue]);
 
   return (
     <main className="mainContent">
@@ -172,7 +173,11 @@ const Extensions = () => {
                     <div className="tableHeader">
                       <div className="showEntries">
                         <label>Show</label>
-                        <select className="formItem" value={itemsPerPage} onChange={(e) => setItemsPerPage(e.target.value)}>
+                        <select
+                          className="formItem"
+                          value={itemsPerPage}
+                          onChange={(e) => setItemsPerPage(e.target.value)}
+                        >
                           <option value={10}>10</option>
                           <option value={20}>20</option>
                           <option value={30}>30</option>

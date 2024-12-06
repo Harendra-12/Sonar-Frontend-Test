@@ -117,6 +117,7 @@ import CampaignAnalytics from "./Components/Pages/DialerModule/Campaigns/Campaig
 import DeviceProvisioningNew from "./Components/Pages/DeviceProvisioning/DeviceProvisioningNew";
 import ConferenceJoin from "./Components/Pages/WebRtc/ConferenceJoin";
 import CallDashboardNew from "./Components/Pages/WebRtc/CallDashboardNew";
+import DummyRegistration from "./Components/Pages/WebRtc/DummyRegistration";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -175,7 +176,8 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/conference-join" element={<ConferenceJoin />} />
+          <Route path="/conference" element={<ConferenceJoin />} />
+          <Route path="/conference-join" element={<DummyRegistration />} />
 
           <Route element={<ProtectedRoute />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -610,7 +612,7 @@ function App() {
           {/* Dialer Modules */}
 
           {/* 404 Redirection */}
-          <Route path="*" element={<Navigate to="/dashboard" />} />
+          <Route path="*" element={<Navigate to="/" />} />
           {/* 404 Redirection */}
         </Routes>
         <ToastContainer
