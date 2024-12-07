@@ -11,7 +11,7 @@ import EmptyPrompt from "../../Loader/EmptyPrompt";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
-const MailSettings = () => {
+const MailSettings = ({ style }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [mailSettings, setMailSettings] = useState([]);
@@ -57,7 +57,7 @@ const MailSettings = () => {
   };
 
   return (
-    <main className="mainContent">
+    <main className="mainContent" style={style}>
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row">

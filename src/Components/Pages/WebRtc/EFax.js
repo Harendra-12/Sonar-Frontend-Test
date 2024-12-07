@@ -168,11 +168,11 @@ function EFax() {
                 <div className="newHeader">
                   <div className="col-auto" style={{ padding: "0 10px" }}>
                     <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
-                      <button class="clearButton text-dark">
+                      <button class="clearButton2 text-dark" onClick={() => featureUnderdevelopment()}>
                         <i class="fa-solid fa-chevron-left fs-4"></i>
                       </button>{" "}
                       E-Fax{" "}
-                      <button class="clearButton">
+                      <button class="clearButton2">
                         <i
                           class="fa-regular fa-arrows-rotate fs-5"
                           style={{ color: "var(--webUtilGray)" }}

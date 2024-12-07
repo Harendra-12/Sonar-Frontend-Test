@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import SideNavbarApp from "./SideNavbarApp";
 import { useDispatch, useSelector } from "react-redux";
-import { generalPutFunction } from "../../GlobalFunction/globalFunction";
+import { featureUnderdevelopment, generalGetFunction, generalPutFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import ActiveCallSidePanel from "./ActiveCallSidePanel";
+import { useNavigate } from "react-router-dom";
+import Header from "../../CommonComponents/Header";
 
 const CallCenter = () => {
   const sessions = useSelector((state) => state.sessions);
@@ -15,6 +17,7 @@ const CallCenter = () => {
   const [assignerCallcenter, setAssignerCallcenter] = useState([]);
   const [refreshCenter, setRefreshCenter] = useState(0);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const Id = account?.id || "";
 
@@ -38,6 +41,19 @@ const CallCenter = () => {
 
   useEffect(() => { }, [refreshCenter, callCenterRefresh]);
 
+
+  async function logOut() {
+    const apiData = await generalGetFunction("/logout");
+    localStorage.clear();
+    if (apiData?.data) {
+      localStorage.clear();
+      dispatch({
+        action: "SET_ACCOUNT",
+        account: null,
+      });
+      navigate("/");
+    }
+  }
   return (
     <>
       <style>
@@ -58,57 +74,129 @@ const CallCenter = () => {
         }}
       >
         <div className="container-fluid">
-          <div className="d-felx flex-column pt-2">
-            <div>
-              <h3>
-                Call Center{" "}
-                <button
-                  disabled={loading}
-                  onClick={() => setRefreshCenter(refreshCenter + 1)}
-                  class="clearButton"
-                >
-                  <i
-                    class={
-                      loading
-                        ? "fa-solid fa-spinner fa-pulse fs-5 fa-spin"
-                        : "fa-regular fa-arrows-rotate fs-5"
-                    }
-                    style={{ color: "var(--color-subtext)" }}
-                  ></i>
-                </button>
-              </h3>
-            </div>
-            <div className="mt-4">
-              <div
-                className="col-12 callDashboardPrimTable px-1"
-                style={{ overflow: "auto" }}
-              >
-                <div className="tableContainer allItems">
-                  <table className="callCenter">
-                    <thead>
-                      <tr>
-                        <th className="sl">S.No</th>
-                        <th>Name</th>
-                        <th className="extension">Extension</th>
-                        <th className="options">Options</th>
-                        <th className="options">Break-Timer</th>
-                        <th className="options">Total-Break</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {assignerCallcenter.length > 0 &&
-                        assignerCallcenter.map((item, index) => {
-                          return (
-                            <CallCenterListItem
-                              key={index}
-                              index={index}
-                              item={item}
-                              Id={Id}
-                            />
-                          );
-                        })}
-                    </tbody>
-                  </table>
+          <div className="row">
+            {/* <div className="col-12 px-0">
+              <div className="newHeader">
+                <div className="col-auto" style={{ padding: "0 10px" }}>
+                  <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
+                    <button class="clearButton2 text-dark" onClick={() => featureUnderdevelopment()}>
+                      <i class="fa-solid fa-chevron-left fs-4"></i>
+                    </button>{" "}
+                    Call Center{" "}
+                  </h3>
+                </div>
+                <div className="d-flex justify-content-end align-items-center">
+                  <div className="col-9">
+                    <input
+                      type="search"
+                      name="Search"
+                      placeholder="Search users, groups or chat"
+                      class="formItem fw-normal"
+                      style={{ backgroundColor: "var(--searchBg)" }}
+                    />
+                  </div>
+                  <div className="col-auto mx-2">
+                    <button className="clearButton2 xl" effect="ripple">
+                      <i className="fa-regular fa-bell" />
+                    </button>
+                  </div>
+                  <div className="col-auto">
+                    <div class="dropdown">
+                      <div
+                        className="myProfileWidget"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <div class="profileHolder" id="profileOnlineNav">
+                          <img
+                            src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
+                            alt="profile"
+                          />
+                        </div>
+                        <div class="profileName">
+                          {account.username}{" "}
+                          <span className="status">Available</span>
+                        </div>
+                      </div>
+                      <ul class="dropdown-menu">
+                        <li onClick={logOut}>
+                          <div
+                            class="dropdown-item"
+                            style={{ cursor: "pointer" }}
+                          >
+                            Logout
+                          </div>
+                        </li>
+                        <li onClick={() => navigate("/my-profile")}>
+                          <div
+                            class="dropdown-item"
+                            style={{ cursor: "pointer" }}
+                          >
+                            Profile
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> */}
+            <Header title="Call Dashboard" />
+            <div className="overviewTableWrapper">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap">
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content">
+                        <h4>Call Center Queue{" "}
+                          <button
+                            disabled={loading}
+                            onClick={() => setRefreshCenter(refreshCenter + 1)}
+                            class="clearButton2"
+                          >
+                            <i
+                              class={
+                                loading
+                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                  : "fa-regular fa-arrows-rotate fs-5"
+                              }
+                              style={{ color: "var(--color-subtext)" }}
+                            ></i>
+                          </button></h4>
+                        <p>You can see the status of the agents</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-12" style={{ padding: '25px 20px 0px' }}>
+                    <div className="tableContainer mt-0">
+                      <table className="callCenter">
+                        <thead>
+                          <tr>
+                            <th className="sl">S.No</th>
+                            <th>Name</th>
+                            <th className="extension">Extension</th>
+                            <th className="options">Options</th>
+                            <th className="options">Break-Timer</th>
+                            <th className="options">Total-Break</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {assignerCallcenter.length > 0 &&
+                            assignerCallcenter.map((item, index) => {
+                              return (
+                                <CallCenterListItem
+                                  key={index}
+                                  index={index}
+                                  item={item}
+                                  Id={Id}
+                                />
+                              );
+                            })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

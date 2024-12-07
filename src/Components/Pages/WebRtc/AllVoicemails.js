@@ -284,12 +284,12 @@ function AllVoicemails({ isCustomerAdmin }) {
                 <div className="newHeader">
                   <div className="col-auto" style={{ padding: "0 10px" }}>
                     <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
-                      <button class="clearButton text-dark">
+                      <button class="clearButton2 text-dark" onClick={() => featureUnderdevelopment()}>
                         <i class="fa-solid fa-chevron-left fs-4"></i>
                       </button>{" "}
                       Voicemails{" "}
                       <button
-                        class="clearButton"
+                        class="clearButton2"
                         onClick={() =>
                           setVoiceMailRefresh(voiceMailRefresh + 1)
                         }

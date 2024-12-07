@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ActiveCalls from "../PhoneDashboard/ActiveCalls";
-import { generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
+import { featureUnderdevelopment, generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import Header from "../../CommonComponents/Header";
 
 function CallDashboard() {
   const sessions = useSelector((state) => state.sessions);
@@ -11,6 +13,8 @@ function CallDashboard() {
   const [allParkedCall, setAllParkedCall] = useState([]);
   const extension = account?.extension?.extension || null;
   const callState = useSelector((state) => state.callState);
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
   console.log("callStatesss", callState);
 
   useEffect(() => {
@@ -69,6 +73,19 @@ function CallDashboard() {
   //     navigate("/");
   //   }
   // }
+
+  async function logOut() {
+    const apiData = await generalGetFunction("/logout");
+    localStorage.clear();
+    if (apiData?.data) {
+      localStorage.clear();
+      dispatch({
+        action: "SET_ACCOUNT",
+        account: null,
+      });
+      navigate("/");
+    }
+  }
   return (
     <>
       {/* <SideNavbarApp /> */}
@@ -87,171 +104,207 @@ function CallDashboard() {
               className="row justify-content-between"
               style={{ height: "100%" }}
             >
-              <div
-                className="col-xl-7 pt-2"
-                style={{ borderRight: "1px solid var(--border-color)" }}
-              >
-                <div className="d-flex flex-wrap justify-content-between align-items-center">
-                  <div className="col-auto">
-                    <h3
-                    >
-                      Call Dashboard
+              {/* <div className="col-12 ps-xl-0">
+                <div className="newHeader">
+                  <div className="col-auto" style={{ padding: "0 10px" }}>
+                    <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
+                      <button class="clearButton2 text-dark" onClick={() => featureUnderdevelopment()}>
+                        <i class="fa-solid fa-chevron-left fs-4"></i>
+                      </button>{" "}
+                      Call Dashboard{" "}
                     </h3>
                   </div>
-                  <div className="col-12">
-                    <nav>
-                      <div className="nav nav-tabs">
-                        <button
-                          className="tabLink active"
-                          effect="ripple"
-                          data-category="all"
-                        >
-                          All
-                        </button>
-                        {/* <button
-                          className="tabLink"
-                          effect="ripple"
-                          data-category="new"
-                        >
-                          New
-                        </button> */}
-                      </div>
-                    </nav>
-                    {/* <div className="position-relative searchBox d-flex mt-3">
+                  <div className="d-flex justify-content-end align-items-center">
+                    <div className="col-9">
                       <input
                         type="search"
                         name="Search"
-                        id="headerSearch"
-                        placeholder="Search"
+                        placeholder="Search users, groups or chat"
+                        class="formItem fw-normal"
+                        style={{ backgroundColor: "var(--searchBg)" }}
                       />
-                      <button className="ms-2 appPanelButton" effect="ripple">
-                        <i className="fa-light fa-calendar-plus" />
+                    </div>
+                    <div className="col-auto mx-2">
+                      <button className="clearButton2 xl" effect="ripple">
+                        <i className="fa-regular fa-bell" />
                       </button>
-                    </div> */}
+                    </div>
+                    <div className="col-auto">
+                      <div class="dropdown">
+                        <div
+                          className="myProfileWidget"
+                          type="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          <div class="profileHolder" id="profileOnlineNav">
+                            <img
+                              src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
+                              alt="profile"
+                            />
+                          </div>
+                          <div class="profileName">
+                            {account.username}{" "}
+                            <span className="status">Available</span>
+                          </div>
+                        </div>
+                        <ul class="dropdown-menu">
+                          <li onClick={logOut}>
+                            <div
+                              class="dropdown-item"
+                              style={{ cursor: "pointer" }}
+                            >
+                              Logout
+                            </div>
+                          </li>
+                          <li onClick={() => navigate("/my-profile")}>
+                            <div
+                              class="dropdown-item"
+                              style={{ cursor: "pointer" }}
+                            >
+                              Profile
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div
-                  className="col-12 callDashboardPrimTable"
-                  style={{ overflow: "auto" }}
-                >
-                  <ActiveCalls />
+              </div> */}
+              <Header title="Call Dashboard" />
+              <div
+                className="col-xl-7 px-0"
+                style={{ borderRight: "1px solid var(--border-color)" }}
+              >
+
+                <div className="overviewTableWrapper">
+                  <div className="overviewTableChild">
+                    <div className="d-flex flex-wrap">
+                      <div className="col-12">
+                        <div className="heading">
+                          <div className="content">
+                            <h4> Call Dashboard</h4>
+                            <p>You can see all of the active calls here</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-12" style={{ padding: '25px 20px 0px' }}>
+                        <div className="tableContainer mt-0">
+                          <ActiveCalls />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div
-                className="col-xl-5 pt-2"
+                className="col-xl-5 px-0"
                 style={{ borderRight: "1px solid var(--border-color)" }}
               >
-                <div style={{ height: "calc(100vh - 50%)" }}>
-                  <div className="d-flex flex-wrap justify-content-between align-items-center">
-                    <div className="col-auto">
-                      <h3>
-                        Parked Calls
-                      </h3>
-                    </div>
-                    {/* <div className="col-12">
-                      <div className="position-relative searchBox d-flex mt-3">
-                        <input
-                          type="search"
-                          name="Search"
-                          id="headerSearch"
-                          placeholder="Search"
-                        />
-                        <button className="ms-2 appPanelButton" effect="ripple">
-                          <i className="fa-light fa-calendar-plus" />
-                        </button>
-                      </div>
-                    </div> */}
-                  </div>
-                  <div className="col-12 px-1" style={{ overflow: "auto" }}>
-                    <div className="tableContainer">
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>Called ID</th>
-                            <th>Parked By</th>
-                            <th>Parked At</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {allParkedCall.length > 0 &&
-                            allParkedCall.map((call) => {
-                              return (
-                                <tr>
-                                  <td>{call.cid_num}</td>
 
-                                  <td>{extractLastNumber(call?.parked_by)}</td>
-                                  <td>
-                                    {call?.dest.includes("set:valet_ticket")
-                                      ? extractLastNumber(call?.accountcode)
-                                      : extractLastNumber(call?.dest)}
-                                  </td>
-                                  <td>
-                                    <button
-                                      onClick={() =>
-                                        handleUnPark(
-                                          call?.dest.includes(
-                                            "set:valet_ticket"
-                                          )
-                                            ? extractLastNumber(
-                                              call?.accountcode
+                <div className="overviewTableWrapper">
+                  <div className="overviewTableChild">
+                    <div className="d-flex flex-wrap">
+                      <div className="col-12">
+                        <div className="heading">
+                          <div className="content">
+                            <h4> Parked Calls</h4>
+                            <p>You can see all of the parked calls here</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-12" style={{ padding: '25px 20px 0px' }}>
+                        <div className="tableContainer mt-0" style={{ height: "auto", maxHeight: '45vh' }}>
+                          <table>
+                            <thead>
+                              <tr>
+                                <th>Called ID</th>
+                                <th>Parked By</th>
+                                <th>Parked At</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {allParkedCall.length > 0 &&
+                                allParkedCall.map((call) => {
+                                  return (
+                                    <tr>
+                                      <td>{call.cid_num}</td>
+
+                                      <td>{extractLastNumber(call?.parked_by)}</td>
+                                      <td>
+                                        {call?.dest.includes("set:valet_ticket")
+                                          ? extractLastNumber(call?.accountcode)
+                                          : extractLastNumber(call?.dest)}
+                                      </td>
+                                      <td>
+                                        <button
+                                          onClick={() =>
+                                            handleUnPark(
+                                              call?.dest.includes(
+                                                "set:valet_ticket"
+                                              )
+                                                ? extractLastNumber(
+                                                  call?.accountcode
+                                                )
+                                                : extractLastNumber(call?.dest)
                                             )
-                                            : extractLastNumber(call?.dest)
-                                        )
-                                      }
-                                    >
-                                      Unpark
-                                    </button>
-                                  </td>
-                                </tr>
-                              );
-                            })}
-                        </tbody>
-                      </table>
+                                          }
+                                        >
+                                          Unpark
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div
-                  className="mt-3 pt-3"
-                  style={{ borderTop: "1px solid var(--border-color)" }}
-                >
-                  <div className="d-flex flex-wrap justify-content-between align-items-center">
-                    <div className="col-auto">
-                      <h3>
-                        Ringinig State
-                      </h3>
-                    </div>
-                    <div className="col-12">
 
-                    </div>
-                  </div>
-                  <div className="col-12" style={{ overflow: "auto" }}>
-                    <div className="tableContainer">
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>Sl no.</th>
-                            <th>From </th>
-                            <th>To</th>
-                            <th>Call at</th>
-                          </tr>
-                        </thead>
+                <div className="overviewTableWrapper pt-2">
+                  <div className="overviewTableChild">
+                    <div className="d-flex flex-wrap">
+                      <div className="col-12">
+                        <div className="heading">
+                          <div className="content">
+                            <h4> Ringinig State</h4>
+                            <p>You can see all of the calls in ringing state here</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-12" style={{ padding: '25px 20px 0px' }}>
+                        <div className="tableContainer mt-0" style={{ height: "auto", maxHeight: '45vh' }}>
+                          <table>
+                            <thead>
+                              <tr>
+                                <th>Sl no.</th>
+                                <th>From </th>
+                                <th>To</th>
+                                <th>Call at</th>
+                              </tr>
+                            </thead>
 
-                        <tbody>
-                          {
-                            activeCall && activeCall.filter((item) => item.callstate === "RINGING").map((item, key) => {
-                              return (
-                                <tr>
-                                  <td>{key + 1}</td>
-                                  <td>{item.cid_name}</td>
-                                  <td>{item.presence_id.split("@")[0]}</td>
-                                  <td>{item.created.split(" ")[1]}</td>
-                                </tr>
-                              )
-                            })
-                          }
+                            <tbody>
+                              {
+                                activeCall && activeCall.filter((item) => item.callstate === "RINGING").map((item, key) => {
+                                  return (
+                                    <tr>
+                                      <td>{key + 1}</td>
+                                      <td>{item.cid_name}</td>
+                                      <td>{item.presence_id.split("@")[0]}</td>
+                                      <td>{item.created.split(" ")[1]}</td>
+                                    </tr>
+                                  )
+                                })
+                              }
 
-                        </tbody>
-                      </table>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
