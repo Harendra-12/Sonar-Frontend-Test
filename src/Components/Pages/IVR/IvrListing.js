@@ -26,12 +26,14 @@ const IvrListing = () => {
   const ivrArr = useSelector((state) => state.ivr);
   const [refreshState, setRefreshState] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);  
-  const [userInput,setuserInput] = useState("");
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [userInput, setuserInput] = useState("");
   useEffect(() => {
     async function getData() {
       setLoading(true);
-      const apiData = await generalGetFunction(`/ivr-master/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}`);
+      const apiData = await generalGetFunction(
+        `/ivr-master/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}`
+      );
       if (apiData.status) {
         setIvr(apiData.data);
         setLoading(false);
@@ -41,15 +43,15 @@ const IvrListing = () => {
         setLoading(false);
       }
     }
-    if(userInput.trim().length === 0){
+    if (userInput.trim().length === 0) {
       getData();
-    }else{
+    } else {
       const timer = setTimeout(() => {
         getData();
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [ivrArr, refreshState,itemsPerPage,pageNumber,userInput]);
+  }, [ivrArr, refreshState, itemsPerPage, pageNumber, userInput]);
 
   async function handleDelete(id) {
     setPopUp(false);
@@ -87,25 +89,17 @@ const IvrListing = () => {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>IVR Master</h4>
+                        <h4>IVR Master
+                          <button className="clearButton" onClick={() => setRefreshState(true)}>
+                            <i className={
+                              loading
+                                ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                : "fa-regular fa-arrows-rotate fs-5"
+                            }></i>
+                          </button>
+                        </h4>
                       </div>
                       <div className="buttonGroup">
-                        <button
-                          effect="ripple"
-                          className="panelButton ms-0"
-                          onClick={() => setRefreshState(true)}
-                        >
-                          <span className="text">Refresh</span>
-                          <span className="icon">
-                            <i
-                              class={
-                                loading
-                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
-                                  : "fa-regular fa-arrows-rotate fs-5"
-                              }
-                            ></i>
-                          </span>
-                        </button>
                         <button
                           effect="ripple"
                           className="panelButton gray"

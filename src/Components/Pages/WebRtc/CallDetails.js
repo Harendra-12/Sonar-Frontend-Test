@@ -94,6 +94,7 @@ function CallDetails({
       setactivePage("messages");
     }
   };
+  console.log(callDetails);
 
   useEffect(() => {
     if (callDetails) {

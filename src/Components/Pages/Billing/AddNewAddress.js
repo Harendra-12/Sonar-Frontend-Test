@@ -156,7 +156,7 @@ function AddNewAddress({ closePopup }) {
       </style>
       <div className="cardDetailsWrapper">
         <div className="row">
-          <div className="col-12 border-start border-4 border-success mb-3 px-3 d-flex jusitfy-content-between align-items-center">
+          <div className="col-12 mb-3 px-2 d-flex jusitfy-content-between align-items-center">
             <h5 className="mb-0">Billing Information</h5>
             <span
               onClick={() => closePopup(false)}

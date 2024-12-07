@@ -75,7 +75,7 @@ table tr th:first-child {
 .tableContainer {
     margin-top: 10px;
     border: 1px solid var(--border-color);
-    overflow-x: auto;
+    overflow: hidden auto;
     /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
     border-radius: 5px;
     margin-bottom: 10px;

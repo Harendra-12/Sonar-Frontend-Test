@@ -379,15 +379,9 @@ function CardAndBilling() {
                             <div class="col-10">
                               <h5>Upcoming Transaction</h5>
                               {/* <p>16-01-2024</p> */}
-                              <p>
+                              <p>On:{" "}
                                 {accountDetails.subscription[0]?.end_date
-                                  ? new Date(
-                                    accountDetails.subscription[0].end_date
-                                  ).toLocaleString("en-GB", {
-                                    year: "numeric",
-                                    month: "2-digit",
-                                    day: "2-digit",
-                                  })
+                                  ? accountDetails.subscription[0]?.end_date.split(" ")[0]
                                   : ""}
                               </p>
                             </div>
@@ -493,7 +487,7 @@ function CardAndBilling() {
                               </h5>
                               <p>
                                 Min Balance: $
-                                {accountDetails?.balance?.min_amount}
+                                {accountDetails?.balance?.min_amount || 0}
                               </p>
                               <p>
                                 {!selectedCard?.[0]?.card_number ? (
@@ -1016,6 +1010,14 @@ function CardAndBilling() {
                         <div className="d-flex flex-wrap justify-content-between">
                           <div className="col-10">
                             <h5>Invoices</h5>
+                            <p>As on:{" "}
+                              {new Date().toLocaleString("en-GB", {
+                                year: "numeric",
+                                month: "2-digit",
+                                day: "2-digit",
+                              }).replace(/\//g, "-")
+                              }
+                            </p>
                           </div>
                           <div
                             className="col-2"
@@ -1069,7 +1071,7 @@ function CardAndBilling() {
                         <div className="d-flex flex-wrap justify-content-between">
                           <div className="col-10">
                             <h5>Last Transaction</h5>
-                            <p>
+                            <p>On:{" "}
                               {
                                 accountDetails?.payments[0].transaction_date?.split(
                                   " "

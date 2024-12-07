@@ -63,6 +63,10 @@ function Call({
         ...new Map(
           apiData.calls
             .filter((item) => {
+              // Remove items with application_state == "conference"
+              if (item.application_state === "conference") {
+                return false;
+              }
               // Apply the filter condition if 'applyFilter' is true
               if (!isCustomerAdmin) {
                 return (
@@ -83,7 +87,7 @@ function Call({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allCall, isCustomerAdmin, refreshCalls]);
-
+  console.log("allCall", allCall);
   useEffect(() => {
     console.log("This is account", account && account.account_id);
 
@@ -281,7 +285,7 @@ function Call({
               >
                 <h4>
                   {matchingCalleeContactForAdmin
-                    ? matchingCalleeContactForAdmin
+                    ? `${matchingCalleeContactForAdmin} (${item["Caller-Callee-ID-Number"]})`
                     : item["Caller-Callee-ID-Number"]}
                   {item["variable_billsec"] > 0 ? (
                     <i
@@ -295,7 +299,7 @@ function Call({
                     ></i>
                   )}
                   {matchingCallerContactForAdmin
-                    ? matchingCallerContactForAdmin
+                    ? `${matchingCallerContactForAdmin} (${item["Caller-Caller-ID-Number"]})`
                     : item["Caller-Caller-ID-Number"]}
                 </h4>
                 {/* <div className="contactTags">
@@ -434,7 +438,8 @@ function Call({
       return;
     }
     const apiData = await sessionManager?.call(
-      `sip:${otherPartyExtension}@ucaas.webvio.in`,
+      // `sip:${otherPartyExtension}@ucaas.webvio.in`,
+      `sip:${otherPartyExtension}@${process.env.REACT_APP_IP}`,
       {
         sessionDescriptionHandlerOptions: {
           constraints: {
@@ -527,6 +532,7 @@ function Call({
       navigate("/");
     }
   }
+  // console.log(sortedGroupedCalls);
 
   return (
     <>
@@ -553,7 +559,11 @@ function Call({
                       Calls{" "}
                       <button
                         class="clearButton"
-                        onClick={() => setRefreshCalls(refreshCalls + 1)}
+                        onClick={() => {
+                          if (!loading) {
+                            setRefreshCalls(refreshCalls + 1);
+                          }
+                        }}
                       >
                         <i
                           class={
@@ -605,13 +615,21 @@ function Call({
                             <span className="status">Available</span>
                           </div>
                         </div>
-                        <ul class="dropdown-menu" onClick={logOut}>
-                          <li>
+                        <ul class="dropdown-menu">
+                          <li onClick={logOut}>
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
                               Logout
+                            </div>
+                          </li>
+                          <li onClick={() => navigate("/my-profile")}>
+                            <div
+                              class="dropdown-item"
+                              style={{ cursor: "pointer" }}
+                            >
+                              Profile
                             </div>
                           </li>
                         </ul>

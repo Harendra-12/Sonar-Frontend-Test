@@ -131,11 +131,10 @@ function CardTransactionsList() {
                           <span className="text">Refresh</span>
                           <span className="icon">
                             <i
-                              class={`${
-                                loading
-                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
-                                  : "fa-regular fa-arrows-rotate fs-5 "
-                              } `}
+                              class={`${loading
+                                ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                : "fa-regular fa-arrows-rotate fs-5 "
+                                } `}
                             ></i>
                           </span>
                         </button>
@@ -208,7 +207,7 @@ function CardTransactionsList() {
                                           )
                                         }
                                       >
-                                        <i className="fa-duotone fa-download text-success"></i>
+                                        <i className="fa-solid fa-download"></i>
                                       </button>
                                     </td>
                                   </tr>

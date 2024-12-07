@@ -14,7 +14,7 @@ import { SipRegister } from "./SipRegister";
 import SideNavbarApp from "./SideNavbarApp";
 import Messages from "./Messages";
 import VideoCall from "./VideoCall";
-import {ConferenceCall} from "./ConferenceCall";
+import { ConferenceCall } from "./ConferenceCall";
 import ConferenceTest from "./ConferenceTest";
 import { Rnd } from "react-rnd";
 import ConferenceConfig from "./ConferenceConfig";
@@ -23,6 +23,8 @@ import MailSettings from "../MailSettings/MailSettings";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 
 const WebrtcWrapper = () => {
+  const ip = process.env.REACT_APP_IP;
+  const port = process.env.REACT_APP_SIP_REGISTER_PORT;
   const [size, setSize] = useState({ width: 300, height: 450 });
   const [position, setPosition] = useState({ x: 700, y: 300 });
   const { sessions: sipSessions } = useSIPProvider();
@@ -50,8 +52,8 @@ const WebrtcWrapper = () => {
   const [conferenceToggle, setConferenceToggle] = useState(false);
   const [conferenceId, setConferenceId] = useState("");
   const memberId = useSelector((state) => state.memberId);
-  console.log("Activepage", activePage,activePage==="conference");
-  
+  console.log("Activepage", activePage, activePage === "conference");
+
   const useWebSocketErrorHandling = (options) => {
     const retryCountRef = useRef(0);
     const connectWebSocket = (retryCount = 0) => {
@@ -102,10 +104,10 @@ const WebrtcWrapper = () => {
   };
   const options = {
     domain: account.domain.domain_name,
-    webSocketServer: "wss://ucaas.webvio.in:7443",
+    webSocketServer: `wss://${ip}:${port}`,
     // webSocketServer: "ws://192.168.2.225:5066",
   };
-
+  console.log(port, ip);
   useWebSocketErrorHandling(options);
 
   const checkMicrophoneStatus = () => {
@@ -184,8 +186,8 @@ const WebrtcWrapper = () => {
     getContact();
   }, [addContactRefresh]);
 
-  console.log("conferenceccc",conferenceToggle || memberId,memberId);
-  
+  console.log("conferenceccc", conferenceToggle || memberId, memberId);
+
   return (
     <>
       <SIPProvider options={options}>
@@ -239,7 +241,15 @@ const WebrtcWrapper = () => {
             setExtensionFromCdrMessage={setExtensionFromCdrMessage}
           />
         )}
-        {activePage === "conference" && <ConferenceConfig setactivePage={setactivePage} setConferenceId={setConferenceId} setConferenceToggle={setConferenceToggle} conferenceId={conferenceId} conferenceToggle={conferenceToggle} />}
+        {activePage === "conference" && (
+          <ConferenceConfig
+            setactivePage={setactivePage}
+            setConferenceId={setConferenceId}
+            setConferenceToggle={setConferenceToggle}
+            conferenceId={conferenceId}
+            conferenceToggle={conferenceToggle}
+          />
+        )}
         {/* {activePage == "videocall" && <VideoCall />} */}
         {activePage == "email" && <Email />}
         {activePage == "mail-setting" && <MailSettings />}
@@ -436,16 +446,18 @@ const WebrtcWrapper = () => {
           ""
         )}
 
-        {(conferenceToggle || memberId)  ?
-        <ConferenceCall
-          name={account.username}
-          extension_id={`${account?.extension?.extension}@${account.domain.domain_name}`}
-          room_id={conferenceId}
-          setactivePage={setactivePage}
-          activePage={activePage}
-          setConferenceToggle={setConferenceToggle}
-        />
-        :""}
+        {conferenceToggle || memberId ? (
+          <ConferenceCall
+            name={account.username}
+            extension_id={`${account?.extension?.extension}@${account.domain.domain_name}`}
+            room_id={conferenceId}
+            setactivePage={setactivePage}
+            activePage={activePage}
+            setConferenceToggle={setConferenceToggle}
+          />
+        ) : (
+          ""
+        )}
       </SIPProvider>
     </>
   );

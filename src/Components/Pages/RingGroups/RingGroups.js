@@ -34,7 +34,6 @@ const RingGroups = () => {
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [searchValue, setSearchValue] = useState("");
 
-  
   useEffect(() => {
     const getRingGroupDashboardData = async () => {
       if (account && account.id) {
@@ -55,22 +54,21 @@ const RingGroups = () => {
         navigate("/");
       }
     };
-    if(searchValue.trim().length === 0){
+    if (searchValue.trim().length === 0) {
       getRingGroupDashboardData();
-    }else{
+    } else {
       const timer = setTimeout(() => {
         getRingGroupDashboardData();
       }, 1000);
       return () => clearTimeout(timer);
     }
-    if(refreshState === 0){
+    if (refreshState === 0) {
       dispatch({
         type: "SET_ALLUSERREFRESH",
         allUserRefresh: allUserRefresh + 1,
       });
     }
-   
-  }, [pageNumber, refreshState,itemsPerPage,searchValue]);
+  }, [pageNumber, refreshState, itemsPerPage, searchValue]);
 
   const handleRingGroupAddValidation = (e) => {
     e.preventDefault();
@@ -183,26 +181,18 @@ const RingGroups = () => {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Ring Group List</h4>
+                        <h4>Ring Group List
+                          <button className="clearButton" onClick={() => setRefreshState(refreshState + 1)} disabled={loading}>
+                            <i className={
+                              loading
+                                ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                : "fa-regular fa-arrows-rotate fs-5"
+                            }></i>
+                          </button>
+                        </h4>
                         <p>You can see all list of ring groups</p>
                       </div>
                       <div className="buttonGroup">
-                        <button
-                          effect="ripple"
-                          className="panelButton ms-0"
-                          onClick={() => setRefreshState(refreshState + 1)}
-                        >
-                          <span className="text">Refresh</span>
-                          <span className="icon">
-                            <i
-                              class={
-                                loading
-                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
-                                  : "fa-regular fa-arrows-rotate fs-5"
-                              }
-                            ></i>
-                          </span>
-                        </button>
                         <button
                           effect="ripple"
                           className="panelButton gray"

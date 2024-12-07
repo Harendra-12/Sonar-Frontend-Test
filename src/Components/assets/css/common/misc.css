@@ -681,6 +681,7 @@ input[type=number] {
 
 .newHeader .dropdown-menu {
     padding: 5px 0;
+    background-color: var(--ele-color);
 }
 
 .newHeader .dropdown-menu .dropdown-item {
@@ -818,4 +819,12 @@ input[type=number] {
     outline: none;
     font-size: 14px;
     font-weight: 700;
+}
+
+.react-clock {
+    margin-left: auto;
+}
+
+.form-group .cardImage {
+    top: -5px !important;
 }
