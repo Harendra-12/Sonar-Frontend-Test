@@ -438,7 +438,8 @@ function Call({
       return;
     }
     const apiData = await sessionManager?.call(
-      `sip:${otherPartyExtension}@ucaas.webvio.in`,
+      // `sip:${otherPartyExtension}@ucaas.webvio.in`,
+      `sip:${otherPartyExtension}@${process.env.REACT_APP_IP}`,
       {
         sessionDescriptionHandlerOptions: {
           constraints: {
