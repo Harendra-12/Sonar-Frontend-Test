@@ -662,6 +662,20 @@ input[type=number] {
     color: var(--immortalBlack);
 }
 
+.contactTags span:not(.add):hover::before {
+    content: '\f057';
+    font-family: 'Font Awesome 5 Pro';
+    font-size: 12px;
+    font-weight: 900;
+    color: #fff;
+    margin-right: 5px;
+}
+
+.contactTags span:not(.add):hover {
+    background-color: #ff0000;
+    color: #fff !important;
+}
+
 .ovalSelect {
     border: 1px solid var(--border-color);
     border-radius: 50px;

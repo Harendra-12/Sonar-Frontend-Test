@@ -18,7 +18,7 @@ function CallDashboard() {
     setAllParkedCall(
       activeCall.filter(
         (call) =>
-          (call.dest.includes("set:valet_ticket") || call.dest.includes("*")) && call.b_callee_direction !=="ACTIVE"
+          (call.dest.includes("set:valet_ticket") || call.dest.includes("*")) && call.b_callee_direction !== "ACTIVE"
       )
     );
   }, [activeCall]);
@@ -89,14 +89,13 @@ function CallDashboard() {
             >
               <div
                 className="col-xl-7 pt-2"
-                style={{ borderRight: "1px solid #dee2e6" }}
+                style={{ borderRight: "1px solid var(--border-color)" }}
               >
                 <div className="d-flex flex-wrap justify-content-between align-items-center">
                   <div className="col-auto">
                     <h3
-                      style={{ fontFamily: "Outfit", color: "rgb(68, 68, 68)" }}
                     >
-                      Call Dashboard 
+                      Call Dashboard
                     </h3>
                   </div>
                   <div className="col-12">
@@ -140,17 +139,12 @@ function CallDashboard() {
               </div>
               <div
                 className="col-xl-5 pt-2"
-                style={{ borderRight: "1px solid #dee2e6" }}
+                style={{ borderRight: "1px solid var(--border-color)" }}
               >
                 <div style={{ height: "calc(100vh - 50%)" }}>
                   <div className="d-flex flex-wrap justify-content-between align-items-center">
                     <div className="col-auto">
-                      <h3
-                        style={{
-                          fontFamily: "Outfit",
-                          color: "rgb(68, 68, 68)",
-                        }}
-                      >
+                      <h3>
                         Parked Calls
                       </h3>
                     </div>
@@ -218,21 +212,16 @@ function CallDashboard() {
                 </div>
                 <div
                   className="mt-3 pt-3"
-                  style={{ borderTop: "1px solid rgb(222, 226, 230)" }}
+                  style={{ borderTop: "1px solid var(--border-color)" }}
                 >
                   <div className="d-flex flex-wrap justify-content-between align-items-center">
                     <div className="col-auto">
-                      <h3
-                        style={{
-                          fontFamily: "Outfit",
-                          color: "rgb(68, 68, 68)",
-                        }}
-                      >
+                      <h3>
                         Ringinig State
                       </h3>
                     </div>
                     <div className="col-12">
-                     
+
                     </div>
                   </div>
                   <div className="col-12" style={{ overflow: "auto" }}>
@@ -249,10 +238,10 @@ function CallDashboard() {
 
                         <tbody>
                           {
-                            activeCall && activeCall.filter((item) => item.callstate === "RINGING").map((item,key) => {
+                            activeCall && activeCall.filter((item) => item.callstate === "RINGING").map((item, key) => {
                               return (
                                 <tr>
-                                  <td>{key+1}</td>
+                                  <td>{key + 1}</td>
                                   <td>{item.cid_name}</td>
                                   <td>{item.presence_id.split("@")[0]}</td>
                                   <td>{item.created.split(" ")[1]}</td>

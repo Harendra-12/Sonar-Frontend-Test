@@ -91,7 +91,7 @@
     margin: 5px 0 0;
     font-family: Roboto;
     font-weight: 400;
-    color: #747474;
+    color: var(--color-subtext);
 
     max-width: 250px;
     overflow: hidden;

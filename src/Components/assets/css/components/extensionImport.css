@@ -127,6 +127,23 @@
     border: 1px solid var(--color2);
 }
 
+.formItem.dark {
+    background-color: #ffffff20;
+    border: 1px solid #dddddd30;
+    padding: 5px 10px;
+    border-radius: 5px;
+    outline: none !important;
+    margin: 10px 0;
+    width: 85%;
+    height: 36px;
+    color: #fff;
+}
+
+.formItem.dark option {
+    background-color: #0e111e;
+    color: #fff;
+}
+
 #detailsContent .formRow select {
     /* width: 170px; */
     width: 100%;
@@ -300,11 +317,13 @@ form.tangoNavs .nav-tabs {
     display: flex;
     justify-content: end;
 }
+
 .overviewTableWrapper .buttonGroup-1 {
     display: flex;
     align-items: center;
-    justify-content:flex-end;
+    justify-content: flex-end;
 }
+
 .overviewTableWrapper .tableContainer {
     height: calc(100vh - 328px);
 }

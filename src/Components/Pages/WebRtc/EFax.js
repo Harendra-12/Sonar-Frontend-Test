@@ -478,7 +478,7 @@ function EFax() {
               {/* THIS UI WILL BE SHOWN TO USER BY DEFAULT OR WHEN HE CLICKS NEW EFAX */}
               {clickStatus === "all" && !showUserHistory && (
                 <div
-                  className="col-12 col-xl-6 callDetails eFaxCompose"
+                  className="col-12 col-xxl-6 col-xl-7 callDetails eFaxCompose"
                   style={{ height: "100%" }}
                   id="callDetails"
                 >
@@ -636,7 +636,7 @@ function EFax() {
               {/* THIS UI WILL BE SHOWN WHEN USER CLICKS A EFAX MESSAGE */}
               {showUserHistory && (
                 <div
-                  className="col-12 col-xl-6 callDetails eFaxCompose"
+                  className="col-12 col-xxl-6 col-xl-7 callDetails eFaxCompose"
                   style={{ height: "100%" }}
                   id="callDetails"
                 >
@@ -789,7 +789,7 @@ function EFax() {
                                     </thead>
                                     <tbody>
                                       <tr>
-                                        <td style={{ color: "#444444" }}>
+                                        <td style={{ color: "var(--color-subtext)" }}>
                                           Jan 16, 2022
                                         </td>
                                         <td>12:46 PM</td>
@@ -800,7 +800,7 @@ function EFax() {
                                           <span>Received</span>
                                         </td>
                                         <td>1 (999) 999-9999</td>
-                                        <td style={{ color: "#444444" }}>
+                                        <td style={{ color: "var(--color-subtext)" }}>
                                           1 Attachment
                                         </td>
                                       </tr>
@@ -828,7 +828,7 @@ function EFax() {
                                     </thead>
                                     <tbody>
                                       <tr>
-                                        <td style={{ color: "#444444" }}>
+                                        <td style={{ color: "var(--color-subtext)" }}>
                                           Jan 16, 2022
                                         </td>
                                         <td>12:46 PM</td>
@@ -839,12 +839,12 @@ function EFax() {
                                           <span>Received</span>
                                         </td>
                                         <td>1 (999) 999-9999</td>
-                                        <td style={{ color: "#444444" }}>
+                                        <td style={{ color: "var(--color-subtext)" }}>
                                           1 Attachment
                                         </td>
                                       </tr>
                                       <tr>
-                                        <td style={{ color: "#444444" }}>
+                                        <td style={{ color: "var(--color-subtext)" }}>
                                           Jan 16, 2022
                                         </td>
                                         <td>12:46 PM</td>
@@ -855,7 +855,7 @@ function EFax() {
                                           <span>Sent</span>
                                         </td>
                                         <td>1 (999) 999-9999</td>
-                                        <td style={{ color: "#444444" }}>
+                                        <td style={{ color: "var(--color-subtext)" }}>
                                           1 Attachment
                                         </td>
                                       </tr>

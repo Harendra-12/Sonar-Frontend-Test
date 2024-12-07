@@ -36,7 +36,7 @@ const CallCenter = () => {
     }
   }, [Id, callCenter]);
 
-  useEffect(() => {}, [refreshCenter, callCenterRefresh]);
+  useEffect(() => { }, [refreshCenter, callCenterRefresh]);
 
   return (
     <>
@@ -60,7 +60,7 @@ const CallCenter = () => {
         <div className="container-fluid">
           <div className="d-felx flex-column pt-2">
             <div>
-              <h3 style={{ fontFamily: "Outfit", color: "rgb(68, 68, 68)" }}>
+              <h3>
                 Call Center{" "}
                 <button
                   disabled={loading}
@@ -73,7 +73,7 @@ const CallCenter = () => {
                         ? "fa-solid fa-spinner fa-pulse fs-5 fa-spin"
                         : "fa-regular fa-arrows-rotate fs-5"
                     }
-                    style={{ color: "rgb(148, 148, 148)" }}
+                    style={{ color: "var(--color-subtext)" }}
                   ></i>
                 </button>
               </h3>

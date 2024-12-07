@@ -12,7 +12,7 @@ function ActiveCalls() {
   const [loading, setLoading] = useState(false);
   const [bargeStatus, setBargeStatus] = useState("disable");
   const [id, setId] = useState("");
-  const [dest,setDest]=useState("")
+  const [dest, setDest] = useState("")
   async function killCall(id) {
     setLoading(true);
     const apiData = await generalGetFunction(`/freeswitch/call-kill/${id}`);
@@ -39,7 +39,7 @@ function ActiveCalls() {
       toast.error(apiData.message);
     }
   }
-  async function eavesdropCall(id,dest) {
+  async function eavesdropCall(id, dest) {
     setLoading(true);
     const apiData = await generalGetFunction(
       `/freeswitch/call-eavesdrop/${id}/${dest}`
@@ -74,9 +74,9 @@ function ActiveCalls() {
     if (bargeStatus === "barge") {
       bargeCall(id);
     } else if (bargeStatus === "intercept") {
-      interceptCall(id,dest);
+      interceptCall(id, dest);
     } else if (bargeStatus === "eavesdrop") {
-      eavesdropCall(id,dest);
+      eavesdropCall(id, dest);
     }
   }, [bargeStatus, id]);
 
@@ -104,7 +104,7 @@ function ActiveCalls() {
                 <table>
                   <thead>
                     <tr>
-                      <th>Serial no.</th>
+                      <th style={{ width: "60px" }}>Sr no.</th>
                       <th>Profile</th>
                       <th>Created</th>
                       {/* <th>CID Name</th> */}
@@ -113,7 +113,7 @@ function ActiveCalls() {
                       <th>Barge</th>
                       {/* <th>Intercept</th>
                         <th>Eavesdrop</th> */}
-                      <th>Hang Up</th>
+                      <th className="text-align">Hang Up</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -121,7 +121,7 @@ function ActiveCalls() {
                       activeCall
                         .filter(
                           (call) =>
-                            call.callstate === "ACTIVE" || call.b_callee_direction==="ACTIVE"
+                            call.callstate === "ACTIVE" || call.b_callee_direction === "ACTIVE"
                         ).map
                         ((item, key) => {
                           return (
@@ -138,12 +138,13 @@ function ActiveCalls() {
                               </td>
                               <td>
                                 <select
+                                  className="formItem"
                                   onChange={(e) => {
                                     setBargeStatus(e.target.value);
                                     setId(item.uuid);
                                     setDest(item?.dest.includes("set:valet_ticket")
-                                    ? extractLastNumber(item?.accountcode)
-                                    : extractLastNumber(item?.dest))
+                                      ? extractLastNumber(item?.accountcode)
+                                      : extractLastNumber(item?.dest))
                                   }}
                                 >
                                   <option value="disbale">Choose action</option>
@@ -155,7 +156,7 @@ function ActiveCalls() {
                                   </option>
                                   <option
                                     value="intercept"
-                                    onClick={() => interceptCall(item.uuid,item?.dest.includes("set:valet_ticket")
+                                    onClick={() => interceptCall(item.uuid, item?.dest.includes("set:valet_ticket")
                                       ? extractLastNumber(item?.accountcode)
                                       : extractLastNumber(item?.dest))}
                                   >
@@ -163,7 +164,7 @@ function ActiveCalls() {
                                   </option>
                                   <option
                                     value="eavesdrop"
-                                    onClick={() => eavesdropCall(item.uuid,item?.dest.includes("set:valet_ticket")
+                                    onClick={() => eavesdropCall(item.uuid, item?.dest.includes("set:valet_ticket")
                                       ? extractLastNumber(item?.accountcode)
                                       : extractLastNumber(item?.dest))}
                                   >
@@ -212,15 +213,12 @@ function ActiveCalls() {
                               </td> */}
                               <td onClick={() => killCall(item.uuid)}>
                                 <label
-                                  className="tableLabel fail"
+                                  className="tableButton delete mx-auto"
                                   style={{
-                                    width: "85px",
-                                    padding: "3px 7px",
                                     cursor: "pointer",
                                   }}
                                 >
-                                  <i class="fa-duotone fa-solid fa-phone-slash me-1"></i>{" "}
-                                  Hang Up
+                                  <i class=" fa-solid fa-phone-slash"></i>{" "}
                                 </label>
                               </td>
                             </tr>

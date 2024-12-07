@@ -28,7 +28,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
       setLoading(false);
     }
   }, [connectStatus, isMicOn]);
-  
+
   return (
     <section>
       <style>
@@ -139,9 +139,8 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Voicemails</div>
               </div>
             </li>
-            <li>
+            {/* <li>
               <div
-                //  to="/"
                 onClick={() => setactivePage("favorites")}
                 className={
                   activePage === "favorites" ? "navItem active" : "navItem"
@@ -152,7 +151,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 </div>
                 <div className="itemTitle">Favorites</div>
               </div>
-            </li>
+            </li> */}
             <li>
               <div
                 // to="/all-contacts"
@@ -175,9 +174,8 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Help &amp; Feedback</div>
               </NavLink>
             </li> */}
-            <li>
+            {/* <li>
               <div
-                // to="/"
                 onClick={() => setactivePage("settings")}
                 className={
                   activePage === "settings" ? "navItem active" : "navItem"
@@ -188,7 +186,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 </div>
                 <div className="itemTitle">Settings</div>
               </div>
-            </li>
+            </li> */}
             <li>
               <div
                 // to="/call-dashboard"

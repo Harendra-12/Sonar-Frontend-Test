@@ -13,6 +13,7 @@ import {
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useNavigate } from "react-router-dom";
+import Tippy from "@tippyjs/react";
 
 function Messages({
   setSelectedModule,
@@ -187,7 +188,7 @@ function Messages({
         if (
           chatHistory[recipient[0]]?.total &&
           chatHistory[recipient[0]].pageNumber * 40 <
-            chatHistory[recipient[0]].total
+          chatHistory[recipient[0]].total
         ) {
           getData(chatHistory[recipient[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
@@ -525,13 +526,13 @@ function Messages({
               mode === "audio"
                 ? true
                 : {
-                    mandatory: {
-                      minWidth: 1280,
-                      minHeight: 720,
-                      minFrameRate: 30,
-                    },
-                    optional: [{ facingMode: "user" }],
+                  mandatory: {
+                    minWidth: 1280,
+                    minHeight: 720,
+                    minFrameRate: 30,
                   },
+                  optional: [{ facingMode: "user" }],
+                },
           },
         }
       );
@@ -988,9 +989,9 @@ function Messages({
                                       <p className="timeAgo">
                                         {item?.last_message_data
                                           ? formatRelativeTime(
-                                              item?.last_message_data
-                                                ?.created_at
-                                            )
+                                            item?.last_message_data
+                                              ?.created_at
+                                          )
                                           : ""}
                                       </p>
                                     </div>
@@ -1095,18 +1096,20 @@ function Messages({
                         <div className="chatHeading" data-bell={""}>
                           <h5>
                             Tag List{" "}
-                            <i
-                              onClick={() => setAddNewTag(true)}
-                              class="fa-regular fa-circle-plus fs-5"
-                              style={{ cursor: "pointer", fontSize: 18 }}
-                            ></i>
+                            <Tippy content="Click to add a new tag!">
+                              <i
+                                onClick={() => setAddNewTag(true)}
+                                class="fa-regular fa-circle-plus fs-5"
+                                style={{ cursor: "pointer", fontSize: 18 }}
+                              ></i>
+                            </Tippy>
                           </h5>
                         </div>
                         {allTags.map((item, key) => {
                           return (
                             <div className="contactTagsAddEdit">
                               <div className="row align-items-center item">
-                                <div className="col-auto">
+                                <div className="col-6">
                                   <h5>
                                     <input
                                       value={
@@ -1123,7 +1126,7 @@ function Messages({
                                     />
                                   </h5>
                                 </div>
-                                <div className="col-auto">
+                                <div className="col-3">
                                   <div className="contactTags">
                                     <span data-id={key}>
                                       {selectedTag === item.id
@@ -1138,7 +1141,9 @@ function Messages({
                                       className="clearButton2 xl"
                                       onClick={handleUpdateTag}
                                     >
-                                      <i class="fa-regular fa-circle-check"></i>
+                                      <Tippy content="Click to save your tag!">
+                                        <i class="fa-regular fa-circle-check"></i>
+                                      </Tippy>
                                     </button>
                                   ) : (
                                     <button
@@ -1148,15 +1153,19 @@ function Messages({
                                         setUpDateTag(item.name);
                                       }}
                                     >
-                                      <i class="fa-regular fa-pen-to-square"></i>
+                                      <Tippy content="You can edit the tag here!">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                      </Tippy>
                                     </button>
                                   )}
-                                  <button
-                                    className="clearButton2 xl"
-                                    onClick={() => handleDeleteTag(item.id)}
-                                  >
-                                    <i class="fa-regular fa-trash text-danger"></i>
-                                  </button>
+                                  <Tippy content="Click to delete your tag!">
+                                    <button
+                                      className="clearButton2 xl"
+                                      onClick={() => handleDeleteTag(item.id)}
+                                    >
+                                      <i class="fa-regular fa-trash text-danger"></i>
+                                    </button>
+                                  </Tippy>
                                 </div>
                               </div>
                             </div>
@@ -1303,17 +1312,17 @@ function Messages({
                           </button>
                           <ul class="dropdown-menu">
                             <li>
-                              <a class="dropdown-item" href="#">
+                              <a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>
                                 Mark as unread
                               </a>
                             </li>
                             <li>
-                              <a class="dropdown-item" href="#">
+                              <a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>
                                 Archive this chat
                               </a>
                             </li>
                             <li>
-                              <a class="dropdown-item" href="#">
+                              <a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>
                                 Close this chat
                               </a>
                             </li>
@@ -1559,14 +1568,16 @@ function Messages({
             </div>
           </div>
         </section>
-      </main>
-      {loading ? (
-        <div colSpan={99}>
-          <CircularLoader />
-        </div>
-      ) : (
-        ""
-      )}
+      </main >
+      {
+        loading ? (
+          <div colSpan={99} >
+            <CircularLoader />
+          </div>
+        ) : (
+          ""
+        )
+      }
     </>
   );
 }

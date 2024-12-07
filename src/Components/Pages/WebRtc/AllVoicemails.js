@@ -146,9 +146,8 @@ function AllVoicemails({ isCustomerAdmin }) {
 
   const renderCallItem = (item) => (
     <div
-      className={`callListItem ${
-        clickedVoiceMail?.id === item?.id ? "selected" : ""
-      }`}
+      className={`callListItem ${clickedVoiceMail?.id === item?.id ? "selected" : ""
+        }`}
       onClick={() => handleVoiceMailClick(item)}
     >
       <div className="row justify-content-between align-items-center">
@@ -161,7 +160,7 @@ function AllVoicemails({ isCustomerAdmin }) {
             {isCustomerAdmin ? (
               <h4>
                 {item.src}
-                ==<i class="fa-solid fa-angles-right"></i>
+                <i class="fa-solid fa-voicemail mx-2 text-danger"></i>
                 {item.dest}
               </h4>
             ) : (
@@ -244,7 +243,7 @@ function AllVoicemails({ isCustomerAdmin }) {
     if (!isCustomerAdmin) {
       return (
         item.dest ==
-          getSourceName(clickedVoiceMail.src, clickedVoiceMail.dest) ||
+        getSourceName(clickedVoiceMail.src, clickedVoiceMail.dest) ||
         item.src == getSourceName(clickedVoiceMail.src, clickedVoiceMail.dest)
       );
     } else {
@@ -692,8 +691,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                           {isCustomerAdmin ? (
                                             <span>
                                               {clickedVoiceMail.src}
-                                              ==
-                                              <i class="fa-solid fa-angles-right"></i>
+                                              <i class="fa-solid fa-voicemail mx-2 text-danger"></i>
                                               {clickedVoiceMail.dest}
                                             </span>
                                           ) : (
@@ -767,7 +765,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                     <tbody>
                                       {selectedVoiceMailExtensionList &&
                                         selectedVoiceMailExtensionList.length >
-                                          0 &&
+                                        0 &&
                                         selectedVoiceMailExtensionList.map(
                                           (item, index) => {
                                             return (
@@ -802,8 +800,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                                     {isCustomerAdmin ? (
                                                       <span>
                                                         {item.src}
-                                                        ==
-                                                        <i class="fa-solid fa-angles-right"></i>
+                                                        <i class="fa-solid fa-voicemail mx-2 text-danger"></i>
                                                         {item.dest}
                                                       </span>
                                                     ) : (
