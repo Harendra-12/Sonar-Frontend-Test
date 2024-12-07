@@ -104,7 +104,7 @@ function CallDashboard() {
               className="row justify-content-between"
               style={{ height: "100%" }}
             >
-              {/* <div className="col-12 ps-xl-0">
+              <div className="col-12 ps-xl-0">
                 <div className="newHeader">
                   <div className="col-auto" style={{ padding: "0 10px" }}>
                     <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
@@ -170,8 +170,7 @@ function CallDashboard() {
                     </div>
                   </div>
                 </div>
-              </div> */}
-              <Header title="Call Dashboard" />
+              </div>
               <div
                 className="col-xl-7 px-0"
                 style={{ borderRight: "1px solid var(--border-color)" }}

@@ -161,7 +161,7 @@ function AllContact({
                       />
                     </div>
                     <div className="col-auto mx-2">
-                      <button className="clearButton2 xl" effect="ripple">
+                      <button className="clearButton2 xl" effect="ripple" onClick={() => featureUnderdevelopment()}>
                         <i className="fa-regular fa-bell" />
                       </button>
                     </div>

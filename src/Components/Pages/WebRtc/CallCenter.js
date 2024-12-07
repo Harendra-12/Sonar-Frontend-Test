@@ -75,7 +75,7 @@ const CallCenter = () => {
       >
         <div className="container-fluid">
           <div className="row">
-            {/* <div className="col-12 px-0">
+            <div className="col-12 px-0">
               <div className="newHeader">
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
@@ -141,8 +141,7 @@ const CallCenter = () => {
                   </div>
                 </div>
               </div>
-            </div> */}
-            <Header title="Call Dashboard" />
+            </div>
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
                 <div className="d-flex flex-wrap">

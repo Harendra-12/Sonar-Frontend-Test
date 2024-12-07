@@ -729,10 +729,11 @@ function Messages({
                         placeholder="Search users, groups or chat"
                         class="formItem fw-normal"
                         style={{ backgroundColor: "var(--searchBg)" }}
+                        onClick={() => featureUnderdevelopment()}
                       />
                     </div>
                     <div className="col-auto mx-2">
-                      <button className="clearButton2 xl" effect="ripple">
+                      <button className="clearButton2 xl" effect="ripple" onClick={() => featureUnderdevelopment()}>
                         <i className="fa-regular fa-bell" />
                       </button>
                     </div>
@@ -1235,6 +1236,7 @@ function Messages({
                                 <span
                                   data-id={key}
                                   onClick={() => handleUnassignTask(item?.id)}
+                                  className="removableTag"
                                 >
                                   {item.tag?.[0]?.name}
                                 </span>
@@ -1534,16 +1536,16 @@ function Messages({
 
                         <div className="col-12 d-flex justify-content-between align-items-center">
                           <div className="d-flex">
-                            <button className="clearButton2">
+                            <button className="clearButton2" onClick={() => featureUnderdevelopment()}>
                               <i className="fa-light fa-eraser" />
                             </button>
-                            <button className="clearButton2">
+                            <button className="clearButton2" onClick={() => featureUnderdevelopment()}>
                               <i class="fa-regular fa-image"></i>
                             </button>
-                            <button className="clearButton2">
+                            <button className="clearButton2" onClick={() => featureUnderdevelopment()}>
                               <i class="fa-solid fa-paperclip"></i>
                             </button>
-                            <button className="clearButton2">
+                            <button className="clearButton2" onClick={() => featureUnderdevelopment()}>
                               <i class="fa-regular fa-face-smile"></i>
                             </button>
                           </div>
