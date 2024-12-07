@@ -309,7 +309,7 @@ function Call({
             {item["variable_billsec"] > 0 && (
               <div className={`col-3 mx-auto ${isCustomerAdmin ? "my-auto" : ""}`}>
                 <div className="contactTags">
-                  <span data-id="2">
+                  <span data-id="2" className="duration">
                     Duration: {formatTime(item["variable_billsec"])}
                   </span>
                 </div>

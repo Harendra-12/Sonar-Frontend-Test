@@ -662,7 +662,7 @@ input[type=number] {
     color: var(--immortalBlack);
 }
 
-.contactTags span:not(.add):hover::before {
+.contactTags span:not(.add, .duration):hover::before {
     content: '\f057';
     font-family: 'Font Awesome 5 Pro';
     font-size: 12px;
@@ -671,7 +671,7 @@ input[type=number] {
     margin-right: 5px;
 }
 
-.contactTags span:not(.add):hover {
+.contactTags span:not(.add, .duration):hover {
     background-color: #ff0000;
     color: #fff !important;
 }
