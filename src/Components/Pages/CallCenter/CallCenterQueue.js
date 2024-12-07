@@ -34,7 +34,6 @@ function CallCenterQueue() {
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [searchValue, setSearchValue] = useState("");
 
-
   // const getCallCenterDashboardData = async () => {
   //   setLoading(true);
   //   const apidata = await generalGetFunction(
@@ -89,7 +88,6 @@ function CallCenterQueue() {
         allUserRefresh: allUserRefresh + 1,
       });
     }
-
   }, [pageNumber, refreshState, itemsPerPage, searchValue]);
 
   const handleAddCallCenterValidation = (e) => {
@@ -236,7 +234,7 @@ function CallCenterQueue() {
                     <div className="heading">
                       <div className="content">
                         <h4>Call Center Queue
-                          <button className="clearButton" onClick={() => setRefreshState(refreshState + 1)}>
+                          <button className="clearButton" onClick={() => setRefreshState(refreshState + 1)} disabled={loading}>
                             <i className={
                               loading
                                 ? "fa-regular fa-arrows-rotate fs-5 fa-spin"

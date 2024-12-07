@@ -23,10 +23,10 @@ function EFax() {
   const [contentLoading, setContentLoading] = useState(true);
   const [dropdownOption, setDropdownOption] = useState([]);
   const [EfaxFileLoading, setEfaxFileLoading] = useState(true);
-  const [faxFileId, setFaxDileId] = useState("")
-  const [destinationId, setDestinationId] = useState("")
-  const [faxIdent, setFaxIdent] = useState("")
-  const [faxHeader, setFaxHeader] = useState("")
+  const [faxFileId, setFaxDileId] = useState("");
+  const [destinationId, setDestinationId] = useState("");
+  const [faxIdent, setFaxIdent] = useState("");
+  const [faxHeader, setFaxHeader] = useState("");
 
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
@@ -108,31 +108,31 @@ function EFax() {
     console.log("api hit");
 
     if (destinationId === "") {
-      toast.error("Please enter destination id")
+      toast.error("Please enter destination id");
     } else if (faxFileId === "") {
-      toast.error("Please select file")
+      toast.error("Please select file");
     } else if (faxIdent === "") {
-      toast.error("Please enter fax identifier")
+      toast.error("Please enter fax identifier");
     } else if (faxHeader === "") {
-      toast.error("Please enter fax header")
+      toast.error("Please enter fax header");
     } else {
-      setContentLoading(true)
+      setContentLoading(true);
       const parsedData = {
-        "destination_caller_id_number": destinationId,
-        "fax_files_id": faxFileId,
-        "fax_ident": faxIdent,
-        "fax_header": faxHeader
-      }
-      const response = await generalPostFunction(`/send-fax`, parsedData)
+        destination_caller_id_number: destinationId,
+        fax_files_id: faxFileId,
+        fax_ident: faxIdent,
+        fax_header: faxHeader,
+      };
+      const response = await generalPostFunction(`/send-fax`, parsedData);
       if (response.status) {
-        toast.success(response.message)
-        setDestinationId("")
-        setFaxDileId("")
-        setFaxIdent("")
-        setFaxHeader("")
-        setContentLoading(false)
+        toast.success(response.message);
+        setDestinationId("");
+        setFaxDileId("");
+        setFaxIdent("");
+        setFaxHeader("");
+        setContentLoading(false);
       } else {
-        setContentLoading(false)
+        setContentLoading(false);
       }
     }
   }
@@ -164,12 +164,14 @@ function EFax() {
         <section className="callPage">
           <div className="container-fluid">
             <div className="row">
-
               <div className="col-12 ps-xl-0">
                 <div className="newHeader">
-                  <div className="col-auto" style={{ padding: '0 10px' }}>
-                    <h3 style={{ fontFamily: "Outfit", marginBottom: '0' }}>
-                      <button class="clearButton text-dark" ><i class="fa-solid fa-chevron-left fs-4"></i></button> E-Fax{" "}
+                  <div className="col-auto" style={{ padding: "0 10px" }}>
+                    <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
+                      <button class="clearButton text-dark">
+                        <i class="fa-solid fa-chevron-left fs-4"></i>
+                      </button>{" "}
+                      E-Fax{" "}
                       <button class="clearButton">
                         <i
                           class="fa-regular fa-arrows-rotate fs-5"
@@ -181,7 +183,14 @@ function EFax() {
                   </div>
                   <div className="d-flex justify-content-end align-items-center">
                     <div className="col-9">
-                      <input type="search" name="Search" placeholder="Search users, groups or chat" class="formItem fw-normal" style={{ backgroundColor: 'var(--searchBg)' }} onChange={() => featureUnderdevelopment()} />
+                      <input
+                        type="search"
+                        name="Search"
+                        placeholder="Search users, groups or chat"
+                        class="formItem fw-normal"
+                        style={{ backgroundColor: "var(--searchBg)" }}
+                        onChange={() => featureUnderdevelopment()}
+                      />
                     </div>
                     <div className="col-auto mx-2">
                       <button
@@ -194,14 +203,40 @@ function EFax() {
                     </div>
                     <div className="col-auto">
                       <div class="dropdown">
-                        <div className="myProfileWidget" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div
+                          className="myProfileWidget"
+                          type="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
                           <div class="profileHolder" id="profileOnlineNav">
-                            <img src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg" alt="profile" />
+                            <img
+                              src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
+                              alt="profile"
+                            />
                           </div>
-                          <div class="profileName">{account.username} <span className="status">Available</span></div>
+                          <div class="profileName">
+                            {account.username}{" "}
+                            <span className="status">Available</span>
+                          </div>
                         </div>
-                        <ul class="dropdown-menu" onClick={logOut}>
-                          <li><div class="dropdown-item" style={{ cursor: 'pointer' }} >Logout</div></li>
+                        <ul class="dropdown-menu">
+                          <li onClick={logOut}>
+                            <div
+                              class="dropdown-item"
+                              style={{ cursor: "pointer" }}
+                            >
+                              Logout
+                            </div>
+                          </li>
+                          <li onClick={() => navigate("/my-profile")}>
+                            <div
+                              class="dropdown-item"
+                              style={{ cursor: "pointer" }}
+                            >
+                              Profile
+                            </div>
+                          </li>
                         </ul>
                       </div>
                     </div>
@@ -210,8 +245,7 @@ function EFax() {
               </div>
 
               <div className="col-xl-6 allCallHistory pb-0">
-
-                <div className="col-auto" style={{ padding: '0 10px' }}>
+                <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
                     Viewing As:
                     <span>
@@ -227,12 +261,15 @@ function EFax() {
                     </span>
                   </h5>
                 </div>
-                <div className="col-auto" style={{ padding: '0 10px' }}>
-                  <button className="clearColorButton dark" onClick={() => setShowUserHistory(false)}>
+                <div className="col-auto" style={{ padding: "0 10px" }}>
+                  <button
+                    className="clearColorButton dark"
+                    onClick={() => setShowUserHistory(false)}
+                  >
                     <i className="fa-light fa-fax" /> New Fax
                   </button>
                 </div>
-                <div className="col-12 mt-3" style={{ padding: '0 10px' }}>
+                <div className="col-12 mt-3" style={{ padding: "0 10px" }}>
                   <input
                     type="search"
                     name="Search"
@@ -243,7 +280,10 @@ function EFax() {
 
                 <div className="col-12">
                   <nav className="mt-3">
-                    <div className="nav nav-tabs" style={{ borderBottom: '1px solid var(--border-color)' }}>
+                    <div
+                      className="nav nav-tabs"
+                      style={{ borderBottom: "1px solid var(--border-color)" }}
+                    >
                       <button
                         onClick={() => setClickStatus("all")}
                         className={
@@ -294,23 +334,35 @@ function EFax() {
                         <div className="dateHeader">
                           <p className="fw-semibold">Today</p>
                         </div>
-                        <div data-bell="" className="callListItem incoming" onClick={() => setShowUserHistory(true)}>
+                        <div
+                          data-bell=""
+                          className="callListItem incoming"
+                          onClick={() => setShowUserHistory(true)}
+                        >
                           <div className="row justify-content-between">
                             <div className="col-xl-12 d-flex">
                               <div className="profileHolder">
                                 <i className="fa-light fa-user fs-5"></i>
                               </div>
 
-                              <div class="col-4 my-auto ms-2 ms-xl-3" style={{ cursor: "pointer" }}>
+                              <div
+                                class="col-4 my-auto ms-2 ms-xl-3"
+                                style={{ cursor: "pointer" }}
+                              >
                                 <h4>AUSER XYZ</h4>
-                                <h5 style={{ paddingLeft: "20px" }}>1 (999) 999-9999</h5>
+                                <h5 style={{ paddingLeft: "20px" }}>
+                                  1 (999) 999-9999
+                                </h5>
                               </div>
 
                               <div className="col-3 mx-auto">
                                 <div className="contactTags">
                                   <span data-id="1">Received</span>
                                 </div>
-                                <h5 style={{ fontWeight: '400' }}><i class="fa-light fa-paperclip"></i> 1 Attachment</h5>
+                                <h5 style={{ fontWeight: "400" }}>
+                                  <i class="fa-light fa-paperclip"></i> 1
+                                  Attachment
+                                </h5>
                               </div>
                               <div className="col-1 text-end ms-auto">
                                 <p className="timeAgo">12:46pm</p>
@@ -325,16 +377,24 @@ function EFax() {
                                 <i className="fa-light fa-user fs-5"></i>
                               </div>
 
-                              <div class="col-4 my-auto ms-2 ms-xl-3" style={{ cursor: "pointer" }}>
+                              <div
+                                class="col-4 my-auto ms-2 ms-xl-3"
+                                style={{ cursor: "pointer" }}
+                              >
                                 <h4>AUSER XYZ</h4>
-                                <h5 style={{ paddingLeft: "20px" }}>1 (999) 999-9999</h5>
+                                <h5 style={{ paddingLeft: "20px" }}>
+                                  1 (999) 999-9999
+                                </h5>
                               </div>
 
                               <div className="col-3 mx-auto">
                                 <div className="contactTags">
                                   <span data-id="0">Sent</span>
                                 </div>
-                                <h5 style={{ fontWeight: '400' }}><i class="fa-light fa-paperclip"></i> 1 Attachment</h5>
+                                <h5 style={{ fontWeight: "400" }}>
+                                  <i class="fa-light fa-paperclip"></i> 1
+                                  Attachment
+                                </h5>
                               </div>
                               <div className="col-1 text-end ms-auto">
                                 <p className="timeAgo">12:46pm</p>
@@ -433,7 +493,10 @@ function EFax() {
                             </div>
                           </div>
                         </div>
-                        <div className="col-12" style={{ padding: '0px 20px 0px' }}>
+                        <div
+                          className="col-12"
+                          style={{ padding: "0px 20px 0px" }}
+                        >
                           <div className="newMessageWrapper mb-3">
                             <div>
                               {/* <div className="messageTitle">
@@ -470,20 +533,27 @@ function EFax() {
                                       type="text"
                                       className="border-0 mb-0"
                                       value={destinationId}
-                                      onChange={(e) => setDestinationId(e.target.value)}
+                                      onChange={(e) =>
+                                        setDestinationId(e.target.value)
+                                      }
                                     />
                                   </div>
                                 </div>
                               </div>
                               <div className="messageSubject">
                                 <label>Fax Identifier</label>
-                                <input value={faxIdent}
-                                  onChange={(e) => setFaxIdent(e.target.value)} type="text" />
+                                <input
+                                  value={faxIdent}
+                                  onChange={(e) => setFaxIdent(e.target.value)}
+                                  type="text"
+                                />
                               </div>
                               <div className="messageBody">
                                 <label>Fax Header</label>
-                                <input value={faxHeader}
-                                  onChange={(e) => setFaxHeader(e.target.value)} />
+                                <input
+                                  value={faxHeader}
+                                  onChange={(e) => setFaxHeader(e.target.value)}
+                                />
                               </div>
                               <div className="messageBody">
                                 <label>
@@ -492,7 +562,13 @@ function EFax() {
                                 </label>
                                 <div className="inputFileWrapper">
                                   {/* <input type="file" /> */}
-                                  <select value={faxFileId} onChange={(e) => setFaxDileId(e.target.value)} className="formItem">
+                                  <select
+                                    value={faxFileId}
+                                    onChange={(e) =>
+                                      setFaxDileId(e.target.value)
+                                    }
+                                    className="formItem"
+                                  >
                                     <option value="" disabled>
                                       Chose file
                                     </option>
@@ -527,7 +603,15 @@ function EFax() {
                               </div>
                               <div className="buttonControl">
                                 {/* <button className="panelButton">Send Later</button> */}
-                                <button onClick={sendFax} className="panelButton"><span className="text">Send</span><span className="icon"><i class="fa-solid fa-paper-plane-top"></i></span></button>
+                                <button
+                                  onClick={sendFax}
+                                  className="panelButton"
+                                >
+                                  <span className="text">Send</span>
+                                  <span className="icon">
+                                    <i class="fa-solid fa-paper-plane-top"></i>
+                                  </span>
+                                </button>
                               </div>
                             </div>
                           </div>
@@ -535,7 +619,6 @@ function EFax() {
                       </div>
                     </div>
                   </div>
-
                 </div>
               )}
               {clickStatus === "file" && (
@@ -557,22 +640,17 @@ function EFax() {
                   style={{ height: "100%" }}
                   id="callDetails"
                 >
-
                   <div className="messageOverlay">
                     <div className="contactHeader">
                       <div>
                         <h4 className="mb-0">Test User</h4>
-                        <p className="gray14 mb-0 mt-1">
-                          Extension - 1002
-                        </p>
+                        <p className="gray14 mb-0 mt-1">Extension - 1002</p>
                       </div>
                       <div className="d-flex my-auto">
                         <div className="d-flex align-items-center me-2">
                           <label className="gray14 me-2">Assigned to:</label>
                           <select className="ovalSelect">
-                            <option>
-                              Test User
-                            </option>
+                            <option>Test User</option>
                           </select>
                         </div>
                         <button
@@ -597,13 +675,42 @@ function EFax() {
                           <i className="fa-regular fa-video" />
                         </button>
                         <div class="dropdown">
-                          <button class="clearButton2 xl" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          <button
+                            class="clearButton2 xl"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
                             <i class="fa-solid fa-ellipsis-vertical"></i>
                           </button>
                           <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>Add to Contact</a></li>
-                            <li><a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>Video Call</a></li>
-                            <li><a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>Delete Contact</a></li>
+                            <li>
+                              <a
+                                class="dropdown-item"
+                                href="#"
+                                onClick={() => featureUnderdevelopment()}
+                              >
+                                Add to Contact
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                class="dropdown-item"
+                                href="#"
+                                onClick={() => featureUnderdevelopment()}
+                              >
+                                Video Call
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                class="dropdown-item"
+                                href="#"
+                                onClick={() => featureUnderdevelopment()}
+                              >
+                                Delete Contact
+                              </a>
+                            </li>
                           </ul>
                         </div>
                       </div>
@@ -621,10 +728,20 @@ function EFax() {
                             </div>
                           </div>
                         </div>
-                        <div className="col-12" style={{ padding: '0px 20px 0px' }}>
+                        <div
+                          className="col-12"
+                          style={{ padding: "0px 20px 0px" }}
+                        >
                           <div className="mt-2">
                             <nav className="mb-2">
-                              <div className="nav nav-tabs" id="nav-tab" role="tablist" style={{ borderBottom: '1px solid var(--border-color)' }}>
+                              <div
+                                className="nav nav-tabs"
+                                id="nav-tab"
+                                role="tablist"
+                                style={{
+                                  borderBottom: "1px solid var(--border-color)",
+                                }}
+                              >
                                 <button
                                   className="tabLink active"
                                   effect="ripple"
@@ -676,7 +793,10 @@ function EFax() {
                                           Jan 16, 2022
                                         </td>
                                         <td>12:46 PM</td>
-                                        <td className="incoming" style={{ paddingLeft: '30px' }}>
+                                        <td
+                                          className="incoming"
+                                          style={{ paddingLeft: "30px" }}
+                                        >
                                           <span>Received</span>
                                         </td>
                                         <td>1 (999) 999-9999</td>
@@ -712,7 +832,10 @@ function EFax() {
                                           Jan 16, 2022
                                         </td>
                                         <td>12:46 PM</td>
-                                        <td className="incoming" style={{ paddingLeft: '30px' }}>
+                                        <td
+                                          className="incoming"
+                                          style={{ paddingLeft: "30px" }}
+                                        >
                                           <span>Received</span>
                                         </td>
                                         <td>1 (999) 999-9999</td>
@@ -725,7 +848,10 @@ function EFax() {
                                           Jan 16, 2022
                                         </td>
                                         <td>12:46 PM</td>
-                                        <td className="outgoing" style={{ paddingLeft: '30px' }}>
+                                        <td
+                                          className="outgoing"
+                                          style={{ paddingLeft: "30px" }}
+                                        >
                                           <span>Sent</span>
                                         </td>
                                         <td>1 (999) 999-9999</td>
@@ -772,7 +898,9 @@ function EFax() {
                       onClick={deleteDocument}
                     >
                       <span className="text">Confirm</span>
-                      <span className="icon"><i class="fa-solid fa-check"></i></span>
+                      <span className="icon">
+                        <i class="fa-solid fa-check"></i>
+                      </span>
                     </button>
                     <button
                       className="panelButtonWhite m-0 float-end"

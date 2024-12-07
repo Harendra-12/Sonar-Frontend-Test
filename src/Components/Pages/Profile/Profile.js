@@ -162,7 +162,7 @@ const Profile = () => {
               </div> 
             </div> */}
           </div>
-          <div className="row" style={{ padding: '20px 10px' }}>
+          <div className="row" style={{ padding: "20px 10px" }}>
             <div className="col-xl-5 pe-xl-0">
               <div className="profileView">
                 <div className="profileDetailsHolder p-0">
@@ -181,17 +181,21 @@ const Profile = () => {
                     </div>
                     <div className="col-xxl-9 col-xl-8 my-auto">
                       <div>
-                        <div className="content profileicons mt-0 d-flex align-items-center justify-content-start" >
+                        <div className="content profileicons mt-1 d-flex align-items-center justify-content-start">
                           <span>
                             <i class="fa-regular me-3 fa-user"></i>
                           </span>
-                          <h5 className="mb-0">{account?.name ? account?.name : "User Name"}</h5>
+                          <h5 className="mb-0">
+                            {account?.name ? account?.name : "User Name"}
+                          </h5>
                         </div>
-                        <div className="content profileicons mt-2  d-flex align-items-center justify-content-start" >
+                        <div className="content profileicons mt-1  d-flex align-items-center justify-content-start">
                           <span>
                             <i class="fa-regular me-3 fa-envelope"></i>
                           </span>
-                          <p className="mb-0"> {account?.email ? account?.email : "user@mail.com"}
+                          <p className="mb-0">
+                            {" "}
+                            {account?.email ? account?.email : "user@mail.com"}
                           </p>
 
                           {/* <p >
@@ -203,16 +207,16 @@ const Profile = () => {
                       </p> */}
                         </div>
 
-
-                        <div className="content profileicons mt-2 d-flex align-items-center justify-content-start" >
+                        <div className="content profileicons mt-1 d-flex align-items-center justify-content-start">
                           <span>
                             <i class="fa-solid me-3 fa-location-dot"></i>
                           </span>
-                          <p className="mb-0">{accountDetails?.billing_address && accountDetails?.billing_address[0].address}
+                          <p className="mb-0">
+                            {accountDetails?.billing_address &&
+                              accountDetails?.billing_address[0].address}
                           </p>
                         </div>
                       </div>
-
                     </div>
                     {accountDetails.summery && (
                       <div className="summaryDetails">
@@ -349,7 +353,7 @@ const Profile = () => {
                                 <div className="col-4 ps-0">
                                   <button
                                     className="panelButton static ms-0 w-100"
-                                    style={{ height: '34px' }}
+                                    style={{ height: "34px" }}
                                     onClick={() => handleSetExtension()}
                                   // effect="ripple"
                                   >
@@ -380,9 +384,6 @@ const Profile = () => {
                         </div>
                       </div>
                     </div>
-
-
-
                   </div>
                 </div>
               </div>
@@ -405,30 +406,30 @@ const Profile = () => {
                               &nbsp;&nbsp;
                               {accountDetails?.billing_address[0].country}
                             </p>
-
                           </div>
                           <div className=" d-flex align-items-center justify-content-between " style={{ height: '25px' }}>
                             <p className=" me-2">Language:</p>
-                            <div >
+                            <div>
                               <p className="imgwidth d-flex  ms-2 me-2">
                                 <img
                                   src={`https://flagsapi.com/GB/flat/16.png`}
                                 ></img>
-                                &nbsp;&nbsp;{account?.language && account?.language}
+                                &nbsp;&nbsp;
+                                {account?.language && account?.language}
                               </p>
                             </div>
-
                           </div>
                           <div className=" d-flex align-items-center justify-content-between " style={{ height: '25px' }}>
                             <p className=" me-2">TimeZone:</p>
 
-                            <p className=" ms-2 me-2">{timeZoneVal && timeZoneVal[0].name}</p>
+                            <p className=" ms-2 me-2">
+                              {timeZoneVal && timeZoneVal[0].name}
+                            </p>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
               <div className="row">
@@ -437,7 +438,9 @@ const Profile = () => {
                     <div className="profileDetailsHolder p-0">
                       {/* <div className="ribbon">Subscription Details</div> */}
                       <div className="row" style={{ padding: "15px" }}>
-                        <div className="col-12 header">Subscription Details</div>
+                        <div className="col-12 header">
+                          Subscription Details
+                        </div>
                         <div className="wrapper0">
                           <ul>
                             <li className="d-flex justify-content-between border-bottom py-1">
@@ -459,31 +462,41 @@ const Profile = () => {
                               </label>
                             </li>
                             <li className="d-flex justify-content-between border-bottom py-1">
-                              <label className="formLabel">Subscription Start</label>{" "}
+                              <label className="formLabel">
+                                Subscription Start
+                              </label>{" "}
                               <label className="formLabel details">
                                 {accountDetails?.subscription?.[0].start_date}
                               </label>
                             </li>
                             <li className="d-flex justify-content-between border-bottom py-1">
-                              <label className="formLabel">Subscription End</label>{" "}
+                              <label className="formLabel">
+                                Subscription End
+                              </label>{" "}
                               <label className="formLabel details">
                                 {accountDetails?.subscription?.[0].end_date}
                               </label>
                             </li>
                             <li className="d-flex justify-content-between border-bottom py-1">
-                              <label className="formLabel">Time of Payment</label>{" "}
+                              <label className="formLabel">
+                                Time of Payment
+                              </label>{" "}
                               <label className="formLabel details">
                                 {accountDetails?.payments[0].transaction_date}
                               </label>
                             </li>
                             <li className="d-flex justify-content-between border-bottom py-1">
-                              <label className="formLabel">Payment Status</label>{" "}
+                              <label className="formLabel">
+                                Payment Status
+                              </label>{" "}
                               <label className="formLabel details">
                                 {accountDetails?.payments[0].payment_status}
                               </label>
                             </li>
                             <li className="d-flex justify-content-between border-bottom py-2">
-                              <label className="formLabel">Transaction Id</label>{" "}
+                              <label className="formLabel">
+                                Transaction Id
+                              </label>{" "}
                               <label className="formLabel details">
                                 {accountDetails?.payments[0].transaction_id}
                               </label>
@@ -495,8 +508,6 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-
-
             </div>
 
             <div className="col-xl-3">
@@ -515,7 +526,6 @@ const Profile = () => {
                             <i class="fa-solid me-1 fa-arrow-right"></i>
                             Buy Extensions
                           </div>
-
                         </Link>
                       </li>
                       <li>
@@ -524,7 +534,6 @@ const Profile = () => {
                             <i class="fa-solid me-1 fa-arrow-right"></i>
                             Increase Users
                           </div>
-
                         </Link>
                       </li>
                       <li>
@@ -533,7 +542,6 @@ const Profile = () => {
                             <i class="fa-solid me-1 fa-arrow-right"></i>
                             Explore Modules
                           </div>
-
                         </Link>
                       </li>
                     </ul>
@@ -545,7 +553,6 @@ const Profile = () => {
                             <i class="fa-solid me-1 fa-arrow-right"></i>
                             Setup Guide
                           </div>
-
                         </Link>
                       </li>
                       <li>
@@ -560,24 +567,46 @@ const Profile = () => {
                     <p>Connect With us</p>
                     <ul>
                       <li>
-                        <Link
-                          onClick={() => window.location.href = "https://ucaas.webvio.in:3001/"}
+                        {/* <Link
+                          onClick={() => navigate(process.env.NEXT_APP_URL)}
                         >
                           <div className="arrowicon me-1">
                             <i class="fa-solid me-1 fa-arrow-right"></i>
                             Know about us!
                           </div>
-                        </Link>
+                        </Link> */}
+                        <a
+                          href={`${process.env.NEXT_APP_URL}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <div className="arrowicon me-1">
+                            <i className="fa-solid me-1 fa-arrow-right"></i>
+                            Know about us!
+                          </div>
+                        </a>
                       </li>
                       <li>
-                        <Link
-                          onClick={() => window.location.href = "https://ucaas.webvio.in:3001/"}
+                        {/* <Link
+                          onClick={() =>
+                            navigate("https://ucaas.webvio.in:3001/")
+                          }
                         >
                           <div className="arrowicon me-1">
                             <i class="fa-solid me-1 fa-arrow-right"></i>
                             Connect with us!
                           </div>
-                        </Link>
+                        </Link> */}
+                        <a
+                          href={`${process.env.NEXT_APP_URL}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <div className="arrowicon me-1">
+                            <i className="fa-solid me-1 fa-arrow-right"></i>
+                            Connect with us!
+                          </div>
+                        </a>
                       </li>
                     </ul>
                   </div>
@@ -587,58 +616,56 @@ const Profile = () => {
           </div>
         </div>
       </section>
-      {
-        popup ? (
-          <div className="popup">
-            <div className="container h-100">
-              <div className="row h-100 justify-content-center align-items-center">
-                <div className="row content col-xl-4">
-                  <div className="col-2 px-0">
-                    <div className="iconWrapper">
-                      <i className="fa-duotone fa-triangle-exclamation"></i>
-                    </div>
+      {popup ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-4">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-triangle-exclamation"></i>
                   </div>
-                  <div className="col-10 ps-0">
-                    <h4>Warning!</h4>
-                    <p>
-                      {preassignedExtension
-                        ? `By Confirming this, ${selectedExtension} extension will be assigned to you and pre-assigned user will be unassigned of any extension. `
-                        : `By Confirming this, ${selectedExtension} extension will be assigned to you.`}
-                      ?
-                    </p>
+                </div>
+                <div className="col-10 ps-0">
+                  <h4>Warning!</h4>
+                  <p>
+                    {preassignedExtension
+                      ? `By Confirming this, ${selectedExtension} extension will be assigned to you and pre-assigned user will be unassigned of any extension. `
+                      : `By Confirming this, ${selectedExtension} extension will be assigned to you.`}
+                    ?
+                  </p>
 
-                    <div className="d-flex justify-content-between">
-                      <button
-                        className="panelButton m-0"
-                        onClick={() => {
-                          handleUpdateExtension();
-                        }}
-                      >
-                        <span className="text">Confirm</span>
-                        <span className="icon">
-                          <i class="fa-solid fa-check"></i>
-                        </span>
-                      </button>
-                      <button
-                        className="panelButtonWhite m-0 float-end"
-                        onClick={() => {
-                          setPopup(false);
-                          setPreassignedExtension(false);
-                        }}
-                      >
-                        Cancel
-                      </button>
-                    </div>
+                  <div className="d-flex justify-content-between">
+                    <button
+                      className="panelButton m-0"
+                      onClick={() => {
+                        handleUpdateExtension();
+                      }}
+                    >
+                      <span className="text">Confirm</span>
+                      <span className="icon">
+                        <i class="fa-solid fa-check"></i>
+                      </span>
+                    </button>
+                    <button
+                      className="panelButtonWhite m-0 float-end"
+                      onClick={() => {
+                        setPopup(false);
+                        setPreassignedExtension(false);
+                      }}
+                    >
+                      Cancel
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        ) : (
-          ""
-        )
-      }
-    </main >
+        </div>
+      ) : (
+        ""
+      )}
+    </main>
   );
 };
 

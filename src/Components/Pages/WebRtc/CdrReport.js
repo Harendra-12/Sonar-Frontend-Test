@@ -279,6 +279,7 @@ function CdrReport() {
                         effect="ripple"
                         className="panelButton"
                         onClick={refreshCallData}
+                        disabled={loading}
                       >
                         <span className="text">Refresh</span>
                         <span className="icon">

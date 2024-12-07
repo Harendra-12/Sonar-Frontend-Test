@@ -31,7 +31,9 @@ const IvrListing = () => {
   useEffect(() => {
     async function getData() {
       setLoading(true);
-      const apiData = await generalGetFunction(`/ivr-master/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}`);
+      const apiData = await generalGetFunction(
+        `/ivr-master/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}`
+      );
       if (apiData.status) {
         setIvr(apiData.data);
         setLoading(false);
