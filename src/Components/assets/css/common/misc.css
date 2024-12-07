@@ -819,3 +819,11 @@ input[type=number] {
     font-size: 14px;
     font-weight: 700;
 }
+
+.react-clock {
+    margin-left: auto;
+}
+
+.form-group .cardImage {
+    top: -5px !important;
+}

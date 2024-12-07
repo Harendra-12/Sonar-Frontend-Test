@@ -143,7 +143,7 @@ function BillingCardSave({ closePopup }) {
       </style>
       <div className="col-xl-4">
         <div className="cardDetailsWrapper">
-          <div className="col-12 border-start border-4 border-success mb-3 px-3">
+          <div className="col-12 mb-3">
             <h5>
               Credit Card Information
               <span

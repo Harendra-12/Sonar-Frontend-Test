@@ -202,7 +202,7 @@ export function featureUnderdevelopment() {
     <div class="popup">
       <div class="container h-100">
         <div class="row h-100 justify-content-center align-items-center">
-          <div class="row content col-xl-3">
+          <div class="row content col-xxl-3 col-xl-4">
             <div class="col-2 px-0">
               <div class="iconWrapper">
                 <i class="fa-duotone fa-clock  text-info"></i>

@@ -1056,7 +1056,7 @@ function CallCenterQueueEdit() {
                             >
                               <label>{index + 1}.</label>
                             </div>
-                            <div className={`row col-${advance.includes(item.id) ? "11" : "5"}`}>
+                            <div className={`row col-${advance.includes(item.id) ? "11" : "xxl-5 col-xl-6"}`}>
                               <div className={`col-${advance.includes(item.id) ? "2" : "4"} ps-0 pe-2`}>
                                 <div className="formLabel">
                                   {index === 0 ? (
@@ -1405,7 +1405,7 @@ function CallCenterQueueEdit() {
                               >
                                 <button
                                   type="button"
-                                  className="tableButton edit my-auto"
+                                  className={`tableButton edit my-auto ${agent.length < 2 ? "me-2" : ""}`}
                                 >
                                   <i className={`fa-solid fa-${advance.includes(item.id) ? "gear" : "gears"}`}></i>
                                 </button>
@@ -1456,8 +1456,8 @@ function CallCenterQueueEdit() {
             </div>
           </div>
         </div>
-      </section>
-    </main>
+      </section >
+    </main >
   );
 }
 

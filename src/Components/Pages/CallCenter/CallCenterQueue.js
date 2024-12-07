@@ -75,22 +75,22 @@ function CallCenterQueue() {
         }
       }
     };
-    if(searchValue.trim().length === 0){
+    if (searchValue.trim().length === 0) {
       getCallCenterDashboardData();
-    }else{
+    } else {
       const timer = setTimeout(() => {
         getCallCenterDashboardData();
       }, 1000);
       return () => clearTimeout(timer);
     }
-    if(refreshState === 0){
+    if (refreshState === 0) {
       dispatch({
         type: "SET_ALLUSERREFRESH",
         allUserRefresh: allUserRefresh + 1,
       });
     }
-   
-  }, [pageNumber, refreshState,itemsPerPage,searchValue]);
+
+  }, [pageNumber, refreshState, itemsPerPage, searchValue]);
 
   const handleAddCallCenterValidation = (e) => {
     e.preventDefault();
@@ -235,25 +235,17 @@ function CallCenterQueue() {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Call Center Queue</h4>
+                        <h4>Call Center Queue
+                          <button className="clearButton" onClick={() => setRefreshState(refreshState + 1)}>
+                            <i className={
+                              loading
+                                ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                : "fa-regular fa-arrows-rotate fs-5"
+                            }></i>
+                          </button>
+                        </h4>
                       </div>
                       <div className="buttonGroup">
-                        <button
-                          effect="ripple"
-                          className="panelButton ms-0"
-                          onClick={() => setRefreshState(refreshState + 1)}
-                        >
-                          <span className="text">Refresh</span>
-                          <span className="icon">
-                            <i
-                              class={
-                                loading
-                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
-                                  : "fa-regular fa-arrows-rotate fs-5"
-                              }
-                            ></i>
-                          </span>
-                        </button>
                         <button
                           effect="ripple"
                           className="panelButton gray"

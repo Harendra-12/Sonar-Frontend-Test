@@ -768,7 +768,7 @@ const ExtensionsEdit = () => {
                             </div>
                             <div className="col-xl-6 col-12">
                               <div className="row">
-                                <div className="col-4 pe-2">
+                                <div className="col-5 pe-2">
                                   <input
                                     type="text"
                                     name="extension"
@@ -787,7 +787,7 @@ const ExtensionsEdit = () => {
                                     />
                                   )}
                                 </div>
-                                <div className="col-8 ps-2">
+                                <div className="col-7 ps-2">
                                   <input
                                     type="text"
                                     name="extension"
@@ -891,7 +891,7 @@ const ExtensionsEdit = () => {
                             </div>
                             <div className="col-xl-6 col-12">
                               <div className="row">
-                                <div className="col-4 pe-2">
+                                <div className="col-5 pe-2">
                                   <input
                                     type="text"
                                     name="extension"
@@ -910,7 +910,7 @@ const ExtensionsEdit = () => {
                                     />
                                   )}
                                 </div>
-                                <div className="col-8 ps-2">
+                                <div className="col-7 ps-2">
                                   <input
                                     type="text"
                                     name="extension"
@@ -990,7 +990,7 @@ const ExtensionsEdit = () => {
                             </div>
                             <div className="col-xl-6 col-12">
                               <div className="row">
-                                <div className="col-4 pe-2">
+                                <div className="col-5 pe-2">
                                   <input
                                     type="text"
                                     name="extension"
@@ -1007,7 +1007,7 @@ const ExtensionsEdit = () => {
                                     />
                                   )}
                                 </div>
-                                <div className="col-8 ps-2">
+                                <div className="col-7 ps-2">
                                   <input
                                     type="text"
                                     name="extension"

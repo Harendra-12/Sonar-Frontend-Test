@@ -167,7 +167,7 @@ const Profile = () => {
               <div className="profileView">
                 <div className="profileDetailsHolder p-0">
                   <div className="baseDetails">
-                    <div className="col-sm-4">
+                    <div className="col-xxl-3 col-xl-4">
                       <div className="profilePicHolder">
                         <img
                           src={
@@ -179,15 +179,15 @@ const Profile = () => {
                         />
                       </div>
                     </div>
-                    <div className="col-sm-8 my-auto">
+                    <div className="col-xxl-9 col-xl-8 my-auto">
                       <div>
-                        <div className="content profileicons mt-1 d-flex align-items-center justify-content-start" >
+                        <div className="content profileicons mt-0 d-flex align-items-center justify-content-start" >
                           <span>
                             <i class="fa-regular me-3 fa-user"></i>
                           </span>
                           <h5 className="mb-0">{account?.name ? account?.name : "User Name"}</h5>
                         </div>
-                        <div className="content profileicons mt-1  d-flex align-items-center justify-content-start" >
+                        <div className="content profileicons mt-2  d-flex align-items-center justify-content-start" >
                           <span>
                             <i class="fa-regular me-3 fa-envelope"></i>
                           </span>
@@ -204,7 +204,7 @@ const Profile = () => {
                         </div>
 
 
-                        <div className="content profileicons mt-1 d-flex align-items-center justify-content-start" >
+                        <div className="content profileicons mt-2 d-flex align-items-center justify-content-start" >
                           <span>
                             <i class="fa-solid me-3 fa-location-dot"></i>
                           </span>
@@ -392,10 +392,10 @@ const Profile = () => {
                 <div className="col-md-12">
                   <div className="profileView ">
                     <div className="profileDetailsHolder baseDetails">
-                      <div className="content">
+                      <div className="content w-100">
                         <h5 className=" me-2">All details</h5>
                         <div className="mt-2">
-                          <div className=" d-flex align-items-center justify-content-start ">
+                          <div className=" d-flex align-items-center justify-content-between " style={{ height: '25px' }}>
                             <p className=" me-2">Country:</p>
 
                             <p className="imgwidth d-flex ms-2 me-2">
@@ -407,7 +407,7 @@ const Profile = () => {
                             </p>
 
                           </div>
-                          <div className=" d-flex align-items-center justify-content-start ">
+                          <div className=" d-flex align-items-center justify-content-between " style={{ height: '25px' }}>
                             <p className=" me-2">Language:</p>
                             <div >
                               <p className="imgwidth d-flex  ms-2 me-2">
@@ -419,7 +419,7 @@ const Profile = () => {
                             </div>
 
                           </div>
-                          <div className=" d-flex align-items-center justify-content-start ">
+                          <div className=" d-flex align-items-center justify-content-between " style={{ height: '25px' }}>
                             <p className=" me-2">TimeZone:</p>
 
                             <p className=" ms-2 me-2">{timeZoneVal && timeZoneVal[0].name}</p>
@@ -554,7 +554,6 @@ const Profile = () => {
                             <i class="fa-solid me-1 fa-arrow-right"></i>
                             Documentation
                           </div>
-
                         </Link>
                       </li>
                     </ul>
@@ -562,28 +561,22 @@ const Profile = () => {
                     <ul>
                       <li>
                         <Link
-                          onClick={() =>
-                            navigate("https://ucaas.webvio.in:3001/")
-                          }
+                          onClick={() => window.location.href = "https://ucaas.webvio.in:3001/"}
                         >
                           <div className="arrowicon me-1">
                             <i class="fa-solid me-1 fa-arrow-right"></i>
                             Know about us!
                           </div>
-
                         </Link>
                       </li>
                       <li>
                         <Link
-                          onClick={() =>
-                            navigate("https://ucaas.webvio.in:3001/")
-                          }
+                          onClick={() => window.location.href = "https://ucaas.webvio.in:3001/"}
                         >
                           <div className="arrowicon me-1">
                             <i class="fa-solid me-1 fa-arrow-right"></i>
                             Connect with us!
                           </div>
-
                         </Link>
                       </li>
                     </ul>

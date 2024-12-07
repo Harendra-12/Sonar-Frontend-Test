@@ -65,7 +65,7 @@ const RingGroup = () => {
     <div
       className="tabGroupDetails"
       data-id={2}
-      // style={{ display: "none" }}
+    // style={{ display: "none" }}
     >
       <div className="col-12">
         <div className="col-12 title text-start">
@@ -77,7 +77,7 @@ const RingGroup = () => {
         {ringGroupData &&
           ringGroup &&
           ringGroup.map((call) => (
-            <div className="row my-3">
+            <div className="row my-3 gx-xxl-3 gx-xl-2">
               <div className="col-xl-1b">
                 <div className="itemWrapperb a">
                   <div className="heading">Ring Group</div>

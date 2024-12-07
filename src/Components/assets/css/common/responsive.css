@@ -174,4 +174,20 @@
         padding: 12px;
     }
 
+    .itemWrapper .data-number2 ul li {
+        font-size: 14px;
+    }
+
+    .itemWrapper .heading h5 {
+        font-size: 17px;
+    }
+
+    .itemWrapper .data-number2 h5 {
+        font-size: 20px;
+    }
+
+    .itemWrapperb .label2 {
+        font-size: 11px;
+    }
+
 }
