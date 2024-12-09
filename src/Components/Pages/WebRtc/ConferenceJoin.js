@@ -98,7 +98,7 @@ function ConferenceJoin() {
                                                         <i class="fa-light fa-microphone"></i>
                                                     </button>
                                                     <button className='clearButton2 xl white ms-3'>
-                                                        <i class="fa-light fa-camera"></i>
+                                                        <i class="fa-light fa-camera-slash"></i>
                                                     </button>
                                                 </div>
                                             </div>

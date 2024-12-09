@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import ContentLoader from "../../Loader/ContentLoader";
 import { act } from "react";
+import ConferenceVideo from "./ConferenceVideo";
+import { use } from "react";
 
 export const DummySipRegisteration = ({
   webSocketServer,
@@ -28,8 +30,8 @@ export const DummySipRegisteration = ({
   const [loading, setLoading] = useState(true);
   const [confList, setConfList] = useState([]);
   const [videoCallToggle, setVideoCallToggle] = useState(false);
-  const [toggleMessages, setToggleMessages] = useState(true);
-  const [participantMiniview, setParticipantMiniview] = useState(true);
+  const [toggleMessages, setToggleMessages] = useState(false);
+  const [participantMiniview, setParticipantMiniview] = useState(false);
   const [participantList, setParticipantList] = useState(true);
   const [selectedConferenceUser, setSelectedConferenceUser] = useState(null);
   const [seconds, setSeconds] = useState(0);
@@ -37,6 +39,8 @@ export const DummySipRegisteration = ({
   const [hours, setHours] = useState(0);
   const account = useSelector((state) => state.account);
   const dispatch = useDispatch();
+  const [isScreenSharing,setIsScreenSharing]=useState(false);
+  const [screenTogglehit, setScreenTogglehit] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -593,75 +597,11 @@ export const DummySipRegisteration = ({
       ) : (
         dummySession && (
           <>
-            <main className="mainContentApp">
+            <main className="mainContentApps">
               <section>
                 <div className="container-fluid">
                   <div className="row">
-                    <div className="col-12 ps-xl-0">
-                      <div className="newHeader">
-                        <div className="col-auto" style={{ padding: "0 10px" }}>
-                          <h3
-                            style={{ fontFamily: "Outfit", marginBottom: "0" }}
-                          >
-                            <button class="clearButton text-dark">
-                              <i class="fa-solid fa-chevron-left fs-4"></i>
-                            </button>{" "}
-                            Conference{" "}
-                          </h3>
-                        </div>
-                        <div className="d-flex justify-content-end align-items-center">
-                          <div className="col-9">
-                            <input
-                              type="search"
-                              name="Search"
-                              placeholder="Search users, groups or chat"
-                              class="formItem fw-normal"
-                              style={{ backgroundColor: "var(--searchBg)" }}
-                            />
-                          </div>
-                          <div className="col-auto mx-2">
-                            <button className="clearButton2 xl" effect="ripple">
-                              <i className="fa-regular fa-bell" />
-                            </button>
-                          </div>
-                          <div className="col-auto">
-                            <div class="dropdown">
-                              <div
-                                className="myProfileWidget"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                              >
-                                <div
-                                  class="profileHolder"
-                                  id="profileOnlineNav"
-                                >
-                                  <img
-                                    src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
-                                    alt="profile"
-                                  />
-                                </div>
-                                <div class="profileName">
-                                  {account.username}{" "}
-                                  <span className="status">Available</span>
-                                </div>
-                              </div>
-                              <ul class="dropdown-menu" onClick={logOut}>
-                                <li>
-                                  <div
-                                    class="dropdown-item"
-                                    style={{ cursor: "pointer" }}
-                                  >
-                                    Logout
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="videoCallWrapper">
+                    <div className="videoCallWrapper" style={{height:"100vh"}}>
                       <div className="row">
                         {toggleMessages && (
                           <div className="col-lg-3 col-xl-3 col-12 p-3">
@@ -755,7 +695,19 @@ export const DummySipRegisteration = ({
                                       ? selectedConferenceUser?.name
                                       : locationState?.name}
                                   </div>
-                                  {videoCallToggle ? (
+                                  {dummySession !== ""  ?
+                                    (
+                                      <ConferenceVideo id={dummySession} setIsScreenSharing={setIsScreenSharing} isScreenSharing={isScreenSharing} screenTogglehit={screenTogglehit} />
+                                    )
+                                    :
+                                    (
+                                      <div className="justify-content-center h-100 d-flex align-items-center text-white fs-1">
+                                        <div className="contactViewProfileHolder">
+                                          {(selectedConferenceUser?.name === "" ? selectedConferenceUser?.name : locationState?.name)}
+                                        </div>
+                                      </div>
+                                    )}
+                                  {/* {videoCallToggle ? (
                                     <img
                                       alt=""
                                       className="videoElement"
@@ -769,7 +721,7 @@ export const DummySipRegisteration = ({
                                           : locationState?.name}
                                       </div>
                                     </div>
-                                  )}
+                                  )} */}
                                   <div
                                     className="activeGuyName"
                                     style={{
@@ -806,7 +758,7 @@ export const DummySipRegisteration = ({
                                       <i class="fa-light fa-microphone"></i>
                                     )}
                                   </button>
-                                  <button className="appPanelButtonCallerRect">
+                                  <button className="appPanelButtonCallerRect" onClick={() => setScreenTogglehit(screenTogglehit +1)}>
                                     <i class="fa-light fa-video"></i>
                                   </button>
                                   <button className="appPanelButtonCallerRect">
