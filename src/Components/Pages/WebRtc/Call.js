@@ -54,7 +54,7 @@ function Call({
   function handleHideDialpad(value) {
     setDialpadShow(value);
   }
-  console.log("allCall", allCall);
+
   useEffect(() => {
     if (allCall && allCall.calls) {
       const apiData = allCall;
@@ -88,7 +88,7 @@ function Call({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allCall, isCustomerAdmin, refreshCalls]);
-  console.log("allCall", allCall);
+
   useEffect(() => {
     console.log("This is account", account && account.account_id);
 
@@ -179,7 +179,7 @@ function Call({
         })
     );
   }, [allCalls, clickStatus, searchQuery]);
-  console.log("allCalls11", allCalls, clickStatus, searchQuery);
+
   const formatTime = (duration) => {
     const sec = Math.floor(duration % 60);
     const min = Math.floor((duration / 60) % 60);
@@ -337,7 +337,7 @@ function Call({
       </div>
     );
   };
-  console.log("clickedExtension", clickedExtension);
+
   useEffect(() => {
     if (clickedExtension) {
       const filteredHistory = allApiData.filter((item) => {
@@ -352,7 +352,6 @@ function Call({
         return item["Caller-Callee-ID-Number"] === clickedExtension;
       });
       setCallHistory(filteredHistory);
-      console.log("filteredHistory", filteredHistory);
     }
   }, [clickedExtension, allApiData, extension]);
 
@@ -435,7 +434,7 @@ function Call({
       callDetails?.["Caller-Callee-ID-Number"] == extension
         ? callDetails?.["Caller-Caller-ID-Number"]
         : callDetails?.["Caller-Callee-ID-Number"];
-    console.log("otherPartyExtension", otherPartyExtension);
+
     if (otherPartyExtension === extension) {
       toast.error("You can't call yourself");
       return;
@@ -500,8 +499,6 @@ function Call({
     });
   }
 
-  // console.log("call status", callProgress, videoCall);
-
   useEffect(() => {
     if (selectedModule === "onGoingCall") {
       if (videoCall) {
@@ -535,7 +532,6 @@ function Call({
       navigate("/");
     }
   }
-  // console.log(sortedGroupedCalls);
 
   return (
     <>

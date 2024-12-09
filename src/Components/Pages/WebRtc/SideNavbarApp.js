@@ -28,7 +28,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
       setLoading(false);
     }
   }, [connectStatus, isMicOn]);
-  
+
   return (
     <section>
       <style>
@@ -69,7 +69,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 {connectStatus}
               </span>
             </div> */}
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 // to="/call"
                 onClick={() => setactivePage("call")}
@@ -81,7 +81,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Calls</div>
               </div>
             </li>
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 // to="/message"
                 onClick={() => setactivePage("messages")}
@@ -95,7 +95,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Messages</div>
               </div>
             </li>
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 // to="/message"
                 onClick={() => setactivePage("email")}
@@ -109,7 +109,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Email</div>
               </div>
             </li>
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 // to="/efax"
                 onClick={() => setactivePage("e-fax")}
@@ -123,7 +123,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">eFax</div>
               </div>
             </li>
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 onClick={() => setactivePage("all-voice-mails")}
                 // to="/all-voicemails"
@@ -139,7 +139,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Voicemails</div>
               </div>
             </li>
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 //  to="/"
                 onClick={() => setactivePage("favorites")}
@@ -153,7 +153,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Favorites</div>
               </div>
             </li>
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 // to="/all-contacts"
                 onClick={() => setactivePage("all-contacts")}
@@ -175,7 +175,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Help &amp; Feedback</div>
               </NavLink>
             </li> */}
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 // to="/"
                 onClick={() => setactivePage("settings")}
@@ -189,7 +189,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Settings</div>
               </div>
             </li>
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 // to="/call-dashboard"
                 onClick={() => setactivePage("call-dashboard")}
@@ -203,7 +203,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Call Dashboard</div>
               </div>
             </li>
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 // to="/call-center"
                 onClick={() => setactivePage("call-center")}
@@ -217,7 +217,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Call Center</div>
               </div>
             </li>
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 //  to="/"
                 onClick={() => navigate("/dashboard")}
@@ -231,7 +231,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Admin</div>
               </div>
             </li>
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 // to="/"
                 onClick={() => setactivePage("reports")}
@@ -245,7 +245,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Reports</div>
               </div>
             </li>
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 // to="/"
                 onClick={() => setactivePage("mail-setting")}
@@ -259,7 +259,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Mail Settings</div>
               </div>
             </li>
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 // to="/"
                 onClick={() => setactivePage("conference")}
@@ -273,7 +273,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Conference</div>
               </div>
             </li>
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 // to="/"
                 onClick={() => setactivePage("test")}
@@ -287,7 +287,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Conference Test</div>
               </div>
             </li>
-            <li className="dashboard ">
+            <li className="dashboard " style={{ cursor: "pointer" }}>
               <a className="navItem">
                 <DarkModeToggle marginLeft={"2"} />
               </a>
