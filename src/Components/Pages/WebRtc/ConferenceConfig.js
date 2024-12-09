@@ -260,7 +260,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                     <th>Joining Pin</th>
                                     <th>Meeting link</th>
                                     <th>Delete</th>
-                                    <th>Action</th>
+                                    {/* <th>Action</th> */}
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -276,7 +276,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                             <td>{item.participate_pin}</td>
                                             <td>{item.conf_url}</td>
                                             <td>
-                                              <button
+                                              <div
                                                 className="tableButton delete"
                                                 onClick={() => {
                                                   // setPopUp(true);
@@ -285,9 +285,9 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                                 }}
                                               >
                                                 <i class="fa-solid fa-trash"></i>
-                                              </button>
+                                              </div>
                                             </td>
-                                            <td>
+                                            {/* <td>
                                               <button
                                                 className="tableButton edit"
                                                 onClick={() => {
@@ -299,7 +299,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                               >
                                                 <i class="fa-solid fa-right-to-bracket"></i>
                                               </button>
-                                            </td>
+                                            </td> */}
                                           </tr>
                                         );
                                       })}{" "}
@@ -506,7 +506,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                             aria-labelledby="nav-voicemail-tab"
                             tabindex="0"
                           >
-                            <div className="loginWrapper2" style={{ position: 'static', transform: 'none', background: 'none', boxShadow: 'none' }}>
+                            <div className="loginWrapper2 p-0 h-auto" style={{ position: 'static', transform: 'none', background: 'none', boxShadow: 'none' }}>
                               <div className="row h-100 justify-content-evenly">
                                 <div className='col-xl-5 position-relative'>
                                   <div className="col-xl-12 h-100 position-relative d-flex align-items-center">

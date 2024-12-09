@@ -216,9 +216,11 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
               </div>
             </li>
             <li>
-              <div
+              <a
+                href="/dashboard"
+                target="_blank"
                 //  to="/"
-                onClick={() => navigate("/dashboard")}
+                // onClick={() => navigate("/dashboard")}
                 className={
                   activePage === "admin" ? "navItem active" : "navItem"
                 }
@@ -227,7 +229,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   <i className="fa-brands fa-black-tie" />
                 </div>
                 <div className="itemTitle">Admin</div>
-              </div>
+              </a>
             </li>
             {/* <li>
               <div
