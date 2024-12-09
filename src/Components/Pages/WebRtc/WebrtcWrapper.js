@@ -454,6 +454,7 @@ const WebrtcWrapper = () => {
             setactivePage={setactivePage}
             activePage={activePage}
             setConferenceToggle={setConferenceToggle}
+            conferenceToggle={conferenceToggle}
           />
         ) : (
           ""

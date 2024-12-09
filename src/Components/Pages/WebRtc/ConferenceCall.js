@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useSIPProvider } from "react-sipjs";
+import { useSessionCall, useSIPProvider } from "react-sipjs";
 import MediaPermissions from "./MediaPermissions ";
 import AutoAnswer from "./AutoAnswer";
 import { generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
@@ -7,8 +7,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import ContentLoader from "../../Loader/ContentLoader";
+import ConferenceVideo from "./ConferenceVideo";
 
-export const ConferenceCall = ({ room_id, extension_id, name, setactivePage,activePage,setConferenceToggle }) => {
+export const ConferenceCall = ({ room_id, extension_id, name, setactivePage, activePage, setConferenceToggle ,conferenceToggle}) => {
   const navigate = useNavigate();
   const { sessions: sipSessions, connectAndRegister } = useSIPProvider();
   const { connectStatus, registerStatus } = useSIPProvider();
@@ -33,13 +34,15 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage,acti
   const sessions = useSelector((state) => state.sessions);
   const memeber_id = useSelector((state) => state.memberId);
   const [numberOfTimeUserVisit, setNumberOfTimeUserVisit] = useState(0)
+  const [isScreenSharing, setIsScreenSharing] = useState(false);
+  const [screenTogglehit, setScreenTogglehit] = useState(0);
 
   useEffect(() => {
-    if(activePage === "conference"){
+    if (activePage === "conference") {
       setNumberOfTimeUserVisit(numberOfTimeUserVisit + 1)
     }
-   
-  },[activePage])
+
+  }, [activePage])
 
   const extension = account?.extension?.extension || "";
   const dispatch = useDispatch();
@@ -125,7 +128,7 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage,acti
 
         }
         // if(numberOfTimeUserVisit === 0 && activePage === "conference"){
-          startConference()
+        startConference()
         // }
       } else {
         toast.error("Not connected with server please try again later.");
@@ -346,6 +349,10 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage,acti
           type: "SET_MEMBERID",
           memberId: null
         })
+        dispatch({
+          type: "SET_DUMMYSION",
+          dummySession: "",
+        });
         setConferenceToggle(false);
         setactivePage("call")
       }
@@ -384,19 +391,19 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage,acti
 
   // Store memeber ID in local storage so that we can access it later
   useEffect(() => {
-    if(currentUser.id!=="" && currentUser.id!==null && currentUser.id!==undefined){
+    if (currentUser.id !== "" && currentUser.id !== null && currentUser.id !== undefined) {
       localStorage.setItem("memberId", currentUser?.id);
       dispatch({
         type: "SET_MEMBERID",
         memberId: currentUser?.id
       })
     }
-   
-  },[currentUser.id])
+
+  }, [currentUser.id])
 
   // Check if there is any previous memeber is present if yes then first hangup it
   useEffect(() => {
-    if (memeber_id && room_id!=="") {
+    if (memeber_id && room_id !== "") {
       const parsedData = {
         action: "hup",
         room_id: room_id,
@@ -410,9 +417,10 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage,acti
         })
       })
     }
-  },[])
+  }, [])
+
   return (
-    <div className="profileDropdowns" style={{ top: "55px", right: "-40px",display:activePage!=="conference"?"none":"" }}>
+    <div className="profileDropdowns" style={{ top: "55px", right: "-40px", display: activePage !== "conference" ? "none" : "" }}>
       <MediaPermissions />
       {incomingSessionsArray.map((item, index) => {
         return (
@@ -427,7 +435,7 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage,acti
               className="mainContentApp position-absolute"
               style={{
                 top: "0",
-                left : "0px",
+                left: "0px",
                 // width: "calc(100% - 210px)",
                 height: "100%",
                 marginRight:
@@ -578,9 +586,9 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage,acti
                               <div className="participantWrapper pb-2">
                                 <div className="videoHolder">
                                   <div className="activeGuyName">{selectedConferenceUser?.name === "" ? selectedConferenceUser?.name : name}</div>
-                                  {videoCallToggle ?
+                                  {dummySession !== ""  ?
                                     (
-                                      <img alt="" className="videoElement" src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
+                                      <ConferenceVideo id={dummySession} setIsScreenSharing={setIsScreenSharing} isScreenSharing={isScreenSharing} screenTogglehit={screenTogglehit} />
                                     )
                                     :
                                     (
@@ -607,7 +615,7 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage,acti
                                   <button className="appPanelButtonCallerRect" onClick={() => { callAction("tmute") }}>
                                     {currentUser?.mute_detect ? <i class="fa-light fa-microphone-slash"></i> : <i class="fa-light fa-microphone"></i>}
                                   </button>
-                                  <button className="appPanelButtonCallerRect">
+                                  <button className="appPanelButtonCallerRect" onClick={() => setScreenTogglehit(screenTogglehit+1)}>
                                     <i class="fa-light fa-video"></i>
                                   </button>
                                   <button className="appPanelButtonCallerRect">
