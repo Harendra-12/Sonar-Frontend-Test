@@ -341,7 +341,7 @@ const UsersEdit = () => {
       <main className="mainContent">
         <section id="phonePage">
           <div className="container-fluid px-0">
-            <Header title="User Edit" />
+            <Header title="Users" />
             {/* <div id="subPageHeader">
               <div className="col-6 my-1">
                 <p className="mb-0">

@@ -226,14 +226,14 @@ function CallCenterQueue() {
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row">
-            <Header title="Call Center" />
+            <Header title="Call Center Queue" />
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
                 <div className="d-flex flex-wrap">
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Call Center Queue
+                        <h4>Call Center Queue List
                           <button className="clearButton" onClick={() => setRefreshState(refreshState + 1)} disabled={loading}>
                             <i className={
                               loading

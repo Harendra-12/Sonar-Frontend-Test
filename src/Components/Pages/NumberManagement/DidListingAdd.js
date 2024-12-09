@@ -62,7 +62,7 @@ const DidListingAdd = () => {
       <main className="mainContent">
         <section id="phonePage">
           <div className="container-fluid px-0">
-            <Header title="DID Add" />
+            <Header title="DID Management" />
             {/* <div id="subPageHeader">
               <div className="col-xl-9 my-auto">
                 <p className="p-0 m-0">Add a new DID to your account</p>

@@ -75,7 +75,7 @@ function IvrEdit() {
     <main className="mainContent">
       <section id="phonePage">
         <div className="container-fluid px-0">
-          <Header title="IVR Edit" />
+          <Header title="IVR" />
           {/* <div id="subPageHeader">
             <div className="col-xl-9 my-auto">
               <p className="mb-0">Edit this IVR</p>

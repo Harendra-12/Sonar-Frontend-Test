@@ -118,6 +118,7 @@ import DeviceProvisioningNew from "./Components/Pages/DeviceProvisioning/DeviceP
 import ConferenceJoin from "./Components/Pages/WebRtc/ConferenceJoin";
 import CallDashboardNew from "./Components/Pages/WebRtc/CallDashboardNew";
 import DummyRegistration from "./Components/Pages/WebRtc/DummyRegistration";
+import ClickToCallSetup from "./Components/Pages/ClickToCall/ClickToCallSetup";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -595,6 +596,7 @@ function App() {
           <Route path="/call-blocking-add" element={<CallBlockingAdd />} />
           {/* Spam Filter end */}
           <Route path="click-to-call" element={<ClickToCall />} />
+          <Route path="click-to-call-add" element={<ClickToCallSetup />} />
 
           {/* Dialer Modules */}
 

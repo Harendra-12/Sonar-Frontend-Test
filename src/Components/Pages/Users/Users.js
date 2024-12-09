@@ -160,7 +160,7 @@ const Users = () => {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content d-flex">
-                        <h4>Users <button className="clearButton" onClick={() => setRefreshState(true)}><i className={
+                        <h4>User List <button className="clearButton" onClick={() => setRefreshState(true)}><i className={
                           loading
                             ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                             : "fa-regular fa-arrows-rotate fs-5"

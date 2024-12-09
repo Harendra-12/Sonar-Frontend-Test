@@ -82,7 +82,7 @@ function IvrAdd() {
     <main className="mainContent">
       <section id="phonePage">
         <div className="container-fluid px-0">
-          <Header title="IVR Add" />
+          <Header title="IVR" />
           {/* <div id="subPageHeader">
             <div className="col-xl-9 my-auto">
               <p className="mb-0">Add an IVR</p>

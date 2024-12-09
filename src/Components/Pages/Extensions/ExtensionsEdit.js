@@ -493,7 +493,7 @@ const ExtensionsEdit = () => {
     <main className="mainContent">
       <section id="phonePage">
         <div className="container-fluid px-0">
-          <Header title="Update Extension" />
+          <Header title="Extensions" />
           {/* <div id="subPageHeader">
             <div className="col-xl-12 ps-2">
               <div className="d-flex justify-content-end">

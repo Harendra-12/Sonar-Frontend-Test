@@ -411,7 +411,7 @@ function CallCenterQueueEdit() {
     <main className="mainContent">
       <section id="phonePage">
         <div className="container-fluid px-0">
-          <Header title="Edit Call Center Queue" />
+          <Header title="Call Center Queue" />
           {/* <div id="subPageHeader">
             <div className="col-xl-6 my-auto">
             </div>

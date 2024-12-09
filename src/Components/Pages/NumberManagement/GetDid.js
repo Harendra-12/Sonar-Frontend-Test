@@ -243,7 +243,7 @@ function GetDid() {
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row justify-content-center">
-            <Header title="Get DID" />
+            <Header title="DID Management" />
 
             <div className="overviewTableWrapper pb-2">
               <div className="overviewTableChild">

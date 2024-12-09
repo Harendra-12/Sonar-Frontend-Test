@@ -302,7 +302,7 @@ const UsersAdd = () => {
       <main className="mainContent">
         <section id="phonePage">
           <div className="container-fluid px-0">
-            <Header title="User Add" />
+            <Header title="Users" />
             {/* <div id="subPageHeader">
               <div className="col-xl-9 my-auto">
                 <p className="mb-0">

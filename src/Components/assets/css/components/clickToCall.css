@@ -1,4 +1,8 @@
 .clickToCall {
+    --prim-color: #f42633;
+    --text-color: #fff;
+
+
     position: absolute;
     right: 10px;
     bottom: 15px;
@@ -10,8 +14,8 @@
     height: 60px;
     border-radius: 50%;
     border: none;
-    background-color: #f42633;
-    color: #fff;
+    background-color: var(--prim-color);
+    color: var(--text-color);
     cursor: pointer;
     margin-left: auto;
     transition: 0.1s ease-in-out;
@@ -28,7 +32,7 @@
 .clickToCall .clickToCallButton button i {
     font-size: 27px;
     line-height: 60px;
-    color: #fff;
+    color: var(--text-color);
 }
 
 .clickToCall .clickToCallModule {
@@ -40,7 +44,7 @@
     position: relative;
     border-radius: 18px;
     overflow: hidden;
-    background-color: #fff;
+    background-color: var(--text-color);
 }
 
 .clickToCall .clickToCallModule .clickToCallHeader {
@@ -56,7 +60,7 @@
 
 .clickToCall .clickToCallModule .clickToCallHeader .wrapper {
     width: 100%;
-    color: #fff;
+    color: var(--text-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -67,7 +71,7 @@
     height: 30px;
     background-color: transparent;
     border: none;
-    color: #fff;
+    color: var(--text-color);
     border-radius: 50%;
     transition: 0.1s ease-in-out;
 
@@ -101,6 +105,7 @@
     margin-bottom: 0;
     font-size: 22px !important;
     font-weight: 600;
+    color: var(--text-color);
 }
 
 .clickToCall .clickToCallModule .clickToCallHeader .wrapper .text p {
@@ -115,7 +120,7 @@
 .clickToCall .clickToCallModule .clickToCallBody {
     height: 300px;
     position: relative;
-    background-color: #fff;
+    background-color: var(--text-color);
     border-radius: 10px 10px 0 0;
     padding: 10px;
     margin-top: -10px;
@@ -131,7 +136,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #fff;
+    background-color: var(--text-color);
     width: 49%;
     text-align: center;
     height: 100%;
@@ -153,7 +158,7 @@
     border-radius: 50%;
     background-color: #17c100;
     border: none;
-    color: #fff;
+    color: var(--text-color);
     transition: 0.1s ease-in-out;
     display: flex;
     justify-content: center;
@@ -200,15 +205,15 @@
 
 .clickToCall .clickToCallModule .clickToCallBody .callDialogBox .formBox input:hover,
 .clickToCall .clickToCallModule .clickToCallBody .callDialogBox .formBox input:focus {
-    border-color: #f42633;
+    border-color: var(--prim-color);
 }
 
 .clickToCall .clickToCallModule .clickToCallBody .callDialogBox button {
     margin-top: 10px;
-    background-color: #f42633;
+    background-color: var(--prim-color);
     border: none;
     border-radius: 5px;
-    color: #fff;
+    color: var(--text-color);
     width: 100%;
     height: 40px;
 }

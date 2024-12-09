@@ -123,7 +123,7 @@ function IvrOptions() {
       )}
       <main className="mainContent">
         <div className="container-fluid px-0">
-          <Header title={"IVR Options"} />
+          <Header title={"IVR"} />
           {/* <div id="subPageHeader">
             <div className="col-xl-9 my-auto">
               <p className="mb-0">Option for selected IVR</p>
@@ -162,7 +162,7 @@ function IvrOptions() {
                 <div className="col-12">
                   <div className="heading">
                     <div className="content">
-                      <h4>Options for IVR: {name}</h4>
+                      <h4>Options for IVR: <span style={{ color: 'var(--ui-accent)' }}>{name}</span></h4>
                       <p>Option for selected IVR</p>
                     </div>
                     <div className="buttonGroup">

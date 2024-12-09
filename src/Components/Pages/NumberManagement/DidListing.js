@@ -101,7 +101,7 @@ function DidListing() {
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row">
-            <Header title="All DID" />
+            <Header title="DID Management" />
 
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
