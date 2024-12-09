@@ -22,6 +22,7 @@ function IncomingCallPopup({
   const [blindTransferNumber, setBlindTransferNumber] = useState("");
   const [attendShow, setAttendShow] = useState(false);
   const [audio] = useState(new Audio(ringtone)); // Initialize the Audio object
+  const dummySession = useSelector((state) => state.dummySession);
   useEffect(() => {
     if (lastIncomingCall && !isMinimized) {
       audio.loop = true; // Set loop so it keeps playing
@@ -46,7 +47,7 @@ function IncomingCallPopup({
       (session) => session.id === sessionId
     );
 
-    if (!sessionExists) {
+    if (!sessionExists && sessionId !==dummySession ) {
       dispatch({
         type: "SET_SESSIONS",
         sessions: [

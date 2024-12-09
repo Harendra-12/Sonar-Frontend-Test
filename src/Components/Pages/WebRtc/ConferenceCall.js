@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import ContentLoader from "../../Loader/ContentLoader";
 import ConferenceVideo from "./ConferenceVideo";
+import ConferenceLoader from "../../Loader/ConferenceLoader";
 
 export const ConferenceCall = ({ room_id, extension_id, name, setactivePage, activePage, setConferenceToggle ,conferenceToggle}) => {
   const navigate = useNavigate();
@@ -429,7 +430,7 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage, act
       })}
       {
         loading ?
-          <ContentLoader /> :
+          <ConferenceLoader /> :
           dummySession && <>
             <main
               className="mainContentApp position-absolute"

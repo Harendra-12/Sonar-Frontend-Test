@@ -13,6 +13,7 @@ import ContentLoader from "../../Loader/ContentLoader";
 import { act } from "react";
 import ConferenceVideo from "./ConferenceVideo";
 import { use } from "react";
+import ConferenceLoader from "../../Loader/ConferenceLoader";
 
 export const DummySipRegisteration = ({
   webSocketServer,
@@ -617,7 +618,7 @@ export const DummySipRegisteration = ({
         return <AutoAnswer id={item} />;
       })}
       {loading ? (
-        <ContentLoader />
+        <ConferenceLoader />
       ) : (
         dummySession && (
           <>
