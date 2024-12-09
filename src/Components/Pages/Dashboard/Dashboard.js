@@ -734,8 +734,8 @@ const Dashboard = () => {
                     >
                       <div className="itemWrapper a">
                         <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
+                          <div className="d-flex flex-wrap justify-content-between">
+                            <div className="col-9">
                               <h5>Timezone</h5>
                               <p>
                                 {" "}
@@ -746,7 +746,7 @@ const Dashboard = () => {
                                 , {new Date().getFullYear()}
                               </p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-3">
                               <i className="fa-duotone fa-earth-americas"></i>
                             </div>
                           </div>
@@ -754,12 +754,12 @@ const Dashboard = () => {
 
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
+                            <div className="col-9">
                               <h5>{accountDetails?.country}</h5>
                               <p>Language: {account?.language}</p>
                               <p>TimeZone: {accountDetails?.timezone?.name}</p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-3">
                               <Clock
                                 value={currentTime}
                                 size={50}
@@ -782,7 +782,7 @@ const Dashboard = () => {
                       <div className="itemWrapper a">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
-                            <div className="col-10">
+                            <div className="col-9">
                               <h5>Account Info</h5>
                               <p>Click to view details</p>
                             </div>
@@ -796,55 +796,13 @@ const Dashboard = () => {
                         </div>
 
                         <div className="data-number2">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
+                          <div className="d-flex flex-wrap justify-content-between">
+                            <div className="col-9">
                               <h5>{account?.name}</h5>
                               <p>Username: {account?.username}</p>
                               <p>Email: {account?.email}</p>
                             </div>
-                            <div className="col-2">
-                              <img
-                                alt="dashboard"
-                                src={require("../../assets/images/icons/diagram.png")}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      className="col-xl-3 mb-3 mb-xl-0"
-                      style={{ cursor: "pointer" }}
-                    >
-                      <div className="itemWrapper a">
-                        <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
-                              <h5>Package Information</h5>
-                              <p>Click to view details</p>
-                            </div>
-                            <div
-                              className="col-2"
-                              onClick={() => navigate("/card-details")}
-                            >
-                              <i className="fa-duotone fa-file"></i>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="data-number2">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
-                              <h5>{accountDetails?.package?.name}</h5>
-                              <p>
-                                {accountDetails?.package?.regular_price} / Year
-                              </p>
-                              <p>
-                                {accountDetails?.extensions?.length} Purchased
-                                Extensions / {accountDetails?.dids?.length} DIDs
-                              </p>
-                            </div>
-                            <div className="col-2">
+                            <div className="col-3">
                               <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
@@ -861,18 +819,61 @@ const Dashboard = () => {
                       <div className="itemWrapper a">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
-                            <div className="col-10">
-                              <h5>Domain Info</h5>
+                            <div className="col-9">
+                              <h5>Package Information</h5>
+                              <p>Click to view details</p>
                             </div>
-                            <div className="col-2">
+                            <div
+                              className="col-3"
+                              onClick={() => navigate("/card-details")}
+                            >
+                              <i className="fa-duotone fa-file"></i>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="data-number2">
+                          <div className="d-flex flex-wrap justify-content-between">
+                            <div className="col-9">
+                              <h5>{accountDetails?.package?.name}</h5>
+                              <p>
+                                {accountDetails?.package?.regular_price} / Year
+                              </p>
+                              <p>
+                                {accountDetails?.extensions?.length} Purchased
+                                Extensions / {accountDetails?.dids?.length} DIDs
+                              </p>
+                            </div>
+                            <div className="col-3">
+                              <img
+                                alt="dashboard"
+                                src={require("../../assets/images/icons/diagram.png")}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="col-xl-3 mb-3 mb-xl-0"
+                      style={{ cursor: "pointer" }}
+                    >
+                      <div className="itemWrapper a">
+                        <div className="heading">
+                          <div className="d-flex flex-wrap justify-content-between">
+                            <div className="col-9">
+                              <h5>Domain Info</h5>
+                              <p>You are registered to this domain</p>
+                            </div>
+                            <div className="col-3">
                               <i className="fa-duotone fa-globe"></i>
                             </div>
                           </div>
                         </div>
 
                         <div className="data-number2">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
+                          <div className="d-flex flex-wrap justify-content-between">
+                            <div className="col-9">
                               <h5>{account?.domain?.domain_name}</h5>
                               <p>
                                 Created at:{" "}
@@ -884,7 +885,7 @@ const Dashboard = () => {
                                 }
                               </p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-3">
                               <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
@@ -900,13 +901,13 @@ const Dashboard = () => {
                         <div className="col-xl-4 mb-3 mb-xl-0">
                           <div className="itemWrapper a">
                             <div className="heading">
-                              <div className="d-flex flex-wrap justify-content-between align-items-center">
-                                <div className="col-10">
+                              <div className="d-flex flex-wrap justify-content-between">
+                                <div className="col-9">
                                   <h5>Payment Details</h5>
                                   <p>Click to view transaction history</p>
                                 </div>
                                 <div
-                                  className="col-2"
+                                  className="col-3"
                                   onClick={() =>
                                     navigate("/card-transaction-list")
                                   }
@@ -916,7 +917,7 @@ const Dashboard = () => {
                               </div>
                             </div>
                             <div className="data-number2">
-                              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                              <div className="d-flex flex-wrap justify-content-between">
                                 <div className="col-12">
                                   <ul>
                                     <li>
@@ -962,13 +963,13 @@ const Dashboard = () => {
                         <div className="col-xl-4 mb-3 mb-xl-0">
                           <div className="itemWrapper a">
                             <div className="heading">
-                              <div className="d-flex flex-wrap justify-content-between align-items-center">
-                                <div className="col-10">
+                              <div className="d-flex flex-wrap justify-content-between">
+                                <div className="col-9">
                                   <h5>Subscription Details</h5>
                                   <p>Click the icon to view it</p>
                                 </div>
                                 <div
-                                  className="col-2"
+                                  className="col-3"
                                   onClick={() => navigate("/card-details")}
                                 >
                                   <i class="fa-duotone fa-money-check-dollar-pen"></i>
@@ -976,7 +977,7 @@ const Dashboard = () => {
                               </div>
                             </div>
                             <div className="data-number2">
-                              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                              <div className="d-flex flex-wrap justify-content-between">
                                 <div className="col-12">
                                   <ul>
                                     <li>
@@ -1029,8 +1030,8 @@ const Dashboard = () => {
                         <div className="col-xl-4 mb-3 mb-xl-0">
                           <div className="itemWrapper a">
                             <div className="heading">
-                              <div className="d-flex flex-wrap justify-content-between align-items-center">
-                                <div className="col-10">
+                              <div className="d-flex flex-wrap justify-content-between">
+                                <div className="col-9">
                                   <h5>Extensions</h5>
                                   <p>
                                     Total: {accountDetails?.extensions?.length}{" "}
@@ -1038,7 +1039,7 @@ const Dashboard = () => {
                                   </p>
                                 </div>
                                 <div
-                                  className="col-2"
+                                  className="col-3"
                                   onClick={() => navigate("/extensions")}
                                 >
                                   <i class="fa-duotone fa-phone-office"></i>
@@ -1046,7 +1047,7 @@ const Dashboard = () => {
                               </div>
                             </div>
                             <div className="data-number2">
-                              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                              <div className="d-flex flex-wrap justify-content-between">
                                 <div className="col-12">
                                   <ul
                                     style={{
@@ -1099,8 +1100,8 @@ const Dashboard = () => {
                     <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper a">
                         <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
+                          <div className="d-flex flex-wrap justify-content-between">
+                            <div className="col-9">
                               <h5>Handled Calls</h5>
                               {/* <p>27 August - 27 September, 2024</p> */}
                               <p>
@@ -1111,21 +1112,21 @@ const Dashboard = () => {
                                 , {new Date().getFullYear()}
                               </p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-3">
                               <i className="fa-duotone fa-phone-office"></i>
                             </div>
                           </div>
                         </div>
                         <div className="data-number2">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
+                          <div className="d-flex flex-wrap justify-content-between">
+                            <div className="col-9">
                               <h5>{callCardData.handled.count}</h5>
                               <p>
                                 {callCardData.handled.inboundAnswered} Inbound /{" "}
                                 {callCardData.handled.outboundAnswered} Outbound
                               </p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-3">
                               <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
@@ -1139,8 +1140,8 @@ const Dashboard = () => {
                     <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper a">
                         <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
+                          <div className="d-flex flex-wrap justify-content-between">
+                            <div className="col-9">
                               <h5>Total Minutes</h5>
                               {/* <p>27 August - 27 September, 2024</p> */}
                               <p>
@@ -1152,14 +1153,14 @@ const Dashboard = () => {
                                 , {new Date().getFullYear()}
                               </p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-3">
                               <i className="fa-duotone fa-clock"></i>
                             </div>
                           </div>
                         </div>
                         <div className="data-number2">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
+                          <div className="d-flex flex-wrap justify-content-between">
+                            <div className="col-9">
                               <h5>{callCardData.minutes.count}</h5>
                               <p>
                                 {callCardData.minutes.inboundAnswered} Inbound /{" "}
@@ -1167,7 +1168,7 @@ const Dashboard = () => {
                                 Outbound
                               </p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-3">
                               <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
@@ -1181,8 +1182,8 @@ const Dashboard = () => {
                     <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper a">
                         <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
+                          <div className="d-flex flex-wrap justify-content-between">
+                            <div className="col-9">
                               <h5>Missed Calls</h5>
                               {/* <p>27 August - 27 September, 2024</p> */}
                               <p>
@@ -1194,7 +1195,7 @@ const Dashboard = () => {
                                 , {new Date().getFullYear()}
                               </p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-3">
                               <i
                                 onClick={() => handleMissedCallClick()}
                                 className="fa-duotone fa-phone-missed"
@@ -1203,15 +1204,15 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <div className="data-number2">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
+                          <div className="d-flex flex-wrap justify-content-between">
+                            <div className="col-9">
                               <h5>{callCardData.missedCalls.count}</h5>
                               <p>
                                 {callCardData.missedCalls.callMissed} Calls
                                 Missed
                               </p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-3">
                               <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
@@ -1225,8 +1226,8 @@ const Dashboard = () => {
                     <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper a">
                         <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
+                          <div className="d-flex flex-wrap justify-content-between">
+                            <div className="col-9">
                               <h5>Abandoned Calls</h5>
                               {/* <p>27 August - 27 September, 2024</p> */}
                               <p>
@@ -1238,17 +1239,17 @@ const Dashboard = () => {
                                 , {new Date().getFullYear()}
                               </p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-3">
                               <i className="fa-duotone fa-phone-xmark"></i>
                             </div>
                           </div>
                         </div>
                         <div className="data-number2">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
+                          <div className="d-flex flex-wrap justify-content-between">
+                            <div className="col-9">
                               <h5>{callCardData.abandonedCalls.count}</h5>
                             </div>
-                            <div className="col-2">
+                            <div className="col-3">
                               <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
@@ -1347,20 +1348,20 @@ const Dashboard = () => {
                     >
                       <div className="itemWrapper a">
                         <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
+                          <div className="d-flex flex-wrap justify-content-between">
+                            <div className="col-9">
                               <h5>Package Type</h5>
                               <p>Click to view details</p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-3">
                               <i className="fa-duotone fa-cube"></i>
                             </div>
                           </div>
                         </div>
 
                         <div className="data-number2">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
+                          <div className="d-flex flex-wrap justify-content-between">
+                            <div className="col-9">
                               <h5>{accountDetails?.package.name}</h5>
                               <p>
                                 Price: ${accountDetails?.package?.regular_price}{" "}
@@ -1379,7 +1380,7 @@ const Dashboard = () => {
                                 }
                               </p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-3">
                               <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
@@ -1392,8 +1393,8 @@ const Dashboard = () => {
                     <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper a">
                         <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
+                          <div className="d-flex flex-wrap justify-content-between">
+                            <div className="col-9">
                               <h5>Upcoming Transaction</h5>
                               <p>
                                 {
@@ -1404,7 +1405,7 @@ const Dashboard = () => {
                               </p>
                             </div>
                             <div
-                              className="col-2"
+                              className="col-3"
                               onClick={() => {
                                 navigate("/card-details");
                               }}
@@ -1415,8 +1416,8 @@ const Dashboard = () => {
                         </div>
 
                         <div className="data-number2">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
+                          <div className="d-flex flex-wrap justify-content-between">
+                            <div className="col-9">
                               <h5>${accountDetails?.package?.regular_price}</h5>
                               <p>
                                 {accountDetails?.package?.subscription_type ===
@@ -1426,7 +1427,7 @@ const Dashboard = () => {
                                 Basis
                               </p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-3">
                               <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
@@ -1439,15 +1440,15 @@ const Dashboard = () => {
                     <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper a">
                         <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
+                          <div className="d-flex flex-wrap justify-content-between">
+                            <div className="col-9">
                               <h5>Last Transaction</h5>
                               <p>
                                 #{accountDetails?.payments[0]?.transaction_id}
                               </p>
                             </div>
                             <div
-                              className="col-2"
+                              className="col-3"
                               onClick={() => navigate("/card-transaction-list")}
                             >
                               <i class="fa-solid fa-dollar-sign"></i>
@@ -1456,17 +1457,17 @@ const Dashboard = () => {
                         </div>
 
                         <div className="data-number2">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
+                          <div className="d-flex flex-wrap justify-content-between">
+                            <div className="col-9">
                               <h5>
                                 ${accountDetails?.payments[0]?.amount_subtotal}
                               </h5>
                               <p>
                                 Transaction Time:{" "}
-                                {accountDetails?.payments[0]?.transaction_date}
+                                {accountDetails?.payments[0]?.transaction_date.split(" ")[0]},{" "}{accountDetails?.payments[0]?.transaction_date.split(" ")[1]}
                               </p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-3">
                               <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
@@ -1480,8 +1481,8 @@ const Dashboard = () => {
                     <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper a">
                         <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
+                          <div className="d-flex flex-wrap justify-content-between">
+                            <div className="col-9">
                               <h5>Wallet Info</h5>
                               {accountDetails?.balance?.created_at ? (
                                 <p>
@@ -1503,7 +1504,7 @@ const Dashboard = () => {
                               )}
                             </div>
                             <div
-                              className="col-2"
+                              className="col-3"
                               onClick={() => navigate("/card-details")}
                             >
                               <i className="fa-duotone fa-wallet"></i>
@@ -1512,8 +1513,8 @@ const Dashboard = () => {
                         </div>
 
                         <div className="data-number2">
-                          <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-10">
+                          <div className="d-flex flex-wrap justify-content-between">
+                            <div className="col-9">
                               <h5>${accountDetails?.balance?.amount || 0}</h5>
                               {accountDetails?.balance?.updated_at ? (
                                 <p>
@@ -1534,7 +1535,7 @@ const Dashboard = () => {
                                 ""
                               )}
                             </div>
-                            <div className="col-2">
+                            <div className="col-3">
                               <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
@@ -1549,13 +1550,13 @@ const Dashboard = () => {
                         <div className="col-xl-4 mb-3 mb-xl-0">
                           <div className="itemWrapper a">
                             <div className="heading">
-                              <div className="d-flex flex-wrap justify-content-between align-items-center">
-                                <div className="col-10">
+                              <div className="d-flex flex-wrap justify-content-between">
+                                <div className="col-9">
                                   <h5>Invoices</h5>
                                   <p>Last 5 invoices</p>
                                 </div>
                                 <div
-                                  className="col-2"
+                                  className="col-3"
                                   onClick={() =>
                                     navigate("/card-transaction-list")
                                   }
@@ -1565,7 +1566,7 @@ const Dashboard = () => {
                               </div>
                             </div>
                             <div className="data-number2">
-                              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                              <div className="d-flex flex-wrap justify-content-between">
                                 <div className="col-12">
                                   <ul>
                                     {accountDetails?.payments
@@ -1579,7 +1580,6 @@ const Dashboard = () => {
                                               downloadImage(item.invoice_url)
                                             }
                                           >
-                                            <i class="fa-solid fa-download text-warning"></i>{" "}
                                             ${item.amount_subtotal}{" "}
                                           </span>
                                         </li>
@@ -1593,13 +1593,13 @@ const Dashboard = () => {
                         <div className="col-xl-4 mb-3 mb-xl-0">
                           <div className="itemWrapper a">
                             <div className="heading">
-                              <div className="d-flex flex-wrap justify-content-between align-items-center">
-                                <div className="col-10">
+                              <div className="d-flex flex-wrap justify-content-between">
+                                <div className="col-9">
                                   <h5>Billing Address</h5>
                                   <p>Click the icon to change it</p>
                                 </div>
                                 <div
-                                  className="col-2"
+                                  className="col-3"
                                   onClick={() => navigate("/card-details")}
                                 >
                                   <i class="fa-duotone fa-address-card"></i>
@@ -1607,7 +1607,7 @@ const Dashboard = () => {
                               </div>
                             </div>
                             <div className="data-number2">
-                              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                              <div className="d-flex flex-wrap justify-content-between">
                                 <div className="col-12">
                                   <ul>
                                     <li>
@@ -1687,8 +1687,8 @@ const Dashboard = () => {
                         <div className="col-xl-4 chartWrapper mb-3 mb-xl-0">
                           <div className="wrapper itemWrapper a">
                             <div class="heading">
-                              <div class="d-flex flex-wrap justify-content-between align-items-center">
-                                <div class="col-10">
+                              <div class="d-flex flex-wrap justify-content-between">
+                                <div class="col-9">
                                   <h5>Billing Expenses</h5>
                                   <p>
                                     {" "}
@@ -1700,14 +1700,14 @@ const Dashboard = () => {
                                   </p>
                                 </div>
                                 <div
-                                  class="col-2"
+                                  class="col-3"
                                   onClick={() => navigate("/card-details")}
                                 >
                                   <i class="fa-solid fa-gauge-simple-high"></i>
                                 </div>
                               </div>
                             </div>
-                            <div class="d-flex flex-wrap justify-content-between align-items-center mt-3">
+                            <div class="d-flex flex-wrap justify-content-between mt-3">
                               <GraphChart
                                 chartType="multiple"
                                 label1={"Wallet"}

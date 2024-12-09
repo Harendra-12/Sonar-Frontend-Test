@@ -181,27 +181,18 @@ const RingGroups = () => {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Ring Group List</h4>
+                        <h4>Ring Group List
+                          <button className="clearButton" onClick={() => setRefreshState(refreshState + 1)} disabled={loading}>
+                            <i className={
+                              loading
+                                ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                : "fa-regular fa-arrows-rotate fs-5"
+                            }></i>
+                          </button>
+                        </h4>
                         <p>You can see all list of ring groups</p>
                       </div>
                       <div className="buttonGroup">
-                        <button
-                          effect="ripple"
-                          className="panelButton ms-0"
-                          onClick={() => setRefreshState(refreshState + 1)}
-                          disabled={loading}
-                        >
-                          <span className="text">Refresh</span>
-                          <span className="icon">
-                            <i
-                              class={
-                                loading
-                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
-                                  : "fa-regular fa-arrows-rotate fs-5"
-                              }
-                            ></i>
-                          </span>
-                        </button>
                         <button
                           effect="ripple"
                           className="panelButton gray"

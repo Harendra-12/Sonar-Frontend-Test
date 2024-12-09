@@ -28,7 +28,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
       setLoading(false);
     }
   }, [connectStatus, isMicOn]);
-  
+
   return (
     <section>
       <style>
@@ -139,9 +139,8 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Voicemails</div>
               </div>
             </li>
-            <li>
+            {/* <li>
               <div
-                //  to="/"
                 onClick={() => setactivePage("favorites")}
                 className={
                   activePage === "favorites" ? "navItem active" : "navItem"
@@ -152,7 +151,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 </div>
                 <div className="itemTitle">Favorites</div>
               </div>
-            </li>
+            </li> */}
             <li>
               <div
                 // to="/all-contacts"
@@ -175,9 +174,8 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Help &amp; Feedback</div>
               </NavLink>
             </li> */}
-            <li>
+            {/* <li>
               <div
-                // to="/"
                 onClick={() => setactivePage("settings")}
                 className={
                   activePage === "settings" ? "navItem active" : "navItem"
@@ -188,7 +186,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 </div>
                 <div className="itemTitle">Settings</div>
               </div>
-            </li>
+            </li> */}
             <li>
               <div
                 // to="/call-dashboard"
@@ -212,7 +210,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 }
               >
                 <div className="iconHolder">
-                  <i className="fa-light fa-sliders" />
+                  <i className="fa-light fa-circle-user" />
                 </div>
                 <div className="itemTitle">Call Center</div>
               </div>
@@ -231,9 +229,8 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Admin</div>
               </div>
             </li>
-            <li>
+            {/* <li>
               <div
-                // to="/"
                 onClick={() => setactivePage("reports")}
                 className={
                   activePage === "reports" ? "navItem active" : "navItem"
@@ -244,10 +241,9 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 </div>
                 <div className="itemTitle">Reports</div>
               </div>
-            </li>
+            </li> */}
             <li>
               <div
-                // to="/"
                 onClick={() => setactivePage("mail-setting")}
                 className={
                   activePage === "reports" ? "navItem active" : "navItem"
@@ -261,7 +257,6 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
             </li>
             <li>
               <div
-                // to="/"
                 onClick={() => setactivePage("conference")}
                 className={
                   activePage === "conference" ? "navItem active" : "navItem"
@@ -273,9 +268,8 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Conference</div>
               </div>
             </li>
-            <li>
+            {/* <li>
               <div
-                // to="/"
                 onClick={() => setactivePage("test")}
                 className={
                   activePage === "reports" ? "navItem active" : "navItem"
@@ -286,7 +280,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 </div>
                 <div className="itemTitle">Conference Test</div>
               </div>
-            </li>
+            </li> */}
             <li className="dashboard ">
               <a className="navItem">
                 <DarkModeToggle marginLeft={"2"} />

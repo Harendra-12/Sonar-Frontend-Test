@@ -167,7 +167,7 @@ const Profile = () => {
               <div className="profileView">
                 <div className="profileDetailsHolder p-0">
                   <div className="baseDetails">
-                    <div className="col-sm-4">
+                    <div className="col-xxl-3 col-xl-4">
                       <div className="profilePicHolder">
                         <img
                           src={
@@ -179,7 +179,7 @@ const Profile = () => {
                         />
                       </div>
                     </div>
-                    <div className="col-sm-8 my-auto">
+                    <div className="col-xxl-9 col-xl-8 my-auto">
                       <div>
                         <div className="content profileicons mt-1 d-flex align-items-center justify-content-start">
                           <span>
@@ -355,7 +355,7 @@ const Profile = () => {
                                     className="panelButton static ms-0 w-100"
                                     style={{ height: "34px" }}
                                     onClick={() => handleSetExtension()}
-                                    // effect="ripple"
+                                  // effect="ripple"
                                   >
                                     <span className="text">Save</span>
                                     {/* <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span> */}
@@ -393,10 +393,10 @@ const Profile = () => {
                 <div className="col-md-12">
                   <div className="profileView ">
                     <div className="profileDetailsHolder baseDetails">
-                      <div className="content">
+                      <div className="content w-100">
                         <h5 className=" me-2">All details</h5>
                         <div className="mt-2">
-                          <div className=" d-flex align-items-center justify-content-start ">
+                          <div className=" d-flex align-items-center justify-content-between " style={{ height: '25px' }}>
                             <p className=" me-2">Country:</p>
 
                             <p className="imgwidth d-flex ms-2 me-2">
@@ -407,7 +407,7 @@ const Profile = () => {
                               {accountDetails?.billing_address[0].country}
                             </p>
                           </div>
-                          <div className=" d-flex align-items-center justify-content-start ">
+                          <div className=" d-flex align-items-center justify-content-between " style={{ height: '25px' }}>
                             <p className=" me-2">Language:</p>
                             <div>
                               <p className="imgwidth d-flex  ms-2 me-2">
@@ -419,7 +419,7 @@ const Profile = () => {
                               </p>
                             </div>
                           </div>
-                          <div className=" d-flex align-items-center justify-content-start ">
+                          <div className=" d-flex align-items-center justify-content-between " style={{ height: '25px' }}>
                             <p className=" me-2">TimeZone:</p>
 
                             <p className=" ms-2 me-2">

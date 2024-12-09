@@ -70,7 +70,7 @@ const CallQueueDetails = () => {
         {callQueue &&
           callCenter &&
           callCenter.map((call) => (
-            <div className="row my-3">
+            <div className="row my-3 gx-xxl-3 gx-xl-2">
               <div className="col-xl-1b">
                 <div className="itemWrapperb a">
                   <div className="heading">Queue Name</div>

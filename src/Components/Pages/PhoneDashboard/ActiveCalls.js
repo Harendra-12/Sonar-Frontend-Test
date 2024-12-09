@@ -12,7 +12,7 @@ function ActiveCalls() {
   const [loading, setLoading] = useState(false);
   const [bargeStatus, setBargeStatus] = useState("disable");
   const [id, setId] = useState("");
-  const [dest,setDest]=useState("")
+  const [dest, setDest] = useState("")
   async function killCall(id) {
     setLoading(true);
     const apiData = await generalGetFunction(`/freeswitch/call-kill/${id}`);
@@ -39,7 +39,7 @@ function ActiveCalls() {
       toast.error(apiData.message);
     }
   }
-  async function eavesdropCall(id,dest) {
+  async function eavesdropCall(id, dest) {
     setLoading(true);
     const apiData = await generalGetFunction(
       `/freeswitch/call-eavesdrop/${id}/${dest}`
@@ -74,9 +74,9 @@ function ActiveCalls() {
     if (bargeStatus === "barge") {
       bargeCall(id);
     } else if (bargeStatus === "intercept") {
-      interceptCall(id,dest);
+      interceptCall(id, dest);
     } else if (bargeStatus === "eavesdrop") {
-      eavesdropCall(id,dest);
+      eavesdropCall(id, dest);
     }
   }, [bargeStatus, id]);
 
@@ -94,84 +94,78 @@ function ActiveCalls() {
   }
   return (
     <>
-      {/* <main className="mainContent"> */}
-      <section id="phonePage">
-        <div className="container-fluid">
-          <div className="row">
-            {/* <Header title="Active Calls" /> */}
-            <div className="col-12 px-1" style={{ overflow: "auto" }}>
-              <div className="tableContainer">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Serial no.</th>
-                      <th>Profile</th>
-                      <th>Created</th>
-                      {/* <th>CID Name</th> */}
-                      <th>CID Number</th>
-                      <th>Destination</th>
-                      <th>Barge</th>
-                      {/* <th>Intercept</th>
+      <table>
+        <thead>
+          <tr>
+            <th style={{ width: "60px" }}>Sr no.</th>
+            <th>Profile</th>
+            <th>Created</th>
+            {/* <th>CID Name</th> */}
+            <th>CID Number</th>
+            <th>Destination</th>
+            <th>Barge</th>
+            {/* <th>Intercept</th>
                         <th>Eavesdrop</th> */}
-                      <th>Hang Up</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {activeCall &&
-                      activeCall
-                        .filter(
-                          (call) =>
-                            call.callstate === "ACTIVE" || call.b_callee_direction==="ACTIVE"
-                        ).map
-                        ((item, key) => {
-                          return (
-                            <tr>
-                              <td>{key + 1}</td>
-                              <td>{item.name.split("/")[1]}</td>
-                              <td>{item.created.split(" ")[1]}</td>
-                              {/* <td>{item.b_cid_name}</td> */}
-                              <td>{item.cid_num}</td>
-                              <td>
-                                {item?.dest.includes("set:valet_ticket")
-                                  ? extractLastNumber(item?.accountcode)
-                                  : extractLastNumber(item?.dest)}
-                              </td>
-                              <td>
-                                <select
-                                  onChange={(e) => {
-                                    setBargeStatus(e.target.value);
-                                    setId(item.uuid);
-                                    setDest(item?.dest.includes("set:valet_ticket")
-                                    ? extractLastNumber(item?.accountcode)
-                                    : extractLastNumber(item?.dest))
-                                  }}
-                                >
-                                  <option value="disbale">Choose action</option>
-                                  <option
-                                    value="barge"
-                                    onClick={() => bargeCall(item.uuid)}
-                                  >
-                                    Barge
-                                  </option>
-                                  <option
-                                    value="intercept"
-                                    onClick={() => interceptCall(item.uuid,item?.dest.includes("set:valet_ticket")
-                                      ? extractLastNumber(item?.accountcode)
-                                      : extractLastNumber(item?.dest))}
-                                  >
-                                    Intercept
-                                  </option>
-                                  <option
-                                    value="eavesdrop"
-                                    onClick={() => eavesdropCall(item.uuid,item?.dest.includes("set:valet_ticket")
-                                      ? extractLastNumber(item?.accountcode)
-                                      : extractLastNumber(item?.dest))}
-                                  >
-                                    Eavesdrop
-                                  </option>
-                                </select>
-                              </td>
-                              {/* <td onClick={() => bargeCall(item.uuid)}>
+            <th className="text-align">Hang Up</th>
+          </tr>
+        </thead>
+        <tbody>
+          {activeCall &&
+            activeCall
+              .filter(
+                (call) =>
+                  call.callstate === "ACTIVE" || call.b_callee_direction === "ACTIVE"
+              ).map
+              ((item, key) => {
+                return (
+                  <tr>
+                    <td>{key + 1}</td>
+                    <td>{item.name.split("/")[1]}</td>
+                    <td>{item.created.split(" ")[1]}</td>
+                    {/* <td>{item.b_cid_name}</td> */}
+                    <td>{item.cid_num}</td>
+                    <td>
+                      {item?.dest.includes("set:valet_ticket")
+                        ? extractLastNumber(item?.accountcode)
+                        : extractLastNumber(item?.dest)}
+                    </td>
+                    <td>
+                      <select
+                        className="formItem"
+                        onChange={(e) => {
+                          setBargeStatus(e.target.value);
+                          setId(item.uuid);
+                          setDest(item?.dest.includes("set:valet_ticket")
+                            ? extractLastNumber(item?.accountcode)
+                            : extractLastNumber(item?.dest))
+                        }}
+                      >
+                        <option value="disbale">Choose action</option>
+                        <option
+                          value="barge"
+                          onClick={() => bargeCall(item.uuid)}
+                        >
+                          Barge
+                        </option>
+                        <option
+                          value="intercept"
+                          onClick={() => interceptCall(item.uuid, item?.dest.includes("set:valet_ticket")
+                            ? extractLastNumber(item?.accountcode)
+                            : extractLastNumber(item?.dest))}
+                        >
+                          Intercept
+                        </option>
+                        <option
+                          value="eavesdrop"
+                          onClick={() => eavesdropCall(item.uuid, item?.dest.includes("set:valet_ticket")
+                            ? extractLastNumber(item?.accountcode)
+                            : extractLastNumber(item?.dest))}
+                        >
+                          Eavesdrop
+                        </option>
+                      </select>
+                    </td>
+                    {/* <td onClick={() => bargeCall(item.uuid)}>
                                 <label
                                   className="tableLabel success"
                                   style={{
@@ -184,7 +178,7 @@ function ActiveCalls() {
                                   Barge
                                 </label>
                               </td> */}
-                              {/* <td onClick={() => interceptCall(item.uuid)}>
+                    {/* <td onClick={() => interceptCall(item.uuid)}>
                                 <label
                                   className="tableLabel success"
                                   style={{
@@ -210,23 +204,20 @@ function ActiveCalls() {
                                   Eavesdrop
                                 </label>
                               </td> */}
-                              <td onClick={() => killCall(item.uuid)}>
-                                <label
-                                  className="tableLabel fail"
-                                  style={{
-                                    width: "85px",
-                                    padding: "3px 7px",
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <i class="fa-duotone fa-solid fa-phone-slash me-1"></i>{" "}
-                                  Hang Up
-                                </label>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                    {/* {activeCall &&
+                    <td onClick={() => killCall(item.uuid)}>
+                      <label
+                        className="tableButton delete mx-auto"
+                        style={{
+                          cursor: "pointer",
+                        }}
+                      >
+                        <i class=" fa-solid fa-phone-slash"></i>{" "}
+                      </label>
+                    </td>
+                  </tr>
+                );
+              })}
+          {/* {activeCall &&
                       Object.values(activeCall).map((item, index) => {
                         return (
                           <tr key={index}>
@@ -265,20 +256,15 @@ function ActiveCalls() {
                           </tr>
                         );
                       })} */}
-                    {/* {activeCall && activeCall.length === 0 ? (
+          {/* {activeCall && activeCall.length === 0 ? (
                         <td colSpan={99}>
                           <EmptyPrompt name="Call" link="call" />
                         </td>
                       ) : (
                         ""
                       )} */}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+        </tbody>
+      </table>
       {/* </main> */}
       {loading && <CircularLoader />}
       {/* <ToastContainer

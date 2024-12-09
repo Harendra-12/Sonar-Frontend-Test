@@ -80,13 +80,13 @@ function Dialpad({
               mode === "audio"
                 ? true
                 : {
-                    mandatory: {
-                      minWidth: 1280,
-                      minHeight: 720,
-                      minFrameRate: 30,
-                    },
-                    optional: [{ facingMode: "user" }],
+                  mandatory: {
+                    minWidth: 1280,
+                    minHeight: 720,
+                    minFrameRate: 30,
                   },
+                  optional: [{ facingMode: "user" }],
+                },
           },
         }
       );
@@ -150,10 +150,13 @@ function Dialpad({
               </div>
               <div className="mb-2"></div>
               {savedContactShow ? (
-                <div className="d-flex">
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                  style={{ width: "75%", margin: "auto" }}
+                >
                   <select
                     defaultValue={""}
-                    className="formItem"
+                    className="formItem dark"
                     onChange={(e) => {
                       setDestNumber(e.target.value);
                     }}
@@ -168,7 +171,7 @@ function Dialpad({
                     ))}
                   </select>
                   <div
-                    className="px-2 d-flex align-items-center"
+                    className="ms-3-2 d-flex align-items-center"
                     onClick={() => setSavedContactShow(false)}
                     style={{ cursor: "pointer" }}
                   >

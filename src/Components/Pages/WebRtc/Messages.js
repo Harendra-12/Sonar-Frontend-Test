@@ -13,6 +13,7 @@ import {
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useNavigate } from "react-router-dom";
+import Tippy from "@tippyjs/react";
 
 function Messages({
   setSelectedModule,
@@ -187,7 +188,7 @@ function Messages({
         if (
           chatHistory[recipient[0]]?.total &&
           chatHistory[recipient[0]].pageNumber * 40 <
-            chatHistory[recipient[0]].total
+          chatHistory[recipient[0]].total
         ) {
           getData(chatHistory[recipient[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
@@ -525,13 +526,13 @@ function Messages({
               mode === "audio"
                 ? true
                 : {
-                    mandatory: {
-                      minWidth: 1280,
-                      minHeight: 720,
-                      minFrameRate: 30,
-                    },
-                    optional: [{ facingMode: "user" }],
+                  mandatory: {
+                    minWidth: 1280,
+                    minHeight: 720,
+                    minFrameRate: 30,
                   },
+                  optional: [{ facingMode: "user" }],
+                },
           },
         }
       );
@@ -700,12 +701,12 @@ function Messages({
                 <div className="newHeader">
                   <div className="col-auto" style={{ padding: "0 10px" }}>
                     <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
-                      <button class="clearButton text-dark">
+                      <button class="clearButton2 text-dark" onClick={() => featureUnderdevelopment()}>
                         <i class="fa-solid fa-chevron-left fs-4"></i>
                       </button>{" "}
                       Messages{" "}
                       <button
-                        class="clearButton"
+                        class="clearButton2"
                         onClick={() => setContactRefresh(contactRefresh + 1)}
                         disabled={loading}
                       >
@@ -728,10 +729,11 @@ function Messages({
                         placeholder="Search users, groups or chat"
                         class="formItem fw-normal"
                         style={{ backgroundColor: "var(--searchBg)" }}
+                        onClick={() => featureUnderdevelopment()}
                       />
                     </div>
                     <div className="col-auto mx-2">
-                      <button className="clearButton2 xl" effect="ripple">
+                      <button className="clearButton2 xl" effect="ripple" onClick={() => featureUnderdevelopment()}>
                         <i className="fa-regular fa-bell" />
                       </button>
                     </div>
@@ -988,9 +990,9 @@ function Messages({
                                       <p className="timeAgo">
                                         {item?.last_message_data
                                           ? formatRelativeTime(
-                                              item?.last_message_data
-                                                ?.created_at
-                                            )
+                                            item?.last_message_data
+                                              ?.created_at
+                                          )
                                           : ""}
                                       </p>
                                     </div>
@@ -1095,18 +1097,20 @@ function Messages({
                         <div className="chatHeading" data-bell={""}>
                           <h5>
                             Tag List{" "}
-                            <i
-                              onClick={() => setAddNewTag(true)}
-                              class="fa-regular fa-circle-plus fs-5"
-                              style={{ cursor: "pointer", fontSize: 18 }}
-                            ></i>
+                            <Tippy content="Click to add a new tag!">
+                              <i
+                                onClick={() => setAddNewTag(true)}
+                                class="fa-regular fa-circle-plus fs-5"
+                                style={{ cursor: "pointer", fontSize: 18 }}
+                              ></i>
+                            </Tippy>
                           </h5>
                         </div>
                         {allTags.map((item, key) => {
                           return (
                             <div className="contactTagsAddEdit">
                               <div className="row align-items-center item">
-                                <div className="col-auto">
+                                <div className="col-6">
                                   <h5>
                                     <input
                                       value={
@@ -1123,7 +1127,7 @@ function Messages({
                                     />
                                   </h5>
                                 </div>
-                                <div className="col-auto">
+                                <div className="col-3">
                                   <div className="contactTags">
                                     <span data-id={key}>
                                       {selectedTag === item.id
@@ -1138,7 +1142,9 @@ function Messages({
                                       className="clearButton2 xl"
                                       onClick={handleUpdateTag}
                                     >
-                                      <i class="fa-regular fa-circle-check"></i>
+                                      <Tippy content="Click to save your tag!">
+                                        <i class="fa-regular fa-circle-check"></i>
+                                      </Tippy>
                                     </button>
                                   ) : (
                                     <button
@@ -1148,15 +1154,19 @@ function Messages({
                                         setUpDateTag(item.name);
                                       }}
                                     >
-                                      <i class="fa-regular fa-pen-to-square"></i>
+                                      <Tippy content="You can edit the tag here!">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                      </Tippy>
                                     </button>
                                   )}
-                                  <button
-                                    className="clearButton2 xl"
-                                    onClick={() => handleDeleteTag(item.id)}
-                                  >
-                                    <i class="fa-regular fa-trash text-danger"></i>
-                                  </button>
+                                  <Tippy content="Click to delete your tag!">
+                                    <button
+                                      className="clearButton2 xl"
+                                      onClick={() => handleDeleteTag(item.id)}
+                                    >
+                                      <i class="fa-regular fa-trash text-danger"></i>
+                                    </button>
+                                  </Tippy>
                                 </div>
                               </div>
                             </div>
@@ -1226,6 +1236,7 @@ function Messages({
                                 <span
                                   data-id={key}
                                   onClick={() => handleUnassignTask(item?.id)}
+                                  className="removableTag"
                                 >
                                   {item.tag?.[0]?.name}
                                 </span>
@@ -1303,17 +1314,17 @@ function Messages({
                           </button>
                           <ul class="dropdown-menu">
                             <li>
-                              <a class="dropdown-item" href="#">
+                              <a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>
                                 Mark as unread
                               </a>
                             </li>
                             <li>
-                              <a class="dropdown-item" href="#">
+                              <a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>
                                 Archive this chat
                               </a>
                             </li>
                             <li>
-                              <a class="dropdown-item" href="#">
+                              <a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>
                                 Close this chat
                               </a>
                             </li>
@@ -1525,16 +1536,16 @@ function Messages({
 
                         <div className="col-12 d-flex justify-content-between align-items-center">
                           <div className="d-flex">
-                            <button className="clearButton2">
+                            <button className="clearButton2" onClick={() => featureUnderdevelopment()}>
                               <i className="fa-light fa-eraser" />
                             </button>
-                            <button className="clearButton2">
+                            <button className="clearButton2" onClick={() => featureUnderdevelopment()}>
                               <i class="fa-regular fa-image"></i>
                             </button>
-                            <button className="clearButton2">
+                            <button className="clearButton2" onClick={() => featureUnderdevelopment()}>
                               <i class="fa-solid fa-paperclip"></i>
                             </button>
-                            <button className="clearButton2">
+                            <button className="clearButton2" onClick={() => featureUnderdevelopment()}>
                               <i class="fa-regular fa-face-smile"></i>
                             </button>
                           </div>
@@ -1559,14 +1570,16 @@ function Messages({
             </div>
           </div>
         </section>
-      </main>
-      {loading ? (
-        <div colSpan={99}>
-          <CircularLoader />
-        </div>
-      ) : (
-        ""
-      )}
+      </main >
+      {
+        loading ? (
+          <div colSpan={99} >
+            <CircularLoader />
+          </div>
+        ) : (
+          ""
+        )
+      }
     </>
   );
 }

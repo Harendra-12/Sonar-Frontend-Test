@@ -93,11 +93,12 @@
     font-weight: 500;
     font-family: Roboto;
     color: var(--bgdark-color);
+    height: 60px;
 }
 
 .itemWrapper .heading h5 {
     margin-bottom: 5px;
-    font-size: 18px !important;
+    font-size: 18px;
     font-family: 'Open Sans';
     font-weight: 700;
 }
@@ -107,6 +108,9 @@
     color: var(--color-subtext);
     font-weight: 500;
     margin-bottom: 0;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .itemWrapper .heading i {
@@ -131,8 +135,8 @@
 
 .itemWrapper .data-number2 {
     text-align: left;
-    /* margin-top: 28px; */
-    margin-top: 20px;
+    /* margin-top: 20px; */
+    margin-top: 10px;
 
 }
 
@@ -160,7 +164,7 @@
 
 .itemWrapper .data-number2 h5 {
     margin-bottom: 5px;
-    font-size: 24px !important;
+    font-size: 24px;
     font-weight: 600;
     font-family: Outfit;
 }
@@ -174,7 +178,10 @@
 
 .itemWrapper .data-number2 img {
     width: 50px;
-    height: 50px;
+    height: auto;
+    max-width: 100%;
+    display: flex;
+    margin-left: auto;
 }
 
 .itemWrapper .label {
@@ -457,7 +464,7 @@
     padding-left: 0;
     list-style: none;
     text-align: left;
-    padding-top: 15px;
+    padding-top: 10px;
     margin-bottom: 0;
 }
 

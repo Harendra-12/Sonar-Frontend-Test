@@ -129,12 +129,12 @@ function AllContact({
                 <div className="newHeader">
                   <div className="col-auto" style={{ padding: "0 10px" }}>
                     <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
-                      <button class="clearButton text-dark">
+                      <button class="clearButton2 text-dark" onClick={() => featureUnderdevelopment()}>
                         <i class="fa-solid fa-chevron-left fs-4"></i>
                       </button>{" "}
                       Contact{" "}
                       <button
-                        class="clearButton"
+                        class="clearButton2"
                         onClick={() => handleContactRefresh()}
                         disabled={allContactLoading}
                       >
@@ -161,7 +161,7 @@ function AllContact({
                       />
                     </div>
                     <div className="col-auto mx-2">
-                      <button className="clearButton2 xl" effect="ripple">
+                      <button className="clearButton2 xl" effect="ripple" onClick={() => featureUnderdevelopment()}>
                         <i className="fa-regular fa-bell" />
                       </button>
                     </div>

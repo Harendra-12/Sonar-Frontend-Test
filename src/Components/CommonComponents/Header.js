@@ -122,25 +122,25 @@ function Header(props) {
               </label>
               <Link to={"/change-password"}>Change Password</Link>
             </div> */}
-            <div className="d-flex justify-content-center mb-1">
+            <div className="dropdown-item">
               <Link
                 to={"/change-password"}
-                className="btn btn-primary w-100 gap-3 d-flex align-items-center justify-content-center"
+                className="clearButton text-align-start"
               >
-                <i className="fa-duotone fa-lock"></i>
+                <i className="fa-regular fa-lock me-2"></i>
                 Change Password
               </Link>
             </div>
-            <div className="d-flex justify-content-center">
+            <div className="dropdown-item">
               <Link
                 to={"/my-profile"}
-                className="btn btn-primary w-100 gap-3 d-flex align-items-center justify-content-center"
+                className="clearButton"
               >
-                <i class="fa fa-user" aria-hidden="true"></i>
+                <i class="fa-regular fa-user me-2" aria-hidden="true"></i>
                 Profile
               </Link>
             </div>
-            <div onClick={logOut} className="d-flex justify-content-center">
+            <div onClick={logOut} className="d-flex w-100 gap-3 align-items-center justify-content-start">
               <Link to={"/"} className="logoutBtn">
                 <i className="fa-solid fa-power-off me-1"></i> Logout
               </Link>

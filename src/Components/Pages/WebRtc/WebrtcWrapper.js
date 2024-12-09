@@ -252,7 +252,7 @@ const WebrtcWrapper = () => {
         )}
         {/* {activePage == "videocall" && <VideoCall />} */}
         {activePage == "email" && <Email />}
-        {activePage == "mail-setting" && <MailSettings />}
+        {activePage == "mail-setting" && <MailSettings style={{ marginLeft: 'var(--sideNavApp-width)' }} />}
 
         <IncomingCalls
           setSelectedModule={setSelectedModule}
@@ -431,7 +431,7 @@ const WebrtcWrapper = () => {
               </div>
             </section>
             {sessions.find((session) => session.mode === "video") &&
-            callProgressId ? (
+              callProgressId ? (
               <VideoCall
                 setHangupRefresh={setHangupRefresh}
                 hangupRefresh={hangupRefresh}

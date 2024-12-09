@@ -75,7 +75,7 @@ table tr th:first-child {
 .tableContainer {
     margin-top: 10px;
     border: 1px solid var(--border-color);
-    overflow-x: auto;
+    overflow: hidden auto;
     /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
     border-radius: 5px;
     margin-bottom: 10px;
@@ -263,7 +263,7 @@ table td.incoming::after {
     z-index: 999;
     top: 70px;
     right: 10px;
-    background-color: #303030;
+    background-color: var(--nav-color);
     padding: 10px;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -274,18 +274,29 @@ table td.incoming::after {
 .profileDropdown::after {
     content: '\f0d8';
     font-family: 'FontAwesome';
-    color: #303030;
+    color: var(--nav-color);
     position: absolute;
     top: -22px;
     right: 55px;
     font-size: 28px;
 }
 
+.profileDropdown .dropdown-item {
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.profileDropdown .dropdown-item:hover {
+    background-color: #ffffff50;
+
+}
+
 .profileDropdown a {
     text-decoration: none;
     color: #fff;
     font-size: 14px;
-    font-weight: 300;
+    font-weight: 400;
+    padding: 5px 0px;
 }
 
 .tableDropdownSelect {

@@ -662,6 +662,20 @@ input[type=number] {
     color: var(--immortalBlack);
 }
 
+.contactTags span.removableTag:hover::before {
+    content: '\f057';
+    font-family: 'Font Awesome 5 Pro';
+    font-size: 12px;
+    font-weight: 900;
+    color: #fff;
+    margin-right: 5px;
+}
+
+.contactTags span.removableTag:hover {
+    background-color: #ff0000;
+    color: #fff !important;
+}
+
 .ovalSelect {
     border: 1px solid var(--border-color);
     border-radius: 50px;
@@ -681,6 +695,7 @@ input[type=number] {
 
 .newHeader .dropdown-menu {
     padding: 5px 0;
+    background-color: var(--ele-color);
 }
 
 .newHeader .dropdown-menu .dropdown-item {
@@ -818,4 +833,12 @@ input[type=number] {
     outline: none;
     font-size: 14px;
     font-weight: 700;
+}
+
+.react-clock {
+    margin-left: auto;
+}
+
+.form-group .cardImage {
+    top: -5px !important;
 }
