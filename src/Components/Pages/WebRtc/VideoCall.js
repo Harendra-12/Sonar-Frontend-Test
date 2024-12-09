@@ -183,39 +183,86 @@ function VideoCall({
       minimize: false,
     });
   };
-
   const toggleScreenShare = async () => {
     if (isScreenSharing) {
-      const localStream = await getLocalStream();
-      session.sessionDescriptionHandler.peerConnection
-        .getSenders()
-        .forEach((sender) => {
-          if (sender.track.kind === "video") {
-            sender.replaceTrack(localStream.getVideoTracks()[0]);
-          }
-        });
-      setIsScreenSharing(false);
+      try {
+        const localStream = await getLocalStream();
+        session.sessionDescriptionHandler.peerConnection
+          .getSenders()
+          .forEach((sender) => {
+            if (sender.track && sender.track.kind === "video") {
+              sender.replaceTrack(localStream.getVideoTracks()[0]);
+            }
+          });
+        setIsScreenSharing(false);
+      } catch (error) {
+        console.error("Error while stopping screen share:", error);
+      }
     } else {
       try {
         const screenStream = await navigator.mediaDevices.getDisplayMedia({
           video: true,
           audio: true,
         });
-
+  
+        let videoSenderFound = false;
+  
         session.sessionDescriptionHandler.peerConnection
           .getSenders()
           .forEach((sender) => {
-            if (sender.track.kind === "video") {
+            if (sender.track && sender.track.kind === "video") {
               sender.replaceTrack(screenStream.getVideoTracks()[0]);
+              videoSenderFound = true;
             }
           });
+  
+        // If no video sender exists (audio-only call), add the screen share track
+        if (!videoSenderFound) {
+          const pc = session.sessionDescriptionHandler.peerConnection;
+          pc.addTrack(screenStream.getVideoTracks()[0], screenStream);
+        }
+  
         setIsScreenSharing(true);
       } catch (error) {
-        console.error("Error sharing screen: ", error);
+        console.error("Error while starting screen share:", error);
         toast.error("Unable to share screen.");
       }
     }
   };
+  
+  
+  // const toggleScreenShare = async () => {
+  //   if (isScreenSharing) {
+  //     const localStream = await getLocalStream();
+  //     session.sessionDescriptionHandler.peerConnection
+  //       .getSenders()
+  //       .forEach((sender) => {
+  //         if (sender.track.kind === "video") {
+  //           sender.replaceTrack(localStream.getVideoTracks()[0]);
+  //         }
+  //       });
+  //     setIsScreenSharing(false);
+  //   } else {
+  //     try {
+  //       const screenStream = await navigator.mediaDevices.getDisplayMedia({
+  //         video: true,
+  //         audio: true,
+  //       });
+
+  //       session.sessionDescriptionHandler.peerConnection
+  //         .getSenders()
+  //         .forEach((sender) => {
+  //           if (sender.track.kind === "video") {
+  //             sender.replaceTrack(screenStream.getVideoTracks()[0]);
+  //           }
+  //         });
+  //       setIsScreenSharing(true);
+  //     } catch (error) {
+  //       console.error("Error sharing screen: ", error);
+  //       toast.error("Unable to share screen.");
+  //     }
+  //   }
+  // };
   const handleHangup = () => {
     if (session) {
       hangup();
