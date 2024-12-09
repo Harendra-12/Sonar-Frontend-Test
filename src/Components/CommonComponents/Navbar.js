@@ -258,7 +258,7 @@ function Navbar() {
                               </div>
                             </NavLink>
                           </li> */}
-                          {account?.permissions?.includes(248) ||
+                          {/* {account?.permissions?.includes(248) ||
                           account?.permissions?.includes(250) ? (
                             <li className="tabItem ">
                               <NavLink
@@ -277,13 +277,10 @@ function Navbar() {
                                     : "nav-link"
                                 }
                               >
-                                {/* <div className="iconHolder">
-                                  <i class="fa-regular fa-solid fa-envelopes-bulk"></i>
-                                </div> */}
                                 <div className="itemTitle">Mail Settings</div>
                               </NavLink>
                             </li>
-                          ) : null}
+                          ) : null} */}
 
                           {userType === "SupreAdmin" ? (
                             <li className="tabItem">

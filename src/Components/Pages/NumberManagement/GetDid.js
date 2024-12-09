@@ -117,6 +117,7 @@ const customStyles = {
 function GetDid() {
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
+  const updateBalance = useSelector((state) => state.updateBalance);
   const accountDetails = useSelector((state) => state.accountDetails);
   const accountDetailsRefresh = useSelector(
     (state) => state.accountDetailsRefresh
@@ -136,6 +137,7 @@ function GetDid() {
       value: "voice",
     },
   ]);
+  const [popUp, setPopUp] = useState(false);
   const {
     register,
     handleSubmit,
@@ -214,6 +216,7 @@ function GetDid() {
         toast.error("Wallet balance is low");
       } else {
         setLoading(true);
+        setPopUp(false);
         const apiData = await generalPostFunction("/purchaseTfn", parsedData);
         if (apiData.status) {
           setLoading(false);
@@ -221,6 +224,13 @@ function GetDid() {
           dispatch({
             type: "SET_ACCOUNTDETAILSREFRESH",
             accountDetailsRefresh: accountDetailsRefresh + 1,
+          });
+          setDid();
+          setSelectedDid([]);
+          navigate("/did-listing");
+          dispatch({
+            type: "SET_UPDATEBALANCE",
+            updateBalance: updateBalance + 1,
           });
         } else {
           setLoading(false);
@@ -238,6 +248,7 @@ function GetDid() {
   function handleBuyPopUp(value) {
     setDidBuyPopUp(value);
   }
+  // console.log(selectedDid);
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -272,7 +283,7 @@ function GetDid() {
                     </div>
                   </div>
                 </div>
-                <div className="col-12" style={{ padding: '25px 23px' }}>
+                <div className="col-12" style={{ padding: "25px 23px" }}>
                   <form onSubmit={handleSubmit(onSubmit)} className="mb-0">
                     <div className="row col-xl-12">
                       <div className="formRow col-xl-2">
@@ -282,20 +293,28 @@ function GetDid() {
                         <div className="col-12">
                           <select
                             name="searchType"
-                            className={`formItem ${errors.searchType ? "error" : ""
-                              }`}
-                            {...register("searchType", { ...requiredValidator })}
+                            className={`formItem ${
+                              errors.searchType ? "error" : ""
+                            }`}
+                            {...register("searchType", {
+                              ...requiredValidator,
+                            })}
                           >
                             <option value="tollfree">Toll free</option>
                           </select>
                           {errors.searchType && (
                             <ErrorMessage text={errors.searchType.message} />
                           )}
-                          <label htmlFor="data" className="formItemDesc">Select the type of DID</label>
+                          <label htmlFor="data" className="formItemDesc">
+                            Select the type of DID
+                          </label>
                         </div>
                       </div>
                       <div className="formRow col-xl-2">
-                        <div className="formLabel d-flex justify-content-between" style={{ width: '100%' }}>
+                        <div
+                          className="formLabel d-flex justify-content-between"
+                          style={{ width: "100%" }}
+                        >
                           <label htmlFor="quantity">Quantity</label>
                           {errors.quantity && (
                             <ErrorMessage text={errors.quantity.message} />
@@ -305,8 +324,9 @@ function GetDid() {
                           <input
                             type="number"
                             name="quantity"
-                            className={`formItem ${errors.quantity ? "error" : ""
-                              }`}
+                            className={`formItem ${
+                              errors.quantity ? "error" : ""
+                            }`}
                             {...register("quantity", {
                               ...requiredValidator,
                               ...lengthValidator(1, 10),
@@ -315,7 +335,9 @@ function GetDid() {
                             onKeyDown={restrictToNumbers}
                           />
 
-                          <label htmlFor="data" className="formItemDesc">Input the quantity</label>
+                          <label htmlFor="data" className="formItemDesc">
+                            Input the quantity
+                          </label>
                         </div>
                       </div>
                       <div className="formRow col-xl-auto">
@@ -338,7 +360,10 @@ function GetDid() {
                         </div>
                       </div>
                       <div className="formRow col-xl-2">
-                        <div className="formLabel d-flex justify-content-between" style={{ width: '100%' }}>
+                        <div
+                          className="formLabel d-flex justify-content-between"
+                          style={{ width: "100%" }}
+                        >
                           <label htmlFor="npa">NPA</label>
                           {errors.npa && (
                             <ErrorMessage text={errors.npa.message} />
@@ -356,7 +381,9 @@ function GetDid() {
                             })}
                           />
 
-                          <label htmlFor="data" className="formItemDesc">Input the NPA for the DID</label>
+                          <label htmlFor="data" className="formItemDesc">
+                            Input the NPA for the DID
+                          </label>
                         </div>
                       </div>
                       <div className="formRow col">
@@ -370,9 +397,14 @@ function GetDid() {
                             type="submit"
                           >
                             <span className="text">Search</span>
-                            <span className="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                            <span className="icon">
+                              <i class="fa-solid fa-magnifying-glass"></i>
+                            </span>
                           </button>
-                          <label htmlFor="data" className="formItemDesc"></label>
+                          <label
+                            htmlFor="data"
+                            className="formItemDesc"
+                          ></label>
                         </div>
                       </div>
                     </div>
@@ -405,7 +437,11 @@ function GetDid() {
                                     <button
                                       style={{ cursor: "pointer" }}
                                       onClick={() => addSelect(item)}
-                                      className={selectedDid.includes(item) ? "tableButton edit float-end" : "tableButton float-end"}
+                                      className={
+                                        selectedDid.includes(item)
+                                          ? "tableButton edit float-end"
+                                          : "tableButton float-end"
+                                      }
                                     >
                                       {selectedDid.includes(item) ? (
                                         <i class="fa-solid fa-check text-info"></i>
@@ -466,9 +502,7 @@ function GetDid() {
                             return (
                               <li>
                                 {item.didSummary}{" "}
-                                <span className="float-end">
-                                  ${item.price}
-                                </span>
+                                <span className="float-end">${item.price}</span>
                               </li>
                             );
                           })}
@@ -522,9 +556,7 @@ function GetDid() {
                             Credit Card{" "}
                             <input
                               type="radio"
-                              checked={
-                                paymentMethod === "card" ? true : false
-                              }
+                              checked={paymentMethod === "card" ? true : false}
                               name="fav_language"
                               onChange={(e) => {
                                 if (e.target.checked) {
@@ -535,7 +567,11 @@ function GetDid() {
                             <span className="checkmark"></span>
                           </li>
                         </ul>
-                        <button className="panelButton static" onClick={handlePayment}>
+                        <button
+                          className="panelButton static"
+                          // onClick={handlePayment}
+                          onClick={() => setPopUp(true)}
+                        >
                           <span class="text">Pay Now</span>
                         </button>
                       </div>
@@ -544,7 +580,6 @@ function GetDid() {
                 )}
               </div>
             </div>
-
 
             {/* <div
               className="d-flex flex-wrap justify-content-end px-xl-3 py-2 position-relative"
@@ -570,7 +605,6 @@ function GetDid() {
             <div className="col-xl-12 px-0">
               {/* {loading ?
                   <div colSpan={99}><CircularLoader /></div> : ""} */}
-
             </div>
           </div>
         </div>
@@ -591,6 +625,46 @@ function GetDid() {
         ""
       )}
       {loading ? <CircularLoader /> : ""}
+      {popUp ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-4">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-triangle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-0">
+                  <h4>Warning!</h4>
+                  <p>
+                    Are you sure you want to purchase{" "}
+                    {selectedDid?.length > 1 ? "these" : "this"} DID?
+                  </p>
+                  <div className="mt-2 d-flex justify-content-between">
+                    <button
+                      className="panelButtonWhite m-0 float-end"
+                      onClick={() => handlePayment()}
+                    >
+                      Confirm
+                    </button>
+                    <button
+                      className="panelButtonWhite m-0 float-end"
+                      onClick={() => {
+                        setPopUp(false);
+                      }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
       {/* <ToastContainer
         position="bottom-right"
         autoClose={3000}

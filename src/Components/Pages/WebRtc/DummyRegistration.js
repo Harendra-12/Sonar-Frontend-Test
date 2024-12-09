@@ -4,8 +4,8 @@ import { DummySipRegisteration } from "./DummySipRegisteration";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function DummyRegistration() {
-  const ip = process.env.REACT_APP_IP;
-  const port = process.env.REACT_APP_SIP_REGISTER_PORT;
+  const ip = process.env.REACT_APP_BACKEND_IP;
+  const port = process.env.REACT_APP_FREESWITCH_PORT;
   const location = useLocation();
   const locationState = location.state;
   console.log("locationState", locationState);

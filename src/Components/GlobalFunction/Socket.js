@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 const Socket = () => {
   const dispatch = useDispatch();
   // const ip = "ucaas.webvio.in";
-  const ip = process.env.REACT_APP_IP;
+  const ip = process.env.REACT_APP_BACKEND_IP;
   // const port = "8443";
-  const port = process.env.REACT_APP_PORT;
+  const port = process.env.REACT_APP_BACKEND_SOCKET_PORT;
   const account = useSelector((state) => state.account);
   const token = localStorage.getItem("token");
   const socketRef = useRef(null);

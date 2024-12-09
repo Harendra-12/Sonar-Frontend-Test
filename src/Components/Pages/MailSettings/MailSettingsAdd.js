@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useSelector } from "react-redux";
 
-const MailSettingsAdd = () => {
+const MailSettingsAdd = ({ setMailSettingAddToggle, setMailDataRefresh }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const loadings = useSelector((state) => state.loading);
@@ -26,7 +26,6 @@ const MailSettingsAdd = () => {
     register,
     formState: { errors },
     handleSubmit,
-    watch,
     reset,
   } = useForm();
 
@@ -45,13 +44,15 @@ const MailSettingsAdd = () => {
       setLoading(false);
       reset();
       toast.success(addSettings.message);
-      navigate("/mail-settings");
+      setMailSettingAddToggle(false);
+      setMailDataRefresh((prev) => prev + 1);
+      // navigate("/mail-settings");
     } else {
       setLoading(false);
       // toast.error(addSettings.message);
     }
   });
-
+  console.log("loading", loading);
   return (
     <>
       <style>
@@ -107,16 +108,19 @@ const MailSettingsAdd = () => {
                       </div>
                       <div className="buttonGroup">
                         <button
-                          onClick={() => {
-                            navigate(-1);
-                            backToTop();
-                          }}
+                          // onClick={() => {
+                          //   navigate(-1);
+                          //   backToTop();
+                          // }}
+                          onClick={() => setMailSettingAddToggle(false)}
                           type="button"
                           effect="ripple"
                           className="panelButton gray"
                         >
                           <span className="text">Back</span>
-                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-caret-left"></i>
+                          </span>
                         </button>
                         <button
                           type="button"
@@ -125,13 +129,21 @@ const MailSettingsAdd = () => {
                           onClick={handleFormSubmit}
                         >
                           <span className="text">Save</span>
-                          <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                          </span>
                         </button>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
+                <div
+                  className="col-12"
+                  style={{
+                    padding: "25px 23px",
+                    borderBottom: "1px solid #ddd",
+                  }}
+                >
                   <form action="#" className="row">
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
@@ -157,7 +169,9 @@ const MailSettingsAdd = () => {
                           </option>
                           <option value="pop3">POP3</option>
                           <option value="imap">IMAP</option>
-                          <option value="ews">EWS (Exchange Web Services)</option>
+                          <option value="ews">
+                            EWS (Exchange Web Services)
+                          </option>
                           <option value="mailgun">Mailgun</option>
                           <option value="sendgrid">SendGrid</option>
                           <option value="ses">Amazon SES</option>
@@ -268,7 +282,10 @@ const MailSettingsAdd = () => {
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Encryption</label>
-                        <label htmlFor="mail_encryption" className="formItemDesc">
+                        <label
+                          htmlFor="mail_encryption"
+                          className="formItemDesc"
+                        >
                           Select Encryption Type
                         </label>
                       </div>
@@ -287,13 +304,18 @@ const MailSettingsAdd = () => {
                           <option value="tls" selected>
                             TLS (Transport Layer Security)
                           </option>
-                          <option value="ssl">SSL (Secure Sockets Layer)</option>
+                          <option value="ssl">
+                            SSL (Secure Sockets Layer)
+                          </option>
                           <option value="pgp">PGP (Pretty Good Privacy)</option>
                           <option value="gpg">GPG (GNU Privacy Guard)</option>
                           <option value="smime">
-                            S/MIME (Secure/Multipurpose Internet Mail Extensions)
+                            S/MIME (Secure/Multipurpose Internet Mail
+                            Extensions)
                           </option>
-                          <option value="end_to_end">End-to-End Encryption</option>
+                          <option value="end_to_end">
+                            End-to-End Encryption
+                          </option>
                           <option value="email_encryption">
                             Email Encryption Gateways
                           </option>
@@ -307,7 +329,10 @@ const MailSettingsAdd = () => {
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Mail From</label>
-                        <label htmlFor="mail_from_address" className="formItemDesc">
+                        <label
+                          htmlFor="mail_from_address"
+                          className="formItemDesc"
+                        >
                           Enter Mail From
                         </label>
                       </div>
@@ -324,7 +349,9 @@ const MailSettingsAdd = () => {
                           onKeyDown={restrictToAllowedChars}
                         />
                         {errors.mail_from_address && (
-                          <ErrorMessage text={errors.mail_from_address.message} />
+                          <ErrorMessage
+                            text={errors.mail_from_address.message}
+                          />
                         )}
                       </div>
                     </div>
@@ -332,7 +359,10 @@ const MailSettingsAdd = () => {
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Mail From Name</label>
-                        <label htmlFor="mail_from_name" className="formItemDesc">
+                        <label
+                          htmlFor="mail_from_name"
+                          className="formItemDesc"
+                        >
                           Enter Mail From Name
                         </label>
                       </div>
@@ -356,8 +386,6 @@ const MailSettingsAdd = () => {
                 </div>
               </div>
             </div>
-
-
           </div>
         </section>
 

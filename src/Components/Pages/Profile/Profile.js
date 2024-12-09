@@ -30,34 +30,34 @@ const Profile = () => {
   const [preassignedExtension, setPreassignedExtension] = useState(false);
   const profileName = account.name;
   const acount = useSelector((state) => state.account);
+  const isCustomerAdmin = account?.email == accountDetails?.email;
   useEffect(() => {
-    if (allUser?.length == 0) {
-      dispatch({
-        type: "SET_ALLUSERREFRESH",
-        allUserRefresh: allUserRefresh + 1,
-      });
-    } else {
-      // setProfileExtensionData(
-      //   allUser?.data?.filter((item) => {
-      //     return item.name == profileName;
-      //   })[0]
-      // );
-      const result = allUser?.data?.find((item) => {
-        return item.name == profileName;
-      });
-      setSelectedExtension(result?.extension?.extension);
+    if (isCustomerAdmin) {
+      if (allUser?.length == 0) {
+        dispatch({
+          type: "SET_ALLUSERREFRESH",
+          allUserRefresh: allUserRefresh + 1,
+        });
+      } else {
+        const result = allUser?.data?.find((item) => {
+          return item.name == profileName;
+        });
+        setSelectedExtension(result?.extension?.extension);
+      }
     }
   }, [allUser]);
 
   useEffect(() => {
-    if (extensionAll?.length == 0) {
-      setLoading(true);
-      dispatch({
-        type: "SET_EXTENSIONALLREFRESH",
-        extensionAllRefresh: extensionAllRefresh + 1,
-      });
-    } else {
-      setLoading(false);
+    if (isCustomerAdmin) {
+      if (extensionAll?.length == 0) {
+        setLoading(true);
+        dispatch({
+          type: "SET_EXTENSIONALLREFRESH",
+          extensionAllRefresh: extensionAllRefresh + 1,
+        });
+      } else {
+        setLoading(false);
+      }
     }
   }, [extensionAll]);
   const userWithExtension = allUser?.data
@@ -315,55 +315,62 @@ const Profile = () => {
                               />
                             </div>
                           </div>
-                          <div className="formRow col-xl-12">
-                            <div className="formLabel">
-                              <label htmlFor="data">Extension</label>
-                            </div>
-                            <div className="col-6">
-                              <div className="row">
-                                <div className="col-8">
-                                  <select
-                                    className="formItem me-0"
-                                    style={{ width: "100%" }}
-                                    name="delay"
-                                    id="selectFormRow"
-                                    value={selectedExtension}
-                                    onChange={(e) => {
-                                      setSelectedExtension(e.target.value);
-                                    }}
-                                  >
-                                    {extensionAll?.data?.map((item, index) => {
-                                      const foundUser = userWithExtension.find(
-                                        (value) =>
-                                          value.extension === item.extension
-                                      );
-                                      return (
-                                        <>
-                                          <option value={item.extension}>
-                                            {item.extension}{" "}
-                                            {foundUser
-                                              ? `(${foundUser.name})`
-                                              : ""}
-                                          </option>
-                                        </>
-                                      );
-                                    })}
-                                  </select>
-                                </div>
-                                <div className="col-4 ps-0">
-                                  <button
-                                    className="panelButton static ms-0 w-100"
-                                    style={{ height: "34px" }}
-                                    onClick={() => handleSetExtension()}
-                                    // effect="ripple"
-                                  >
-                                    <span className="text">Save</span>
-                                    {/* <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span> */}
-                                  </button>
+                          {isCustomerAdmin && (
+                            <div className="formRow col-xl-12">
+                              <div className="formLabel">
+                                <label htmlFor="data">Extension</label>
+                              </div>
+                              <div className="col-6">
+                                <div className="row">
+                                  <div className="col-8">
+                                    <select
+                                      className="formItem me-0"
+                                      style={{ width: "100%" }}
+                                      name="delay"
+                                      id="selectFormRow"
+                                      value={selectedExtension}
+                                      onChange={(e) => {
+                                        setSelectedExtension(e.target.value);
+                                      }}
+                                    >
+                                      {extensionAll?.data?.map(
+                                        (item, index) => {
+                                          const foundUser =
+                                            userWithExtension.find(
+                                              (value) =>
+                                                value.extension ===
+                                                item.extension
+                                            );
+                                          return (
+                                            <>
+                                              <option value={item.extension}>
+                                                {item.extension}{" "}
+                                                {foundUser
+                                                  ? `(${foundUser.name})`
+                                                  : ""}
+                                              </option>
+                                            </>
+                                          );
+                                        }
+                                      )}
+                                    </select>
+                                  </div>
+                                  <div className="col-4 ps-0">
+                                    <button
+                                      className="panelButton static ms-0 w-100"
+                                      style={{ height: "34px" }}
+                                      onClick={() => handleSetExtension()}
+                                      // effect="ripple"
+                                    >
+                                      <span className="text">Save</span>
+                                      {/* <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span> */}
+                                    </button>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          )}
+
                           {/* <div className="formRow col-xl-4">
                       <div className="formLabel">
                         <label htmlFor="data">Two Factor Authentication</label>
