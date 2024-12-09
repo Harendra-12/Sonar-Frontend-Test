@@ -568,9 +568,9 @@ export const DummySipRegisteration = ({
     }
   }
 
-  window.addEventListener("beforeunload", (event) => {
-    callAction("hup");
-  });
+  // window.addEventListener("beforeunload", (event) => {
+  //   callAction("hup");
+  // });
 
   async function logOut() {
     const apiData = await generalGetFunction("/logout");
@@ -585,6 +585,30 @@ export const DummySipRegisteration = ({
     }
   }
 
+  // adding logic to update currengt user memeber id to localstorage on page reload
+  useEffect(() => {
+    if (currentUser) {
+      if(currentUser.id!==""){
+        localStorage.setItem("memberId", currentUser.id);
+      }
+      
+    }
+  }, [currentUser,currentUser?.id]);
+
+
+  // Check for memeber id and hangup the call
+  useEffect(() => {
+    const parsedData = {
+      action: "hup",
+      room_id: locationState.room_id,
+      member: String(localStorage.getItem("memberId")),
+    };
+    if(localStorage.getItem("memberId")){
+      generalPostFunction(`conference/action`, parsedData)
+    }
+    console.log("local data", localStorage.getItem("memberId"));
+    
+  },[])
   // console.log("Current User", currentUser);
   return (
     <div className="profileDropdowns" style={{ top: "55px", right: "-40px" }}>
