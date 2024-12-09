@@ -3,13 +3,12 @@ import Header from '../../CommonComponents/Header'
 import CircularLoader from '../../Loader/CircularLoader'
 import { backToTop } from '../../GlobalFunction/globalFunction';
 import { useNavigate } from 'react-router-dom';
-import ConferenceLoader from '../../Loader/ConferenceLoader';
+
 
 function ClickToCallSetup() {
     const navigate = useNavigate()
     return (
         <>
-            <ConferenceLoader />
             <main className="mainContent">
                 <section id="phonePage">
                     <div className="container-fluid px-0">
