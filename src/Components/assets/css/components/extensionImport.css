@@ -50,17 +50,17 @@
     -webkit-font-smoothing: antialiased;
 }
 
-.formLabel .status {
-    float: inline-end;
+label.status {
+    /* float: inline-end; */
     font-size: 12px;
     font-weight: 400;
 }
 
-.formLabel .status.success {
+label.status.success {
     color: #00a900;
 }
 
-.formLabel .status.success::before {
+label.status.success::before {
     content: '\f00c';
     font-size: 14px;
     font-weight: 600;
@@ -69,11 +69,11 @@
     margin-right: 3px;
 }
 
-.formLabel .status.fail {
+label.status.fail {
     color: red;
 }
 
-.formLabel .status.fail::before {
+label.status.fail::before {
     content: '\f071';
     font-size: 14px;
     font-weight: 600;
@@ -82,8 +82,8 @@
     margin-right: 3px;
 }
 
-.formLabel .status.missing {
-    color: #fd4800;
+label.status.missing {
+    color: rgb(var(--bs-danger-rgb)) !important;
 }
 
 .formItem.missing {
@@ -94,11 +94,11 @@
     border: 1px solid red;
 }
 
-.formLabel .status.missing::before {
+label.status.missing::before {
     content: '\f06a';
     font-size: 14px;
     font-weight: 600;
-    color: #fd4800;
+    color: rgb(var(--bs-danger-rgb));
     font-family: 'Font Awesome 6 Pro';
     margin-right: 3px;
 }
@@ -116,7 +116,7 @@
     font-size: 13px;
     width: 100%;
     /* margin: 0px 5px 5px 0px; */
-    height: 34px;
+    height: 35px;
     transition: all 0.3s ease-in-out;
     color: var(--form-input-text);
     font-weight: 700;
@@ -142,6 +142,12 @@
 .formItem.dark option {
     background-color: #0e111e;
     color: #fff;
+}
+
+
+.formItem:autofill {
+    background-color: transparent !important;
+    color: var(--form-input-text) !important;
 }
 
 #detailsContent .formRow select {

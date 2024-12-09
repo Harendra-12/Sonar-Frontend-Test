@@ -654,7 +654,7 @@ const UsersEdit = () => {
                                 <div className="col-4">
                                   <button
                                     effect="ripple"
-                                    className="panelButton delete"
+                                    className="panelButton delete ms-auto"
                                     onClick={(e) => {
                                       e.preventDefault();
                                       setValue("extension_id", null);
@@ -761,8 +761,7 @@ const UsersEdit = () => {
                                           {filteredPermission[item].map(
                                             (innerItem, key) => (
                                               <div
-                                                className="col-xl-2 col-md-4 col-6"
-                                                style={{ paddingLeft: 30 }}
+                                                className="col-xxl col-auto col-md-4 col-6"
                                                 key={key}
                                               >
                                                 <input

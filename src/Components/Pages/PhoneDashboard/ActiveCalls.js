@@ -97,13 +97,13 @@ function ActiveCalls() {
       <table>
         <thead>
           <tr>
-            <th style={{ width: "60px" }}>Sr no.</th>
+            <th>#</th>
             <th>Profile</th>
             <th>Created</th>
             {/* <th>CID Name</th> */}
             <th>CID Number</th>
             <th>Destination</th>
-            <th>Barge</th>
+            <th>Action</th>
             {/* <th>Intercept</th>
                         <th>Eavesdrop</th> */}
             <th className="text-align">Hang Up</th>

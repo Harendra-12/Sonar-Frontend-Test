@@ -1585,7 +1585,7 @@ const ExtensionsEdit = () => {
                               <div
                                 className={
                                   watch().noanswer === "Forward"
-                                    ? "col-2 pe-2"
+                                    ? "col-3 pe-2 ms-auto"
                                     : "col-6"
                                 }
                               >
@@ -1613,7 +1613,7 @@ const ExtensionsEdit = () => {
                               </div>
                               {watch().noanswer === "Forward" ? (
                                 <>
-                                  <div className="col-3 pe-2">
+                                  <div className="col-3">
                                     <div className="formLabel">
                                       <label htmlFor="">Destinations</label>
 
@@ -1627,6 +1627,7 @@ const ExtensionsEdit = () => {
                                     </div>
                                     <div className="col-12">
                                       <ActionList
+                                        title={null}
                                         getDropdownValue={actionListValue1}
                                         value={watch().noanswerTo}
                                       />

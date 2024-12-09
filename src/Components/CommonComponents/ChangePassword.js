@@ -104,11 +104,6 @@ function ChangePassword() {
                   <div className="formLabel">
                     <div>
                       <label className="text-dark">Current Password : </label>
-                      {errorOldPassword ? (
-                        <label className="status missing">Field Missing</label>
-                      ) : (
-                        ""
-                      )}
                     </div>
                     <div>
                       <label
@@ -128,19 +123,17 @@ function ChangePassword() {
                       value={oldPassword}
                       onChange={(e) => setOldPassword(e.target.value)}
                     />
+                    {errorOldPassword ? (
+                      <label className="status missing">Field Missing</label>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <div>
                       <label className="text-dark">New Password : </label>
-                      {errorNewPassword ? (
-                        <label className="status missing">
-                          Password must be at least 6 characters
-                        </label>
-                      ) : (
-                        ""
-                      )}
                     </div>
                     <div>
                       <label
@@ -160,6 +153,13 @@ function ChangePassword() {
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
                     />
+                    {errorNewPassword ? (
+                      <label className="status missing">
+                        Password must be at least 6 characters
+                      </label>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
                 <div className="formRow col-xl-3">

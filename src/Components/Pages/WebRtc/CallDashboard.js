@@ -279,7 +279,7 @@ function CallDashboard() {
                           <table>
                             <thead>
                               <tr>
-                                <th>Sl no.</th>
+                                <th>#</th>
                                 <th>From </th>
                                 <th>To</th>
                                 <th>Call at</th>

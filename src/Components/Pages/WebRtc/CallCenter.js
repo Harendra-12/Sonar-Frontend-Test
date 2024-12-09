@@ -172,7 +172,7 @@ const CallCenter = () => {
                       <table className="callCenter">
                         <thead>
                           <tr>
-                            <th className="sl">S.No</th>
+                            <th className="sl">#</th>
                             <th>Name</th>
                             <th className="extension">Extension</th>
                             <th className="options">Options</th>

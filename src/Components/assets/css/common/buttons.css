@@ -68,7 +68,7 @@
 
 .panelButton {
   width: 100px;
-  height: 37px;
+  height: 35px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -752,4 +752,11 @@
 .videoConferenceButton:hover {
   background-color: #e7e7e7;
   color: #000;
+}
+
+.addmusic {
+  text-align: center;
+  background-color: var(--accordion-active);
+  color: var(--ui-accent);
+  font-weight: 500;
 }

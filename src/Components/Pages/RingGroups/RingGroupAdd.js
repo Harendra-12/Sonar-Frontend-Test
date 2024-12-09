@@ -822,7 +822,7 @@ const RingGroupAdd = () => {
                             })}
                           <option
                             value="addmusic"
-                            className="text-center border bg-info-subtle fs-6 fw-bold text-info"
+                            className="addmusic"
                             style={{ cursor: "pointer" }}
                           >
                             Add Music
@@ -1207,7 +1207,7 @@ const RingGroupAdd = () => {
                                       })}
                                   <option
                                     value="addUser"
-                                    className="text-center border bg-info-subtle fs-6 fw-bold text-info"
+                                    className="addmusic"
                                     style={{ cursor: "pointer" }}
                                   >
                                     Add User

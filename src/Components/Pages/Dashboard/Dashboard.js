@@ -1629,7 +1629,7 @@ const Dashboard = () => {
                                       </span>
                                     </li>
                                     <li>
-                                      Email Address{" "}
+                                      Email{" "}
                                       <span className="float-end">
                                         {
                                           accountDetails?.billing_address[0]
