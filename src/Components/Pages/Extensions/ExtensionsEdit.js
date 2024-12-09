@@ -2466,13 +2466,15 @@ const ExtensionsEdit = () => {
                         handleFormSubmit("force");
                       }}
                     >
-                      Confirm
+                      <span className="text">Confirm</span>
+                      <span className="icon"><i className="fa-solid fa-check"></i></span>
                     </button>
                     <button
-                      className="panelButtonWhite m-0 float-end"
+                      className="panelButton gray m-0 float-end"
                       onClick={() => setPopUp(false)}
                     >
-                      Cancel
+                      <span className="text">Cancel</span>
+                      <span className="icon"><i className="fa-solid fa-xmark"></i></span>
                     </button>
                   </div>
                 </div>

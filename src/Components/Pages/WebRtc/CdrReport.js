@@ -545,7 +545,7 @@ function CdrReport() {
                     <table>
                       <thead>
                         <tr>
-                          <th>Sr. no</th>
+                          <th>#</th>
                           <th>Call Direction</th>
                           <th>Call Type</th>
                           <th>Origin</th>

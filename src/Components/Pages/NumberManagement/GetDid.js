@@ -297,9 +297,6 @@ function GetDid() {
                       <div className="formRow col-xl-2">
                         <div className="formLabel d-flex justify-content-between" style={{ width: '100%' }}>
                           <label htmlFor="quantity">Quantity</label>
-                          {errors.quantity && (
-                            <ErrorMessage text={errors.quantity.message} />
-                          )}
                         </div>
                         <div className="col-12">
                           <input
@@ -314,7 +311,9 @@ function GetDid() {
                             })}
                             onKeyDown={restrictToNumbers}
                           />
-
+                          {errors.quantity && (
+                            <ErrorMessage text={errors.quantity.message} />
+                          )}
                           <label htmlFor="data" className="formItemDesc">Input the quantity</label>
                         </div>
                       </div>
@@ -340,9 +339,6 @@ function GetDid() {
                       <div className="formRow col-xl-2">
                         <div className="formLabel d-flex justify-content-between" style={{ width: '100%' }}>
                           <label htmlFor="npa">NPA</label>
-                          {errors.npa && (
-                            <ErrorMessage text={errors.npa.message} />
-                          )}
                         </div>
                         <div className="col-12">
                           <input
@@ -355,7 +351,9 @@ function GetDid() {
                               ...noSpecialCharactersValidator,
                             })}
                           />
-
+                          {errors.npa && (
+                            <ErrorMessage text={errors.npa.message} />
+                          )}
                           <label htmlFor="data" className="formItemDesc">Input the NPA for the DID</label>
                         </div>
                       </div>

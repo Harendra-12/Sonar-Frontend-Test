@@ -244,7 +244,7 @@ function EFax() {
                 </div>
               </div>
 
-              <div className="col-xl-6 allCallHistory pb-0">
+              <div className="col-xxl-5 col-xl-6 allCallHistory pb-0">
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
                     Viewing As:
@@ -478,7 +478,7 @@ function EFax() {
               {/* THIS UI WILL BE SHOWN TO USER BY DEFAULT OR WHEN HE CLICKS NEW EFAX */}
               {clickStatus === "all" && !showUserHistory && (
                 <div
-                  className="col-12 col-xxl-6 col-xl-7 callDetails eFaxCompose"
+                  className="col-xxl-7 col-xl-6 callDetails eFaxCompose"
                   style={{ height: "100%" }}
                   id="callDetails"
                 >

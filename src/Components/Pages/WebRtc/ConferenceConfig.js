@@ -215,8 +215,8 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                           </button>
                           <button
                             className={`nav-link ${selectedTab == "nav-voicemail-tab"
-                                ? "active"
-                                : ""
+                              ? "active"
+                              : ""
                               } `}
                             id="nav-voicemail-tab"
                             data-bs-toggle="tab"
@@ -241,8 +241,8 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                         <div class="tab-content" id="nav-tabContent">
                           <div
                             className={`tab-pane fade ${selectedTab == "nav-all-tab"
-                                ? "show active"
-                                : ""
+                              ? "show active"
+                              : ""
                               }`}
                             id="nav-all"
                             role="tabpanel"
@@ -310,8 +310,8 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                           </div>
                           <div
                             className={`tab-pane fade ${selectedTab == "nav-gen-tab"
-                                ? "show active"
-                                : ""
+                              ? "show active"
+                              : ""
                               }`}
                             id="nav-gen"
                             role="tabpanel"
@@ -498,15 +498,88 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                           </div>
                           <div
                             className={`tab-pane fade ${selectedTab == "nav-voicemail-tab"
-                                ? "show active"
-                                : ""
+                              ? "show active"
+                              : ""
                               }`}
                             id="nav-voicemail"
                             role="tabpanel"
                             aria-labelledby="nav-voicemail-tab"
                             tabindex="0"
                           >
-                            <form className="col-12 mx-auto">
+                            <div className="loginWrapper2" style={{ position: 'static', transform: 'none', background: 'none', boxShadow: 'none' }}>
+                              <div className="row h-100 justify-content-evenly">
+                                <div className='col-xl-5 position-relative'>
+                                  <div className="col-xl-12 h-100 position-relative d-flex align-items-center">
+                                    <div className="content col-xl-7 mx-auto py-5">
+                                      <h3>Join conference</h3>
+                                      <p>Enter your name to join conference</p>
+                                      <div className="border-bottom my-4"></div>
+                                      <form className="loginForm">
+                                        <div className="col-xl-12 m-auto">
+                                          <label>Meeting Url</label>
+                                          <div className="position-relative">
+                                            <i className="fa-thin fa-user" />
+                                            <input
+                                              type="text"
+                                              placeholder="Enter the meeting url"
+                                              className="loginFormItem"
+                                              value={conferenceId}
+                                              onChange={(e) =>
+                                                setConferenceId(e.target.value)
+                                              }
+                                            />
+                                            {error && (
+                                              <p style={{ color: "red" }}>{error}</p>
+                                            )}
+                                          </div>
+                                          <div>
+                                            {/* <button
+                                              className="panelButton"
+                                              type="button"
+                                              effect="ripple"
+                                              onClick={() =>
+                                                validateAndSetConferenceId(conferenceId)
+                                              }
+                                            >
+                                              <span className="text">JOIN</span>
+                                              <span className="icon"><i className="fa-solid fa-right-to-bracket"></i></span>
+                                            </button> */}
+
+                                            <button type="button" class="formSubmit" onClick={() =>
+                                              validateAndSetConferenceId(conferenceId)
+                                            }>
+                                              <i className="fa-solid fa-right-to-bracket position-static text-white"></i> Join
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </form>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className='col-xl-6 d-xl-block d-none my-auto'>
+                                  <div className="loginImgWrapper h-auto bg-transparent">
+                                    <div className="content" style={{ padding: '25px' }}>
+                                      <div className='conferenceJoinVideo'>
+                                        <video autoPlay={true} loop={true} muted={true}>
+                                          <source src={require('../../assets/images/testvideo.mp4')} type="video/mp4" />
+                                        </video>
+                                        <div className='buttonGroup' >
+                                          <button className='clearButton2 xl white'>
+                                            <i class="fa-light fa-microphone"></i>
+                                          </button>
+                                          <button className='clearButton2 xl white ms-3'>
+                                            <i class="fa-light fa-camera-slash"></i>
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+
+                            {/* <form className="col-12 mx-auto">
                               <div className="formRow col-xl-3">
                                 <div className="formLabel">
                                   <label htmlFor="">Conference link</label>
@@ -541,25 +614,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                   <span className="icon"><i className="fa-solid fa-right-to-bracket"></i></span>
                                 </div>
                               </div>
-                              {/* <div className="formRow col-xl-3">
-                                  <div className="formLabel">
-                                    <label htmlFor="selectFormRow">PIN</label>
-                                    <label
-                                      htmlFor="data"
-                                      className="formItemDesc"
-                                    >
-                                      Enter pin to join private conference.
-                                    </label>
-                                  </div>
-                                  <div className="col-xl-6 col-12">
-                                    <input
-                                      type="text"
-                                      name="extension"
-                                      className="formItem"
-                                    />
-                                  </div>
-                                </div> */}
-                            </form>
+                            </form> */}
                           </div>
                         </div>
                       )}

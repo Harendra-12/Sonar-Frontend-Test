@@ -1159,7 +1159,7 @@ function CallCenterQueueEdit() {
                               <div className={`col-${advance.includes(item.id) ? "1" : "2"} ps-0 pe-2`}>
                                 <div className="formLabel">
                                   {index === 0 ? (
-                                    <label htmlFor="">Tier Position</label>
+                                    <label htmlFor="" style={{ whiteSpace: 'nowrap' }}>Tier Position</label>
                                   ) : (
                                     ""
                                   )}
@@ -1398,7 +1398,7 @@ function CallCenterQueueEdit() {
 
                             </div>
 
-                            <div className="row col">
+                            <div className="row col mt-xxl-0 mt-xl-2">
                               {<div
                                 onClick={() => handleAdvance(item.id)}
                                 className="col-auto px-0 mt-auto"
