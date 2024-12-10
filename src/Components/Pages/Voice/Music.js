@@ -323,7 +323,7 @@ function Music() {
                             }
                           }}
                         />
-                        <p className="report">{newMusic?.name}</p>
+                        {newMusic?.name && <p className="report">{newMusic?.name}</p>}
                         <label htmlFor="fileInput" className="d-block">
                           <div className="test-user text-center">
                             <i style={{ fontSize: 30 }} className="fa-solid fa-cloud-arrow-up" />
@@ -366,7 +366,7 @@ function Music() {
                           </button>
                           <button
                             className="panelButton gray"
-                            onClick={() => setNewMusicPopup(false)}
+                            onClick={() => { setNewMusicPopup(false); setNewMusic(); }}
                           >
                             <span className="text">Cancel</span>
                             <span className="icon">

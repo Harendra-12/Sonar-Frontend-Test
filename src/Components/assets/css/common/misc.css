@@ -895,8 +895,9 @@ input[type=number] {
 }
 
 .popup.music .card-body .popup-border .report {
-    height: 20px;
+    /* height: 20px; */
     width: 170px;
+    padding: 2px 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
