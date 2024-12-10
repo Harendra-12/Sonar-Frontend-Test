@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import ContentLoader from "../../Loader/ContentLoader";
 import ConferenceVideo from "./ConferenceVideo";
 import ConferenceLoader from "../../Loader/ConferenceLoader";
+import ConferenceMessages from "./ConferenceMessages";
 
 export const ConferenceCall = ({ room_id, extension_id, name, setactivePage, activePage, setConferenceToggle ,conferenceToggle}) => {
   const navigate = useNavigate();
@@ -510,59 +511,7 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage, act
                     <div className="videoCallWrapper">
                       <div className="row">
                         {toggleMessages && <div className="col-lg-3 col-xl-3 col-12 p-3">
-                          <div className="messageOverlay">
-                            <div className="contactHeader py-3">
-                              <div>
-                                <h4>Messages</h4>
-                              </div>
-                            </div>
-                            <div className="messageContent">
-                              <div className="messageList">
-                                <div className="messageItem sender">
-                                  <div className="second">
-                                    <h6>
-                                      1003,<span>3:48</span>
-                                    </h6>
-                                    <div className="messageDetails">
-                                      <p>hi</p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="messageInput">
-                                <textarea
-                                  type="text"
-                                  name=""
-                                  className="input"
-                                  placeholder="Please enter your message"
-                                  defaultValue={""}
-                                  rows={2}
-                                />
-                                <div className="col-12 d-flex justify-content-between align-items-center pt-2">
-                                  <div className="d-flex">
-                                    <button className="clearButton2">
-                                      <i className="fa-regular fa-image" />
-                                    </button>
-                                    <button className="clearButton2">
-                                      <i className="fa-solid fa-paperclip" />
-                                    </button>
-                                    <button className="clearButton2">
-                                      <i className="fa-regular fa-face-smile" />
-                                    </button>
-                                  </div>
-                                  <div>
-                                    <button
-                                      effect="ripple"
-                                      className="clearColorButton dark"
-                                    >
-                                      Send Now{" "}
-                                      <i className="fa-solid fa-paper-plane-top" />
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                          <ConferenceMessages />
                         </div>}
                         <div className={`"col-lg-${toggleMessages ? "9" : "12"} col-xl-${toggleMessages ? "9" : "12"} col-12" px-0`}>
                           <div className="videoBody py-0">

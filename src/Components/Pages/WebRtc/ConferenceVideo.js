@@ -107,9 +107,9 @@ const toggleScreenShare = async () => {
     const localStream = await getLocalStream();
     session.sessionDescriptionHandler.peerConnection?.getSenders()
       .forEach((sender) => {
-        // if (sender.track.kind === "video") {
+        if (sender.track.kind === "video") {
           sender.replaceTrack(localStream.getVideoTracks()[0]);
-        // }
+        }
       });
     setIsScreenSharing(false);
   } else {
@@ -134,6 +134,10 @@ const toggleScreenShare = async () => {
     }
   }
 };
+
+
+
+
 useEffect(()=>{
     if(screenTogglehit>0){
         toggleScreenShare();
