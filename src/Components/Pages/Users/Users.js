@@ -246,11 +246,12 @@ const Users = () => {
                       <table>
                         <thead>
                           <tr>
-                            <th>Username (Extension)</th>
+                            <th>Username</th>
+                            <th>Extension</th>
                             <th>Account ID</th>
+                            <th>Role</th>
                             {/* <th>Domain</th> */}
                             <th>Online</th>
-                            <th>On Call</th>
                             <th>Edit</th>
                             <th>Status</th>
                           </tr>
@@ -294,8 +295,14 @@ const Users = () => {
                                             })
                                           }
                                         >
-                                          {item.username} (
-                                          {item.extension?.extension})
+                                          {item.username}
+                                        </td>
+                                        <td onClick={() =>
+                                          navigate(`/users-edit`, {
+                                            state: item,
+                                          })
+                                        }>
+                                          {item.extension?.extension || 'N/A'}
                                         </td>
                                         <td
                                           onClick={() =>
@@ -313,13 +320,7 @@ const Users = () => {
                                             })
                                           }
                                         >
-                                          <span
-                                            className={
-                                              onlineUser.includes(item.id)
-                                                ? "extensionStatus online"
-                                                : "extensionStatus"
-                                            }
-                                          ></span>
+                                          {item?.user_role?.roles?.name}
                                         </td>
                                         <td
                                           onClick={() =>
@@ -328,7 +329,13 @@ const Users = () => {
                                             })
                                           }
                                         >
-                                          True
+                                          <span
+                                            className={
+                                              onlineUser.includes(item.id)
+                                                ? "extensionStatus online"
+                                                : "extensionStatus"
+                                            }
+                                          ></span>
                                         </td>
                                         <td>
                                           <button

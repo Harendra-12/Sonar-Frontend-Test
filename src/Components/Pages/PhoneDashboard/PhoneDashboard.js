@@ -226,7 +226,7 @@ function PhoneDashboard() {
                       onClick={() => setCalls(!calls)}
                       data-id={1}
                     >
-                      Extensions
+                      Calls
                     </button>
                   </div>
                   <div className="col-xl-4 tabButtonParent">
@@ -277,9 +277,9 @@ function PhoneDashboard() {
                             {activeCall.length} on Call /{" "}
                             {(extension &&
                               extension.length -
-                                extension.filter((extension) =>
-                                  onlineExtension.includes(extension.extension)
-                                ).length) ||
+                              extension.filter((extension) =>
+                                onlineExtension.includes(extension.extension)
+                              ).length) ||
                               0}{" "}
                             Offline /{" "}
                             {(extension &&
@@ -326,7 +326,7 @@ function PhoneDashboard() {
                                 callCenter.some(
                                   (call) =>
                                     data["Caller-Callee-ID-Number"] ===
-                                      call.extension &&
+                                    call.extension &&
                                     data["variable_DIALSTATUS"] === "SUCCESS"
                                 )
                               ).length) ||
@@ -415,13 +415,13 @@ function PhoneDashboard() {
                             Active Users /{" "}
                             {(allUser.data &&
                               allUser.data.length -
-                                allUser.data.filter((user) => {
-                                  user.extension !== null &&
-                                    user.extension.extension !== null &&
-                                    onlineUser.includes(
-                                      user?.extension?.extension
-                                    );
-                                }).length) ||
+                              allUser.data.filter((user) => {
+                                user.extension !== null &&
+                                  user.extension.extension !== null &&
+                                  onlineUser.includes(
+                                    user?.extension?.extension
+                                  );
+                              }).length) ||
                               0}{" "}
                             Idle Users /{" "}
                             {(allUser.data &&
@@ -462,7 +462,7 @@ function PhoneDashboard() {
                         registerUser.length,
                         extensionList,
                         Number(accountDetails.package?.number_of_user) -
-                          extensionList,
+                        extensionList,
                       ]}
                       colors={["#9999", "#FF638470", "#36A2EB70"]}
                     />
@@ -475,7 +475,7 @@ function PhoneDashboard() {
                       percentage={[
                         userList,
                         Number(accountDetails.package?.number_of_user) -
-                          userList,
+                        userList,
                       ]}
                       centerTitle={`${userList}/${Number(
                         accountDetails.package?.number_of_user
@@ -510,9 +510,9 @@ function PhoneDashboard() {
                         ((Number(accountDetails.package?.number_of_user) -
                           extensionList) *
                           100) /
-                          Number(accountDetails.package?.number_of_user),
+                        Number(accountDetails.package?.number_of_user),
                         (extensionList * 100) /
-                          Number(accountDetails.package?.number_of_user),
+                        Number(accountDetails.package?.number_of_user),
                       ]}
                       centerTitle={`${extensionList}/${accountDetails.package?.number_of_user}`}
                       centerDesc="Total Extensions"

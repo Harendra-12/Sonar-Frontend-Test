@@ -11,7 +11,7 @@ function CallBlockingAdd() {
         <main className="mainContent">
             <section id="phonePage">
                 <div className="container-fluid px-0">
-                    <Header title="Call Blocking Add" />
+                    <Header title="Call Blocking" />
                 </div>
                 <div className="col-xl-12">
                     {/* {loading && loadings && (
@@ -25,7 +25,7 @@ function CallBlockingAdd() {
                                 <div className="col-12">
                                     <div className="heading">
                                         <div className="content">
-                                            <h4>Call Blocking Add</h4>
+                                            <h4>Call Blocking Advance</h4>
                                             <p>Configure call blocking</p>
                                         </div>
                                         <div className="buttonGroup">
@@ -219,7 +219,7 @@ function CallBlockingAdd() {
                                         </select>
                                         <button
                                             effect="ripple"
-                                            className="panelButton ms-0"
+                                            className="panelButton delete ms-0"
                                             style={{ height: '34px' }}
                                         >
                                             <span className="text">Block</span>

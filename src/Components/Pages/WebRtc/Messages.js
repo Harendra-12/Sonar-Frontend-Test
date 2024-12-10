@@ -1003,7 +1003,7 @@ function Messages({
                           })}
                         </div>
 
-                        {/* <div className="chatHeading">
+                        <div className="chatHeading">
                           <h5 data-bs-toggle="collapse" href="#collapse3" role="button" aria-expanded="false" aria-controls="collapse3">Group Chat <i class="fa-solid fa-chevron-down"></i></h5>
                         </div>
                         <div class="collapse show" id="collapse3" style={{ borderBottom: '1px solid #ddd' }}>
@@ -1029,7 +1029,7 @@ function Messages({
                               </div>
                             </div>
                           </div>
-                        </div> */}
+                        </div>
                       </div>
                     </div>
                   ) : activeTab === "online" ? (

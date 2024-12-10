@@ -556,7 +556,7 @@ function Roles() {
                                   This will apper only for agents (Agents will
                                   only access webrtc)
                                 </span>
-                                <div class="accordion permissionListWrapper">
+                                <div class="accordion permissionListWrapper h-auto">
                                   {filteredPermission &&
                                     Object.keys(filteredPermission).map(
                                       (item, key) => (
@@ -610,8 +610,7 @@ function Roles() {
                                               {filteredPermission[item].map(
                                                 (innerItem, key) => (
                                                   <div
-                                                    className="col-xl-2 col-md-4 col-6"
-                                                    style={{ paddingLeft: 30 }}
+                                                    className="col-xxl col-auto col-md-4 col-6"
                                                     key={key}
                                                   >
                                                     <input
@@ -640,7 +639,7 @@ function Roles() {
                                 </div>
                               </div>
                             ) : (
-                              <div class="accordion permissionListWrapper">
+                              <div class="accordion permissionListWrapper h-auto">
                                 {filteredPermission &&
                                   Object.keys(filteredPermission).map(
                                     (item, key) => (
@@ -689,8 +688,7 @@ function Roles() {
                                             {filteredPermission[item].map(
                                               (innerItem, key) => (
                                                 <div
-                                                  className="col-xl-2 col-md-4 col-6"
-                                                  style={{ paddingLeft: 30 }}
+                                                  className="col-xxl col-auto col-md-4 col-6"
                                                   key={key}
                                                 >
                                                   <input

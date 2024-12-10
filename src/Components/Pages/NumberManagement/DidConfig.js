@@ -337,7 +337,7 @@ const DidConfig = () => {
                             Set how the Destination will be used.
                           </label>
                         </div>
-                        <div className="col-6">
+                        <div className="col-3 pe-2 ms-auto">
                           <select
                             className="formItem"
                             name="forward"
@@ -358,9 +358,23 @@ const DidConfig = () => {
                             <option value="ivr">IVR</option>
                           </select>
                         </div>
+                        <div className="col-3">
+                          <ActionList
+                            category={watch().usages}
+                            title={null}
+                            label={null}
+                            getDropdownValue={actionListValue}
+                            value={watch().action}
+                            {...register("action", requiredValidator)}
+                          />
+                          {errors.action && (
+                            <ErrorMessage text={errors.action.message} />
+                          )}
+                        </div>
+
                       </div>
 
-                      <div className="formRow col-xl-3">
+                      {/* <div className="formRow col-xl-3">
                         <div className="formLabel">
                           <label htmlFor="">Action</label>
                           <label htmlFor="data" className="formItemDesc">
@@ -381,7 +395,7 @@ const DidConfig = () => {
                             <ErrorMessage text={errors.action.message} />
                           )}
                         </div>
-                      </div>
+                      </div> */}
 
                       <div className="formRow col-xl-3">
                         <div className="formLabel">
@@ -506,6 +520,23 @@ const DidConfig = () => {
                           </div>
                         </div>
                       )} */}
+
+                      <div className="formRow col-xl-3">
+                        <div className="formLabel">
+                          <label htmlFor="selectFormRow">Prefix Tag</label>
+                          <label htmlFor="data" className="formItemDesc">
+                            Set a prefix tag for the destination
+                          </label>
+                        </div>
+                        <div className="col-6">
+                          <input
+                            type="number"
+                            name="forward_to"
+                            className="formItem"
+                          />
+                        </div>
+                      </div>
+
                       <div className="formRow col-xl-3">
                         <div className="formLabel">
                           <label htmlFor="selectFormRow">Record</label>
@@ -585,13 +616,15 @@ const DidConfig = () => {
                         <div
                           className={`col-${watch().sticky_agent_enable == "true" ||
                             watch().sticky_agent_enable == 1
-                            ? "2"
+                            ? "2 pe-2 ms-auto"
                             : "6"
-                            } pe-2 ms-auto`}
+                            }`}
                         >
-                          <div class="formLabel">
-                            <label>Status</label>
-                          </div>
+                          {watch().sticky_agent_enable === "true" || watch().sticky_agent_enable === 1 ?
+                            <div class="formLabel">
+                              <label>Status</label>
+                            </div>
+                            : ""}
                           <select
                             className="formItem"
                             name=""
@@ -654,7 +687,7 @@ const DidConfig = () => {
                           )}
                       </div>
 
-                      <div className="formRow col-xl-3 align-items-start">
+                      <div className="formRow col-xl-3">
                         <div className="formLabel">
                           <label htmlFor="selectFormRow">Spam Filter</label>
                           <label htmlFor="data" className="formItemDesc">
@@ -670,9 +703,9 @@ const DidConfig = () => {
                                 : "4"
                                 } pe-2 ms-auto`}
                             >
-                              <div class="formLabel">
+                              {watch().spam_filter_type != "1" && <div class="formLabel">
                                 <label>Type</label>
-                              </div>
+                              </div>}
                               <select
                                 className="formItem"
                                 name=""
