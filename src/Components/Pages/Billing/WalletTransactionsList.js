@@ -131,11 +131,10 @@ function WalletTransactionsList() {
                           <span className="text">Refresh</span>
                           <span className="icon">
                             <i
-                              class={`${
-                                loading
+                              class={`${loading
                                   ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                   : "fa-regular fa-arrows-rotate fs-5 "
-                              } `}
+                                } `}
                             ></i>
                           </span>
                         </button>
@@ -143,7 +142,7 @@ function WalletTransactionsList() {
                     </div>
                   </div>
                   <div
-                    className="col-12 formScroller"
+                    className="col-12"
                     style={{ overflow: "auto", padding: "25px 20px 0" }}
                   >
                     <div className="tableContainer">
