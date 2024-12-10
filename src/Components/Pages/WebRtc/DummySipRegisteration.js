@@ -13,6 +13,7 @@ import ContentLoader from "../../Loader/ContentLoader";
 import { act } from "react";
 import ConferenceVideo from "./ConferenceVideo";
 import { use } from "react";
+import ConferenceLoader from "../../Loader/ConferenceLoader";
 
 export const DummySipRegisteration = ({
   webSocketServer,
@@ -31,8 +32,8 @@ export const DummySipRegisteration = ({
   const [confList, setConfList] = useState([]);
   const [videoCallToggle, setVideoCallToggle] = useState(false);
   const [toggleMessages, setToggleMessages] = useState(false);
-  const [participantMiniview, setParticipantMiniview] = useState(false);
-  const [participantList, setParticipantList] = useState(true);
+  const [participantMiniview, setParticipantMiniview] = useState(true);
+  const [participantList, setParticipantList] = useState(false);
   const [selectedConferenceUser, setSelectedConferenceUser] = useState(null);
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(0);
@@ -617,7 +618,7 @@ export const DummySipRegisteration = ({
         return <AutoAnswer id={item} />;
       })}
       {loading ? (
-        <ContentLoader />
+        <ConferenceLoader />
       ) : (
         dummySession && (
           <>
@@ -786,7 +787,7 @@ export const DummySipRegisteration = ({
                                     <i class="fa-light fa-video"></i>
                                   </button>
                                   <button className="appPanelButtonCallerRect">
-                                    <i class="fa-sharp fa-light fa-record-vinyl"></i>
+                                    <i class="fa-sharp fa-light fa-screencast"></i>
                                   </button>
                                   <button
                                     className="appPanelButtonCallerRect"

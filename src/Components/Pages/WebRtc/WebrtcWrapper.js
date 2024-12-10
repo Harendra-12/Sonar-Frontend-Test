@@ -52,8 +52,7 @@ const WebrtcWrapper = () => {
   const [conferenceToggle, setConferenceToggle] = useState(false);
   const [conferenceId, setConferenceId] = useState("");
   const memberId = useSelector((state) => state.memberId);
-  console.log("Activepage", activePage, activePage === "conference");
-
+  const  dummySession = useSelector((state) => state.dummySession);
   const useWebSocketErrorHandling = (options) => {
     const retryCountRef = useRef(0);
     const connectWebSocket = (retryCount = 0) => {
@@ -188,6 +187,17 @@ const WebrtcWrapper = () => {
 
   console.log("conferenceccc", conferenceToggle || memberId, memberId);
 
+
+  // Function that will check if session contains conference dummy id then remove it
+  useEffect(() => {
+    const updatedSession = sessions.filter(
+      (item) => item.id !== dummySession
+    );
+    dispatch({
+      type: "SET_SESSIONS",
+      sessions: updatedSession,
+    });
+  },[dummySession]);
   return (
     <>
       <SIPProvider options={options}>
@@ -321,127 +331,132 @@ const WebrtcWrapper = () => {
           )}
 
         {sessions.length > 0 && Object.keys(sessions).length > 0 ? (
-          <>
-            <section
-              className="activeCallsSidePanel"
-              onClick={() => {
-                setSelectedModule("onGoingCall");
-                // setactivePage("call");
-              }}
-            >
-              <div className="container">
-                <div className="row">
-                  <div class="chatHeading">
-                    <h5
-                      data-bs-toggle="collapse"
-                      href="#collapse1"
-                      role="button"
-                      aria-expanded="false"
-                      aria-controls="collapse1"
-                    >
-                      Incoming Call{" "}
-                      {sessions.filter(
-                        (session) => session.state === "Incoming"
-                      ).length > 0 ? (
-                        <span>
-                          {
-                            sessions.filter(
-                              (session) => session.state === "Incoming"
-                            ).length
-                          }
-                        </span>
-                      ) : (
-                        ""
-                      )}{" "}
-                      <i class="fa-solid fa-chevron-down"></i>
-                    </h5>
-                  </div>
-                  {sessions.length > 0 &&
-                    sessions
-                      .filter((session) => session.state === "Incoming")
-                      .map((session, chennel) => {
-                        return (
-                          <div class="collapse show px-0" id="collapse1">
-                            <ActiveCallSidePanel
-                              key={chennel}
-                              mode={session.mode}
-                              sessionId={session.id}
-                              destination={session.destination}
-                              chennel={chennel}
-                              setHangupRefresh={setHangupRefresh}
-                              hangupRefresh={hangupRefresh}
-                              setSelectedModule={setSelectedModule}
-                              isMicOn={isMicOn}
-                              setactivePage={setactivePage}
-                              globalSession={sessions}
-                            />
-                          </div>
-                        );
-                      })}
-                </div>
-                <div className="row">
-                  <div class="chatHeading">
-                    <h5
-                      data-bs-toggle="collapse"
-                      href="#collapse2"
-                      role="button"
-                      aria-expanded="false"
-                      aria-controls="collapse2"
-                    >
-                      Active Call{" "}
-                      {sessions.filter(
-                        (session) => session.state !== "Incoming"
-                      ).length ? (
-                        <span>
-                          {
-                            sessions.filter(
-                              (session) => session.state !== "Incoming"
-                            ).length
-                          }
-                        </span>
-                      ) : (
-                        ""
-                      )}{" "}
-                      <i class="fa-solid fa-chevron-down"></i>
-                    </h5>
-                  </div>
-                  {sessions.length > 0 &&
-                    sessions
-                      .filter((session) => session.state !== "Incoming")
-                      .map((session, chennel) => {
-                        return (
-                          <div class="collapse show px-0" id="collapse2">
-                            <ActiveCallSidePanel
-                              key={chennel}
-                              mode={session.mode}
-                              sessionId={session.id}
-                              destination={session.destination}
-                              chennel={chennel}
-                              setHangupRefresh={setHangupRefresh}
-                              hangupRefresh={hangupRefresh}
-                              setSelectedModule={setSelectedModule}
-                              isMicOn={isMicOn}
-                              setactivePage={setactivePage}
-                              globalSession={sessions}
-                            />
-                          </div>
-                        );
-                      })}
-                </div>
-              </div>
-            </section>
-            {sessions.find((session) => session.mode === "video") &&
-              callProgressId ? (
-              <VideoCall
-                setHangupRefresh={setHangupRefresh}
-                hangupRefresh={hangupRefresh}
-                setSelectedModule={setSelectedModule}
-                activePage={activePage}
-                setCloseVideoCall={setCloseVideoCall}
-                callProgressId={callProgressId}
-              />
-            ) : null}
-          </>
+        
+         <>
+         <section
+           className="activeCallsSidePanel"
+           onClick={() => {
+             setSelectedModule("onGoingCall");
+             // setactivePage("call");
+           }}
+         >
+           <div className="container">
+             <div className="row">
+               <div class="chatHeading">
+                 <h5
+                   data-bs-toggle="collapse"
+                   href="#collapse1"
+                   role="button"
+                   aria-expanded="false"
+                   aria-controls="collapse1"
+                 >
+                   Incoming Call{" "}
+                   {sessions.filter(
+                     (session) => session.state === "Incoming"
+                   ).length > 0 ? (
+                     <span>
+                       {
+                         sessions.filter(
+                           (session) => session.state === "Incoming"
+                         ).length
+                       }
+                     </span>
+                   ) : (
+                     ""
+                   )}{" "}
+                   <i class="fa-solid fa-chevron-down"></i>
+                 </h5>
+               </div>
+               {sessions.length > 0 &&
+                 sessions
+                   .filter((session) => session.state === "Incoming")
+                   .map((session, chennel) => {
+                     if (session.id !== dummySession) {
+                       return (
+                         <div class="collapse show px-0" id="collapse1">
+                           <ActiveCallSidePanel
+                             key={chennel}
+                             mode={session.mode}
+                             sessionId={session.id}
+                             destination={session.destination}
+                             chennel={chennel}
+                             setHangupRefresh={setHangupRefresh}
+                             hangupRefresh={hangupRefresh}
+                             setSelectedModule={setSelectedModule}
+                             isMicOn={isMicOn}
+                             setactivePage={setactivePage}
+                             globalSession={sessions}
+                           />
+                         </div>
+                       );
+                     }
+                   })}
+             </div>
+             <div className="row">
+               <div class="chatHeading">
+                 <h5
+                   data-bs-toggle="collapse"
+                   href="#collapse2"
+                   role="button"
+                   aria-expanded="false"
+                   aria-controls="collapse2"
+                 >
+                   Active Call{" "}
+                   {sessions.filter(
+                     (session) => session.state !== "Incoming" 
+                   ).length ? (
+                     <span>
+                       {
+                         sessions.filter(
+                           (session) => session.state !== "Incoming" 
+                         ).length
+                       }
+                     </span>
+                   ) : (
+                     ""
+                   )}{" "}
+                   <i class="fa-solid fa-chevron-down"></i>
+                 </h5>
+               </div>
+               {sessions.length > 0 &&
+                 sessions
+                   .filter((session) => session.state !== "Incoming")
+                   .map((session, chennel) => {
+                     if (session.id !== dummySession) {
+                       return (
+                         <div class="collapse show px-0" id="collapse2">
+                           <ActiveCallSidePanel
+                             key={chennel}
+                             mode={session.mode}
+                             sessionId={session.id}
+                             destination={session.destination}
+                             chennel={chennel}
+                             setHangupRefresh={setHangupRefresh}
+                             hangupRefresh={hangupRefresh}
+                             setSelectedModule={setSelectedModule}
+                             isMicOn={isMicOn}
+                             setactivePage={setactivePage}
+                             globalSession={sessions}
+                           />
+                         </div>
+                       );
+                     }
+                   })}
+             </div>
+           </div>
+         </section>
+         {sessions.find((session) => session.mode === "video") &&
+           callProgressId ? (
+           <VideoCall
+             setHangupRefresh={setHangupRefresh}
+             hangupRefresh={hangupRefresh}
+             setSelectedModule={setSelectedModule}
+             activePage={activePage}
+             setCloseVideoCall={setCloseVideoCall}
+             callProgressId={callProgressId}
+           />
+         ) : null}
+       </> 
         ) : (
           ""
         )}

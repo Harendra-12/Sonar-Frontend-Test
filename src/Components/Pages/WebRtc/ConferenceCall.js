@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import ContentLoader from "../../Loader/ContentLoader";
 import ConferenceVideo from "./ConferenceVideo";
+import ConferenceLoader from "../../Loader/ConferenceLoader";
 
 export const ConferenceCall = ({ room_id, extension_id, name, setactivePage, activePage, setConferenceToggle ,conferenceToggle}) => {
   const navigate = useNavigate();
@@ -21,8 +22,8 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage, act
   const [confList, setConfList] = useState([])
   const [videoCallToggle, setVideoCallToggle] = useState(false);
   const [toggleMessages, setToggleMessages] = useState(false);
-  const [participantMiniview, setParticipantMiniview] = useState(false);
-  const [participantList, setParticipantList] = useState(true);
+  const [participantMiniview, setParticipantMiniview] = useState(true);
+  const [participantList, setParticipantList] = useState(false);
   const [selectedConferenceUser, setSelectedConferenceUser] = useState(null);
   const [currentUser, setCurrentUser] = useState([])
   const [notification, setNotification] = useState(false)
@@ -429,7 +430,7 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage, act
       })}
       {
         loading ?
-          <ContentLoader /> :
+          <ConferenceLoader /> :
           dummySession && <>
             <main
               className="mainContentApp position-absolute"
@@ -619,7 +620,7 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage, act
                                     <i class="fa-light fa-video"></i>
                                   </button>
                                   <button className="appPanelButtonCallerRect">
-                                    <i class="fa-sharp fa-light fa-record-vinyl"></i>
+                                    <i class="fa-sharp fa-light fa-screencast"></i>
                                   </button>
                                   <button
                                     className="appPanelButtonCallerRect"
