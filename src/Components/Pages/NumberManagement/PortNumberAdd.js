@@ -125,7 +125,7 @@ function PortNumberAdd() {
                       </div>
                     </div>
                   </div>
-                  <div className="col-12" style={{ padding: '25px 23px' }}>
+                  <div className="col-12 formScroller" style={{ padding: '25px 23px' }}>
                     <form action="#" className="row">
                       <div className="formRow col-xl-3">
                         <div className="formLabel">

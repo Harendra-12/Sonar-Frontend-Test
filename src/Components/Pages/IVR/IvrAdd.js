@@ -149,7 +149,7 @@ function IvrAdd() {
                   </div>
                 </div>
               </div>
-              <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
+              <div className="col-12 formScroller" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
                 <form action="#" className="row">
                   <div className="formRow col-xl-3">
                     <div className="formLabel">

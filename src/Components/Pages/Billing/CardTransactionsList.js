@@ -142,7 +142,7 @@ function CardTransactionsList() {
                     </div>
                   </div>
                   <div
-                    className="col-12"
+                    className="col-12 formScroller"
                     style={{ overflow: "auto", padding: "25px 20px 0" }}
                   >
                     <div className="tableContainer">
