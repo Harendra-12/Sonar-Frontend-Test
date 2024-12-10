@@ -847,3 +847,91 @@ input[type=number] {
 .form-group .cardImage {
     top: -5px !important;
 }
+
+.popup.music {
+    --bg-color: antiquewhite;
+    --primary-color: #005eff;
+    --secondary-color: #e5e5e5;
+    --muted-text-color: rgb(143, 140, 140);
+}
+
+.popup.music .card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border: none;
+}
+
+.popup.music .card .header {
+    background-color: var(--secondary-color);
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+}
+
+.popup.music .card .header .card-title {
+    padding: 11px;
+    font-size: 16px;
+    margin-bottom: 0;
+    background: var(--ele-color);
+    color: var(--immortalBlack);
+}
+
+.popup.music .card-body {
+    padding: 24px;
+}
+
+.popup.music .card-body p {
+    font-weight: 600;
+}
+
+.popup.music .card-body .popup-border p {
+    font-size: 14px;
+    text-align: left;
+}
+
+.popup.music .test-user p span {
+    color: var(--ui-accent);
+    font-size: 14px;
+}
+
+.popup.music .card-body .popup-border .report {
+    height: 20px;
+    width: 170px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background-color: var(--primary-color);
+    border-radius: 40px;
+    color: white;
+    cursor: pointer;
+    font-size: 12px;
+    text-align: center;
+}
+
+.popup.music .card-body span {
+    font-size: 12px;
+    color: var(--muted-text-color);
+}
+
+.popup.music .card .card-body .popup-border {
+    border: 2px dotted var(--border-color);
+    border-radius: 10px;
+    transition: 0.2s ease-in-out;
+}
+
+.popup.music .card .card-body .popup-border:hover {
+    border-color: var(--ui-accent);
+}
+
+.popup.music .card .card-body .test-user {
+    padding: 24px 50px;
+}
+
+.popup.music .card .card-body .test-user1 {
+    padding: 0px 78px 24px 87px;
+}
+
+.popup.music .card .card-footer {
+    border-color: var(--border-color);
+    width: 100%;
+}
