@@ -160,7 +160,6 @@ const CallCenter = () => {
                                   ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                   : "fa-regular fa-arrows-rotate fs-5"
                               }
-                              style={{ color: "var(--color-subtext)" }}
                             ></i>
                           </button></h4>
                         <p>You can see the status of the agents</p>

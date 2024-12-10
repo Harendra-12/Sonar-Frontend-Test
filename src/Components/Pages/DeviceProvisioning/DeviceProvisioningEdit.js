@@ -101,7 +101,7 @@ const DeviceProvisioningEdit = () => {
     <main className="mainContent">
       <section id="phonePage">
         <div className="container-fluid px-0">
-          <Header title="Device Provisioning Edit" />
+          <Header title="Device Provisioning" />
           {/* <div id="subPageHeader">
             <div className="col-xl-9 my-auto">
               <p className="mb-0">Edit Device Provisioning</p>
@@ -216,7 +216,6 @@ const DeviceProvisioningEdit = () => {
                   className="col-12"
                   style={{
                     padding: "25px 23px",
-                    borderBottom: "1px solid #ddd",
                   }}
                 >
                   <form>

@@ -773,6 +773,11 @@ input[type=number] {
     margin-top: 5px;
 }
 
+.permissionListWrapper {
+    overflow-y: auto;
+    height: calc(100vh - 300px);
+}
+
 .permissionListWrapper .accordion-item {
     border-color: var(--border-color);
 }

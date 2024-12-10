@@ -659,14 +659,36 @@ function Call({
                   </button>
                 </div>
                 <div className="col-12 mt-3" style={{ padding: "0 10px" }}>
-                  <input
-                    type="search"
-                    name="Search"
-                    id="headerSearch"
-                    placeholder="Search"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
+                  <div className="d-flex">
+                    <div className="col-xl-7 col-12 pe-2">
+                      <input
+                        type="search"
+                        name="Search"
+                        id="headerSearch"
+                        placeholder="Search"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                    </div>
+                    <div className="col-xl-5 col-12">
+                      <div className="d-flex">
+                        <div className="col-6 pe-2">
+                          <input
+                            type="date"
+                            className="formItem"
+                            style={{ background: 'var(--searchBg)', borderColor: 'var(--border-color)', borderRadius: '5px' }}
+                          />
+                        </div>
+                        <div className="col-6">
+                          <input
+                            type="date"
+                            className="formItem"
+                            style={{ background: 'var(--searchBg)', borderColor: 'var(--border-color)', borderRadius: '5px' }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   {/* <button
                       className="ms-2 me-0 appPanelButton"
                       effect="ripple"

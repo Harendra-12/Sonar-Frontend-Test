@@ -760,3 +760,36 @@
   color: var(--ui-accent);
   font-weight: 500;
 }
+
+.addButtonGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--ui-accent);
+  border-radius: 5px;
+  overflow: hidden;
+  width: max-content;
+}
+
+.addButtonGroup button {
+  background-color: var(--ui-accent);
+  width: 40px;
+  height: 40px;
+  border: none;
+  font-size: 18px;
+  color: #fff;
+  transition: 0.2s ease-in;
+}
+
+.addButtonGroup button:hover {
+  background-color: #474747;
+}
+
+.addButtonGroup .number {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+}
