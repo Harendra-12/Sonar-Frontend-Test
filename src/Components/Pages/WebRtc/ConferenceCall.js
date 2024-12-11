@@ -102,12 +102,12 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage, act
         navigate(-1)
       } else if (connectStatus === "CONNECTED") {
         async function startConference() {
-          const response = await generalPostFunction("/conference/start", { user: `user/${extension_id}`, name: name, roomId: room_id, is_guest: 0 })
+          const response = await generalPostFunction("/conference/start", { user: `user/${extension_id}`, name: name, roomId: room_id, is_guest: 0,pin:"555555" })
 
           if (response.status) {
             setLoading(false)
             const confLists = await generalGetFunction(`/conference/${room_id}/details`)
-            // console.log(locationState, "confListsss", JSON?.parse?.(confLists?.data));
+            // console.log("confListsss", JSON?.parse?.(confLists?.data));
 
             if (confLists.status && confLists?.data !== `-ERR Conference ${room_id} not found\n`) {
               setConfList(JSON?.parse?.(confLists?.data)?.filter((item) => item.conference_name == room_id)?.[0]?.members.map((item) => {
@@ -147,6 +147,7 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage, act
       sipSessions[id].logger.category === "sip.Invitation"
   );
 
+console.log("conferenceDataaa", conferenceData);
 
   // Monitor incoming data from web socket accound to its action type
   useEffect(() => {
@@ -165,7 +166,7 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage, act
           caller_id_number: conferenceData["Channel-Presence-ID"],
           uuid: conferenceData["Core-UUID"],
           talking: conferenceData["Talking"],
-          mute_detect: conferenceData["Mute-Detect"],
+          mute_detect: !conferenceData["Mute-Detect"],
           hold: conferenceData["Hold"],
           isYou: conferenceData["Caller-Caller-ID-Name"] === name ? true : false,
           deaf: false

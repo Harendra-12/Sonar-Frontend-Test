@@ -130,26 +130,16 @@ const CallBlocking = () => {
                                                 </button>
                                                 <div
                                                     // to="/ring-groups-add"
-                                                    onClick={() => setPopUp(true)}
                                                     effect="ripple"
                                                     className="panelButton"
+                                                    onClick={() => navigate('/call-blocking-add')}
                                                 >
                                                     <span className="text">Add</span>
                                                     <span className="icon">
                                                         <i class="fa-solid fa-plus"></i>
                                                     </span>
                                                 </div>
-                                                <div
-                                                    // to="/ring-groups-add"
-                                                    onClick={() => navigate('/call-blocking-add')}
-                                                    effect="ripple"
-                                                    className="panelButton"
-                                                >
-                                                    <span className="text">Boost</span>
-                                                    <span className="icon">
-                                                        <i class="fa-solid fa-rocket"></i>
-                                                    </span>
-                                                </div>
+                                                
                                             </div>
                                         </div>
                                     </div>

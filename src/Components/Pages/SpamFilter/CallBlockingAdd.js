@@ -1,14 +1,46 @@
-import React from 'react'
+import React, { useState } from 'react'
 import CircularLoader from '../../Loader/CircularLoader'
 import { useNavigate } from 'react-router-dom';
-import { backToTop } from '../../GlobalFunction/globalFunction';
+import { backToTop, generalPostFunction } from '../../GlobalFunction/globalFunction';
 import Header from '../../CommonComponents/Header';
 import PaginationComponent from '../../CommonComponents/PaginationComponent';
+import { toast } from 'react-toastify';
 
 function CallBlockingAdd() {
     const navigate = useNavigate();
+    const [type, setType] = useState("")
+    const [number, setNumber] = useState("")
+    const [loading, setLoading] = useState(false)
+    async function addBlock() {
+        if (type === "") {
+            toast.error("Please enter type")
+        } else if (number === "") {
+            toast.error("Please enter number")
+        } else if (number < 99999999 || number > 99999999999999) {
+            toast.error("Please enter valid number")
+        } else {
+            setLoading(true)
+            const parsedData = {
+                type: type,
+                number: number
+            }
+            const apidata = await generalPostFunction(
+                `/spam/store`, parsedData
+            );
+            if (apidata.status) {
+                navigate("/call-blocking")
+                setLoading(false)
+                setType("")
+                setNumber("")
+                toast.success("Number added to block list")
+            } else {
+                setLoading(false)
+            }
+        }
+    }
     return (
         <main className="mainContent">
+            {loading&&<CircularLoader/>}
             <section id="phonePage">
                 <div className="container-fluid px-0">
                     <Header title="Call Blocking" />
@@ -58,6 +90,7 @@ function CallBlockingAdd() {
                                             <button
                                                 effect="ripple"
                                                 className="panelButton"
+                                                onClick={addBlock}
                                             >
                                                 <span className="text">Save</span>
                                                 <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
@@ -179,12 +212,35 @@ function CallBlockingAdd() {
                                                 type="text"
                                                 name="extension"
                                                 className="formItem"
+                                                value={number}
+                                                onChange={(e) => setNumber(e.target.value)}
                                             />
                                             {/* {errors.queue_name && (
                                                 <ErrorMessage text={errors.queue_name.message} />
                                             )} */}
                                         </div>
                                     </div>
+                                    <div className="formRow col-xl-3">
+                                        <div className="formLabel">
+                                            <label htmlFor="">Type</label>
+                                            <label htmlFor="data" className="formItemDesc">
+                                                Enter the number type.
+                                            </label>
+                                        </div>
+                                        <div className="col-xl-6 col-12">
+                                            <input
+                                                type="text"
+                                                class="formItem"
+                                                placeholder="DID/PSTN..."
+                                                value={type}
+                                                onChange={(e) => setType(e.target.value)}
+                                            />
+                                            {/* {errors.queue_name && (
+                                                <ErrorMessage text={errors.queue_name.message} />
+                                            )} */}
+                                        </div>
+                                    </div>
+
                                 </form>
                             </div>
                             <div className="col-12" style={{ padding: '20px 23px' }}>
