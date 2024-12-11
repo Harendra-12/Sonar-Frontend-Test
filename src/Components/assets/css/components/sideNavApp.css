@@ -48,6 +48,12 @@
 
 #sidenNavApp .sidenavItems ul li .navItem.active {
     /* background: #ffffff29; */
+    background: #3e8ef7 !important;
+    color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.20) 0px 1px 5px;
+}
+#sidenNavApp .sidenavItems ul li .navItem:hover {
+    /* background: #ffffff29; */
     background: #ffffff50;
     color: #fff;
     box-shadow: rgba(0, 0, 0, 0.20) 0px 1px 5px;

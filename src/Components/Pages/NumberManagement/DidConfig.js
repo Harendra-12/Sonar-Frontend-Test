@@ -299,7 +299,7 @@ const DidConfig = () => {
                     </div>
                   </div>
                   <div
-                    className="col-12"
+                    className="col-12 formScroller"
                     style={{
                       padding: "25px 23px",
                     }}

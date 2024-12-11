@@ -131,11 +131,10 @@ function WalletTransactionsList() {
                           <span className="text">Refresh</span>
                           <span className="icon">
                             <i
-                              class={`${
-                                loading
+                              class={`${loading
                                   ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                   : "fa-regular fa-arrows-rotate fs-5 "
-                              } `}
+                                } `}
                             ></i>
                           </span>
                         </button>
