@@ -41,6 +41,7 @@ const UsersEdit = () => {
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const extensionAll = useSelector((state) => state.extensionAll);
   const [password, setPassword] = useState("");
+  const [popUp, setPopUp] = useState(false);
   const {
     register,
     watch,
@@ -433,7 +434,9 @@ const UsersEdit = () => {
                       <form action="#" className="row px-2">
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
-                            <label htmlFor="">Username</label>
+                            <label htmlFor="">
+                              Username <span className="text-danger">*</span>
+                            </label>
                           </div>
                           <div className="col-6">
                             <input
@@ -453,7 +456,9 @@ const UsersEdit = () => {
                         </div>
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
-                            <label htmlFor="">Email</label>
+                            <label htmlFor="">
+                              Email <span className="text-danger">*</span>
+                            </label>
                           </div>
                           <div className="col-6">
                             <input
@@ -473,7 +478,9 @@ const UsersEdit = () => {
                         </div>
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
-                            <label htmlFor="">First Name</label>
+                            <label htmlFor="">
+                              First Name <span className="text-danger">*</span>
+                            </label>
                           </div>
                           <div className="col-6">
                             <input
@@ -513,7 +520,9 @@ const UsersEdit = () => {
                         </div>
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
-                            <label htmlFor="selectFormRow">Time Zone</label>
+                            <label htmlFor="selectFormRow">
+                              Time Zone <span className="text-danger">*</span>
+                            </label>
                             <label htmlFor="data" className="formItemDesc">
                               Select the default time zone.
                             </label>
@@ -546,7 +555,9 @@ const UsersEdit = () => {
                         </div>
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
-                            <label htmlFor="selectFormRow">Status</label>
+                            <label htmlFor="selectFormRow">
+                              Status <span className="text-danger">*</span>
+                            </label>
                             <label htmlFor="data" className="formItemDesc">
                               Set the user's presence.
                             </label>
@@ -570,7 +581,9 @@ const UsersEdit = () => {
                         </div>
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
-                            <label htmlFor="selectFormRow">Role Type</label>
+                            <label htmlFor="selectFormRow">
+                              Role Type <span className="text-danger">*</span>
+                            </label>
                             <label htmlFor="data" className="formItemDesc">
                               Select Default to enable login or to disable login
                               select Virtual.
@@ -593,8 +606,8 @@ const UsersEdit = () => {
                                   e.target.value === ""
                                     ? ""
                                     : roleName.permissions.map((item) => {
-                                      return item.permission_id;
-                                    })
+                                        return item.permission_id;
+                                      })
                                 );
                               }}
                             >
@@ -636,6 +649,7 @@ const UsersEdit = () => {
                                   name="extension_id"
                                   value={watch().extension_id}
                                   {...register("extension_id")}
+                                  disabled={watch().extension_id == ""}
                                 >
                                   <option value="" disabled>
                                     Available Extensions
@@ -654,15 +668,19 @@ const UsersEdit = () => {
                                 <div className="col-4">
                                   <button
                                     effect="ripple"
-                                    className="panelButton delete ms-auto"
+                                    className="panelButton  ms-auto"
                                     onClick={(e) => {
                                       e.preventDefault();
-                                      setValue("extension_id", null);
+                                      setPopUp(true);
                                     }}
+                                    // onClick={(e) => {
+                                    //   e.preventDefault();
+                                    //   setValue("extension_id", null);
+                                    // }}
                                   >
-                                    <span className="text">Delete</span>
+                                    <span className="text">Edit</span>
                                     <span className="icon">
-                                      <i class="fa-solid fa-xmark"></i>
+                                      <i class="fas fa-edit"></i>
                                     </span>
                                   </button>
                                 </div>
@@ -805,18 +823,116 @@ const UsersEdit = () => {
         ) : (
           ""
         )}
-        {/* <ToastContainer
-          position="bottom-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        /> */}
+        {popUp ? (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <div className="row content col-xl-4">
+                  <div className="col-2 px-0">
+                    <div className="iconWrapper">
+                      <i className="fa-duotone fa-triangle-exclamation"></i>
+                    </div>
+                  </div>
+                  <div className="col-10 ps-0">
+                    <h4>Note</h4>
+                    <p>
+                      Updating this extension will remove the current extension
+                      access from this user.
+                    </p>
+                    <div>
+                      <div className="formRow col-xl-12">
+                        <div className="formLabel">
+                          <label htmlFor="selectFormRow">
+                            Select extension
+                          </label>
+                          <label htmlFor="data" className="formItemDesc">
+                            Assign an extension to the newly created user.
+                          </label>
+                        </div>
+                        <div className="col-6">
+                          <div className="row">
+                            <div
+                              className={
+                                watch().extension_id ? "col-8" : "col-12"
+                              }
+                            >
+                              <select
+                                className="formItem"
+                                name="extension_id"
+                                value={watch().extension_id}
+                                {...register("extension_id")}
+                              >
+                                <option value="" disabled>
+                                  Available Extensions
+                                </option>
+                                {filterExtensions &&
+                                  filterExtensions.map((extension, key) => {
+                                    return (
+                                      <option value={extension.id} key={key}>
+                                        {extension.extension}
+                                      </option>
+                                    );
+                                  })}
+                              </select>
+                            </div>
+                            {watch().extension_id && (
+                              <div className="col-4">
+                                <button
+                                  effect="ripple"
+                                  className="panelButton delete ms-auto"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    setValue("extension_id", null);
+                                  }}
+                                >
+                                  <span className="text">Remove</span>
+                                  <span className="icon">
+                                    <i class="fas fa-xmark"></i>
+                                  </span>
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="d-flex justify-content-between">
+                      {/* <button
+                        disabled={loading}
+                        className="panelButton m-0"
+                        // onClick={() => {
+                        //   // setForce(true);
+                        //   if (selectedUser?.id) {
+                        //     handleUpdateStatusUser(selectedUser?.id);
+                        //   } else {
+                        //     setPopUp(false);
+                        //     navigate("/roles");
+                        //   }
+                        // }}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-check"></i>
+                        </span>
+                      </button> */}
+                      <button
+                        className="panelButton gray m-0 float-end"
+                        onClick={() => setPopUp(false)}
+                      >
+                        <span className="text">Close</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-xmark"></i>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
       </main>
     </>
   );

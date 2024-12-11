@@ -361,29 +361,29 @@ const ExtensionsEdit = () => {
             data.callblocking === "Incoming"
               ? 1
               : data.callblocking === "All"
-                ? 1
-                : 0,
+              ? 1
+              : 0,
           blockOutGoingStatus:
             data.callblocking === "Outgoing"
               ? 1
               : data.callblocking === "All"
-                ? 1
-                : 0,
+              ? 1
+              : 0,
           dnd: data.dnd,
           notregistered: data.notregistered,
           followme: data.followme,
           ...(data.followme == 1
             ? {
-              data: [
-                {
-                  destination: callSetting.followMeDestination,
-                  delay: callSetting.followMeDelay,
-                  timeout: callSetting.followMeTimeOut,
-                  extension_id: value,
-                  prompt: callSetting.followMePrompt,
-                },
-              ],
-            }
+                data: [
+                  {
+                    destination: callSetting.followMeDestination,
+                    delay: callSetting.followMeDelay,
+                    timeout: callSetting.followMeTimeOut,
+                    extension_id: value,
+                    prompt: callSetting.followMePrompt,
+                  },
+                ],
+              }
             : {}),
           password: data.password,
           ...(data.user === "" || data.user === null
@@ -433,29 +433,29 @@ const ExtensionsEdit = () => {
           dnd: data.dnd,
           ...(data.followme == 1
             ? {
-              data: [
-                {
-                  destination: callSetting.followMeDestination,
-                  delay: callSetting.followMeDelay,
-                  timeout: callSetting.followMeTimeOut,
-                  extension_id: value,
-                  prompt: callSetting.followMePrompt,
-                },
-              ],
-            }
+                data: [
+                  {
+                    destination: callSetting.followMeDestination,
+                    delay: callSetting.followMeDelay,
+                    timeout: callSetting.followMeTimeOut,
+                    extension_id: value,
+                    prompt: callSetting.followMePrompt,
+                  },
+                ],
+              }
             : {}),
           blockIncomingStatus:
             data.callblocking === "Incoming"
               ? 1
               : data.callblocking === "All"
-                ? 1
-                : 0,
+              ? 1
+              : 0,
           blockOutGoingStatus:
             data.callblocking === "Outgoing"
               ? 1
               : data.callblocking === "All"
-                ? 1
-                : 0,
+              ? 1
+              : 0,
           description: data.description,
           password: data.password,
           ...(data.user === "" || data.user === null
@@ -585,7 +585,14 @@ const ExtensionsEdit = () => {
                           aria-controls="nav-gen"
                           aria-selected="true"
                         >
-                          General
+                          General{" "}
+                          {(errors?.password?.message ||
+                            errors?.extension?.message) && (
+                            <i
+                              class="fa fa-exclamation-circle text-danger"
+                              aria-hidden="true"
+                            ></i>
+                          )}
                         </button>
                         <button
                           class="nav-link"
@@ -597,7 +604,13 @@ const ExtensionsEdit = () => {
                           aria-controls="nav-voicemail"
                           aria-selected="false"
                         >
-                          Voicemail
+                          Voicemail{" "}
+                          {errors?.voicemail_password?.message && (
+                            <i
+                              class="fa fa-exclamation-circle text-danger"
+                              aria-hidden="true"
+                            ></i>
+                          )}
                         </button>
                         {/* <button class="nav-link" id="nav-device-tab" data-bs-toggle="tab" data-bs-target="#nav-device" type="button" role="tab" aria-controls="nav-device" aria-selected="false">Device Provisioning</button> */}
                         <button
@@ -637,7 +650,9 @@ const ExtensionsEdit = () => {
                         <form className="row col-12 mx-auto">
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <label htmlFor="">Extension</label>
+                              <label htmlFor="">
+                                Extension <span className="text-danger">*</span>
+                              </label>
                               <label htmlFor="data" className="formItemDesc">
                                 Enter the alphanumeric extension. The default
                                 configuration allows 2 - 15 digit extensions.
@@ -660,7 +675,9 @@ const ExtensionsEdit = () => {
                           </div>
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <label htmlFor="">Password</label>
+                              <label htmlFor="">
+                                Password <span className="text-danger">*</span>
+                              </label>
                               <label htmlFor="data" className="formItemDesc">
                                 Password length must be atleast 4 character
                               </label>
@@ -692,10 +709,11 @@ const ExtensionsEdit = () => {
                                 className="formItem"
                                 {...register("user")}
                                 id="selectFormRow"
+                                defaultValue={""}
                               >
-                                <option value="" disabled>
+                                {/* <option value="" disabled>
                                   Select User
-                                </option>
+                                </option> */}
                                 <option value={""}>None</option>
                                 {users &&
                                   users.map((item, key) => {
@@ -735,7 +753,7 @@ const ExtensionsEdit = () => {
                             </div>
                           </div>
 
-                          <div className="formRow col-xl-3">
+                          {/* <div className="formRow col-xl-3">
                             <div className="formLabel">
                               <label htmlFor="">Account Code</label>
                               <label htmlFor="data" className="formItemDesc">
@@ -758,7 +776,7 @@ const ExtensionsEdit = () => {
                                 />
                               )}
                             </div>
-                          </div>
+                          </div> */}
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
                               <label htmlFor="">Effective Caller ID</label>
@@ -846,11 +864,12 @@ const ExtensionsEdit = () => {
                                 className="formItem"
                                 name=""
                                 id="selectFormRow"
-                                {...register("record", {})}
+                                {...register("record")}
+                                defaultValue={"D"}
                               >
-                                <option value="" disabled>
+                                {/* <option value="" disabled>
                                   Select Type
-                                </option>
+                                </option> */}
                                 <option value="D">Disabled</option>
                                 <option value="A">All</option>
                                 <option value="L">Local</option>
@@ -1041,7 +1060,10 @@ const ExtensionsEdit = () => {
                         <form className="row col-12 mx-auto">
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <label htmlFor="">Voicemail Password</label>
+                              <label htmlFor="">
+                                Voicemail Password{" "}
+                                <span className="text-danger">*</span>
+                              </label>
                               <label htmlFor="data" className="formItemDesc">
                                 Enter the numeric voicemail password here.
                               </label>
@@ -1078,6 +1100,7 @@ const ExtensionsEdit = () => {
                                 name=""
                                 id="selectFormRow"
                                 {...register("voicemailEnabled", {})}
+                                defaultValue={"N"}
                               >
                                 <option value="" disabled>
                                   Select Voicemail
@@ -1171,7 +1194,8 @@ const ExtensionsEdit = () => {
                                 className="formItem"
                                 name=""
                                 id="selectFormRow"
-                                {...register("voiceMailkeepFile", {})}
+                                {...register("voiceMailkeepFile")}
+                                defaultValue={"false"}
                               >
                                 <option value="" disabled>
                                   Select User
@@ -1281,7 +1305,8 @@ const ExtensionsEdit = () => {
                                 className="formItem"
                                 name=""
                                 id="selectFormRow"
-                                {...register("directoryExtensionVisible", {})}
+                                {...register("directoryExtensionVisible")}
+                                defaultValue={"false"}
                               >
                                 <option value="" disabled>
                                   Select Visibility
@@ -1383,7 +1408,8 @@ const ExtensionsEdit = () => {
                                 className="formItem"
                                 name=""
                                 id="selectFormRow"
-                                {...register("missedCall", {})}
+                                {...register("missedCall")}
+                                defaultValue={"none"}
                               >
                                 <option value="" disabled>
                                   Select Notification Type
@@ -1445,7 +1471,7 @@ const ExtensionsEdit = () => {
                               />
                             </div>
                           </div>
-                          <div className="formRow col-xl-3">
+                          {/* <div className="formRow col-xl-3">
                             <div className="formLabel">
                               <label htmlFor="selectFormRow">Call Group</label>
                               <label htmlFor="data" className="formItemDesc">
@@ -1467,8 +1493,8 @@ const ExtensionsEdit = () => {
                                 <ErrorMessage text={errors.callgroup.message} />
                               )}
                             </div>
-                          </div>
-                          <div className="formRow col-xl-3">
+                          </div> */}
+                          {/* <div className="formRow col-xl-3">
                             <div className="formLabel">
                               <label htmlFor="selectFormRow">Call Screen</label>
                               <label htmlFor="data" className="formItemDesc">
@@ -1481,7 +1507,8 @@ const ExtensionsEdit = () => {
                                 className="formItem"
                                 name=""
                                 id="selectFormRow"
-                                {...register("callScreen", {})}
+                                {...register("callScreen")}
+                                defaultValue={"Disable"}
                               >
                                 <option value="" disabled>
                                   Select Notification Type
@@ -1495,7 +1522,7 @@ const ExtensionsEdit = () => {
                                 />
                               )}
                             </div>
-                          </div>
+                          </div> */}
                         </form>
                       </div>
                       <div
@@ -1544,6 +1571,7 @@ const ExtensionsEdit = () => {
                                   //   }));
                                   // }}
                                   {...register("onbusy")}
+                                  defaultValue={0}
                                 >
                                   <option value={1}>Enabled</option>
                                   <option value={0}>Disabled</option>
@@ -1605,6 +1633,7 @@ const ExtensionsEdit = () => {
                                   //   }));
                                   // }}
                                   {...register("noanswer")}
+                                  defaultValue={"Disabled"}
                                 >
                                   <option>Disabled</option>
                                   <option>Voicemail</option>
@@ -1785,6 +1814,7 @@ const ExtensionsEdit = () => {
                                   //   }));
                                   // }}
                                   {...register("followme")}
+                                  defaultValue={0}
                                 >
                                   <option value={1}>Enabled</option>
                                   <option value={0}>Disabled</option>
@@ -1970,6 +2000,7 @@ const ExtensionsEdit = () => {
                                   //   }));
                                   // }}
                                   {...register("dnd")}
+                                  defaultValue={0}
                                 >
                                   <option value={1}>Enabled</option>
                                   <option value={0}>Disabled</option>
@@ -2467,14 +2498,18 @@ const ExtensionsEdit = () => {
                       }}
                     >
                       <span className="text">Confirm</span>
-                      <span className="icon"><i className="fa-solid fa-check"></i></span>
+                      <span className="icon">
+                        <i className="fa-solid fa-check"></i>
+                      </span>
                     </button>
                     <button
                       className="panelButton gray m-0 float-end"
                       onClick={() => setPopUp(false)}
                     >
                       <span className="text">Cancel</span>
-                      <span className="icon"><i className="fa-solid fa-xmark"></i></span>
+                      <span className="icon">
+                        <i className="fa-solid fa-xmark"></i>
+                      </span>
                     </button>
                   </div>
                 </div>

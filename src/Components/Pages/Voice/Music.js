@@ -28,6 +28,8 @@ function Music() {
   const navigate = useNavigate();
   const musicAll = useSelector((state) => state.musicAll);
   const dispatch = useDispatch();
+  const [musicEditPopup, setMusicEditPopup] = useState(false);
+  const [selectedMusicToEdit, setSelectedMusicToEdit] = useState();
   useEffect(() => {
     if (musicAll?.length !== 0) {
       setLoading(false);
@@ -231,10 +233,11 @@ function Music() {
                               <th>Added Date</th>
                               <th>Play</th>
                               <th>Delete</th>
+                              <th>Edit</th>
                             </tr>
                           </thead>
                           <tbody>
-                            {music &&
+                            {/* {music &&
                               music.map((item) => {
                                 return (
                                   <tr>
@@ -266,6 +269,101 @@ function Music() {
                                     </td>
                                   </tr>
                                 );
+                              })} */}
+                            {music &&
+                              music.map((item) => {
+                                const isCurrent = currentPlaying === item.id; // Use item.id as a unique identifier
+
+                                return (
+                                  <React.Fragment key={item.id}>
+                                    <tr>
+                                      <td>{item.name}</td>
+                                      <td>{item.type}</td>
+                                      <td>{item.created_at.split("T")[0]}</td>
+                                      <td>
+                                        <button
+                                          className="tableButton play"
+                                          onClick={() => {
+                                            if (currentPlaying === item.id) {
+                                              setCurrentPlaying(null); // Pause if already playing
+                                            } else {
+                                              setCurrentPlaying(item.id); // Play selected audio
+                                            }
+                                          }}
+                                        >
+                                          {isCurrent ? (
+                                            <i className="fa-solid fa-stop"></i>
+                                          ) : (
+                                            <i className="fa-solid fa-play"></i>
+                                          )}
+                                        </button>
+                                      </td>
+                                      <td>
+                                        <button
+                                          className="tableButton delete"
+                                          onClick={() => {
+                                            setDeletePopup(true);
+                                            setDeleteId(item.id);
+                                          }}
+                                        >
+                                          <i className="fa-solid fa-trash"></i>
+                                        </button>
+                                      </td>
+                                      <td>
+                                        <button
+                                          className="tableButton "
+                                          onClick={() => {
+                                            setSelectedMusicToEdit(item);
+                                            setMusicEditPopup(true);
+                                          }}
+                                        >
+                                          <i className="fa-solid fa-edit"></i>
+                                        </button>
+                                      </td>
+                                    </tr>
+                                    {isCurrent && (
+                                      <tr>
+                                        <td colSpan={99}>
+                                          <div className="audio-container mx-2">
+                                            <audio
+                                              controls
+                                              autoPlay
+                                              onPlay={() =>
+                                                setCurrentPlaying(item.id)
+                                              } // Sync playback state
+                                              onPause={() =>
+                                                setCurrentPlaying(item.id)
+                                              } // Ensure state consistency
+                                              onEnded={() =>
+                                                setCurrentPlaying(null)
+                                              } // Reset on end
+                                            >
+                                              <source
+                                                src={item.path}
+                                                type="audio/mpeg"
+                                              />
+                                            </audio>
+                                            {/* <button
+                                              className="audioCustomButton"
+                                              onClick={() => {
+                                                const link =
+                                                  document.createElement("a");
+                                                link.href = item.path;
+                                                link.download =
+                                                  item.name || "audio.mp3"; // Ensure a default filename if `item.name` is not set
+                                                document.body.appendChild(link); // Append the link to the DOM
+                                                link.click(); // Trigger the download
+                                                document.body.removeChild(link); // Remove the link from the DOM
+                                              }}
+                                            >
+                                              <i className="fa-sharp fa-solid fa-download"></i>
+                                            </button> */}
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    )}
+                                  </React.Fragment>
+                                );
                               })}
                           </tbody>
                         </table>
@@ -277,29 +375,260 @@ function Music() {
             </div>
           </div>
           {newMusicPopup ? (
+            // <div className="popup music">
+            //   <div className="container h-100">
+            //     <div className="row h-100 justify-content-center align-items-center">
+
+            //       <div className="card px-0 col-xl-4">
+            //         <div className="header">
+            //           <h5 className="card-title fs14  border-bootm fw700">Upload Documents</h5>
+            //         </div>
+            //         <div className="card-body">
+            //           <div className=" popup-border text-center p-2">
+            //             <input type="file" className="form-control-file d-none" id="fileInput"
+            //               accept="audio/*"
+            //               onChange={(e) => {
+            //                 const file = e.target.files[0];
+
+            //                 if (file) {
+            //                   const audio = new Audio();
+            //                   audio.src = URL.createObjectURL(file);
+
+            //                   audio.onloadedmetadata = () => {
+            //                     if (audio.duration <= 5) {
+            //                       // Replace with your toast function
+            //                       toast.error(
+            //                         "Error: Audio file must be longer than 5 seconds.",
+            //                         "error"
+            //                       );
+            //                       return;
+            //                     }
+
+            //                     const fileName = file.name.replace(/ /g, "-");
+            //                     const newFile = new File([file], fileName, {
+            //                       type: file.type,
+            //                     });
+            //                     setNewMusic(newFile);
+            //                   };
+
+            //                   audio.onerror = () => {
+            //                     toast.error(
+            //                       "Error: Unable to read the audio file.",
+            //                       "error"
+            //                     );
+            //                   };
+            //                 }
+            //               }}
+            //             />
+            //             {newMusic?.name && <p className="report">{newMusic?.name}</p>}
+            //             <label htmlFor="fileInput" className="d-block">
+            //               <div className="test-user text-center">
+            //                 <i style={{ fontSize: 30 }} className="fa-solid fa-cloud-arrow-up" />
+            //                 <p className="mb-0 mt-2 text-center ">
+            //                   Drag and Drop or{" "}
+            //                   <span>Click on upload </span>
+            //                 </p>
+            //                 <span className="">
+            //                   {" "}
+            //                   Supports formats : CSV or XLS, Max Size: 25MB
+            //                 </span>
+            //               </div>
+            //             </label>
+            //           </div>
+            //         </div>
+            //         <div className="card-footer">
+            //           <div className="d-flex justify-content-between">
+            //             <div className="col-auto">
+            //               <select
+            //                 name="music"
+            //                 className="formItem"
+            //                 onChange={(e) => setNewMusicType(e.target.value)}
+            //               >
+            //                 <option value="hold">Hold</option>
+            //                 <option value="busy">Busy</option>
+            //                 <option value="ringback">Ringback</option>
+            //                 <option value="announcement">Announcement</option>
+            //                 <option value="ivr"> IVR</option>
+            //               </select>
+            //             </div>
+            //             <div className="d-flex">
+            //               <button
+            //                 className="panelButton m-0"
+            //                 onClick={handleNewMusic}
+            //               >
+            //                 <span className="text">Confirm</span>
+            //                 <span className="icon">
+            //                   <i class="fa-solid fa-check"></i>
+            //                 </span>
+            //               </button>
+            //               <button
+            //                 className="panelButton gray"
+            //                 onClick={() => { setNewMusicPopup(false); setNewMusic(); }}
+            //               >
+            //                 <span className="text">Cancel</span>
+            //                 <span className="icon">
+            //                   <i class="fa-solid fa-xmark"></i>
+            //                 </span>
+            //               </button>
+            //             </div>
+            //           </div>
+            //         </div>
+            //       </div>
+
+            //       {/* <div className="row content col-xl-4">
+            //         <div className="col-2 px-0">
+            //           <div className="iconWrapper">
+            //             <i className="fa-duotone fa-triangle-exclamation"></i>
+            //           </div>
+            //         </div>
+            //         <div className="col-10 ps-0">
+            //           <h4>Warning!</h4>
+            //           <p>Please select the file you want to upload</p>
+            //           <div className="row justify-content-between align-items-center">
+            //             <div className="col-4">
+            //               <select
+            //                 name="music"
+            //                 className="formItem"
+            //                 onChange={(e) => setNewMusicType(e.target.value)}
+            //               >
+            //                 <option value="hold">Hold</option>
+            //                 <option value="busy">Busy</option>
+            //                 <option value="ringback">Ringback</option>
+            //                 <option value="announcement">Announcement</option>
+            //                 <option value="ivr"> IVR</option>
+            //               </select>
+            //             </div>
+            //             <div className="col-8">
+            //               <input
+            //                 name="reg"
+            //                 className="formItem"
+            //                 type="file"
+            //                 accept="audio/*"
+            //                 onChange={(e) => {
+            //                   const file = e.target.files[0];
+
+            //                   if (file) {
+            //                     const audio = new Audio();
+            //                     audio.src = URL.createObjectURL(file);
+
+            //                     audio.onloadedmetadata = () => {
+            //                       if (audio.duration <= 5) {
+            //                         toast.error(
+            //                           "Error: Audio file must be longer than 5 seconds.",
+            //                           "error"
+            //                         );
+            //                         return;
+            //                       }
+
+            //                       const fileName = file.name.replace(/ /g, "-");
+            //                       const newFile = new File([file], fileName, {
+            //                         type: file.type,
+            //                       });
+            //                       setNewMusic(newFile);
+            //                     };
+
+            //                     audio.onerror = () => {
+            //                       toast.error(
+            //                         "Error: Unable to read the audio file.",
+            //                         "error"
+            //                       );
+            //                     };
+            //                   }
+            //                 }}
+            //               />
+            //             </div>
+            //           </div>
+            //           <div className="mt-2 d-flex justify-content-between">
+            //             <button
+            //               className="panelButton m-0"
+            //               onClick={handleNewMusic}
+            //             >
+            //               <span className="text">Confirm</span>
+            //               <span className="icon">
+            //                 <i class="fa-solid fa-check"></i>
+            //               </span>
+            //             </button>
+            //             <button
+            //               className="panelButton gray m-0 float-end"
+            //               onClick={() => setNewMusicPopup(false)}
+            //             >
+            //               <span className="text">Cancel</span>
+            //               <span className="icon">
+            //                 <i class="fa-solid fa-xmark"></i>
+            //               </span>
+            //             </button>
+            //           </div>
+            //         </div>
+            //       </div> */}
+
+            //     </div>
+            //   </div>
+            // </div>
             <div className="popup music">
               <div className="container h-100">
                 <div className="row h-100 justify-content-center align-items-center">
-
-
                   <div className="card px-0 col-xl-4">
                     <div className="header">
-                      <h5 className="card-title fs14  border-bootm fw700">Upload Documents</h5>
+                      <h5 className="card-title fs14 border-bootm fw700">
+                        Upload Documents
+                      </h5>
                     </div>
                     <div className="card-body">
-                      <div className=" popup-border text-center p-2">
-                        <input type="file" className="form-control-file d-none" id="fileInput"
-                          accept="audio/*"
-                          onChange={(e) => {
-                            const file = e.target.files[0];
+                      {newMusic ? (
+                        // Show audio controls if a file is uploaded
+                        <div className="audio-container mx-2">
+                          <audio
+                            controls
+                            src={URL.createObjectURL(newMusic)}
+                            onEnded={() => {
+                              toast.info("Audio playback completed.");
+                            }}
+                          />
+                          <button
+                            className="audioCustomButton"
+                            onClick={() => {
+                              const link = document.createElement("a");
+                              link.href = URL.createObjectURL(newMusic);
+                              link.download = newMusic.name;
+                              link.click();
+                            }}
+                          >
+                            <i className="fa-sharp fa-solid fa-download" />
+                          </button>
+                          <button
+                            className="audioCustomButton ms-2"
+                            onClick={() => setNewMusic(null)}
+                          >
+                            <i className="fa-sharp fa-solid fa-rotate-left" />{" "}
+                            Reset
+                          </button>
+                        </div>
+                      ) : (
+                        // Show upload options if no file is uploaded
+                        <div
+                          className="popup-border text-center p-2"
+                          onDragOver={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            e.currentTarget.classList.add("drag-over");
+                          }}
+                          onDragLeave={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            e.currentTarget.classList.remove("drag-over");
+                          }}
+                          onDrop={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            e.currentTarget.classList.remove("drag-over");
 
+                            const file = e.dataTransfer.files[0];
                             if (file) {
                               const audio = new Audio();
                               audio.src = URL.createObjectURL(file);
 
                               audio.onloadedmetadata = () => {
                                 if (audio.duration <= 5) {
-                                  // Replace with your toast function
                                   toast.error(
                                     "Error: Audio file must be longer than 5 seconds.",
                                     "error"
@@ -322,95 +651,27 @@ function Music() {
                               };
                             }
                           }}
-                        />
-                        {newMusic?.name && <p className="report">{newMusic?.name}</p>}
-                        <label htmlFor="fileInput" className="d-block">
-                          <div className="test-user text-center">
-                            <i style={{ fontSize: 30 }} className="fa-solid fa-cloud-arrow-up" />
-                            <p className="mb-0 mt-2 text-center ">
-                              Drag and Drop or{" "}
-                              <span>Click on upload </span>
-                            </p>
-                            <span className="">
-                              {" "}
-                              Supports formats : CSV or XLS, Max Size: 25MB
-                            </span>
-                          </div>
-                        </label>
-                      </div>
-                    </div>
-                    <div className="card-footer">
-                      <div className="d-flex justify-content-between">
-                        <div className="col-auto">
-                          <select
-                            name="music"
-                            className="formItem"
-                            onChange={(e) => setNewMusicType(e.target.value)}
-                          >
-                            <option value="hold">Hold</option>
-                            <option value="busy">Busy</option>
-                            <option value="ringback">Ringback</option>
-                            <option value="announcement">Announcement</option>
-                            <option value="ivr"> IVR</option>
-                          </select>
-                        </div>
-                        <div className="d-flex">
-                          <button
-                            className="panelButton m-0"
-                            onClick={handleNewMusic}
-                          >
-                            <span className="text">Confirm</span>
-                            <span className="icon">
-                              <i class="fa-solid fa-check"></i>
-                            </span>
-                          </button>
-                          <button
-                            className="panelButton gray"
-                            onClick={() => { setNewMusicPopup(false); setNewMusic(); }}
-                          >
-                            <span className="text">Cancel</span>
-                            <span className="icon">
-                              <i class="fa-solid fa-xmark"></i>
-                            </span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* <div className="row content col-xl-4">
-                    <div className="col-2 px-0">
-                      <div className="iconWrapper">
-                        <i className="fa-duotone fa-triangle-exclamation"></i>
-                      </div>
-                    </div>
-                    <div className="col-10 ps-0">
-                      <h4>Warning!</h4>
-                      <p>Please select the file you want to upload</p>
-                      <div className="row justify-content-between align-items-center">
-                        <div className="col-4">
-                          <select
-                            name="music"
-                            className="formItem"
-                            onChange={(e) => setNewMusicType(e.target.value)}
-                          >
-                            <option value="hold">Hold</option>
-                            <option value="busy">Busy</option>
-                            <option value="ringback">Ringback</option>
-                            <option value="announcement">Announcement</option>
-                            <option value="ivr"> IVR</option>
-                          </select>
-                        </div>
-                        <div className="col-8">
+                        >
                           <input
-                            name="reg"
-                            className="formItem"
                             type="file"
-                            accept="audio/*"
+                            className="form-control-file d-none"
+                            id="fileInput"
+                            accept="audio/mp3"
                             onChange={(e) => {
                               const file = e.target.files[0];
-
                               if (file) {
+                                // Check if the file type is MP3
+                                if (
+                                  file.type !== "audio/mpeg" &&
+                                  !file.name.endsWith(".mp3")
+                                ) {
+                                  toast.error(
+                                    "Only MP3 files are allowed.",
+                                    "error"
+                                  );
+                                  return;
+                                }
+
                                 const audio = new Audio();
                                 audio.src = URL.createObjectURL(file);
 
@@ -439,31 +700,63 @@ function Music() {
                               }
                             }}
                           />
+
+                          <label htmlFor="fileInput" className="d-block">
+                            <div className="test-user text-center">
+                              <i
+                                style={{ fontSize: 30 }}
+                                className="fa-solid fa-cloud-arrow-up"
+                              />
+                              <p className="mb-0 mt-2 text-center">
+                                Drag and Drop or <span>Click on upload</span>
+                              </p>
+                              <span>Supports formats : MP3, Max Size: 2MB</span>
+                            </div>
+                          </label>
+                        </div>
+                      )}
+                    </div>
+                    <div className="card-footer">
+                      <div className="d-flex justify-content-between">
+                        <div className="col-auto">
+                          <select
+                            name="music"
+                            className="formItem"
+                            onChange={(e) => setNewMusicType(e.target.value)}
+                          >
+                            <option value="hold">Hold</option>
+                            <option value="busy">Busy</option>
+                            <option value="ringback">Ringback</option>
+                            <option value="announcement">Announcement</option>
+                            <option value="ivr"> IVR</option>
+                          </select>
+                        </div>
+                        <div className="d-flex">
+                          <button
+                            className="panelButton m-0"
+                            onClick={handleNewMusic}
+                          >
+                            <span className="text">Confirm</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-check"></i>
+                            </span>
+                          </button>
+                          <button
+                            className="panelButton gray"
+                            onClick={() => {
+                              setNewMusicPopup(false);
+                              setNewMusic(null);
+                            }}
+                          >
+                            <span className="text">Cancel</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-xmark"></i>
+                            </span>
+                          </button>
                         </div>
                       </div>
-                      <div className="mt-2 d-flex justify-content-between">
-                        <button
-                          className="panelButton m-0"
-                          onClick={handleNewMusic}
-                        >
-                          <span className="text">Confirm</span>
-                          <span className="icon">
-                            <i class="fa-solid fa-check"></i>
-                          </span>
-                        </button>
-                        <button
-                          className="panelButton gray m-0 float-end"
-                          onClick={() => setNewMusicPopup(false)}
-                        >
-                          <span className="text">Cancel</span>
-                          <span className="icon">
-                            <i class="fa-solid fa-xmark"></i>
-                          </span>
-                        </button>
-                      </div>
                     </div>
-                  </div> */}
-
+                  </div>
                 </div>
               </div>
             </div>
@@ -500,6 +793,74 @@ function Music() {
                           className="panelButton gray m-0 float-end"
                           onClick={() => {
                             setDeletePopup(false);
+                          }}
+                        >
+                          <span className="text">Cancel</span>
+                          <span className="icon">
+                            <i class="fa-solid fa-xmark"></i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
+          {musicEditPopup ? (
+            <div className="popup">
+              <div className="container h-100">
+                <div className="row h-100 justify-content-center align-items-center">
+                  <div className="row content col-xl-4">
+                    <div className="col-2 px-0">
+                      <div className="iconWrapper">
+                        <i className="fa-duotone fa-triangle-exclamation"></i>
+                      </div>
+                    </div>
+                    <div className="col-10 ps-0">
+                      <h4>Note</h4>
+                      <p>This will change the name of the music file</p>
+                      <div className="row g-2">
+                        <div className="col-8">
+                          <input
+                            type="text"
+                            className="mb-3"
+                            defaultValue={selectedMusicToEdit.name}
+                          ></input>
+                        </div>
+                        <div className="col-4">
+                          <select
+                            name="music"
+                            className="formItem"
+                            value={selectedMusicToEdit.type}
+                            // onChange={(e) => setNewMusicType(e.target.value)}
+                          >
+                            <option value="hold">Hold</option>
+                            <option value="busy">Busy</option>
+                            <option value="ringback">Ringback</option>
+                            <option value="announcement">Announcement</option>
+                            <option value="ivr"> IVR</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="d-flex justify-content-between">
+                        <button
+                          className="panelButton m-0"
+                          onClick={() => {
+                            setMusicEditPopup(false);
+                          }}
+                        >
+                          <span className="text">Confirm</span>
+                          <span className="icon">
+                            <i class="fa-solid fa-check"></i>
+                          </span>
+                        </button>
+                        <button
+                          className="panelButton gray m-0 float-end"
+                          onClick={() => {
+                            setMusicEditPopup(false);
                           }}
                         >
                           <span className="text">Cancel</span>

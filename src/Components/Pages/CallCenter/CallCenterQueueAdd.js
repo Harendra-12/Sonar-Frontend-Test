@@ -295,7 +295,7 @@ function CallCenterQueueAdd() {
     }
   });
 
-  // Handle advance click 
+  // Handle advance click
   function handleAdvance(id) {
     if (advance.includes(id)) {
       setAdvance(advance.filter((item) => item !== id));
@@ -352,7 +352,9 @@ function CallCenterQueueAdd() {
                         className="panelButton gray"
                       >
                         <span className="text">Back</span>
-                        <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                        <span className="icon">
+                          <i class="fa-solid fa-caret-left"></i>
+                        </span>
                       </button>
                       <button
                         effect="ripple"
@@ -360,29 +362,103 @@ function CallCenterQueueAdd() {
                         onClick={handleFormSubmit}
                       >
                         <span className="text">Save</span>
-                        <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                        <span className="icon">
+                          <i class="fa-solid fa-floppy-disk"></i>
+                        </span>
                       </button>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
+              <div
+                className="col-12"
+                style={{ padding: "25px 23px", borderBottom: "1px solid #ddd" }}
+              >
                 <form action="#" className="tangoNavs mb-0">
                   <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                      <button class="nav-link active" id="nav-gen-tab" data-bs-toggle="tab" data-bs-target="#nav-gen" type="button" role="tab" aria-controls="nav-gen" aria-selected="true">General</button>
-                      <button class="nav-link" id="nav-tier-tab" data-bs-toggle="tab" data-bs-target="#nav-tier" type="button" role="tab" aria-controls="nav-tier" aria-selected="false">Tier Rules</button>
-                      <button class="nav-link" id="nav-max-tab" data-bs-toggle="tab" data-bs-target="#nav-max" type="button" role="tab" aria-controls="nav-max" aria-selected="false">Max Wait Time</button>
-                      <button class="nav-link" id="nav-queue-tab" data-bs-toggle="tab" data-bs-target="#nav-queue" type="button" role="tab" aria-controls="nav-queue" aria-selected="false">Queue Rules</button>
-                      <button class="nav-link" id="nav-adv-tab" data-bs-toggle="tab" data-bs-target="#nav-adv" type="button" role="tab" aria-controls="nav-adv" aria-selected="false">Advanced</button>
+                      <button
+                        class="nav-link active"
+                        id="nav-gen-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-gen"
+                        type="button"
+                        role="tab"
+                        aria-controls="nav-gen"
+                        aria-selected="true"
+                      >
+                        General{" "}
+                        {errors?.queue_name?.message && (
+                          <i
+                            class="fa fa-exclamation-circle text-danger"
+                            aria-hidden="true"
+                          ></i>
+                        )}
+                      </button>
+                      <button
+                        class="nav-link"
+                        id="nav-tier-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-tier"
+                        type="button"
+                        role="tab"
+                        aria-controls="nav-tier"
+                        aria-selected="false"
+                      >
+                        Tier Rules
+                      </button>
+                      <button
+                        class="nav-link"
+                        id="nav-max-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-max"
+                        type="button"
+                        role="tab"
+                        aria-controls="nav-max"
+                        aria-selected="false"
+                      >
+                        Max Wait Time
+                      </button>
+                      <button
+                        class="nav-link"
+                        id="nav-queue-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-queue"
+                        type="button"
+                        role="tab"
+                        aria-controls="nav-queue"
+                        aria-selected="false"
+                      >
+                        Queue Rules
+                      </button>
+                      <button
+                        class="nav-link"
+                        id="nav-adv-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-adv"
+                        type="button"
+                        role="tab"
+                        aria-controls="nav-adv"
+                        aria-selected="false"
+                      >
+                        Advanced
+                      </button>
                     </div>
                   </nav>
                   <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-gen" role="tabpanel" aria-labelledby="nav-gen-tab" tabindex="0">
+                    <div
+                      class="tab-pane fade show active"
+                      id="nav-gen"
+                      role="tabpanel"
+                      aria-labelledby="nav-gen-tab"
+                      tabindex="0"
+                    >
                       <form className="row col-12 mx-auto mb-0">
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
-                            <label htmlFor="">Queue Name</label>
+                            <label htmlFor="">
+                              Queue Name <span className="text-danger">*</span>
+                            </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter the queue name.
                             </label>
@@ -412,7 +488,7 @@ function CallCenterQueueAdd() {
                           </div>
                           <div className="col-xl-6 col-12">
                             <select
-                              {...register("greeting", { ...requiredValidator })}
+                              {...register("greeting")}
                               className="formItem w-100"
                             >
                               <option disabled value="" selected>
@@ -440,7 +516,10 @@ function CallCenterQueueAdd() {
                             </label>
                           </div>
                           <div className="col-xl-6 col-12">
-                            <select {...register("strategy")} className="formItem w-100">
+                            <select
+                              {...register("strategy")}
+                              className="formItem w-100"
+                            >
                               <option value="ring-all">Ring All</option>
                               <option value="top-down">Top Down</option>
                               <option value="sequentially-by-agent-order">
@@ -463,7 +542,7 @@ function CallCenterQueueAdd() {
                           </div>
                           <div className="col-xl-6 col-12">
                             <select
-                              {...register("moh_sound", { ...requiredValidator })}
+                              {...register("moh_sound")}
                               className="formItem w-100"
                             >
                               <option disabled value="" selected>
@@ -495,6 +574,7 @@ function CallCenterQueueAdd() {
                               {...register("recording_enabled")}
                               className="formItem w-100"
                               name="recording_enabled"
+                              defaultValue={"false"}
                             >
                               <option value="true">True</option>
                               <option value="false">False</option>
@@ -505,7 +585,8 @@ function CallCenterQueueAdd() {
                           <div className="formLabel">
                             <label htmlFor="">Action</label>
                             <label htmlFor="data" className="formItemDesc">
-                              Set the action to perform when the max wait time is reached.
+                              Set the action to perform when the max wait time
+                              is reached.
                             </label>
                           </div>
                           <div className="col-xl-6 col-12">
@@ -521,8 +602,8 @@ function CallCenterQueueAdd() {
                           <div className="formLabel">
                             <label htmlFor="">Discard Abandoned After</label>
                             <label htmlFor="data" className="formItemDesc">
-                              The number of seconds before the abandoned call is removed
-                              from the queue.
+                              The number of seconds before the abandoned call is
+                              removed from the queue.
                             </label>
                           </div>
                           <div className="col-xl-6 col-12">
@@ -560,13 +641,21 @@ function CallCenterQueueAdd() {
                               onKeyDown={restrictToAllowedChars}
                             />
                             {errors.queue_cid_prefix && (
-                              <ErrorMessage text={errors.queue_cid_prefix.message} />
+                              <ErrorMessage
+                                text={errors.queue_cid_prefix.message}
+                              />
                             )}
                           </div>
                         </div>
                       </form>
                     </div>
-                    <div class="tab-pane fade" id="nav-tier" role="tabpanel" aria-labelledby="nav-tier-tab" tabindex="0">
+                    <div
+                      class="tab-pane fade"
+                      id="nav-tier"
+                      role="tabpanel"
+                      aria-labelledby="nav-tier-tab"
+                      tabindex="0"
+                    >
                       <form className="row col-12 mx-auto mb-0">
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
@@ -576,6 +665,7 @@ function CallCenterQueueAdd() {
                             <select
                               {...register("tier_rules_apply")}
                               className="formItem w-100"
+                              defaultValue={0}
                             >
                               <option value={1}>True</option>
                               <option value={0}>False</option>2{" "}
@@ -597,19 +687,24 @@ function CallCenterQueueAdd() {
                               })}
                             />
                             {errors.tier_rule_wait_second && (
-                              <ErrorMessage text={errors.tier_rule_wait_second.message} />
+                              <ErrorMessage
+                                text={errors.tier_rule_wait_second.message}
+                              />
                             )}
                           </div>
                         </div>
 
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
-                            <label htmlFor="">Tier Rule Wait Multiply Level</label>
+                            <label htmlFor="">
+                              Tier Rule Wait Multiply Level
+                            </label>
                           </div>
                           <div className="col-xl-6 col-12">
                             <select
                               {...register("tier_rule_wait_multiply_level")}
                               className="formItem w-100"
+                              defaultValue={0}
                             >
                               <option value={1}>True</option>
                               <option value={0}>False</option>
@@ -625,6 +720,7 @@ function CallCenterQueueAdd() {
                             <select
                               {...register("tier_rule_no_agent_no_wait")}
                               className="formItem w-100"
+                              defaultValue={0}
                             >
                               <option value={1}>True</option>
                               <option value={0}>False</option>
@@ -633,7 +729,13 @@ function CallCenterQueueAdd() {
                         </div>
                       </form>
                     </div>
-                    <div class="tab-pane fade" id="nav-max" role="tabpanel" aria-labelledby="nav-max-tab" tabindex="0">
+                    <div
+                      class="tab-pane fade"
+                      id="nav-max"
+                      role="tabpanel"
+                      aria-labelledby="nav-max-tab"
+                      tabindex="0"
+                    >
                       <form className="row col-12 mx-auto mb-0">
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
@@ -650,14 +752,18 @@ function CallCenterQueueAdd() {
                               onKeyDown={restrictToNumbers}
                             />
                             {errors.max_wait_time && (
-                              <ErrorMessage text={errors.max_wait_time.message} />
+                              <ErrorMessage
+                                text={errors.max_wait_time.message}
+                              />
                             )}
                           </div>
                         </div>
 
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
-                            <label htmlFor="">Max Wait Time with no agent</label>
+                            <label htmlFor="">
+                              Max Wait Time with no agent
+                            </label>
                           </div>
                           <div className="col-xl-6 col-12">
                             <input
@@ -670,7 +776,9 @@ function CallCenterQueueAdd() {
                               onKeyDown={restrictToNumbers}
                             />
                             {errors.max_wait_time_with_no_agent && (
-                              <ErrorMessage text={errors.max_wait_time_with_no_agent} />
+                              <ErrorMessage
+                                text={errors.max_wait_time_with_no_agent}
+                              />
                             )}
                           </div>
                         </div>
@@ -686,21 +794,32 @@ function CallCenterQueueAdd() {
                               type="number"
                               name="extension"
                               className="formItem"
-                              {...register("max_wait_time_with_no_agent_time_reached", {
-                                ...noSpecialCharactersValidator,
-                              })}
+                              {...register(
+                                "max_wait_time_with_no_agent_time_reached",
+                                {
+                                  ...noSpecialCharactersValidator,
+                                }
+                              )}
                               onKeyDown={restrictToNumbers}
                             />
                             {errors.max_wait_time_with_no_agent_time_reached && (
                               <ErrorMessage
-                                text={errors.max_wait_time_with_no_agent_time_reached}
+                                text={
+                                  errors.max_wait_time_with_no_agent_time_reached
+                                }
                               />
                             )}
                           </div>
                         </div>
                       </form>
                     </div>
-                    <div class="tab-pane fade" id="nav-queue" role="tabpanel" aria-labelledby="nav-queue-tab" tabindex="0">
+                    <div
+                      class="tab-pane fade"
+                      id="nav-queue"
+                      role="tabpanel"
+                      aria-labelledby="nav-queue-tab"
+                      tabindex="0"
+                    >
                       <form className="row col-12 mx-auto mb-0">
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
@@ -744,7 +863,9 @@ function CallCenterQueueAdd() {
                               onKeyDown={restrictToNumbers}
                             />
                             {errors.queue_announce_frequency && (
-                              <ErrorMessage text={errors.queue_announce_frequency} />
+                              <ErrorMessage
+                                text={errors.queue_announce_frequency}
+                              />
                             )}
                           </div>
                         </div>
@@ -773,7 +894,13 @@ function CallCenterQueueAdd() {
                         </div>
                       </form>
                     </div>
-                    <div class="tab-pane fade" id="nav-adv" role="tabpanel" aria-labelledby="nav-adv-tab" tabindex="0">
+                    <div
+                      class="tab-pane fade"
+                      id="nav-adv"
+                      role="tabpanel"
+                      aria-labelledby="nav-adv-tab"
+                      tabindex="0"
+                    >
                       <form className="row col-12 mx-auto mb-0">
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
@@ -790,7 +917,9 @@ function CallCenterQueueAdd() {
                               onKeyDown={restrictToNumbers}
                             />
                             {errors.ring_progressively_delay && (
-                              <ErrorMessage text={errors.ring_progressively_delay} />
+                              <ErrorMessage
+                                text={errors.ring_progressively_delay}
+                              />
                             )}
                           </div>
                         </div>
@@ -840,6 +969,7 @@ function CallCenterQueueAdd() {
                             <select
                               {...register("abandoned_resume_allowed")}
                               className="formItem w-100"
+                              defaultValue={0}
                             >
                               <option value={1}>True</option>
                               <option value={0}>False</option>
@@ -889,7 +1019,7 @@ function CallCenterQueueAdd() {
               </div> */}
                 </form>
               </div>
-              <div className="col-12" style={{ padding: '20px 23px' }}>
+              <div className="col-12" style={{ padding: "20px 23px" }}>
                 <form className="row">
                   <div className="formRow col-xl-12 border-0">
                     {agent &&
@@ -906,11 +1036,24 @@ function CallCenterQueueAdd() {
                             >
                               <label>{index + 1}.</label>
                             </div>
-                            <div className={`row col-${advance.includes(item.id) ? "11" : "xxl-5 col-xl-6"}`}>
-                              <div className={`col-${advance.includes(item.id) ? "2" : "4"} ps-0 pe-2`}>
+                            <div
+                              className={`row col-${
+                                advance.includes(item.id)
+                                  ? "11"
+                                  : "xxl-5 col-xl-6"
+                              }`}
+                            >
+                              <div
+                                className={`col-${
+                                  advance.includes(item.id) ? "2" : "4"
+                                } ps-0 pe-2`}
+                              >
                                 <div className="formLabel">
                                   {index === 0 ? (
-                                    <label htmlFor="">Agent Name</label>
+                                    <label htmlFor="">
+                                      Agent Name{" "}
+                                      <span className="text-danger">*</span>
+                                    </label>
                                   ) : (
                                     ""
                                   )}
@@ -920,7 +1063,9 @@ function CallCenterQueueAdd() {
                                     type="text"
                                     name="name"
                                     value={item.name}
-                                    onChange={(e) => handleAgentChange(e, index)}
+                                    onChange={(e) =>
+                                      handleAgentChange(e, index)
+                                    }
                                     className="formItem"
                                     placeholder="Destination"
                                   >
@@ -958,7 +1103,11 @@ function CallCenterQueueAdd() {
                                   </select>
                                 </div>
                               </div>
-                              <div className={`col-${advance.includes(item.id) ? "2" : "4"} ps-0 pe-2`}>
+                              <div
+                                className={`col-${
+                                  advance.includes(item.id) ? "2" : "4"
+                                } ps-0 pe-2`}
+                              >
                                 <div className="formLabel">
                                   {index === 0 ? (
                                     <label htmlFor="">Password</label>
@@ -971,13 +1120,19 @@ function CallCenterQueueAdd() {
                                     type="text"
                                     name="password"
                                     value={item.password}
-                                    onChange={(e) => handleAgentChange(e, index)}
+                                    onChange={(e) =>
+                                      handleAgentChange(e, index)
+                                    }
                                     className="formItem"
                                     placeholder="Password"
                                   />
                                 </div>
                               </div>
-                              <div className={`col-${advance.includes(item.id) ? "1" : "2"} ps-0 pe-2`}>
+                              <div
+                                className={`col-${
+                                  advance.includes(item.id) ? "1" : "2"
+                                } ps-0 pe-2`}
+                              >
                                 <div className="formLabel">
                                   {index === 0 ? (
                                     <label htmlFor="">Tier Level</label>
@@ -1005,10 +1160,19 @@ function CallCenterQueueAdd() {
                                   <option value={9}>9</option>
                                 </select>
                               </div>
-                              <div className={`col-${advance.includes(item.id) ? "1" : "2"} ps-0 pe-2`}>
+                              <div
+                                className={`col-${
+                                  advance.includes(item.id) ? "1" : "2"
+                                } ps-0 pe-2`}
+                              >
                                 <div className="formLabel">
                                   {index === 0 ? (
-                                    <label htmlFor="" style={{ whiteSpace: 'nowrap' }}>Tier Position</label>
+                                    <label
+                                      htmlFor=""
+                                      style={{ whiteSpace: "nowrap" }}
+                                    >
+                                      Tier Position
+                                    </label>
                                   ) : (
                                     ""
                                   )}
@@ -1049,7 +1213,9 @@ function CallCenterQueueAdd() {
                                         type="number"
                                         name="call_timeout"
                                         value={item.call_timeout}
-                                        onChange={(e) => handleAgentChange(e, index)}
+                                        onChange={(e) =>
+                                          handleAgentChange(e, index)
+                                        }
                                         className="formItem"
                                         placeholder="Call Timeout"
                                       />
@@ -1068,7 +1234,9 @@ function CallCenterQueueAdd() {
                                         type="number"
                                         name="reject_delay_time"
                                         value={item.reject_delay_time}
-                                        onChange={(e) => handleAgentChange(e, index)}
+                                        onChange={(e) =>
+                                          handleAgentChange(e, index)
+                                        }
                                         className="formItem"
                                         placeholder="Reject Delay"
                                       />
@@ -1088,7 +1256,9 @@ function CallCenterQueueAdd() {
                                         type="number"
                                         name="max_no_answer"
                                         value={item.max_no_answer}
-                                        onChange={(e) => handleAgentChange(e, index)}
+                                        onChange={(e) =>
+                                          handleAgentChange(e, index)
+                                        }
                                         className="formItem"
                                         placeholder="Max No Answer"
                                       />
@@ -1108,7 +1278,9 @@ function CallCenterQueueAdd() {
                                         type="number"
                                         name="busy_delay_time"
                                         value={item.busy_delay_time}
-                                        onChange={(e) => handleAgentChange(e, index)}
+                                        onChange={(e) =>
+                                          handleAgentChange(e, index)
+                                        }
                                         className="formItem"
                                         placeholder="Busy Delay"
                                       />
@@ -1118,7 +1290,9 @@ function CallCenterQueueAdd() {
                                   <div className="col-2 ps-0 pe-2">
                                     <div className="formLabel">
                                       {index === 0 ? (
-                                        <label htmlFor="">No Answer Delay</label>
+                                        <label htmlFor="">
+                                          No Answer Delay
+                                        </label>
                                       ) : (
                                         ""
                                       )}
@@ -1128,7 +1302,9 @@ function CallCenterQueueAdd() {
                                         type="number"
                                         name="no_answer_delay_time"
                                         value={item.no_answer_delay_time}
-                                        onChange={(e) => handleAgentChange(e, index)}
+                                        onChange={(e) =>
+                                          handleAgentChange(e, index)
+                                        }
                                         className="formItem"
                                         placeholder="No Answer Delay"
                                       />
@@ -1148,7 +1324,9 @@ function CallCenterQueueAdd() {
                                         type="number"
                                         name="wrap_up_time"
                                         value={item.wrap_up_time}
-                                        onChange={(e) => handleAgentChange(e, index)}
+                                        onChange={(e) =>
+                                          handleAgentChange(e, index)
+                                        }
                                         className="formItem"
                                         placeholder="Wrap Up Time"
                                       />
@@ -1168,7 +1346,9 @@ function CallCenterQueueAdd() {
                                       style={{ width: "100%" }}
                                       name="reserve_agents"
                                       value={item.reserve_agents}
-                                      onChange={(e) => handleAgentChange(e, index)}
+                                      onChange={(e) =>
+                                        handleAgentChange(e, index)
+                                      }
                                       id="selectFormRow"
                                     >
                                       <option value={0}>False</option>
@@ -1191,7 +1371,9 @@ function CallCenterQueueAdd() {
                                       style={{ width: "100%" }}
                                       name="truncate-agents-on-load"
                                       value={item["truncate-agents-on-load"]}
-                                      onChange={(e) => handleAgentChange(e, index)}
+                                      onChange={(e) =>
+                                        handleAgentChange(e, index)
+                                      }
                                       id="selectFormRow"
                                     >
                                       <option value={0}>False</option>
@@ -1202,7 +1384,9 @@ function CallCenterQueueAdd() {
                                   <div className="col-2 ps-0 pe-2">
                                     <div className="formLabel">
                                       {index === 0 ? (
-                                        <label htmlFor="">Truncate tiers on load</label>
+                                        <label htmlFor="">
+                                          Truncate tiers on load
+                                        </label>
                                       ) : (
                                         ""
                                       )}
@@ -1212,7 +1396,9 @@ function CallCenterQueueAdd() {
                                       style={{ width: "100%" }}
                                       name="truncate-tiers-on-load"
                                       value={item["truncate-tiers-on-load"]}
-                                      onChange={(e) => handleAgentChange(e, index)}
+                                      onChange={(e) =>
+                                        handleAgentChange(e, index)
+                                      }
                                       id="selectFormRow"
                                     >
                                       <option value={0}>False</option>
@@ -1221,22 +1407,30 @@ function CallCenterQueueAdd() {
                                   </div>
                                 </>
                               )}
-
                             </div>
 
                             <div className="row col mt-xxl-0 mt-xl-2">
-                              {<div
-                                onClick={() => handleAdvance(item.id)}
-                                className="col-auto px-0 mt-auto"
-                              >
-                                <button
-                                  type="button"
-                                  className={`tableButton edit my-auto ${agent.length < 2 ? "me-2" : ""}`}
+                              {
+                                <div
+                                  onClick={() => handleAdvance(item.id)}
+                                  className="col-auto px-0 mt-auto"
                                 >
-
-                                  <i className={`fa-solid fa-${advance.includes(item.id) ? "gear" : "gears"}`}></i>
-                                </button>
-                              </div>}
+                                  <button
+                                    type="button"
+                                    className={`tableButton edit my-auto ${
+                                      agent.length < 2 ? "me-2" : ""
+                                    }`}
+                                  >
+                                    <i
+                                      className={`fa-solid fa-${
+                                        advance.includes(item.id)
+                                          ? "gear"
+                                          : "gears"
+                                      }`}
+                                    ></i>
+                                  </button>
+                                </div>
+                              }
 
                               {agent.length === 1 ? (
                                 ""
@@ -1255,7 +1449,7 @@ function CallCenterQueueAdd() {
                               )}
 
                               {index === agent.length - 1 &&
-                                index !== (user && user.length - 1) ? (
+                              index !== (user && user.length - 1) ? (
                                 <div
                                   onClick={addNewAgent}
                                   className="col-auto  px-0 mt-auto"
@@ -1265,18 +1459,22 @@ function CallCenterQueueAdd() {
                                     className="panelButton my-auto ms-0"
                                   >
                                     <span className="text">Add</span>
-                                    <span className="icon"> <i class="fa-solid fa-plus"></i></span>
+                                    <span className="icon">
+                                      {" "}
+                                      <i class="fa-solid fa-plus"></i>
+                                    </span>
                                   </button>
                                 </div>
                               ) : (
                                 ""
                               )}
-
                             </div>
                           </div>
                         );
                       })}
-                    {errors.agent && <ErrorMessage text={errors.agent.message} />}
+                    {errors.agent && (
+                      <ErrorMessage text={errors.agent.message} />
+                    )}
                   </div>
                 </form>
               </div>

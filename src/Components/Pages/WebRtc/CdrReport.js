@@ -439,12 +439,12 @@ function CdrReport() {
                             setPageNumber(1);
                           }}
                           value={callDirection}
-                        // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                          // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                         >
                           <option value={""}>All Calls</option>
                           <option value={"inbound"}>Inbound Calls</option>
                           <option value={"outbound"}>Outbound Calls</option>
-                          <option value={"local"}>Missed Calls</option>
+                          <option value={"missed"}>Missed Calls</option>
                           <option value={"internal"}>Internal Calls</option>
                         </select>
                       </div>
@@ -582,7 +582,7 @@ function CdrReport() {
                                       <td>
                                         {item["application_state"] ===
                                           "intercept" ||
-                                          item["application_state"] ===
+                                        item["application_state"] ===
                                           "eavesdrop"
                                           ? item["other_leg_destination_number"]
                                           : item["variable_sip_to_user"]}
@@ -635,46 +635,46 @@ function CdrReport() {
                                           ? item["Hangup-Cause"]
                                           : item["variable_DIALSTATUS"] ===
                                             "NO_USER_RESPONSE"
-                                            ? "BUSY"
-                                            : item["variable_DIALSTATUS"]}
+                                          ? "BUSY"
+                                          : item["variable_DIALSTATUS"]}
                                       </td>
                                       <td>{item["call_cost"]}</td>
                                     </tr>
                                     {currentPlaying ===
                                       item["recording_path"] && (
-                                        <tr>
-                                          <td colSpan={99}>
-                                            <div className="audio-container mx-2">
-                                              <audio
-                                                controls={true}
-                                                ref={thisAudioRef}
-                                                onEnded={() => {
-                                                  setCurrentPlaying(null);
-                                                }}
-                                              >
-                                                <source
-                                                  src={item["recording_path"]}
-                                                  type="audio/mpeg"
-                                                />
-                                              </audio>
+                                      <tr>
+                                        <td colSpan={99}>
+                                          <div className="audio-container mx-2">
+                                            <audio
+                                              controls={true}
+                                              ref={thisAudioRef}
+                                              onEnded={() => {
+                                                setCurrentPlaying(null);
+                                              }}
+                                            >
+                                              <source
+                                                src={item["recording_path"]}
+                                                type="audio/mpeg"
+                                              />
+                                            </audio>
 
-                                              <button
-                                                className="audioCustomButton"
+                                            <button
+                                              className="audioCustomButton"
                                               // onClick={() =>
                                               //   handleAudioDownload(
                                               //     clickedVoiceMail.recording_path
                                               //   )
                                               // }
-                                              >
-                                                <i className="fa-sharp fa-solid fa-download" />
-                                              </button>
-                                              {/* <button className="audioCustomButton ms-1">
+                                            >
+                                              <i className="fa-sharp fa-solid fa-download" />
+                                            </button>
+                                            {/* <button className="audioCustomButton ms-1">
                               <i className="fa-sharp fa-solid fa-box-archive" />
                             </button> */}
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      )}
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    )}
                                   </>
                                 );
                               })}
