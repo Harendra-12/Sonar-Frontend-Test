@@ -69,7 +69,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 {connectStatus}
               </span>
             </div> */}
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 // to="/call"
                 onClick={() => setactivePage("call")}
@@ -81,7 +81,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Calls</div>
               </div>
             </li>
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 // to="/message"
                 onClick={() => setactivePage("messages")}
@@ -95,7 +95,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Messages</div>
               </div>
             </li>
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 // to="/message"
                 onClick={() => setactivePage("email")}
@@ -109,7 +109,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Email</div>
               </div>
             </li>
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 // to="/efax"
                 onClick={() => setactivePage("e-fax")}
@@ -123,7 +123,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">eFax</div>
               </div>
             </li>
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 onClick={() => setactivePage("all-voice-mails")}
                 // to="/all-voicemails"
@@ -201,7 +201,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Call Dashboard</div>
               </div>
             </li>
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 // to="/call-center"
                 onClick={() => setactivePage("call-center")}
@@ -257,7 +257,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Mail Settings</div>
               </div>
             </li>
-            <li>
+            <li style={{ cursor: "pointer" }}>
               <div
                 onClick={() => setactivePage("conference")}
                 className={

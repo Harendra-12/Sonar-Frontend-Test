@@ -16,7 +16,7 @@ function ConferenceJoin() {
         setLoading(true)
         const parsedData = {
             name: name,
-            room_id: conferenceId.split("/")[1]
+            room_id: conferenceId.split("/")[1],
         }
         const apiData = await generalPostFunction(`/conference/create`, parsedData);
         if (apiData.status) {

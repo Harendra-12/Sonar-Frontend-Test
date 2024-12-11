@@ -3,7 +3,7 @@ import { handleNavigation, handleDispatch } from "./Navigation";
 import { toast } from "react-toastify";
 // const baseName = "http://127.0.0.1:8000/api"
 // const baseName = "https://ucaas.webvio.in/backend/api";
-const baseName = process.env.REACT_APP_BASE_URL;
+const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 
 // Creating instance of axios
 const axiosInstance = axios.create({

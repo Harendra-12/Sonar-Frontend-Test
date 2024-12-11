@@ -18,7 +18,12 @@ import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 
-const MailSettingsEdit = () => {
+const MailSettingsEdit = ({
+  setMailSettingsEditToggle,
+  selectedMailSettingToEdit,
+  setSelectedMailSettingToEdit,
+  setMailDataRefresh,
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const locationState = location.state;
@@ -33,11 +38,11 @@ const MailSettingsEdit = () => {
 
   // Fetch the mail settings value from the API
   useEffect(() => {
-    if (locationState) {
+    if (selectedMailSettingToEdit) {
       setLoading(true);
       const getData = async () => {
         const apiData = await generalGetFunction(
-          `/mail-setting/show/${locationState}`
+          `/mail-setting/show/${selectedMailSettingToEdit}`
         );
 
         if (apiData?.status) {
@@ -53,7 +58,7 @@ const MailSettingsEdit = () => {
     } else {
       navigate("/mail-settings");
     }
-  }, [locationState]);
+  }, [selectedMailSettingToEdit]);
 
   // set the default values
   useEffect(() => {
@@ -92,7 +97,9 @@ const MailSettingsEdit = () => {
       setLoading(false);
       reset();
       toast.success(addSettings.message);
-      navigate("/mail-settings");
+      setMailSettingsEditToggle(false);
+      setSelectedMailSettingToEdit(null);
+      setMailDataRefresh((prev) => prev + 1);
     } else {
       setLoading(false);
       // toast.error(addSettings.message);
@@ -154,16 +161,19 @@ const MailSettingsEdit = () => {
                       </div>
                       <div className="buttonGroup">
                         <button
-                          onClick={() => {
-                            navigate(-1);
-                            backToTop();
-                          }}
+                          // onClick={() => {
+                          //   navigate(-1);
+                          //   backToTop();
+                          // }}
+                          onClick={() => setMailSettingsEditToggle(false)}
                           type="button"
                           effect="ripple"
                           className="panelButton gray"
                         >
                           <span className="text">Back</span>
-                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-caret-left"></i>
+                          </span>
                         </button>
                         <button
                           type="button"
@@ -172,13 +182,21 @@ const MailSettingsEdit = () => {
                           onClick={handleFormSubmit}
                         >
                           <span className="text">Save</span>
-                          <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                          </span>
                         </button>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="col-12 formScroller" style={{ padding: '25px 23px' }}>
+                <div
+                  className="col-12"
+                  style={{
+                    padding: "25px 23px",
+                    borderBottom: "1px solid #ddd",
+                  }}
+                >
                   <form action="#" className="row">
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
@@ -202,7 +220,9 @@ const MailSettingsEdit = () => {
                           <option value="smtp">SMTP</option>
                           <option value="pop3">POP3</option>
                           <option value="imap">IMAP</option>
-                          <option value="ews">EWS (Exchange Web Services)</option>
+                          <option value="ews">
+                            EWS (Exchange Web Services)
+                          </option>
                           <option value="mailgun">Mailgun</option>
                           <option value="sendgrid">SendGrid</option>
                           <option value="ses">Amazon SES</option>
@@ -313,7 +333,10 @@ const MailSettingsEdit = () => {
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Encryption</label>
-                        <label htmlFor="mail_encryption" className="formItemDesc">
+                        <label
+                          htmlFor="mail_encryption"
+                          className="formItemDesc"
+                        >
                           Select Encryption Type
                         </label>
                       </div>
@@ -332,13 +355,18 @@ const MailSettingsEdit = () => {
                           <option value="tls">
                             TLS (Transport Layer Security)
                           </option>
-                          <option value="ssl">SSL (Secure Sockets Layer)</option>
+                          <option value="ssl">
+                            SSL (Secure Sockets Layer)
+                          </option>
                           <option value="pgp">PGP (Pretty Good Privacy)</option>
                           <option value="gpg">GPG (GNU Privacy Guard)</option>
                           <option value="smime">
-                            S/MIME (Secure/Multipurpose Internet Mail Extensions)
+                            S/MIME (Secure/Multipurpose Internet Mail
+                            Extensions)
                           </option>
-                          <option value="end_to_end">End-to-End Encryption</option>
+                          <option value="end_to_end">
+                            End-to-End Encryption
+                          </option>
                           <option value="email_encryption">
                             Email Encryption Gateways
                           </option>
@@ -352,7 +380,10 @@ const MailSettingsEdit = () => {
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Mail From</label>
-                        <label htmlFor="mail_from_address" className="formItemDesc">
+                        <label
+                          htmlFor="mail_from_address"
+                          className="formItemDesc"
+                        >
                           Enter Mail From
                         </label>
                       </div>
@@ -369,7 +400,9 @@ const MailSettingsEdit = () => {
                           onKeyDown={restrictToAllowedChars}
                         />
                         {errors.mail_from_address && (
-                          <ErrorMessage text={errors.mail_from_address.message} />
+                          <ErrorMessage
+                            text={errors.mail_from_address.message}
+                          />
                         )}
                       </div>
                     </div>
@@ -377,7 +410,10 @@ const MailSettingsEdit = () => {
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Mail From Name</label>
-                        <label htmlFor="mail_from_name" className="formItemDesc">
+                        <label
+                          htmlFor="mail_from_name"
+                          className="formItemDesc"
+                        >
                           Enter Mail From Name
                         </label>
                       </div>
@@ -401,8 +437,6 @@ const MailSettingsEdit = () => {
                 </div>
               </div>
             </div>
-
-
           </div>
         </section>
 

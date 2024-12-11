@@ -212,9 +212,9 @@ export const DummySipRegisteration = ({
   // Setup websocket for guest user to get real time information about other members
   // const ip = "ucaas.webvio.in";
   // const port = "8443";
-  const ip = process.env.REACT_APP_IP;
+  const ip = process.env.REACT_APP_BACKEND_IP;
 
-  const port = process.env.REACT_APP_PORT;
+  const port = process.env.REACT_APP_BACKEND_SOCKET_PORT;
   // const token = localStorage.getItem("token");
   const socketRef = useRef(null);
   useEffect(() => {

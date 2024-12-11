@@ -23,8 +23,8 @@ import MailSettings from "../MailSettings/MailSettings";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 
 const WebrtcWrapper = () => {
-  const ip = process.env.REACT_APP_IP;
-  const port = process.env.REACT_APP_SIP_REGISTER_PORT;
+  const ip = process.env.REACT_APP_BACKEND_IP;
+  const port = process.env.REACT_APP_FREESWITCH_PORT;
   const [size, setSize] = useState({ width: 300, height: 450 });
   const [position, setPosition] = useState({ x: 700, y: 300 });
   const { sessions: sipSessions } = useSIPProvider();
