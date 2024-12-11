@@ -54,6 +54,7 @@ function Call({
   function handleHideDialpad(value) {
     setDialpadShow(value);
   }
+
   useEffect(() => {
     if (allCall && allCall.calls) {
       const apiData = allCall;
@@ -87,7 +88,7 @@ function Call({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allCall, isCustomerAdmin, refreshCalls]);
-  console.log("allCall", allCall);
+
   useEffect(() => {
     console.log("This is account", account && account.account_id);
 
@@ -154,6 +155,7 @@ function Call({
     if (clickedCall == null) {
       setClickedCall(filteredCalls[0]);
     }
+
     if (filteredCalls[0]) {
       setClickedExtension(
         filteredCalls[0]["Caller-Callee-ID-Number"] === extension
@@ -430,14 +432,14 @@ function Call({
       callDetails?.["Caller-Callee-ID-Number"] == extension
         ? callDetails?.["Caller-Caller-ID-Number"]
         : callDetails?.["Caller-Callee-ID-Number"];
-    console.log("otherPartyExtension", otherPartyExtension);
+
     if (otherPartyExtension === extension) {
       toast.error("You can't call yourself");
       return;
     }
     const apiData = await sessionManager?.call(
       // `sip:${otherPartyExtension}@ucaas.webvio.in`,
-      `sip:${otherPartyExtension}@${process.env.REACT_APP_IP}`,
+      `sip:${otherPartyExtension}@${process.env.REACT_APP_BACKEND_IP}`,
       {
         sessionDescriptionHandlerOptions: {
           constraints: {
@@ -495,8 +497,6 @@ function Call({
     });
   }
 
-  // console.log("call status", callProgress, videoCall);
-
   useEffect(() => {
     if (selectedModule === "onGoingCall") {
       if (videoCall) {
@@ -530,7 +530,6 @@ function Call({
       navigate("/");
     }
   }
-  // console.log(sortedGroupedCalls);
 
   return (
     <>

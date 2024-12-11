@@ -513,7 +513,7 @@ function App() {
           {/* Variable Page End  */}
 
           {/* Mail Settings Page Start */}
-          <Route
+          {/* <Route
             path="/mail-settings"
             element={
               permission?.includes(248) || permission?.includes(250) ? (
@@ -522,8 +522,8 @@ function App() {
                 <Navigate to="/dashboard" replace />
               )
             }
-          />
-          <Route
+          /> */}
+          {/* <Route
             path="/mail-settings-add"
             element={
               permission?.includes(250) ? (
@@ -532,7 +532,7 @@ function App() {
                 <Navigate to="/dashboard" replace />
               )
             }
-          />
+          /> */}
           <Route
             path="/mail-settings-edit"
             element={
@@ -589,7 +589,10 @@ function App() {
             path="/device-provisioning-edit"
             element={<DeviceProvisioningEdit />}
           />
-          <Route path="/device-provisioning-new" element={<DeviceProvisioningNew />} />
+          <Route
+            path="/device-provisioning-new"
+            element={<DeviceProvisioningNew />}
+          />
           {/* Device Profisioning End  */}
           {/* Spam Filter start */}
           <Route path="/call-blocking" element={<CallBlocking />} />
