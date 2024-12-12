@@ -176,7 +176,7 @@ console.log("conferenceDataaa", conferenceData,confList);
           caller_id_number: conferenceData["Channel-Presence-ID"],
           uuid: conferenceData["Core-UUID"],
           talking: conferenceData["Talking"],
-          mute_detect: conferenceData["Mute-Detect"],
+          mute_detect: conferenceData["Mute-Detect"]==="true"?true:false,
           hold: conferenceData["Hold"],
           isYou: conferenceData["Caller-Caller-ID-Name"] === name ? true : false,
           deaf: false,
@@ -201,7 +201,7 @@ console.log("conferenceDataaa", conferenceData,confList);
             caller_id_number: conferenceData["Channel-Presence-ID"],
             uuid: conferenceData["Core-UUID"],
             talking: conferenceData["Talking"],
-            mute_detect: conferenceData["Mute-Detect"],
+            mute_detect: conferenceData["Mute-Detect"]==="true"?true:false,
             hold: conferenceData["Hold"],
             isYou: conferenceData["Caller-Caller-ID-Name"] === name ? true : false,
             deaf: false,
@@ -235,7 +235,7 @@ console.log("conferenceDataaa", conferenceData,confList);
             caller_id_number: conferenceData["Channel-Presence-ID"],
             uuid: conferenceData["Core-UUID"],
             talking: conferenceData["Talking"],
-            mute_detect: conferenceData["Mute-Detect"],
+            mute_detect: conferenceData["Mute-Detect"]==="true"?true:false,
             hold: conferenceData["Hold"],
             isYou: conferenceData["Caller-Caller-ID-Name"] === name ? true : false,
             deaf: false,
@@ -591,18 +591,18 @@ console.log("conferenceDataaa", conferenceData,confList);
                                     }}
                                     onClick={() => { callAction(confList.filter((item) => item.isYou)[0]?.deaf ? "undeaf" : "deaf") }}
                                   >
-                                    {currentUser?.deaf ? <i class="fa-sharp fa-solid fa-volume-slash"></i> : <i class="fa-sharp fa-solid fa-volume"></i>}
+                                    {currentUser?.deaf ? <i class="fa-sharp fa-solid active fa-volume-slash"></i> : <i class="fa-sharp fa-solid fa-volume"></i>}
 
                                   </div>
                                 </div>
                                 <div className="videoControls">
-                                  <button className="appPanelButtonCallerRect" onClick={() => { callAction("tmute") }}>
+                                  <button className={currentUser?.mute_detect?"appPanelButtonCallerRect active":"appPanelButtonCallerRect"} onClick={() => { callAction("tmute") }}>
                                     {currentUser?.mute_detect ? <i class="fa-light fa-microphone-slash"></i> : <i class="fa-light fa-microphone"></i>}
                                   </button>
-                                  <button className="appPanelButtonCallerRect" onClick={() => setScreenTogglehit(screenTogglehit+1)}>
+                                  <button className="appPanelButtonCallerRect" >
                                     <i class="fa-light fa-video"></i>
                                   </button>
-                                  <button className="appPanelButtonCallerRect">
+                                  <button className="appPanelButtonCallerRect" onClick={() => setScreenTogglehit(screenTogglehit+1)}>
                                     <i class="fa-sharp fa-light fa-screencast"></i>
                                   </button>
                                   <button
@@ -616,10 +616,10 @@ console.log("conferenceDataaa", conferenceData,confList);
                                   >
                                     Leave Call
                                   </button>
-                                  <button className="appPanelButtonCallerRect" onClick={() => setToggleMessages(!toggleMessages)}>
+                                  <button className={toggleMessages?"appPanelButtonCallerRect active":"appPanelButtonCallerRect"} onClick={() => setToggleMessages(!toggleMessages)}>
                                     <i class="fa-light fa-messages"></i>
                                   </button>
-                                  <button className="appPanelButtonCallerRect" onClick={() => setParticipantList(!participantList)}>
+                                  <button className={participantList?"appPanelButtonCallerRect active":"appPanelButtonCallerRect"} onClick={() => setParticipantList(!participantList)}>
                                     <i class="fa-light fa-users"></i>
                                   </button>
                                   <button className="appPanelButtonCallerRect">

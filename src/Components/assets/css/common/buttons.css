@@ -469,7 +469,7 @@
 
 .appPanelButtonCaller.active,
 .appPanelButtonCallerRect.active {
-  background-color: #5c5c5c;
+  background-color: #000;
 }
 
 .appPanelButtonCaller.active i,

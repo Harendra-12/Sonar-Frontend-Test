@@ -288,6 +288,8 @@ export const DummySipRegisteration = ({
         setTimeout(() => {
           setNotification(false);
         }, [3000]);
+        console.log("conferenceData", conferenceData);
+        
         setConfList((prevList) => [
           ...prevList,
           {
@@ -296,7 +298,7 @@ export const DummySipRegisteration = ({
             caller_id_number: conferenceData["Channel-Presence-ID"],
             uuid: conferenceData["Core-UUID"],
             talking: conferenceData["Talking"],
-            mute_detect: conferenceData["Mute-Detect"],
+            mute_detect: conferenceData["Mute-Detect"]==="true"?true:false,
             hold: conferenceData["Hold"],
             isYou:
               conferenceData["Caller-Caller-ID-Name"] === locationState.state.name
@@ -333,7 +335,7 @@ export const DummySipRegisteration = ({
               caller_id_number: conferenceData["Channel-Presence-ID"],
               uuid: conferenceData["Core-UUID"],
               talking: conferenceData["Talking"],
-              mute_detect: conferenceData["Mute-Detect"],
+              mute_detect: conferenceData["Mute-Detect"]==="true"?true:false,
               hold: conferenceData["Hold"],
               isYou:
                 conferenceData["Caller-Caller-ID-Name"] === locationState.state.name
@@ -384,7 +386,7 @@ export const DummySipRegisteration = ({
               caller_id_number: conferenceData["Channel-Presence-ID"],
               uuid: conferenceData["Core-UUID"],
               talking: conferenceData["Talking"],
-              mute_detect: conferenceData["Mute-Detect"],
+              mute_detect: conferenceData["Mute-Detect"]==="true"?true:false,
               hold: conferenceData["Hold"],
               isYou:
                 conferenceData["Caller-Caller-ID-Name"] === locationState.state.name
@@ -550,6 +552,8 @@ export const DummySipRegisteration = ({
           }
           return prevList; // Return the original list if no match is found
         });
+      }else{
+        console.log("conferenceData", conferenceData);
       }
     }
   }, [conferenceData]);
@@ -623,7 +627,7 @@ export const DummySipRegisteration = ({
     if(localStorage.getItem("memberId")){
       generalPostFunction(`conference/action`, parsedData)
     }
-    console.log("local data", localStorage.getItem("memberId"));
+    // console.log("local data", localStorage.getItem("memberId"));
     
   },[])
 
@@ -798,7 +802,7 @@ export const DummySipRegisteration = ({
                                 </div>
                                 <div className="videoControls">
                                   <button
-                                    className="appPanelButtonCallerRect"
+                                    className={currentUser?.mute_detect ? "appPanelButtonCallerRect active" : "appPanelButtonCallerRect"}
                                     onClick={() => {
                                       callAction("tmute");
                                     }}
@@ -809,10 +813,10 @@ export const DummySipRegisteration = ({
                                       <i class="fa-light fa-microphone"></i>
                                     )}
                                   </button>
-                                  <button className="appPanelButtonCallerRect" onClick={() => setScreenTogglehit(screenTogglehit +1)}>
+                                  <button className="appPanelButtonCallerRect" >
                                     <i class="fa-light fa-video"></i>
                                   </button>
-                                  <button className="appPanelButtonCallerRect">
+                                  <button className="appPanelButtonCallerRect" onClick={() => setScreenTogglehit(screenTogglehit +1)}>
                                     <i class="fa-sharp fa-light fa-screencast"></i>
                                   </button>
                                   <button
@@ -827,7 +831,7 @@ export const DummySipRegisteration = ({
                                     Leave Call
                                   </button>
                                   <button
-                                    className="appPanelButtonCallerRect"
+                                    className={toggleMessages? "appPanelButtonCallerRect active" : "appPanelButtonCallerRect"}
                                     onClick={() =>
                                       setToggleMessages(!toggleMessages)
                                     }
@@ -835,7 +839,7 @@ export const DummySipRegisteration = ({
                                     <i class="fa-light fa-messages"></i>
                                   </button>
                                   <button
-                                    className="appPanelButtonCallerRect"
+                                    className={participantList? "appPanelButtonCallerRect active" : "appPanelButtonCallerRect"}
                                     onClick={() =>
                                       setParticipantList(!participantList)
                                     }
