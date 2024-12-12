@@ -33,7 +33,7 @@
 
 .clearButton2:hover {
   background-color: #e7e7e7;
-  color: #000;
+  color: #000 !important;
   border-color: transparent;
 }
 
@@ -41,6 +41,15 @@
   width: 40px;
   height: 40px;
   font-size: 19px;
+}
+
+.clearButton2:disabled{
+  color: #4a4a4a !important;
+  background: none !important;
+}
+
+.clearButton2.danger{
+  color: red
 }
 
 .panelButtonOLD {

@@ -103,16 +103,16 @@ function ConferenceVideo({id,setIsScreenSharing,isScreenSharing,screenTogglehit}
 
 // Toggle screen share
 const toggleScreenShare = async () => {
-  if (isScreenSharing) {
-    const localStream = await getLocalStream();
-    session.sessionDescriptionHandler.peerConnection?.getSenders()
-      .forEach((sender) => {
-        if (sender.track.kind === "video") {
-          sender.replaceTrack(localStream.getVideoTracks()[0]);
-        }
-      });
-    setIsScreenSharing(false);
-  } else {
+  // if (isScreenSharing) {
+  //   const localStream = await getLocalStream();
+  //   session.sessionDescriptionHandler.peerConnection?.getSenders()
+  //     .forEach((sender) => {
+  //       if (sender.track.kind === "video") {
+  //         sender.replaceTrack(localStream.getVideoTracks()[0]);
+  //       }
+  //     });
+  //   setIsScreenSharing(false);
+  // } else {
     try {
       const screenStream = await navigator.mediaDevices.getDisplayMedia({
         video: true,
@@ -132,7 +132,7 @@ const toggleScreenShare = async () => {
       console.error("Error sharing screen: ", error);
       toast.error("Unable to share screen.");
     }
-  }
+  // }
 };
 
 

@@ -15,10 +15,10 @@ function DummyRegistration() {
   const [domain, setDomain] = useState();
   const [webSocketServer, setWebSocketServer] = useState();
   useEffect(() => {
-    if (locationState.extension && locationState.password) {
-      setDomain(locationState.domainName);
-      setExtension(locationState.extension);
-      setPassword(locationState.password);
+    if (locationState.state.extension && locationState.state.password) {
+      setDomain(locationState.state.domainName);
+      setExtension(locationState.state.extension);
+      setPassword(locationState.state.password);
       setWebSocketServer(`wss://${ip}:${port}`);
     } else {
       navigate(-1);

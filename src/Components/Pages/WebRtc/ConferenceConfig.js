@@ -10,7 +10,7 @@ import { ConferenceCall } from "./ConferenceCall";
 import ContentLoader from "../../Loader/ContentLoader";
 import { useSelector } from "react-redux";
 
-const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId, conferenceId, conferenceToggle }) => {
+const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId, conferenceId, conferenceToggle,pin,setPin }) => {
   const [conferenceName, setConferenceName] = useState("");
   const [conferenceType, setConferenceType] = useState("public");
   const [loading, setLoading] = useState(false);
@@ -99,12 +99,18 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
       const query = urlObj.searchParams.get("type"); // e.g., "public/8/y03T2a"
 
       if (path !== "/conference" || !query) {
+        setConferenceId("")
         throw new Error("Invalid URL format");
+      }
+      if(pin===""){
+        toast.error("Please enter your pin")
+        return
       }
 
       // Extract the conference ID (the "8" part)
       const parts = query.split("/");
       if (parts.length < 2 || isNaN(parts[1])) {
+        setConferenceId("")
         throw new Error("Invalid conference link");
       }
 
@@ -523,7 +529,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                               type="text"
                                               placeholder="Enter the meeting url"
                                               className="loginFormItem"
-                                              value={conferenceId}
+                                              // value={conferenceId}
                                               onChange={(e) =>
                                                 setConferenceId(e.target.value)
                                               }
@@ -531,6 +537,19 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                             {error && (
                                               <p style={{ color: "red" }}>{error}</p>
                                             )}
+                                          </div>
+                                          <label>Pin</label>
+                                          <div className="position-relative">
+                                            <i className="fa-thin fa-user" />
+                                            <input
+                                              type="number"
+                                              placeholder="Enter the meeting pin"
+                                              className="loginFormItem"
+                                              value={pin}
+                                              onChange={(e) =>
+                                                setPin(e.target.value)
+                                              }
+                                            />
                                           </div>
                                           <div>
                                             {/* <button

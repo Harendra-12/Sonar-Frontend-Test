@@ -53,6 +53,7 @@ const WebrtcWrapper = () => {
   const [conferenceId, setConferenceId] = useState("");
   const memberId = useSelector((state) => state.memberId);
   const  dummySession = useSelector((state) => state.dummySession);
+  const [pin,setPin]=useState("");
   const useWebSocketErrorHandling = (options) => {
     const retryCountRef = useRef(0);
     const connectWebSocket = (retryCount = 0) => {
@@ -258,6 +259,8 @@ const WebrtcWrapper = () => {
             setConferenceToggle={setConferenceToggle}
             conferenceId={conferenceId}
             conferenceToggle={conferenceToggle}
+            pin={pin}
+            setPin={setPin}
           />
         )}
         {/* {activePage == "videocall" && <VideoCall />} */}
@@ -470,6 +473,7 @@ const WebrtcWrapper = () => {
             activePage={activePage}
             setConferenceToggle={setConferenceToggle}
             conferenceToggle={conferenceToggle}
+            pin={pin}
           />
         ) : (
           ""

@@ -30,7 +30,6 @@ export const DummySipRegisteration = ({
   const locationState = location.state;
   const [loading, setLoading] = useState(true);
   const [confList, setConfList] = useState([]);
-  const [videoCallToggle, setVideoCallToggle] = useState(false);
   const [toggleMessages, setToggleMessages] = useState(false);
   const [participantMiniview, setParticipantMiniview] = useState(true);
   const [participantList, setParticipantList] = useState(false);
@@ -38,10 +37,11 @@ export const DummySipRegisteration = ({
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [hours, setHours] = useState(0);
-  const account = useSelector((state) => state.account);
   const dispatch = useDispatch();
   const [isScreenSharing,setIsScreenSharing]=useState(false);
   const [screenTogglehit, setScreenTogglehit] = useState(0);
+
+ 
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -65,8 +65,8 @@ export const DummySipRegisteration = ({
   }, []);
   const [currentUser, setCurrentUser] = useState({
     id: "",
-    caller_id_number: `${locationState.extension}@${locationState.domainName}`,
-    name: locationState.name,
+    caller_id_number: `${locationState.state.extension}@${locationState.state.domainName}`,
+    name: locationState.state.name,
     uuid: "item.uuid",
     talking: true,
     mute_detect: false,
@@ -152,27 +152,29 @@ export const DummySipRegisteration = ({
       } else if (connectStatus === "CONNECTED") {
         async function startConference() {
           const response = await generalPostFunction("/conference/start", {
-            id: locationState.extension_id,
-            name: locationState.name,
+            id: locationState.state.extension_id,
+            name: locationState.state.name,
             is_guest: 1,
+            pin:locationState.pin,
+            roomId: locationState.state.room_id,
           });
 
           if (response.status) {
             setLoading(false);
             const confLists = await generalGetFunction(
-              `/conference/${locationState.room_id}/details`
+              `/conference/${locationState.state.room_id}/details`
             );
             // console.log(locationState, "confListsss", JSON?.parse?.(confLists?.data));
 
             if (
               confLists.status &&
               confLists?.data !==
-                `-ERR Conference ${locationState.room_id} not found\n`
+                `-ERR Conference ${locationState.state.room_id} not found\n`
             ) {
               setConfList(
                 JSON?.parse?.(confLists?.data)
                   ?.filter(
-                    (item) => item.conference_name == locationState.room_id
+                    (item) => item.conference_name == locationState.state.room_id
                   )?.[0]
                   ?.members.map((item) => {
                     return {
@@ -181,10 +183,11 @@ export const DummySipRegisteration = ({
                       name: item.caller_id_name,
                       uuid: item.uuid,
                       talking: item.flags.talking,
-                      mute_detect: item.flags.mute_detect,
+                      mute_detect: (item.flags.mute_detect),
                       hold: item.flags.hold,
+                      isModerator:item.flags.is_moderator,
                       isYou:
-                        item.caller_id_name === locationState.name
+                        item.caller_id_name === locationState.state.name
                           ? true
                           : false,
                       deaf: false,
@@ -233,7 +236,7 @@ export const DummySipRegisteration = ({
 
             setConferenceData(
               JSON.parse(JSON.parse(event.data))["result"]["Conference-Name"] ==
-                locationState.room_id &&
+                locationState.state.room_id &&
                 JSON.parse(JSON.parse(event.data))["result"]
             );
           }
@@ -296,21 +299,23 @@ export const DummySipRegisteration = ({
             mute_detect: conferenceData["Mute-Detect"],
             hold: conferenceData["Hold"],
             isYou:
-              conferenceData["Caller-Caller-ID-Name"] === locationState.name
+              conferenceData["Caller-Caller-ID-Name"] === locationState.state.name
                 ? true
                 : false,
             deaf: false,
+            isModerator:conferenceData["Member-Type"]==="member"?false:true
           },
         ]);
 
         // Here i want to change the id on current user
         if (
           conferenceData["Channel-Presence-ID"] ===
-          `${locationState.extension}@${locationState.domainName}`
+          `${locationState.state.extension}@${locationState.state.domainName}`
         ) {
           setCurrentUser((prevState) => ({
             ...prevState,
             id: conferenceData["Member-ID"],
+            isModerator:conferenceData["Member-Type"]==="member"?false:true,
           }));
         }
       } else if (conferenceData.Action === "stop-talking") {
@@ -331,21 +336,23 @@ export const DummySipRegisteration = ({
               mute_detect: conferenceData["Mute-Detect"],
               hold: conferenceData["Hold"],
               isYou:
-                conferenceData["Caller-Caller-ID-Name"] === locationState.name
+                conferenceData["Caller-Caller-ID-Name"] === locationState.state.name
                   ? true
                   : false,
               deaf: false,
+              isModerator:conferenceData["Member-Type"]==="member"?false:true
             },
           ]);
         }
 
         if (
           conferenceData["Channel-Presence-ID"] ===
-          `${locationState.extension}@${locationState.domainName}`
+          `${locationState.state.extension}@${locationState.state.domainName}`
         ) {
           setCurrentUser((prevState) => ({
             ...prevState,
             id: conferenceData["Member-ID"],
+            isModerator:conferenceData["Member-Type"]==="member"?false:true
           }));
         }
         // Update the list with the updated values
@@ -380,21 +387,23 @@ export const DummySipRegisteration = ({
               mute_detect: conferenceData["Mute-Detect"],
               hold: conferenceData["Hold"],
               isYou:
-                conferenceData["Caller-Caller-ID-Name"] === locationState.name
+                conferenceData["Caller-Caller-ID-Name"] === locationState.state.name
                   ? true
                   : false,
               deaf: false,
+              isModerator:conferenceData["Member-Type"]==="member"?false:true
             },
           ]);
         }
 
         if (
           conferenceData["Channel-Presence-ID"] ===
-          `${locationState.extension}@${locationState.domainName}`
+          `${locationState.state.extension}@${locationState.state.domainName}`
         ) {
           setCurrentUser((prevState) => ({
             ...prevState,
             id: conferenceData["Member-ID"],
+            isModerator:conferenceData["Member-Type"]==="member"?false:true
           }));
         }
         // Update the list with the updated values
@@ -429,12 +438,13 @@ export const DummySipRegisteration = ({
         );
         if (
           conferenceData["Channel-Presence-ID"] ===
-          `${locationState.extension}@${locationState.domainName}`
+          `${locationState.state.extension}@${locationState.state.domainName}`
         ) {
           setCurrentUser((prevState) => ({
             ...prevState,
             id: conferenceData["Member-ID"],
             mute_detect: true,
+            isModerator:conferenceData["Member-Type"]==="member"?false:true
           }));
         }
       } else if (conferenceData.Action === "unmute-member") {
@@ -454,12 +464,13 @@ export const DummySipRegisteration = ({
         );
         if (
           conferenceData["Channel-Presence-ID"] ===
-          `${locationState.extension}@${locationState.domainName}`
+          `${locationState.state.extension}@${locationState.state.domainName}`
         ) {
           setCurrentUser((prevState) => ({
             ...prevState,
             id: conferenceData["Member-ID"],
             mute_detect: false,
+            isModerator:conferenceData["Member-Type"]==="member"?false:true
           }));
         }
       } else if (conferenceData.Action === "deaf-member") {
@@ -479,11 +490,12 @@ export const DummySipRegisteration = ({
         );
         if (
           conferenceData["Channel-Presence-ID"] ===
-          `${locationState.extension}@${locationState.domainName}`
+          `${locationState.state.extension}@${locationState.state.domainName}`
         ) {
           setCurrentUser((prevState) => ({
             ...prevState,
             id: conferenceData["Member-ID"],
+            isModerator:conferenceData["Member-Type"]==="member"?false:true
           }));
         }
       } else if (conferenceData.Action === "undeaf-member") {
@@ -503,17 +515,21 @@ export const DummySipRegisteration = ({
         );
         if (
           conferenceData["Channel-Presence-ID"] ===
-          `${locationState.extension}@${locationState.domainName}`
+          `${locationState.state.extension}@${locationState.state.domainName}`
         ) {
           setCurrentUser((prevState) => ({
             ...prevState,
             id: conferenceData["Member-ID"],
+            isModerator:conferenceData["Member-Type"]==="member"?false:true
           }));
         }
       } else if (
         conferenceData.Action === "del-member" ||
         conferenceData.Action === "hup-member"
       ) {
+        if(currentUser.caller_id_number === conferenceData["Channel-Presence-ID"]) {
+          navigate(-1);
+        }
         setNotification(false);
         setNotification(true);
         setNotificationData(
@@ -542,7 +558,7 @@ export const DummySipRegisteration = ({
   async function callAction(action) {
     const parsedData = {
       action: action,
-      room_id: locationState.room_id,
+      room_id: locationState.state.room_id,
       member: String(currentUser?.id),
     };
     generalPostFunction(`conference/action`, parsedData).then((res) => {
@@ -601,7 +617,7 @@ export const DummySipRegisteration = ({
   useEffect(() => {
     const parsedData = {
       action: "hup",
-      room_id: locationState.room_id,
+      room_id: locationState.state.room_id,
       member: String(localStorage.getItem("memberId")),
     };
     if(localStorage.getItem("memberId")){
@@ -610,6 +626,16 @@ export const DummySipRegisteration = ({
     console.log("local data", localStorage.getItem("memberId"));
     
   },[])
+
+  // Handle moderator action
+  async function moderatorAction(action,id) {
+    const parsedData = {
+      action: action,
+      room_id: locationState.state.room_id,
+      member: String(id),
+    };
+    generalPostFunction(`conference/action`, parsedData)
+  }
   // console.log("Current User", currentUser);
   return (
     <div className="profileDropdowns" style={{ top: "55px", right: "-40px" }}>
@@ -622,7 +648,7 @@ export const DummySipRegisteration = ({
       ) : (
         dummySession && (
           <>
-            <main className="mainContentApps">
+            <main className="mainContentApp mx-0">
               <section>
                 <div className="container-fluid">
                   <div className="row">
@@ -690,7 +716,7 @@ export const DummySipRegisteration = ({
                             toggleMessages ? "9" : "12"
                           } col-xl-${toggleMessages ? "9" : "12"} col-12" px-0`}
                         >
-                          <div className="videoBody">
+                          <div className="videoBody py-0" style={{height:"100vh"}}>
                             {notification && (
                               <div className="NotificationBell">
                                 <i className="fa-solid fa-bell"></i>
@@ -816,7 +842,7 @@ export const DummySipRegisteration = ({
                                   >
                                     <i class="fa-light fa-users"></i>
                                   </button>
-                                  <button className="appPanelButtonCallerRect">
+                                  <button className="appPanelButtonCallerRect"> 
                                     <i class="fa-light fa-hand"></i>
                                   </button>
                                 </div>
@@ -824,19 +850,11 @@ export const DummySipRegisteration = ({
                               </div>
                               {/* )} */}
                             </div>
-                            <div className="conferenceParticipantsWrapper">
+                            <div className={`conferenceParticipantsWrapper ${participantMiniview ? "" : "hidden"}`}>
                               <div className="py-2 px-3 pe-2">
                                 <button
-                                  onClick={() =>
-                                    setParticipantMiniview(!participantMiniview)
-                                  }
-                                  className="clearButton2 xl position-absolute"
-                                  style={{
-                                    left: "-20px",
-                                    top: "50%",
-                                    transform: "translateY(-50%)",
-                                    zIndex: "9",
-                                  }}
+                                  onClick={() => setParticipantMiniview(!participantMiniview)}
+                                  className="clearButton2 xl position-absolute" style={{ left: '-20px', top: '50%', transform: 'translateY(-50%)', zIndex: '9' }}
                                 >
                                   <i
                                     class={`fa-regular fa-chevron-${
@@ -878,14 +896,14 @@ export const DummySipRegisteration = ({
                                       marginBottom: "16px",
                                     }}
                                   >
-                                    Meeting Participants (3)
+                                    Meeting Participants ({confList.length})
                                   </div>
-                                  <button className="panelButton static">
+                                  {/* <button className="panelButton static">
                                     <span className="text">
                                       <i class="fa-solid fa-circle-plus"></i>{" "}
                                       Add Participant
                                     </span>
-                                  </button>
+                                  </button> */}
                                 </div>
                                 <div class="col-12 mt-3">
                                   <input
@@ -900,100 +918,25 @@ export const DummySipRegisteration = ({
                                   />
                                 </div>
                                 <ul>
-                                  <li>
-                                    <div className="d-flex align-items-center">
-                                      <div className="profileHolder">
-                                        {/* {getInitials(item.name)} */}
-                                        <i class="fa-light fa-user"></i>
+                                {confList.map((item, index) => {
+                                  return (
+                                    <li>
+                                      <div className="d-flex align-items-center">
+                                        <div className="profileHolder">
+                                          {/* {getInitials(item.name)} */}
+                                          <i class="fa-light fa-user"></i>
+                                        </div>
+                                        <span className="ms-2">{item.name}</span>
                                       </div>
-                                      <span className="ms-2">Test Name</span>
-                                    </div>
-                                    <div className="d-flex">
-                                      <button
-                                        className="clearButton2 me-2"
-                                        style={{
-                                          width: "30px",
-                                          height: "30px",
-                                          fontSize: "16px",
-                                        }}
-                                      >
-                                        <i class="fa-light fa-microphone-slash"></i>
-                                      </button>
-                                      <button
-                                        className="clearButton2"
-                                        style={{
-                                          width: "30px",
-                                          height: "30px",
-                                          fontSize: "16px",
-                                        }}
-                                      >
-                                        <i class="fa-light fa-camera-slash"></i>
-                                      </button>
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div className="d-flex align-items-center">
-                                      <div className="profileHolder">
-                                        {/* {getInitials(item.name)} */}
-                                        <i class="fa-light fa-user"></i>
+                                      <div className="d-flex">
+                                        <button onClick={() =>{if(currentUser.isModerator){moderatorAction("tmute", item.id)}}}  disabled={!currentUser.isModerator} className="clearButton2 me-2" style={{ width: '30px', height: '30px', fontSize: '16px' }}><i class={!item.mute_detect ? "fa-light fa-microphone" : "fa-light fa-microphone-slash"}></i></button>
+                                        <button onClick={() =>{if(currentUser.isModerator){moderatorAction("kick", item.id)}}} disabled={!currentUser.isModerator} className="clearButton2 danger" style={{ width: '30px', height: '30px', fontSize: '16px' }}><i class="fa-light fa-user-minus"></i></button>
                                       </div>
-                                      <span className="ms-2">Test Name</span>
-                                    </div>
-                                    <div className="d-flex">
-                                      <button
-                                        className="clearButton2 me-2"
-                                        style={{
-                                          width: "30px",
-                                          height: "30px",
-                                          fontSize: "16px",
-                                        }}
-                                      >
-                                        <i class="fa-light fa-microphone-slash"></i>
-                                      </button>
-                                      <button
-                                        className="clearButton2"
-                                        style={{
-                                          width: "30px",
-                                          height: "30px",
-                                          fontSize: "16px",
-                                        }}
-                                      >
-                                        <i class="fa-light fa-camera-slash"></i>
-                                      </button>
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div className="d-flex align-items-center">
-                                      <div className="profileHolder">
-                                        {/* {getInitials(item.name)} */}
-                                        <i class="fa-light fa-user"></i>
-                                      </div>
-                                      <span className="ms-2">Test Name</span>
-                                    </div>
-                                    <div className="d-flex">
-                                      <button
-                                        className="clearButton2 me-2"
-                                        style={{
-                                          width: "30px",
-                                          height: "30px",
-                                          fontSize: "16px",
-                                        }}
-                                      >
-                                        <i class="fa-light fa-microphone-slash"></i>
-                                      </button>
-                                      <button
-                                        className="clearButton2"
-                                        style={{
-                                          width: "30px",
-                                          height: "30px",
-                                          fontSize: "16px",
-                                        }}
-                                      >
-                                        <i class="fa-light fa-camera-slash"></i>
-                                      </button>
-                                    </div>
-                                  </li>
-                                </ul>
+                                    </li>
+                                  );
+                                })}
+                               
+                              </ul>
                                 <div
                                   className="position-absolute d-flex"
                                   style={{ bottom: 20, right: 10 }}

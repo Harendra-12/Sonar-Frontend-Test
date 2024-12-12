@@ -3,42 +3,41 @@ import { generalGetFunction, generalPostFunction } from '../../GlobalFunction/gl
 import { useNavigate } from 'react-router-dom';
 import CircularLoader from '../../Loader/CircularLoader';
 import ContentLoader from '../../Loader/ContentLoader';
+import { toast } from 'react-toastify';
 
 function ConferenceJoin() {
     // getting the value of querry type
     const urlParams = new URLSearchParams(window.location.search);
     const conferenceId = urlParams.get('type');
-    console.log("type", conferenceId);
     const [name, setName] = useState('')
+    const [pin,setPin] = useState('')
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false)
     async function joinConference() {
-        setLoading(true)
-        const parsedData = {
-            name: name,
-            room_id: conferenceId.split("/")[1],
+        if(name===""){
+            toast.error("Please enter your name")
+        }else if(pin===""){
+            toast.error("Please enter your pin")
+        }else{
+            setLoading(true)
+            const parsedData = {
+                name: name,
+                room_id: conferenceId.split("/")[1],
+                pin:pin,
+            }
+            const apiData = await generalPostFunction(`/conference/create`, parsedData);
+            if (apiData.status) {
+                setLoading(false)
+                navigate("/conference-join", {
+                    state:{state:apiData.data,pin:pin},
+                })
+    
+            } else {
+                setLoading(false)
+            }
         }
-        const apiData = await generalPostFunction(`/conference/create`, parsedData);
-        if (apiData.status) {
-            setLoading(false)
-            navigate("/conference-join", {
-                state:
-                    apiData.data
-            })
-
-        } else {
-            setLoading(false)
-        }
+       
     }
-
-    // window.addEventListener("beforeunload", (event) => {
-    //     // Custom logic before showing the confirmation
-    //     // callAction("hup");
-
-    //     // Set a generic confirmation dialog
-    //     event.preventDefault();
-    //     event.returnValue = ""; // Required for most browsers to show the dialog
-    // });
     return (
         <>
             <style>
@@ -68,6 +67,17 @@ function ConferenceJoin() {
                                                             className="loginFormItem"
                                                             value={name}
                                                             onChange={(e) => setName(e.target.value)}
+                                                        />
+                                                    </div>
+                                                    <label>Pin</label>
+                                                    <div className="position-relative">
+                                                        <i className="fa-thin fa-user" />
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Enter your pin"
+                                                            className="loginFormItem"
+                                                            value={pin}
+                                                            onChange={(e) => setPin(e.target.value)}
                                                         />
                                                     </div>
                                                     <div>
