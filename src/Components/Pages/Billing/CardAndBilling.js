@@ -638,7 +638,7 @@ function CardAndBilling() {
                                         >
                                           <div className="col-11">
                                             <button
-                                              className="accordion-button collapsed justify-content-between"
+                                              className="accordion-button collapsed justify-content-between bg-transparent"
                                               type="button"
                                               data-bs-toggle="collapse"
                                               data-bs-target={`#flush-collapse${key}`}
@@ -1185,7 +1185,7 @@ function CardAndBilling() {
                   </div>
                 </div>
                 <div className="col-10 ps-0">
-                  <h4>Warning!</h4>
+                  <h4>{disableCard ? "Warning" : "Confirmation"}!</h4>
                   {disableCard
                     ? "Are you sure you want to disable the selected card ?"
                     : "Are you sure you want to activate the selected card ?"}
@@ -1231,7 +1231,7 @@ function CardAndBilling() {
                   </div>
                 </div>
                 <div className="col-10 ps-0">
-                  <h4>Warning!</h4>
+                  <h4>{disableBilling ? "Warning" : "Confirmation"}!</h4>
                   {disableBilling
                     ? "Are you sure you want to disable the selected billing address ?"
                     : "Are you sure you want to activate the selected billing address ?"}
@@ -1279,8 +1279,8 @@ function CardAndBilling() {
                 </div>
                 <div className="col-10 ps-0">
                   <h4>Warning!</h4>
-                  "Are you sure you want to delete the selected billing address
-                  ?"
+                  Are you sure you want to delete the selected billing address
+                  ?
                   <div className="mt-2 d-flex justify-content-between">
                     <button
                       className="panelButton m-0"
@@ -1325,7 +1325,7 @@ function CardAndBilling() {
                 </div>
                 <div className="col-10 ps-0">
                   <h4>Warning!</h4>
-                  "Are you sure you want to delete the selected Card ?"
+                  Are you sure you want to delete the selected Card ?
                   <div className="mt-2 d-flex justify-content-between">
                     <button
                       className="panelButton m-0"

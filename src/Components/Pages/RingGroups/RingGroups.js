@@ -13,6 +13,7 @@ import EmptyPrompt from "../../Loader/EmptyPrompt";
 import Header from "../../CommonComponents/Header";
 import { toast } from "react-toastify";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
+import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 
 const RingGroups = () => {
   const [ringGroup, setRingGroup] = useState();
@@ -297,11 +298,7 @@ const RingGroups = () => {
                           ) : (
                             <>
                               {loading ? (
-                                <tr>
-                                  <td colSpan={99}>
-                                    <ContentLoader />
-                                  </td>
-                                </tr>
+                                <SkeletonTableLoader col={8} row={15} />
                               ) : (
                                 <>
                                   {ringGroup &&

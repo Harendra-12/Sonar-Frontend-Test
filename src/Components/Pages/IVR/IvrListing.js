@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import { set } from "react-hook-form";
+import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 
 const IvrListing = () => {
   const dispatch = useDispatch();
@@ -185,11 +186,7 @@ const IvrListing = () => {
                         </thead>
                         <tbody>
                           {loading ? (
-                            <tr>
-                              <td colSpan={99}>
-                                <ContentLoader />
-                              </td>
-                            </tr>
+                            <SkeletonTableLoader col={8} row={15} />
                           ) : (
                             <>
                               {ivr &&

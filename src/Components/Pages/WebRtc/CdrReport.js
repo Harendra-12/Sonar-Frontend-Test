@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
+import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 
 function CdrReport() {
   const dispatch = useDispatch();
@@ -561,11 +562,7 @@ function CdrReport() {
                       </thead>
                       <tbody>
                         {loading ? (
-                          <tr>
-                            <td colSpan={99}>
-                              <ContentLoader />
-                            </td>
-                          </tr>
+                          (<SkeletonTableLoader col={12} row={15} />)
                         ) : (
                           <>
                             {cdr?.data &&

@@ -12,6 +12,7 @@ import ContentLoader from "../../Loader/ContentLoader";
 import Header from "../../CommonComponents/Header";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import { toast } from "react-toastify";
+import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 
 const Extensions = () => {
   const navigate = useNavigate();
@@ -229,13 +230,7 @@ const Extensions = () => {
                             </tr>
                           ) : (
                             <>
-                              {loading ? (
-                                <tr>
-                                  <td colSpan={99}>
-                                    <ContentLoader />
-                                  </td>
-                                </tr>
-                              ) : (
+                              {loading ? (<SkeletonTableLoader col={9} row={15} />) : (
                                 ""
                               )}
                               {extension &&

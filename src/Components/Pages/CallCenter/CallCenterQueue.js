@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
+import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 
 function CallCenterQueue() {
   const navigate = useNavigate();
@@ -348,11 +349,7 @@ function CallCenterQueue() {
                           ) : (
                             <>
                               {loading ? (
-                                <tr>
-                                  <td colSpan={99}>
-                                    <ContentLoader />
-                                  </td>
-                                </tr>
+                                <SkeletonTableLoader col={8} row={15} />
                               ) : (
                                 <>
                                   {callCenter &&

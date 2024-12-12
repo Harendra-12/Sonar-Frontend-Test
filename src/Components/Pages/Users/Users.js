@@ -14,6 +14,7 @@ import PaginationComponent from "../../CommonComponents/PaginationComponent";
 
 import { toast } from "react-toastify";
 import { set } from "react-hook-form";
+import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 const Users = () => {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
@@ -269,11 +270,7 @@ const Users = () => {
                             </tr>
                           ) : // </div>
                             loading ? (
-                              <tr>
-                                <td colSpan={99}>
-                                  <ContentLoader />
-                                </td>
-                              </tr>
+                              <SkeletonTableLoader col={8} row={15} />
                             ) : (
                               <>
                                 {user &&

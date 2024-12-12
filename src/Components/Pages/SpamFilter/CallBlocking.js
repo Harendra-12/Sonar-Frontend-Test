@@ -13,6 +13,7 @@ import EmptyPrompt from "../../Loader/EmptyPrompt";
 import Header from "../../CommonComponents/Header";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import { toast } from "react-toastify";
+import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 
 const CallBlocking = () => {
     const [callBlock, setCallBlock] = useState();
@@ -139,7 +140,7 @@ const CallBlocking = () => {
                                                         <i class="fa-solid fa-plus"></i>
                                                     </span>
                                                 </div>
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -177,11 +178,7 @@ const CallBlocking = () => {
                                                 </thead>
                                                 <tbody>
                                                     {loading ? (
-                                                        <tr>
-                                                            <td colSpan={99}>
-                                                                <ContentLoader />
-                                                            </td>
-                                                        </tr>
+                                                        <SkeletonTableLoader col={8} row={15} />
                                                     ) : (
                                                         <>
                                                             {callBlock &&

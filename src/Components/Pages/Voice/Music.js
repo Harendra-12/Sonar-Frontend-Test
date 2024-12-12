@@ -13,6 +13,7 @@ import {
 import ContentLoader from "../../Loader/ContentLoader";
 import { useSelector, useDispatch } from "react-redux";
 import MusicPlayer from "../../CommonComponents/MusicPlayer";
+import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 
 function Music() {
   const [music, setMusic] = useState();
@@ -220,56 +221,55 @@ function Music() {
                       </div>
                     </div>
                     <div className="tableContainer">
-                      {loading ? (
-                        <ContentLoader />
-                      ) : (
-                        <table>
-                          <thead>
-                            <tr>
-                              <th>Music</th>
-                              <th>Type</th>
-                              <th>Added Date</th>
-                              <th>Play</th>
-                              <th>Delete</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {music &&
-                              music.map((item) => {
-                                return (
-                                  <tr>
-                                    <td>{item.name}</td>
-                                    <td>{item.type}</td>
-                                    <td>{item.created_at.split("T")[0]}</td>
-                                    <td>
-                                      <MusicPlayer
-                                        audioSrc={item.path}
-                                        isPlaying={currentPlaying === item.path}
-                                        onPlay={() =>
-                                          setCurrentPlaying(item.path)
-                                        }
-                                        onStop={() => setCurrentPlaying(null)}
-                                      />
-                                    </td>
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Music</th>
+                            <th>Type</th>
+                            <th>Added Date</th>
+                            <th>Play</th>
+                            <th>Delete</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {loading ? (<SkeletonTableLoader col={5} row={15} />) :
+                            (<>
+                              {music &&
+                                music.map((item) => {
+                                  return (
+                                    <tr>
+                                      <td>{item.name}</td>
+                                      <td>{item.type}</td>
+                                      <td>{item.created_at.split("T")[0]}</td>
+                                      <td>
+                                        <MusicPlayer
+                                          audioSrc={item.path}
+                                          isPlaying={currentPlaying === item.path}
+                                          onPlay={() =>
+                                            setCurrentPlaying(item.path)
+                                          }
+                                          onStop={() => setCurrentPlaying(null)}
+                                        />
+                                      </td>
 
-                                    <td>
-                                      <button
-                                        className="tableButton delete"
-                                        onClick={() => {
-                                          // handleDelete(item.id)
-                                          setDeletePopup(true);
-                                          setDeleteId(item.id);
-                                        }}
-                                      >
-                                        <i className="fa-solid fa-trash"></i>
-                                      </button>
-                                    </td>
-                                  </tr>
-                                );
-                              })}
-                          </tbody>
-                        </table>
-                      )}
+                                      <td>
+                                        <button
+                                          className="tableButton delete"
+                                          onClick={() => {
+                                            // handleDelete(item.id)
+                                            setDeletePopup(true);
+                                            setDeleteId(item.id);
+                                          }}
+                                        >
+                                          <i className="fa-solid fa-trash"></i>
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                            </>)}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>

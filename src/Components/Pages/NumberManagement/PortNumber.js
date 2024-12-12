@@ -11,6 +11,8 @@ import ContentLoader from "../../Loader/ContentLoader";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
+import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+import EmptyPrompt from "../../Loader/EmptyPrompt";
 
 function PortNumber() {
   const navigate = useNavigate();
@@ -24,7 +26,7 @@ function PortNumber() {
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   useEffect(() => {
     if (portsAll) {
-      setLoading(false);
+      // setLoading(false);
       setPortData(portsAll);
       async function getData() {
         const apiData = await generalGetFunction(`/ports/all`);
@@ -194,39 +196,38 @@ function PortNumber() {
                         </div>
                       </div>
                       <div className="tableContainer">
-                        {loading ? (
-                          <ContentLoader />
-                        ) : (
-                          <table>
-                            <thead>
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>Id</th>
+                              <th>Name</th>
+                              <th>Company Name</th>
+                              <th>Billing Address</th>
+                              <th>Pin</th>
+                              <th>Carrier</th>
+                              <th>Account no.</th>
+                              <th>Phone no.</th>
+                              <th>Edit</th>
+                              <th>Delete</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {noPermissionToRead ? (
                               <tr>
-                                <th>Id</th>
-                                <th>Name</th>
-                                <th>Company Name</th>
-                                <th>Billing Address</th>
-                                <th>Pin</th>
-                                <th>Carrier</th>
-                                <th>Account no.</th>
-                                <th>Phone no.</th>
-                                <th>Edit</th>
-                                <th>Delete</th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td> No Permission</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                               </tr>
-                            </thead>
-                            <tbody>
-                              {noPermissionToRead ? (
-                                <tr>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td> No Permission</td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                </tr>
-                              ) : (
+                            ) : loading ?
+                              (<SkeletonTableLoader col={10} row={15} />)
+                              : (
                                 <>
                                   {portData.length > 0 &&
                                     portData.map((item) => {
@@ -324,11 +325,20 @@ function PortNumber() {
                                         </tr>
                                       );
                                     })}
+                                  {portData && Object.keys(portData).length === 0 ? (
+                                    <td colSpan={99}>
+                                      <EmptyPrompt
+                                        name="Port Number"
+                                        link="port-number-add"
+                                      />
+                                    </td>
+                                  ) : (
+                                    ""
+                                  )}
                                 </>
                               )}
-                            </tbody>
-                          </table>
-                        )}
+                          </tbody>
+                        </table>
                       </div>
                     </div>
                   </div>

@@ -9,6 +9,7 @@ import Header from "../../CommonComponents/Header";
 import ContentLoader from "../../Loader/ContentLoader";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import { useDispatch, useSelector } from "react-redux";
+import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 
 function CardTransactionsList() {
   const [transaction, setTransaction] = useState();
@@ -146,76 +147,75 @@ function CardTransactionsList() {
                     style={{ overflow: "auto", padding: "25px 20px 0" }}
                   >
                     <div className="tableContainer">
-                      {loading ? (
-                        <ContentLoader />
-                      ) : (
-                        <table>
-                          <thead>
-                            <tr>
-                              <th>Card Holder's Name</th>
-                              <th>Card Number</th>
-                              <th>Payment Date</th>
-                              <th>Transaction ID</th>
-                              <th>Transaction Amount</th>
-                              <th>Description</th>
-                              <th>Type</th>
-                              <th>Download</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {transaction &&
-                              transaction.data.map((item) => {
-                                return (
-                                  <tr>
-                                    <td>{item.payment_details.name}</td>
-                                    <td>{item.payment_details.card_number}</td>
-                                    <td>
-                                      {item.transaction_date.split(" ")[0]}
-                                    </td>
-                                    <td>{item.transaction_id}</td>
-                                    <td>
-                                      <label
-                                        className={
-                                          item.transaction_type === "credit"
-                                            ? "tableLabel success"
-                                            : "tableLabel fail"
-                                        }
-                                      >
-                                        ${item.amount_subtotal}
-                                      </label>
-                                    </td>
-                                    <td>{item.description}</td>
-                                    <td>
-                                      <i
-                                        className={
-                                          item.transaction_type === "credit"
-                                            ? "fa-duotone fa-circle-up text-success me-1"
-                                            : "fa-duotone fa-circle-down text-danger me-1"
-                                        }
-                                      ></i>{" "}
-                                      {item.transaction_type === "credit"
-                                        ? "Credit"
-                                        : "Debit"}
-                                    </td>
-                                    <td>
-                                      <button
-                                        className="tableButton"
-                                        onClick={() =>
-                                          downloadImage(
-                                            item.invoice_url,
-                                            `${item.description}invoice`
-                                          )
-                                        }
-                                      >
-                                        <i className="fa-solid fa-download"></i>
-                                      </button>
-                                    </td>
-                                  </tr>
-                                );
-                              })}
-                          </tbody>
-                        </table>
-                      )}
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Card Holder's Name</th>
+                            <th>Card Number</th>
+                            <th>Payment Date</th>
+                            <th>Transaction ID</th>
+                            <th>Transaction Amount</th>
+                            <th>Description</th>
+                            <th>Type</th>
+                            <th>Download</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {loading ? (<SkeletonTableLoader col={8} row={15} />) :
+                            (<>
+                              {transaction &&
+                                transaction.data.map((item) => {
+                                  return (
+                                    <tr>
+                                      <td>{item.payment_details.name}</td>
+                                      <td>{item.payment_details.card_number}</td>
+                                      <td>
+                                        {item.transaction_date.split(" ")[0]}
+                                      </td>
+                                      <td>{item.transaction_id}</td>
+                                      <td>
+                                        <label
+                                          className={
+                                            item.transaction_type === "credit"
+                                              ? "tableLabel success"
+                                              : "tableLabel fail"
+                                          }
+                                        >
+                                          ${item.amount_subtotal}
+                                        </label>
+                                      </td>
+                                      <td>{item.description}</td>
+                                      <td>
+                                        <i
+                                          className={
+                                            item.transaction_type === "credit"
+                                              ? "fa-duotone fa-circle-up text-success me-1"
+                                              : "fa-duotone fa-circle-down text-danger me-1"
+                                          }
+                                        ></i>{" "}
+                                        {item.transaction_type === "credit"
+                                          ? "Credit"
+                                          : "Debit"}
+                                      </td>
+                                      <td>
+                                        <button
+                                          className="tableButton"
+                                          onClick={() =>
+                                            downloadImage(
+                                              item.invoice_url,
+                                              `${item.description}invoice`
+                                            )
+                                          }
+                                        >
+                                          <i className="fa-solid fa-download"></i>
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                            </>)}
+                        </tbody>
+                      </table>
                     </div>
                     <div className="tableHeader mb-3">
                       {transaction && transaction.data.length > 0 ? (
