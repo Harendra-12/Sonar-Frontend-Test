@@ -568,7 +568,7 @@ const RingGroupEdit = () => {
             </div>
           </div> */}
         </div>
-        <div className="col-xl-12" style={{ overflow: "auto" }}>
+        <>
           {loading ? (
             <div colSpan={99}>
               <CircularLoader />
@@ -578,7 +578,7 @@ const RingGroupEdit = () => {
           )}
           <div className="overviewTableWrapper">
             <div className="overviewTableChild">
-              <div className="d-flex flex-wrap">
+              <div className="d-flex flex-wrap" style={{ position: 'sticky', top: '0', zIndex: '9' }}>
                 <div className="col-12">
                   <div className="heading">
                     <div className="content">
@@ -1417,7 +1417,7 @@ const RingGroupEdit = () => {
               </div>
             </div>
           </div>
-        </div>
+        </>
       </section>
       {/* <ToastContainer
         position="bottom-right"
