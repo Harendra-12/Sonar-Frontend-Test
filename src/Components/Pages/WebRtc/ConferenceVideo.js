@@ -43,7 +43,7 @@ function ConferenceVideo({id,setIsScreenSharing,isScreenSharing,screenTogglehit}
 
           if (includeVideo) {
             const localVideoStream = new MediaStream();
-            const pc = session.sessionDescriptionHandler.peerConnection;
+            const pc = session.sessionDescriptionHandler?.peerConnection;
 
             pc.getSenders().forEach((sender) => {
               if (sender.track) {
@@ -119,7 +119,7 @@ const toggleScreenShare = async () => {
         audio: true,
       });
 
-      session.sessionDescriptionHandler.peerConnection?.getSenders()
+      session.sessionDescriptionHandler?.peerConnection?.getSenders()
         .forEach((sender) => {
             console.log("sender",sender);
             
@@ -144,6 +144,9 @@ useEffect(()=>{
     }
   
 },[screenTogglehit])
+
+console.log("remoteVideoRef",remoteVideoRef);
+
 
 return (
     <>

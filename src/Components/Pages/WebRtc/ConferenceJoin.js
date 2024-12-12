@@ -14,30 +14,46 @@ function ConferenceJoin() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false)
     async function joinConference() {
-        if(name===""){
-            toast.error("Please enter your name")
-        }else if(pin===""){
-            toast.error("Please enter your pin")
-        }else{
-            setLoading(true)
-            const parsedData = {
-                name: name,
-                room_id: conferenceId.split("/")[1],
-                pin:pin,
-            }
-            const apiData = await generalPostFunction(`/conference/create`, parsedData);
-            if (apiData.status) {
-                setLoading(false)
-                navigate("/conference-join", {
-                    state:{state:apiData.data,pin:pin},
-                })
+        if (name === "") {
+            toast.error("Please enter your name");
+        } else if (pin === "") {
+            toast.error("Please enter your pin");
+        } else {
+           
     
-            } else {
-                setLoading(false)
+            // Request microphone access
+            try {
+                const mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    
+                // Proceed only if microphone access is granted
+                if (mediaStream) {
+                    setLoading(true);
+                    const parsedData = {
+                        name: name,
+                        room_id: conferenceId.split("/")[1],
+                        pin: pin,
+                    };
+                    const apiData = await generalPostFunction(`/conference/create`, parsedData);
+                    if (apiData.status) {
+                        setLoading(false);
+                        navigate("/conference-join", {
+                            state: { state: apiData.data, pin: pin },
+                        });
+                    } else {
+                        setLoading(false);
+                        toast.error("Failed to join the conference");
+                    }
+                } else {
+                    setLoading(false);
+                    toast.error("Microphone access denied. Please grant microphone access to proceed.");
+                }
+            } catch (error) {
+                setLoading(false);
+                toast.error("Failed to access microphone. Please ensure your microphone is working and try again.");
             }
         }
-       
     }
+    
     return (
         <>
             <style>
