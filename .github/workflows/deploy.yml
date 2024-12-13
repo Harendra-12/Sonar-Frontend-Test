@@ -1,0 +1,40 @@
+name: DeployJS
+
+on:
+  push:
+    branches:
+      - Developement  # Adjust this to your preferred branch (e.g., 'dev', 'staging', etc.)
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: SSH into Debian Server and Build React App
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+            # Navigate to the directory where the React app is located
+            cd ${{ secrets.DEPLOY_PATH }}
+
+            # Pull the latest changes from the Git repository
+            git pull origin Developement  # Replace 'main' with your branch if needed
+
+            # Install any new dependencies (if required)
+            # npm install  # Uncomment if you want to run npm install before the build
+
+            # Build the React app
+            npm run build
+
+            # Restart Apache to serve the new build (optional)
+            sudo systemctl reload apache2
+            
+            exit
+          EOF
