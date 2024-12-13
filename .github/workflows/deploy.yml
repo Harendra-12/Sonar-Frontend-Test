@@ -27,13 +27,13 @@ jobs:
              # Check if the directory is a Git repository
               if [ -d ".git" ]; then
                 echo "Git repository found. Pulling latest changes."
-                git config --global --add safe.directory ${{ secrets.DEPLOY_PATH }}
-                git pull origin Developement
+                sudo git config --global --add safe.directory ${{ secrets.DEPLOY_PATH }}
+                sudo git pull origin Developement
               else
                 echo "Git repository not found. Cloning repository."
-                git clone https://github.com/AngelPbx/UcaaS-Frontend.git . 
+                sudo git clone https://github.com/AngelPbx/UcaaS-Frontend.git . 
                 # Replace <YOUR_GIT_REPO_URL> with your actual repository URL
-                git checkout Develoepment
+                sudo git checkout Develoepment
               fi
 
             # Ensure correct ownership and permissions (if passwordless sudo is configured)
