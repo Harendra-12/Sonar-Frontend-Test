@@ -11,6 +11,7 @@ import AddNewContactPopup from "./AddNewContactPopup";
 import { toast } from "react-toastify";
 import ContentLoader from "../../Loader/ContentLoader";
 import { useNavigate } from "react-router-dom";
+import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 
 function AllContact({
   allContact,
@@ -160,11 +161,12 @@ function AllContact({
                         onChange={() => featureUnderdevelopment()}
                       />
                     </div>
-                    <div className="col-auto mx-2">
+                    <div className="col-auto ms-2">
                       <button className="clearButton2 xl" effect="ripple" onClick={() => featureUnderdevelopment()}>
                         <i className="fa-regular fa-bell" />
                       </button>
                     </div>
+                    <DarkModeToggle marginLeft={"2"} />
                     <div className="col-auto">
                       <div class="dropdown">
                         <div

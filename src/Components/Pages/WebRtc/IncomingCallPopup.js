@@ -334,7 +334,7 @@ function IncomingCallPopup({
         <div id="dialPad" className="inCall">
           <div className="container h-100">
             <div className="row align-items-center justify-content-center h-100">
-              <div className="col-xl-5 col-md-6 col-11 dialPadContainer p-2">
+              <div className="col-xxl-3 col-xl-4 col-md-6 col-11 dialPadContainer p-2">
                 <div className="d-flex justify-content-end pt-1 pb-1 px-2">
                   {/* <div>
                   <i className="fa-light fa-address-book fs-5" />

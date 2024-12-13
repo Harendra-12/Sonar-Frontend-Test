@@ -4,6 +4,7 @@ import "../assets/css/style.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   backToTop,
+  featureUnderdevelopment,
   generalGetFunction,
 } from "../GlobalFunction/globalFunction";
 import { NavLink } from "react-router-dom";
@@ -114,15 +115,14 @@ function Navbar() {
                       <div className="iconHolder">
                         <i class="fa-regular fa-user"></i>
                       </div>
-                      <div className="itemTitle">Account Details</div>
+                      <div className="itemTitle">Accounts</div>
                     </button>
                     <div
                       id="collapse8"
-                      className={`accordion-collapse collapse ${
-                        isChildActive(["/my-profile", "/change-password"])
-                          ? "show"
-                          : ""
-                      }`}
+                      className={`accordion-collapse collapse ${isChildActive(["/my-profile", "/change-password", "/admin/package", "/users", "/users-edit", "/users-add", "/roles", "/master"])
+                        ? "show"
+                        : ""
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -137,7 +137,7 @@ function Navbar() {
                                 {/* <div className="iconHolder">
                                   <i class="fa-regular fa-user"></i>
                                 </div> */}
-                                <div className="itemTitle">My Profile</div>
+                                <div className="itemTitle">Company Details</div>
                               </NavLink>
                             </li>
                           )}
@@ -154,6 +154,82 @@ function Navbar() {
                               <div className="itemTitle">Details</div>
                             </NavLink>
                           </li> */}
+
+                          {account?.permissions?.includes(440) ||
+                            account?.permissions?.includes(442) ? (
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/users"
+                                onClick={backToTop}
+                                type="button"
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    ["/users-add", "/users-edit"].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                {/* <div className="iconHolder">
+                                  <i class="fa-regular fa-users-gear"></i>
+                                </div> */}
+                                <div className="itemTitle">Users</div>
+                              </NavLink>
+                            </li>
+                          ) : null}
+
+                          {account?.permissions?.includes(350) ||
+                            account?.permissions?.includes(352) ? (
+                            <li className="tabItem">
+                              <NavLink
+                                to="/roles"
+                                onClick={backToTop}
+                                className="nav-link"
+                              >
+                                {/* <div className="iconHolder">
+                                  <i class="fa-regular fa-arrow-up-big-small"></i>
+                                </div> */}
+                                <div className="itemTitle">
+                                  Roles and Permisson
+                                </div>
+                              </NavLink>
+                            </li>
+                          ) : null}
+
+                          {userType === "SupreAdmin" ? (
+                            <li className="tabItem">
+                              <NavLink
+                                to="/admin/package"
+                                onClick={backToTop}
+                                className="nav-link"
+                              >
+                                {/* <div className="iconHolder">
+                                  <i class="fa-regular fa-cube"></i>
+                                </div> */}
+                                <div className="itemTitle">Manage Services</div>
+                              </NavLink>
+                            </li>
+                          ) : (
+                            ""
+                          )}
+
+                          {userType === "SupreAdmin" ? (
+                            <li className="tabItem">
+                              <NavLink
+                                to="/master"
+                                onClick={backToTop}
+                                className="nav-link"
+                              >
+                                {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-swap-arrows" />
+                                </div> */}
+                                <div className="itemTitle">Master</div>
+                              </NavLink>
+                            </li>
+                          ) : (
+                            ""
+                          )}
 
                           <li className="tabItem">
                             <NavLink
@@ -175,129 +251,80 @@ function Navbar() {
                   <li className="">
                     <button
                       data-bs-toggle="collapse"
-                      data-bs-target="#collapse5"
+                      data-bs-target="#collapse10"
                       aria-expanded={
                         isChildActive([
-                          "/master",
-                          "/roles",
-                          "/mail-settings",
-                          "/admin/package",
+                          "/get-did",
+
+                          "/port-number",
+                          "/did-config",
+                          "/did-add",
+                          "/port-number-add",
+                          "/port-number-edit",
                         ])
                           ? "true"
                           : "false"
                       }
-                      aria-controls="collapse5"
+                      aria-controls="collapse10"
                     >
                       <div className="iconHolder">
-                        <i class="fa-regular fa-sliders"></i>
+                        <i class="fa-regular fa-hashtag"></i>
                       </div>
-                      <div className="itemTitle">Setting</div>
+                      <div className="itemTitle">Number Management</div>
                     </button>
                     <div
-                      id="collapse5"
-                      className={`accordion-collapse collapse ${
-                        isChildActive([
-                          "/master",
-                          "/roles",
-                          "/mail-settings",
-                          "/admin/package",
-                        ])
-                          ? "show"
-                          : ""
-                      }`}
+                      id="collapse10"
+                      className={`accordion-collapse collapse ${isChildActive([
+                        "/get-did",
+                        "/port-number",
+                        "/port-number-add",
+                        "/port-number-edit",
+                      ])
+                        ? "show"
+                        : ""
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
-                          {userType === "SupreAdmin" ? (
-                            <li className="tabItem">
-                              <NavLink
-                                to="/master"
-                                onClick={backToTop}
-                                className="nav-link"
-                              >
-                                {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-swap-arrows" />
-                                </div> */}
-                                <div className="itemTitle">Master</div>
-                              </NavLink>
-                            </li>
-                          ) : (
-                            ""
-                          )}
-
-                          {account?.permissions?.includes(350) ||
-                          account?.permissions?.includes(352) ? (
-                            <li className="tabItem">
-                              <NavLink
-                                to="/roles"
-                                onClick={backToTop}
-                                className="nav-link"
-                              >
-                                {/* <div className="iconHolder">
-                                  <i class="fa-regular fa-arrow-up-big-small"></i>
-                                </div> */}
-                                <div className="itemTitle">
-                                  Roles and Permisson
-                                </div>
-                              </NavLink>
-                            </li>
-                          ) : null}
-
-                          {/* <li className="tabItem" >
+                          <li className="tabItem">
                             <NavLink
-                              to="/roles1"
+                              to="/get-did"
                               onClick={backToTop}
                               className="nav-link"
                             >
-                              <div className="iconHolder">
-                                <i class="fa-regular fa-laptop-mobile"></i>
-                              </div>
-                              <div className="itemTitle">
-                                Device Provisioning
-                              </div>
+                              {/* <div className="iconHolder">
+                                <i className="fa-regular fa-swap-arrows" />
+                              </div> */}
+                              <div className="itemTitle">Get DID</div>
                             </NavLink>
-                          </li> */}
-                          {/* {account?.permissions?.includes(248) ||
-                          account?.permissions?.includes(250) ? (
-                            <li className="tabItem ">
+                          </li>
+
+                          {account?.permissions?.includes(308) ||
+                            account?.permissions?.includes(310) ? (
+                            <li className="tabItem">
                               <NavLink
-                                to="/mail-settings"
+                                to="/port-number"
                                 onClick={backToTop}
-                                type="button"
                                 className={({ isActive }) =>
                                   isActive ||
-                                  [
-                                    "/mail-settings-add",
-                                    "/mail-settings-edit",
-                                  ].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    [
+                                      "/port-number-add",
+                                      "/port-number-edit",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
                               >
-                                <div className="itemTitle">Mail Settings</div>
-                              </NavLink>
-                            </li>
-                          ) : null} */}
-
-                          {userType === "SupreAdmin" ? (
-                            <li className="tabItem">
-                              <NavLink
-                                to="/admin/package"
-                                onClick={backToTop}
-                                className="nav-link"
-                              >
                                 {/* <div className="iconHolder">
-                                  <i class="fa-regular fa-cube"></i>
+                                  <i class="fa-regular fa-hashtag-lock"></i>
                                 </div> */}
-                                <div className="itemTitle">Packages</div>
+                                <div className="itemTitle">Port number</div>
                               </NavLink>
                             </li>
-                          ) : (
-                            ""
-                          )}
+                          ) : null}
                         </ul>
                       </div>
                     </div>
@@ -316,6 +343,18 @@ function Navbar() {
                           "/extensions-edit",
                           "/extensions-add",
                           "/device-provisioning-add",
+                          "device-provisioning-edit",
+                          "/did-listing",
+                          "/did-config",
+                          "/did-add",
+                          "/ring-groups",
+                          "/ring-groups-add",
+                          "/ring-groups-edit",
+                          "/cal-center-queue",
+                          "/cal-center-queue-add",
+                          "/cal-center-queue-edit",
+                          "/call-blocking",
+                          "/call-blocking-add"
                         ])
                           ? "true"
                           : "false"
@@ -325,22 +364,33 @@ function Navbar() {
                       <div className="iconHolder">
                         <i class="fa-regular fa-phone-intercom"></i>
                       </div>
-                      <div className="itemTitle">Phone System</div>
+                      <div className="itemTitle">PBX</div>
                     </button>
                     <div
                       id="collapseOne"
-                      className={`accordion-collapse collapse ${
-                        isChildActive([
-                          "/phone-dashboard",
-                          "/extensions",
-                          "/voice-music",
-                          "/extensions-edit",
-                          "/extensions-add",
-                          "/device-provisioning-add",
-                        ])
-                          ? "show"
-                          : ""
-                      }`}
+                      className={`accordion-collapse collapse ${isChildActive([
+                        "/phone-dashboard",
+                        "/extensions",
+                        "/voice-music",
+                        "/extensions-edit",
+                        "/extensions-add",
+                        "/device-provisioning-add",
+                        "device-provisioning-edit",
+                        "/did-listing",
+                        "/did-config",
+                        "/did-add",
+                        "/ring-groups",
+                        "/ring-groups-add",
+                        "/ring-groups-edit",
+                        "/cal-center-queue",
+                        "/cal-center-queue-add",
+                        "/cal-center-queue-edit",
+                        "/call-blocking",
+                        "/call-blocking-add"
+                      ])
+                        ? "show"
+                        : ""
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -350,20 +400,39 @@ function Navbar() {
                               {/* <div className="iconHolder">
                                 <i className="fa-regular fa-regular fa-list-dropdown"></i>
                               </div> */}
-                              <div className="itemTitle">Phone Dashboard</div>
+                              <div className="itemTitle">Call Dashboard</div>
+                            </NavLink>
+                          </li>
+                          <li className="tabItem">
+                            <NavLink
+                              to="/did-listing"
+                              onClick={backToTop}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/did-add", "/did-config"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                <i class="fa-regular fa-hashtag"></i>
+                              </div> */}
+                              <div className="itemTitle">Number Configuration</div>
                             </NavLink>
                           </li>
                           {account?.permissions?.includes(176) ||
-                          account?.permissions?.includes(178) ? (
+                            account?.permissions?.includes(178) ? (
                             <li className="tabItem ">
                               <NavLink
                                 to="/extensions"
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
-                                    (path) =>
-                                      window.location.pathname.includes(path)
-                                  )
+                                    ["/extensions-add", "/extensions-edit"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -375,6 +444,133 @@ function Navbar() {
                               </NavLink>
                             </li>
                           ) : null}
+
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Agents</div>
+                            </a>
+                          </li>
+
+                          {account?.permissions?.includes(344) ||
+                            account?.permissions?.includes(346) ? (
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/ring-groups"
+                                onClick={backToTop}
+                                type="button"
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    ["/ring-groups-add", "/ring-groups-edit"].some(
+                                      (path) => window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                {/* <div className="iconHolder">
+                                  <i class="fa-regular fa-screen-users"></i>
+                                </div> */}
+                                <div className="itemTitle">Ring Group</div>
+                              </NavLink>
+                            </li>
+                          ) : null}
+
+                          {account?.permissions?.includes(62) ||
+                            account?.permissions?.includes(64) ? (
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/cal-center-queue"
+                                onClick={backToTop}
+                                type="button"
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/cal-center-queue-add",
+                                      "/cal-center-queue-edit",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                {/* <div className="iconHolder">
+                                  <i class="fa-regular fa-users-rectangle"></i>
+                                </div> */}
+                                <div className="itemTitle">Call Center</div>
+                              </NavLink>
+                            </li>
+                          ) : null}
+
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Meeting Rooms</div>
+                            </a>
+                          </li>
+
+                          <li className="tabItem ">
+                            <NavLink
+                              to="/call-blocking"
+                              onClick={backToTop}
+                              type="button"
+                            >
+                              {/* <div className="iconHolder">
+                                <i class="fa-regular fa-block-brick-fire"></i>
+                              </div> */}
+                              <div className="itemTitle">Call Blocking</div>
+                            </NavLink>
+                          </li>
+
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Voice Mail</div>
+                            </a>
+                          </li>
 
                           <li className="tabItem ">
                             <NavLink to="/voice-music">
@@ -396,6 +592,297 @@ function Navbar() {
                       </div>
                     </div>
                   </li>
+
+                  <li className="">
+                    <button
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapse6"
+                      aria-expanded={
+                        isChildActive([
+                          "/get-did",
+
+                          "/port-number",
+                          "/did-config",
+                          "/did-add",
+                          "/port-number-add",
+                          "/port-number-edit",
+                        ])
+                          ? "true"
+                          : "false"
+                      }
+                      aria-controls="collapse6"
+                    >
+                      <div className="iconHolder">
+                        <i class="fa-regular fa-grid"></i>
+                      </div>
+                      <div className="itemTitle">Dialer</div>
+                    </button>
+                    <div
+                      id="collapse6"
+                      className={`accordion-collapse collapse ${isChildActive([
+                      ])
+                        ? "show"
+                        : ""
+                        }`}
+                      data-bs-parent="#sidenNav"
+                    >
+                      <div className="menuWrapper">
+                        <ul className="tabMenu">
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Dashboard</div>
+                            </a>
+                          </li>
+
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Campaign</div>
+                            </a>
+                          </li>
+
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Leads</div>
+                            </a>
+                          </li>
+
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Agents</div>
+                            </a>
+                          </li>
+
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Call Desposition</div>
+                            </a>
+                          </li>
+
+                        </ul>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li className="">
+                    <button
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapse7"
+                      aria-expanded={
+                        isChildActive([
+                          "/get-did",
+
+                          "/port-number",
+                          "/did-config",
+                          "/did-add",
+                          "/port-number-add",
+                          "/port-number-edit",
+                        ])
+                          ? "true"
+                          : "false"
+                      }
+                      aria-controls="collapse7"
+                    >
+                      <div className="iconHolder">
+                        <i class="fa-regular fa-chart-waterfall"></i>
+                      </div>
+                      <div className="itemTitle">Call Tracker</div>
+                    </button>
+                    <div
+                      id="collapse7"
+                      className={`accordion-collapse collapse ${isChildActive([
+                      ])
+                        ? "show"
+                        : ""
+                        }`}
+                      data-bs-parent="#sidenNav"
+                    >
+                      <div className="menuWrapper">
+                        <ul className="tabMenu">
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Dashboard</div>
+                            </a>
+                          </li>
+
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Number Configuration</div>
+                            </a>
+                          </li>
+
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Campaign</div>
+                            </a>
+                          </li>
+
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Buyers</div>
+                            </a>
+                          </li>
+
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Source</div>
+                            </a>
+                          </li>
+
+                        </ul>
+                      </div>
+                    </div>
+                  </li>
+
                   {/* <li className="">
                     <button
                       data-bs-toggle="collapse"
@@ -468,6 +955,100 @@ function Navbar() {
                           <div className="itemTitle">Outbound Routes</div>
                         </a>
                       </li> */}
+
+                  {/* <li className="dashboard ">
+                    <NavLink
+                      to="/variable"
+                      onClick={backToTop}
+                      type="button"
+                      
+                    >
+                      <div className="itemTitle">Variable</div>
+                    </NavLink>
+                  </li> */}
+                  {account?.permissions?.includes(230) ||
+                    account?.permissions?.includes(232) ? (
+                    <li className="dashboard ">
+                      <NavLink
+                        to="/ivr"
+                        onClick={backToTop}
+                        type="button"
+                        className={({ isActive }) =>
+                          isActive ||
+                            ["/ivr-add", "/ivr-edit"].some((path) =>
+                              window.location.pathname.includes(path)
+                            )
+                            ? "nav-link active"
+                            : "nav-link"
+                        }
+                      >
+                        <div className="iconHolder">
+                          <i class="fa-regular fa-microphone-stand"></i>
+                        </div>
+                        <div className="itemTitle">Interactive Voice Response (IVR)</div>
+                      </NavLink>
+                    </li>
+                  ) : null}
+
+                  {/* <li className="dashboard ">
+                    <NavLink
+                      to="/device-provisioning"
+                      onClick={backToTop}
+                      type="button"
+                      
+                    >
+                      <div className="itemTitle">Device Provisioning</div>
+                    </NavLink>
+                  </li> */}
+                  {/* <li className="dashboard ">
+                    <NavLink
+                      to="/call-blocking"
+                      onClick={backToTop}
+                      type="button"
+                    >
+                      <div className="iconHolder">
+                        <i class="fa-regular fa-block-brick-fire"></i>
+                      </div>
+                      <div className="itemTitle">Call Blocking</div>
+                    </NavLink>
+                  </li> */}
+
+                  <li className="dashboard ">
+                    <NavLink
+                      to="/click-to-call"
+                      onClick={backToTop}
+                      type="button"
+                    >
+                      <div className="iconHolder">
+                        <i class="fa-regular fa-bullseye-pointer"></i>
+                      </div>
+                      <div className="itemTitle">Click To Call</div>
+                    </NavLink>
+                  </li>
+                  {/* <li className="dashboard">
+                    <a>
+                      <DarkModeToggle marginLeft={"3"} />
+                    </a>
+                  </li> */}
+
+                  {account?.extension || isCustomerAdmin ? (
+                    <li className="dashboard ">
+                      <a
+                        href="/webrtc"
+                        target="_blank"
+                        // onClick={backToTop}
+                        type="button"
+                      >
+                        <div className="iconHolder">
+                          <i class="fa-regular fa-headset"></i>
+                        </div>
+                        <div className="itemTitle">Phone</div>
+                      </a>
+                    </li>
+                  ) : (
+                    ""
+                  )}
+
                   {account?.permissions?.includes(86) ? (
                     <li className="">
                       <button
@@ -485,9 +1066,8 @@ function Navbar() {
                       </button>
                       <div
                         id="collapse4"
-                        className={`accordion-collapse collapse ${
-                          isChildActive(["/cdr-report"]) ? "show" : ""
-                        }`}
+                        className={`accordion-collapse collapse ${isChildActive(["/cdr-report"]) ? "show" : ""
+                          }`}
                         data-bs-parent="#sidenNav"
                       >
                         <div className="menuWrapper">
@@ -514,119 +1094,175 @@ function Navbar() {
                                   {/* <div className="iconHolder">
                                     <i class="fa-regular fa-chart-bar"></i>
                                   </div> */}
-                                  <div className="itemTitle">CDR Report</div>
+                                  <div className="itemTitle">CDR / CQR</div>
                                 </NavLink>
                               </li>
                             ) : null}
-                          </ul>
-                        </div>
-                      </div>
-                    </li>
-                  ) : null}
-
-                  <li className="">
-                    <button
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapse10"
-                      aria-expanded={
-                        isChildActive([
-                          "/get-did",
-                          "/did-listing",
-                          "/port-number",
-                          "/did-config",
-                          "/did-add",
-                          "/port-number-add",
-                          "/port-number-edit",
-                        ])
-                          ? "true"
-                          : "false"
-                      }
-                      aria-controls="collapse10"
-                    >
-                      <div className="iconHolder">
-                        <i class="fa-regular fa-hashtag"></i>
-                      </div>
-                      <div className="itemTitle">Number Management</div>
-                    </button>
-                    <div
-                      id="collapse10"
-                      className={`accordion-collapse collapse ${
-                        isChildActive([
-                          "/get-did",
-                          "/did-listing",
-                          "/port-number",
-                          "/did-config",
-                          "/did-add",
-                          "/port-number-add",
-                          "/port-number-edit",
-                        ])
-                          ? "show"
-                          : ""
-                      }`}
-                      data-bs-parent="#sidenNav"
-                    >
-                      <div className="menuWrapper">
-                        <ul className="tabMenu">
-                          <li className="tabItem">
-                            <NavLink
-                              to="/get-did"
-                              onClick={backToTop}
-                              className="nav-link"
-                            >
-                              {/* <div className="iconHolder">
-                                <i className="fa-regular fa-swap-arrows" />
-                              </div> */}
-                              <div className="itemTitle">Get DID</div>
-                            </NavLink>
-                          </li>
-                          <li className="tabItem">
-                            <NavLink
-                              to="/did-listing"
-                              onClick={backToTop}
-                              className={({ isActive }) =>
-                                isActive ||
-                                ["/did-add", "/did-config"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
-                                  ? "nav-link active"
-                                  : "nav-link"
-                              }
-                            >
-                              {/* <div className="iconHolder">
-                                <i class="fa-regular fa-hashtag"></i>
-                              </div> */}
-                              <div className="itemTitle">DID Listing</div>
-                            </NavLink>
-                          </li>
-                          {account?.permissions?.includes(308) ||
-                          account?.permissions?.includes(310) ? (
-                            <li className="tabItem">
-                              <NavLink
-                                to="/port-number"
-                                onClick={backToTop}
+                            <li className="tabItem ">
+                              <a
+                                // to="/extensions"
+                                onClick={() => featureUnderdevelopment()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                  [
-                                    "/port-number-add",
-                                    "/port-number-edit",
-                                  ].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    ["/extensions-add", "/extensions-edit"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
                               >
                                 {/* <div className="iconHolder">
-                                  <i class="fa-regular fa-hashtag-lock"></i>
+                                  <i className="fa-regular fa-phone-office" />
                                 </div> */}
-                                <div className="itemTitle">Port number</div>
-                              </NavLink>
+                                <div className="itemTitle">Real-Time Analytics</div>
+                              </a>
                             </li>
-                          ) : null}
-                        </ul>
+                            <li className="tabItem ">
+                              <a
+                                // to="/extensions"
+                                onClick={() => featureUnderdevelopment()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    ["/extensions-add", "/extensions-edit"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                                <div className="itemTitle">Call Analytics</div>
+                              </a>
+                            </li>
+                            <li className="tabItem ">
+                              <a
+                                // to="/extensions"
+                                onClick={() => featureUnderdevelopment()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    ["/extensions-add", "/extensions-edit"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                                <div className="itemTitle">Agent Report</div>
+                              </a>
+                            </li>
+                            <li className="tabItem ">
+                              <a
+                                // to="/extensions"
+                                onClick={() => featureUnderdevelopment()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    ["/extensions-add", "/extensions-edit"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                                <div className="itemTitle">Call Queues</div>
+                              </a>
+                            </li>
+                            <li className="tabItem ">
+                              <a
+                                // to="/extensions"
+                                onClick={() => featureUnderdevelopment()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    ["/extensions-add", "/extensions-edit"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                                <div className="itemTitle">Ring Groups</div>
+                              </a>
+                            </li>
+                            <li className="tabItem ">
+                              <a
+                                // to="/extensions"
+                                onClick={() => featureUnderdevelopment()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    ["/extensions-add", "/extensions-edit"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                                <div className="itemTitle">Dialer Analytics</div>
+                              </a>
+                            </li>
+                            <li className="tabItem ">
+                              <a
+                                // to="/extensions"
+                                onClick={() => featureUnderdevelopment()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    ["/extensions-add", "/extensions-edit"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                                <div className="itemTitle">Call Tracking</div>
+                              </a>
+                            </li>
+                            <li className="tabItem ">
+                              <a
+                                // to="/extensions"
+                                onClick={() => featureUnderdevelopment()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    ["/extensions-add", "/extensions-edit"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                                <div className="itemTitle">Meeting Reports</div>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
-                    </div>
-                  </li>
+                    </li>
+                  ) : null}
 
                   <li className="">
                     <button
@@ -646,25 +1282,24 @@ function Navbar() {
                       <div className="iconHolder">
                         <i class="fa-regular fa-file-invoice-dollar"></i>
                       </div>
-                      <div className="itemTitle">Billing</div>
+                      <div className="itemTitle">Billings</div>
                     </button>
                     <div
                       id="collapse9"
-                      className={`accordion-collapse collapse ${
-                        isChildActive([
-                          "/card-details",
-                          "/card-transaction-list",
-                          "/wallet-transaction-list",
-                        ])
-                          ? "show"
-                          : ""
-                      }`}
+                      className={`accordion-collapse collapse ${isChildActive([
+                        "/card-details",
+                        "/card-transaction-list",
+                        "/wallet-transaction-list",
+                      ])
+                        ? "show"
+                        : ""
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
                           {account?.permissions?.includes(470) ||
-                          account?.permissions?.includes(470) ? (
+                            account?.permissions?.includes(470) ? (
                             <li className="tabItem">
                               <NavLink
                                 to="/card-details"
@@ -674,7 +1309,7 @@ function Navbar() {
                                 {/* <div className="iconHolder">
                                   <i class="fa-regular fa-money-check-dollar-pen"></i>
                                 </div> */}
-                                <div className="itemTitle">Payment Details</div>
+                                <div className="itemTitle">Payment Info</div>
                               </NavLink>
                             </li>
                           ) : null}
@@ -704,7 +1339,7 @@ function Navbar() {
                             </NavLink>
                           </li> */}
                           {account?.permissions?.includes(80) ||
-                          account?.permissions?.includes(82) ? (
+                            account?.permissions?.includes(82) ? (
                             <li className="tabItem">
                               <NavLink
                                 to="/card-transaction-list"
@@ -715,14 +1350,14 @@ function Navbar() {
                                   <i class="fa-regular fa-credit-card"></i>
                                 </div> */}
                                 <div className="itemTitle">
-                                  Card Transactions
+                                  Card
                                 </div>
                               </NavLink>
                             </li>
                           ) : null}
 
                           {account?.permissions?.includes(470) ||
-                          account?.permissions?.includes(472) ? (
+                            account?.permissions?.includes(472) ? (
                             <li className="tabItem">
                               <NavLink
                                 to="/wallet-transaction-list"
@@ -733,179 +1368,155 @@ function Navbar() {
                                   <i class="fa-regular fa-wallet"></i>
                                 </div> */}
                                 <div className="itemTitle">
-                                  Wallet Transactions
+                                  Wallet
                                 </div>
                               </NavLink>
                             </li>
                           ) : null}
+
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Rate Card</div>
+                            </a>
+                          </li>
                         </ul>
                       </div>
                     </div>
                   </li>
-                  {account?.permissions?.includes(344) ||
-                  account?.permissions?.includes(346) ? (
-                    <li className="dashboard ">
-                      <NavLink
-                        to="/ring-groups"
-                        onClick={backToTop}
-                        type="button"
-                        className={({ isActive }) =>
-                          isActive ||
-                          ["/ring-groups-add", "/ring-groups-edit"].some(
-                            (path) => window.location.pathname.includes(path)
-                          )
-                            ? "nav-link active"
-                            : "nav-link"
-                        }
-                      >
-                        <div className="iconHolder">
-                          <i class="fa-regular fa-screen-users"></i>
-                        </div>
-                        <div className="itemTitle">Ring Group</div>
-                      </NavLink>
-                    </li>
-                  ) : null}
-                  {account?.permissions?.includes(440) ||
-                  account?.permissions?.includes(442) ? (
-                    <li className="dashboard ">
-                      <NavLink
-                        to="/users"
-                        onClick={backToTop}
-                        type="button"
-                        className={({ isActive }) =>
-                          isActive ||
-                          ["/users-add", "/users-edit"].some((path) =>
-                            window.location.pathname.includes(path)
-                          )
-                            ? "nav-link active"
-                            : "nav-link"
-                        }
-                      >
-                        <div className="iconHolder">
-                          <i class="fa-regular fa-users-gear"></i>
-                        </div>
-                        <div className="itemTitle">Users</div>
-                      </NavLink>
-                    </li>
-                  ) : null}
 
-                  {account?.permissions?.includes(62) ||
-                  account?.permissions?.includes(64) ? (
-                    <li className="dashboard ">
-                      <NavLink
-                        to="/cal-center-queue"
-                        onClick={backToTop}
-                        type="button"
-                        className={({ isActive }) =>
-                          isActive ||
-                          [
-                            "/cal-center-queue-add",
-                            "/cal-center-queue-edit",
-                          ].some((path) =>
-                            window.location.pathname.includes(path)
-                          )
-                            ? "nav-link active"
-                            : "nav-link"
-                        }
-                      >
-                        <div className="iconHolder">
-                          <i class="fa-regular fa-users-rectangle"></i>
-                        </div>
-                        <div className="itemTitle">Call Center</div>
-                      </NavLink>
-                    </li>
-                  ) : null}
-
-                  {/* <li className="dashboard ">
-                    <NavLink
-                      to="/variable"
-                      onClick={backToTop}
-                      type="button"
-                      
-                    >
-                      <div className="itemTitle">Variable</div>
-                    </NavLink>
-                  </li> */}
-                  {account?.permissions?.includes(230) ||
-                  account?.permissions?.includes(232) ? (
-                    <li className="dashboard ">
-                      <NavLink
-                        to="/ivr"
-                        onClick={backToTop}
-                        type="button"
-                        className={({ isActive }) =>
-                          isActive ||
-                          ["/ivr-add", "/ivr-edit"].some((path) =>
-                            window.location.pathname.includes(path)
-                          )
-                            ? "nav-link active"
-                            : "nav-link"
-                        }
-                      >
-                        <div className="iconHolder">
-                          <i class="fa-regular fa-microphone-stand"></i>
-                        </div>
-                        <div className="itemTitle">IVR</div>
-                      </NavLink>
-                    </li>
-                  ) : null}
-
-                  {/* <li className="dashboard ">
-                    <NavLink
-                      to="/device-provisioning"
-                      onClick={backToTop}
-                      type="button"
-                      
-                    >
-                      <div className="itemTitle">Device Provisioning</div>
-                    </NavLink>
-                  </li> */}
-                  <li className="dashboard ">
-                    <NavLink
-                      to="/call-blocking"
-                      onClick={backToTop}
-                      type="button"
+                  <li className="">
+                    <button
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapse5"
+                      aria-expanded={
+                        isChildActive([
+                          "/mail-settings",
+                        ])
+                          ? "true"
+                          : "false"
+                      }
+                      aria-controls="collapse5"
                     >
                       <div className="iconHolder">
-                        <i class="fa-regular fa-block-brick-fire"></i>
+                        <i class="fa-regular fa-sliders"></i>
                       </div>
-                      <div className="itemTitle">Call Blocking</div>
-                    </NavLink>
-                  </li>
-                  {account?.extension || isCustomerAdmin ? (
-                    <li className="dashboard ">
-                      <a
-                        href="/webrtc"
-                        target="_blank"
-                        // onClick={backToTop}
-                        type="button"
-                      >
-                        <div className="iconHolder">
-                          <i class="fa-regular fa-headset"></i>
-                        </div>
-                        <div className="itemTitle">WebRtc</div>
-                      </a>
-                    </li>
-                  ) : (
-                    ""
-                  )}
-                  <li className="dashboard ">
-                    <NavLink
-                      to="/click-to-call"
-                      onClick={backToTop}
-                      type="button"
+                      <div className="itemTitle">Setting</div>
+                    </button>
+                    <div
+                      id="collapse5"
+                      className={`accordion-collapse collapse ${isChildActive([
+                        "/mail-settings",
+                      ])
+                        ? "show"
+                        : ""
+                        }`}
+                      data-bs-parent="#sidenNav"
                     >
-                      <div className="iconHolder">
-                        <i class="fa-regular fa-bullseye-pointer"></i>
+                      <div className="menuWrapper">
+                        <ul className="tabMenu">
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">General</div>
+                            </a>
+                          </li>
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Fax</div>
+                            </a>
+                          </li>
+                          {account?.permissions?.includes(248) ||
+                            account?.permissions?.includes(250) ? (
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/mail-settings"
+                                onClick={backToTop}
+                                type="button"
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/mail-settings-add",
+                                      "/mail-settings-edit",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">Email</div>
+                              </NavLink>
+                            </li>
+                          ) : null}
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Call Recording</div>
+                            </a>
+                          </li>
+                        </ul>
                       </div>
-                      <div className="itemTitle">Click To Call</div>
-                    </NavLink>
+                    </div>
                   </li>
-                  <li className="dashboard">
-                    <a>
-                      <DarkModeToggle marginLeft={"3"} />
-                    </a>
-                  </li>
+
                   <li className="dashboard ">
                     <NavLink to="/" onClick={logOut} type="button">
                       <div className="iconHolder">

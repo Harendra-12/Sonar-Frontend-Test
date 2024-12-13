@@ -244,7 +244,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Reports</div>
               </div>
             </li> */}
-            <li>
+            {/* <li>
               <div
                 onClick={() => setactivePage("mail-setting")}
                 className={
@@ -256,7 +256,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 </div>
                 <div className="itemTitle">Mail Settings</div>
               </div>
-            </li>
+            </li> */}
             <li style={{ cursor: "pointer" }}>
               <div
                 onClick={() => setactivePage("conference")}
@@ -283,11 +283,11 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Conference Test</div>
               </div>
             </li> */}
-            <li className="dashboard ">
+            {/* <li className="dashboard ">
               <a className="navItem">
                 <DarkModeToggle marginLeft={"2"} />
               </a>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

@@ -94,6 +94,10 @@
     font-family: Roboto;
     color: var(--bgdark-color);
     height: 60px;
+    padding: 0;
+    width: 100%;
+    background: transparent;
+    border: none;
 }
 
 .itemWrapper .heading h5 {
@@ -114,7 +118,7 @@
 }
 
 .itemWrapper .heading i {
-    margin-right: 5px;
+    /* margin-right: 5px; */
     font-size: 16px;
     padding: 13px;
     border-radius: 10px;

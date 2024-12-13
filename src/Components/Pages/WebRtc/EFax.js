@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import CircularLoader from "../../Loader/CircularLoader";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 
 function EFax() {
   const dispatch = useDispatch();
@@ -192,7 +193,7 @@ function EFax() {
                         onChange={() => featureUnderdevelopment()}
                       />
                     </div>
-                    <div className="col-auto mx-2">
+                    <div className="col-auto ms-2">
                       <button
                         className="clearButton2 xl"
                         effect="ripple"
@@ -201,6 +202,7 @@ function EFax() {
                         <i className="fa-regular fa-bell" />
                       </button>
                     </div>
+                    <DarkModeToggle marginLeft={"2"} />
                     <div className="col-auto">
                       <div class="dropdown">
                         <div
