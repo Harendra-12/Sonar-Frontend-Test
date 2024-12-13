@@ -190,7 +190,7 @@ function IvrOptions() {
                   </div>
                 </div>
               </div>
-              <div className="col-12 formScroller" style={{ padding: '25px 23px' }}>
+              <div className="col-12" style={{ padding: '25px 23px' }}>
                 <form>
                   {options?.map((item, index) => {
                     return (
@@ -365,7 +365,7 @@ function IvrOptions() {
                             <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                           </button>
                         </div>
-                        {index === 0 ? <div className="col-12 mb-2"></div> : ""}
+                        {/* {index === 0 ? <div className="col-12 mb-2"></div> : ""} */}
                       </div>
                     );
                   })}

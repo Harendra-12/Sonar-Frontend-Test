@@ -155,7 +155,7 @@ const Extensions = () => {
                         <Link
                           // to="/extensions-add"
                           to="#"
-                          onClick={backToTop}
+                          onClick={() => window.open("https://ucaas.webvio.in:3001/", "_blank")}
                           effect="ripple"
                           className="panelButton"
                         >

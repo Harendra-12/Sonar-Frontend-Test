@@ -47,7 +47,7 @@ function IncomingCallPopup({
       (session) => session.id === sessionId
     );
 
-    if (!sessionExists && sessionId !==dummySession ) {
+    if (!sessionExists && sessionId !== dummySession) {
       dispatch({
         type: "SET_SESSIONS",
         sessions: [
@@ -298,8 +298,13 @@ function IncomingCallPopup({
               <h4>{callerExtension}</h4>
             </div>
             <div className="controls px-2">
-              <button class="callButton hangup" onClick={decline}>
-                <i class="fa-solid fa-phone-hangup"></i>
+              <button
+                class="callButton"
+                onClick={() => handleAnswerCall("audio")}
+              >
+                <i class="fa-solid fa-phone"></i>
+                <div class="circle1"></div>
+                <div class="circle2"></div>
               </button>
               <button
                 className="callButton bg-primary"
@@ -310,13 +315,8 @@ function IncomingCallPopup({
               >
                 <i className="fa-thin fa-phone-arrow-up-right" />
               </button>
-              <button
-                class="callButton"
-                onClick={() => handleAnswerCall("audio")}
-              >
-                <i class="fa-solid fa-phone"></i>
-                <div class="circle1"></div>
-                <div class="circle2"></div>
+              <button class="callButton hangup" onClick={decline}>
+                <i class="fa-solid fa-phone-hangup"></i>
               </button>
               {isVideoOn && (
                 <button

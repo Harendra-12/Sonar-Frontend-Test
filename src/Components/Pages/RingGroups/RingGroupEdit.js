@@ -28,6 +28,7 @@ import {
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
 import ActionList from "../../CommonComponents/ActionList";
+import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 
 const RingGroupEdit = () => {
   const navigate = useNavigate();
@@ -570,108 +571,106 @@ const RingGroupEdit = () => {
         </div>
         <>
           {loading ? (
-            <div colSpan={99}>
-              <CircularLoader />
+            <div>
+              <SkeletonFormLoader />
             </div>
           ) : (
-            ""
-          )}
-          <div className="overviewTableWrapper">
-            <div className="overviewTableChild">
-              <div className="d-flex flex-wrap" style={{ position: 'sticky', top: '0', zIndex: '9' }}>
-                <div className="col-12">
-                  <div className="heading">
-                    <div className="content">
-                      <h4>Ring Group Edit</h4>
-                      <p>A ring group is a set of destinations that can be called with a ring strategy.</p>
-                    </div>
-                    <div className="buttonGroup">
-                      <div className="d-flex align-items-center">
-                        <div className="formLabel py-0 me-2">
-                          <label htmlFor="selectFormRow">Enabled</label>
-                        </div>
-                        <div className="my-auto position-relative mx-1">
-                          <label className="switch">
-                            <input
-                              type="checkbox"
-                              checked={watch().status}
-                              {...register("status")}
-                              id="showAllCheck"
-                            />
-                            <span className="slider round" />
-                          </label>
-                        </div>
+            <div className="overviewTableWrapper">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap" style={{ position: 'sticky', top: '0', zIndex: '9' }}>
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content">
+                        <h4>Ring Group Edit</h4>
+                        <p>A ring group is a set of destinations that can be called with a ring strategy.</p>
                       </div>
-                      <button
-                        onClick={() => {
-                          navigate(-1);
-                          backToTop();
-                        }}
-                        type="button"
-                        effect="ripple"
-                        className="panelButton gray"
-                      >
-                        <span className="text">Back</span>
-                        <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
-                      </button>
-                      <button
-                        type="button"
-                        effect="ripple"
-                        className="panelButton"
-                        onClick={handleFormSubmit}
-                      >
-                        <span className="text">Save</span>
-                        <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
-                      </button>
+                      <div className="buttonGroup">
+                        <div className="d-flex align-items-center">
+                          <div className="formLabel py-0 me-2">
+                            <label htmlFor="selectFormRow">Enabled</label>
+                          </div>
+                          <div className="my-auto position-relative mx-1">
+                            <label className="switch">
+                              <input
+                                type="checkbox"
+                                checked={watch().status}
+                                {...register("status")}
+                                id="showAllCheck"
+                              />
+                              <span className="slider round" />
+                            </label>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
+                          type="button"
+                          effect="ripple"
+                          className="panelButton gray"
+                        >
+                          <span className="text">Back</span>
+                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                        </button>
+                        <button
+                          type="button"
+                          effect="ripple"
+                          className="panelButton"
+                          onClick={handleFormSubmit}
+                        >
+                          <span className="text">Save</span>
+                          <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
-                <form className="row mb-0">
-                  <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="">Name</label>
-                      <label htmlFor="data" className="formItemDesc">
-                        Enter a name.
-                      </label>
+                <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
+                  <form className="row mb-0">
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="">Name</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Enter a name.
+                        </label>
+                      </div>
+                      <div className="col-6">
+                        <input
+                          type="text"
+                          name="extension"
+                          className="formItem"
+                          {...register("name", {
+                            ...requiredValidator,
+                            ...lengthValidator(3, 25),
+                            ...nameNumberValidator,
+                          })}
+                          onKeyDown={restrictToAllowedChars}
+                        />
+                        {errors.name && <ErrorMessage text={errors.name.message} />}
+                      </div>
                     </div>
-                    <div className="col-6">
-                      <input
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                        {...register("name", {
-                          ...requiredValidator,
-                          ...lengthValidator(3, 25),
-                          ...nameNumberValidator,
-                        })}
-                        onKeyDown={restrictToAllowedChars}
-                      />
-                      {errors.name && <ErrorMessage text={errors.name.message} />}
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="">Extension</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Enter a name.
+                        </label>
+                      </div>
+                      <div className="col-6">
+                        <input
+                          type="text"
+                          name="extension"
+                          className="formItem"
+                          {...register("extension")}
+                          disabled
+                        />
+                        {errors.extension && (
+                          <ErrorMessage text={errors.extension.message} />
+                        )}
+                      </div>
                     </div>
-                  </div>
-                  <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="">Extension</label>
-                      <label htmlFor="data" className="formItemDesc">
-                        Enter a name.
-                      </label>
-                    </div>
-                    <div className="col-6">
-                      <input
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                        {...register("extension")}
-                        disabled
-                      />
-                      {errors.extension && (
-                        <ErrorMessage text={errors.extension.message} />
-                      )}
-                    </div>
-                  </div>
-                  {/* <div className="formRow col-xl-3">
+                    {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Extension</label>
                 </div>
@@ -713,7 +712,7 @@ const RingGroupEdit = () => {
                   </label>
                 </div>
               </div> */}
-                  {/* <div className="formRow col-xl-3">
+                    {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Follow Me</label>
                 </div>
@@ -732,28 +731,28 @@ const RingGroupEdit = () => {
                   </label>
                 </div>
               </div> */}
-                  <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="selectFormRow">Strategy</label>
-                      <label htmlFor="data" className="formItemDesc">
-                        Select the ring strategy.
-                      </label>
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="selectFormRow">Strategy</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Select the ring strategy.
+                        </label>
+                      </div>
+                      <div className="col-6">
+                        <select
+                          className="formItem"
+                          {...register("strategy")}
+                          id="selectFormRow"
+                        >
+                          <option value="enterprise">Enterprise</option>
+                          <option value="sequence">Sequence</option>
+                          <option value="simultaneously">Simultaneous</option>
+                          <option value="random">Random</option>
+                          <option value="rollover">Rollover</option>
+                        </select>
+                      </div>
                     </div>
-                    <div className="col-6">
-                      <select
-                        className="formItem"
-                        {...register("strategy")}
-                        id="selectFormRow"
-                      >
-                        <option value="enterprise">Enterprise</option>
-                        <option value="sequence">Sequence</option>
-                        <option value="simultaneously">Simultaneous</option>
-                        <option value="random">Random</option>
-                        <option value="rollover">Rollover</option>
-                      </select>
-                    </div>
-                  </div>
-                  {/* <div className="formRow col-xl-3">
+                    {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Timeout Destination</label>
                 </div>
@@ -783,59 +782,59 @@ const RingGroupEdit = () => {
                   </label>
                 </div>
               </div> */}
-                  <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="">Timeout Destination</label>
-                      <label htmlFor="data" className="formItemDesc">
-                        Select the timeout destination for this ring group.
-                      </label>
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="">Timeout Destination</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Select the timeout destination for this ring group.
+                        </label>
+                      </div>
+                      <div className="col-6">
+                        <ActionList
+                          title={null}
+                          label={null}
+                          getDropdownValue={actionListValue}
+                          value={watch().timeout_destination}
+                        />
+                      </div>
                     </div>
-                    <div className="col-6">
-                      <ActionList
-                        title={null}
-                        label={null}
-                        getDropdownValue={actionListValue}
-                        value={watch().timeout_destination}
-                      />
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="">Call Timeout</label>
+                      </div>
+                      <div className="col-6">
+                        <input
+                          type="text"
+                          name="extension"
+                          className="formItem"
+                          {...register("call_timeout", {
+                            ...noSpecialCharactersValidator,
+                            ...(watch("call_timeout") !== "" &&
+                              minValidator(
+                                destination.reduce(
+                                  (max, obj) => Math.max(max, obj.delay),
+                                  0
+                                )
+                              )),
+                          })}
+                          onKeyDown={restrictToNumbers}
+                        // {...register("call_timeout", {
+                        //   ...requiredValidator,
+                        //   ...noSpecialCharactersValidator,
+                        //   ...minValidator(
+                        //     destination.reduce(
+                        //       (max, obj) => Math.max(max, obj.delay),
+                        //       0
+                        //     )
+                        //   ),
+                        // })}
+                        />
+                        {errors.call_timeout && (
+                          <ErrorMessage text={errors.call_timeout.message} />
+                        )}
+                      </div>
                     </div>
-                  </div>
-                  <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="">Call Timeout</label>
-                    </div>
-                    <div className="col-6">
-                      <input
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                        {...register("call_timeout", {
-                          ...noSpecialCharactersValidator,
-                          ...(watch("call_timeout") !== "" &&
-                            minValidator(
-                              destination.reduce(
-                                (max, obj) => Math.max(max, obj.delay),
-                                0
-                              )
-                            )),
-                        })}
-                        onKeyDown={restrictToNumbers}
-                      // {...register("call_timeout", {
-                      //   ...requiredValidator,
-                      //   ...noSpecialCharactersValidator,
-                      //   ...minValidator(
-                      //     destination.reduce(
-                      //       (max, obj) => Math.max(max, obj.delay),
-                      //       0
-                      //     )
-                      //   ),
-                      // })}
-                      />
-                      {errors.call_timeout && (
-                        <ErrorMessage text={errors.call_timeout.message} />
-                      )}
-                    </div>
-                  </div>
-                  {/* <div className="formRow col-xl-3">
+                    {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="">Distinctive Ring</label>
                 </div>
@@ -857,48 +856,48 @@ const RingGroupEdit = () => {
                   </label>
                 </div>
               </div> */}
-                  <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="selectFormRow">Ring Back</label>
-                      <label htmlFor="data" className="formItemDesc">
-                        Defines what the caller will hear while the destination is
-                        being called.
-                      </label>
-                    </div>
-                    <div className="col-6">
-                      <select
-                        className="formItem"
-                        {...register("ring_back")}
-                        id="selectFormRow"
-                        onChange={(e) => {
-                          if (e.target.value === "addmusic") {
-                            navigate("/voice-music");
-                          }
-                        }}
-                      >
-                        <option value="null">None</option>
-                        {/* <option>us-ring</option>
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="selectFormRow">Ring Back</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Defines what the caller will hear while the destination is
+                          being called.
+                        </label>
+                      </div>
+                      <div className="col-6">
+                        <select
+                          className="formItem"
+                          {...register("ring_back")}
+                          id="selectFormRow"
+                          onChange={(e) => {
+                            if (e.target.value === "addmusic") {
+                              navigate("/voice-music");
+                            }
+                          }}
+                        >
+                          <option value="null">None</option>
+                          {/* <option>us-ring</option>
                     <option value="uk-ring">uk-ring</option>
                     <option value="eu-ring">eu-ring</option> */}
-                        {ringBack &&
-                          ringBack.map((ring) => {
-                            return (
-                              <option key={ring.id} value={ring.id}>
-                                {ring.name}
-                              </option>
-                            );
-                          })}
-                        <option
-                          value="addmusic"
-                          className="addmusic"
-                          style={{ cursor: "pointer" }}
-                        >
-                          Add Music
-                        </option>
-                      </select>
+                          {ringBack &&
+                            ringBack.map((ring) => {
+                              return (
+                                <option key={ring.id} value={ring.id}>
+                                  {ring.name}
+                                </option>
+                              );
+                            })}
+                          <option
+                            value="addmusic"
+                            className="addmusic"
+                            style={{ cursor: "pointer" }}
+                          >
+                            Add Music
+                          </option>
+                        </select>
+                      </div>
                     </div>
-                  </div>
-                  {/* <div className="formRow col-xl-3">
+                    {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">User List</label>
                 </div>
@@ -923,7 +922,7 @@ const RingGroupEdit = () => {
                 </div>
               </div> */}
 
-                  {/* <div className="formRow col-xl-3">
+                    {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Missed Call</label>
                 </div>
@@ -962,7 +961,7 @@ const RingGroupEdit = () => {
                   </label>
                 </div>
               </div> */}
-                  {/* <div className="formRow col-xl-3">
+                    {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Ring Group Forward</label>
                 </div>
@@ -1004,7 +1003,7 @@ const RingGroupEdit = () => {
                   </label>
                 </div>
               </div> */}
-                  {/* <div className="formRow col-xl-3">
+                    {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Forward Toll Allow</label>
                 </div>
@@ -1026,7 +1025,7 @@ const RingGroupEdit = () => {
                   </label>
                 </div>
               </div> */}
-                  {/* <div className="formRow col-xl-3">
+                    {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Context</label>
                 </div>
@@ -1048,30 +1047,30 @@ const RingGroupEdit = () => {
                   </label>
                 </div>
               </div> */}
-                  <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="selectFormRow">Description</label>
-                      <label htmlFor="data" className="formItemDesc">
-                        Enter the description.
-                      </label>
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="selectFormRow">Description</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Enter the description.
+                        </label>
+                      </div>
+                      <div className="col-6">
+                        <input
+                          type="text"
+                          name="extension"
+                          className="formItem"
+                          {...register("description", {
+                            ...noSpecialCharactersValidator,
+                          })}
+                          onKeyDown={restrictToAllowedChars}
+                        />
+                        {errors.description && (
+                          <ErrorMessage text={errors.description.message} />
+                        )}
+                      </div>
                     </div>
-                    <div className="col-6">
-                      <input
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                        {...register("description", {
-                          ...noSpecialCharactersValidator,
-                        })}
-                        onKeyDown={restrictToAllowedChars}
-                      />
-                      {errors.description && (
-                        <ErrorMessage text={errors.description.message} />
-                      )}
-                    </div>
-                  </div>
 
-                  {/* <div className="formRow col-xl-3">
+                    {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Greeting</label>
                 </div>
@@ -1093,27 +1092,27 @@ const RingGroupEdit = () => {
                   </label>
                 </div>
               </div> */}
-                  <div className="formRow col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="">Recording</label>
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="">Recording</label>
+                      </div>
+                      <div className="col-6">
+                        <select
+                          className="formItem me-0"
+                          style={{ width: "100%" }}
+                          // value={watch().recording_enabled}
+                          {...register("recording_enabled")}
+                          id="selectFormRow"
+                          name="recording_enabled"
+                        >
+                          <option className="status" value="true">
+                            True
+                          </option>
+                          <option value="false">False</option>
+                        </select>
+                      </div>
                     </div>
-                    <div className="col-6">
-                      <select
-                        className="formItem me-0"
-                        style={{ width: "100%" }}
-                        // value={watch().recording_enabled}
-                        {...register("recording_enabled")}
-                        id="selectFormRow"
-                        name="recording_enabled"
-                      >
-                        <option className="status" value="true">
-                          True
-                        </option>
-                        <option value="false">False</option>
-                      </select>
-                    </div>
-                  </div>
-                  {/* <div className="formRow  col-xl-3">
+                    {/* <div className="formRow  col-xl-3">
                 <div className="d-flex flex-wrap align-items-center">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Enabled</label>
@@ -1136,33 +1135,33 @@ const RingGroupEdit = () => {
                   Set the status of this ring group.
                 </label>
               </div> */}
-                </form>
-              </div>
-              <div className="col-12" style={{ padding: '20px 23px' }}>
-                <form className="row">
-                  <div className="formRow col-xl-12">
-                    {destination.map((item, index) => {
-                      return (
-                        <div className="col-12 d-flex justify-content-start mb-2">
-                          <div
-                            className="formLabel pe-2"
-                            style={
-                              index === 0
-                                ? { marginTop: 32, width: 30 }
-                                : { width: 30 }
-                            }
-                          >
-                            <label>{index + 1}.</label>
-                          </div>
-                          <div className="col-3 pe-2">
-                            {index === 0 ? (
-                              <div className="formLabel">
-                                <label htmlFor="">Destinations</label>
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                            {/* <div className="position-relative">
+                  </form>
+                </div>
+                <div className="col-12" style={{ padding: '20px 23px' }}>
+                  <form className="row">
+                    <div className="formRow col-xl-12">
+                      {destination.map((item, index) => {
+                        return (
+                          <div className="col-12 d-flex justify-content-start mb-2">
+                            <div
+                              className="formLabel pe-2"
+                              style={
+                                index === 0
+                                  ? { marginTop: 32, width: 30 }
+                                  : { width: 30 }
+                              }
+                            >
+                              <label>{index + 1}.</label>
+                            </div>
+                            <div className="col-3 pe-2">
+                              {index === 0 ? (
+                                <div className="formLabel">
+                                  <label htmlFor="">Destinations</label>
+                                </div>
+                              ) : (
+                                ""
+                              )}
+                              {/* <div className="position-relative">
                           <input
                             type="text"
                             name="destination"
@@ -1206,26 +1205,26 @@ const RingGroupEdit = () => {
                             ""
                           )}
                         </div> */}
-                            <div className="position-relative">
-                              <select
-                                type="text"
-                                name="destination"
-                                value={item.destination}
-                                onChange={(e) => {
-                                  const selectedValue = e.target.value;
-                                  if (selectedValue === "addUser") {
-                                    navigate("/users-add");
-                                  } else {
-                                    handleDestinationChange(index, e);
-                                  }
-                                }}
-                                className="formItem"
-                                placeholder="Destination"
-                              >
-                                <option value={""} disabled>
-                                  Choose agent
-                                </option>
-                                {/* {user &&
+                              <div className="position-relative">
+                                <select
+                                  type="text"
+                                  name="destination"
+                                  value={item.destination}
+                                  onChange={(e) => {
+                                    const selectedValue = e.target.value;
+                                    if (selectedValue === "addUser") {
+                                      navigate("/users-add");
+                                    } else {
+                                      handleDestinationChange(index, e);
+                                    }
+                                  }}
+                                  className="formItem"
+                                  placeholder="Destination"
+                                >
+                                  <option value={""} disabled>
+                                    Choose agent
+                                  </option>
+                                  {/* {user &&
                               user.map((item) => {
                                 return (
                                   <option
@@ -1236,104 +1235,104 @@ const RingGroupEdit = () => {
                                   </option>
                                 );
                               })} */}
-                                {user &&
-                                  user
-                                    .filter((item1) => {
-                                      return (
-                                        item1.extension.extension ==
-                                        destination[index]?.destination ||
-                                        !destination.some(
-                                          (destinationItem, destinationIndex) =>
-                                            destinationItem.destination ==
-                                            item1.extension.extension &&
-                                            destinationIndex != index
-                                        )
-                                      );
-                                    })
-                                    .map((item) => {
-                                      return (
-                                        <option
-                                          value={item.extension?.extension}
-                                          key={item.id}
-                                        >
-                                          {item.username}(
-                                          {item.extension?.extension})
-                                        </option>
-                                      );
-                                    })}
-                                <option
-                                  value="addUser"
-                                  className="addmusic"
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  Add User
-                                </option>
+                                  {user &&
+                                    user
+                                      .filter((item1) => {
+                                        return (
+                                          item1.extension.extension ==
+                                          destination[index]?.destination ||
+                                          !destination.some(
+                                            (destinationItem, destinationIndex) =>
+                                              destinationItem.destination ==
+                                              item1.extension.extension &&
+                                              destinationIndex != index
+                                          )
+                                        );
+                                      })
+                                      .map((item) => {
+                                        return (
+                                          <option
+                                            value={item.extension?.extension}
+                                            key={item.id}
+                                          >
+                                            {item.username}(
+                                            {item.extension?.extension})
+                                          </option>
+                                        );
+                                      })}
+                                  <option
+                                    value="addUser"
+                                    className="addmusic"
+                                    style={{ cursor: "pointer" }}
+                                  >
+                                    Add User
+                                  </option>
+                                </select>
+                              </div>
+                            </div>
+                            <div className="col-2 pe-2">
+                              {index === 0 ? (
+                                <div className="formLabel">
+                                  <label htmlFor="">Delay</label>
+                                </div>
+                              ) : (
+                                ""
+                              )}
+                              <select
+                                className="formItem me-0"
+                                style={{ width: "100%" }}
+                                name="delay"
+                                id="selectFormRow"
+                                value={item.delay}
+                                onChange={(e) => {
+                                  handleDestinationChange(index, e);
+                                }}
+                              >
+                                <option>Delay</option>
+                                {(() => {
+                                  const numbers = [];
+                                  for (let i = 0; i <= 100; i++) {
+                                    if (i % 5 === 0) {
+                                      numbers.push(<span key={i}>{i}</span>);
+                                    }
+                                  }
+                                  return numbers.map((item) => {
+                                    return <option>{item}</option>;
+                                  });
+                                })()}
                               </select>
                             </div>
-                          </div>
-                          <div className="col-2 pe-2">
-                            {index === 0 ? (
-                              <div className="formLabel">
-                                <label htmlFor="">Delay</label>
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                            <select
-                              className="formItem me-0"
-                              style={{ width: "100%" }}
-                              name="delay"
-                              id="selectFormRow"
-                              value={item.delay}
-                              onChange={(e) => {
-                                handleDestinationChange(index, e);
-                              }}
-                            >
-                              <option>Delay</option>
-                              {(() => {
-                                const numbers = [];
-                                for (let i = 0; i <= 100; i++) {
-                                  if (i % 5 === 0) {
-                                    numbers.push(<span key={i}>{i}</span>);
+                            <div className="col-2 pe-2">
+                              {index === 0 ? (
+                                <div className="formLabel">
+                                  <label htmlFor="">Timeout</label>
+                                </div>
+                              ) : (
+                                ""
+                              )}
+                              <select
+                                className="formItem me-0"
+                                style={{ width: "100%" }}
+                                name="timeOut"
+                                value={item.timeOut}
+                                onChange={(e) => handleDestinationChange(index, e)}
+                                id="selectFormRow"
+                              >
+                                <option>Timeout</option>
+                                {(() => {
+                                  const numbers = [];
+                                  for (let i = 0; i <= 100; i++) {
+                                    if (i % 5 === 0) {
+                                      numbers.push(<span key={i}>{i}</span>);
+                                    }
                                   }
-                                }
-                                return numbers.map((item) => {
-                                  return <option>{item}</option>;
-                                });
-                              })()}
-                            </select>
-                          </div>
-                          <div className="col-2 pe-2">
-                            {index === 0 ? (
-                              <div className="formLabel">
-                                <label htmlFor="">Timeout</label>
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                            <select
-                              className="formItem me-0"
-                              style={{ width: "100%" }}
-                              name="timeOut"
-                              value={item.timeOut}
-                              onChange={(e) => handleDestinationChange(index, e)}
-                              id="selectFormRow"
-                            >
-                              <option>Timeout</option>
-                              {(() => {
-                                const numbers = [];
-                                for (let i = 0; i <= 100; i++) {
-                                  if (i % 5 === 0) {
-                                    numbers.push(<span key={i}>{i}</span>);
-                                  }
-                                }
-                                return numbers.map((item) => {
-                                  return <option>{item}</option>;
-                                });
-                              })()}
-                            </select>
-                          </div>
-                          {/* <div className="col-2 pe-2">
+                                  return numbers.map((item) => {
+                                    return <option>{item}</option>;
+                                  });
+                                })()}
+                              </select>
+                            </div>
+                            {/* <div className="col-2 pe-2">
                         {index === 0 ? (
                           <div className="formLabel">
                             <label htmlFor="">Prompt</label>
@@ -1353,70 +1352,71 @@ const RingGroupEdit = () => {
                           <option value="confirm">Confirm</option>
                         </select>
                       </div> */}
-                          <div className="col-2 pe-2">
+                            <div className="col-2 pe-2">
+                              {index === 0 ? (
+                                <div className="formLabel">
+                                  <label htmlFor="">Status</label>
+                                </div>
+                              ) : (
+                                ""
+                              )}
+                              <select
+                                className="formItem me-0"
+                                style={{ width: "100%" }}
+                                value={item.status}
+                                onChange={(e) => handleDestinationChange(index, e)}
+                                id="selectFormRow"
+                                name="status"
+                              >
+                                <option className="status" value="active">
+                                  True
+                                </option>
+                                <option value="inactive">False</option>
+                              </select>
+                            </div>
+                            {destination.length === 1 ? (
+                              ""
+                            ) : (
+                              <div className={`col-auto h-100 m${index === 0 ? "t" : "y"}-auto`}>
+                                <button
+                                  type="button"
+                                  onClick={() => deleteDestination(item.id)}
+                                  className="tableButton delete"
+                                >
+                                  <i className="fa-solid fa-trash"></i>
+                                </button>
+                              </div>
+                            )}
                             {index === 0 ? (
-                              <div className="formLabel">
-                                <label htmlFor="">Status</label>
+                              <div className="mt-auto">
+                                <button
+                                  onClick={() => addNewDestination()}
+                                  className="panelButton mb-auto"
+                                  effect="ripple"
+                                  type="button"
+                                >
+                                  <span className="text">Add</span>
+                                  <span className="icon"><i class="fa-solid fa-plus"></i></span>
+                                </button>
                               </div>
                             ) : (
                               ""
                             )}
-                            <select
-                              className="formItem me-0"
-                              style={{ width: "100%" }}
-                              value={item.status}
-                              onChange={(e) => handleDestinationChange(index, e)}
-                              id="selectFormRow"
-                              name="status"
-                            >
-                              <option className="status" value="active">
-                                True
-                              </option>
-                              <option value="inactive">False</option>
-                            </select>
                           </div>
-                          {destination.length === 1 ? (
-                            ""
-                          ) : (
-                            <div className={`col-auto h-100 m${index === 0 ? "t" : "y"}-auto`}>
-                              <button
-                                type="button"
-                                onClick={() => deleteDestination(item.id)}
-                                className="tableButton delete"
-                              >
-                                <i className="fa-solid fa-trash"></i>
-                              </button>
-                            </div>
-                          )}
-                          {index === 0 ? (
-                            <div className="mt-auto">
-                              <button
-                                onClick={() => addNewDestination()}
-                                className="panelButton mb-auto"
-                                effect="ripple"
-                                type="button"
-                              >
-                                <span className="text">Add</span>
-                                <span className="icon"><i class="fa-solid fa-plus"></i></span>
-                              </button>
-                            </div>
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                      );
-                    })}
-                    {errors.destinations && (
-                      <ErrorMessage text={errors.destinations.message} />
-                    )}
-                    <label htmlFor="data" className="formItemDesc">
-                      Add destinations and parameters to the ring group.
-                    </label>
-                  </div>
-                </form>
+                        );
+                      })}
+                      {errors.destinations && (
+                        <ErrorMessage text={errors.destinations.message} />
+                      )}
+                      <label htmlFor="data" className="formItemDesc">
+                        Add destinations and parameters to the ring group.
+                      </label>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </>
       </section>
       {/* <ToastContainer
