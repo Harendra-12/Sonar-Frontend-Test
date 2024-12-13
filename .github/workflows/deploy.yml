@@ -52,7 +52,7 @@ jobs:
 
             # Option 1: Use npm ci for clean and consistent installations
             #echo "Running npm ci for clean installation."
-            npm ci
+            #npm ci
 
             # Option 2: If you prefer npm install, uncomment the following lines
             # echo "Removing existing node_modules directory."
