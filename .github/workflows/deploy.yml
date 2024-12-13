@@ -1,0 +1,73 @@
+name: DeployJS
+
+on:
+  push:
+    branches:
+      - Developement  # Ensure this matches your actual branch name
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Remove the checkout step if not needed
+      # - name: Checkout code
+      #   uses: actions/checkout@v2
+      #   with:
+      #     fetch-depth: 0
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add GitHub to known_hosts
+        run: |
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: SSH into Debian Server and Build React App
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+           # set -e  # Exit immediately if a command exits with a non-zero status
+           # set -x  # Uncomment for debugging purposes
+
+            echo "Navigating to deployment directory: ${{ secrets.DEPLOY_PATH }}"
+            cd ${{ secrets.DEPLOY_PATH }}
+
+            echo "Configuring Git to trust this repository globally."
+            git config --global --add safe.directory "$PWD"
+
+            # Check if the directory is a Git repository
+            if [ -d ".git" ]; then
+              echo "Git repository found. Pulling latest changes."
+              git pull origin Developement
+            else
+              echo "Git repository not found. Cloning repository."
+              git clone git@github.com:AngelPbx/UcaaS-Frontend.git .
+              git checkout Developement
+            fi
+
+            echo "Listing deployment directory contents:"
+            ls -la
+
+            # Option 1: Use npm ci for clean and consistent installations
+            #echo "Running npm ci for clean installation."
+            #npm ci
+
+            # Option 2: If you prefer npm install, uncomment the following lines
+            # echo "Removing existing node_modules directory."
+            # rm -rf node_modules
+
+            # echo "Installing dependencies."
+            # npm install
+
+            echo "Building the React app."
+            npm run build
+
+            #echo "Reloading Apache to serve the new build."
+            #sudo systemctl reload apache2
+
+           echo "Deployment completed successfully."
+           echo "Exiting with status 0."
+           exit 0
+          EOF

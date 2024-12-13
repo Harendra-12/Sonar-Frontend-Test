@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { generalGetFunction } from "../GlobalFunction/globalFunction";
+import DarkModeToggle from "./DarkModeToggle";
 
 function Header(props) {
   const dispatch = useDispatch();
@@ -67,7 +68,7 @@ function Header(props) {
         <h4 className="my-auto">{props.title}</h4>
       </div>
       <div className="col-8 d-flex justify-content-end align-items-center">
-        <div className="col-auto me-3">
+        <div className="col-auto">
           <div className="d-flex justify-content-end align-items-center">
             {/* <div className="my-auto mx-3">
             <button className="getApp" effect="ripple">
@@ -90,6 +91,7 @@ function Header(props) {
             </div>
           </div>
         </div>
+        <DarkModeToggle marginLeft={"3"} />
         <div className="col-auto col-xl-auto d-flex justify-content-end align-items-center">
           <Tippy content={accounName}>
             <div className="profileName">{accounName}</div>

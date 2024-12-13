@@ -834,9 +834,9 @@ const UsersAdd = () => {
                                         class="accordion-button collapsed"
                                         type="button"
                                         data-bs-toggle="collapse"
-                                        data-bs-target={`#collapse${key}`}
+                                        data-bs-target={`#collapseRole${key}`}
                                         aria-expanded="true"
-                                        aria-controls={`collapse${key}`}
+                                        aria-controls={`collapseRole${key}`}
                                       >
                                         <input
                                           type="checkbox"
@@ -862,7 +862,7 @@ const UsersAdd = () => {
                                       </div>
                                     </div> */}
                                     <div
-                                      id={`collapse${key}`}
+                                      id={`collapseRole${key}`}
                                       class="accordion-collapse collapse"
                                       aria-labelledby={`collapseHeading${key}`}
                                     >

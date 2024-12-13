@@ -349,7 +349,7 @@ function CallCenterQueue() {
                           ) : (
                             <>
                               {loading ? (
-                                <SkeletonTableLoader col={8} row={15} />
+                                <SkeletonTableLoader col={9} row={15} />
                               ) : (
                                 <>
                                   {callCenter &&
@@ -557,14 +557,17 @@ function CallCenterQueue() {
                     )}
 
                     <button
-                      className="panelButtonWhite m-0 float-end"
+                      className="panelButton gray m-0 float-end"
                       onClick={() => {
                         setPopUp(false);
                         setDeleteId("");
                         setSelectedCallCenter(null);
                       }}
                     >
-                      Cancel
+                      <span className="text">Cancel</span>
+                      <span className="icon">
+                        <i class="fa-solid fa-xmark"></i>
+                      </span>
                     </button>
                   </div>
                 </div>

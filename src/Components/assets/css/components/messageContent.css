@@ -201,7 +201,7 @@
 }
 
 .messageItem.receiver .messageDetails {
-    background-color: #fff;
+    background-color: var(--ele-color);
     border-radius: 0px 10px 10px 10px;
 }
 

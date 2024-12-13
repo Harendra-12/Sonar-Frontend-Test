@@ -94,6 +94,10 @@
     font-family: Roboto;
     color: var(--bgdark-color);
     height: 60px;
+    padding: 0;
+    width: 100%;
+    background: transparent;
+    border: none;
 }
 
 .itemWrapper .heading h5 {
@@ -114,7 +118,7 @@
 }
 
 .itemWrapper .heading i {
-    margin-right: 5px;
+    /* margin-right: 5px; */
     font-size: 16px;
     padding: 13px;
     border-radius: 10px;
@@ -399,7 +403,8 @@
     --half-size: calc(var(--size) / 2);
     --stroke-width: 25px;
     --radius: calc((var(--size) - var(--stroke-width)) / 2);
-    --circumference: calc(var(--radius) * pi * 2);
+    /*--circumference: calc(var(--radius) * pi * 2);*/
+    --circumference: calc(2 * 3.14159 * var(--radius));
     --dash: calc((var(--progress) * var(--circumference)) / 100);
 }
 

@@ -42,8 +42,16 @@ function DarkModeToggle({ marginLeft }) {
 
     return (
         <>
-            <div className="iconHolder">
-                <i class={`fa-light fa-${isDark ? "moon" : "sun"}`}></i>
+            <div class="col-auto mx-2">
+                <button class="clearButton2 xl" effect="ripple">
+                    <i class={`fa-light fa-${isDark ? "moon" : "sun"}`}></i>
+                    <input type="checkbox" onChange={toggleTheme} ref={darkModeToggle} style={{ opacity: 0, width: '100%', height: '100%', position: 'absolute', top: '0' }} />
+                </button>
+            </div>
+
+
+            {/* <div className="iconHolder">
+
             </div>
             <div className="itemTitle customTogle d-flex align-items-center">
                 Dark Mode
@@ -51,7 +59,7 @@ function DarkModeToggle({ marginLeft }) {
                     <input type="checkbox" onChange={toggleTheme} ref={darkModeToggle} />
                     <span class="slider my-auto"></span>
                 </label>
-            </div>
+            </div> */}
         </>
     )
 }

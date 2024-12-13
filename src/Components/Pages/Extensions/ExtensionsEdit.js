@@ -24,6 +24,7 @@ import {
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Tippy from "@tippyjs/react";
 import ActionList from "../../CommonComponents/ActionList";
+import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 
 const ExtensionsEdit = () => {
   const navigate = useNavigate();
@@ -522,294 +523,292 @@ const ExtensionsEdit = () => {
         </div>
         <div className="col-xl-12">
           {loading ? (
-            <div colSpan={99}>
-              <CircularLoader />
+            <div>
+              <SkeletonFormLoader />
             </div>
           ) : (
-            ""
-          )}
-          <div className="overviewTableWrapper">
-            <div className="overviewTableChild">
-              <div className="d-flex flex-wrap">
-                <div className="col-12">
-                  <div className="heading">
-                    <div className="content">
-                      <h4>Update Extension</h4>
-                      <p>An extension is a destinations that can be called.</p>
-                    </div>
-                    <div className="buttonGroup">
-                      <button
-                        onClick={() => {
-                          navigate(-1);
-                          backToTop();
-                        }}
-                        type="button"
-                        effect="ripple"
-                        className="panelButton gray"
-                      >
-                        <span className="text">Back</span>
-                        <span className="icon">
-                          <i class="fa-solid fa-caret-left"></i>
-                        </span>
-                      </button>
-                      <button
-                        type="button"
-                        effect="ripple"
-                        className="panelButton"
-                        onClick={() => handleFormSubmit()}
-                      >
-                        <span className="text">Save</span>
-                        <span className="icon">
-                          <i class="fa-solid fa-floppy-disk"></i>
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="col-12 formScroller"
-                  style={{
-                    padding: "25px 23px",
-                  }}
-                >
-                  <form action="#" className="tangoNavs">
-                    <nav>
-                      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <div className="overviewTableWrapper">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap">
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content">
+                        <h4>Update Extension</h4>
+                        <p>An extension is a destinations that can be called.</p>
+                      </div>
+                      <div className="buttonGroup">
                         <button
-                          class="nav-link active"
-                          id="nav-gen-tab"
-                          data-bs-toggle="tab"
-                          data-bs-target="#nav-gen"
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
                           type="button"
-                          role="tab"
-                          aria-controls="nav-gen"
-                          aria-selected="true"
+                          effect="ripple"
+                          className="panelButton gray"
                         >
-                          General
+                          <span className="text">Back</span>
+                          <span className="icon">
+                            <i class="fa-solid fa-caret-left"></i>
+                          </span>
                         </button>
                         <button
-                          class="nav-link"
-                          id="nav-voicemail-tab"
-                          data-bs-toggle="tab"
-                          data-bs-target="#nav-voicemail"
                           type="button"
-                          role="tab"
-                          aria-controls="nav-voicemail"
-                          aria-selected="false"
+                          effect="ripple"
+                          className="panelButton"
+                          onClick={() => handleFormSubmit()}
                         >
-                          Voicemail
-                        </button>
-                        {/* <button class="nav-link" id="nav-device-tab" data-bs-toggle="tab" data-bs-target="#nav-device" type="button" role="tab" aria-controls="nav-device" aria-selected="false">Device Provisioning</button> */}
-                        <button
-                          class="nav-link"
-                          id="nav-adv-tab"
-                          data-bs-toggle="tab"
-                          data-bs-target="#nav-adv"
-                          type="button"
-                          role="tab"
-                          aria-controls="nav-adv"
-                          aria-selected="false"
-                        >
-                          Advanced
-                        </button>
-                        <button
-                          class="nav-link"
-                          id="nav-call-setting-tab"
-                          data-bs-toggle="tab"
-                          data-bs-target="#nav-call-setting"
-                          type="button"
-                          role="tab"
-                          aria-controls="nav-call-setting"
-                          aria-selected="false"
-                        >
-                          Call Settings
+                          <span className="text">Save</span>
+                          <span className="icon">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                          </span>
                         </button>
                       </div>
-                    </nav>
-                    <div class="tab-content" id="nav-tabContent">
-                      <div
-                        class="tab-pane fade show active"
-                        id="nav-gen"
-                        role="tabpanel"
-                        aria-labelledby="nav-gen-tab"
-                        tabindex="0"
-                      >
-                        <form className="row col-12 mx-auto">
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="">Extension</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter the alphanumeric extension. The default
-                                configuration allows 2 - 15 digit extensions.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                                {...register("extension", {
-                                  ...requiredValidator,
-                                })}
-                                disabled
-                              />
-                              {errors.extension && (
-                                <ErrorMessage text={errors.extension.message} />
-                              )}
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="">Password</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Password length must be atleast 4 character
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                                {...register("password", {
-                                  ...requiredValidator,
-                                  ...lengthValidator(4, 50),
-                                })}
-                              />
-                              {errors.password && (
-                                <ErrorMessage text={errors.password.message} />
-                              )}
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="">Select User</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Define users assigned to this Extension.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <select
-                                className="formItem"
-                                {...register("user")}
-                                id="selectFormRow"
-                              >
-                                <option value="" disabled>
-                                  Select User
-                                </option>
-                                <option value={""}>None</option>
-                                {users &&
-                                  users.map((item, key) => {
-                                    return (
-                                      <option key={key} value={item.id}>
-                                        {item.username}
-                                      </option>
-                                    );
+                    </div>
+                  </div>
+                  <div
+                    className="col-12 formScroller"
+                    style={{
+                      padding: "25px 23px",
+                    }}
+                  >
+                    <form action="#" className="tangoNavs">
+                      <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                          <button
+                            class="nav-link active"
+                            id="nav-gen-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#nav-gen"
+                            type="button"
+                            role="tab"
+                            aria-controls="nav-gen"
+                            aria-selected="true"
+                          >
+                            General
+                          </button>
+                          <button
+                            class="nav-link"
+                            id="nav-voicemail-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#nav-voicemail"
+                            type="button"
+                            role="tab"
+                            aria-controls="nav-voicemail"
+                            aria-selected="false"
+                          >
+                            Voicemail
+                          </button>
+                          {/* <button class="nav-link" id="nav-device-tab" data-bs-toggle="tab" data-bs-target="#nav-device" type="button" role="tab" aria-controls="nav-device" aria-selected="false">Device Provisioning</button> */}
+                          <button
+                            class="nav-link"
+                            id="nav-adv-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#nav-adv"
+                            type="button"
+                            role="tab"
+                            aria-controls="nav-adv"
+                            aria-selected="false"
+                          >
+                            Advanced
+                          </button>
+                          <button
+                            class="nav-link"
+                            id="nav-call-setting-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#nav-call-setting"
+                            type="button"
+                            role="tab"
+                            aria-controls="nav-call-setting"
+                            aria-selected="false"
+                          >
+                            Call Settings
+                          </button>
+                        </div>
+                      </nav>
+                      <div class="tab-content" id="nav-tabContent">
+                        <div
+                          class="tab-pane fade show active"
+                          id="nav-gen"
+                          role="tabpanel"
+                          aria-labelledby="nav-gen-tab"
+                          tabindex="0"
+                        >
+                          <form className="row col-12 mx-auto">
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="">Extension</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Enter the alphanumeric extension. The default
+                                  configuration allows 2 - 15 digit extensions.
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <input
+                                  type="text"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("extension", {
+                                    ...requiredValidator,
                                   })}
-                              </select>
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="">Music on Hold</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Select the desired hold music.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <select
-                                {...register("moh")}
-                                className="formItem w-100"
-                              >
-                                <option disabled value="">
-                                  Select
-                                </option>
-                                {music &&
-                                  music.map((item, index) => {
-                                    return (
-                                      <option key={index} value={item.id}>
-                                        {item.name}
-                                      </option>
-                                    );
-                                  })}
-                              </select>
-                            </div>
-                          </div>
-
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="">Account Code</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter the account code here.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                                {...register("account_code", {
-                                  ...noSpecialCharactersValidator,
-                                })}
-                                onKeyDown={restrictToAllowedChars}
-                              />
-                              {errors.account_code && (
-                                <ErrorMessage
-                                  text={errors.account_code.message}
+                                  disabled
                                 />
-                              )}
+                                {errors.extension && (
+                                  <ErrorMessage text={errors.extension.message} />
+                                )}
+                              </div>
                             </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="">Effective Caller ID</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter the internal caller ID name & number here.
-                              </label>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="">Password</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Password length must be atleast 4 character
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <input
+                                  type="text"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("password", {
+                                    ...requiredValidator,
+                                    ...lengthValidator(4, 50),
+                                  })}
+                                />
+                                {errors.password && (
+                                  <ErrorMessage text={errors.password.message} />
+                                )}
+                              </div>
                             </div>
-                            <div className="col-xl-6 col-12">
-                              <div className="row">
-                                <div className="col-5 pe-2">
-                                  <input
-                                    type="text"
-                                    name="extension"
-                                    placeholder="Name"
-                                    className="formItem"
-                                    {...register("effectiveCallerIdName", {
-                                      ...noSpecialCharactersValidator,
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="">Select User</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Define users assigned to this Extension.
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <select
+                                  className="formItem"
+                                  {...register("user")}
+                                  id="selectFormRow"
+                                >
+                                  <option value="" disabled>
+                                    Select User
+                                  </option>
+                                  <option value={""}>None</option>
+                                  {users &&
+                                    users.map((item, key) => {
+                                      return (
+                                        <option key={key} value={item.id}>
+                                          {item.username}
+                                        </option>
+                                      );
                                     })}
-                                    onKeyDown={restrictToAllowedChars}
-                                  />
-                                  {errors.effectiveCallerIdName && (
-                                    <ErrorMessage
-                                      text={
-                                        errors.effectiveCallerIdName.message
-                                      }
-                                    />
-                                  )}
-                                </div>
-                                <div className="col-7 ps-2">
-                                  <input
-                                    type="text"
-                                    name="extension"
-                                    placeholder="Number"
-                                    className="formItem"
-                                    {...register("effectiveCallerIdNumber", {
-                                      ...numberValidator,
+                                </select>
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="">Music on Hold</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Select the desired hold music.
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <select
+                                  {...register("moh")}
+                                  className="formItem w-100"
+                                >
+                                  <option disabled value="">
+                                    Select
+                                  </option>
+                                  {music &&
+                                    music.map((item, index) => {
+                                      return (
+                                        <option key={index} value={item.id}>
+                                          {item.name}
+                                        </option>
+                                      );
                                     })}
-                                    onKeyDown={restrictToNumbers}
+                                </select>
+                              </div>
+                            </div>
+
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="">Account Code</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Enter the account code here.
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <input
+                                  type="text"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("account_code", {
+                                    ...noSpecialCharactersValidator,
+                                  })}
+                                  onKeyDown={restrictToAllowedChars}
+                                />
+                                {errors.account_code && (
+                                  <ErrorMessage
+                                    text={errors.account_code.message}
                                   />
-                                  {errors.effectiveCallerIdNumber && (
-                                    <ErrorMessage
-                                      text={
-                                        errors.effectiveCallerIdNumber.message
-                                      }
+                                )}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="">Effective Caller ID</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Enter the internal caller ID name & number here.
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <div className="row">
+                                  <div className="col-5 pe-2">
+                                    <input
+                                      type="text"
+                                      name="extension"
+                                      placeholder="Name"
+                                      className="formItem"
+                                      {...register("effectiveCallerIdName", {
+                                        ...noSpecialCharactersValidator,
+                                      })}
+                                      onKeyDown={restrictToAllowedChars}
                                     />
-                                  )}
+                                    {errors.effectiveCallerIdName && (
+                                      <ErrorMessage
+                                        text={
+                                          errors.effectiveCallerIdName.message
+                                        }
+                                      />
+                                    )}
+                                  </div>
+                                  <div className="col-7 ps-2">
+                                    <input
+                                      type="text"
+                                      name="extension"
+                                      placeholder="Number"
+                                      className="formItem"
+                                      {...register("effectiveCallerIdNumber", {
+                                        ...numberValidator,
+                                      })}
+                                      onKeyDown={restrictToNumbers}
+                                    />
+                                    {errors.effectiveCallerIdNumber && (
+                                      <ErrorMessage
+                                        text={
+                                          errors.effectiveCallerIdNumber.message
+                                        }
+                                      />
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                          {/* <div className="formRow col-xl-3">
+                            {/* <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Effective Caller ID Number</label>
                         <label htmlFor="data" className="formItemDesc">
@@ -833,33 +832,33 @@ const ExtensionsEdit = () => {
                         )}
                       </div>
                     </div> */}
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="selectFormRow">Record</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Choose whether to record local, inbound,
-                                outbound, or all.
-                              </label>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="selectFormRow">Record</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Choose whether to record local, inbound,
+                                  outbound, or all.
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <select
+                                  className="formItem"
+                                  name=""
+                                  id="selectFormRow"
+                                  {...register("record", {})}
+                                >
+                                  <option value="" disabled>
+                                    Select Type
+                                  </option>
+                                  <option value="D">Disabled</option>
+                                  <option value="A">All</option>
+                                  <option value="L">Local</option>
+                                  <option value="I">Inbound</option>
+                                  <option value="O">Outbound</option>
+                                </select>
+                              </div>
                             </div>
-                            <div className="col-xl-6 col-12">
-                              <select
-                                className="formItem"
-                                name=""
-                                id="selectFormRow"
-                                {...register("record", {})}
-                              >
-                                <option value="" disabled>
-                                  Select Type
-                                </option>
-                                <option value="D">Disabled</option>
-                                <option value="A">All</option>
-                                <option value="L">Local</option>
-                                <option value="I">Inbound</option>
-                                <option value="O">Outbound</option>
-                              </select>
-                            </div>
-                          </div>
-                          {/* <div className="formRow col-xl-3">
+                            {/* <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Outbound Caller ID Number</label>
                         <label htmlFor="data" className="formItemDesc">
@@ -881,58 +880,58 @@ const ExtensionsEdit = () => {
                         )}
                       </div>
                     </div> */}
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="">Emergency Caller ID</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter the emergency caller ID name & number
-                                here.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <div className="row">
-                                <div className="col-5 pe-2">
-                                  <input
-                                    type="text"
-                                    name="extension"
-                                    placeholder="Name"
-                                    className="formItem"
-                                    {...register("emergencyCallerIdName", {
-                                      ...noSpecialCharactersValidator,
-                                    })}
-                                    onKeyDown={restrictToAllowedChars}
-                                  />
-                                  {errors.emergencyCallerIdName && (
-                                    <ErrorMessage
-                                      text={
-                                        errors.emergencyCallerIdName.message
-                                      }
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="">Emergency Caller ID</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Enter the emergency caller ID name & number
+                                  here.
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <div className="row">
+                                  <div className="col-5 pe-2">
+                                    <input
+                                      type="text"
+                                      name="extension"
+                                      placeholder="Name"
+                                      className="formItem"
+                                      {...register("emergencyCallerIdName", {
+                                        ...noSpecialCharactersValidator,
+                                      })}
+                                      onKeyDown={restrictToAllowedChars}
                                     />
-                                  )}
-                                </div>
-                                <div className="col-7 ps-2">
-                                  <input
-                                    type="text"
-                                    name="extension"
-                                    placeholder="Number"
-                                    className="formItem"
-                                    {...register("emergencyCallerIdNumber", {
-                                      ...numberValidator,
-                                    })}
-                                    onKeyDown={restrictToNumbers}
-                                  />
-                                  {errors.emergencyCallerIdNumber && (
-                                    <ErrorMessage
-                                      text={
-                                        errors.emergencyCallerIdNumber.message
-                                      }
+                                    {errors.emergencyCallerIdName && (
+                                      <ErrorMessage
+                                        text={
+                                          errors.emergencyCallerIdName.message
+                                        }
+                                      />
+                                    )}
+                                  </div>
+                                  <div className="col-7 ps-2">
+                                    <input
+                                      type="text"
+                                      name="extension"
+                                      placeholder="Number"
+                                      className="formItem"
+                                      {...register("emergencyCallerIdNumber", {
+                                        ...numberValidator,
+                                      })}
+                                      onKeyDown={restrictToNumbers}
                                     />
-                                  )}
+                                    {errors.emergencyCallerIdNumber && (
+                                      <ErrorMessage
+                                        text={
+                                          errors.emergencyCallerIdNumber.message
+                                        }
+                                      />
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                          {/* <div className="formRow col-xl-3">
+                            {/* <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Emergency Caller ID Number</label>
                         <label htmlFor="data" className="formItemDesc">
@@ -956,670 +955,609 @@ const ExtensionsEdit = () => {
                         )}
                       </div>
                     </div> */}
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="selectFormRow">Description</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter the description.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                                {...register("description", {
-                                  ...noSpecialCharactersValidator,
-                                })}
-                                onKeyDown={restrictToAllowedChars}
-                              />
-                              {errors.description && (
-                                <ErrorMessage
-                                  text={errors.description.message}
-                                />
-                              )}
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="">Outbound Caller ID</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter the external (public) caller ID name &
-                                number here.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <div className="row">
-                                <div className="col-5 pe-2">
-                                  <input
-                                    type="text"
-                                    name="extension"
-                                    placeholder="Name"
-                                    className="formItem"
-                                    {...register("outbundCallerIdName", {
-                                      ...noSpecialCharactersValidator,
-                                    })}
-                                    onKeyDown={restrictToAllowedChars}
-                                  />
-                                  {errors.outbundCallerIdName && (
-                                    <ErrorMessage
-                                      text={errors.outbundCallerIdName.message}
-                                    />
-                                  )}
-                                </div>
-                                <div className="col-7 ps-2">
-                                  <input
-                                    type="text"
-                                    name="extension"
-                                    placeholder="Number"
-                                    className="formItem"
-                                    {...register("outbundCallerIdNumber", {
-                                      ...numberValidator,
-                                    })}
-                                    onKeyDown={restrictToNumbers}
-                                  />
-                                  {errors.outbundCallerIdNumber && (
-                                    <ErrorMessage
-                                      text={
-                                        errors.outbundCallerIdNumber.message
-                                      }
-                                    />
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-                      <div
-                        class="tab-pane fade"
-                        id="nav-voicemail"
-                        role="tabpanel"
-                        aria-labelledby="nav-voicemail-tab"
-                        tabindex="0"
-                      >
-                        <form className="row col-12 mx-auto">
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="">Voicemail Password</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter the numeric voicemail password here.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                                {...register("voicemail_password", {
-                                  ...requiredValidator,
-                                  ...lengthValidator(4, 50),
-                                })}
-                              />
-                              {errors.voicemail_password && (
-                                <ErrorMessage
-                                  text={errors.voicemail_password.message}
-                                />
-                              )}
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="selectFormRow">
-                                Voicemail Enabled
-                              </label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enable/disable voicemail for this extension.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <select
-                                className="formItem"
-                                name=""
-                                id="selectFormRow"
-                                {...register("voicemailEnabled", {})}
-                              >
-                                <option value="" disabled>
-                                  Select Voicemail
-                                </option>
-                                <option value="Y">True</option>
-                                <option value="N">False</option>
-                              </select>
-                              {errors.voicemailEnabled && (
-                                <ErrorMessage
-                                  text={errors.voicemailEnabled.message}
-                                />
-                              )}
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="selectFormRow">
-                                Voicemail Mail To
-                              </label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter the email address to send voicemail to
-                                (optional).
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                                {...register("voiceEmailTo", {
-                                  ...emailValidator,
-                                })}
-                                onKeyDown={restrictToAllowedChars}
-                              />
-                              {errors.voiceEmailTo && (
-                                <ErrorMessage
-                                  text={errors.voiceEmailTo.message}
-                                />
-                              )}
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="selectFormRow">
-                                Voicemail File
-                              </label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Select a listening option to include with the
-                                email notification.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <select
-                                className="formItem"
-                                name=""
-                                id="selectFormRow"
-                                {...register("voiceMailFile", {})}
-                              >
-                                <option value="" disabled>
-                                  Select Voicemail File
-                                </option>
-                                <option value="audio">
-                                  Audio File Attachment
-                                </option>
-                                <option value="listen">
-                                  Listen Link (Login Required)
-                                </option>
-                                <option value="download">
-                                  Download Link (No Login Required)
-                                </option>
-                              </select>
-                              {errors.voiceMailFile && (
-                                <ErrorMessage
-                                  text={errors.voiceMailFile.message}
-                                />
-                              )}
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="selectFormRow">
-                                Voicemail Keep Local
-                              </label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Choose whether to keep the voicemail in the
-                                system after sending the email notification.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <select
-                                className="formItem"
-                                name=""
-                                id="selectFormRow"
-                                {...register("voiceMailkeepFile", {})}
-                              >
-                                <option value="" disabled>
-                                  Select User
-                                </option>
-                                <option value="true">True</option>
-                                <option value="false">False</option>
-                              </select>
-                              {errors.voiceMailkeepFile && (
-                                <ErrorMessage
-                                  text={errors.voiceMailkeepFile.message}
-                                />
-                              )}
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-                      <div
-                        class="tab-pane fade"
-                        id="nav-device"
-                        role="tabpanel"
-                        aria-labelledby="nav-device-tab"
-                        tabindex="0"
-                      >
-                        <form className="col-12 mx-auto">
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="">Address</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter the address.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                              />
-                              {/* {errors.voicemail_password && (
-                                <ErrorMessage text={errors.voicemail_password.message} />
-                              )} */}
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="">Transport</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Select a transport
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                              />
-                              {/* {errors.voicemail_password && (
-                                <ErrorMessage text={errors.voicemail_password.message} />
-                              )} */}
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-                      <div
-                        class="tab-pane fade"
-                        id="nav-adv"
-                        role="tabpanel"
-                        aria-labelledby="nav-adv-tab"
-                        tabindex="0"
-                      >
-                        <form className="row col-12 mx-auto">
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="">Directory Full Name</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter the first name followed by the last name.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                                {...register("directoryFullname", {
-                                  ...noSpecialCharactersValidator,
-                                })}
-                                onKeyDown={restrictToAllowedChars}
-                              />
-                              {errors.directoryFullname && (
-                                <ErrorMessage
-                                  text={errors.directoryFullname.message}
-                                />
-                              )}
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="selectFormRow">
-                                Directory Extension Visible
-                              </label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Select whether announce the extension when
-                                calling the directory.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <select
-                                className="formItem"
-                                name=""
-                                id="selectFormRow"
-                                {...register("directoryExtensionVisible", {})}
-                              >
-                                <option value="" disabled>
-                                  Select Visibility
-                                </option>
-                                <option value="true">True</option>
-                                <option value="false">False</option>
-                              </select>
-                              {errors.directoryExtensionVisible && (
-                                <ErrorMessage
-                                  text={
-                                    errors.directoryExtensionVisible.message
-                                  }
-                                />
-                              )}
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="selectFormRow">
-                                Max Registrations
-                              </label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter the maximum concurrent registrations
-                                allowed.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                                {...register("maxRegistration", {
-                                  ...numberValidator,
-                                })}
-                                onKeyDown={restrictToNumbers}
-                              />
-                              {errors.maxRegistration && (
-                                <ErrorMessage
-                                  text={errors.maxRegistration.message}
-                                />
-                              )}
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="selectFormRow">Limit Max</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter the maximum number of concurrent outbound
-                                calls allowed.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                                {...register("limitMax", {
-                                  ...numberValidator,
-                                })}
-                                onKeyDown={restrictToNumbers}
-                              />
-                              {errors.limitMax && (
-                                <ErrorMessage text={errors.limitMax.message} />
-                              )}
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="selectFormRow">
-                                Limit Destination
-                              </label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter the destination to send the calls when the
-                                max number of outgoing calls has been reached.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                                {...register("limitDestinations", {
-                                  ...numberValidator,
-                                })}
-                                onKeyDown={restrictToNumbers}
-                              />
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="selectFormRow">Missed Call</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Select the notification type, and enter the
-                                appropriate destination.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <select
-                                className="formItem"
-                                name=""
-                                id="selectFormRow"
-                                {...register("missedCall", {})}
-                              >
-                                <option value="" disabled>
-                                  Select Notification Type
-                                </option>
-                                <option value="email">Email</option>
-                                <option value="none">None</option>
-                              </select>
-                              {errors.missedCall && (
-                                <ErrorMessage
-                                  text={errors.missedCall.message}
-                                />
-                              )}
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="selectFormRow">Toll Allow</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter the toll allow value here. (Examples:
-                                domestic,international,local).
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                                {...register("tollAllowValue", {
-                                  ...noSpecialCharactersValidator,
-                                })}
-                                onKeyDown={restrictToAllowedChars}
-                              />
-                              {errors.tollAllowValue && (
-                                <ErrorMessage
-                                  text={errors.tollAllowValue.message}
-                                />
-                              )}
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="selectFormRow">
-                                Call Timeout
-                              </label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter the ring time (delay in seconds) before
-                                sending a call to voicemail.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <input
-                                type="number"
-                                name="extension"
-                                className="formItem"
-                                {...register("callTimeOut", {
-                                  ...numberValidator,
-                                })}
-                                onKeyDown={restrictToNumbers}
-                              />
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="selectFormRow">Call Group</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter the user call group here. Groups available
-                                by default: sales, support, billing.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                                {...register("callgroup", {
-                                  ...noSpecialCharactersValidator,
-                                })}
-                                onKeyDown={restrictToAllowedChars}
-                              />
-                              {errors.callgroup && (
-                                <ErrorMessage text={errors.callgroup.message} />
-                              )}
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
-                              <label htmlFor="selectFormRow">Call Screen</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Choose whether to enable or disable call
-                                screening.
-                              </label>
-                            </div>
-                            <div className="col-xl-6 col-12">
-                              <select
-                                className="formItem"
-                                name=""
-                                id="selectFormRow"
-                                {...register("callScreen", {})}
-                              >
-                                <option value="" disabled>
-                                  Select Notification Type
-                                </option>
-                                <option value="Enable">Enable</option>
-                                <option value="Disable">Disable</option>
-                              </select>
-                              {errors.callScreen && (
-                                <ErrorMessage
-                                  text={errors.callScreen.message}
-                                />
-                              )}
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-                      <div
-                        class="tab-pane fade show "
-                        id="nav-call-setting"
-                        role="tabpanel"
-                        aria-labelledby="nav-call-setting-tab"
-                        tabindex="0"
-                      >
-                        <div
-                          className="col-12"
-                          style={{
-                            padding: "25px 23px",
-                            borderBottom: "1px solid #ddd",
-                          }}
-                        >
-                          <form className="row">
                             <div className="formRow col-xl-3">
                               <div className="formLabel">
-                                <label className="text-dark">On Busy</label>
+                                <label htmlFor="selectFormRow">Description</label>
                                 <label htmlFor="data" className="formItemDesc">
-                                  If enabled, it overrides the value of
-                                  voicemail enabling in extension
+                                  Enter the description.
                                 </label>
                               </div>
-                              <div
-                                className={
-                                  watch().onbusy == 0
-                                    ? "col-6"
-                                    : "col-3 pe-2 ms-auto"
-                                }
-                              >
-                                <div class="formLabel">
-                                  <label>Status</label>
-                                </div>
-                                <select
-                                  className="formItem me-0"
-                                  style={{ width: "100%" }}
-                                  name="delay"
-                                  id="selectFormRow"
-                                  // value={callSetting.onBusyState}
-                                  // onChange={(e) => {
-                                  //   setCallSetting((prevState) => ({
-                                  //     ...prevState,
-                                  //     onBusyState: parseInt(e.target.value),
-                                  //   }));
-                                  // }}
-                                  {...register("onbusy")}
-                                >
-                                  <option value={1}>Enabled</option>
-                                  <option value={0}>Disabled</option>
-                                </select>
+                              <div className="col-xl-6 col-12">
+                                <input
+                                  type="text"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("description", {
+                                    ...noSpecialCharactersValidator,
+                                  })}
+                                  onKeyDown={restrictToAllowedChars}
+                                />
+                                {errors.description && (
+                                  <ErrorMessage
+                                    text={errors.description.message}
+                                  />
+                                )}
                               </div>
-                              {watch().onbusy == 0 ? (
-                                ""
-                              ) : (
-                                <div className="col-3">
-                                  <div className="formLabel">
-                                    <label htmlFor="">Destinations</label>
-
-                                    {errors.onbusyTo ? (
+                            </div>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="">Outbound Caller ID</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Enter the external (public) caller ID name &
+                                  number here.
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <div className="row">
+                                  <div className="col-5 pe-2">
+                                    <input
+                                      type="text"
+                                      name="extension"
+                                      placeholder="Name"
+                                      className="formItem"
+                                      {...register("outbundCallerIdName", {
+                                        ...noSpecialCharactersValidator,
+                                      })}
+                                      onKeyDown={restrictToAllowedChars}
+                                    />
+                                    {errors.outbundCallerIdName && (
                                       <ErrorMessage
-                                        text={errors.onbusyTo.message}
+                                        text={errors.outbundCallerIdName.message}
                                       />
-                                    ) : (
-                                      ""
                                     )}
                                   </div>
-                                  <div className="col-12">
-                                    <ActionList
-                                      title={null}
-                                      getDropdownValue={actionListValue}
-                                      value={watch().onbusyTo}
+                                  <div className="col-7 ps-2">
+                                    <input
+                                      type="text"
+                                      name="extension"
+                                      placeholder="Number"
+                                      className="formItem"
+                                      {...register("outbundCallerIdNumber", {
+                                        ...numberValidator,
+                                      })}
+                                      onKeyDown={restrictToNumbers}
                                     />
+                                    {errors.outbundCallerIdNumber && (
+                                      <ErrorMessage
+                                        text={
+                                          errors.outbundCallerIdNumber.message
+                                        }
+                                      />
+                                    )}
                                   </div>
                                 </div>
-                              )}
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                        <div
+                          class="tab-pane fade"
+                          id="nav-voicemail"
+                          role="tabpanel"
+                          aria-labelledby="nav-voicemail-tab"
+                          tabindex="0"
+                        >
+                          <form className="row col-12 mx-auto">
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="">Voicemail Password</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Enter the numeric voicemail password here.
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <input
+                                  type="text"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("voicemail_password", {
+                                    ...requiredValidator,
+                                    ...lengthValidator(4, 50),
+                                  })}
+                                />
+                                {errors.voicemail_password && (
+                                  <ErrorMessage
+                                    text={errors.voicemail_password.message}
+                                  />
+                                )}
+                              </div>
                             </div>
                             <div className="formRow col-xl-3">
                               <div className="formLabel">
-                                <label className="text-dark">No Answer</label>
+                                <label htmlFor="selectFormRow">
+                                  Voicemail Enabled
+                                </label>
                                 <label htmlFor="data" className="formItemDesc">
-                                  If enabled, it overrides the value of
-                                  voicemail enabling in extension
+                                  Enable/disable voicemail for this extension.
                                 </label>
                               </div>
-                              <div
-                                className={
-                                  watch().noanswer === "Forward"
-                                    ? "col-3 pe-2 ms-auto"
-                                    : "col-6"
-                                }
-                              >
-                                <div class="formLabel">
-                                  <label>Status</label>
-                                </div>
+                              <div className="col-xl-6 col-12">
                                 <select
-                                  className="formItem me-0"
-                                  style={{ width: "100%" }}
-                                  name="delay"
+                                  className="formItem"
+                                  name=""
                                   id="selectFormRow"
-                                  // value={callSetting.noAnswerStatus}
-                                  // onChange={(e) => {
-                                  //   setCallSetting((prevState) => ({
-                                  //     ...prevState,
-                                  //     noAnswerStatus: e.target.value,
-                                  //   }));
-                                  // }}
-                                  {...register("noanswer")}
+                                  {...register("voicemailEnabled", {})}
                                 >
-                                  <option>Disabled</option>
-                                  <option>Voicemail</option>
-                                  <option>Forward</option>
+                                  <option value="" disabled>
+                                    Select Voicemail
+                                  </option>
+                                  <option value="Y">True</option>
+                                  <option value="N">False</option>
                                 </select>
+                                {errors.voicemailEnabled && (
+                                  <ErrorMessage
+                                    text={errors.voicemailEnabled.message}
+                                  />
+                                )}
                               </div>
-                              {watch().noanswer === "Forward" ? (
-                                <>
+                            </div>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="selectFormRow">
+                                  Voicemail Mail To
+                                </label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Enter the email address to send voicemail to
+                                  (optional).
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <input
+                                  type="text"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("voiceEmailTo", {
+                                    ...emailValidator,
+                                  })}
+                                  onKeyDown={restrictToAllowedChars}
+                                />
+                                {errors.voiceEmailTo && (
+                                  <ErrorMessage
+                                    text={errors.voiceEmailTo.message}
+                                  />
+                                )}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="selectFormRow">
+                                  Voicemail File
+                                </label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Select a listening option to include with the
+                                  email notification.
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <select
+                                  className="formItem"
+                                  name=""
+                                  id="selectFormRow"
+                                  {...register("voiceMailFile", {})}
+                                >
+                                  <option value="" disabled>
+                                    Select Voicemail File
+                                  </option>
+                                  <option value="audio">
+                                    Audio File Attachment
+                                  </option>
+                                  <option value="listen">
+                                    Listen Link (Login Required)
+                                  </option>
+                                  <option value="download">
+                                    Download Link (No Login Required)
+                                  </option>
+                                </select>
+                                {errors.voiceMailFile && (
+                                  <ErrorMessage
+                                    text={errors.voiceMailFile.message}
+                                  />
+                                )}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="selectFormRow">
+                                  Voicemail Keep Local
+                                </label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Choose whether to keep the voicemail in the
+                                  system after sending the email notification.
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <select
+                                  className="formItem"
+                                  name=""
+                                  id="selectFormRow"
+                                  {...register("voiceMailkeepFile", {})}
+                                >
+                                  <option value="" disabled>
+                                    Select User
+                                  </option>
+                                  <option value="true">True</option>
+                                  <option value="false">False</option>
+                                </select>
+                                {errors.voiceMailkeepFile && (
+                                  <ErrorMessage
+                                    text={errors.voiceMailkeepFile.message}
+                                  />
+                                )}
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                        <div
+                          class="tab-pane fade"
+                          id="nav-device"
+                          role="tabpanel"
+                          aria-labelledby="nav-device-tab"
+                          tabindex="0"
+                        >
+                          <form className="col-12 mx-auto">
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="">Address</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Enter the address.
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <input
+                                  type="text"
+                                  name="extension"
+                                  className="formItem"
+                                />
+                                {/* {errors.voicemail_password && (
+                                <ErrorMessage text={errors.voicemail_password.message} />
+                              )} */}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="">Transport</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Select a transport
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <input
+                                  type="text"
+                                  name="extension"
+                                  className="formItem"
+                                />
+                                {/* {errors.voicemail_password && (
+                                <ErrorMessage text={errors.voicemail_password.message} />
+                              )} */}
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                        <div
+                          class="tab-pane fade"
+                          id="nav-adv"
+                          role="tabpanel"
+                          aria-labelledby="nav-adv-tab"
+                          tabindex="0"
+                        >
+                          <form className="row col-12 mx-auto">
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="">Directory Full Name</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Enter the first name followed by the last name.
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <input
+                                  type="text"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("directoryFullname", {
+                                    ...noSpecialCharactersValidator,
+                                  })}
+                                  onKeyDown={restrictToAllowedChars}
+                                />
+                                {errors.directoryFullname && (
+                                  <ErrorMessage
+                                    text={errors.directoryFullname.message}
+                                  />
+                                )}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="selectFormRow">
+                                  Directory Extension Visible
+                                </label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Select whether announce the extension when
+                                  calling the directory.
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <select
+                                  className="formItem"
+                                  name=""
+                                  id="selectFormRow"
+                                  {...register("directoryExtensionVisible", {})}
+                                >
+                                  <option value="" disabled>
+                                    Select Visibility
+                                  </option>
+                                  <option value="true">True</option>
+                                  <option value="false">False</option>
+                                </select>
+                                {errors.directoryExtensionVisible && (
+                                  <ErrorMessage
+                                    text={
+                                      errors.directoryExtensionVisible.message
+                                    }
+                                  />
+                                )}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="selectFormRow">
+                                  Max Registrations
+                                </label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Enter the maximum concurrent registrations
+                                  allowed.
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <input
+                                  type="text"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("maxRegistration", {
+                                    ...numberValidator,
+                                  })}
+                                  onKeyDown={restrictToNumbers}
+                                />
+                                {errors.maxRegistration && (
+                                  <ErrorMessage
+                                    text={errors.maxRegistration.message}
+                                  />
+                                )}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="selectFormRow">Limit Max</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Enter the maximum number of concurrent outbound
+                                  calls allowed.
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <input
+                                  type="text"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("limitMax", {
+                                    ...numberValidator,
+                                  })}
+                                  onKeyDown={restrictToNumbers}
+                                />
+                                {errors.limitMax && (
+                                  <ErrorMessage text={errors.limitMax.message} />
+                                )}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="selectFormRow">
+                                  Limit Destination
+                                </label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Enter the destination to send the calls when the
+                                  max number of outgoing calls has been reached.
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <input
+                                  type="text"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("limitDestinations", {
+                                    ...numberValidator,
+                                  })}
+                                  onKeyDown={restrictToNumbers}
+                                />
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="selectFormRow">Missed Call</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Select the notification type, and enter the
+                                  appropriate destination.
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <select
+                                  className="formItem"
+                                  name=""
+                                  id="selectFormRow"
+                                  {...register("missedCall", {})}
+                                >
+                                  <option value="" disabled>
+                                    Select Notification Type
+                                  </option>
+                                  <option value="email">Email</option>
+                                  <option value="none">None</option>
+                                </select>
+                                {errors.missedCall && (
+                                  <ErrorMessage
+                                    text={errors.missedCall.message}
+                                  />
+                                )}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="selectFormRow">Toll Allow</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Enter the toll allow value here. (Examples:
+                                  domestic,international,local).
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <input
+                                  type="text"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("tollAllowValue", {
+                                    ...noSpecialCharactersValidator,
+                                  })}
+                                  onKeyDown={restrictToAllowedChars}
+                                />
+                                {errors.tollAllowValue && (
+                                  <ErrorMessage
+                                    text={errors.tollAllowValue.message}
+                                  />
+                                )}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="selectFormRow">
+                                  Call Timeout
+                                </label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Enter the ring time (delay in seconds) before
+                                  sending a call to voicemail.
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <input
+                                  type="number"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("callTimeOut", {
+                                    ...numberValidator,
+                                  })}
+                                  onKeyDown={restrictToNumbers}
+                                />
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="selectFormRow">Call Group</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Enter the user call group here. Groups available
+                                  by default: sales, support, billing.
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <input
+                                  type="text"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("callgroup", {
+                                    ...noSpecialCharactersValidator,
+                                  })}
+                                  onKeyDown={restrictToAllowedChars}
+                                />
+                                {errors.callgroup && (
+                                  <ErrorMessage text={errors.callgroup.message} />
+                                )}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label htmlFor="selectFormRow">Call Screen</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Choose whether to enable or disable call
+                                  screening.
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <select
+                                  className="formItem"
+                                  name=""
+                                  id="selectFormRow"
+                                  {...register("callScreen", {})}
+                                >
+                                  <option value="" disabled>
+                                    Select Notification Type
+                                  </option>
+                                  <option value="Enable">Enable</option>
+                                  <option value="Disable">Disable</option>
+                                </select>
+                                {errors.callScreen && (
+                                  <ErrorMessage
+                                    text={errors.callScreen.message}
+                                  />
+                                )}
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                        <div
+                          class="tab-pane fade show "
+                          id="nav-call-setting"
+                          role="tabpanel"
+                          aria-labelledby="nav-call-setting-tab"
+                          tabindex="0"
+                        >
+                          <div
+                            className="col-12"
+                            style={{
+                              padding: "25px 23px",
+                              borderBottom: "1px solid #ddd",
+                            }}
+                          >
+                            <form className="row">
+                              <div className="formRow col-xl-3">
+                                <div className="formLabel">
+                                  <label className="text-dark">On Busy</label>
+                                  <label htmlFor="data" className="formItemDesc">
+                                    If enabled, it overrides the value of
+                                    voicemail enabling in extension
+                                  </label>
+                                </div>
+                                <div
+                                  className={
+                                    watch().onbusy == 0
+                                      ? "col-6"
+                                      : "col-3 pe-2 ms-auto"
+                                  }
+                                >
+                                  <div class="formLabel">
+                                    <label>Status</label>
+                                  </div>
+                                  <select
+                                    className="formItem me-0"
+                                    style={{ width: "100%" }}
+                                    name="delay"
+                                    id="selectFormRow"
+                                    // value={callSetting.onBusyState}
+                                    // onChange={(e) => {
+                                    //   setCallSetting((prevState) => ({
+                                    //     ...prevState,
+                                    //     onBusyState: parseInt(e.target.value),
+                                    //   }));
+                                    // }}
+                                    {...register("onbusy")}
+                                  >
+                                    <option value={1}>Enabled</option>
+                                    <option value={0}>Disabled</option>
+                                  </select>
+                                </div>
+                                {watch().onbusy == 0 ? (
+                                  ""
+                                ) : (
                                   <div className="col-3">
                                     <div className="formLabel">
                                       <label htmlFor="">Destinations</label>
 
-                                      {errors.noanswerTo ? (
+                                      {errors.onbusyTo ? (
                                         <ErrorMessage
-                                          text={errors.noanswerTo.message}
+                                          text={errors.onbusyTo.message}
                                         />
                                       ) : (
                                         ""
@@ -1628,10 +1566,71 @@ const ExtensionsEdit = () => {
                                     <div className="col-12">
                                       <ActionList
                                         title={null}
-                                        getDropdownValue={actionListValue1}
-                                        value={watch().noanswerTo}
+                                        getDropdownValue={actionListValue}
+                                        value={watch().onbusyTo}
                                       />
-                                      {/* <input
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                              <div className="formRow col-xl-3">
+                                <div className="formLabel">
+                                  <label className="text-dark">No Answer</label>
+                                  <label htmlFor="data" className="formItemDesc">
+                                    If enabled, it overrides the value of
+                                    voicemail enabling in extension
+                                  </label>
+                                </div>
+                                <div
+                                  className={
+                                    watch().noanswer === "Forward"
+                                      ? "col-3 pe-2 ms-auto"
+                                      : "col-6"
+                                  }
+                                >
+                                  <div class="formLabel">
+                                    <label>Status</label>
+                                  </div>
+                                  <select
+                                    className="formItem me-0"
+                                    style={{ width: "100%" }}
+                                    name="delay"
+                                    id="selectFormRow"
+                                    // value={callSetting.noAnswerStatus}
+                                    // onChange={(e) => {
+                                    //   setCallSetting((prevState) => ({
+                                    //     ...prevState,
+                                    //     noAnswerStatus: e.target.value,
+                                    //   }));
+                                    // }}
+                                    {...register("noanswer")}
+                                  >
+                                    <option>Disabled</option>
+                                    <option>Voicemail</option>
+                                    <option>Forward</option>
+                                  </select>
+                                </div>
+                                {watch().noanswer === "Forward" ? (
+                                  <>
+                                    <div className="col-3">
+                                      <div className="formLabel">
+                                        <label htmlFor="">Destinations</label>
+
+                                        {errors.noanswerTo ? (
+                                          <ErrorMessage
+                                            text={errors.noanswerTo.message}
+                                          />
+                                        ) : (
+                                          ""
+                                        )}
+                                      </div>
+                                      <div className="col-12">
+                                        <ActionList
+                                          title={null}
+                                          getDropdownValue={actionListValue1}
+                                          value={watch().noanswerTo}
+                                        />
+                                        {/* <input
                                         type="text"
                                         name="extension"
                                         className="formItem"
@@ -1650,10 +1649,10 @@ const ExtensionsEdit = () => {
                                             : true
                                         }
                                       /> */}
+                                      </div>
                                     </div>
-                                  </div>
 
-                                  {/* <div className="col-3 pe-2">
+                                    {/* <div className="col-3 pe-2">
                                     <div className="formLabel">
                                       <label htmlFor="">Call TimeOut</label>
                                     </div>
@@ -1674,73 +1673,73 @@ const ExtensionsEdit = () => {
                                       />
                                     </div>
                                   </div> */}
-                                </>
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                            <div className="formRow col-xl-3">
-                              <div className="formLabel">
-                                <label className="text-dark">
-                                  Not Registered
-                                </label>
-                                <label htmlFor="data" className="formItemDesc">
-                                  If endpoint is not reachable, forward to this
-                                  destination before going to voicemail
-                                </label>
+                                  </>
+                                ) : (
+                                  ""
+                                )}
                               </div>
-                              <div
-                                className={
-                                  watch().notregistered == 0
-                                    ? "col-6"
-                                    : "col-3 pe-2 ms-auto"
-                                }
-                              >
-                                <div class="formLabel">
-                                  <label>Status</label>
+                              <div className="formRow col-xl-3">
+                                <div className="formLabel">
+                                  <label className="text-dark">
+                                    Not Registered
+                                  </label>
+                                  <label htmlFor="data" className="formItemDesc">
+                                    If endpoint is not reachable, forward to this
+                                    destination before going to voicemail
+                                  </label>
                                 </div>
-                                <select
-                                  className="formItem me-0"
-                                  style={{ width: "100%" }}
-                                  name="delay"
-                                  id="selectFormRow"
-                                  // value={callSetting.notRegisterStatus}
-                                  // onChange={(e) => {
-                                  //   setCallSetting((prevState) => ({
-                                  //     ...prevState,
-                                  //     notRegisterStatus: parseInt(
-                                  //       e.target.value
-                                  //     ),
-                                  //   }));
-                                  // }}
-                                  {...register("notregistered")}
+                                <div
+                                  className={
+                                    watch().notregistered == 0
+                                      ? "col-6"
+                                      : "col-3 pe-2 ms-auto"
+                                  }
                                 >
-                                  <option value={1}>Enabled</option>
-                                  <option value={0}>Disabled</option>
-                                </select>
-                              </div>
-                              {watch().notregistered == 0 ? (
-                                ""
-                              ) : (
-                                <div className="col-3">
-                                  <div className="formLabel">
-                                    <label htmlFor="">Destinations</label>
-                                    {errors.notregisteredTo ? (
-                                      <ErrorMessage
-                                        text={errors.notregisteredTo.message}
-                                      />
-                                    ) : (
-                                      ""
-                                    )}
+                                  <div class="formLabel">
+                                    <label>Status</label>
                                   </div>
-                                  <div className="col-12">
-                                    <ActionList
-                                      label={null}
-                                      title={null}
-                                      getDropdownValue={actionListValue2}
-                                      value={watch().notregisteredTo}
-                                    />
-                                    {/* <input
+                                  <select
+                                    className="formItem me-0"
+                                    style={{ width: "100%" }}
+                                    name="delay"
+                                    id="selectFormRow"
+                                    // value={callSetting.notRegisterStatus}
+                                    // onChange={(e) => {
+                                    //   setCallSetting((prevState) => ({
+                                    //     ...prevState,
+                                    //     notRegisterStatus: parseInt(
+                                    //       e.target.value
+                                    //     ),
+                                    //   }));
+                                    // }}
+                                    {...register("notregistered")}
+                                  >
+                                    <option value={1}>Enabled</option>
+                                    <option value={0}>Disabled</option>
+                                  </select>
+                                </div>
+                                {watch().notregistered == 0 ? (
+                                  ""
+                                ) : (
+                                  <div className="col-3">
+                                    <div className="formLabel">
+                                      <label htmlFor="">Destinations</label>
+                                      {errors.notregisteredTo ? (
+                                        <ErrorMessage
+                                          text={errors.notregisteredTo.message}
+                                        />
+                                      ) : (
+                                        ""
+                                      )}
+                                    </div>
+                                    <div className="col-12">
+                                      <ActionList
+                                        label={null}
+                                        title={null}
+                                        getDropdownValue={actionListValue2}
+                                        value={watch().notregisteredTo}
+                                      />
+                                      {/* <input
                                       type="text"
                                       name="extension"
                                       className="formItem"
@@ -1757,166 +1756,166 @@ const ExtensionsEdit = () => {
                                           : false
                                       }
                                     /> */}
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                            <div className="formRow col-xl-3">
-                              <div className="formLabel">
-                                <label className="text-dark">Follow Me</label>
-                                <label htmlFor="data" className="formItemDesc">
-                                  Select and configure the Follow Me Status
-                                </label>
-                              </div>
-                              <div className="col-6">
-                                <div class="formLabel">
-                                  <label>Status</label>
-                                </div>
-                                <select
-                                  className="formItem me-0"
-                                  style={{ width: "100%" }}
-                                  name="delay"
-                                  id="selectFormRow"
-                                  // value={callSetting.followMe}
-                                  // onChange={(e) => {
-                                  //   setCallSetting((prevState) => ({
-                                  //     ...prevState,
-                                  //     followMe: parseInt(e.target.value),
-                                  //   }));
-                                  // }}
-                                  {...register("followme")}
-                                >
-                                  <option value={1}>Enabled</option>
-                                  <option value={0}>Disabled</option>
-                                </select>
-                              </div>
-                              {watch().followme == 0 ? (
-                                ""
-                              ) : (
-                                <div className="formRow col-xl-12 px-0 border-0">
-                                  <div className="col-3 pe-2">
-                                    <div className="formLabel">
-                                      <label htmlFor="">Destinations</label>
-                                      {callSetting.followMeDestinationError ? (
-                                        <ErrorMessage text={"Field missing"} />
-                                      ) : (
-                                        ""
-                                      )}
                                     </div>
-                                    <div className="position-relative">
-                                      <input
-                                        type="text"
-                                        name="destination"
-                                        className="formItem"
-                                        value={callSetting.followMeDestination}
+                                  </div>
+                                )}
+                              </div>
+                              <div className="formRow col-xl-3">
+                                <div className="formLabel">
+                                  <label className="text-dark">Follow Me</label>
+                                  <label htmlFor="data" className="formItemDesc">
+                                    Select and configure the Follow Me Status
+                                  </label>
+                                </div>
+                                <div className="col-6">
+                                  <div class="formLabel">
+                                    <label>Status</label>
+                                  </div>
+                                  <select
+                                    className="formItem me-0"
+                                    style={{ width: "100%" }}
+                                    name="delay"
+                                    id="selectFormRow"
+                                    // value={callSetting.followMe}
+                                    // onChange={(e) => {
+                                    //   setCallSetting((prevState) => ({
+                                    //     ...prevState,
+                                    //     followMe: parseInt(e.target.value),
+                                    //   }));
+                                    // }}
+                                    {...register("followme")}
+                                  >
+                                    <option value={1}>Enabled</option>
+                                    <option value={0}>Disabled</option>
+                                  </select>
+                                </div>
+                                {watch().followme == 0 ? (
+                                  ""
+                                ) : (
+                                  <div className="formRow col-xl-12 px-0 border-0">
+                                    <div className="col-3 pe-2">
+                                      <div className="formLabel">
+                                        <label htmlFor="">Destinations</label>
+                                        {callSetting.followMeDestinationError ? (
+                                          <ErrorMessage text={"Field missing"} />
+                                        ) : (
+                                          ""
+                                        )}
+                                      </div>
+                                      <div className="position-relative">
+                                        <input
+                                          type="text"
+                                          name="destination"
+                                          className="formItem"
+                                          value={callSetting.followMeDestination}
+                                          onChange={(e) => {
+                                            setCallSetting((prevState) => ({
+                                              ...prevState,
+                                              followMeDestination: e.target.value,
+                                            }));
+                                            if (e.target.value != "") {
+                                              setCallSetting((prevState) => ({
+                                                ...prevState,
+                                                followMeDestinationError: false,
+                                              }));
+                                            }
+                                          }}
+                                          placeholder="Destination"
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="col-3 pe-2">
+                                      <div className="formLabel">
+                                        <label htmlFor="">Delay</label>
+                                      </div>
+
+                                      <select
+                                        className="formItem me-0"
+                                        style={{ width: "100%" }}
+                                        name="delay"
+                                        id="selectFormRow"
+                                        value={callSetting.followMeDelay}
                                         onChange={(e) => {
                                           setCallSetting((prevState) => ({
                                             ...prevState,
-                                            followMeDestination: e.target.value,
+                                            followMeDelay: parseInt(
+                                              e.target.value
+                                            ),
                                           }));
-                                          if (e.target.value != "") {
-                                            setCallSetting((prevState) => ({
-                                              ...prevState,
-                                              followMeDestinationError: false,
-                                            }));
-                                          }
                                         }}
-                                        placeholder="Destination"
-                                      />
-                                    </div>
-                                  </div>
-                                  <div className="col-3 pe-2">
-                                    <div className="formLabel">
-                                      <label htmlFor="">Delay</label>
-                                    </div>
-
-                                    <select
-                                      className="formItem me-0"
-                                      style={{ width: "100%" }}
-                                      name="delay"
-                                      id="selectFormRow"
-                                      value={callSetting.followMeDelay}
-                                      onChange={(e) => {
-                                        setCallSetting((prevState) => ({
-                                          ...prevState,
-                                          followMeDelay: parseInt(
-                                            e.target.value
-                                          ),
-                                        }));
-                                      }}
-                                    >
-                                      {(() => {
-                                        const numbers = [];
-                                        for (let i = 0; i <= 100; i++) {
-                                          if (i % 5 === 0) {
-                                            numbers.push(
-                                              <span key={i}>{i}</span>
-                                            );
+                                      >
+                                        {(() => {
+                                          const numbers = [];
+                                          for (let i = 0; i <= 100; i++) {
+                                            if (i % 5 === 0) {
+                                              numbers.push(
+                                                <span key={i}>{i}</span>
+                                              );
+                                            }
                                           }
-                                        }
-                                        return numbers.map((item) => {
-                                          return <option>{item}</option>;
-                                        });
-                                      })()}
-                                    </select>
-                                  </div>
-                                  <div className="col-3 pe-2">
-                                    <div className="formLabel">
-                                      <label htmlFor="">Timeout</label>
+                                          return numbers.map((item) => {
+                                            return <option>{item}</option>;
+                                          });
+                                        })()}
+                                      </select>
                                     </div>
-                                    <select
-                                      className="formItem me-0"
-                                      style={{ width: "100%" }}
-                                      name="timeOut"
-                                      value={callSetting.followMeTimeOut}
-                                      onChange={(e) =>
-                                        setCallSetting((prevState) => ({
-                                          ...prevState,
-                                          followMeTimeOut: parseInt(
-                                            e.target.value
-                                          ),
-                                        }))
-                                      }
-                                      id="selectFormRow"
-                                    >
-                                      {(() => {
-                                        const numbers = [];
-                                        for (let i = 0; i <= 100; i++) {
-                                          if (i % 5 === 0) {
-                                            numbers.push(
-                                              <span key={i}>{i}</span>
-                                            );
+                                    <div className="col-3 pe-2">
+                                      <div className="formLabel">
+                                        <label htmlFor="">Timeout</label>
+                                      </div>
+                                      <select
+                                        className="formItem me-0"
+                                        style={{ width: "100%" }}
+                                        name="timeOut"
+                                        value={callSetting.followMeTimeOut}
+                                        onChange={(e) =>
+                                          setCallSetting((prevState) => ({
+                                            ...prevState,
+                                            followMeTimeOut: parseInt(
+                                              e.target.value
+                                            ),
+                                          }))
+                                        }
+                                        id="selectFormRow"
+                                      >
+                                        {(() => {
+                                          const numbers = [];
+                                          for (let i = 0; i <= 100; i++) {
+                                            if (i % 5 === 0) {
+                                              numbers.push(
+                                                <span key={i}>{i}</span>
+                                              );
+                                            }
                                           }
-                                        }
-                                        return numbers.map((item) => {
-                                          return <option>{item}</option>;
-                                        });
-                                      })()}
-                                    </select>
-                                  </div>
-                                  <div className="col-3 pe-2">
-                                    <div className="formLabel">
-                                      <label htmlFor="">Prompt</label>
+                                          return numbers.map((item) => {
+                                            return <option>{item}</option>;
+                                          });
+                                        })()}
+                                      </select>
                                     </div>
+                                    <div className="col-3 pe-2">
+                                      <div className="formLabel">
+                                        <label htmlFor="">Prompt</label>
+                                      </div>
 
-                                    <select
-                                      className="formItem me-0"
-                                      style={{ width: "100%" }}
-                                      value={callSetting.followMePrompt}
-                                      onChange={(e) =>
-                                        setCallSetting((prevState) => ({
-                                          ...prevState,
-                                          followMePrompt: e.target.value,
-                                        }))
-                                      }
-                                      id="selectFormRow"
-                                      name="prompt"
-                                    >
-                                      <option className="status">Prompt</option>
-                                      <option value="confirm">Confirm</option>
-                                    </select>
-                                  </div>
-                                  {/* <div className="col-2 pe-2">
+                                      <select
+                                        className="formItem me-0"
+                                        style={{ width: "100%" }}
+                                        value={callSetting.followMePrompt}
+                                        onChange={(e) =>
+                                          setCallSetting((prevState) => ({
+                                            ...prevState,
+                                            followMePrompt: e.target.value,
+                                          }))
+                                        }
+                                        id="selectFormRow"
+                                        name="prompt"
+                                      >
+                                        <option className="status">Prompt</option>
+                                        <option value="confirm">Confirm</option>
+                                      </select>
+                                    </div>
+                                    {/* <div className="col-2 pe-2">
                             <div className="formLabel">
                               <label htmlFor="">Status</label>
                             </div>
@@ -1940,43 +1939,43 @@ const ExtensionsEdit = () => {
                               <option value="inactive">False</option>
                             </select>
                           </div> */}
-                                  <label
-                                    htmlFor="data"
-                                    className="formItemDesc"
-                                  >
-                                    Add destinations and parameters for follow
-                                    me.
+                                    <label
+                                      htmlFor="data"
+                                      className="formItemDesc"
+                                    >
+                                      Add destinations and parameters for follow
+                                      me.
+                                    </label>
+                                  </div>
+                                )}
+                              </div>
+                              <div className="formRow col-xl-3">
+                                <div className="formLabel">
+                                  <label className="text-dark">
+                                    Do Not Disturb Status
                                   </label>
                                 </div>
-                              )}
-                            </div>
-                            <div className="formRow col-xl-3">
-                              <div className="formLabel">
-                                <label className="text-dark">
-                                  Do Not Disturb Status
-                                </label>
+                                <div className="col-6">
+                                  <select
+                                    className="formItem me-0"
+                                    style={{ width: "100%" }}
+                                    name="delay"
+                                    id="selectFormRow"
+                                    // value={callSetting.dnd}
+                                    // onChange={(e) => {
+                                    //   setCallSetting((prevState) => ({
+                                    //     ...prevState,
+                                    //     dnd: parseInt(e.target.value),
+                                    //   }));
+                                    // }}
+                                    {...register("dnd")}
+                                  >
+                                    <option value={1}>Enabled</option>
+                                    <option value={0}>Disabled</option>
+                                  </select>
+                                </div>
                               </div>
-                              <div className="col-6">
-                                <select
-                                  className="formItem me-0"
-                                  style={{ width: "100%" }}
-                                  name="delay"
-                                  id="selectFormRow"
-                                  // value={callSetting.dnd}
-                                  // onChange={(e) => {
-                                  //   setCallSetting((prevState) => ({
-                                  //     ...prevState,
-                                  //     dnd: parseInt(e.target.value),
-                                  //   }));
-                                  // }}
-                                  {...register("dnd")}
-                                >
-                                  <option value={1}>Enabled</option>
-                                  <option value={0}>Disabled</option>
-                                </select>
-                              </div>
-                            </div>
-                            {/* <div className="formRow col-xl-3">
+                              {/* <div className="formRow col-xl-3">
                               <div className="formLabel">
                                 <label className="text-dark">
                                   Call Recording Status
@@ -2005,39 +2004,39 @@ const ExtensionsEdit = () => {
                               </div>
                             </div> */}
 
-                            <div className="formRow col-xl-3">
-                              <div className="formLabel">
-                                <label className="text-dark">
-                                  Call Blocking Status
-                                </label>
+                              <div className="formRow col-xl-3">
+                                <div className="formLabel">
+                                  <label className="text-dark">
+                                    Call Blocking Status
+                                  </label>
+                                </div>
+                                <div className="col-6">
+                                  <select
+                                    className="formItem me-0"
+                                    style={{ width: "100%" }}
+                                    name="delay"
+                                    id="selectFormRow"
+                                    // value={callSetting.callBlocking}
+                                    // onChange={(e) => {
+                                    //   setCallSetting((prevState) => ({
+                                    //     ...prevState,
+                                    //     callBlocking: e.target.value,
+                                    //   }));
+                                    // }}
+                                    {...register("callblocking")}
+                                  >
+                                    <option>Disabled</option>
+                                    <option>All</option>
+                                    <option>Incoming</option>
+                                    <option>Outgoing</option>
+                                  </select>
+                                </div>
                               </div>
-                              <div className="col-6">
-                                <select
-                                  className="formItem me-0"
-                                  style={{ width: "100%" }}
-                                  name="delay"
-                                  id="selectFormRow"
-                                  // value={callSetting.callBlocking}
-                                  // onChange={(e) => {
-                                  //   setCallSetting((prevState) => ({
-                                  //     ...prevState,
-                                  //     callBlocking: e.target.value,
-                                  //   }));
-                                  // }}
-                                  {...register("callblocking")}
-                                >
-                                  <option>Disabled</option>
-                                  <option>All</option>
-                                  <option>Incoming</option>
-                                  <option>Outgoing</option>
-                                </select>
-                              </div>
-                            </div>
-                          </form>
+                            </form>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    {/* <div className="formRow col-xl-3">
+                      {/* <div className="formRow col-xl-3">
                     <div className="formLabel">
                       <label htmlFor="selectFormRow">Range</label>
                     </div>
@@ -2055,7 +2054,7 @@ const ExtensionsEdit = () => {
                       </label>
                     </div>
                   </div> */}
-                    {/* <div className="formRow col-xl-3">
+                      {/* <div className="formRow col-xl-3">
                     <div className="formLabel">
                       <label htmlFor="selectFormRow">User</label>
                     </div>
@@ -2072,7 +2071,7 @@ const ExtensionsEdit = () => {
                     </div>
                   </div> */}
 
-                    {/* <div className="formRow col-xl-3">
+                      {/* <div className="formRow col-xl-3">
                 <div className="formLabel">
                   <label htmlFor="selectFormRow">Domain</label>
                   {!extensionState.domainMissing ? (
@@ -2110,7 +2109,7 @@ const ExtensionsEdit = () => {
                   </label>
                 </div>
               </div> */}
-                    {/* <div className="formRow col-xl-3">
+                      {/* <div className="formRow col-xl-3">
                     <div className="formLabel">
                       <label htmlFor="">Device Provisioning</label>
                     </div>
@@ -2144,7 +2143,7 @@ const ExtensionsEdit = () => {
                       </label>
                     </div>
                   </div> */}
-                    {/* <div className="formRow col-xl-3">
+                      {/* <div className="formRow col-xl-3">
                     <div className="formLabel">
                       <label htmlFor="selectFormRow">
                         Transcription Enabled
@@ -2163,7 +2162,7 @@ const ExtensionsEdit = () => {
                       </label>
                     </div>
                   </div> */}
-                    {/* <div className="formRow col-xl-3">
+                      {/* <div className="formRow col-xl-3">
                     <div className="formLabel">
                       <label htmlFor="selectFormRow">Hold Music</label>
                     </div>
@@ -2196,7 +2195,7 @@ const ExtensionsEdit = () => {
                       </label>
                     </div>
                   </div> */}
-                    {/* <div className="formRow col-xl-3">
+                      {/* <div className="formRow col-xl-3">
                     <div className="formLabel">
                       <label htmlFor="selectFormRow">Context</label>
                     </div>
@@ -2215,7 +2214,7 @@ const ExtensionsEdit = () => {
                       </label>
                     </div>
                   </div> */}
-                    {/* <div id="advancedOptions">
+                      {/* <div id="advancedOptions">
                                         <div className="formRow col-xl-3">
                                             <div className="formLabel">
                                                 <label htmlFor="selectFormRow">Auth ACL</label>
@@ -2412,7 +2411,7 @@ const ExtensionsEdit = () => {
                                             </div>
                                         </div>
                                     </div> */}
-                    {/* <div className="formRow d-flex align-items-center col-xl-3">
+                      {/* <div className="formRow d-flex align-items-center col-xl-3">
                     <div className="formLabel">
                       <label htmlFor="selectFormRow">Enabled</label>
                     </div>
@@ -2425,12 +2424,14 @@ const ExtensionsEdit = () => {
                       </div>
                     </div>
                   </div> */}
-                    <div />
-                  </form>
+                      <div />
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
+
         </div>
 
         {popUp ? (

@@ -13,6 +13,7 @@ import {
   featureUnderdevelopment,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
+import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 
 function Call({
   setHangupRefresh,
@@ -584,7 +585,7 @@ function Call({
                         style={{ backgroundColor: "var(--searchBg)" }}
                       />
                     </div>
-                    <div className="col-auto mx-2">
+                    <div className="col-auto ms-2">
                       <button
                         className="clearButton2 xl"
                         effect="ripple"
@@ -593,6 +594,7 @@ function Call({
                         <i className="fa-regular fa-bell" />
                       </button>
                     </div>
+                    <DarkModeToggle marginLeft={"2"} />
                     <div className="col-auto">
                       <div class="dropdown">
                         <div

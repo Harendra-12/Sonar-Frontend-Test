@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
+import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 
 function Messages({
   setSelectedModule,
@@ -732,11 +733,12 @@ function Messages({
                         onClick={() => featureUnderdevelopment()}
                       />
                     </div>
-                    <div className="col-auto mx-2">
+                    <div className="col-auto ms-2">
                       <button className="clearButton2 xl" effect="ripple" onClick={() => featureUnderdevelopment()}>
                         <i className="fa-regular fa-bell" />
                       </button>
                     </div>
+                    <DarkModeToggle marginLeft={"2"} />
                     <div className="col-auto">
                       <div class="dropdown">
                         <div

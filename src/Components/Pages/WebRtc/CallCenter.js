@@ -7,6 +7,7 @@ import CircularLoader from "../../Loader/CircularLoader";
 import ActiveCallSidePanel from "./ActiveCallSidePanel";
 import { useNavigate } from "react-router-dom";
 import Header from "../../CommonComponents/Header";
+import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 
 const CallCenter = () => {
   const sessions = useSelector((state) => state.sessions);
@@ -95,11 +96,12 @@ const CallCenter = () => {
                       style={{ backgroundColor: "var(--searchBg)" }}
                     />
                   </div>
-                  <div className="col-auto mx-2">
+                  <div className="col-auto ms-2">
                     <button className="clearButton2 xl" effect="ripple">
                       <i className="fa-regular fa-bell" />
                     </button>
                   </div>
+                  <DarkModeToggle marginLeft={"2"} />
                   <div className="col-auto">
                     <div class="dropdown">
                       <div

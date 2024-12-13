@@ -22,6 +22,7 @@ import {
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import ActionList from "../../CommonComponents/ActionList";
 import Header from "../../CommonComponents/Header";
+import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 
 function CallCenterQueueAdd() {
   const navigate = useNavigate();
@@ -313,7 +314,7 @@ function CallCenterQueueAdd() {
         <div className="col-xl-12">
           {loading && loadings && (
             <div colSpan={99}>
-              <CircularLoader />
+              <SkeletonFormLoader />
             </div>
           )}
           <div className="overviewTableWrapper">

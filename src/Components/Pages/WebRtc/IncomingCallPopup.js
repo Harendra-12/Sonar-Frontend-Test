@@ -47,7 +47,7 @@ function IncomingCallPopup({
       (session) => session.id === sessionId
     );
 
-    if (!sessionExists && sessionId !==dummySession ) {
+    if (!sessionExists && sessionId !== dummySession) {
       dispatch({
         type: "SET_SESSIONS",
         sessions: [
@@ -298,8 +298,13 @@ function IncomingCallPopup({
               <h4>{callerExtension}</h4>
             </div>
             <div className="controls px-2">
-              <button class="callButton hangup" onClick={decline}>
-                <i class="fa-solid fa-phone-hangup"></i>
+              <button
+                class="callButton"
+                onClick={() => handleAnswerCall("audio")}
+              >
+                <i class="fa-solid fa-phone"></i>
+                <div class="circle1"></div>
+                <div class="circle2"></div>
               </button>
               <button
                 className="callButton bg-primary"
@@ -310,13 +315,8 @@ function IncomingCallPopup({
               >
                 <i className="fa-thin fa-phone-arrow-up-right" />
               </button>
-              <button
-                class="callButton"
-                onClick={() => handleAnswerCall("audio")}
-              >
-                <i class="fa-solid fa-phone"></i>
-                <div class="circle1"></div>
-                <div class="circle2"></div>
+              <button class="callButton hangup" onClick={decline}>
+                <i class="fa-solid fa-phone-hangup"></i>
               </button>
               {isVideoOn && (
                 <button
@@ -334,7 +334,7 @@ function IncomingCallPopup({
         <div id="dialPad" className="inCall">
           <div className="container h-100">
             <div className="row align-items-center justify-content-center h-100">
-              <div className="col-xl-5 col-md-6 col-11 dialPadContainer p-2">
+              <div className="col-xxl-3 col-xl-4 col-md-6 col-11 dialPadContainer p-2">
                 <div className="d-flex justify-content-end pt-1 pb-1 px-2">
                   {/* <div>
                   <i className="fa-light fa-address-book fs-5" />

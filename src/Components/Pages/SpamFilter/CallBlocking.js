@@ -178,7 +178,7 @@ const CallBlocking = () => {
                                                 </thead>
                                                 <tbody>
                                                     {loading ? (
-                                                        <SkeletonTableLoader col={8} row={15} />
+                                                        <SkeletonTableLoader col={3} row={15} />
                                                     ) : (
                                                         <>
                                                             {callBlock &&

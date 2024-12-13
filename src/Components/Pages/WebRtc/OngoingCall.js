@@ -12,6 +12,7 @@ import {
 } from "sip.js";
 import { toast } from "react-toastify";
 import { Dialog, UserAgentCore } from "sip.js/lib/core";
+import { featureUnderdevelopment } from "../../GlobalFunction/globalFunction";
 
 function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule, setactivePage }) {
   const dispatch = useDispatch();
@@ -266,7 +267,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule, setac
               <i className="fa-solid fa-grid" />
             </button>
 
-            <button className="appPanelButtonCaller" effect="ripple">
+            <button className="appPanelButtonCaller" effect="ripple" onClick={() => featureUnderdevelopment()}>
               <i className="fa-solid fa-user-plus" />
             </button>
             <button

@@ -9,6 +9,7 @@ import {
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import ContentLoader from "../../Loader/ContentLoader";
 import { useNavigate } from "react-router-dom";
+import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 
 function AllVoicemails({ isCustomerAdmin }) {
   const navigate = useNavigate();
@@ -317,7 +318,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                         onChange={() => featureUnderdevelopment()}
                       />
                     </div>
-                    <div className="col-auto mx-2">
+                    <div className="col-auto ms-2">
                       <button
                         className="clearButton2 xl"
                         effect="ripple"
@@ -326,6 +327,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                         <i className="fa-regular fa-bell" />
                       </button>
                     </div>
+                    <DarkModeToggle marginLeft={"2"} />
                     <div className="col-auto">
                       <div class="dropdown">
                         <div
