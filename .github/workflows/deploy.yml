@@ -24,14 +24,18 @@ jobs:
             # Navigate to the directory where the React app is located
             cd ${{ secrets.DEPLOY_PATH }}
 
+            # Ensure correct ownership and permissions (if passwordless sudo is configured)
+            # sudo chown -R $USER:$USER .
+            # sudo chmod -R u+w .
+
             # Pull the latest changes from the Git repository
-            git pull origin Developement  # Replace 'main' with your branch if needed
+            sudo git pull origin Developement  # Replace 'main' with your branch if needed
 
             # Install any new dependencies (if required)
             # npm install  # Uncomment if you want to run npm install before the build
 
             # Build the React app
-            npm run build
+            sudo npm run build
 
             # Restart Apache to serve the new build (optional)
             sudo systemctl reload apache2
