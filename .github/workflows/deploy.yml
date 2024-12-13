@@ -64,8 +64,8 @@ jobs:
             echo "Building the React app."
             npm run build
 
-            echo "Reloading Apache to serve the new build."
-            sudo systemctl reload apache2
+            #echo "Reloading Apache to serve the new build."
+            #sudo systemctl reload apache2
 
             echo "Deployment completed successfully."
             exit
