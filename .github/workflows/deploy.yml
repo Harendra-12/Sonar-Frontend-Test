@@ -3,15 +3,18 @@ name: DeployJS
 on:
   push:
     branches:
-      - Developement  # Adjust this to your preferred branch (e.g., 'dev', 'staging', etc.)
+      - Developement  # Corrected branch name
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # Optional: Remove if not needed for other steps
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
@@ -21,36 +24,33 @@ jobs:
       - name: SSH into Debian Server and Build React App
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
-            # Navigate to the directory where the React app is located
+            set -e  # Exit immediately if a command exits with a non-zero status
+            set -x  # Print each command before executing it
+
+            # Navigate to the deployment directory
             cd ${{ secrets.DEPLOY_PATH }}
 
-             # Check if the directory is a Git repository
-              if [ -d ".git" ]; then
-                echo "Git repository found. Pulling latest changes."
-                sudo git config --global --add safe.directory ${{ secrets.DEPLOY_PATH }}
-                sudo git pull origin Developement
-              else
-                echo "Git repository not found. Cloning repository."
-                sudo git clone https://github.com/AngelPbx/UcaaS-Frontend.git . 
-                # Replace <YOUR_GIT_REPO_URL> with your actual repository URL
-                sudo git checkout Develoepment
-              fi
+            # Configure Git to trust this directory
+            git config --global --add safe.directory ${{ secrets.DEPLOY_PATH }}
 
-            # Ensure correct ownership and permissions (if passwordless sudo is configured)
-            # sudo chown -R $USER:$USER .
-            # sudo chmod -R u+w .
+            # Check if the directory is a Git repository
+            if [ -d ".git" ]; then
+              echo "Git repository found. Pulling latest changes."
+              git pull origin Developement
+            else
+              echo "Git repository not found. Cloning repository."
+              git clone git@github.com:AngelPbx/UcaaS-Frontend.git . 
+              git checkout Developement
+            fi
 
-            # Pull the latest changes from the Git repository
-            sudo git pull origin Developement  # Replace 'main' with your branch if needed
-
-            # Install any new dependencies (if required)
-            # npm install  # Uncomment if you want to run npm install before the build
+            # Install dependencies
+            npm install
 
             # Build the React app
-            sudo npm run build
+            npm run build
 
-            # Restart Apache to serve the new build (optional)
+            # Reload Apache to serve the new build
             sudo systemctl reload apache2
-            
+
             exit
           EOF
