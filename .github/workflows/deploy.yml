@@ -3,23 +3,27 @@ name: DeployJS
 on:
   push:
     branches:
-      - Developement  # Corrected branch name
+      - Developement  # Ensure this matches your actual branch name
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Optional: Remove if not needed for other steps
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+      # Remove the checkout step if not needed
+      # - name: Checkout code
+      #   uses: actions/checkout@v2
+      #   with:
+      #     fetch-depth: 0
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add GitHub to known_hosts
+        run: |
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
 
       - name: SSH into Debian Server and Build React App
         run: |
@@ -30,24 +34,24 @@ jobs:
             # Navigate to the deployment directory
             cd ${{ secrets.DEPLOY_PATH }}
 
-            # Configure Git to trust this directory
-             sudo git config --global --add safe.directory ${{ secrets.DEPLOY_PATH }}
+            # Configure Git to trust this repository
+            git config --add safe.directory "$PWD"
 
             # Check if the directory is a Git repository
             if [ -d ".git" ]; then
               echo "Git repository found. Pulling latest changes."
-              sudo git pull origin Developement
+              git pull origin Developement
             else
               echo "Git repository not found. Cloning repository."
-              sudo git clone git@github.com:AngelPbx/UcaaS-Frontend.git . 
-              sudo git checkout Developement
+              git clone git@github.com:AngelPbx/UcaaS-Frontend.git . 
+              git checkout Developement
             fi
 
-            # Install dependencies
-            sudo npm install
+            # Install dependencies without sudo
+            npm install
 
-            # Build the React app
-            sudo npm run build
+            # Build the React app without sudo
+            npm run build
 
             # Reload Apache to serve the new build
             sudo systemctl reload apache2
