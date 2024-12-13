@@ -67,6 +67,7 @@ jobs:
             #echo "Reloading Apache to serve the new build."
             #sudo systemctl reload apache2
 
-            echo "Deployment completed successfully."
-            exit
+           echo "Deployment completed successfully."
+           echo "Exiting with status 0."
+           exit 0
           EOF
