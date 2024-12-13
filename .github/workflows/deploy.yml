@@ -35,7 +35,7 @@ jobs:
             cd ${{ secrets.DEPLOY_PATH }}
 
             # Configure Git to trust this repository
-            git config --add safe.directory "$PWD"
+            git config --global --add safe.directory "$PWD"
 
             # Check if the directory is a Git repository
             if [ -d ".git" ]; then
