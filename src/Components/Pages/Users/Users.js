@@ -249,7 +249,7 @@ const Users = () => {
                           <tr>
                             <th>Username</th>
                             <th>Extension</th>
-                            <th>Account ID</th>
+                            {/* <th>Account ID</th> */}
                             <th>Role</th>
                             {/* <th>Domain</th> */}
                             <th>Online</th>
@@ -301,7 +301,7 @@ const Users = () => {
                                         }>
                                           {item.extension?.extension || 'N/A'}
                                         </td>
-                                        <td
+                                        {/* <td
                                           onClick={() =>
                                             navigate(`/users-edit`, {
                                               state: item,
@@ -309,7 +309,7 @@ const Users = () => {
                                           }
                                         >
                                           {item.account_id}
-                                        </td>
+                                        </td> */}
                                         <td
                                           onClick={() =>
                                             navigate(`/users-edit`, {
