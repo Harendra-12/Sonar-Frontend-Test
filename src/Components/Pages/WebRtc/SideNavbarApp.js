@@ -215,7 +215,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Call Center</div>
               </div>
             </li>
-            <li>
+            {/* <li>
               <a
                 href="/dashboard"
                 target="_blank"
@@ -230,7 +230,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 </div>
                 <div className="itemTitle">Admin</div>
               </a>
-            </li>
+            </li> */}
             {/* <li>
               <div
                 onClick={() => setactivePage("reports")}

@@ -379,7 +379,7 @@ function CallCenterQueueEdit() {
     if (checkPrevDestination(id)) {
       setLoading(true);
       const deleteGroup = await generalDeleteFunction(
-        `/call-center-agents/destroy/${id}`
+        `/call-center-agent/destroy/${id}`
       );
       if (deleteGroup.status) {
         const updatedDestination = agent.filter((item) => item.id !== id);
