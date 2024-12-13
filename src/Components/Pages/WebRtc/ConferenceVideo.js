@@ -5,10 +5,7 @@ import { toast } from 'react-toastify';
 
 function ConferenceVideo({id,setIsScreenSharing,isScreenSharing,screenTogglehit}) {
     const remoteVideoRef = useRef(null);
-    const dummySession = useSelector((state) => state.dummySession);
-
-    console.log("screenTogglehit",screenTogglehit);
-    
+    const dummySession = useSelector((state) => state.dummySession);    
     const localVideoRef = useRef(null);
     const includeVideo = true;
     const sessionCallData = useSessionCall(id) || {}; // Safeguard
