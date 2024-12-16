@@ -205,7 +205,7 @@ const Extensions = () => {
                             <th>Effective CID Name</th>
                             <th>Outbound CID Name</th>
                             <th>Call Group</th>
-                            <th>Call Screen</th>
+                            {/* <th>Call Screen</th> */}
                             <th>Description</th>
                             <th className="text-center">Status</th>
                             {/* <th className="text-center">Setting</th> */}
@@ -286,7 +286,7 @@ const Extensions = () => {
                                       >
                                         {item.callgroup}
                                       </td>
-                                      <td
+                                      {/* <td
                                         onClick={() =>
                                           navigate(
                                             `/extensions-edit?id=${item.id}`
@@ -294,7 +294,7 @@ const Extensions = () => {
                                         }
                                       >
                                         {item.callScreen}
-                                      </td>
+                                      </td> */}
                                       {/* <td>1001</td> */}
                                       <td
                                         onClick={() =>

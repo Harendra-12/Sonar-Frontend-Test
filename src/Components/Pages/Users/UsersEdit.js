@@ -19,7 +19,6 @@ import {
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
-import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 const UsersEdit = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -42,6 +41,7 @@ const UsersEdit = () => {
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const extensionAll = useSelector((state) => state.extensionAll);
   const [password, setPassword] = useState("");
+  const [popUp, setPopUp] = useState(false);
   const {
     register,
     watch,
@@ -377,369 +377,388 @@ const UsersEdit = () => {
 
           <div className="col-xl-12" style={{ overflow: "auto" }}>
             {loading ? (
-              <div>
-                <SkeletonFormLoader />
+              <div colSpan={99}>
+                <CircularLoader />
               </div>
             ) : (
-              <div className="overviewTableWrapper">
-                <div className="overviewTableChild">
-                  <div className="d-flex flex-wrap">
-                    <div className="col-12">
-                      <div className="heading">
-                        <div className="content">
-                          <h4>User Edit</h4>
-                          <p>Edit user information and group membership.</p>
-                        </div>
-                        <div className="buttonGroup">
-                          <button
-                            onClick={() => {
-                              navigate(-1);
-                              backToTop();
-                            }}
-                            type="button"
-                            effect="ripple"
-                            className="panelButton gray"
-                          >
-                            <span className="text">Back</span>
-                            <span className="icon">
-                              <i class="fa-solid fa-caret-left"></i>
-                            </span>
-                          </button>
-                          <button
-                            type="button"
-                            effect="ripple"
-                            className="panelButton"
-                            onClick={handleFormSubmit}
-                          >
-                            <span className="text">Save</span>
-                            <span className="icon">
-                              <i class="fa-solid fa-floppy-disk"></i>
-                            </span>
-                          </button>
-                        </div>
+              ""
+            )}
+            <div className="overviewTableWrapper">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap">
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content">
+                        <h4>User Edit</h4>
+                        <p>Edit user information and group membership.</p>
+                      </div>
+                      <div className="buttonGroup">
+                        <button
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
+                          type="button"
+                          effect="ripple"
+                          className="panelButton gray"
+                        >
+                          <span className="text">Back</span>
+                          <span className="icon">
+                            <i class="fa-solid fa-caret-left"></i>
+                          </span>
+                        </button>
+                        <button
+                          type="button"
+                          effect="ripple"
+                          className="panelButton"
+                          onClick={handleFormSubmit}
+                        >
+                          <span className="text">Save</span>
+                          <span className="icon">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                          </span>
+                        </button>
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  <div
-                    className="col-12"
-                    style={{
-                      padding: "25px 23px",
-                    }}
-                  >
-                    <div className="row gx-5">
-                      <div className="col-xl-6">
-                        <form action="#" className="row px-2">
-                          <div className="formRow col-xl-12">
-                            <div className="formLabel">
-                              <label htmlFor="">Username</label>
-                            </div>
-                            <div className="col-6">
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                                {...register("username", {
-                                  ...requiredValidator,
-                                })}
-                                disabled
-                                onKeyDown={restrictToAllowedChars}
-                              />
-                              {errors.username && (
-                                <ErrorMessage text={errors.username.message} />
-                              )}
-                            </div>
+                <div
+                  className="col-12"
+                  style={{
+                    padding: "25px 23px",
+                  }}
+                >
+                  <div className="row gx-5">
+                    <div className="col-xl-6">
+                      <form action="#" className="row px-2">
+                        <div className="formRow col-xl-12">
+                          <div className="formLabel">
+                            <label htmlFor="">
+                              Username <span className="text-danger">*</span>
+                            </label>
                           </div>
-                          <div className="formRow col-xl-12">
-                            <div className="formLabel">
-                              <label htmlFor="">Email</label>
-                            </div>
-                            <div className="col-6">
-                              <input
-                                type="email"
-                                name="extension"
-                                className="formItem"
-                                {...register("email", {
-                                  ...requiredValidator,
-                                  ...emailValidator,
-                                })}
-                                onKeyDown={restrictToAllowedChars}
-                              />
-                              {errors.email && (
-                                <ErrorMessage text={errors.email.message} />
-                              )}
-                            </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              name="extension"
+                              className="formItem"
+                              {...register("username", {
+                                ...requiredValidator,
+                              })}
+                              disabled
+                              onKeyDown={restrictToAllowedChars}
+                            />
+                            {errors.username && (
+                              <ErrorMessage text={errors.username.message} />
+                            )}
                           </div>
-                          <div className="formRow col-xl-12">
-                            <div className="formLabel">
-                              <label htmlFor="">First Name</label>
-                            </div>
-                            <div className="col-6">
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                                {...register("firstName", {
-                                  ...requiredValidator,
-                                  ...nameValidator,
-                                  ...noSpecialCharactersValidator,
-                                })}
-                                onKeyDown={restrictToAllowedChars}
-                              />
-                              {errors.firstName && (
-                                <ErrorMessage text={errors.firstName.message} />
-                              )}
-                            </div>
+                        </div>
+                        <div className="formRow col-xl-12">
+                          <div className="formLabel">
+                            <label htmlFor="">
+                              Email <span className="text-danger">*</span>
+                            </label>
                           </div>
-                          <div className="formRow col-xl-12">
-                            <div className="formLabel">
-                              <label htmlFor="">Last Name</label>
-                            </div>
-                            <div className="col-6">
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                                {...register("lastName", {
-                                  ...noSpecialCharactersValidator,
-                                })}
-                                onKeyDown={restrictToAllowedChars}
-                              />
-                              {errors.lastName && (
-                                <ErrorMessage text={errors.lastName.message} />
-                              )}
-                            </div>
+                          <div className="col-6">
+                            <input
+                              type="email"
+                              name="extension"
+                              className="formItem"
+                              {...register("email", {
+                                ...requiredValidator,
+                                ...emailValidator,
+                              })}
+                              onKeyDown={restrictToAllowedChars}
+                            />
+                            {errors.email && (
+                              <ErrorMessage text={errors.email.message} />
+                            )}
                           </div>
-                          <div className="formRow col-xl-12">
-                            <div className="formLabel">
-                              <label htmlFor="selectFormRow">Time Zone</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Select the default time zone.
-                              </label>
-                            </div>
-                            <div className="col-6">
-                              <select
-                                className="formItem"
-                                name=""
-                                value={watch().timezone_id}
-                                {...register("timezone_id", {
-                                  ...requiredValidator,
-                                })}
-                              >
-                                <option disabled value="">
-                                  Select Time Zone
-                                </option>
-                                {timeZone &&
-                                  timeZone.map((item, key) => {
-                                    return (
-                                      <option value={item[0]} key={key}>
-                                        {item[1]}
-                                      </option>
-                                    );
-                                  })}
-                              </select>
-                              {errors.timezone_id && (
-                                <ErrorMessage text={errors.timezone_id.message} />
-                              )}
-                            </div>
+                        </div>
+                        <div className="formRow col-xl-12">
+                          <div className="formLabel">
+                            <label htmlFor="">
+                              First Name <span className="text-danger">*</span>
+                            </label>
                           </div>
-                          <div className="formRow col-xl-12">
-                            <div className="formLabel">
-                              <label htmlFor="selectFormRow">Status</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Set the user's presence.
-                              </label>
-                            </div>
-                            <div className="col-6">
-                              <select
-                                className="formItem"
-                                name=""
-                                {...register("status", { ...requiredValidator })}
-                              >
-                                <option disabled value="">
-                                  Choose Status
-                                </option>
-                                <option value="E">Enable</option>
-                                <option value="D">Disable</option>
-                              </select>
-                              {errors.status && (
-                                <ErrorMessage text={errors.status.message} />
-                              )}
-                            </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              name="extension"
+                              className="formItem"
+                              {...register("firstName", {
+                                ...requiredValidator,
+                                ...nameValidator,
+                                ...noSpecialCharactersValidator,
+                              })}
+                              onKeyDown={restrictToAllowedChars}
+                            />
+                            {errors.firstName && (
+                              <ErrorMessage text={errors.firstName.message} />
+                            )}
                           </div>
-                          <div className="formRow col-xl-12">
-                            <div className="formLabel">
-                              <label htmlFor="selectFormRow">Role Type</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Select Default to enable login or to disable login
-                                select Virtual.
-                              </label>
-                            </div>
-                            <div className="col-6">
-                              <select
-                                className="formItem"
-                                name=""
-                                value={watch().role_id}
-                                {...register("role_id", { ...requiredValidator })}
-                                onChange={(e) => {
-                                  const roleName = role.find(
-                                    (item) => item.id == e.target.value
+                        </div>
+                        <div className="formRow col-xl-12">
+                          <div className="formLabel">
+                            <label htmlFor="">Last Name</label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              name="extension"
+                              className="formItem"
+                              {...register("lastName", {
+                                ...noSpecialCharactersValidator,
+                              })}
+                              onKeyDown={restrictToAllowedChars}
+                            />
+                            {errors.lastName && (
+                              <ErrorMessage text={errors.lastName.message} />
+                            )}
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-12">
+                          <div className="formLabel">
+                            <label htmlFor="selectFormRow">
+                              Time Zone <span className="text-danger">*</span>
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Select the default time zone.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <select
+                              className="formItem"
+                              name=""
+                              value={watch().timezone_id}
+                              {...register("timezone_id", {
+                                ...requiredValidator,
+                              })}
+                            >
+                              <option disabled value="">
+                                Select Time Zone
+                              </option>
+                              {timeZone &&
+                                timeZone.map((item, key) => {
+                                  return (
+                                    <option value={item[0]} key={key}>
+                                      {item[1]}
+                                    </option>
                                   );
+                                })}
+                            </select>
+                            {errors.timezone_id && (
+                              <ErrorMessage text={errors.timezone_id.message} />
+                            )}
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-12">
+                          <div className="formLabel">
+                            <label htmlFor="selectFormRow">
+                              Status <span className="text-danger">*</span>
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Set the user's presence.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <select
+                              className="formItem"
+                              name=""
+                              {...register("status", { ...requiredValidator })}
+                            >
+                              <option disabled value="">
+                                Choose Status
+                              </option>
+                              <option value="E">Enable</option>
+                              <option value="D">Disable</option>
+                            </select>
+                            {errors.status && (
+                              <ErrorMessage text={errors.status.message} />
+                            )}
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-12">
+                          <div className="formLabel">
+                            <label htmlFor="selectFormRow">
+                              Role Type <span className="text-danger">*</span>
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Select Default to enable login or to disable login
+                              select Virtual.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <select
+                              className="formItem"
+                              name=""
+                              value={watch().role_id}
+                              {...register("role_id", { ...requiredValidator })}
+                              onChange={(e) => {
+                                const roleName = role.find(
+                                  (item) => item.id == e.target.value
+                                );
 
-                                  setValue("role_id", e.target.value);
-                                  setSelectedRole(roleName.name);
-                                  setSelectedPermission(
-                                    e.target.value === ""
-                                      ? ""
-                                      : roleName.permissions.map((item) => {
+                                setValue("role_id", e.target.value);
+                                setSelectedRole(roleName.name);
+                                setSelectedPermission(
+                                  e.target.value === ""
+                                    ? ""
+                                    : roleName.permissions.map((item) => {
                                         return item.permission_id;
                                       })
-                                  );
-                                }}
-                              >
-                                <option value="" disabled>
-                                  Choose Type
-                                </option>
+                                );
+                              }}
+                            >
+                              <option value="" disabled>
+                                Choose Type
+                              </option>
 
-                                {role.map((item, key) => {
-                                  return (
-                                    <option value={item.id} key={key}>
-                                      {item.name}
-                                    </option>
-                                  );
-                                })}
-                              </select>
-                              {errors.role_id && (
-                                <ErrorMessage text={errors.role_id.message} />
+                              {role.map((item, key) => {
+                                return (
+                                  <option value={item.id} key={key}>
+                                    {item.name}
+                                  </option>
+                                );
+                              })}
+                            </select>
+                            {errors.role_id && (
+                              <ErrorMessage text={errors.role_id.message} />
+                            )}
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-12">
+                          <div className="formLabel">
+                            <label htmlFor="selectFormRow">
+                              Select extension
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Assign an extension to the newly created user.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <div className="row">
+                              <div
+                                className={
+                                  watch().extension_id ? "col-8" : "col-12"
+                                }
+                              >
+                                <select
+                                  className="formItem"
+                                  name="extension_id"
+                                  value={watch().extension_id}
+                                  {...register("extension_id")}
+                                  disabled={watch().extension_id == ""}
+                                >
+                                  <option value="" disabled>
+                                    Available Extensions
+                                  </option>
+                                  {filterExtensions &&
+                                    filterExtensions.map((extension, key) => {
+                                      return (
+                                        <option value={extension.id} key={key}>
+                                          {extension.extension}
+                                        </option>
+                                      );
+                                    })}
+                                </select>
+                              </div>
+                              {watch().extension_id && (
+                                <div className="col-4">
+                                  <button
+                                    effect="ripple"
+                                    className="panelButton  ms-auto"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      setPopUp(true);
+                                    }}
+                                    // onClick={(e) => {
+                                    //   e.preventDefault();
+                                    //   setValue("extension_id", null);
+                                    // }}
+                                  >
+                                    <span className="text">Edit</span>
+                                    <span className="icon">
+                                      <i class="fas fa-edit"></i>
+                                    </span>
+                                  </button>
+                                </div>
                               )}
                             </div>
                           </div>
-                          <div className="formRow col-xl-12">
-                            <div className="formLabel">
-                              <label htmlFor="selectFormRow">
-                                Select extension
-                              </label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Assign an extension to the newly created user.
-                              </label>
-                            </div>
-                            <div className="col-6">
-                              <div className="row">
-                                <div
-                                  className={
-                                    watch().extension_id ? "col-8" : "col-12"
-                                  }
-                                >
-                                  <select
-                                    className="formItem"
-                                    name="extension_id"
-                                    value={watch().extension_id}
-                                    {...register("extension_id")}
+                        </div>
+                        <div className="formRow col-xl-12">
+                          <div className="formLabel">
+                            <label htmlFor="selectFormRow">New Password</label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Set new password to user.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              className="formItem"
+                              name=""
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+
+                    {selectedRole && (
+                      <div
+                        className="col-xl-6"
+                        style={{ borderLeft: "1px solid var(--border-color)" }}
+                      >
+                        <div className="profileView p-0">
+                          <div className="profileDetailsHolder position-relative p-0 shadow-none border-0">
+                            <div className="col-xl-12">
+                              <div className="headerCommon d-flex align-items-center">
+                                <div className="col-5">
+                                  Permissions for Role{" "}
+                                  <span
+                                    style={{
+                                      color: "var(--ui-accent)",
+                                      fontWeight: 600,
+                                    }}
                                   >
-                                    <option value="" disabled>
-                                      Available Extensions
-                                    </option>
-                                    {filterExtensions &&
-                                      filterExtensions.map((extension, key) => {
-                                        return (
-                                          <option value={extension.id} key={key}>
-                                            {extension.extension}
-                                          </option>
-                                        );
-                                      })}
-                                  </select>
-                                </div>
-                                {watch().extension_id && (
-                                  <div className="col-4">
-                                    <button
-                                      effect="ripple"
-                                      className="panelButton delete ms-auto"
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        setValue("extension_id", null);
-                                      }}
-                                    >
-                                      <span className="text">Delete</span>
-                                      <span className="icon">
-                                        <i class="fa-solid fa-xmark"></i>
-                                      </span>
-                                    </button>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-12">
-                            <div className="formLabel">
-                              <label htmlFor="selectFormRow">New Password</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Set new password to user.
-                              </label>
-                            </div>
-                            <div className="col-6">
-                              <input
-                                type="text"
-                                className="formItem"
-                                name=""
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                              />
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-
-                      {selectedRole && (
-                        <div
-                          className="col-xl-6"
-                          style={{ borderLeft: "1px solid var(--border-color)" }}
-                        >
-                          <div className="profileView p-0">
-                            <div className="profileDetailsHolder position-relative p-0 shadow-none border-0">
-                              <div className="col-xl-12">
-                                <div className="headerCommon d-flex align-items-center">
-                                  <div className="col-5">
-                                    Permissions for Role{" "}
-                                    <span
-                                      style={{
-                                        color: "var(--ui-accent)",
-                                        fontWeight: 600,
-                                      }}
-                                    >
-                                      {selectedRole}
-                                    </span>
-                                  </div>
+                                    {selectedRole}
+                                  </span>
                                 </div>
                               </div>
-                              <div class="accordion permissionListWrapper">
-                                {filteredPermission &&
-                                  Object.keys(filteredPermission).map(
-                                    (item, key) => (
-                                      <div className="accordion-item" key={key}>
-                                        <h2
-                                          class="accordion-header"
-                                          id={`collapseHeading${key}`}
+                            </div>
+                            <div class="accordion permissionListWrapper">
+                              {filteredPermission &&
+                                Object.keys(filteredPermission).map(
+                                  (item, key) => (
+                                    <div className="accordion-item" key={key}>
+                                      <h2
+                                        class="accordion-header"
+                                        id={`collapseHeading${key}`}
+                                      >
+                                        <button
+                                          class="accordion-button collapsed"
+                                          type="button"
+                                          data-bs-toggle="collapse"
+                                          data-bs-target={`#collapseRole${key}`}
+                                          aria-expanded="true"
+                                          aria-controls={`collapse${key}`}
                                         >
-                                          <button
-                                            class="accordion-button collapsed"
-                                            type="button"
-                                            data-bs-toggle="collapseRole"
-                                            data-bs-target={`#collapseRole${key}`}
-                                            aria-expanded="true"
-                                            aria-controls={`collapseRole${key}`}
-                                          >
-                                            <input
-                                              type="checkbox"
-                                              checked={parentChecked[item]}
-                                              onChange={() =>
-                                                handleParentCheckboxChange(item)
-                                              }
-                                            />
+                                          <input
+                                            type="checkbox"
+                                            checked={parentChecked[item]}
+                                            onChange={() =>
+                                              handleParentCheckboxChange(item)
+                                            }
+                                          />
 
-                                            <label>{item}</label>
-                                          </button>
-                                        </h2>
-                                        {/* <div className="header d-flex align-items-center">
+                                          <label>{item}</label>
+                                        </button>
+                                      </h2>
+                                      {/* <div className="header d-flex align-items-center">
                                       <div className="col-5">
                                         <input
                                           type="checkbox"
@@ -751,73 +770,169 @@ const UsersEdit = () => {
                                         <label class="ms-2">{item}</label>
                                       </div>
                                     </div> */}
-                                        <div
-                                          id={`collapseRole${key}`}
-                                          class="accordion-collapse collapse"
-                                          aria-labelledby={`collapseHeading${key}`}
-                                        >
-                                          <div class="accordion-body">
-                                            {filteredPermission[item].map(
-                                              (innerItem, key) => (
-                                                <div
-                                                  className="col-xxl col-auto col-md-4 col-6"
-                                                  key={key}
-                                                >
-                                                  <input
-                                                    type="checkbox"
-                                                    id={`permission-${innerItem.id}`}
-                                                    checked={selectedPermission.includes(
+                                      <div
+                                        id={`collapseRole${key}`}
+                                        class="accordion-collapse collapse"
+                                        aria-labelledby={`collapseHeading${key}`}
+                                      >
+                                        <div class="accordion-body">
+                                          {filteredPermission[item].map(
+                                            (innerItem, key) => (
+                                              <div
+                                                className="col-xxl col-auto col-md-4 col-6"
+                                                key={key}
+                                              >
+                                                <input
+                                                  type="checkbox"
+                                                  id={`permission-${innerItem.id}`}
+                                                  checked={selectedPermission.includes(
+                                                    innerItem.id
+                                                  )}
+                                                  onChange={() =>
+                                                    handleCheckboxChange(
                                                       innerItem.id
-                                                    )}
-                                                    onChange={() =>
-                                                      handleCheckboxChange(
-                                                        innerItem.id
-                                                      )
-                                                    }
-                                                  />
-                                                  <label className="formLabel ms-2 text-capitalize">
-                                                    {innerItem.action}
-                                                  </label>
-                                                </div>
-                                              )
-                                            )}
-                                          </div>
+                                                    )
+                                                  }
+                                                />
+                                                <label className="formLabel ms-2 text-capitalize">
+                                                  {innerItem.action}
+                                                </label>
+                                              </div>
+                                            )
+                                          )}
                                         </div>
                                       </div>
-                                    )
-                                  )}
-                              </div>
+                                    </div>
+                                  )
+                                )}
                             </div>
                           </div>
                         </div>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
-            )}
-
+            </div>
           </div>
         </section>
-        {/* {loading ? (
+        {loading ? (
           <div colSpan={99}>
             <CircularLoader />
           </div>
         ) : (
           ""
-        )} */}
-        {/* <ToastContainer
-          position="bottom-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        /> */}
+        )}
+        {popUp ? (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <div className="row content col-xl-4">
+                  <div className="col-2 px-0">
+                    <div className="iconWrapper">
+                      <i className="fa-duotone fa-triangle-exclamation"></i>
+                    </div>
+                  </div>
+                  <div className="col-10 ps-0">
+                    <h4>Note</h4>
+                    <p>
+                      Updating this extension will remove the current extension
+                      access from this user.
+                    </p>
+                    <div>
+                      <div className="formRow col-xl-12">
+                        <div className="formLabel">
+                          <label htmlFor="selectFormRow">
+                            Select extension
+                          </label>
+                          <label htmlFor="data" className="formItemDesc">
+                            Assign an extension to the newly created user.
+                          </label>
+                        </div>
+                        <div className="col-6">
+                          <div className="row">
+                            <div
+                              className={
+                                watch().extension_id ? "col-8" : "col-12"
+                              }
+                            >
+                              <select
+                                className="formItem"
+                                name="extension_id"
+                                value={watch().extension_id}
+                                {...register("extension_id")}
+                              >
+                                <option value="" disabled>
+                                  Available Extensions
+                                </option>
+                                {filterExtensions &&
+                                  filterExtensions.map((extension, key) => {
+                                    return (
+                                      <option value={extension.id} key={key}>
+                                        {extension.extension}
+                                      </option>
+                                    );
+                                  })}
+                              </select>
+                            </div>
+                            {watch().extension_id && (
+                              <div className="col-4">
+                                <button
+                                  effect="ripple"
+                                  className="panelButton delete ms-auto"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    setValue("extension_id", null);
+                                  }}
+                                >
+                                  <span className="text">Remove</span>
+                                  <span className="icon">
+                                    <i class="fas fa-xmark"></i>
+                                  </span>
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="d-flex justify-content-between">
+                      {/* <button
+                        disabled={loading}
+                        className="panelButton m-0"
+                        // onClick={() => {
+                        //   // setForce(true);
+                        //   if (selectedUser?.id) {
+                        //     handleUpdateStatusUser(selectedUser?.id);
+                        //   } else {
+                        //     setPopUp(false);
+                        //     navigate("/roles");
+                        //   }
+                        // }}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-check"></i>
+                        </span>
+                      </button> */}
+                      <button
+                        className="panelButton gray m-0 float-end"
+                        onClick={() => setPopUp(false)}
+                      >
+                        <span className="text">Close</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-xmark"></i>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
       </main>
     </>
   );
