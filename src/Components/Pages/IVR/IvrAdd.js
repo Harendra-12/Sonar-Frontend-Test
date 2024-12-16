@@ -18,6 +18,7 @@ import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useDispatch, useSelector } from "react-redux";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
+import AddMusic from "../../CommonComponents/AddMusic";
 
 function IvrAdd() {
   const dispatch = useDispatch();
@@ -26,17 +27,40 @@ function IvrAdd() {
     formState: { errors },
     handleSubmit,
     reset,
+    setValue,
+    watch,
   } = useForm();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [ivrMusic, setIvrMusic] = useState([]);
   const ivrRefresh = useSelector((state) => state.ivrRefresh);
+  const [showMusicGreet, setShowMusicGreet] = useState(false);
+  const [uploadedMusicGreet, setUploadedMusicGreet] = useState();
+  const [musicRefreshGreet, setMusicRefreshGreet] = useState(0);
+  const [showMusicInvalid, setShowMusicInvalid] = useState(false);
+  const [uploadedMusicInvalid, setUploadedMusicInvalid] = useState();
+  const [musicRefreshInvalid, setMusicRefreshInvalid] = useState(0);
+  const [showMusicExit, setShowMusicExit] = useState(false);
+  const [uploadedMusicExit, setUploadedMusicExit] = useState();
+  const [musicRefreshExit, setMusicRefreshExit] = useState(0);
   useEffect(() => {
     async function getData() {
+      setLoading(true);
       const apiData = await generalGetFunction("/sound/all?type=ivr");
       if (apiData.status) {
         setIvrMusic(apiData.data);
+        if (apiData.data.length > 0 && uploadedMusicGreet) {
+          setValue("greet_long", `${uploadedMusicGreet.id}`);
+        }
+        if (apiData.data.length > 0 && uploadedMusicInvalid) {
+          setValue("invalid_sound", `${uploadedMusicInvalid.id}`);
+        }
+        if (apiData.data.length > 0 && uploadedMusicExit) {
+          setValue("exit_sound", `${uploadedMusicExit.id}`);
+        }
+        setLoading(false);
       }
+      setLoading(false);
     }
 
     // set the predefauls values for selected fields in the form
@@ -50,8 +74,8 @@ function IvrAdd() {
     });
 
     getData();
-  }, []);
-
+  }, [musicRefreshExit, musicRefreshGreet, musicRefreshInvalid]);
+  console.log(watch());
   const handleFormSubmit = handleSubmit(async (data) => {
     const payload = {
       ...data,
@@ -78,7 +102,18 @@ function IvrAdd() {
       setLoading(false);
     }
   });
-
+  const handleAddMusicGreet = () => {
+    setValue("greet_long", "");
+    setShowMusicGreet(true);
+  };
+  const handleAddMusicInvalid = () => {
+    setValue("invalid_sound", "");
+    setShowMusicInvalid(true);
+  };
+  const handleAddMusicExit = () => {
+    setValue("exit_sound", "");
+    setShowMusicExit(true);
+  };
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -271,6 +306,12 @@ function IvrAdd() {
                           {...register("greet_long", {
                             ...requiredValidator,
                           })}
+                          onChange={(e) => {
+                            const selectedValue = e.target.value;
+                            if (selectedValue === "add-music") {
+                              handleAddMusicGreet(); // Call your function here
+                            }
+                          }}
                         >
                           <option value="">Select greet sound</option>
                           {ivrMusic?.map((item) => {
@@ -278,6 +319,12 @@ function IvrAdd() {
                               <option value={item?.id}>{item?.name}</option>
                             );
                           })}
+                          <option
+                            value="add-music"
+                            className="bg-primary text-center text-white"
+                          >
+                            Add Music
+                          </option>
                         </select>
                         {errors.greet_long && (
                           <ErrorMessage text={errors.greet_long.message} />
@@ -300,6 +347,12 @@ function IvrAdd() {
                             ...requiredValidator,
                           })}
                           defaultValue={""}
+                          onChange={(e) => {
+                            const selectedValue = e.target.value;
+                            if (selectedValue === "add-music") {
+                              handleAddMusicInvalid(); // Call your function here
+                            }
+                          }}
                         >
                           <option value="" disabled>
                             Select invalid sound
@@ -309,6 +362,12 @@ function IvrAdd() {
                               <option value={item?.id}>{item?.name}</option>
                             );
                           })}
+                          <option
+                            value="add-music"
+                            className="bg-primary text-center text-white"
+                          >
+                            Add Music
+                          </option>
                         </select>
                         {errors.invalid_sound && (
                           <ErrorMessage text={errors.invalid_sound.message} />
@@ -332,6 +391,12 @@ function IvrAdd() {
                           {...register("exit_sound", {
                             ...requiredValidator,
                           })}
+                          onChange={(e) => {
+                            const selectedValue = e.target.value;
+                            if (selectedValue === "add-music") {
+                              handleAddMusicExit(); // Call your function here
+                            }
+                          }}
                         >
                           <option value="">Select Exit Sound</option>
                           {ivrMusic?.map((item) => {
@@ -339,6 +404,12 @@ function IvrAdd() {
                               <option value={item?.id}>{item?.name}</option>
                             );
                           })}
+                          <option
+                            value="add-music"
+                            className="bg-primary text-center text-white"
+                          >
+                            Add Music
+                          </option>
                         </select>
                         {errors.exit_sound && (
                           <ErrorMessage text={errors.exit_sound.message} />
@@ -623,6 +694,36 @@ function IvrAdd() {
           )}
         </div>
       </section>
+      {showMusicGreet && (
+        <AddMusic
+          show={showMusicGreet}
+          setShow={setShowMusicGreet}
+          setUploadedMusic={setUploadedMusicGreet}
+          setMusicRefresh={setMusicRefreshGreet}
+          musicRefresh={musicRefreshGreet}
+          listArray={["ivr"]}
+        />
+      )}
+      {showMusicInvalid && (
+        <AddMusic
+          show={showMusicInvalid}
+          setShow={setShowMusicInvalid}
+          setUploadedMusic={setUploadedMusicInvalid}
+          setMusicRefresh={setMusicRefreshInvalid}
+          musicRefresh={musicRefreshInvalid}
+          listArray={["ivr"]}
+        />
+      )}
+      {showMusicExit && (
+        <AddMusic
+          show={showMusicExit}
+          setShow={setShowMusicExit}
+          setUploadedMusic={setUploadedMusicExit}
+          setMusicRefresh={setMusicRefreshExit}
+          musicRefresh={musicRefreshExit}
+          listArray={["ivr"]}
+        />
+      )}
     </main>
   );
 }

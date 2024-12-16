@@ -28,6 +28,7 @@ import CircularLoader from "../../Loader/CircularLoader";
 import Header from "../../CommonComponents/Header";
 import ActionList from "../../CommonComponents/ActionList";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
+import AddMusic from "../../CommonComponents/AddMusic";
 
 const RingGroupAdd = () => {
   const navigate = useNavigate();
@@ -49,6 +50,9 @@ const RingGroupAdd = () => {
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
   const [timeoutDestPstnToggle, setTimeoutDestPstnToggle] = useState(false);
   // const [popUp, setPopUp] = useState(true);
+  const [showMusic, setShowMusic] = useState(false);
+  const [uploadedMusic, setUploadedMusic] = useState();
+  const [musicRefresh, setMusicRefresh] = useState(0);
 
   const {
     register,
@@ -67,6 +71,7 @@ const RingGroupAdd = () => {
         // const apiData = await generalGetFunction(
         //   `/extension/search?account=${account.account_id}`
         // );
+        setLoading(true);
         const apidataUser = await generalGetFunction(
           `/user/search?account=${account.account_id}`
         );
@@ -84,6 +89,9 @@ const RingGroupAdd = () => {
         }
         if (ringBack?.status) {
           setRingBack(ringBack.data);
+          if (ringBack.data.length > 0 && uploadedMusic) {
+            setValue("ring_back", uploadedMusic.id);
+          }
         } else {
           navigate("/");
         }
@@ -93,8 +101,8 @@ const RingGroupAdd = () => {
       setLoading(false);
       navigate("/");
     }
-  }, [account, navigate]);
-
+  }, [account, navigate, musicRefresh]);
+  console.log(watch());
   // Get all users with valid extension
   useEffect(() => {
     if (allUserRefresh > 0) {
@@ -437,6 +445,11 @@ const RingGroupAdd = () => {
     // }
     // getData();
   }, [allUserArr]);
+
+  const handleAddMusic = () => {
+    setValue("ring_back", "");
+    setShowMusic(true);
+  };
 
   return (
     <main className="mainContent">
@@ -863,10 +876,11 @@ const RingGroupAdd = () => {
                           className="formItem"
                           {...register("ring_back")}
                           id="selectFormRow"
-                          defaultValue={"null"}
+                          // defaultValue={"null"}
                           onChange={(e) => {
-                            if (e.target.value === "addmusic") {
-                              navigate("/voice-music");
+                            const selectedValue = e.target.value;
+                            if (selectedValue === "add-music") {
+                              handleAddMusic(); // Call your function here
                             }
                           }}
                         >
@@ -883,7 +897,7 @@ const RingGroupAdd = () => {
                               );
                             })}
                           <option
-                            value="addmusic"
+                            value="add-music"
                             className="addmusic"
                             style={{ cursor: "pointer" }}
                           >
@@ -1464,18 +1478,16 @@ const RingGroupAdd = () => {
           ""
         )} */}
       </section>
-      {/* <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      /> */}
+      {showMusic && (
+        <AddMusic
+          show={showMusic}
+          setShow={setShowMusic}
+          setUploadedMusic={setUploadedMusic}
+          setMusicRefresh={setMusicRefresh}
+          musicRefresh={musicRefresh}
+          listArray={["ringback"]}
+        />
+      )}
     </main>
   );
 };

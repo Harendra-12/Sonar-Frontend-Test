@@ -29,6 +29,7 @@ import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
 import ActionList from "../../CommonComponents/ActionList";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
+import AddMusic from "../../CommonComponents/AddMusic";
 
 const RingGroupEdit = () => {
   const navigate = useNavigate();
@@ -55,6 +56,9 @@ const RingGroupEdit = () => {
   const extension = useSelector((state) => state.extension);
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
   const [timeoutDestPstnToggle, setTimeoutDestPstnToggle] = useState(false);
+  const [showMusic, setShowMusic] = useState(false);
+  const [uploadedMusic, setUploadedMusic] = useState();
+  const [musicRefresh, setMusicRefresh] = useState(0);
   const {
     register,
     watch,
@@ -122,7 +126,7 @@ const RingGroupEdit = () => {
         const apidataUser = await generalGetFunction(
           `/user/search?account=${account.account_id}`
         );
-        const ringBack = await generalGetFunction("/sound/all?type=ringback");
+        // const ringBack = await generalGetFunction("/sound/all?type=ringback");
 
         // if (apiData.status) {
         //   setExtensions(apiData.data);
@@ -131,11 +135,6 @@ const RingGroupEdit = () => {
         // }
         if (apidataUser?.status) {
           setUsers(apidataUser.data);
-        } else {
-          navigate("/");
-        }
-        if (ringBack?.status) {
-          setRingBack(ringBack.data);
         } else {
           navigate("/");
         }
@@ -193,6 +192,25 @@ const RingGroupEdit = () => {
       navigate("/");
     }
   }, [account, navigate, value, getAllDataRefresh]);
+
+  useEffect(() => {
+    const getRingBackData = async () => {
+      setLoading(true);
+      const ringBack = await generalGetFunction("/sound/all?type=ringback");
+
+      if (ringBack?.status) {
+        setRingBack(ringBack.data);
+        if (ringBack.data.length > 0 && uploadedMusic) {
+          setValue("ring_back", uploadedMusic.id);
+        }
+        setLoading(false);
+      } else {
+        setLoading(false);
+        navigate("/");
+      }
+    };
+    getRingBackData();
+  }, [musicRefresh, getAllDataRefresh]);
 
   // Get all users with valid extension
   useEffect(() => {
@@ -514,6 +532,11 @@ const RingGroupEdit = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
+  const handleAddMusic = () => {
+    setValue("ring_back", "");
+    setShowMusic(true);
+  };
 
   return (
     <main className="mainContent">
@@ -949,11 +972,11 @@ const RingGroupEdit = () => {
                           {...register("ring_back")}
                           id="selectFormRow"
                           onChange={(e) => {
-                            if (e.target.value === "addmusic") {
-                              navigate("/voice-music");
+                            const selectedValue = e.target.value;
+                            if (selectedValue === "add-music") {
+                              handleAddMusic(); // Call your function here
                             }
                           }}
-                          defaultValue={"null"}
                         >
                           <option value="null">None</option>
                           {/* <option>us-ring</option>
@@ -968,7 +991,7 @@ const RingGroupEdit = () => {
                               );
                             })}
                           <option
-                            value="addmusic"
+                            value="add-music"
                             className="addmusic"
                             style={{ cursor: "pointer" }}
                           >
@@ -1516,18 +1539,16 @@ const RingGroupEdit = () => {
           )}
         </>
       </section>
-      {/* <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      /> */}
+      {showMusic && (
+        <AddMusic
+          show={showMusic}
+          setShow={setShowMusic}
+          setUploadedMusic={setUploadedMusic}
+          setMusicRefresh={setMusicRefresh}
+          musicRefresh={musicRefresh}
+          listArray={["ringback"]}
+        />
+      )}
     </main>
   );
 };

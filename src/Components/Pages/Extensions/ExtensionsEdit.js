@@ -25,6 +25,7 @@ import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Tippy from "@tippyjs/react";
 import ActionList from "../../CommonComponents/ActionList";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
+import AddMusic from "../../CommonComponents/AddMusic";
 
 const ExtensionsEdit = () => {
   const navigate = useNavigate();
@@ -39,6 +40,9 @@ const ExtensionsEdit = () => {
   const [loading, setLoading] = useState(false);
   const [music, setMusic] = useState();
   const [musicHold, setMusicHold] = useState();
+  const [showMusic, setShowMusic] = useState(false);
+  const [uploadedMusic, setUploadedMusic] = useState();
+  const [musicRefresh, setMusicRefresh] = useState(0);
   const [extensionState, setExtensionState] = useState({
     extension: "",
     extensionMissing: false,
@@ -139,24 +143,13 @@ const ExtensionsEdit = () => {
       navigate("/");
     } else {
       async function getDomain() {
-        // const domain = await generalGetFunction(
-        //   `/domain/search?account=${account.account_id}`
-        // );
+        setMusicRefresh(musicRefresh + 1);
         const apidataUser = await generalGetFunction(
           `/user/search?account=${account.account_id}`
         );
-        const musicData = await generalGetFunction("/sound/all?type=hold");
-        if (musicData?.status) {
-          setMusic(musicData.data);
-        }
-        // if (domain.status) {
-        //   setDomains(
-        //     domain.data.map((item) => {
-        //       return [item.id, item.domain_name];
-        //     })
-        //   );
-        // } else {
-        //   navigate("/");
+        // const musicData = await generalGetFunction("/sound/all?type=hold");
+        // if (musicData?.status) {
+        //   setMusic(musicData.data);
         // }
 
         if (apidataUser?.status) {
@@ -266,7 +259,26 @@ const ExtensionsEdit = () => {
       getData();
     }
   }, [account, navigate, value]);
-  console.log(watch());
+
+  useEffect(() => {
+    if (musicRefresh > 0) {
+      if (account === null) {
+        navigate("/");
+      } else {
+        async function getDomain() {
+          const musicData = await generalGetFunction("/sound/all?type=hold");
+          if (musicData?.status) {
+            setMusic(musicData.data);
+
+            if (musicData.data.length > 0 && uploadedMusic) {
+              setValue("moh", uploadedMusic.id);
+            }
+          }
+        }
+        getDomain();
+      }
+    }
+  }, [musicRefresh]);
 
   const actionListValue = (value) => {
     setValue("onbusyTo", value[0]);
@@ -348,7 +360,7 @@ const ExtensionsEdit = () => {
           record: data.record,
           // domain: `${domainId}`,
           description: data.description,
-          // moh: data.moh,
+          moh_sound: data.moh,
           notregisteredTo: data.notregisteredTo,
           noanswer: data.noanswer == "Disabled" ? 0 : 1,
 
@@ -423,7 +435,7 @@ const ExtensionsEdit = () => {
           notregistered: data.notregistered,
           notregisteredTo: data.notregisteredTo,
           noanswer: data.noanswer == "Disabled" ? 0 : 1,
-
+          moh_sound: data.moh,
           callforward: data.noanswer == "Forward" ? 1 : 0,
           callforwardTo: data.noanswer === "Forward" ? data.noanswerTo : "",
           voicemailEnabled: data.noanswer === "Voicemail" ? "Y" : "N",
@@ -490,6 +502,14 @@ const ExtensionsEdit = () => {
     }
   });
 
+  console.log(showMusic);
+
+  const handleAddMusic = () => {
+    setValue("moh", "");
+    setShowMusic(true);
+  };
+
+  console.log(watch());
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -734,18 +754,29 @@ const ExtensionsEdit = () => {
                                 <select
                                   {...register("moh")}
                                   className="formItem w-100"
+                                  onChange={(e) => {
+                                    const selectedValue = e.target.value;
+                                    if (selectedValue === "add-music") {
+                                      handleAddMusic(); // Call your function here
+                                    }
+                                  }}
                                 >
                                   <option disabled value="">
                                     Select
                                   </option>
                                   {music &&
-                                    music.map((item, index) => {
-                                      return (
-                                        <option key={index} value={item.id}>
-                                          {item.name}
-                                        </option>
-                                      );
-                                    })}
+                                    music.map((item, index) => (
+                                      <option key={index} value={item.id}>
+                                        {item.name}
+                                      </option>
+                                    ))}
+                                  <option
+                                    className="bg-primary text-center text-white"
+                                    style={{ cursor: "pointer" }}
+                                    value="add-music"
+                                  >
+                                    Add music
+                                  </option>
                                 </select>
                               </div>
                             </div>
@@ -2548,6 +2579,16 @@ const ExtensionsEdit = () => {
           </div>
         ) : (
           ""
+        )}
+        {showMusic && (
+          <AddMusic
+            show={showMusic}
+            setShow={setShowMusic}
+            setUploadedMusic={setUploadedMusic}
+            setMusicRefresh={setMusicRefresh}
+            musicRefresh={musicRefresh}
+            listArray={["hold"]}
+          />
         )}
       </section>
     </main>

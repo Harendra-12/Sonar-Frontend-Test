@@ -23,6 +23,7 @@ import {
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
+import AddMusic from "../../CommonComponents/AddMusic";
 
 function CallCenterQueueEdit() {
   const navigate = useNavigate();
@@ -38,7 +39,15 @@ function CallCenterQueueEdit() {
   const [holdSound, setHoldSound] = useState();
   const [announcmentSound, setAnnouncmentSound] = useState();
   const [advance, setAdvance] = useState([]);
-
+  const [showMusicGreet, setShowMusicGreet] = useState(false);
+  const [uploadedMusicGreet, setUploadedMusicGreet] = useState();
+  const [musicRefreshGreet, setMusicRefreshGreet] = useState(0);
+  const [showMusicAnnouncement, setShowMusicAnnouncement] = useState(false);
+  const [uploadedMusicAnnouncement, setUploadedMusicAnnouncement] = useState();
+  const [musicRefreshAnnouncement, setMusicRefreshAnnouncement] = useState(0);
+  const [showMusicHold, setShowMusicHold] = useState(false);
+  const [uploadedMusicHold, setUploadedMusicHold] = useState();
+  const [musicRefreshHold, setMusicRefreshHold] = useState(0);
   // Define the initial state of the form
   const [agent, setAgent] = useState([
     {
@@ -148,14 +157,28 @@ function CallCenterQueueEdit() {
         setGreetingSound(
           musicData.data.filter((item) => item.type === "ringback")
         );
+        if (musicData.data.length > 0 && uploadedMusicGreet) {
+          setValue("greeting", `${uploadedMusicGreet.id}`);
+        }
         setHoldSound(musicData.data.filter((item) => item.type === "hold"));
+        if (musicData.data.length > 0 && uploadedMusicHold) {
+          setValue("moh_sound", `${uploadedMusicHold.id}`);
+        }
         setAnnouncmentSound(
           musicData.data.filter((item) => item.type === "announcement")
         );
+        if (musicData.data.length > 0 && uploadedMusicAnnouncement) {
+          setValue("queue_announce_sound", `${uploadedMusicAnnouncement.id}`);
+        }
       }
     }
     getData();
-  }, [account.account_id]);
+  }, [
+    account.account_id,
+    musicRefreshAnnouncement,
+    musicRefreshGreet,
+    musicRefreshHold,
+  ]);
 
   const actionListValue = (value) => {
     setValue("queue_timeout_action", value[0]);
@@ -407,7 +430,18 @@ function CallCenterQueueEdit() {
       setAdvance([...advance, id]);
     }
   }
-
+  const handleAddMusicGreet = () => {
+    setValue("greeting", "");
+    setShowMusicGreet(true);
+  };
+  const handleAddMusicAnnouncement = () => {
+    setValue("queue_announce_sound", "");
+    setShowMusicAnnouncement(true);
+  };
+  const handleAddMusicHold = () => {
+    setValue("moh_sound", "");
+    setShowMusicHold(true);
+  };
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -647,6 +681,12 @@ function CallCenterQueueEdit() {
                               <select
                                 {...register("greeting")}
                                 className="formItem w-100"
+                                onChange={(e) => {
+                                  const selectedValue = e.target.value;
+                                  if (selectedValue === "add-music") {
+                                    handleAddMusicGreet(); // Call your function here
+                                  }
+                                }}
                               >
                                 <option disabled value="" selected>
                                   Select Greeting
@@ -659,6 +699,13 @@ function CallCenterQueueEdit() {
                                       </option>
                                     );
                                   })}
+                                <option
+                                  value="add-music"
+                                  className="addmusic"
+                                  style={{ cursor: "pointer" }}
+                                >
+                                  Add Music
+                                </option>
                               </select>
                               {errors.greeting && (
                                 <ErrorMessage text={errors.greeting.message} />
@@ -701,6 +748,12 @@ function CallCenterQueueEdit() {
                               <select
                                 {...register("moh_sound")}
                                 className="formItem w-100"
+                                onChange={(e) => {
+                                  const selectedValue = e.target.value;
+                                  if (selectedValue === "add-music") {
+                                    handleAddMusicHold(); // Call your function here
+                                  }
+                                }}
                               >
                                 <option disabled value="" selected>
                                   Select Hold Music
@@ -713,6 +766,13 @@ function CallCenterQueueEdit() {
                                       </option>
                                     );
                                   })}
+                                <option
+                                  value="add-music"
+                                  className="addmusic"
+                                  style={{ cursor: "pointer" }}
+                                >
+                                  Add Music
+                                </option>
                               </select>
                               {errors.moh_sound && (
                                 <ErrorMessage text={errors.moh_sound.message} />
@@ -991,6 +1051,12 @@ function CallCenterQueueEdit() {
                               <select
                                 {...register("queue_announce_sound")}
                                 className="formItem w-100"
+                                onChange={(e) => {
+                                  const selectedValue = e.target.value;
+                                  if (selectedValue === "add-music") {
+                                    handleAddMusicAnnouncement(); // Call your function here
+                                  }
+                                }}
                               >
                                 <option disabled value="" selected>
                                   Select Queue Announce
@@ -1003,6 +1069,12 @@ function CallCenterQueueEdit() {
                                       </option>
                                     );
                                   })}
+                                <option
+                                  className="bg-primary text-white text-center"
+                                  value="add-music"
+                                >
+                                  Add Music
+                                </option>
                               </select>
                             </div>
                           </div>
@@ -1676,6 +1748,36 @@ function CallCenterQueueEdit() {
           )}
         </div>
       </section>
+      {showMusicGreet && (
+        <AddMusic
+          show={showMusicGreet}
+          setShow={setShowMusicGreet}
+          setUploadedMusic={setUploadedMusicGreet}
+          setMusicRefresh={setMusicRefreshGreet}
+          musicRefresh={musicRefreshGreet}
+          listArray={["ringback"]}
+        />
+      )}
+      {showMusicAnnouncement && (
+        <AddMusic
+          show={showMusicAnnouncement}
+          setShow={setShowMusicAnnouncement}
+          setUploadedMusic={setUploadedMusicAnnouncement}
+          setMusicRefresh={setMusicRefreshAnnouncement}
+          musicRefresh={musicRefreshAnnouncement}
+          listArray={["announcement"]}
+        />
+      )}
+      {showMusicHold && (
+        <AddMusic
+          show={showMusicHold}
+          setShow={setShowMusicHold}
+          setUploadedMusic={setUploadedMusicHold}
+          setMusicRefresh={setMusicRefreshHold}
+          musicRefresh={musicRefreshHold}
+          listArray={["hold"]}
+        />
+      )}
     </main>
   );
 }
