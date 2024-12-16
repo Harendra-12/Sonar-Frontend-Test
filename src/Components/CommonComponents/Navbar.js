@@ -599,13 +599,10 @@ function Navbar() {
                       data-bs-target="#collapse6"
                       aria-expanded={
                         isChildActive([
-                          "/get-did",
-
-                          "/port-number",
-                          "/did-config",
-                          "/did-add",
-                          "/port-number-add",
-                          "/port-number-edit",
+                          "/dialer-dashboard",
+                          "/leads",
+                          "/lead-add",
+                          "/lead-edit",
                         ])
                           ? "true"
                           : "false"
@@ -620,6 +617,10 @@ function Navbar() {
                     <div
                       id="collapse6"
                       className={`accordion-collapse collapse ${isChildActive([
+                        "/dialer-dashboard",
+                        "/leads",
+                        "/lead-add",
+                        "/lead-edit",
                       ])
                         ? "show"
                         : ""
@@ -629,9 +630,9 @@ function Navbar() {
                       <div className="menuWrapper">
                         <ul className="tabMenu">
                           <li className="tabItem ">
-                            <a
-                              // to="/extensions"
-                              onClick={() => featureUnderdevelopment()}
+                            <NavLink
+                              to="/dialer-dashboard"
+                              onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
                                   ["/extensions-add", "/extensions-edit"].some(
@@ -646,7 +647,7 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Dashboard</div>
-                            </a>
+                            </NavLink>
                           </li>
 
                           <li className="tabItem ">
@@ -671,12 +672,12 @@ function Navbar() {
                           </li>
 
                           <li className="tabItem ">
-                            <a
-                              // to="/extensions"
-                              onClick={() => featureUnderdevelopment()}
+                            <NavLink
+                              to="/leads"
+                              onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
+                                  ["/lead-add", "/lead-edit"].some(
                                     (path) =>
                                       window.location.pathname.includes(path)
                                   )
@@ -688,7 +689,7 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Leads</div>
-                            </a>
+                            </NavLink>
                           </li>
 
                           <li className="tabItem ">
@@ -745,12 +746,8 @@ function Navbar() {
                       aria-expanded={
                         isChildActive([
                           "/get-did",
-
-                          "/port-number",
                           "/did-config",
                           "/did-add",
-                          "/port-number-add",
-                          "/port-number-edit",
                         ])
                           ? "true"
                           : "false"
@@ -1512,6 +1509,222 @@ function Navbar() {
                               <div className="itemTitle">Call Recording</div>
                             </a>
                           </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </li>
+
+
+                  <li className="">
+                    <button
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapse11"
+                      aria-expanded={
+                        isChildActive([
+                          "/mail-settings",
+                        ])
+                          ? "true"
+                          : "false"
+                      }
+                      aria-controls="collapse11"
+                    >
+                      <div className="iconHolder">
+                        <i class="fa-regular fa-store"></i>
+                      </div>
+                      <div className="itemTitle">Store</div>
+                    </button>
+                    <div
+                      id="collapse11"
+                      className={`accordion-collapse collapse ${isChildActive([
+                        "/store",
+                      ])
+                        ? "show"
+                        : ""
+                        }`}
+                      data-bs-parent="#sidenNav"
+                    >
+                      <div className="menuWrapper">
+                        <ul className="tabMenu">
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Extensions</div>
+                            </a>
+                          </li>
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/plugins"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Plugins</div>
+                            </a>
+                          </li>
+                          {account?.permissions?.includes(248) ||
+                            account?.permissions?.includes(250) ? (
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/mail-settings"
+                                onClick={backToTop}
+                                type="button"
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/hardwares",
+                                      "/hardware-add",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">Hardwares</div>
+                              </NavLink>
+                            </li>
+                          ) : null}
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/add-on"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Add-Ons</div>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li className="">
+                    <button
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapse12"
+                      aria-expanded={
+                        isChildActive([
+                          "/support",
+                        ])
+                          ? "true"
+                          : "false"
+                      }
+                      aria-controls="collapse12"
+                    >
+                      <div className="iconHolder">
+                        <i class="fa-regular fa-circle-info"></i>
+                      </div>
+                      <div className="itemTitle">Support</div>
+                    </button>
+                    <div
+                      id="collapse12"
+                      className={`accordion-collapse collapse ${isChildActive([
+                        "/support",
+                      ])
+                        ? "show"
+                        : ""
+                        }`}
+                      data-bs-parent="#sidenNav"
+                    >
+                      <div className="menuWrapper">
+                        <ul className="tabMenu">
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Knowledge Base</div>
+                            </a>
+                          </li>
+                          <li className="tabItem ">
+                            <a
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Submit a Ticket</div>
+                            </a>
+                          </li>
+                          {account?.permissions?.includes(248) ||
+                            account?.permissions?.includes(250) ? (
+                            <li className="tabItem ">
+                              <a
+                                onClick={() => featureUnderdevelopment()}
+                                type="button"
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/mail-settings-add",
+                                      "/mail-settings-edit",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">Live Chat Support</div>
+                              </a>
+                            </li>
+                          ) : null}
                         </ul>
                       </div>
                     </div>

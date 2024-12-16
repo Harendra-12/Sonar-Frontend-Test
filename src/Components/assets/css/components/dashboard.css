@@ -173,6 +173,10 @@
     font-family: Outfit;
 }
 
+.itemWrapper .data-number2 h4 {
+    color: var(--color-subtext);
+}
+
 .itemWrapper .data-number2 p {
     font-size: 12px;
     color: var(--color-subtext);

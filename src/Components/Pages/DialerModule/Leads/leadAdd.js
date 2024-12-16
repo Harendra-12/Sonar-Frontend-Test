@@ -53,9 +53,9 @@ function LeadAdd() {
                                                     type="button"
                                                     className="panelButton"
                                                 >
-                                                    <span className="text">Add</span>
+                                                    <span className="text">Save</span>
                                                     <span className="icon">
-                                                        <i className="fa-solid fa-plus"></i>
+                                                        <i className="fa-solid fa-floppy-disk"></i>
                                                     </span>
                                                 </button>
                                             </div>
@@ -72,7 +72,7 @@ function LeadAdd() {
                                                     </label>
                                                 </div>
                                                 <div className='col-6'>
-                                                <select
+                                                    <select
                                                         name=""
                                                         id=""
                                                         className="formItem "
@@ -86,7 +86,7 @@ function LeadAdd() {
                                             <div className="formRow col-xl-3">
                                                 <div className='formLabel'>
                                                     <label>
-                                                       Vendor Lead Code
+                                                        Vendor Lead Code
                                                     </label>
                                                 </div>
                                                 <div className='col-6'>
@@ -99,7 +99,7 @@ function LeadAdd() {
                                             <div className="formRow col-xl-3">
                                                 <div className='formLabel'>
                                                     <label>
-                                                      Phone Code
+                                                        Phone Code
                                                     </label>
                                                 </div>
                                                 <div className='col-6'>
@@ -161,7 +161,7 @@ function LeadAdd() {
                                             <div className="formRow col-xl-3">
                                                 <div className='formLabel'>
                                                     <label>
-                                                       Last Name
+                                                        Last Name
                                                     </label>
                                                 </div>
                                                 <div className='col-6'>
@@ -173,7 +173,7 @@ function LeadAdd() {
                                             <div className="formRow col-xl-3">
                                                 <div className='formLabel'>
                                                     <label>
-                                                       Address1
+                                                        Address1
                                                     </label>
                                                 </div>
                                                 <div className='col-6'>
@@ -185,7 +185,7 @@ function LeadAdd() {
                                             <div className="formRow col-xl-3">
                                                 <div className='formLabel'>
                                                     <label>
-                                                    Address2
+                                                        Address2
                                                     </label>
                                                 </div>
                                                 <div className='col-6'>
@@ -197,7 +197,7 @@ function LeadAdd() {
                                             <div className="formRow col-xl-3">
                                                 <div className='formLabel'>
                                                     <label>
-                                                    Address3
+                                                        Address3
                                                     </label>
                                                 </div>
                                                 <div className='col-6'>
@@ -209,7 +209,7 @@ function LeadAdd() {
                                             <div className="formRow col-xl-3">
                                                 <div className='formLabel'>
                                                     <label>
-                                                    City
+                                                        City
                                                     </label>
                                                 </div>
                                                 <div className='col-6'>
@@ -221,7 +221,7 @@ function LeadAdd() {
                                             <div className="formRow col-xl-3">
                                                 <div className='formLabel'>
                                                     <label>
-                                                  State
+                                                        State
                                                     </label>
                                                 </div>
                                                 <div className='col-6'>
@@ -233,7 +233,7 @@ function LeadAdd() {
                                             <div className="formRow col-xl-3">
                                                 <div className='formLabel'>
                                                     <label>
-                                                   Province
+                                                        Province
                                                     </label>
                                                 </div>
                                                 <div className='col-6'>
@@ -245,7 +245,7 @@ function LeadAdd() {
                                             <div className="formRow col-xl-3">
                                                 <div className='formLabel'>
                                                     <label>
-                                                    Postal Code
+                                                        Postal Code
                                                     </label>
                                                 </div>
                                                 <div className='col-6'>

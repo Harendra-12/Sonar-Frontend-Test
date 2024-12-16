@@ -6,7 +6,7 @@ import { styled } from '@mui/material';
 // Register necessary components
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement);
 
-const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, colors, chartType, label1, label2 }) => {
+const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, colors, chartType, label1, label2, height }) => {
 
   // Define the data for the chart
   const data = {
@@ -68,7 +68,7 @@ const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, color
   };
 
   return (
-    <div style={{ width: '100%', height: '300px', position: 'relative', margin: '0 auto' }}>
+    <div style={{ width: '100%', height: height || '300px', position: 'relative', margin: '0 auto' }}>
       <Line data={chartType === "multiple" ? multiChartData : data} options={options} />
     </div>
   );
