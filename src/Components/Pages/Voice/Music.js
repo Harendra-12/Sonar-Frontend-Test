@@ -223,22 +223,19 @@ function Music() {
                       </div>
                     </div>
                     <div className="tableContainer">
-                      {loading ? (
-                        <ContentLoader />
-                      ) : (
-                        <table>
-                          <thead>
-                            <tr>
-                              <th>Music</th>
-                              <th>Type</th>
-                              <th>Added Date</th>
-                              <th>Play</th>
-                              <th>Delete</th>
-                              <th>Edit</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {/* {music &&
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Music</th>
+                            <th>Type</th>
+                            <th>Added Date</th>
+                            <th>Play</th>
+                            <th>Delete</th>
+                            <th>Edit</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {/* {music &&
                               music.map((item) => {
                                 return (
                                   <tr>
@@ -271,83 +268,84 @@ function Music() {
                                   </tr>
                                 );
                               })} */}
-                            {loading ? (
-                              <SkeletonTableLoader col={5} row={15} />
-                            ) : (
-                              music &&
-                              music.map((item) => {
-                                const isCurrent = currentPlaying === item.id; // Use item.id as a unique identifier
+                          {loading ? (
+                            <SkeletonTableLoader col={5} row={15} />
+                          ) : (
+                            <>
+                              {music &&
+                                music.map((item) => {
+                                  const isCurrent = currentPlaying === item.id; // Use item.id as a unique identifier
 
-                                return (
-                                  <React.Fragment key={item.id}>
-                                    <tr>
-                                      <td>{item.name}</td>
-                                      <td>{item.type}</td>
-                                      <td>{item.created_at.split("T")[0]}</td>
-                                      <td>
-                                        <button
-                                          className="tableButton play"
-                                          onClick={() => {
-                                            if (currentPlaying === item.id) {
-                                              setCurrentPlaying(null); // Pause if already playing
-                                            } else {
-                                              setCurrentPlaying(item.id); // Play selected audio
-                                            }
-                                          }}
-                                        >
-                                          {isCurrent ? (
-                                            <i className="fa-solid fa-stop"></i>
-                                          ) : (
-                                            <i className="fa-solid fa-play"></i>
-                                          )}
-                                        </button>
-                                      </td>
-                                      <td>
-                                        <button
-                                          className="tableButton delete"
-                                          onClick={() => {
-                                            setDeletePopup(true);
-                                            setDeleteId(item.id);
-                                          }}
-                                        >
-                                          <i className="fa-solid fa-trash"></i>
-                                        </button>
-                                      </td>
-                                      <td>
-                                        <button
-                                          className="tableButton "
-                                          onClick={() => {
-                                            setSelectedMusicToEdit(item);
-                                            setMusicEditPopup(true);
-                                          }}
-                                        >
-                                          <i className="fa-solid fa-edit"></i>
-                                        </button>
-                                      </td>
-                                    </tr>
-                                    {isCurrent && (
+                                  return (
+                                    <React.Fragment key={item.id}>
                                       <tr>
-                                        <td colSpan={99}>
-                                          <div className="audio-container mx-2">
-                                            <audio
-                                              controls
-                                              autoPlay
-                                              onPlay={() =>
-                                                setCurrentPlaying(item.id)
-                                              } // Sync playback state
-                                              onPause={() =>
-                                                setCurrentPlaying(item.id)
-                                              } // Ensure state consistency
-                                              onEnded={() =>
-                                                setCurrentPlaying(null)
-                                              } // Reset on end
-                                            >
-                                              <source
-                                                src={item.path}
-                                                type="audio/mpeg"
-                                              />
-                                            </audio>
-                                            {/* <button
+                                        <td>{item.name}</td>
+                                        <td>{item.type}</td>
+                                        <td>{item.created_at.split("T")[0]}</td>
+                                        <td>
+                                          <button
+                                            className="tableButton play"
+                                            onClick={() => {
+                                              if (currentPlaying === item.id) {
+                                                setCurrentPlaying(null); // Pause if already playing
+                                              } else {
+                                                setCurrentPlaying(item.id); // Play selected audio
+                                              }
+                                            }}
+                                          >
+                                            {isCurrent ? (
+                                              <i className="fa-solid fa-stop"></i>
+                                            ) : (
+                                              <i className="fa-solid fa-play"></i>
+                                            )}
+                                          </button>
+                                        </td>
+                                        <td>
+                                          <button
+                                            className="tableButton delete"
+                                            onClick={() => {
+                                              setDeletePopup(true);
+                                              setDeleteId(item.id);
+                                            }}
+                                          >
+                                            <i className="fa-solid fa-trash"></i>
+                                          </button>
+                                        </td>
+                                        <td>
+                                          <button
+                                            className="tableButton "
+                                            onClick={() => {
+                                              setSelectedMusicToEdit(item);
+                                              setMusicEditPopup(true);
+                                            }}
+                                          >
+                                            <i className="fa-solid fa-edit"></i>
+                                          </button>
+                                        </td>
+                                      </tr>
+                                      {isCurrent && (
+                                        <tr>
+                                          <td colSpan={99}>
+                                            <div className="audio-container mx-2">
+                                              <audio
+                                                controls
+                                                autoPlay
+                                                onPlay={() =>
+                                                  setCurrentPlaying(item.id)
+                                                } // Sync playback state
+                                                onPause={() =>
+                                                  setCurrentPlaying(item.id)
+                                                } // Ensure state consistency
+                                                onEnded={() =>
+                                                  setCurrentPlaying(null)
+                                                } // Reset on end
+                                              >
+                                                <source
+                                                  src={item.path}
+                                                  type="audio/mpeg"
+                                                />
+                                              </audio>
+                                              {/* <button
                                               className="audioCustomButton"
                                               onClick={() => {
                                                 const link =
@@ -362,17 +360,17 @@ function Music() {
                                             >
                                               <i className="fa-sharp fa-solid fa-download"></i>
                                             </button> */}
-                                          </div>
-                                        </td>
-                                      </tr>
-                                    )}
-                                  </React.Fragment>
-                                );
-                              })
-                            )}
-                          </tbody>
-                        </table>
-                      )}
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      )}
+                                    </React.Fragment>
+                                  );
+                                })}
+                            </>
+                          )}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>

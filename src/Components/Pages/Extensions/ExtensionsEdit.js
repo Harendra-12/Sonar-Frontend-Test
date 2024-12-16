@@ -670,7 +670,10 @@ const ExtensionsEdit = () => {
                             </div>
                             <div className="formRow col-xl-3">
                               <div className="formLabel">
-                                <label htmlFor="">Password</label>
+                                <label htmlFor="">
+                                  Password{" "}
+                                  <span className="text-danger">*</span>
+                                </label>
                                 <label htmlFor="data" className="formItemDesc">
                                   Password length must be atleast 4 character
                                 </label>

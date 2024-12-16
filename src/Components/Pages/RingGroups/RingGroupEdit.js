@@ -54,6 +54,7 @@ const RingGroupEdit = () => {
   const [user, setUser] = useState();
   const extension = useSelector((state) => state.extension);
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
+  const [timeoutDestPstnToggle, setTimeoutDestPstnToggle] = useState(false);
   const {
     register,
     watch,
@@ -646,7 +647,9 @@ const RingGroupEdit = () => {
                   <form className="row mb-0">
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="">Name</label>
+                        <label htmlFor="">
+                          Name <span className="text-danger">*</span>
+                        </label>
                         <label htmlFor="data" className="formItemDesc">
                           Enter a name.
                         </label>
@@ -800,7 +803,7 @@ const RingGroupEdit = () => {
                   </label>
                 </div>
               </div> */}
-                    <div className="formRow col-xl-3">
+                    {/* <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Timeout Destination</label>
                         <label htmlFor="data" className="formItemDesc">
@@ -814,6 +817,64 @@ const RingGroupEdit = () => {
                           getDropdownValue={actionListValue}
                           value={watch().timeout_destination}
                         />
+                      </div>
+                    </div> */}
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label>Timeout Destination</label>
+                        <label className="formItemDesc">
+                          Select the timeout destination for this ring group.
+                        </label>
+                      </div>
+                      <div className="col-6">
+                        <div className="row">
+                          <div className="col-8">
+                            {timeoutDestPstnToggle ? (
+                              <input
+                                placeholder="PSTN"
+                                className=""
+                                {...register("timeout_destination", {
+                                  ...numberValidator,
+                                })}
+                              ></input>
+                            ) : (
+                              <ActionList
+                                title={null}
+                                label={null}
+                                getDropdownValue={actionListValue}
+                                value={watch().timeout_destination}
+                              />
+                            )}
+                          </div>
+                          <div className="col-4">
+                            {timeoutDestPstnToggle ? (
+                              <button
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  setTimeoutDestPstnToggle(false);
+                                  setValue("timeout_destination", "");
+                                }}
+                              >
+                                PSTN
+                              </button>
+                            ) : (
+                              <button
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  setTimeoutDestPstnToggle(true);
+                                  setValue("timeout_destination", "");
+                                }}
+                              >
+                                EXT
+                              </button>
+                            )}
+                          </div>
+                          {errors?.timeout_destination && (
+                            <ErrorMessage
+                              text={errors?.timeout_destination?.message}
+                            />
+                          )}
+                        </div>
                       </div>
                     </div>
                     <div className="formRow col-xl-3">
