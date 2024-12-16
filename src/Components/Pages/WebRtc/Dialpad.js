@@ -66,6 +66,7 @@ function Dialpad({
       const apiData = await sessionManager?.call(
         `sip:${destNumber}@${account.domain.domain_name}`,
         {
+          earlyMedia: true,
           sessionDescriptionHandlerOptions: {
             constraints: {
               audio: true,

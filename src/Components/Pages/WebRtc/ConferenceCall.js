@@ -36,7 +36,7 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage, act
   const [numberOfTimeUserVisit, setNumberOfTimeUserVisit] = useState(0)
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [screenTogglehit, setScreenTogglehit] = useState(0);
-
+  
   useEffect(()=>{
     if(conferenceRawData["Conference-Name"]===room_id){
       setConferenceData(conferenceRawData)

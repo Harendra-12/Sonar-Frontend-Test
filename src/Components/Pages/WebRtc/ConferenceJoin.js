@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import CircularLoader from '../../Loader/CircularLoader';
 import ContentLoader from '../../Loader/ContentLoader';
 import { toast } from 'react-toastify';
+import ConferenceLoader from '../../Loader/ConferenceLoader';
 
 function ConferenceJoin() {
     // getting the value of querry type
@@ -61,7 +62,7 @@ function ConferenceJoin() {
                     display:none;
                 }`}
             </style>
-            {loading ? <ContentLoader /> :
+            {loading ? <ConferenceLoader /> :
                 <main className="login">
                     <div className="container position-relative h-100">
                         <div className="loginWrapper2">
