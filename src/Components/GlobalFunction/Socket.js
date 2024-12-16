@@ -1,106 +1,89 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+let sendData = () => {
+  console.warn("WebSocket not initialized yet.");
+}; // Default placeholder function if called before initialization.
+
 const Socket = () => {
   const dispatch = useDispatch();
-  // const ip = "ucaas.webvio.in";
   const ip = process.env.REACT_APP_BACKEND_IP;
-  // const port = "8443";
   const port = process.env.REACT_APP_BACKEND_SOCKET_PORT;
   const account = useSelector((state) => state.account);
   const token = localStorage.getItem("token");
   const socketRef = useRef(null);
 
   useEffect(() => {
-    var reconnectValue = 0;
+    let reconnectValue = 0;
+
     const connectWebSocket = () => {
       const socket = new WebSocket(`wss://${ip}:${port}?token=${token}`);
+
+      // Update `sendData` to send messages via the initialized socket.
+      sendData = (data) => {
+        if (socket.readyState === WebSocket.OPEN) {
+          socket.send(JSON.stringify(data));
+        } else {
+          console.warn("WebSocket is not open. Unable to send data.");
+        }
+      };
 
       socket.onopen = () => {
         console.log("WebSocket connection successful.");
       };
+
       socket.onmessage = (event) => {
-        // console.log(JSON.parse(event.data));
-        if (typeof JSON.parse(event.data) === "string") {
-          if (JSON.parse(JSON.parse(event.data))["key"] === "UserRegister") {
-            dispatch({
-              type: "SET_REGISTERUSER",
-              registerUser: JSON.parse(JSON.parse(event.data))["result"].filter(
-                (item) => {
-                  return item.account_id === account.account_id;
-                }
-              ),
-            });
-          } else if (
-            JSON.parse(JSON.parse(event.data))["key"] === "onlineUser"
-          ) {
-            dispatch({
-              type: "SET_LOGINUSER",
-              loginUser: JSON.parse(JSON.parse(event.data))["result"],
-            });
-          } else if (
-            JSON.parse(JSON.parse(event.data))["key"] === "CallState"
-          ) {
-            dispatch({
-              type: "SET_CALLSTATE",
-              callState: JSON.parse(JSON.parse(event.data))["result"],
-            });
-          } else if (
-            JSON.parse(JSON.parse(event.data))["key"] ===
-            "ChannelHangupComplete"
-          ) {
-            dispatch({
-              type: "SET_CHANNELHANGUP",
-              channelHangupComplete: JSON.parse(JSON.parse(event.data))[
-                "result"
-              ],
-            });
-            if (
-              Number(
-                JSON.parse(JSON.parse(event.data))["result"]["account_id"]
-              ) === Number(account.account_id)
-            ) {
+        const parsedData = JSON.parse(event.data);
+        if (typeof parsedData === "string") {
+          const message = JSON.parse(parsedData);
+          const { key, result } = message;
+          switch (key) {
+            case "UserRegister":
               dispatch({
-                type: "SET_BALANCE",
-                balance: JSON.parse(JSON.parse(event.data))["balance"],
+                type: "SET_REGISTERUSER",
+                registerUser: result.filter(
+                  (item) => item.account_id === account.account_id
+                ),
               });
-            }
-          } else if (
-            JSON.parse(JSON.parse(event.data))["key"] === "activeCalls"
-          ) {
-            // console.log(
-            //   "inside activeCalls",
-            //   JSON.parse(JSON.parse(event.data))["result"]
-            // );
-            dispatch({
-              type: "SET_ACTIVECALL",
-              activeCall: JSON.parse(JSON.parse(event.data))["result"],
-            });
-          } else if (
-            JSON.parse(JSON.parse(event.data))["key"] === "Conference"
-          ) {
-            // console.log(
-            //   "inside Conference",
-            //   JSON.parse(JSON.parse(event.data))["result"]
-            // );
-            dispatch({
-              type: "SET_CONFERENCE",
-              conference: JSON.parse(JSON.parse(event.data))["result"],
-            });
+              break;
+            case "onlineUser":
+              dispatch({ type: "SET_LOGINUSER", loginUser: result });
+              break;
+            case "CallState":
+              dispatch({ type: "SET_CALLSTATE", callState: result });
+              break;
+            case "ChannelHangupComplete":
+              dispatch({
+                type: "SET_CHANNELHANGUP",
+                channelHangupComplete: result,
+              });
+              if (Number(result.account_id) === Number(account.account_id)) {
+                dispatch({ type: "SET_BALANCE", balance: message.balance });
+              }
+              break;
+            case "activeCalls":
+              dispatch({ type: "SET_ACTIVECALL", activeCall: result });
+              break;
+            case "Conference":
+              dispatch({ type: "SET_CONFERENCE", conference: result });
+              break;
+            default:
+              console.log("Unhandled WebSocket message key:", key);
           }
         } else {
-          // console.log("This is else condition", JSON.parse(event.data));
+          console.log("Received non-string message:", parsedData);
         }
       };
 
       socket.onerror = (error) => {
         console.error("WebSocket error:", error);
       };
+
       socket.onclose = () => {
         console.log("WebSocket connection closed. Reconnecting...");
         if (reconnectValue < 5) {
-          reconnectValue = reconnectValue + 1;
-          setTimeout(connectWebSocket, 5000); // Retry after 3 seconds
+          reconnectValue++;
+          setTimeout(connectWebSocket, 5000); // Retry after 5 seconds
         }
       };
 
@@ -116,9 +99,10 @@ const Socket = () => {
         socketRef.current.close();
       }
     };
-  }, [account, dispatch, token]);
+  }, [account, dispatch, token, ip, port]);
 
   return null;
 };
 
+export { sendData };
 export default Socket;

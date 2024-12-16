@@ -437,6 +437,7 @@ function PhoneDashboard() {
                         </div>
                         <div className="col-2">
                           <img
+                            alt=""
                             src={require("../../assets/images/icons/diagram.png")}
                           />
                         </div>

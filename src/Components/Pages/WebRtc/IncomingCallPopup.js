@@ -225,6 +225,9 @@ function IncomingCallPopup({
     }
   };
 
+  console.log("Sessionasasasa", session);
+  
+
   return (
     <>
       {lastIncomingCall && !isMinimized ? (
