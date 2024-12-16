@@ -119,6 +119,14 @@ import ConferenceJoin from "./Components/Pages/WebRtc/ConferenceJoin";
 import CallDashboardNew from "./Components/Pages/WebRtc/CallDashboardNew";
 import DummyRegistration from "./Components/Pages/WebRtc/DummyRegistration";
 import ClickToCallSetup from "./Components/Pages/ClickToCall/ClickToCallSetup";
+import Agents from "./Components/Pages/Agents/Agents";
+import AgentsEdits from "./Components/Pages/Agents/AgentsEdits";
+import AgentsAdd from "./Components/Pages/Agents/AgentsAdd";
+import AgentReport from "./Components/Pages/Agents/AgentReport";
+import MeetingReports from "./Components/Pages/Agents/MeetingReports";
+import CallRecording from "./Components/Pages/Setting/CallRecording";
+import Fax from "./Components/Pages/Setting/Fax";
+
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -305,8 +313,21 @@ function App() {
             path="/extension-settings-edit"
             element={<ExtensionSettingsEdit />}
           />
+
+
+
+
           <Route path="/call-settings" element={<CallSettings />} />
           {/* Extensions Path End */}
+
+          <Route path="/agents" element={<Agents />} />
+          <Route path="/agents-edit" element={<AgentsEdits />} />
+          <Route path="/agents-add" element={<AgentsAdd />} />
+          <Route path="/agents-reports" element={<AgentReport />} />
+          <Route path="/meeting-reports" element={<MeetingReports />} />
+
+
+          {/*Agents path */}
 
           {/* Voice path start */}
           <Route path="/voice-music" element={<Music />} />
@@ -329,6 +350,12 @@ function App() {
           <Route path="/sofia-add-setting" element={<SofiaAddSetting />} />
           <Route path="/sofia-edit-setting" element={<SofiaEditSetting />} />
           {/* Sofia path end */}
+
+          {/* setting fax and callrecording path start */}
+          <Route path="/fax" element={<Fax/>} />
+          <Route path="/call-recording" element={<CallRecording />} />
+          {/* setting fax and callrecording path end */}
+
 
           {/* WebRtc path start */}
           <Route path="/webrtc" element={<WebrtcWrapper />} />
