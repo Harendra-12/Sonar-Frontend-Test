@@ -47,6 +47,10 @@ function Leads() {
                                                 <button
                                                     type="button"
                                                     className="panelButton"
+                                                    onClick={() => {
+                                                        navigate('/lead-add');
+                                                        backToTop();
+                                                    }}
                                                 >
                                                     <span className="text">Add</span>
                                                     <span className="icon">
@@ -144,6 +148,7 @@ function Leads() {
                                                         <td>
                                                             <button
                                                                 className="tableButton edit mx-auto"
+                                                                onClick={() => navigate('/lead-edit')}
                                                             >
                                                                 <i class="fa-solid fa-pen"></i>
                                                             </button>

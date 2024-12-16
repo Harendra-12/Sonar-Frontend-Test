@@ -6,7 +6,7 @@ import { styled } from '@mui/material';
 // Register necessary components
 ChartJS.register(PolarAreaController, RadialLinearScale, PointElement, LineElement, ArcElement, Tooltip, Legend);
 
-const DoughnutChart = ({ fields, percentage, centerTitle, centerDesc, colors }) => {
+const DoughnutChart = ({ fields, percentage, centerTitle, centerDesc, colors, height }) => {
 
   // Define the data for the chart
   const data = {
@@ -51,7 +51,7 @@ const DoughnutChart = ({ fields, percentage, centerTitle, centerDesc, colors }) 
   };
 
   return (
-    <div style={{ width: '250px', height: '300px', position: 'relative', margin: '0 auto' }}>
+    <div style={{ width: '250px', height: height || '300px', position: 'relative', margin: '0 auto' }}>
       <PolarArea data={data} options={options} />
       <div className="data-number" style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%,-50%)' }}>
         {/* <label style={{ color: '#FF6384' }}>{centerTitle.slice(0, 2).replace('/', '').padStart(2, '0')}</label> <span>/ {centerTitle.slice(2).replace('/', '')}</span> */}

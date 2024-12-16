@@ -119,6 +119,7 @@ import ConferenceJoin from "./Components/Pages/WebRtc/ConferenceJoin";
 import CallDashboardNew from "./Components/Pages/WebRtc/CallDashboardNew";
 import DummyRegistration from "./Components/Pages/WebRtc/DummyRegistration";
 import ClickToCallSetup from "./Components/Pages/ClickToCall/ClickToCallSetup";
+import DialerDashboard from "./Components/Pages/DialerModule/DialerDashboard";
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -602,6 +603,10 @@ function App() {
           <Route path="click-to-call-add" element={<ClickToCallSetup />} />
 
           {/* Dialer Modules */}
+
+          {/* ------ Dashboard  */}
+          <Route path="/dialer-dashboard" element={<DialerDashboard />} />
+          {/* ------ Dashboard  */}
 
           {/* ------ Leads */}
           <Route path="/leads" element={<Leads />} />

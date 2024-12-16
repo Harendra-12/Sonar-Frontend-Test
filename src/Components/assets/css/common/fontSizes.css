@@ -6,6 +6,7 @@ h4 {
     font-size: 20px !important;
     font-family: Roboto;
     color: var(--immortalBlack);
+    margin-bottom: 0;
 }
 
 h5 {

@@ -53,9 +53,9 @@ function LeadEdit() {
                                                     type="button"
                                                     className="panelButton"
                                                 >
-                                                    <span className="text">Add</span>
+                                                    <span className="text">Save</span>
                                                     <span className="icon">
-                                                        <i className="fa-solid fa-plus"></i>
+                                                        <i className="fa-solid fa-floppy-disk"></i>
                                                     </span>
                                                 </button>
                                             </div>

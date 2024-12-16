@@ -168,7 +168,7 @@ function PhoneDashboard() {
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row ">
-            <Header title="Phone Dashboard" />
+            <Header title="Call Dashboard" />
             <div id="detailsHeader" className="p-0">
               <div className="headerBgWave">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
@@ -400,7 +400,7 @@ function PhoneDashboard() {
                     <div className="data-number2">
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className="col-10">
-                          <h5>{(allUser.data && allUser.data.length-1) || 0}</h5>
+                          <h5>{(allUser.data && allUser.data.length - 1) || 0}</h5>
                           <p>
                             {(allUser.data &&
                               allUser.data.filter(
