@@ -362,29 +362,29 @@ const ExtensionsEdit = () => {
             data.callblocking === "Incoming"
               ? 1
               : data.callblocking === "All"
-                ? 1
-                : 0,
+              ? 1
+              : 0,
           blockOutGoingStatus:
             data.callblocking === "Outgoing"
               ? 1
               : data.callblocking === "All"
-                ? 1
-                : 0,
+              ? 1
+              : 0,
           dnd: data.dnd,
           notregistered: data.notregistered,
           followme: data.followme,
           ...(data.followme == 1
             ? {
-              data: [
-                {
-                  destination: callSetting.followMeDestination,
-                  delay: callSetting.followMeDelay,
-                  timeout: callSetting.followMeTimeOut,
-                  extension_id: value,
-                  prompt: callSetting.followMePrompt,
-                },
-              ],
-            }
+                data: [
+                  {
+                    destination: callSetting.followMeDestination,
+                    delay: callSetting.followMeDelay,
+                    timeout: callSetting.followMeTimeOut,
+                    extension_id: value,
+                    prompt: callSetting.followMePrompt,
+                  },
+                ],
+              }
             : {}),
           password: data.password,
           ...(data.user === "" || data.user === null
@@ -434,29 +434,29 @@ const ExtensionsEdit = () => {
           dnd: data.dnd,
           ...(data.followme == 1
             ? {
-              data: [
-                {
-                  destination: callSetting.followMeDestination,
-                  delay: callSetting.followMeDelay,
-                  timeout: callSetting.followMeTimeOut,
-                  extension_id: value,
-                  prompt: callSetting.followMePrompt,
-                },
-              ],
-            }
+                data: [
+                  {
+                    destination: callSetting.followMeDestination,
+                    delay: callSetting.followMeDelay,
+                    timeout: callSetting.followMeTimeOut,
+                    extension_id: value,
+                    prompt: callSetting.followMePrompt,
+                  },
+                ],
+              }
             : {}),
           blockIncomingStatus:
             data.callblocking === "Incoming"
               ? 1
               : data.callblocking === "All"
-                ? 1
-                : 0,
+              ? 1
+              : 0,
           blockOutGoingStatus:
             data.callblocking === "Outgoing"
               ? 1
               : data.callblocking === "All"
-                ? 1
-                : 0,
+              ? 1
+              : 0,
           description: data.description,
           password: data.password,
           ...(data.user === "" || data.user === null
@@ -534,7 +534,9 @@ const ExtensionsEdit = () => {
                     <div className="heading">
                       <div className="content">
                         <h4>Update Extension</h4>
-                        <p>An extension is a destinations that can be called.</p>
+                        <p>
+                          An extension is a destinations that can be called.
+                        </p>
                       </div>
                       <div className="buttonGroup">
                         <button
@@ -584,7 +586,14 @@ const ExtensionsEdit = () => {
                             aria-controls="nav-gen"
                             aria-selected="true"
                           >
-                            General
+                            General{" "}
+                            {(errors?.password?.message ||
+                              errors?.extension?.message) && (
+                              <i
+                                class="fa fa-exclamation-circle text-danger"
+                                aria-hidden="true"
+                              ></i>
+                            )}
                           </button>
                           <button
                             class="nav-link"
@@ -653,13 +662,18 @@ const ExtensionsEdit = () => {
                                   disabled
                                 />
                                 {errors.extension && (
-                                  <ErrorMessage text={errors.extension.message} />
+                                  <ErrorMessage
+                                    text={errors.extension.message}
+                                  />
                                 )}
                               </div>
                             </div>
                             <div className="formRow col-xl-3">
                               <div className="formLabel">
-                                <label htmlFor="">Password</label>
+                                <label htmlFor="">
+                                  Password{" "}
+                                  <span className="text-danger">*</span>
+                                </label>
                                 <label htmlFor="data" className="formItemDesc">
                                   Password length must be atleast 4 character
                                 </label>
@@ -675,7 +689,9 @@ const ExtensionsEdit = () => {
                                   })}
                                 />
                                 {errors.password && (
-                                  <ErrorMessage text={errors.password.message} />
+                                  <ErrorMessage
+                                    text={errors.password.message}
+                                  />
                                 )}
                               </div>
                             </div>
@@ -734,35 +750,36 @@ const ExtensionsEdit = () => {
                               </div>
                             </div>
 
-                            <div className="formRow col-xl-3">
-                              <div className="formLabel">
-                                <label htmlFor="">Account Code</label>
-                                <label htmlFor="data" className="formItemDesc">
-                                  Enter the account code here.
-                                </label>
-                              </div>
-                              <div className="col-xl-6 col-12">
-                                <input
-                                  type="text"
-                                  name="extension"
-                                  className="formItem"
-                                  {...register("account_code", {
-                                    ...noSpecialCharactersValidator,
-                                  })}
-                                  onKeyDown={restrictToAllowedChars}
-                                />
-                                {errors.account_code && (
-                                  <ErrorMessage
-                                    text={errors.account_code.message}
-                                  />
-                                )}
-                              </div>
+                            {/* <div className="formRow col-xl-3">
+                            <div className="formLabel">
+                              <label htmlFor="">Account Code</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Enter the account code here.
+                              </label>
                             </div>
+                            <div className="col-xl-6 col-12">
+                              <input
+                                type="text"
+                                name="extension"
+                                className="formItem"
+                                {...register("account_code", {
+                                  ...noSpecialCharactersValidator,
+                                })}
+                                onKeyDown={restrictToAllowedChars}
+                              />
+                              {errors.account_code && (
+                                <ErrorMessage
+                                  text={errors.account_code.message}
+                                />
+                              )}
+                            </div>
+                          </div> */}
                             <div className="formRow col-xl-3">
                               <div className="formLabel">
                                 <label htmlFor="">Effective Caller ID</label>
                                 <label htmlFor="data" className="formItemDesc">
-                                  Enter the internal caller ID name & number here.
+                                  Enter the internal caller ID name & number
+                                  here.
                                 </label>
                               </div>
                               <div className="col-xl-6 col-12">
@@ -845,11 +862,12 @@ const ExtensionsEdit = () => {
                                   className="formItem"
                                   name=""
                                   id="selectFormRow"
-                                  {...register("record", {})}
+                                  {...register("record")}
+                                  defaultValue={"D"}
                                 >
-                                  <option value="" disabled>
-                                    Select Type
-                                  </option>
+                                  {/* <option value="" disabled>
+                                  Select Type
+                                </option> */}
                                   <option value="D">Disabled</option>
                                   <option value="A">All</option>
                                   <option value="L">Local</option>
@@ -957,7 +975,9 @@ const ExtensionsEdit = () => {
                     </div> */}
                             <div className="formRow col-xl-3">
                               <div className="formLabel">
-                                <label htmlFor="selectFormRow">Description</label>
+                                <label htmlFor="selectFormRow">
+                                  Description
+                                </label>
                                 <label htmlFor="data" className="formItemDesc">
                                   Enter the description.
                                 </label>
@@ -1002,7 +1022,9 @@ const ExtensionsEdit = () => {
                                     />
                                     {errors.outbundCallerIdName && (
                                       <ErrorMessage
-                                        text={errors.outbundCallerIdName.message}
+                                        text={
+                                          errors.outbundCallerIdName.message
+                                        }
                                       />
                                     )}
                                   </div>
@@ -1040,7 +1062,10 @@ const ExtensionsEdit = () => {
                           <form className="row col-12 mx-auto">
                             <div className="formRow col-xl-3">
                               <div className="formLabel">
-                                <label htmlFor="">Voicemail Password</label>
+                                <label htmlFor="">
+                                  Voicemail Password{" "}
+                                  <span className="text-danger">*</span>
+                                </label>
                                 <label htmlFor="data" className="formItemDesc">
                                   Enter the numeric voicemail password here.
                                 </label>
@@ -1077,6 +1102,7 @@ const ExtensionsEdit = () => {
                                   name=""
                                   id="selectFormRow"
                                   {...register("voicemailEnabled", {})}
+                                  defaultValue={"N"}
                                 >
                                   <option value="" disabled>
                                     Select Voicemail
@@ -1170,7 +1196,8 @@ const ExtensionsEdit = () => {
                                   className="formItem"
                                   name=""
                                   id="selectFormRow"
-                                  {...register("voiceMailkeepFile", {})}
+                                  {...register("voiceMailkeepFile")}
+                                  defaultValue={"false"}
                                 >
                                   <option value="" disabled>
                                     Select User
@@ -1245,7 +1272,8 @@ const ExtensionsEdit = () => {
                               <div className="formLabel">
                                 <label htmlFor="">Directory Full Name</label>
                                 <label htmlFor="data" className="formItemDesc">
-                                  Enter the first name followed by the last name.
+                                  Enter the first name followed by the last
+                                  name.
                                 </label>
                               </div>
                               <div className="col-xl-6 col-12">
@@ -1280,7 +1308,8 @@ const ExtensionsEdit = () => {
                                   className="formItem"
                                   name=""
                                   id="selectFormRow"
-                                  {...register("directoryExtensionVisible", {})}
+                                  {...register("directoryExtensionVisible")}
+                                  defaultValue={"false"}
                                 >
                                   <option value="" disabled>
                                     Select Visibility
@@ -1328,8 +1357,8 @@ const ExtensionsEdit = () => {
                               <div className="formLabel">
                                 <label htmlFor="selectFormRow">Limit Max</label>
                                 <label htmlFor="data" className="formItemDesc">
-                                  Enter the maximum number of concurrent outbound
-                                  calls allowed.
+                                  Enter the maximum number of concurrent
+                                  outbound calls allowed.
                                 </label>
                               </div>
                               <div className="col-xl-6 col-12">
@@ -1343,7 +1372,9 @@ const ExtensionsEdit = () => {
                                   onKeyDown={restrictToNumbers}
                                 />
                                 {errors.limitMax && (
-                                  <ErrorMessage text={errors.limitMax.message} />
+                                  <ErrorMessage
+                                    text={errors.limitMax.message}
+                                  />
                                 )}
                               </div>
                             </div>
@@ -1353,8 +1384,9 @@ const ExtensionsEdit = () => {
                                   Limit Destination
                                 </label>
                                 <label htmlFor="data" className="formItemDesc">
-                                  Enter the destination to send the calls when the
-                                  max number of outgoing calls has been reached.
+                                  Enter the destination to send the calls when
+                                  the max number of outgoing calls has been
+                                  reached.
                                 </label>
                               </div>
                               <div className="col-xl-6 col-12">
@@ -1371,7 +1403,9 @@ const ExtensionsEdit = () => {
                             </div>
                             <div className="formRow col-xl-3">
                               <div className="formLabel">
-                                <label htmlFor="selectFormRow">Missed Call</label>
+                                <label htmlFor="selectFormRow">
+                                  Missed Call
+                                </label>
                                 <label htmlFor="data" className="formItemDesc">
                                   Select the notification type, and enter the
                                   appropriate destination.
@@ -1382,7 +1416,8 @@ const ExtensionsEdit = () => {
                                   className="formItem"
                                   name=""
                                   id="selectFormRow"
-                                  {...register("missedCall", {})}
+                                  {...register("missedCall")}
+                                  defaultValue={"none"}
                                 >
                                   <option value="" disabled>
                                     Select Notification Type
@@ -1399,7 +1434,9 @@ const ExtensionsEdit = () => {
                             </div>
                             <div className="formRow col-xl-3">
                               <div className="formLabel">
-                                <label htmlFor="selectFormRow">Toll Allow</label>
+                                <label htmlFor="selectFormRow">
+                                  Toll Allow
+                                </label>
                                 <label htmlFor="data" className="formItemDesc">
                                   Enter the toll allow value here. (Examples:
                                   domestic,international,local).
@@ -1444,57 +1481,58 @@ const ExtensionsEdit = () => {
                                 />
                               </div>
                             </div>
-                            <div className="formRow col-xl-3">
-                              <div className="formLabel">
-                                <label htmlFor="selectFormRow">Call Group</label>
-                                <label htmlFor="data" className="formItemDesc">
-                                  Enter the user call group here. Groups available
-                                  by default: sales, support, billing.
-                                </label>
-                              </div>
-                              <div className="col-xl-6 col-12">
-                                <input
-                                  type="text"
-                                  name="extension"
-                                  className="formItem"
-                                  {...register("callgroup", {
-                                    ...noSpecialCharactersValidator,
-                                  })}
-                                  onKeyDown={restrictToAllowedChars}
+                            {/* <div className="formRow col-xl-3">
+                            <div className="formLabel">
+                              <label htmlFor="selectFormRow">Call Group</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Enter the user call group here. Groups available
+                                by default: sales, support, billing.
+                              </label>
+                            </div>
+                            <div className="col-xl-6 col-12">
+                              <input
+                                type="text"
+                                name="extension"
+                                className="formItem"
+                                {...register("callgroup", {
+                                  ...noSpecialCharactersValidator,
+                                })}
+                                onKeyDown={restrictToAllowedChars}
+                              />
+                              {errors.callgroup && (
+                                <ErrorMessage text={errors.callgroup.message} />
+                              )}
+                            </div>
+                          </div> */}
+                            {/* <div className="formRow col-xl-3">
+                            <div className="formLabel">
+                              <label htmlFor="selectFormRow">Call Screen</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Choose whether to enable or disable call
+                                screening.
+                              </label>
+                            </div>
+                            <div className="col-xl-6 col-12">
+                              <select
+                                className="formItem"
+                                name=""
+                                id="selectFormRow"
+                                {...register("callScreen")}
+                                defaultValue={"Disable"}
+                              >
+                                <option value="" disabled>
+                                  Select Notification Type
+                                </option>
+                                <option value="Enable">Enable</option>
+                                <option value="Disable">Disable</option>
+                              </select>
+                              {errors.callScreen && (
+                                <ErrorMessage
+                                  text={errors.callScreen.message}
                                 />
-                                {errors.callgroup && (
-                                  <ErrorMessage text={errors.callgroup.message} />
-                                )}
-                              </div>
+                              )}
                             </div>
-                            <div className="formRow col-xl-3">
-                              <div className="formLabel">
-                                <label htmlFor="selectFormRow">Call Screen</label>
-                                <label htmlFor="data" className="formItemDesc">
-                                  Choose whether to enable or disable call
-                                  screening.
-                                </label>
-                              </div>
-                              <div className="col-xl-6 col-12">
-                                <select
-                                  className="formItem"
-                                  name=""
-                                  id="selectFormRow"
-                                  {...register("callScreen", {})}
-                                >
-                                  <option value="" disabled>
-                                    Select Notification Type
-                                  </option>
-                                  <option value="Enable">Enable</option>
-                                  <option value="Disable">Disable</option>
-                                </select>
-                                {errors.callScreen && (
-                                  <ErrorMessage
-                                    text={errors.callScreen.message}
-                                  />
-                                )}
-                              </div>
-                            </div>
+                          </div> */}
                           </form>
                         </div>
                         <div
@@ -1515,7 +1553,10 @@ const ExtensionsEdit = () => {
                               <div className="formRow col-xl-3">
                                 <div className="formLabel">
                                   <label className="text-dark">On Busy</label>
-                                  <label htmlFor="data" className="formItemDesc">
+                                  <label
+                                    htmlFor="data"
+                                    className="formItemDesc"
+                                  >
                                     If enabled, it overrides the value of
                                     voicemail enabling in extension
                                   </label>
@@ -1543,6 +1584,7 @@ const ExtensionsEdit = () => {
                                     //   }));
                                     // }}
                                     {...register("onbusy")}
+                                    defaultValue={0}
                                   >
                                     <option value={1}>Enabled</option>
                                     <option value={0}>Disabled</option>
@@ -1576,7 +1618,10 @@ const ExtensionsEdit = () => {
                               <div className="formRow col-xl-3">
                                 <div className="formLabel">
                                   <label className="text-dark">No Answer</label>
-                                  <label htmlFor="data" className="formItemDesc">
+                                  <label
+                                    htmlFor="data"
+                                    className="formItemDesc"
+                                  >
                                     If enabled, it overrides the value of
                                     voicemail enabling in extension
                                   </label>
@@ -1604,6 +1649,7 @@ const ExtensionsEdit = () => {
                                     //   }));
                                     // }}
                                     {...register("noanswer")}
+                                    defaultValue={"Disabled"}
                                   >
                                     <option>Disabled</option>
                                     <option>Voicemail</option>
@@ -1683,9 +1729,12 @@ const ExtensionsEdit = () => {
                                   <label className="text-dark">
                                     Not Registered
                                   </label>
-                                  <label htmlFor="data" className="formItemDesc">
-                                    If endpoint is not reachable, forward to this
-                                    destination before going to voicemail
+                                  <label
+                                    htmlFor="data"
+                                    className="formItemDesc"
+                                  >
+                                    If endpoint is not reachable, forward to
+                                    this destination before going to voicemail
                                   </label>
                                 </div>
                                 <div
@@ -1763,7 +1812,10 @@ const ExtensionsEdit = () => {
                               <div className="formRow col-xl-3">
                                 <div className="formLabel">
                                   <label className="text-dark">Follow Me</label>
-                                  <label htmlFor="data" className="formItemDesc">
+                                  <label
+                                    htmlFor="data"
+                                    className="formItemDesc"
+                                  >
                                     Select and configure the Follow Me Status
                                   </label>
                                 </div>
@@ -1784,6 +1836,7 @@ const ExtensionsEdit = () => {
                                     //   }));
                                     // }}
                                     {...register("followme")}
+                                    defaultValue={0}
                                   >
                                     <option value={1}>Enabled</option>
                                     <option value={0}>Disabled</option>
@@ -1797,7 +1850,9 @@ const ExtensionsEdit = () => {
                                       <div className="formLabel">
                                         <label htmlFor="">Destinations</label>
                                         {callSetting.followMeDestinationError ? (
-                                          <ErrorMessage text={"Field missing"} />
+                                          <ErrorMessage
+                                            text={"Field missing"}
+                                          />
                                         ) : (
                                           ""
                                         )}
@@ -1807,11 +1862,14 @@ const ExtensionsEdit = () => {
                                           type="text"
                                           name="destination"
                                           className="formItem"
-                                          value={callSetting.followMeDestination}
+                                          value={
+                                            callSetting.followMeDestination
+                                          }
                                           onChange={(e) => {
                                             setCallSetting((prevState) => ({
                                               ...prevState,
-                                              followMeDestination: e.target.value,
+                                              followMeDestination:
+                                                e.target.value,
                                             }));
                                             if (e.target.value != "") {
                                               setCallSetting((prevState) => ({
@@ -1911,7 +1969,9 @@ const ExtensionsEdit = () => {
                                         id="selectFormRow"
                                         name="prompt"
                                       >
-                                        <option className="status">Prompt</option>
+                                        <option className="status">
+                                          Prompt
+                                        </option>
                                         <option value="confirm">Confirm</option>
                                       </select>
                                     </div>
@@ -1969,6 +2029,7 @@ const ExtensionsEdit = () => {
                                     //   }));
                                     // }}
                                     {...register("dnd")}
+                                    defaultValue={0}
                                   >
                                     <option value={1}>Enabled</option>
                                     <option value={0}>Disabled</option>
@@ -2431,7 +2492,6 @@ const ExtensionsEdit = () => {
               </div>
             </div>
           )}
-
         </div>
 
         {popUp ? (
@@ -2468,14 +2528,18 @@ const ExtensionsEdit = () => {
                       }}
                     >
                       <span className="text">Confirm</span>
-                      <span className="icon"><i className="fa-solid fa-check"></i></span>
+                      <span className="icon">
+                        <i className="fa-solid fa-check"></i>
+                      </span>
                     </button>
                     <button
                       className="panelButton gray m-0 float-end"
                       onClick={() => setPopUp(false)}
                     >
                       <span className="text">Cancel</span>
-                      <span className="icon"><i className="fa-solid fa-xmark"></i></span>
+                      <span className="icon">
+                        <i className="fa-solid fa-xmark"></i>
+                      </span>
                     </button>
                   </div>
                 </div>

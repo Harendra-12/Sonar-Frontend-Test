@@ -54,6 +54,7 @@ const RingGroupEdit = () => {
   const [user, setUser] = useState();
   const extension = useSelector((state) => state.extension);
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
+  const [timeoutDestPstnToggle, setTimeoutDestPstnToggle] = useState(false);
   const {
     register,
     watch,
@@ -577,12 +578,18 @@ const RingGroupEdit = () => {
           ) : (
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
-                <div className="d-flex flex-wrap" style={{ position: 'sticky', top: '0', zIndex: '9' }}>
+                <div
+                  className="d-flex flex-wrap"
+                  style={{ position: "sticky", top: "0", zIndex: "9" }}
+                >
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
                         <h4>Ring Group Edit</h4>
-                        <p>A ring group is a set of destinations that can be called with a ring strategy.</p>
+                        <p>
+                          A ring group is a set of destinations that can be
+                          called with a ring strategy.
+                        </p>
                       </div>
                       <div className="buttonGroup">
                         <div className="d-flex align-items-center">
@@ -611,7 +618,9 @@ const RingGroupEdit = () => {
                           className="panelButton gray"
                         >
                           <span className="text">Back</span>
-                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-caret-left"></i>
+                          </span>
                         </button>
                         <button
                           type="button"
@@ -620,17 +629,27 @@ const RingGroupEdit = () => {
                           onClick={handleFormSubmit}
                         >
                           <span className="text">Save</span>
-                          <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                          </span>
                         </button>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
+                <div
+                  className="col-12"
+                  style={{
+                    padding: "25px 23px",
+                    borderBottom: "1px solid #ddd",
+                  }}
+                >
                   <form className="row mb-0">
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="">Name</label>
+                        <label htmlFor="">
+                          Name <span className="text-danger">*</span>
+                        </label>
                         <label htmlFor="data" className="formItemDesc">
                           Enter a name.
                         </label>
@@ -647,7 +666,9 @@ const RingGroupEdit = () => {
                           })}
                           onKeyDown={restrictToAllowedChars}
                         />
-                        {errors.name && <ErrorMessage text={errors.name.message} />}
+                        {errors.name && (
+                          <ErrorMessage text={errors.name.message} />
+                        )}
                       </div>
                     </div>
                     <div className="formRow col-xl-3">
@@ -782,7 +803,7 @@ const RingGroupEdit = () => {
                   </label>
                 </div>
               </div> */}
-                    <div className="formRow col-xl-3">
+                    {/* <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Timeout Destination</label>
                         <label htmlFor="data" className="formItemDesc">
@@ -796,6 +817,64 @@ const RingGroupEdit = () => {
                           getDropdownValue={actionListValue}
                           value={watch().timeout_destination}
                         />
+                      </div>
+                    </div> */}
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label>Timeout Destination</label>
+                        <label className="formItemDesc">
+                          Select the timeout destination for this ring group.
+                        </label>
+                      </div>
+                      <div className="col-6">
+                        <div className="row">
+                          <div className="col-8">
+                            {timeoutDestPstnToggle ? (
+                              <input
+                                placeholder="PSTN"
+                                className=""
+                                {...register("timeout_destination", {
+                                  ...numberValidator,
+                                })}
+                              ></input>
+                            ) : (
+                              <ActionList
+                                title={null}
+                                label={null}
+                                getDropdownValue={actionListValue}
+                                value={watch().timeout_destination}
+                              />
+                            )}
+                          </div>
+                          <div className="col-4">
+                            {timeoutDestPstnToggle ? (
+                              <button
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  setTimeoutDestPstnToggle(false);
+                                  setValue("timeout_destination", "");
+                                }}
+                              >
+                                PSTN
+                              </button>
+                            ) : (
+                              <button
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  setTimeoutDestPstnToggle(true);
+                                  setValue("timeout_destination", "");
+                                }}
+                              >
+                                EXT
+                              </button>
+                            )}
+                          </div>
+                          {errors?.timeout_destination && (
+                            <ErrorMessage
+                              text={errors?.timeout_destination?.message}
+                            />
+                          )}
+                        </div>
                       </div>
                     </div>
                     <div className="formRow col-xl-3">
@@ -818,16 +897,16 @@ const RingGroupEdit = () => {
                               )),
                           })}
                           onKeyDown={restrictToNumbers}
-                        // {...register("call_timeout", {
-                        //   ...requiredValidator,
-                        //   ...noSpecialCharactersValidator,
-                        //   ...minValidator(
-                        //     destination.reduce(
-                        //       (max, obj) => Math.max(max, obj.delay),
-                        //       0
-                        //     )
-                        //   ),
-                        // })}
+                          // {...register("call_timeout", {
+                          //   ...requiredValidator,
+                          //   ...noSpecialCharactersValidator,
+                          //   ...minValidator(
+                          //     destination.reduce(
+                          //       (max, obj) => Math.max(max, obj.delay),
+                          //       0
+                          //     )
+                          //   ),
+                          // })}
                         />
                         {errors.call_timeout && (
                           <ErrorMessage text={errors.call_timeout.message} />
@@ -860,8 +939,8 @@ const RingGroupEdit = () => {
                       <div className="formLabel">
                         <label htmlFor="selectFormRow">Ring Back</label>
                         <label htmlFor="data" className="formItemDesc">
-                          Defines what the caller will hear while the destination is
-                          being called.
+                          Defines what the caller will hear while the
+                          destination is being called.
                         </label>
                       </div>
                       <div className="col-6">
@@ -874,6 +953,7 @@ const RingGroupEdit = () => {
                               navigate("/voice-music");
                             }
                           }}
+                          defaultValue={"null"}
                         >
                           <option value="null">None</option>
                           {/* <option>us-ring</option>
@@ -1104,6 +1184,7 @@ const RingGroupEdit = () => {
                           {...register("recording_enabled")}
                           id="selectFormRow"
                           name="recording_enabled"
+                          defaultValue={"false"}
                         >
                           <option className="status" value="true">
                             True
@@ -1137,7 +1218,7 @@ const RingGroupEdit = () => {
               </div> */}
                   </form>
                 </div>
-                <div className="col-12" style={{ padding: '20px 23px' }}>
+                <div className="col-12" style={{ padding: "20px 23px" }}>
                   <form className="row">
                     <div className="formRow col-xl-12">
                       {destination.map((item, index) => {
@@ -1156,7 +1237,10 @@ const RingGroupEdit = () => {
                             <div className="col-3 pe-2">
                               {index === 0 ? (
                                 <div className="formLabel">
-                                  <label htmlFor="">Destinations</label>
+                                  <label htmlFor="">
+                                    Destinations{" "}
+                                    <span className="text-danger">*</span>
+                                  </label>
                                 </div>
                               ) : (
                                 ""
@@ -1240,11 +1324,14 @@ const RingGroupEdit = () => {
                                       .filter((item1) => {
                                         return (
                                           item1.extension.extension ==
-                                          destination[index]?.destination ||
+                                            destination[index]?.destination ||
                                           !destination.some(
-                                            (destinationItem, destinationIndex) =>
+                                            (
+                                              destinationItem,
+                                              destinationIndex
+                                            ) =>
                                               destinationItem.destination ==
-                                              item1.extension.extension &&
+                                                item1.extension.extension &&
                                               destinationIndex != index
                                           )
                                         );
@@ -1315,7 +1402,9 @@ const RingGroupEdit = () => {
                                 style={{ width: "100%" }}
                                 name="timeOut"
                                 value={item.timeOut}
-                                onChange={(e) => handleDestinationChange(index, e)}
+                                onChange={(e) =>
+                                  handleDestinationChange(index, e)
+                                }
                                 id="selectFormRow"
                               >
                                 <option>Timeout</option>
@@ -1364,7 +1453,9 @@ const RingGroupEdit = () => {
                                 className="formItem me-0"
                                 style={{ width: "100%" }}
                                 value={item.status}
-                                onChange={(e) => handleDestinationChange(index, e)}
+                                onChange={(e) =>
+                                  handleDestinationChange(index, e)
+                                }
                                 id="selectFormRow"
                                 name="status"
                               >
@@ -1377,7 +1468,11 @@ const RingGroupEdit = () => {
                             {destination.length === 1 ? (
                               ""
                             ) : (
-                              <div className={`col-auto h-100 m${index === 0 ? "t" : "y"}-auto`}>
+                              <div
+                                className={`col-auto h-100 m${
+                                  index === 0 ? "t" : "y"
+                                }-auto`}
+                              >
                                 <button
                                   type="button"
                                   onClick={() => deleteDestination(item.id)}
@@ -1396,7 +1491,9 @@ const RingGroupEdit = () => {
                                   type="button"
                                 >
                                   <span className="text">Add</span>
-                                  <span className="icon"><i class="fa-solid fa-plus"></i></span>
+                                  <span className="icon">
+                                    <i class="fa-solid fa-plus"></i>
+                                  </span>
                                 </button>
                               </div>
                             ) : (
