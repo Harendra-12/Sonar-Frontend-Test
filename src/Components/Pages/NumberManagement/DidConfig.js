@@ -23,6 +23,7 @@ import { useSelector } from "react-redux";
 import CircularLoader from "../../Loader/CircularLoader";
 import Tippy from "@tippyjs/react";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
+import AddMusic from "../../CommonComponents/AddMusic";
 
 const DidConfig = () => {
   const navigate = useNavigate();
@@ -32,6 +33,9 @@ const DidConfig = () => {
   const account = useSelector((state) => state.account);
   const [holdMusic, setHoldMusic] = useState();
   const [loading, setLoading] = useState(true);
+  const [showMusic, setShowMusic] = useState(false);
+  const [uploadedMusic, setUploadedMusic] = useState();
+  const [musicRefresh, setMusicRefresh] = useState(0);
   const {
     register,
     setError: setErr,
@@ -97,10 +101,15 @@ const DidConfig = () => {
   useEffect(() => {
     if (account && account.id) {
       async function getData() {
+        setLoading(true);
         const holdMusic = await generalGetFunction("/sound/all?type=hold");
         setLoading(false);
         if (holdMusic?.status) {
           setHoldMusic(holdMusic.data);
+          if (holdMusic.data.length > 0 && uploadedMusic) {
+            console.log(holdMusic.data, uploadedMusic);
+            setValue("hold_music", uploadedMusic.id);
+          }
         } else {
           navigate("/");
         }
@@ -110,8 +119,8 @@ const DidConfig = () => {
       setLoading(false);
       navigate("/");
     }
-  }, [navigate, account]);
-
+  }, [navigate, account, musicRefresh]);
+  console.log(watch());
   useEffect(() => {
     if (locationData) {
       setValue("did_id_view", locationData.did || "");
@@ -210,6 +219,11 @@ const DidConfig = () => {
       }
     }
   });
+
+  const handleAddMusic = () => {
+    setValue("hold_music", "");
+    setShowMusic(true);
+  };
   console.log(watch());
   return (
     <>
@@ -594,7 +608,14 @@ const DidConfig = () => {
                               name=""
                               id="selectFormRow"
                               {...register("hold_music")}
-                              value={watch().hold_music}
+                              // value={watch().hold_music}
+
+                              onChange={(e) => {
+                                const selectedValue = e.target.value;
+                                if (selectedValue === "add-music") {
+                                  handleAddMusic(); // Call your function here
+                                }
+                              }}
                             >
                               <option value="default">default</option>
                               {holdMusic &&
@@ -605,6 +626,13 @@ const DidConfig = () => {
                                     </option>
                                   );
                                 })}
+                              <option
+                                className="bg-primary text-center text-white"
+                                style={{ cursor: "pointer" }}
+                                value="add-music"
+                              >
+                                Add music
+                              </option>
                             </select>
                           </div>
                         </div>
@@ -868,6 +896,16 @@ const DidConfig = () => {
           </div>
         </section>
       </main>
+      {showMusic && (
+        <AddMusic
+          show={showMusic}
+          setShow={setShowMusic}
+          setUploadedMusic={setUploadedMusic}
+          setMusicRefresh={setMusicRefresh}
+          musicRefresh={musicRefresh}
+          listArray={["hold"]}
+        />
+      )}
     </>
   );
 };
