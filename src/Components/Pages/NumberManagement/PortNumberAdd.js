@@ -112,7 +112,9 @@ function PortNumberAdd() {
                           }}
                         >
                           <span className="text">Back</span>
-                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-caret-left"></i>
+                          </span>
                         </button>
                         <button
                           effect="ripple"
@@ -120,16 +122,23 @@ function PortNumberAdd() {
                           onClick={handleFormSubmit}
                         >
                           <span className="text">Save</span>
-                          <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                          </span>
                         </button>
                       </div>
                     </div>
                   </div>
-                  <div className="col-12 formScroller" style={{ padding: '25px 23px' }}>
+                  <div
+                    className="col-12 formScroller"
+                    style={{ padding: "25px 23px" }}
+                  >
                     <form action="#" className="row">
                       <div className="formRow col-xl-3">
                         <div className="formLabel">
-                          <label className="text-dark">Full Name</label>
+                          <label className="text-dark">
+                            Full Name <span className="text-danger">*</span>
+                          </label>
                           <label
                             htmlFor="data"
                             className="formItemDesc"
@@ -160,7 +169,9 @@ function PortNumberAdd() {
                       </div>
                       <div className="formRow col-xl-3">
                         <div className="formLabel">
-                          <label className="text-dark">Company Name</label>
+                          <label className="text-dark">
+                            Company Name <span className="text-danger">*</span>
+                          </label>
                           <label htmlFor="data" className="formItemDesc">
                             The company to whom the number is registered.
                           </label>
@@ -183,7 +194,10 @@ function PortNumberAdd() {
                       </div>
                       <div className="formRow col-xl-3">
                         <div className="formLabel">
-                          <label className="text-dark">Billing Address</label>
+                          <label className="text-dark">
+                            Billing Address{" "}
+                            <span className="text-danger">*</span>
+                          </label>
                           <label
                             htmlFor="data"
                             className="formItemDesc"
@@ -207,13 +221,18 @@ function PortNumberAdd() {
                             onKeyDown={restrictToAllowedChars}
                           />
                           {errors.billing_address && (
-                            <ErrorMessage text={errors.billing_address.message} />
+                            <ErrorMessage
+                              text={errors.billing_address.message}
+                            />
                           )}
                         </div>
                       </div>
                       <div className="formRow col-xl-3">
                         <div className="formLabel">
-                          <label className="text-dark">PIN or Password</label>
+                          <label className="text-dark">
+                            PIN or Password{" "}
+                            <span className="text-danger">*</span>
+                          </label>
                           <br />
                           <label htmlFor="data" className="formItemDesc">
                             Some carriers require a PIN for porting.
@@ -228,12 +247,16 @@ function PortNumberAdd() {
                               ...requiredValidator,
                             })}
                           />
-                          {errors.pin && <ErrorMessage text={errors.pin.message} />}
+                          {errors.pin && (
+                            <ErrorMessage text={errors.pin.message} />
+                          )}
                         </div>
                       </div>
                       <div className="formRow col-xl-3">
                         <div className="formLabel">
-                          <label className="text-dark">Carrier</label>
+                          <label className="text-dark">
+                            Carrier <span className="text-danger">*</span>
+                          </label>
                           <label htmlFor="data" className="formItemDesc">
                             The current vendor/carrier of the number.
                           </label>
@@ -256,10 +279,13 @@ function PortNumberAdd() {
                       </div>
                       <div className="formRow col-xl-3">
                         <div className="formLabel">
-                          <label className="text-dark">Account Number</label>
+                          <label className="text-dark">
+                            Account Number{" "}
+                            <span className="text-danger">*</span>
+                          </label>
                           <label htmlFor="data" className="formItemDesc">
-                            Account Number with Current Provider. This can often be
-                            found on
+                            Account Number with Current Provider. This can often
+                            be found on
                           </label>
                         </div>
                         <div className="col-6">
@@ -274,13 +300,17 @@ function PortNumberAdd() {
                             onKeyDown={restrictToNumbers}
                           />
                           {errors.account_number && (
-                            <ErrorMessage text={errors.account_number.message} />
+                            <ErrorMessage
+                              text={errors.account_number.message}
+                            />
                           )}
                         </div>
                       </div>
                       <div className="formRow col-xl-3">
                         <div className="formLabel pe-2 col-2">
-                          <label className="text-dark">Phone Number</label>
+                          <label className="text-dark">
+                            Phone Number <span className="text-danger">*</span>
+                          </label>
                           <label htmlFor="data" className="formItemDesc">
                             The number(s) that need to be ported.
                           </label>
@@ -316,8 +346,6 @@ function PortNumberAdd() {
                 </div>
               </div>
             </div>
-
-
           </div>
         </section>
       </main>

@@ -133,7 +133,9 @@ function IvrEdit() {
                           className="panelButton gray"
                         >
                           <span className="text">Back</span>
-                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-caret-left"></i>
+                          </span>
                         </button>
                         <button
                           effect="ripple"
@@ -141,17 +143,27 @@ function IvrEdit() {
                           onClick={handleFormSubmit}
                         >
                           <span className="text">Save</span>
-                          <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                          </span>
                         </button>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="col-12 formScroller" style={{ padding: '25px 23px' }}>
+                <div
+                  className="col-12 formScroller"
+                  style={{
+                    padding: "25px 23px",
+                    borderBottom: "1px solid #ddd",
+                  }}
+                >
                   <form action="#" className="row">
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="">Name</label>
+                        <label htmlFor="">
+                          Name <span className="text-danger">*</span>
+                        </label>
                       </div>
                       <div className="col-6">
                         <input
@@ -172,7 +184,7 @@ function IvrEdit() {
 
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="">Type</label>
+                        <label htmlFor="">Type </label>
                         <label htmlFor="mail_host" className="formItemDesc">
                           Select the type of IVR
                         </label>
@@ -192,7 +204,9 @@ function IvrEdit() {
 
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="">Greet Sound </label>
+                        <label htmlFor="">
+                          Greet Sound <span className="text-danger">*</span>
+                        </label>
                         <label htmlFor="mail_host" className="formItemDesc">
                           Upload a greet when entering the menu.
                         </label>
@@ -203,10 +217,15 @@ function IvrEdit() {
                           {...register("greet_long", {
                             ...requiredValidator,
                           })}
+                          defaultValue={""}
                         >
-                          <option value="">Select greet sound</option>
+                          <option disabled value="">
+                            Select greet sound
+                          </option>
                           {ivrMusic?.map((item) => {
-                            return <option value={item?.id}>{item?.name}</option>;
+                            return (
+                              <option value={item?.id}>{item?.name}</option>
+                            );
                           })}
                         </select>
                         {errors.greet_long && (
@@ -216,7 +235,9 @@ function IvrEdit() {
                     </div>
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="">Invalid Sound</label>
+                        <label htmlFor="">
+                          Invalid Sound <span className="text-danger">*</span>
+                        </label>
                         <label htmlFor="mail_host" className="formItemDesc">
                           Upload an invalid sound.
                         </label>
@@ -227,10 +248,15 @@ function IvrEdit() {
                           {...register("invalid_sound", {
                             ...requiredValidator,
                           })}
+                          defaultValue={""}
                         >
-                          <option value="">Select invalid sound</option>
+                          <option disabled value="">
+                            Select invalid sound
+                          </option>
                           {ivrMusic?.map((item) => {
-                            return <option value={item?.id}>{item?.name}</option>;
+                            return (
+                              <option value={item?.id}>{item?.name}</option>
+                            );
                           })}
                         </select>
                         {errors.invalid_sound && (
@@ -241,9 +267,12 @@ function IvrEdit() {
 
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="">Exit Sound</label>
+                        <label htmlFor="">
+                          Exit Sound <span className="text-danger">*</span>
+                        </label>
                         <label htmlFor="mail_host" className="formItemDesc">
-                          Select the exit action to be performed if the ivr exists.
+                          Select the exit action to be performed if the ivr
+                          exists.
                         </label>
                       </div>
                       <div className="col-6">
@@ -252,10 +281,15 @@ function IvrEdit() {
                           {...register("exit_sound", {
                             ...requiredValidator,
                           })}
+                          defaultValue={""}
                         >
-                          <option value="">Select Exit Sound</option>
+                          <option value="" disabled>
+                            Select Exit Sound
+                          </option>
                           {ivrMusic?.map((item) => {
-                            return <option value={item?.id}>{item?.name}</option>;
+                            return (
+                              <option value={item?.id}>{item?.name}</option>
+                            );
                           })}
                         </select>
                         {errors.exit_sound && (
@@ -287,7 +321,10 @@ function IvrEdit() {
 
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
-                        <label htmlFor="">Confirm Attempts</label>
+                        <label htmlFor="">
+                          Confirm Attempts{" "}
+                          <span className="text-danger">*</span>
+                        </label>
                         <label htmlFor="mail_port" className="formItemDesc">
                           Enter number of confirm attempts
                         </label>
@@ -313,7 +350,9 @@ function IvrEdit() {
                           <option value="9">9</option>
                         </select>
                         {errors.confirm_attempts && (
-                          <ErrorMessage text={errors.confirm_attempts.message} />
+                          <ErrorMessage
+                            text={errors.confirm_attempts.message}
+                          />
                         )}
                       </div>
                     </div>
@@ -322,8 +361,8 @@ function IvrEdit() {
                       <div className="formLabel">
                         <label htmlFor="">Timeout</label>
                         <label htmlFor="mail_port" className="formItemDesc">
-                          Enter the number of miliseconds to wait after playing the
-                          greeting or the confirm macro.
+                          Enter the number of miliseconds to wait after playing
+                          the greeting or the confirm macro.
                         </label>
                       </div>
                       <div className="col-6">
@@ -369,8 +408,8 @@ function IvrEdit() {
                       <div className="formLabel">
                         <label htmlFor="">Inter Digit Timeout</label>
                         <label htmlFor="mail_port" className="formItemDesc">
-                          This is the time in milliseconds to wait before playing the
-                          prompt again if no input is received.
+                          This is the time in milliseconds to wait before
+                          playing the prompt again if no input is received.
                         </label>
                       </div>
                       <div className="col-6">
@@ -428,7 +467,9 @@ function IvrEdit() {
                       ...noSpecialCharactersValidator,
                     })}
                   /> */}
-                        {errors.min_digit && <ErrorMessage text={errors.min_digit} />}
+                        {errors.min_digit && (
+                          <ErrorMessage text={errors.min_digit} />
+                        )}
                       </div>
                     </div>
 
@@ -470,7 +511,9 @@ function IvrEdit() {
                       ...noSpecialCharactersValidator,
                     })}
                   /> */}
-                        {errors.max_digit && <ErrorMessage text={errors.max_digit} />}
+                        {errors.max_digit && (
+                          <ErrorMessage text={errors.max_digit} />
+                        )}
                       </div>
                     </div>
                   </form>

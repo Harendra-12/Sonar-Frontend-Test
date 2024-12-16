@@ -1,12 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import { useSessionCall, useSIPProvider } from "react-sipjs";
+import { useEffect, useState } from "react";
+import {useSIPProvider } from "react-sipjs";
 import MediaPermissions from "./MediaPermissions ";
 import AutoAnswer from "./AutoAnswer";
 import { generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import ContentLoader from "../../Loader/ContentLoader";
 import ConferenceVideo from "./ConferenceVideo";
 import ConferenceLoader from "../../Loader/ConferenceLoader";
 import ConferenceMessages from "./ConferenceMessages";
@@ -17,12 +16,10 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage, act
   const { connectStatus, registerStatus } = useSIPProvider();
   const [sipRegisterErrror, setSipRegisterError] = useState(false);
   const dummySession = useSelector((state) => state.dummySession);
-  const conference = useSelector((state) => state.conference);
   const conferenceRawData = useSelector((state) => state.conference)
   const [conferenceData,setConferenceData] = useState([])
   const [loading, setLoading] = useState(true);
   const [confList, setConfList] = useState([])
-  const [videoCallToggle, setVideoCallToggle] = useState(false);
   const [toggleMessages, setToggleMessages] = useState(false);
   const [participantMiniview, setParticipantMiniview] = useState(true);
   const [participantList, setParticipantList] = useState(false);

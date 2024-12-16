@@ -225,6 +225,17 @@ function IncomingCallPopup({
     }
   };
 
+  // Handle auto answer for intercept, barge and merge calls
+  useEffect(() => {
+    if(session.incomingInviteRequest){
+      if(session?.incomingInviteRequest?.message?.headers?.["X-Call-Type"]?.[0]?.["raw"]==="auto_answered"){
+        handleAnswerCall("audio")
+      }
+    }
+  },[session])
+  console.log("Sessionasasasa", session);
+  
+
   return (
     <>
       {lastIncomingCall && !isMinimized ? (
