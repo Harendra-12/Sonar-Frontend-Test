@@ -28,31 +28,32 @@ function ActiveCallSidePanel({
   const [playMusic, setPlayMusic] = useState(false);
   //Keep track for previous call progress Id
   const [prevCallProgressId, setPrevCallProgressId] = useState(callProgressId);
-  useEffect(() => {
-    const audioElement = audioRef.current;
-    if (playMusic && audioElement) {
-      audioElement.src = connectMusic; // Set the audio source
-      audioElement.loop = false; // Ensure looping is disabled
-      setTimeout(() => {
-        audioElement.play().catch((error) => {
-          console.error("Error playing the audio:", error);
-        });
-      }, 2000); // Play after 2 seconds
-    } else if (!playMusic && audioElement) {
-      audioElement.pause();
-      audioElement.currentTime = 0; // Reset to the start
-      audioElement.src = ""; // Clear the source for extra safety
-    }
+  
+  // useEffect(() => {
+  //   const audioElement = audioRef.current;
+  //   if (playMusic && audioElement) {
+  //     audioElement.src = connectMusic; // Set the audio source
+  //     audioElement.loop = false; // Ensure looping is disabled
+  //     setTimeout(() => {
+  //       audioElement.play().catch((error) => {
+  //         console.error("Error playing the audio:", error);
+  //       });
+  //     }, 2000); // Play after 2 seconds
+  //   } else if (!playMusic && audioElement) {
+  //     audioElement.pause();
+  //     audioElement.currentTime = 0; // Reset to the start
+  //     audioElement.src = ""; // Clear the source for extra safety
+  //   }
 
-    // Cleanup when component unmounts
-    return () => {
-      if (audioElement) {
-        audioElement.pause();
-        audioElement.currentTime = 0;
-        audioElement.src = ""; // Clear source to avoid dangling audio
-      }
-    };
-  }, [playMusic, connectMusic]); // Dependencies: playMusic, connectMusic
+  //   // Cleanup when component unmounts
+  //   return () => {
+  //     if (audioElement) {
+  //       audioElement.pause();
+  //       audioElement.currentTime = 0;
+  //       audioElement.src = ""; // Clear source to avoid dangling audio
+  //     }
+  //   };
+  // }, [playMusic, connectMusic]); // Dependencies: playMusic, connectMusic
 
   useEffect(() => {
     if (session?._state === "Establishing") {

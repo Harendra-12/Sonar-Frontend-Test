@@ -851,7 +851,26 @@ const RingGroupEdit = () => {
                       </div>
                       <div className="col-6">
                         <div className="row">
-                          <div className="col-8 pe-2">
+                          <div className="col-5">
+                            <select
+                              className="formItem"
+                              onChange={(e) => {
+                                if (e.target.value == "extension") {
+                                  setTimeoutDestPstnToggle(false);
+                                  setValue("timeout_destination", "");
+                                } else if (e.target.value == "pstn") {
+                                  setTimeoutDestPstnToggle(true);
+                                  setValue("timeout_destination", "");
+                                }
+                              }}
+                              id="selectFormRow"
+                              defaultValue={"extension"}
+                            >
+                              <option value="extension">Extension</option>
+                              <option value="pstn">PSTN</option>
+                            </select>
+                          </div>
+                          <div className="col-7">
                             {timeoutDestPstnToggle ? (
                               <input
                                 placeholder="PSTN"
@@ -867,31 +886,6 @@ const RingGroupEdit = () => {
                                 getDropdownValue={actionListValue}
                                 value={watch().timeout_destination}
                               />
-                            )}
-                          </div>
-                          <div className="col-4 ps-2">
-                            {timeoutDestPstnToggle ? (
-                              <button
-                                className="panelButton static"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  setTimeoutDestPstnToggle(false);
-                                  setValue("timeout_destination", "");
-                                }}
-                              >
-                                <span className="text">PSTN</span>
-                              </button>
-                            ) : (
-                              <button
-                                className="panelButton static"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  setTimeoutDestPstnToggle(true);
-                                  setValue("timeout_destination", "");
-                                }}
-                              >
-                                <span className="text">EXT</span>
-                              </button>
                             )}
                           </div>
                           {errors?.timeout_destination && (

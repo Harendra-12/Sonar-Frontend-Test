@@ -19,7 +19,7 @@ import {
   usagesValidator,
 } from "../../validations/validation";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CircularLoader from "../../Loader/CircularLoader";
 import Tippy from "@tippyjs/react";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
@@ -27,10 +27,12 @@ import AddMusic from "../../CommonComponents/AddMusic";
 
 const DidConfig = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const location = useLocation();
   const locationData = location.state;
   // const [dataAvailable, setDataAvailable] = useState(true);
   const account = useSelector((state) => state.account);
+  const newAddDid = useSelector((state) => state.newAddDid);
   const [holdMusic, setHoldMusic] = useState();
   const [loading, setLoading] = useState(true);
   const [showMusic, setShowMusic] = useState(false);
@@ -224,7 +226,16 @@ const DidConfig = () => {
     setValue("hold_music", "");
     setShowMusic(true);
   };
-  console.log(watch());
+
+  useEffect(() => {
+    if (newAddDid) {
+      dispatch({
+        type: "SET_NEWADDDID",
+        newAddDid: null,
+      });
+    }
+  }, [newAddDid]);
+
   return (
     <>
       <main className="mainContent">

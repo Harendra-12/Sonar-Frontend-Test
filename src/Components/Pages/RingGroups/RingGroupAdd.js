@@ -756,11 +756,30 @@ const RingGroupAdd = () => {
                       </div>
                       <div className="col-6">
                         <div className="row">
-                          <div className="col-8">
+                          <div className="col-5">
+                            <select
+                              className="formItem"
+                              onChange={(e) => {
+                                if (e.target.value == "extension") {
+                                  setTimeoutDestPstnToggle(false);
+                                  setValue("timeout_destination", "");
+                                } else if (e.target.value == "pstn") {
+                                  setTimeoutDestPstnToggle(true);
+                                  setValue("timeout_destination", "");
+                                }
+                              }}
+                              id="selectFormRow"
+                              defaultValue={"extension"}
+                            >
+                              <option value="extension">Extension</option>
+                              <option value="pstn">PSTN</option>
+                            </select>
+                          </div>
+                          <div className="col-7">
                             {timeoutDestPstnToggle ? (
                               <input
                                 placeholder="PSTN"
-                                className=""
+                                className="formItem"
                                 {...register("timeout_destination", {
                                   ...numberValidator,
                                 })}
@@ -774,29 +793,7 @@ const RingGroupAdd = () => {
                               />
                             )}
                           </div>
-                          <div className="col-4">
-                            {timeoutDestPstnToggle ? (
-                              <button
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  setTimeoutDestPstnToggle(false);
-                                  setValue("timeout_destination", "");
-                                }}
-                              >
-                                PSTN
-                              </button>
-                            ) : (
-                              <button
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  setTimeoutDestPstnToggle(true);
-                                  setValue("timeout_destination", "");
-                                }}
-                              >
-                                EXT
-                              </button>
-                            )}
-                          </div>
+
                           {errors?.timeout_destination && (
                             <ErrorMessage
                               text={errors?.timeout_destination?.message}

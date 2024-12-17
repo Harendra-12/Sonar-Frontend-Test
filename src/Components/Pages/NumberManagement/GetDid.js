@@ -221,6 +221,10 @@ function GetDid() {
         if (apiData.status) {
           setLoading(false);
           toast.success(apiData.message);
+          // dispatch({
+          //   type: "SET_NEWADDDID",
+          //   newAddDid: apiData.data,
+          // });
           dispatch({
             type: "SET_ACCOUNTDETAILSREFRESH",
             accountDetailsRefresh: accountDetailsRefresh + 1,

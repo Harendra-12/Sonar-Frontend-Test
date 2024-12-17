@@ -67,6 +67,7 @@ function Dialpad({
         `sip:${destNumber}@${account.domain.domain_name}`,
         {
           earlyMedia: true,
+          inviteWithSdp: true,
           sessionDescriptionHandlerOptions: {
             constraints: {
               audio: true,
@@ -90,7 +91,37 @@ function Dialpad({
                 },
           },
         }
-      );
+      )
+
+      const sdh = apiData.sessionDescriptionHandler;
+
+      // Check if remoteMediaStream is available
+      if (sdh && sdh._remoteMediaStream) {
+        const remoteStream = sdh._remoteMediaStream;
+
+        // Listen for tracks being added to the remote stream
+        remoteStream.onaddtrack = () => {
+          console.log("Remote track added:", remoteStream);
+          playRemoteStream(remoteStream);
+        };
+
+        // If tracks are already present, attach immediately
+        if (remoteStream.getTracks().length > 0) {
+          console.log("Remote stream tracks available immediately:", remoteStream);
+          playRemoteStream(remoteStream);
+        }
+      }
+
+      // Function to play the remote stream
+      function playRemoteStream(stream) {
+        const audioElement = document.createElement("audio");
+        audioElement.srcObject = stream;
+        audioElement.autoplay = true;
+
+        audioElement.play().catch((e) => {
+          console.error("Error playing early media stream:", e);
+        });
+      }
       console.log("apiData", apiData);
 
       setSelectedModule("onGoingCall");
