@@ -120,6 +120,15 @@ import CallDashboardNew from "./Components/Pages/WebRtc/CallDashboardNew";
 import DummyRegistration from "./Components/Pages/WebRtc/DummyRegistration";
 import ClickToCallSetup from "./Components/Pages/ClickToCall/ClickToCallSetup";
 import DialerDashboard from "./Components/Pages/DialerModule/DialerDashboard";
+import Agents from "./Components/Pages/Agents/Agents";
+import AgentsEdits from "./Components/Pages/Agents/AgentsEdits";
+import AgentsAdd from "./Components/Pages/Agents/AgentsAdd";
+import AgentReport from "./Components/Pages/Agents/AgentReport";
+import MeetingReports from "./Components/Pages/Agents/MeetingReports";
+import CallRecording from "./Components/Pages/Setting/CallRecording";
+import Fax from "./Components/Pages/Setting/FaxSettings";
+import FaxSettings from "./Components/Pages/Setting/FaxSettings";
+
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
 // import { getToken, onMessage } from "@firebase/messaging";
@@ -308,6 +317,20 @@ function App() {
           />
           <Route path="/call-settings" element={<CallSettings />} />
           {/* Extensions Path End */}
+
+
+          {/*Agents path */}
+          <Route path="/agents" element={<Agents />} />
+          <Route path="/agents-edit" element={<AgentsEdits />} />
+          <Route path="/agents-add" element={<AgentsAdd />} />
+          <Route path="/agents-reports" element={<AgentReport />} />
+          <Route path="/meeting-reports" element={<MeetingReports />} />
+          {/*Agents path */}
+
+          {/* Settings Path */}
+          <Route path="/fax-settings" element={<FaxSettings />} />
+          <Route path="/call-recording" element={<CallRecording />} />
+          {/* Settings Path */}
 
           {/* Voice path start */}
           <Route path="/voice-music" element={<Music />} />
