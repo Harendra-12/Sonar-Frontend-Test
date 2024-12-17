@@ -18,7 +18,9 @@ function DidListing() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const didAll = useSelector((state) => state.didAll);
+  const newAddDid = useSelector((state) => state.newAddDid);
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (didAll) {
       // setLoading(false);
@@ -82,8 +84,8 @@ function DidListing() {
   async function handleClickDefault(id) {
     setLoading(true);
     const parsedData = {
-      id: id
-    }
+      id: id,
+    };
     const apiData = await generalPostFunction(`/did/set-default`, parsedData);
     if (apiData?.status) {
       setLoading(false);
@@ -96,7 +98,18 @@ function DidListing() {
       setLoading(false);
     }
   }
-  console.log("This is transition details", did);
+
+  useEffect(() => {
+    if (newAddDid) {
+      const addedDid = did?.find((item) => item.id === newAddDid.id);
+      if (addedDid) {
+        navigate(`/did-config`, {
+          state: addedDid,
+        });
+      }
+    }
+  }, [newAddDid, did]);
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -123,18 +136,28 @@ function DidListing() {
                           }}
                         >
                           <span className="text">Back</span>
-                          <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-caret-left"></i>
+                          </span>
                         </button>
-                        <Link to="/did-add" effect="ripple" className="panelButton">
+                        <Link
+                          to="/did-add"
+                          effect="ripple"
+                          className="panelButton"
+                        >
                           <span className="text">Add</span>
-                          <span className="icon"><i class="fa-solid fa-plus"></i></span>
+                          <span className="icon">
+                            <i class="fa-solid fa-plus"></i>
+                          </span>
                         </Link>
                       </div>
                     </div>
                   </div>
-                  <div className="col-12" style={{ overflow: "auto", padding: '25px 20px 0' }}>
+                  <div
+                    className="col-12"
+                    style={{ overflow: "auto", padding: "25px 20px 0" }}
+                  >
                     <div className="tableContainer">
-
                       <table>
                         <thead>
                           <tr>
@@ -142,35 +165,65 @@ function DidListing() {
                             <th>E911</th>
                             <th>Cname</th>
                             <th>SMS</th>
-                            <th style={{ width: 80, textAlign: 'center' }}>Configure</th>
-                            <th style={{ width: 110, textAlign: 'center' }}>Reset Config</th>
-                            <th style={{ width: 135, textAlign: 'center' }}>Default Caller DID</th>
+                            <th style={{ width: 80, textAlign: "center" }}>
+                              Configure
+                            </th>
+                            <th style={{ width: 110, textAlign: "center" }}>
+                              Reset Config
+                            </th>
+                            <th style={{ width: 135, textAlign: "center" }}>
+                              Default Caller DID
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
-                          {loading ? (<SkeletonTableLoader col={7} row={15} />) :
-                            (<>
+                          {loading ? (
+                            <SkeletonTableLoader col={7} row={15} />
+                          ) : (
+                            <>
                               {did &&
                                 did.map((item) => {
                                   return (
                                     <tr>
-                                      <td style={{ cursor: "default" }}>{item.did}</td>
+                                      <td style={{ cursor: "default" }}>
+                                        {item.did}
+                                      </td>
                                       <td style={{ cursor: "default" }}>
                                         {item?.e911}
                                       </td>
                                       <td style={{ cursor: "default" }}>
                                         {item?.cnam}
                                       </td>
-                                      <td style={{ cursor: "default" }}>{item?.sms}</td>
                                       <td style={{ cursor: "default" }}>
-                                        <Tippy content={item.configuration !== null ? "Update the configuration" : "Not Configured! Click to configure"}>
+                                        {item?.sms}
+                                      </td>
+                                      <td style={{ cursor: "default" }}>
+                                        <Tippy
+                                          content={
+                                            item.configuration !== null
+                                              ? "Update the configuration"
+                                              : "Not Configured! Click to configure"
+                                          }
+                                        >
                                           <button
                                             onClick={() =>
-                                              navigate(`/did-config`, { state: item })
+                                              navigate(`/did-config`, {
+                                                state: item,
+                                              })
                                             }
-                                            className={item.configuration !== null ? "tableButton mx-auto" : "tableButton warning mx-auto"}
+                                            className={
+                                              item.configuration !== null
+                                                ? "tableButton mx-auto"
+                                                : "tableButton warning mx-auto"
+                                            }
                                           >
-                                            <i className={item.configuration !== null ? "fa-solid fa-gear text-success" : "fa-solid fa-triangle-exclamation"}></i>
+                                            <i
+                                              className={
+                                                item.configuration !== null
+                                                  ? "fa-solid fa-gear text-success"
+                                                  : "fa-solid fa-triangle-exclamation"
+                                              }
+                                            ></i>
                                           </button>
                                         </Tippy>
                                         {/* <label
@@ -193,7 +246,9 @@ function DidListing() {
                                               className="tableButton delete mx-auto"
                                               style={{ cursor: "pointer" }}
                                               onClick={() =>
-                                                handleClick(item.configuration.id)
+                                                handleClick(
+                                                  item.configuration.id
+                                                )
                                               }
                                             >
                                               <i class="fa-solid fa-arrows-rotate"></i>
@@ -202,13 +257,23 @@ function DidListing() {
                                         )}
                                       </td>
                                       <td style={{ cursor: "default" }}>
-                                        <Tippy content={item.default_outbound === 1 ? "This DID is set as default" : "Set this DID default"}>
+                                        <Tippy
+                                          content={
+                                            item.default_outbound === 1
+                                              ? "This DID is set as default"
+                                              : "Set this DID default"
+                                          }
+                                        >
                                           <button
-                                            className={item.default_outbound === 1 ? "tableButton mx-auto" : "tableButton empty mx-auto"}
+                                            className={
+                                              item.default_outbound === 1
+                                                ? "tableButton mx-auto"
+                                                : "tableButton empty mx-auto"
+                                            }
                                             style={{ cursor: "pointer" }}
                                             onClick={() => {
                                               if (item.default_outbound === 0) {
-                                                handleClickDefault(item.id)
+                                                handleClickDefault(item.id);
                                               }
                                             }}
                                           >
@@ -219,18 +284,15 @@ function DidListing() {
                                     </tr>
                                   );
                                 })}
-                            </>)
-                          }
+                            </>
+                          )}
                         </tbody>
                       </table>
-
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-
-
           </div>
         </div>
       </section>

@@ -5,6 +5,7 @@ import {
   backToTop,
   featureUnderdevelopment,
   generalGetFunction,
+  generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +13,7 @@ import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+import { toast } from "react-toastify";
 
 function CdrReport() {
   const dispatch = useDispatch();
@@ -39,9 +41,13 @@ function CdrReport() {
   const [endDate, setEndDate] = useState("");
   const [contentLoader, setContentLoader] = useState(false);
   const [refresh, setRefrehsh] = useState(1);
+  const [callBlock, setCallBlock] = useState([]);
+  const [callBlockRefresh, setCallBlockRefresh] = useState(0);
+  const [selectedNumberToBlock, setSelectedNumberToBlock] = useState(null);
+  const [popUp, setPopUp] = useState(false);
 
   const thisAudioRef = useRef(null);
-
+  console.log(cdr, callBlock);
   useEffect(() => {
     if (selectedCdrFilter == "missed-calls") {
       setCallDirection("local");
@@ -118,7 +124,23 @@ function CdrReport() {
       }
     }
   };
-
+  useEffect(() => {
+    const getRingGroupDashboardData = async () => {
+      if (account && account.id) {
+        const apidata = await generalGetFunction(`/spam/all`);
+        // console.log(apidata);
+        if (apidata?.status) {
+          setCallBlock(apidata.data);
+          // setLoading(false);
+        } else {
+          navigate("/");
+        }
+      } else {
+        navigate("/");
+      }
+    };
+    getRingGroupDashboardData();
+  }, [callBlockRefresh]);
   useEffect(() => {
     setLoading(true);
     // build a dynamic url which include only the available params to make API call easy
@@ -246,6 +268,35 @@ function CdrReport() {
         thisAudioRef.current.play();
       }
     }, 200);
+  };
+
+  const handleBlockNumber = async (blockNumber) => {
+    if (!blockNumber) {
+      toast.error("Please enter number");
+    } else if (
+      blockNumber < 99999999 ||
+      blockNumber > 99999999999999 ||
+      isNaN(blockNumber)
+    ) {
+      toast.error("Please enter valid number");
+    } else {
+      setPopUp(false);
+      setLoading(true);
+      const parsedData = {
+        type: "DID",
+        number: blockNumber,
+      };
+      const apidata = await generalPostFunction(`/spam/store`, parsedData);
+      if (apidata.status) {
+        setLoading(false);
+
+        setSelectedNumberToBlock(null);
+        setCallBlock([...callBlock, apidata.data]);
+        toast.success("Number added to block list");
+      } else {
+        setLoading(false);
+      }
+    }
   };
 
   return (
@@ -558,15 +609,31 @@ function CdrReport() {
                           <th>Duration</th>
                           <th>Hangup Cause</th>
                           <th>Charge</th>
+                          <th>Block</th>
                         </tr>
                       </thead>
                       <tbody>
                         {loading ? (
-                          (<SkeletonTableLoader col={12} row={15} />)
+                          <SkeletonTableLoader col={12} row={15} />
                         ) : (
                           <>
                             {cdr?.data &&
                               cdr?.data?.map((item, index) => {
+                                const isBlocked = callBlock.some((block) => {
+                                  if (item["Call-Direction"] == "inbound") {
+                                    return (
+                                      item["Caller-Caller-ID-Number"] ==
+                                      block.number
+                                    );
+                                  } else if (
+                                    item["Call-Direction"] == "outbound"
+                                  ) {
+                                    return (
+                                      item["Caller-Callee-ID-Number"] ==
+                                      block.number
+                                    );
+                                  }
+                                });
                                 return (
                                   <>
                                     <tr key={index} className="cdrTableRow">
@@ -636,6 +703,38 @@ function CdrReport() {
                                           : item["variable_DIALSTATUS"]}
                                       </td>
                                       <td>{item["call_cost"]}</td>
+                                      <td>
+                                        {" "}
+                                        <button
+                                          disabled={isBlocked}
+                                          effect="ripple"
+                                          className="panelButton delete ms-0"
+                                          style={{ height: "34px" }}
+                                          onClick={() => {
+                                            setSelectedNumberToBlock(
+                                              item["Call-Direction"] ===
+                                                "inbound"
+                                                ? item[
+                                                    "Caller-Caller-ID-Number"
+                                                  ]
+                                                : item["Call-Direction"] ===
+                                                  "outbound"
+                                                ? item[
+                                                    "Caller-Callee-ID-Number"
+                                                  ]
+                                                : "N/A"
+                                            );
+                                            setPopUp(true);
+                                          }}
+                                        >
+                                          <span className="text">
+                                            {isBlocked ? "Blocked" : "Block"}
+                                          </span>
+                                          <span className="icon">
+                                            <i class="fa-solid fa-ban"></i>
+                                          </span>
+                                        </button>
+                                      </td>
                                     </tr>
                                     {currentPlaying ===
                                       item["recording_path"] && (
@@ -708,6 +807,58 @@ function CdrReport() {
           </div>
         </div>
       </section>
+      {popUp ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-4">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-triangle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-0">
+                  <h4>Warning!</h4>
+                  <p>
+                    Are you sure, you want to block this number (
+                    {selectedNumberToBlock})?
+                  </p>
+                  <div className="mt-2 d-flex justify-content-between">
+                    <button
+                      disabled={loading}
+                      className="panelButton m-0"
+                      onClick={() => handleBlockNumber(selectedNumberToBlock)}
+                    >
+                      <span className="text">Confirm</span>
+                      <span className="icon">
+                        <i class="fa-solid fa-check"></i>
+                      </span>
+                    </button>
+                    {/* ) : ( */}
+
+                    {/* )} */}
+
+                    <button
+                      className="panelButton gray m-0 float-end"
+                      onClick={() => {
+                        setPopUp(false);
+                        setSelectedNumberToBlock(null);
+                      }}
+                    >
+                      <span className="text">Cancel</span>
+                      <span className="icon">
+                        <i class="fa-solid fa-xmark"></i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </main>
   );
 }
