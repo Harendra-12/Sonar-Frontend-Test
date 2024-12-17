@@ -851,11 +851,11 @@ const RingGroupEdit = () => {
                       </div>
                       <div className="col-6">
                         <div className="row">
-                          <div className="col-8">
+                          <div className="col-8 pe-2">
                             {timeoutDestPstnToggle ? (
                               <input
                                 placeholder="PSTN"
-                                className=""
+                                className="formItem"
                                 {...register("timeout_destination", {
                                   ...numberValidator,
                                 })}
@@ -869,26 +869,28 @@ const RingGroupEdit = () => {
                               />
                             )}
                           </div>
-                          <div className="col-4">
+                          <div className="col-4 ps-2">
                             {timeoutDestPstnToggle ? (
                               <button
+                                className="panelButton static"
                                 onClick={(e) => {
                                   e.preventDefault();
                                   setTimeoutDestPstnToggle(false);
                                   setValue("timeout_destination", "");
                                 }}
                               >
-                                PSTN
+                                <span className="text">PSTN</span>
                               </button>
                             ) : (
                               <button
+                                className="panelButton static"
                                 onClick={(e) => {
                                   e.preventDefault();
                                   setTimeoutDestPstnToggle(true);
                                   setValue("timeout_destination", "");
                                 }}
                               >
-                                EXT
+                                <span className="text">EXT</span>
                               </button>
                             )}
                           </div>
@@ -920,16 +922,16 @@ const RingGroupEdit = () => {
                               )),
                           })}
                           onKeyDown={restrictToNumbers}
-                          // {...register("call_timeout", {
-                          //   ...requiredValidator,
-                          //   ...noSpecialCharactersValidator,
-                          //   ...minValidator(
-                          //     destination.reduce(
-                          //       (max, obj) => Math.max(max, obj.delay),
-                          //       0
-                          //     )
-                          //   ),
-                          // })}
+                        // {...register("call_timeout", {
+                        //   ...requiredValidator,
+                        //   ...noSpecialCharactersValidator,
+                        //   ...minValidator(
+                        //     destination.reduce(
+                        //       (max, obj) => Math.max(max, obj.delay),
+                        //       0
+                        //     )
+                        //   ),
+                        // })}
                         />
                         {errors.call_timeout && (
                           <ErrorMessage text={errors.call_timeout.message} />
@@ -1347,14 +1349,14 @@ const RingGroupEdit = () => {
                                       .filter((item1) => {
                                         return (
                                           item1.extension.extension ==
-                                            destination[index]?.destination ||
+                                          destination[index]?.destination ||
                                           !destination.some(
                                             (
                                               destinationItem,
                                               destinationIndex
                                             ) =>
                                               destinationItem.destination ==
-                                                item1.extension.extension &&
+                                              item1.extension.extension &&
                                               destinationIndex != index
                                           )
                                         );
@@ -1492,9 +1494,8 @@ const RingGroupEdit = () => {
                               ""
                             ) : (
                               <div
-                                className={`col-auto h-100 m${
-                                  index === 0 ? "t" : "y"
-                                }-auto`}
+                                className={`col-auto h-100 m${index === 0 ? "t" : "y"
+                                  }-auto`}
                               >
                                 <button
                                   type="button"

@@ -255,7 +255,7 @@ function PhoneDashboard() {
               <div className="row mt-3">
                 <div className="col-xl-3">
                   <div className="itemWrapper a">
-                    <div className="heading">
+                    <div className="heading h-auto">
                       <div class="d-flex flex-wrap justify-content-between align-items-center">
                         <div class="col-10">
                           <h5>Extensions</h5>
@@ -301,7 +301,7 @@ function PhoneDashboard() {
                 </div>
                 <div className="col-xl-3">
                   <div className="itemWrapper a">
-                    <div className="heading">
+                    <div className="heading h-auto">
                       <div class="d-flex flex-wrap justify-content-between align-items-center">
                         <div class="col-10">
                           <h5>Call Center Queue</h5>
@@ -345,7 +345,7 @@ function PhoneDashboard() {
                 </div>
                 <div className="col-xl-3">
                   <div className="itemWrapper a">
-                    <div className="heading">
+                    <div className="heading h-auto">
                       <div class="d-flex flex-wrap justify-content-between align-items-center">
                         <div class="col-10">
                           <h5>Ring Group</h5>
@@ -386,7 +386,7 @@ function PhoneDashboard() {
                 </div>
                 <div className="col-xl-3">
                   <div className="itemWrapper a">
-                    <div className="heading">
+                    <div className="heading h-auto">
                       <div class="d-flex flex-wrap justify-content-between align-items-center">
                         <div class="col-10">
                           <h5>Users</h5>

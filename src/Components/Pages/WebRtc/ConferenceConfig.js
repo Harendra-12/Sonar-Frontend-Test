@@ -10,7 +10,7 @@ import { ConferenceCall } from "./ConferenceCall";
 import ContentLoader from "../../Loader/ContentLoader";
 import { useSelector } from "react-redux";
 
-const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId, conferenceId, conferenceToggle,pin,setPin }) => {
+const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId, conferenceId, conferenceToggle, pin, setPin }) => {
   const [conferenceName, setConferenceName] = useState("");
   const [conferenceType, setConferenceType] = useState("public");
   const [loading, setLoading] = useState(false);
@@ -102,7 +102,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
         setConferenceId("")
         throw new Error("Invalid URL format");
       }
-      if(pin===""){
+      if (pin === "") {
         toast.error("Please enter your pin")
         return
       }
@@ -516,7 +516,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                               <div className="row h-100 justify-content-evenly">
                                 <div className='col-xl-5 position-relative'>
                                   <div className="col-xl-12 h-100 position-relative d-flex align-items-center">
-                                    <div className="content col-xl-7 mx-auto py-5">
+                                    <div className="content col-xl-7 m-auto">
                                       <h3>Join conference</h3>
                                       <p>Enter your name to join conference</p>
                                       <div className="border-bottom my-4"></div>

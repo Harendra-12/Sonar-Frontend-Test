@@ -81,6 +81,14 @@
     font-weight: 600;
 }
 
+.itemWrapperb .data-number.ellipsis {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 17px;
+}
+
 .itemWrapperb .label2 {
     font-size: 12px;
     font-weight: 400;
