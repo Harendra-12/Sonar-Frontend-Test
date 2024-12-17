@@ -230,7 +230,7 @@ const Extensions = () => {
                             </tr>
                           ) : (
                             <>
-                              {loading ? (<SkeletonTableLoader col={9} row={15} />) : (
+                              {loading ? (<SkeletonTableLoader col={8} row={15} />) : (
                                 ""
                               )}
                               {extension &&

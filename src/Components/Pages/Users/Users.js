@@ -270,7 +270,7 @@ const Users = () => {
                             </tr>
                           ) : // </div>
                             loading ? (
-                              <SkeletonTableLoader col={7} row={15} />
+                              <SkeletonTableLoader col={6} row={15} />
                             ) : (
                               <>
                                 {user &&

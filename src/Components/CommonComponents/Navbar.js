@@ -354,7 +354,10 @@ function Navbar() {
                           "/cal-center-queue-add",
                           "/cal-center-queue-edit",
                           "/call-blocking",
-                          "/call-blocking-add"
+                          "/call-blocking-add",
+                          "/agents",
+                          "/agents-add",
+                          "/agents-edit"
                         ])
                           ? "true"
                           : "false"
@@ -386,7 +389,10 @@ function Navbar() {
                         "/cal-center-queue-add",
                         "/cal-center-queue-edit",
                         "/call-blocking",
-                        "/call-blocking-add"
+                        "/call-blocking-add",
+                        "/agents",
+                        "/agents-add",
+                        "/agents-edit"
                       ])
                         ? "show"
                         : ""
@@ -446,12 +452,12 @@ function Navbar() {
                           ) : null}
 
                           <li className="tabItem ">
-                            <a
-                              // to="/extensions"
-                              onClick={() => featureUnderdevelopment()}
+                            <NavLink
+                              to="/agents"
+                              onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
+                                  ["/agents-add", "/agents-edit"].some(
                                     (path) =>
                                       window.location.pathname.includes(path)
                                   )
@@ -463,7 +469,7 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Agents</div>
-                            </a>
+                            </NavLink>
                           </li>
 
                           {account?.permissions?.includes(344) ||
@@ -1052,7 +1058,7 @@ function Navbar() {
                         data-bs-toggle="collapse"
                         data-bs-target="#collapse4"
                         aria-expanded={
-                          isChildActive(["/cdr-report"]) ? "true" : "false"
+                          isChildActive(["/cdr-report", "/agents-reports", "/meeting-reports"]) ? "true" : "false"
                         }
                         aria-controls="collapse4"
                       >
@@ -1063,7 +1069,7 @@ function Navbar() {
                       </button>
                       <div
                         id="collapse4"
-                        className={`accordion-collapse collapse ${isChildActive(["/cdr-report"]) ? "show" : ""
+                        className={`accordion-collapse collapse ${isChildActive(["/cdr-report", "/agents-reports", "/meeting-reports"]) ? "show" : ""
                           }`}
                         data-bs-parent="#sidenNav"
                       >
@@ -1136,12 +1142,12 @@ function Navbar() {
                               </a>
                             </li>
                             <li className="tabItem ">
-                              <a
-                                // to="/extensions"
-                                onClick={() => featureUnderdevelopment()}
+                              <NavLink
+                                to="/agents-reports"
+                                onClick={() => backToTop()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                    ["/extensions-add", "/extensions-edit"].some(
+                                    ["/agents-reports"].some(
                                       (path) =>
                                         window.location.pathname.includes(path)
                                     )
@@ -1153,7 +1159,7 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                                 <div className="itemTitle">Agent Report</div>
-                              </a>
+                              </NavLink>
                             </li>
                             <li className="tabItem ">
                               <a
@@ -1236,12 +1242,12 @@ function Navbar() {
                               </a>
                             </li>
                             <li className="tabItem ">
-                              <a
-                                // to="/extensions"
-                                onClick={() => featureUnderdevelopment()}
+                              <NavLink
+                                to="/meeting-reports"
+                                onClick={() => backToTop()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                    ["/extensions-add", "/extensions-edit"].some(
+                                    ["/meeting-reports"].some(
                                       (path) =>
                                         window.location.pathname.includes(path)
                                     )
@@ -1253,7 +1259,7 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                                 <div className="itemTitle">Meeting Reports</div>
-                              </a>
+                              </NavLink>
                             </li>
                           </ul>
                         </div>
@@ -1403,6 +1409,8 @@ function Navbar() {
                       aria-expanded={
                         isChildActive([
                           "/mail-settings",
+                          "/fax-settings",
+                          "/call-recording"
                         ])
                           ? "true"
                           : "false"
@@ -1418,6 +1426,8 @@ function Navbar() {
                       id="collapse5"
                       className={`accordion-collapse collapse ${isChildActive([
                         "/mail-settings",
+                        "/fax-settings",
+                        "/call-recording"
                       ])
                         ? "show"
                         : ""
@@ -1446,13 +1456,13 @@ function Navbar() {
                               <div className="itemTitle">General</div>
                             </a>
                           </li>
-                          <li className="tabItem ">
-                            <a
-                              // to="/extensions"
-                              onClick={() => featureUnderdevelopment()}
+                          <li className="tabItem">
+                            <NavLink
+                              to="/fax-settings"
+                              onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
+                                  ["/fax-settings"].some(
                                     (path) =>
                                       window.location.pathname.includes(path)
                                   )
@@ -1464,7 +1474,7 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Fax</div>
-                            </a>
+                            </NavLink>
                           </li>
                           {account?.permissions?.includes(248) ||
                             account?.permissions?.includes(250) ? (
@@ -1490,12 +1500,12 @@ function Navbar() {
                             </li>
                           ) : null}
                           <li className="tabItem ">
-                            <a
-                              // to="/extensions"
-                              onClick={() => featureUnderdevelopment()}
+                            <NavLink
+                              to="/call-recording"
+                              onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
+                                  ["/call-recording"].some(
                                     (path) =>
                                       window.location.pathname.includes(path)
                                   )
@@ -1507,7 +1517,7 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Call Recording</div>
-                            </a>
+                            </NavLink>
                           </li>
                         </ul>
                       </div>
