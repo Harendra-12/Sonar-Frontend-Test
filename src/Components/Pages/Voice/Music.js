@@ -269,7 +269,7 @@ function Music() {
                                 );
                               })} */}
                           {loading ? (
-                            <SkeletonTableLoader col={5} row={15} />
+                            <SkeletonTableLoader col={6} row={15} />
                           ) : (
                             <>
                               {music &&

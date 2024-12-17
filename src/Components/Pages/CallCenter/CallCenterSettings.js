@@ -9,6 +9,7 @@ import {
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useForm } from "react-hook-form";
+import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 
 const CallCenterSettings = () => {
   const navigate = useNavigate();
@@ -111,7 +112,7 @@ const CallCenterSettings = () => {
           </div> */}
         </div>
         <div className="col-xl-12">
-          {loading && <CircularLoader />}
+          {loading && <SkeletonFormLoader />}
           <div className="overviewTableWrapper">
             <div className="overviewTableChild">
               <div className="d-flex flex-wrap">

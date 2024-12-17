@@ -760,7 +760,7 @@ const RingGroupAdd = () => {
                             {timeoutDestPstnToggle ? (
                               <input
                                 placeholder="PSTN"
-                                className=""
+                                className="formItem"
                                 {...register("timeout_destination", {
                                   ...numberValidator,
                                 })}
@@ -776,7 +776,7 @@ const RingGroupAdd = () => {
                           </div>
                           <div className="col-4">
                             {timeoutDestPstnToggle ? (
-                              <button
+                              <button className="formItem"
                                 onClick={(e) => {
                                   e.preventDefault();
                                   setTimeoutDestPstnToggle(false);
@@ -786,7 +786,7 @@ const RingGroupAdd = () => {
                                 PSTN
                               </button>
                             ) : (
-                              <button
+                              <button className="formItem"
                                 onClick={(e) => {
                                   e.preventDefault();
                                   setTimeoutDestPstnToggle(true);

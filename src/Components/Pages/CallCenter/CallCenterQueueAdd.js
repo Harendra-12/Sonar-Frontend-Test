@@ -351,11 +351,11 @@ function CallCenterQueueAdd() {
           <Header title="Call Center Queue" />
         </div>
         <div className="col-xl-12">
-          {loading && loadings && (
+          {/* {loading && loadings && (
             <div colSpan={99}>
               <SkeletonFormLoader />
             </div>
-          )}
+          )} */}
           <div className="overviewTableWrapper">
             <div className="overviewTableChild">
               <div
@@ -1563,13 +1563,13 @@ function CallCenterQueueAdd() {
           </div>
         </div>
       </section>
-      {loading ? (
+      {/* {loading ? (
         <div colSpan={99}>
-          <CircularLoader />
+          <SkeletonFormLoader />
         </div>
       ) : (
         ""
-      )}
+      )} */}
       {showMusicGreet && (
         <AddMusic
           show={showMusicGreet}
