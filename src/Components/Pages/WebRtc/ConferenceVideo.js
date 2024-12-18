@@ -142,9 +142,6 @@ useEffect(()=>{
   
 },[screenTogglehit])
 
-console.log("remoteVideoRef",remoteVideoRef);
-
-
 return (
     <>
         <video ref={remoteVideoRef} autoPlay alt="" className="videoElement" />
