@@ -323,7 +323,7 @@ function App() {
           <Route path="/agents" element={<Agents />} />
           <Route path="/agents-edit" element={<AgentsEdits />} />
           <Route path="/agents-add" element={<AgentsAdd />} />
-          <Route path="/agents-reports" element={<AgentReport />} />
+          <Route path="/agent-reports" element={<AgentReport />} />
           <Route path="/meeting-reports" element={<MeetingReports />} />
           {/*Agents path */}
 

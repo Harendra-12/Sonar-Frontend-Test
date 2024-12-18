@@ -313,7 +313,7 @@ function Music() {
                                         </td>
                                         <td>
                                           <button
-                                            className="tableButton "
+                                            className="tableButton edit"
                                             onClick={() => {
                                               setSelectedMusicToEdit(item);
                                               setMusicEditPopup(true);
@@ -640,7 +640,7 @@ function Music() {
                         <div className="col-8">
                           <input
                             type="text"
-                            className="mb-3"
+                            className="mb-3 formItem"
                             defaultValue={selectedMusicToEdit.name}
                           ></input>
                         </div>
@@ -649,7 +649,7 @@ function Music() {
                             name="music"
                             className="formItem"
                             value={selectedMusicToEdit.type}
-                            // onChange={(e) => setNewMusicType(e.target.value)}
+                          // onChange={(e) => setNewMusicType(e.target.value)}
                           >
                             <option value="hold">Hold</option>
                             <option value="busy">Busy</option>

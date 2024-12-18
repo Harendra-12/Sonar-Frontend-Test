@@ -191,6 +191,12 @@
         font-size: 15px !important;
     }
 
+    .itemWrapper .heading i {
+        width: 35px;
+        height: 35px;
+        padding: 10px;
+    }
+
     .itemWrapper .data-number2 h5 {
         font-size: 18px;
     }
@@ -237,9 +243,29 @@
         padding: 15px;
     }
 
+    .overviewTableChild .formScroller {
+        max-height: calc(100vh - 150px);
+    }
+
+    .overviewTableWrapper .tableContainer {
+        height: calc(100vh - 320px)
+    }
+
     .viewingAs span,
     .messageOverlay .contactHeader h4 {
         font-size: 16px !important;
+    }
+
+    .loginWrapper2 {
+        height: auto;
+    }
+
+    .loginWave {
+        bottom: -10px;
+    }
+
+    .loginWave img {
+        height: 100%;
     }
 
 }

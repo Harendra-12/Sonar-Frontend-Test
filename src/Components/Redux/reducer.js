@@ -60,6 +60,7 @@ var dummySession = "";
 var rolesRefresh = 0;
 var permissionRefresh = 0;
 var memberId = null;
+var newAddedDid = null;
 
 const initialState = {
   account,
@@ -123,6 +124,7 @@ const initialState = {
   rolesRefresh,
   permissionRefresh,
   memberId,
+  newAddedDid,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -270,11 +272,17 @@ const counterReducer = (state = initialState, action) => {
         ...state,
         dummySession: action.dummySession,
       };
-      case "SET_MEMBERID":
+    case "SET_MEMBERID":
       return {
         ...state,
         memberId: action.memberId,
       };
+    case "SET_NEWADDDID":
+      return {
+        ...state,
+        newAddDid: action.newAddDid,
+      };
+
     default:
       return state;
   }

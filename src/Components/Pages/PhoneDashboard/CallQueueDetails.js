@@ -74,7 +74,7 @@ const CallQueueDetails = () => {
               <div className="col-xl-1b">
                 <div className="itemWrapperb a">
                   <div className="heading">Queue Name</div>
-                  <div className="data-number" style={{ fontSize: "19px" }}>
+                  <div className="data-number ellipsis">
                     {`${call.queue_name}`}
                   </div>
                   <div className="label2">Extension - {call.extension}</div>

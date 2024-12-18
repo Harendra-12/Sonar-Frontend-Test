@@ -1058,7 +1058,7 @@ function Navbar() {
                         data-bs-toggle="collapse"
                         data-bs-target="#collapse4"
                         aria-expanded={
-                          isChildActive(["/cdr-report", "/agents-reports", "/meeting-reports"]) ? "true" : "false"
+                          isChildActive(["/cdr-report", "/agent-reports", "/meeting-reports"]) ? "true" : "false"
                         }
                         aria-controls="collapse4"
                       >
@@ -1069,7 +1069,7 @@ function Navbar() {
                       </button>
                       <div
                         id="collapse4"
-                        className={`accordion-collapse collapse ${isChildActive(["/cdr-report", "/agents-reports", "/meeting-reports"]) ? "show" : ""
+                        className={`accordion-collapse collapse ${isChildActive(["/cdr-report", "/agent-reports", "/meeting-reports"]) ? "show" : ""
                           }`}
                         data-bs-parent="#sidenNav"
                       >
@@ -1143,11 +1143,11 @@ function Navbar() {
                             </li>
                             <li className="tabItem ">
                               <NavLink
-                                to="/agents-reports"
+                                to="/agent-reports"
                                 onClick={() => backToTop()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                    ["/agents-reports"].some(
+                                    ["/agent-reports"].some(
                                       (path) =>
                                         window.location.pathname.includes(path)
                                     )

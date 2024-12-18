@@ -23,18 +23,22 @@ function IncomingCallPopup({
   const [attendShow, setAttendShow] = useState(false);
   const [audio] = useState(new Audio(ringtone)); // Initialize the Audio object
   const dummySession = useSelector((state) => state.dummySession);
+  const [muteAudio, setMuteAudio] = useState(false);
   useEffect(() => {
-    if (lastIncomingCall && !isMinimized) {
-      audio.loop = true; // Set loop so it keeps playing
-      audio.play(); // Play the ringtone
+    const audio = new Audio(ringtone);
+    audio.loop = true;
+
+    if (!muteAudio) {
+      audio.play();
+    } else {
+      audio.pause();
     }
 
-    // Cleanup to stop the audio
     return () => {
-      audio.pause(); // Stop the ringtone
-      audio.currentTime = 0; // Reset the audio to the beginning
+      audio.pause();
+      audio.currentTime = 0; // Reset audio position to the start when component unmounts
     };
-  }, [lastIncomingCall, isMinimized, audio]);
+  }, [muteAudio]);
   useEffect(() => {
     if (!lastIncomingCall) {
       setIsMinimized(true);
@@ -304,9 +308,14 @@ function IncomingCallPopup({
         // }}
         >
           <div className="user">
-            <div className="userInfo text-start my-0 px-2">
-              <h5>Incoming Call...</h5>
-              <h4>{callerExtension}</h4>
+            <div className="userInfo text-start my-0 px-2 d-flex justify-content-between">
+              <div>
+                <h5>Incoming Call...</h5>
+                <h4>{callerExtension}</h4>
+              </div>
+              <div>
+                <button className="clearButton2" onClick={()=>setMuteAudio(!muteAudio)}><i class={muteAudio?"fa-regular fa-volume-xmark":"fa-regular fa-volume"}></i></button>
+              </div>
             </div>
             <div className="controls px-2">
               <button

@@ -606,8 +606,8 @@ const UsersEdit = () => {
                                   e.target.value === ""
                                     ? ""
                                     : roleName.permissions.map((item) => {
-                                        return item.permission_id;
-                                      })
+                                      return item.permission_id;
+                                    })
                                 );
                               }}
                             >
@@ -668,20 +668,20 @@ const UsersEdit = () => {
                                 <div className="col-4">
                                   <button
                                     effect="ripple"
-                                    className="panelButton  ms-auto"
+                                    className="panelButton static ms-auto"
                                     onClick={(e) => {
                                       e.preventDefault();
                                       setPopUp(true);
                                     }}
-                                    // onClick={(e) => {
-                                    //   e.preventDefault();
-                                    //   setValue("extension_id", null);
-                                    // }}
+                                  // onClick={(e) => {
+                                  //   e.preventDefault();
+                                  //   setValue("extension_id", null);
+                                  // }}
                                   >
                                     <span className="text">Edit</span>
-                                    <span className="icon">
+                                    {/* <span className="icon">
                                       <i class="fas fa-edit"></i>
-                                    </span>
+                                    </span> */}
                                   </button>
                                 </div>
                               )}

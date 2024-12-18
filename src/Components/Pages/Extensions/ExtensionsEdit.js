@@ -232,7 +232,10 @@ const ExtensionsEdit = () => {
           if (apiData.data.callforward == 1) {
             setValue("noanswer", "Forward");
             setValue("noanswerTo", apiData.data.callforwardTo);
-          } else if (apiData.data.voicemailEnabled == "Y") {
+          } else if (
+            apiData.data.callforward == 0 &&
+            apiData.data.noanswer == 1
+          ) {
             setValue("noanswer", "Voicemail");
             // setValue("noanswerTo", apiData.data.voiceEmailTo);
           } else {
@@ -366,7 +369,7 @@ const ExtensionsEdit = () => {
 
           callforward: data.noanswer == "Forward" ? 1 : 0,
           callforwardTo: data.noanswer === "Forward" ? data.noanswerTo : "",
-          voicemailEnabled: data.noanswer === "Voicemail" ? "Y" : "N",
+          // voicemailEnabled: data.noanswer === "Voicemail" ? "Y" : "N",
           // voiceEmailTo: data.noanswer === "Voicemail" ? data.noanswerTo : "",
           onbusy: data.onbusy,
           onbusyTo: data.onbusyTo,
@@ -438,7 +441,7 @@ const ExtensionsEdit = () => {
           moh_sound: data.moh,
           callforward: data.noanswer == "Forward" ? 1 : 0,
           callforwardTo: data.noanswer === "Forward" ? data.noanswerTo : "",
-          voicemailEnabled: data.noanswer === "Voicemail" ? "Y" : "N",
+          // voicemailEnabled: data.noanswer === "Voicemail" ? "Y" : "N",
           // voiceEmailTo: data.noanswer === "Voicemail" ? data.noanswerTo : "",
           onbusy: data.onbusy,
           onbusyTo: data.onbusyTo,
@@ -502,7 +505,7 @@ const ExtensionsEdit = () => {
     }
   });
 
-  console.log(showMusic);
+  console.log(watch());
 
   const handleAddMusic = () => {
     setValue("moh", "");
@@ -1132,7 +1135,7 @@ const ExtensionsEdit = () => {
                                   className="formItem"
                                   name=""
                                   id="selectFormRow"
-                                  {...register("voicemailEnabled", {})}
+                                  {...register("voicemailEnabled")}
                                   defaultValue={"N"}
                                 >
                                   <option value="" disabled>

@@ -756,7 +756,26 @@ const RingGroupAdd = () => {
                       </div>
                       <div className="col-6">
                         <div className="row">
-                          <div className="col-8">
+                          <div className="col-5">
+                            <select
+                              className="formItem"
+                              onChange={(e) => {
+                                if (e.target.value == "extension") {
+                                  setTimeoutDestPstnToggle(false);
+                                  setValue("timeout_destination", "");
+                                } else if (e.target.value == "pstn") {
+                                  setTimeoutDestPstnToggle(true);
+                                  setValue("timeout_destination", "");
+                                }
+                              }}
+                              id="selectFormRow"
+                              defaultValue={"extension"}
+                            >
+                              <option value="extension">Extension</option>
+                              <option value="pstn">PSTN</option>
+                            </select>
+                          </div>
+                          <div className="col-7">
                             {timeoutDestPstnToggle ? (
                               <input
                                 placeholder="PSTN"
@@ -772,29 +791,6 @@ const RingGroupAdd = () => {
                                 getDropdownValue={actionListValue}
                                 value={watch().timeout_destination}
                               />
-                            )}
-                          </div>
-                          <div className="col-4">
-                            {timeoutDestPstnToggle ? (
-                              <button className="formItem"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  setTimeoutDestPstnToggle(false);
-                                  setValue("timeout_destination", "");
-                                }}
-                              >
-                                PSTN
-                              </button>
-                            ) : (
-                              <button className="formItem"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  setTimeoutDestPstnToggle(true);
-                                  setValue("timeout_destination", "");
-                                }}
-                              >
-                                EXT
-                              </button>
                             )}
                           </div>
                           {errors?.timeout_destination && (
@@ -825,16 +821,16 @@ const RingGroupAdd = () => {
                               )),
                           })}
                           onKeyDown={restrictToNumbers}
-                          // {...register("call_timeout", {
-                          //   ...requiredValidator,
-                          //   ...noSpecialCharactersValidator,
-                          //   ...minValidator(
-                          //     destination.reduce(
-                          //       (max, obj) => Math.max(max, obj.delay),
-                          //       0
-                          //     )
-                          //   ),
-                          // })}
+                        // {...register("call_timeout", {
+                        //   ...requiredValidator,
+                        //   ...noSpecialCharactersValidator,
+                        //   ...minValidator(
+                        //     destination.reduce(
+                        //       (max, obj) => Math.max(max, obj.delay),
+                        //       0
+                        //     )
+                        //   ),
+                        // })}
                         />
                         {errors.call_timeout && (
                           <ErrorMessage text={errors.call_timeout.message} />
@@ -1265,14 +1261,14 @@ const RingGroupAdd = () => {
                                       .filter((item1) => {
                                         return (
                                           item1.extension.extension ==
-                                            destination[index]?.destination ||
+                                          destination[index]?.destination ||
                                           !destination.some(
                                             (
                                               destinationItem,
                                               destinationIndex
                                             ) =>
                                               destinationItem.destination ==
-                                                item1.extension.extension &&
+                                              item1.extension.extension &&
                                               destinationIndex != index
                                           )
                                         );
@@ -1390,9 +1386,8 @@ const RingGroupAdd = () => {
                               ""
                             ) : (
                               <div
-                                className={`me-2 h-100 m${
-                                  index === 0 ? "t" : "y"
-                                }-auto`}
+                                className={`me-2 h-100 m${index === 0 ? "t" : "y"
+                                  }-auto`}
                               >
                                 <button
                                   type="button"

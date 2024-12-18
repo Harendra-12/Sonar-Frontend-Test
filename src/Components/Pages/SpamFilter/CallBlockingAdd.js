@@ -321,7 +321,7 @@ function CallBlockingAdd() {
                 </form>
               </div>
               <div className="col-12" style={{ padding: "20px 23px" }}>
-                <div className="tableHeader">
+                <div className="tableHeader align-items-end mb-3">
                   <div className="showEntries">
                     <label>Show</label>
                     <select
@@ -329,12 +329,10 @@ function CallBlockingAdd() {
                       style={{ width: "max-content" }}
                     >
                       <option value={10}>Outbound</option>
-                      <option value={20}>20</option>
-                      <option value={30}>30</option>
                     </select>
                   </div>
-                  <div className="showEntries">
-                    <div className="formRow border-0">
+                  <div className="showEntries align-items-end">
+                    <div className="formRow border-0 pb-0">
                       <label className="formLabel text-start mb-0 w-100">
                         Call Destination
                       </label>
@@ -350,7 +348,7 @@ function CallBlockingAdd() {
                         onChange={handleCallDestinationChange}
                       />
                     </div>
-                    <div className="formRow border-0">
+                    <div className="formRow border-0 pb-0">
                       <label className="formLabel text-start mb-0 w-100">
                         Call Direction
                       </label>
@@ -361,7 +359,7 @@ function CallBlockingAdd() {
                           setPageNumber(1);
                         }}
                         value={callDirection}
-                        // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                      // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                       >
                         <option value={""}>All Calls</option>
                         <option value={"inbound"}>Inbound Calls</option>
@@ -375,16 +373,12 @@ function CallBlockingAdd() {
                       style={{ width: "max-content" }}
                     >
                       <option value={10}>All</option>
-                      <option value={20}>20</option>
-                      <option value={30}>30</option>
                     </select>
                     <select
                       className="formItem"
                       style={{ width: "max-content" }}
                     >
                       <option value={10}>Reject</option>
-                      <option value={20}>20</option>
-                      <option value={30}>30</option>
                     </select>
                     <button
                       effect="ripple"
@@ -420,7 +414,7 @@ function CallBlockingAdd() {
                               <td className="d-flex align-items-center gap-2">
                                 <input
                                   type="checkbox"
-                                  //   onClick={() => {}}
+                                //   onClick={() => {}}
                                 ></input>
                                 {item["Call-Direction"]}
                               </td>

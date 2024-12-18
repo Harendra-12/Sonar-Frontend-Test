@@ -15,8 +15,10 @@ import {
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import CircularLoader from "../../Loader/CircularLoader";
+import { useDispatch } from "react-redux";
 
 const DidListingAdd = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   //   const [loading, setLoading] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -51,6 +53,10 @@ const DidListingAdd = () => {
     const apiData = await generalPostFunction("/did/store", payload);
     if (apiData?.status) {
       setLoading(false);
+      dispatch({
+        type: "SET_NEWADDDID",
+        newAddDid: apiData.data,
+      });
       navigate("/did-listing");
     } else {
       setLoading(false);
