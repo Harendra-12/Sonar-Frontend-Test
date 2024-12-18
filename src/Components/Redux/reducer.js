@@ -61,6 +61,7 @@ var rolesRefresh = 0;
 var permissionRefresh = 0;
 var memberId = null;
 var newAddedDid = null;
+var conferenceScreenShareStatus = null;
 
 const initialState = {
   account,
@@ -125,6 +126,7 @@ const initialState = {
   permissionRefresh,
   memberId,
   newAddedDid,
+  conferenceScreenShareStatus,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -281,6 +283,11 @@ const counterReducer = (state = initialState, action) => {
       return {
         ...state,
         newAddDid: action.newAddDid,
+      };
+    case "SET_CONFERENCESCREENSHARESTATUS":
+      return {
+        ...state,
+        conferenceScreenShareStatus: action.conferenceScreenShareStatus,
       };
 
     default:

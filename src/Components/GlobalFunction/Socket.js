@@ -23,6 +23,7 @@ const Socket = () => {
       sendData = (data) => {
         if (socket.readyState === WebSocket.OPEN) {
           socket.send(JSON.stringify(data));
+          console.warn("WebSocket data send.");
         } else {
           console.warn("WebSocket is not open. Unable to send data.");
         }
@@ -66,6 +67,12 @@ const Socket = () => {
               break;
             case "Conference":
               dispatch({ type: "SET_CONFERENCE", conference: result });
+              break;
+            case "sharedStatus":
+              dispatch({
+                type: "SET_CONFERENCESCREENSHARESTATUS",
+                conferenceScreenShareStatus: result,
+              });
               break;
             default:
               console.log("Unhandled WebSocket message key:", key);
