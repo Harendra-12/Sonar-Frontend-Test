@@ -606,8 +606,8 @@ const UsersEdit = () => {
                                   e.target.value === ""
                                     ? ""
                                     : roleName.permissions.map((item) => {
-                                      return item.permission_id;
-                                    })
+                                        return item.permission_id;
+                                      })
                                 );
                               }}
                             >
@@ -649,7 +649,11 @@ const UsersEdit = () => {
                                   name="extension_id"
                                   value={watch().extension_id}
                                   {...register("extension_id")}
-                                  disabled={watch().extension_id == ""}
+                                  // disabled
+                                  disabled={
+                                    watch().extension_id != "" ||
+                                    watch().extension_id != null
+                                  }
                                 >
                                   <option value="" disabled>
                                     Available Extensions
@@ -673,10 +677,10 @@ const UsersEdit = () => {
                                       e.preventDefault();
                                       setPopUp(true);
                                     }}
-                                  // onClick={(e) => {
-                                  //   e.preventDefault();
-                                  //   setValue("extension_id", null);
-                                  // }}
+                                    // onClick={(e) => {
+                                    //   e.preventDefault();
+                                    //   setValue("extension_id", null);
+                                    // }}
                                   >
                                     <span className="text">Edit</span>
                                     {/* <span className="icon">

@@ -1,17 +1,31 @@
-import React, { useEffect, useImperativeHandle, useRef, useState } from 'react'
-import { useSelector } from 'react-redux';
-import { useSessionCall } from 'react-sipjs';
-import { toast } from 'react-toastify';
+import React, { useEffect, useImperativeHandle, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import { useSessionCall } from "react-sipjs";
+import { toast } from "react-toastify";
+import { sendData } from "../../GlobalFunction/Socket";
+import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 
-function ConferenceVideo({id,setIsScreenSharing,isScreenSharing,screenTogglehit}) {
-    const remoteVideoRef = useRef(null);
-    const dummySession = useSelector((state) => state.dummySession);    
-    const localVideoRef = useRef(null);
-    const includeVideo = true;
-    const sessionCallData = useSessionCall(id) || {}; // Safeguard
-    const { session } = sessionCallData || {}; // Safe destructuring
-    // const [isScreenSharing, setIsScreenSharing] = useState(false);
-      // Setting up remote media handler to show user remote stream
+function ConferenceVideo({
+  id,
+  setIsScreenSharing,
+  isScreenSharing,
+  screenTogglehit,
+  conferenceId,
+  currentUser,
+  isVideoOn,
+  userName,
+}) {
+  const account = useSelector((state) => state.account);
+  const extension = account?.extension?.extension || "";
+  const remoteVideoRef = useRef(null);
+  const memeber_id = useSelector((state) => state.memberId);
+  const dummySession = useSelector((state) => state.dummySession);
+  const localVideoRef = useRef(null);
+  const includeVideo = true;
+  const sessionCallData = useSessionCall(id) || {}; // Safeguard
+  const { session } = sessionCallData || {}; // Safe destructuring
+  // const [isScreenSharing, setIsScreenSharing] = useState(false);
+  // Setting up remote media handler to show user remote stream
   const getLocalStream = async () => {
     try {
       const localStream = await navigator.mediaDevices.getUserMedia({
@@ -59,7 +73,6 @@ function ConferenceVideo({id,setIsScreenSharing,isScreenSharing,screenTogglehit}
       });
       if (!isMounted) return;
 
-
       session.sessionDescriptionHandler.peerConnection.ontrack = (event) => {
         if (!isMounted) return; // Check if the component is still mounted
 
@@ -82,7 +95,8 @@ function ConferenceVideo({id,setIsScreenSharing,isScreenSharing,screenTogglehit}
       };
 
       const remoteDescription =
-        session.sessionDescriptionHandler?.peerConnection?.currentRemoteDescription;
+        session.sessionDescriptionHandler?.peerConnection
+          ?.currentRemoteDescription;
       console.log("Remote SDP:", remoteDescription);
 
       return () => {
@@ -97,56 +111,89 @@ function ConferenceVideo({id,setIsScreenSharing,isScreenSharing,screenTogglehit}
     }
   }, [session]);
 
-
-// Toggle screen share
-const toggleScreenShare = async () => {
-  // if (isScreenSharing) {
-  //   const localStream = await getLocalStream();
-  //   session.sessionDescriptionHandler.peerConnection?.getSenders()
-  //     .forEach((sender) => {
-  //       if (sender.track.kind === "video") {
-  //         sender.replaceTrack(localStream.getVideoTracks()[0]);
-  //       }
-  //     });
-  //   setIsScreenSharing(false);
-  // } else {
-    try {
-      const screenStream = await navigator.mediaDevices.getDisplayMedia({
-        video: true,
-        audio: true,
-      });
-
-      session.sessionDescriptionHandler?.peerConnection?.getSenders()
+  // Toggle screen share
+  const toggleScreenShare = async () => {
+    if (isScreenSharing) {
+      const localStream = await getLocalStream();
+      session.sessionDescriptionHandler.peerConnection
+        ?.getSenders()
         .forEach((sender) => {
-            console.log("sender",sender);
-            
-        //   if (sender.track.kind === "video") {
-            sender.replaceTrack(screenStream.getVideoTracks()[0]);
-        //   }
+          if (sender.track.kind === "video") {
+            if (isVideoOn) {
+              sender.track.stop();
+              sender.replaceTrack(localStream.getVideoTracks()[0]);
+            } else {
+              sender.track.stop();
+              session.sessionDescriptionHandler.peerConnection.removeTrack(
+                sender
+              );
+            }
+          }
         });
-      setIsScreenSharing(true);
-    } catch (error) {
-      console.error("Error sharing screen: ", error);
-      toast.error("Unable to share screen.");
+      sendData({
+        action: "screenShare",
+        user: userName,
+        sharedMessage: false,
+        room_id: conferenceId,
+      });
+      setIsScreenSharing(false);
+    } else {
+      try {
+        const screenStream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: true,
+        });
+
+        session.sessionDescriptionHandler?.peerConnection
+          ?.getSenders()
+          .forEach((sender) => {
+            console.log("sender", sender);
+
+            //   if (sender.track.kind === "video") {
+            sender.replaceTrack(screenStream.getVideoTracks()[0]);
+
+            //   }
+          });
+
+        const parsedData = {
+          action: "vid-floor",
+          room_id: conferenceId,
+          member: `${currentUser?.id} force`,
+        };
+        generalPostFunction(`conference/action`, parsedData)
+          .then((res) => {
+            console.log("res", res);
+          })
+          .catch((err) => {
+            console.log("err", err);
+          });
+        sendData({
+          action: "screenShare",
+          user: userName,
+          sharedMessage: true,
+          room_id: conferenceId,
+        });
+        setIsScreenSharing(true);
+      } catch (error) {
+        console.error("Error sharing screen: ", error);
+        toast.error("Unable to share screen.");
+      }
     }
-  // }
-};
+    // }
+  };
 
-
-
-
-useEffect(()=>{
-    if(screenTogglehit>0){
-        toggleScreenShare();
+  useEffect(() => {
+    if (screenTogglehit > 0) {
+      toggleScreenShare();
+      console.log("called");
     }
-  
-},[screenTogglehit])
-
-return (
+  }, [screenTogglehit]);
+  console.log(screenTogglehit);
+  return (
     <>
-        <video ref={remoteVideoRef} autoPlay alt="" className="videoElement" />
+      <video ref={remoteVideoRef} autoPlay alt="" className="videoElement" />
     </>
   );
 }
 
-export default ConferenceVideo
+export default ConferenceVideo;
