@@ -659,11 +659,23 @@ export const DummySipRegisteration = ({
     generalPostFunction(`conference/action`, parsedData);
   }
   // console.log("Current User", currentUser);
+
+  // Set name of current user when he joins the conference
+  useEffect(()=>{
+    if(currentUser.id!==""){
+      const parsedData = {
+        action: "vid-banner",
+        room_id: locationState.state.room_id,
+        member: `${String(currentUser?.id)} '${currentUser?.name}'`,
+      };
+      generalPostFunction(`conference/action`, parsedData)
+    }
+  },[currentUser.id])
   return (
     <div className="profileDropdowns" style={{ top: "55px", right: "-40px" }}>
       <MediaPermissions />
       {incomingSessionsArray.map((item, index) => {
-        return <AutoAnswer id={item} />;
+        return <AutoAnswer id={item} isVideoOn={isVideoOn} />;
       })}
       {loading ? (
         <ConferenceLoader />
@@ -884,7 +896,7 @@ export const DummySipRegisteration = ({
                                     </button>
                                   ) : (
                                     <button
-                                      className="appPanelButtonCallerRect active"
+                                      className="appPanelButtonCallerRect"
                                       onClick={() =>
                                         setScreenTogglehit(screenTogglehit + 1)
                                       }

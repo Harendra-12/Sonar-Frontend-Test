@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useSessionCall } from 'react-sipjs';
 
-function AutoAnswer({ id }) {
+function AutoAnswer({ id,isVideoOn }) {
   const dispatch = useDispatch();
   const { session } = useSessionCall(id);
   const memeber_id = useSelector((state) => state.memberId);
@@ -13,7 +13,7 @@ function AutoAnswer({ id }) {
       sessionDescriptionHandlerOptions: {
         constraints: {
           audio: true,
-          video: false,
+          video: isVideoOn,
         },
       },
     });

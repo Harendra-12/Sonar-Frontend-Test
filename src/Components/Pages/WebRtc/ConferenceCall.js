@@ -41,7 +41,16 @@ export const ConferenceCall = ({
   const [participantMiniview, setParticipantMiniview] = useState(true);
   const [participantList, setParticipantList] = useState(false);
   const [selectedConferenceUser, setSelectedConferenceUser] = useState(null);
-  const [currentUser, setCurrentUser] = useState([]);
+  const [currentUser, setCurrentUser] = useState({
+    id: "",
+    name: name,
+    uuid: "item.uuid",
+    talking: true,
+    mute_detect: false,
+    hold: false,
+    isYou: true,
+    deaf: false,
+  });
   const [notification, setNotification] = useState(false);
   const [notificationData, setNotificationData] = useState("");
   const [seconds, setSeconds] = useState(0);
@@ -54,6 +63,8 @@ export const ConferenceCall = ({
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [screenTogglehit, setScreenTogglehit] = useState(0);
 
+  console.log("CurrentUsersss", currentUser);
+  
   useEffect(() => {
     if (conferenceRawData["Conference-Name"] === room_id) {
       setConferenceData(conferenceRawData);
@@ -554,6 +565,19 @@ export const ConferenceCall = ({
     generalPostFunction(`conference/action`, parsedData);
   }
   // console.log(screenTogglehit);
+
+
+  // Set name of current user when he joins the conference
+  useEffect(()=>{
+    if(currentUser.id!==""){
+      const parsedData = {
+        action: "vid-banner",
+        room_id: room_id,
+        member: `${String(currentUser?.id)} '${currentUser?.name}'`,
+      };
+      generalPostFunction(`conference/action`, parsedData)
+    }
+  },[currentUser.id])
   return (
     <div
       className="profileDropdowns"
@@ -565,7 +589,7 @@ export const ConferenceCall = ({
     >
       <MediaPermissions />
       {incomingSessionsArray.map((item, index) => {
-        return <AutoAnswer id={item} />;
+        return <AutoAnswer id={item} isVideoOn={isVideoOn} />;
       })}
       {loading ? (
         <ConferenceLoader />
@@ -787,7 +811,7 @@ export const ConferenceCall = ({
                                     </button>
                                   ) : (
                                     <button
-                                      className="appPanelButtonCallerRect active"
+                                      className="appPanelButtonCallerRect"
                                       onClick={() =>
                                         setScreenTogglehit(screenTogglehit + 1)
                                       }
