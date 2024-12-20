@@ -29,10 +29,10 @@ function ConferenceVideo({
   const getLocalStream = async () => {
     try {
       const localStream = await navigator.mediaDevices.getUserMedia({
-        video: false,
+        video: isVideoOn,
         audio: true,
       });
-      localVideoRef.current.srcObject = localStream;
+      // localVideoRef.current.srcObject = localStream;
       return localStream;
     } catch (error) {
       console.error("Error accessing media devices:", error);
@@ -121,6 +121,8 @@ function ConferenceVideo({
           if (sender.track.kind === "video") {
             if (isVideoOn) {
               sender.track.stop();
+              console.log("Inside track change");
+              
               sender.replaceTrack(localStream.getVideoTracks()[0]);
             } else {
               sender.track.stop();
@@ -148,11 +150,13 @@ function ConferenceVideo({
           ?.getSenders()
           .forEach((sender) => {
             console.log("sender", sender);
-
-            //   if (sender.track.kind === "video") {
-            sender.replaceTrack(screenStream.getVideoTracks()[0]);
-
-            //   }
+            if (isVideoOn) {
+              if (sender.track.kind === "video") {
+                sender.replaceTrack(screenStream.getVideoTracks()[0]);
+              }
+            } else {
+              sender.replaceTrack(screenStream.getVideoTracks()[0]);
+            }
           });
 
         const parsedData = {
