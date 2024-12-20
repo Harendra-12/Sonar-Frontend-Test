@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import ConferenceVideo from "./ConferenceVideo";
 import ConferenceLoader from "../../Loader/ConferenceLoader";
 import ConferenceMessages from "./ConferenceMessages";
+import Socket from "../../GlobalFunction/Socket";
 
 export const ConferenceCall = ({
   room_id,
@@ -25,6 +26,7 @@ export const ConferenceCall = ({
   pin,
   isVideoOn,
 }) => {
+  const { sendMessage } = Socket();
   const navigate = useNavigate();
   const { sessions: sipSessions, connectAndRegister } = useSIPProvider();
   const { connectStatus, registerStatus } = useSIPProvider();
@@ -64,7 +66,7 @@ export const ConferenceCall = ({
   const [screenTogglehit, setScreenTogglehit] = useState(0);
 
   console.log("CurrentUsersss", currentUser);
-  
+
   useEffect(() => {
     if (conferenceRawData["Conference-Name"] === room_id) {
       setConferenceData(conferenceRawData);
@@ -566,18 +568,17 @@ export const ConferenceCall = ({
   }
   // console.log(screenTogglehit);
 
-
   // Set name of current user when he joins the conference
-  useEffect(()=>{
-    if(currentUser.id!==""){
+  useEffect(() => {
+    if (currentUser.id !== "") {
       const parsedData = {
         action: "vid-banner",
         room_id: room_id,
         member: `${String(currentUser?.id)} '${currentUser?.name}'`,
       };
-      generalPostFunction(`conference/action`, parsedData)
+      generalPostFunction(`conference/action`, parsedData);
     }
-  },[currentUser.id])
+  }, [currentUser.id]);
   return (
     <div
       className="profileDropdowns"
@@ -714,7 +715,7 @@ export const ConferenceCall = ({
                               <div className="participantWrapper pb-2">
                                 <div className="videoHolder">
                                   <div className="activeGuyName">
-                                    {conferenceScreenShareStatus?.shareStatus ===
+                                    {conferenceScreenShareStatus?.sharedMessage ==
                                     true
                                       ? conferenceScreenShareStatus.user
                                       : selectedConferenceUser?.name === ""
@@ -734,11 +735,8 @@ export const ConferenceCall = ({
                                       isScreenSharing={isScreenSharing}
                                       screenTogglehit={screenTogglehit}
                                       isVideoOn={isVideoOn}
-                                      userName={
-                                        selectedConferenceUser?.name === ""
-                                          ? selectedConferenceUser?.name
-                                          : name
-                                      }
+                                      userName={name}
+                                      sendMessage={sendMessage}
                                     />
                                   ) : (
                                     <div className="justify-content-center h-100 d-flex align-items-center text-white fs-1">
@@ -746,10 +744,10 @@ export const ConferenceCall = ({
                                         className="contactViewProfileHolder"
                                         //check if shared screen global state is true then show his name
                                       >
-                                        {conferenceScreenShareStatus?.shareStatus ==
+                                        {conferenceScreenShareStatus?.sharedMessage ==
                                         true
                                           ? conferenceScreenShareStatus.user
-                                          : selectedConferenceUser?.name === ""
+                                          : selectedConferenceUser?.name !== ""
                                           ? selectedConferenceUser?.name
                                           : name}
                                       </div>
