@@ -44,7 +44,14 @@ export const DummySipRegisteration = ({
   const dispatch = useDispatch();
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [screenTogglehit, setScreenTogglehit] = useState(0);
-
+  const sendMessage = (data) => {
+    if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+      socketRef.current.send(JSON.stringify(data)); // Send JSON data
+      console.log("Message sent:", data);
+    } else {
+      console.warn("WebSocket is not open. Unable to send message.");
+    }
+  };
   useEffect(() => {
     const interval = setInterval(() => {
       setSeconds((prevSeconds) => {
@@ -112,6 +119,24 @@ export const DummySipRegisteration = ({
           ws.close();
           resolve(true);
         };
+        // ws.onmessage = (event) => {
+        //   console.log("Message received:", event);
+        //   const data = JSON.parse(event.data); // Assuming server sends a JSON string
+        //   // setReceivedMessage(data); // Store the received message in state
+        //   // const parsedData = JSON.parse(event.data);
+        //   if (typeof data === "string") {
+        //     const message = JSON.parse(data);
+        //     const { key, result } = message;
+        //     console.log(key, result);
+        //     // Handle specific message types if necessary
+        //     if (key === "screenShare") {
+        //       dispatch({
+        //         type: "SET_CONFERENCESCREENSHARESTATUS",
+        //         conferenceScreenShareStatus: result,
+        //       });
+        //     }
+        //   }
+        // };
 
         ws.onerror = (error) => {
           console.error("WebSocket connection failed:", error);
@@ -232,7 +257,7 @@ export const DummySipRegisteration = ({
         // console.log("WebSocket connection successful.");
       };
       socket.onmessage = (event) => {
-        // console.log(JSON.parse(event.data));
+        console.log(JSON.parse(event.data));
         if (typeof JSON.parse(event.data) === "string") {
           if (JSON.parse(JSON.parse(event.data))["key"] === "Conference") {
             // console.log("Conference Data", JSON.parse(JSON.parse(event.data))["result"]);
@@ -242,6 +267,15 @@ export const DummySipRegisteration = ({
                 locationState.state.room_id &&
                 JSON.parse(JSON.parse(event.data))["result"]
             );
+          } else if (
+            JSON.parse(JSON.parse(event.data))["key"] === "screenShare"
+          ) {
+            dispatch({
+              type: "SET_CONFERENCESCREENSHARESTATUS",
+              conferenceScreenShareStatus: JSON.parse(JSON.parse(event.data))[
+                "result"
+              ],
+            });
           }
         } else {
         }
@@ -661,16 +695,16 @@ export const DummySipRegisteration = ({
   // console.log("Current User", currentUser);
 
   // Set name of current user when he joins the conference
-  useEffect(()=>{
-    if(currentUser.id!==""){
+  useEffect(() => {
+    if (currentUser.id !== "") {
       const parsedData = {
         action: "vid-banner",
         room_id: locationState.state.room_id,
         member: `${String(currentUser?.id)} '${currentUser?.name}'`,
       };
-      generalPostFunction(`conference/action`, parsedData)
+      generalPostFunction(`conference/action`, parsedData);
     }
-  },[currentUser.id])
+  }, [currentUser.id]);
   return (
     <div className="profileDropdowns" style={{ top: "55px", right: "-40px" }}>
       <MediaPermissions />
@@ -782,9 +816,13 @@ export const DummySipRegisteration = ({
                               <div className="participantWrapper pb-2">
                                 <div className="videoHolder">
                                   <div className="activeGuyName">
-                                    {selectedConferenceUser?.name === ""
+                                    {conferenceScreenShareStatus?.sharedMessage ==
+                                    true
+                                      ? conferenceScreenShareStatus.user
+                                      : selectedConferenceUser?.name !== ""
                                       ? selectedConferenceUser?.name
-                                      : locationState?.name}
+                                      : currentUser?.name}
+                                    {/* {locationState?.name} */}
                                   </div>
                                   {dummySession !== "" ? (
                                     // &&
@@ -799,21 +837,18 @@ export const DummySipRegisteration = ({
                                       isScreenSharing={isScreenSharing}
                                       screenTogglehit={screenTogglehit}
                                       isVideoOn={isVideoOn}
-                                      userName={
-                                        selectedConferenceUser?.name === ""
-                                          ? selectedConferenceUser?.name
-                                          : locationState?.name
-                                      }
+                                      userName={currentUser?.name}
+                                      sendMessage={sendMessage}
                                     />
                                   ) : (
                                     <div className="justify-content-center h-100 d-flex align-items-center text-white fs-1">
                                       <div className="contactViewProfileHolder">
-                                        {conferenceScreenShareStatus?.shareStatus ==
+                                        {conferenceScreenShareStatus?.sharedMessage ==
                                         true
                                           ? conferenceScreenShareStatus?.user
-                                          : selectedConferenceUser?.name === ""
+                                          : selectedConferenceUser?.name !== ""
                                           ? selectedConferenceUser?.name
-                                          : locationState?.name}
+                                          : currentUser?.name}
                                       </div>
                                     </div>
                                   )}

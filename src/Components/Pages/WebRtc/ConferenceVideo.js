@@ -14,12 +14,17 @@ function ConferenceVideo({
   currentUser,
   isVideoOn,
   userName,
+  sendMessage,
 }) {
+  const prevConferenceScreenShareStatus = useRef(null); // Ref to keep track of previous status
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
   const remoteVideoRef = useRef(null);
   const memeber_id = useSelector((state) => state.memberId);
   const dummySession = useSelector((state) => state.dummySession);
+  const conferenceScreenShareStatus = useSelector(
+    (state) => state.conferenceScreenShareStatus
+  );
   const localVideoRef = useRef(null);
   const includeVideo = true;
   const sessionCallData = useSessionCall(id) || {}; // Safeguard
@@ -132,9 +137,9 @@ function ConferenceVideo({
             }
           }
         });
-      sendData({
+      sendMessage({
         action: "screenShare",
-        user: userName,
+        user: userName || "dummy",
         sharedMessage: false,
         room_id: conferenceId,
       });
@@ -171,9 +176,9 @@ function ConferenceVideo({
           .catch((err) => {
             console.log("err", err);
           });
-        sendData({
+        sendMessage({
           action: "screenShare",
-          user: userName,
+          user: userName || "dummy",
           sharedMessage: true,
           room_id: conferenceId,
         });
@@ -189,10 +194,58 @@ function ConferenceVideo({
   useEffect(() => {
     if (screenTogglehit > 0) {
       toggleScreenShare();
-      console.log("called");
     }
   }, [screenTogglehit]);
-  console.log(screenTogglehit);
+
+  // useEffect(() => {
+  //   if (conferenceScreenShareStatus) {
+  //     console.log("conferenceScreenShareStatus", conferenceScreenShareStatus);
+  //     if (conferenceId == conferenceScreenShareStatus.room_id) {
+  //       toast.success(
+  //         `${conferenceScreenShareStatus.user} has ${
+  //           conferenceScreenShareStatus.sharedMessage == true
+  //             ? "shared"
+  //             : "stopped"
+  //         } screen share.`
+  //       );
+  //     }
+  //   }
+  // }, [conferenceScreenShareStatus]);
+
+  useEffect(() => {
+    if (conferenceScreenShareStatus) {
+      console.log("conferenceScreenShareStatus", conferenceScreenShareStatus);
+
+      // Only show the toast if the screen share status has changed
+      const hasStatusChanged =
+        prevConferenceScreenShareStatus.current?.room_id !==
+          conferenceScreenShareStatus.room_id ||
+        prevConferenceScreenShareStatus.current?.sharedMessage !==
+          conferenceScreenShareStatus.sharedMessage;
+
+      if (
+        conferenceId === conferenceScreenShareStatus.room_id &&
+        hasStatusChanged
+      ) {
+        toast.success(
+          `${conferenceScreenShareStatus.user} has ${
+            conferenceScreenShareStatus.sharedMessage === true
+              ? "shared"
+              : "stopped"
+          } screen share.`
+        );
+
+        // Update the ref to the latest conferenceScreenShareStatus
+        prevConferenceScreenShareStatus.current = conferenceScreenShareStatus;
+      }
+    }
+  }, [conferenceScreenShareStatus]);
+
+  // To reset the toastShownRef when conferenceScreenShareStatus changes (or when you need to reset)
+  // useEffect(() => {
+  //   toastShownRef.current = false;
+  // }, [conferenceScreenShareStatus]);
+
   return (
     <>
       <video ref={remoteVideoRef} autoPlay alt="" className="videoElement" />

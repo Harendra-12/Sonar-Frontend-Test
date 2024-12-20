@@ -30,9 +30,9 @@ function VideoCall({
   const {
     isHeld = false,
     isMuted = false,
-    hangup = () => { },
-    hold = () => { },
-    unhold = () => { },
+    hangup = () => {},
+    hold = () => {},
+    unhold = () => {},
   } = sessionCallData;
 
   useEffect(() => {
@@ -204,9 +204,9 @@ function VideoCall({
           video: true,
           audio: true,
         });
-  
+
         let videoSenderFound = false;
-  
+
         session.sessionDescriptionHandler.peerConnection
           .getSenders()
           .forEach((sender) => {
@@ -215,13 +215,13 @@ function VideoCall({
               videoSenderFound = true;
             }
           });
-  
+
         // If no video sender exists (audio-only call), add the screen share track
         if (!videoSenderFound) {
           const pc = session.sessionDescriptionHandler.peerConnection;
           pc.addTrack(screenStream.getVideoTracks()[0], screenStream);
         }
-  
+
         setIsScreenSharing(true);
       } catch (error) {
         console.error("Error while starting screen share:", error);
@@ -229,8 +229,7 @@ function VideoCall({
       }
     }
   };
-  
-  
+
   // const toggleScreenShare = async () => {
   //   if (isScreenSharing) {
   //     const localStream = await getLocalStream();
