@@ -281,17 +281,20 @@ table td.incoming::after {
     font-size: 28px;
 }
 
-.profileDropdown .dropdown-item {
+.profileDropdown .dropdown-item,
+.actionBtnDropdowns .dropdown-item {
     border-radius: 5px;
     padding: 5px;
 }
 
-.profileDropdown .dropdown-item:hover {
+.profileDropdown .dropdown-item:hover,
+.actionBtnDropdowns .dropdown-item:hover {
     background-color: #ffffff50;
 
 }
 
-.profileDropdown a {
+.profileDropdown a,
+.actionBtnDropdowns a {
     text-decoration: none;
     color: #fff;
     font-size: 14px;

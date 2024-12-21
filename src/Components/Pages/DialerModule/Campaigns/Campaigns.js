@@ -1,5 +1,7 @@
 import React from 'react'
 import Header from '../../../CommonComponents/Header'
+import PaginationComponent from '../../../CommonComponents/PaginationComponent'
+import Tippy from '@tippyjs/react'
 
 function Campaigns() {
     return (
@@ -79,7 +81,7 @@ function Campaigns() {
                                                             <td>Gateway</td>
                                                             <td className="">
                                                                 <div
-                                                                    className="specialProgressWrap  dropdown"
+                                                                    className="specialProgressWrap"
                                                                     style={{ cursor: "pointer" }}
                                                                 >
                                                                     <div className="specialProgress">
@@ -87,150 +89,115 @@ function Campaigns() {
                                                                         <div className='segment fail' style={{ width: '5%' }}></div>
                                                                         <div className='segment pending' style={{ width: '10%' }}></div>
                                                                     </div>
-                                                                    <div className="dropdown-content">
-                                                                        <div>
-                                                                            <div className="">
-                                                                                <div className="d-flex align-items-center justify-content-start">
-                                                                                    <p
-                                                                                        className="text-paragraph p-1 m-0"
-                                                                                        style={{ fontSize: 10, fontWeight: 500 }}
-                                                                                    >
-                                                                                        LEADS IN TOTAL
-                                                                                    </p>
-                                                                                    <span className="test-demos">1000</span>
-                                                                                </div>
-                                                                                <div className="border-test">
-                                                                                    <p
-                                                                                        style={{
-                                                                                            color: "rgb(92, 92, 92)",
-                                                                                            fontSize: 12,
-                                                                                            fontWeight: 400
-                                                                                        }}
-                                                                                        className="p-0 m-0"
-                                                                                    >
-                                                                                        Completed records
-                                                                                    </p>
-                                                                                    <div className="specialProgressWrap">
-                                                                                        <div className="specialProgress">
-                                                                                            <div className='segment success' style={{ width: '85%' }}></div>
-                                                                                            <div className='segment fail' style={{ width: '5%' }}></div>
-                                                                                            <div className='segment pending' style={{ width: '10%' }}></div>
-                                                                                        </div>
-                                                                                        <div className="specialProgressText">
-                                                                                            <p>0.00%</p>
-                                                                                            <span>0 of 1000</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <p
-                                                                                        style={{
-                                                                                            color: "rgb(92, 92, 92)",
-                                                                                            fontSize: 12,
-                                                                                            fontWeight: 400
-                                                                                        }}
-                                                                                        className="p-0 m-0"
-                                                                                    >
-                                                                                        Failed records
-                                                                                    </p>
-                                                                                    <div className="specialProgressWrap">
-                                                                                        <div className="specialProgress">
-                                                                                            <div className='segment success' style={{ width: '85%' }}></div>
-                                                                                            <div className='segment fail' style={{ width: '5%' }}></div>
-                                                                                            <div className='segment pending' style={{ width: '10%' }}></div>
-                                                                                        </div>
-                                                                                        <div className="specialProgressText">
-                                                                                            <p>0.00%</p>
-                                                                                            <span>0 of 1000</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <p
-                                                                                        style={{
-                                                                                            color: "rgb(92, 92, 92)",
-                                                                                            fontSize: 12,
-                                                                                            fontWeight: 400
-                                                                                        }}
-                                                                                        className="p-0 m-0"
-                                                                                    >
-                                                                                        Request records
-                                                                                    </p>
-                                                                                    <div className="specialProgressWrap">
-                                                                                        <div className="specialProgress">
-                                                                                            <div className='segment success' style={{ width: '85%' }}></div>
-                                                                                            <div className='segment fail' style={{ width: '5%' }}></div>
-                                                                                            <div className='segment pending' style={{ width: '10%' }}></div>
-                                                                                        </div>
-                                                                                        <div className="specialProgressText">
-                                                                                            <p>0.00%</p>
-                                                                                            <span>0 of 1000</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <p
-                                                                                        style={{
-                                                                                            color: "rgb(92, 92, 92)",
-                                                                                            fontSize: 12,
-                                                                                            fontWeight: 400
-                                                                                        }}
-                                                                                        className="p-0 m-0"
-                                                                                    >
-                                                                                        Untouched records
-                                                                                    </p>
-                                                                                    <div className="specialProgressWrap">
-                                                                                        <div className="specialProgress">
-                                                                                            <div className='segment success' style={{ width: '85%' }}></div>
-                                                                                            <div className='segment fail' style={{ width: '5%' }}></div>
-                                                                                            <div className='segment pending' style={{ width: '10%' }}></div>
-                                                                                        </div>
-                                                                                        <div className="specialProgressText">
-                                                                                            <p>0.00%</p>
-                                                                                            <span>0 of 1000</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
                                                                     <div className="specialProgressText">
                                                                         <p>0.00%</p>
                                                                         <span>0 of 1000</span>
+                                                                    </div>
+                                                                    <div className="specialProgressWrapDetails">
+                                                                        <div className="d-flex align-items-center justify-content-start mb-1">
+                                                                            <p
+                                                                                style={{ fontSize: 12, fontWeight: 500, marginBottom: 0 }}
+                                                                            >
+                                                                                LEADS IN TOTAL
+                                                                            </p>
+                                                                            <span className="test-demos ms-2">1000</span>
+                                                                        </div>
+                                                                        <ul>
+                                                                            <li>
+                                                                                <p
+                                                                                    style={{
+                                                                                        color: "rgb(92, 92, 92)",
+                                                                                        fontSize: 12,
+                                                                                        fontWeight: 400
+                                                                                    }}
+                                                                                    className="p-0 m-0"
+                                                                                >
+                                                                                    Completed records
+                                                                                </p>
+                                                                                <div className="specialProgressWrap">
+                                                                                    <div className="specialProgress">
+                                                                                        <div className='segment success' style={{ width: '85%' }}></div>
+                                                                                        <div className='segment fail' style={{ width: '5%' }}></div>
+                                                                                        <div className='segment pending' style={{ width: '10%' }}></div>
+                                                                                    </div>
+                                                                                    <div className="specialProgressText">
+                                                                                        <p>0.00%</p>
+                                                                                        <span>0</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li>
+                                                                                <p
+                                                                                    style={{
+                                                                                        color: "rgb(92, 92, 92)",
+                                                                                        fontSize: 12,
+                                                                                        fontWeight: 400
+                                                                                    }}
+                                                                                    className="p-0 m-0"
+                                                                                >
+                                                                                    Failed records
+                                                                                </p>
+                                                                                <div className="specialProgressWrap">
+                                                                                    <div className="specialProgress">
+                                                                                        <div className='segment success' style={{ width: '85%' }}></div>
+                                                                                        <div className='segment fail' style={{ width: '5%' }}></div>
+                                                                                        <div className='segment pending' style={{ width: '10%' }}></div>
+                                                                                    </div>
+                                                                                    <div className="specialProgressText">
+                                                                                        <p>0.00%</p>
+                                                                                        <span>0</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li>
+                                                                                <p
+                                                                                    style={{
+                                                                                        color: "rgb(92, 92, 92)",
+                                                                                        fontSize: 12,
+                                                                                        fontWeight: 400
+                                                                                    }}
+                                                                                    className="p-0 m-0"
+                                                                                >
+                                                                                    Untouched records
+                                                                                </p>
+                                                                                <div className="specialProgressWrap">
+                                                                                    <div className="specialProgress">
+                                                                                        <div className='segment success' style={{ width: '85%' }}></div>
+                                                                                        <div className='segment fail' style={{ width: '5%' }}></div>
+                                                                                        <div className='segment pending' style={{ width: '10%' }}></div>
+                                                                                    </div>
+                                                                                    <div className="specialProgressText">
+                                                                                        <p>0.00%</p>
+                                                                                        <span>0</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                        </ul>
                                                                     </div>
                                                                 </div>
                                                             </td>
                                                             <td>
                                                                 <div>
                                                                     <div className="avatar-container">
-                                                                        <img
-                                                                            src="https://randomuser.me/api/portraits/men/1.jpg"
-                                                                            alt="Avatar 1"
-                                                                            className="avatar avatar1"
-                                                                        />
-                                                                        <img
-                                                                            src="https://randomuser.me/api/portraits/men/2.jpg"
-                                                                            alt="Avatar 2"
-                                                                            className="avatar avatar2"
-                                                                        />
-                                                                        <img
-                                                                            src="https://randomuser.me/api/portraits/men/3.jpg"
-                                                                            alt="Avatar 3"
-                                                                            className="avatar avatar3"
-                                                                        />
-                                                                        <img
-                                                                            src="https://randomuser.me/api/portraits/men/4.jpg"
-                                                                            alt="Avatar 4"
-                                                                            className="avatar avatar4"
-                                                                        />
-                                                                        <img
-                                                                            src="https://randomuser.me/api/portraits/men/5.jpg"
-                                                                            alt="Avatar 5"
-                                                                            className="avatar avatar5"
-                                                                        />
-                                                                        <img src="" alt="Avatar 6" className="avatar avatar6" />
+                                                                        <Tippy content={"1001"}><i class="fa-light fa-user"></i></Tippy>
+                                                                        <Tippy content={"1001"}><i class="fa-light fa-user"></i></Tippy>
+                                                                        <Tippy content={"1001"}><i class="fa-light fa-user"></i></Tippy>
+                                                                        <Tippy content={"1001"}><i class="fa-light fa-user"></i></Tippy>
+                                                                        <span>+2</span>
                                                                     </div>
                                                                 </div>
                                                             </td>
                                                             <td><span className='ellipsis'>Customerlist.xls</span></td>
                                                             <td>
-                                                                <button className="tableButton">
-                                                                    <i className="fa-solid fa-ellipsis-vertical" />
-                                                                </button>
+                                                                <div class="dropdown">
+                                                                    <a class="tableButton" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                        <i className="fa-solid fa-ellipsis-vertical" />
+                                                                    </a>
+                                                                    <ul class="dropdown-menu actionBtnDropdowns">
+                                                                        <li className='dropdown-item'><a class="clearButton text-align-start" href="#"><i class="fa-regular fa-pen-to-square me-2"></i> Edit</a></li>
+                                                                        <li className='dropdown-item'><a class="clearButton text-align-start" href="#"><i class="fa-regular fa-circle-pause me-2"></i> Pause</a></li>
+                                                                    </ul>
+                                                                </div>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -266,39 +233,25 @@ function Campaigns() {
                                                             <td>
                                                                 <div>
                                                                     <div className="avatar-container">
-                                                                        <img
-                                                                            src="https://randomuser.me/api/portraits/men/1.jpg"
-                                                                            alt="Avatar 1"
-                                                                            className="avatar avatar1"
-                                                                        />
-                                                                        <img
-                                                                            src="https://randomuser.me/api/portraits/men/2.jpg"
-                                                                            alt="Avatar 2"
-                                                                            className="avatar avatar2"
-                                                                        />
-                                                                        <img
-                                                                            src="https://randomuser.me/api/portraits/men/3.jpg"
-                                                                            alt="Avatar 3"
-                                                                            className="avatar avatar3"
-                                                                        />
-                                                                        <img
-                                                                            src="https://randomuser.me/api/portraits/men/4.jpg"
-                                                                            alt="Avatar 4"
-                                                                            className="avatar avatar4"
-                                                                        />
-                                                                        <img
-                                                                            src="https://randomuser.me/api/portraits/men/5.jpg"
-                                                                            alt="Avatar 5"
-                                                                            className="avatar avatar5"
-                                                                        />
+                                                                        <Tippy content={"1001"}><i class="fa-light fa-user"></i></Tippy>
+                                                                        <Tippy content={"1001"}><i class="fa-light fa-user"></i></Tippy>
+                                                                        <Tippy content={"1001"}><i class="fa-light fa-user"></i></Tippy>
+                                                                        <Tippy content={"1001"}><i class="fa-light fa-user"></i></Tippy>
+                                                                        <span>+2</span>
                                                                     </div>
                                                                 </div>
                                                             </td>
                                                             <td><span className='ellipsis'>Customerlist.xls</span></td>
                                                             <td>
-                                                                <button className="tableButton">
-                                                                    <i className="fa-solid fa-ellipsis-vertical" />
-                                                                </button>
+                                                                <div class="dropdown">
+                                                                    <a class="tableButton" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                        <i className="fa-solid fa-ellipsis-vertical" />
+                                                                    </a>
+                                                                    <ul class="dropdown-menu actionBtnDropdowns">
+                                                                        <li className='dropdown-item'><a class="clearButton text-align-start" href="#"><i class="fa-regular fa-pen-to-square me-2"></i> Edit</a></li>
+                                                                        <li className='dropdown-item'><a class="clearButton text-align-start" href="#"><i class="fa-regular fa-circle-pause me-2"></i> Pause</a></li>
+                                                                    </ul>
+                                                                </div>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -330,49 +283,124 @@ function Campaigns() {
                                                                         <p>0.00%</p>
                                                                         <span>0 of 1000</span>
                                                                     </div>
+                                                                    <div className="specialProgressWrapDetails">
+                                                                        <div className="d-flex align-items-center justify-content-start mb-1">
+                                                                            <p
+                                                                                style={{ fontSize: 12, fontWeight: 500, marginBottom: 0 }}
+                                                                            >
+                                                                                LEADS IN TOTAL
+                                                                            </p>
+                                                                            <span className="test-demos ms-2">1000</span>
+                                                                        </div>
+                                                                        <ul>
+                                                                            <li>
+                                                                                <p
+                                                                                    style={{
+                                                                                        color: "rgb(92, 92, 92)",
+                                                                                        fontSize: 12,
+                                                                                        fontWeight: 400
+                                                                                    }}
+                                                                                    className="p-0 m-0"
+                                                                                >
+                                                                                    Completed records
+                                                                                </p>
+                                                                                <div className="specialProgressWrap">
+                                                                                    <div className="specialProgress">
+                                                                                        <div className='segment success' style={{ width: '85%' }}></div>
+                                                                                        <div className='segment fail' style={{ width: '5%' }}></div>
+                                                                                        <div className='segment pending' style={{ width: '10%' }}></div>
+                                                                                    </div>
+                                                                                    <div className="specialProgressText">
+                                                                                        <p>0.00%</p>
+                                                                                        <span>0</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li>
+                                                                                <p
+                                                                                    style={{
+                                                                                        color: "rgb(92, 92, 92)",
+                                                                                        fontSize: 12,
+                                                                                        fontWeight: 400
+                                                                                    }}
+                                                                                    className="p-0 m-0"
+                                                                                >
+                                                                                    Failed records
+                                                                                </p>
+                                                                                <div className="specialProgressWrap">
+                                                                                    <div className="specialProgress">
+                                                                                        <div className='segment success' style={{ width: '85%' }}></div>
+                                                                                        <div className='segment fail' style={{ width: '5%' }}></div>
+                                                                                        <div className='segment pending' style={{ width: '10%' }}></div>
+                                                                                    </div>
+                                                                                    <div className="specialProgressText">
+                                                                                        <p>0.00%</p>
+                                                                                        <span>0</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li>
+                                                                                <p
+                                                                                    style={{
+                                                                                        color: "rgb(92, 92, 92)",
+                                                                                        fontSize: 12,
+                                                                                        fontWeight: 400
+                                                                                    }}
+                                                                                    className="p-0 m-0"
+                                                                                >
+                                                                                    Untouched records
+                                                                                </p>
+                                                                                <div className="specialProgressWrap">
+                                                                                    <div className="specialProgress">
+                                                                                        <div className='segment success' style={{ width: '85%' }}></div>
+                                                                                        <div className='segment fail' style={{ width: '5%' }}></div>
+                                                                                        <div className='segment pending' style={{ width: '10%' }}></div>
+                                                                                    </div>
+                                                                                    <div className="specialProgressText">
+                                                                                        <p>0.00%</p>
+                                                                                        <span>0</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
                                                                 </div>
                                                             </td>
                                                             <td>
                                                                 <div>
                                                                     <div className="avatar-container">
-                                                                        <img
-                                                                            src="https://randomuser.me/api/portraits/men/1.jpg"
-                                                                            alt="Avatar 1"
-                                                                            className="avatar avatar1"
-                                                                        />
-                                                                        <img
-                                                                            src="https://randomuser.me/api/portraits/men/2.jpg"
-                                                                            alt="Avatar 2"
-                                                                            className="avatar avatar2"
-                                                                        />
-                                                                        <img
-                                                                            src="https://randomuser.me/api/portraits/men/3.jpg"
-                                                                            alt="Avatar 3"
-                                                                            className="avatar avatar3"
-                                                                        />
-                                                                        <img
-                                                                            src="https://randomuser.me/api/portraits/men/4.jpg"
-                                                                            alt="Avatar 4"
-                                                                            className="avatar avatar4"
-                                                                        />
-                                                                        <img
-                                                                            src="https://randomuser.me/api/portraits/men/5.jpg"
-                                                                            alt="Avatar 5"
-                                                                            className="avatar avatar5"
-                                                                        />
-                                                                        <img src="" alt="Avatar 6" className="avatar avatar6" />
+                                                                        <Tippy content={"1001"}><i class="fa-light fa-user"></i></Tippy>
+                                                                        <Tippy content={"1001"}><i class="fa-light fa-user"></i></Tippy>
+                                                                        <Tippy content={"1001"}><i class="fa-light fa-user"></i></Tippy>
+                                                                        <Tippy content={"1001"}><i class="fa-light fa-user"></i></Tippy>
+                                                                        <span>+2</span>
                                                                     </div>
                                                                 </div>
                                                             </td>
                                                             <td><span className='ellipsis'>Customerlist.xls</span></td>
                                                             <td>
-                                                                <button className="tableButton">
-                                                                    <i className="fa-solid fa-ellipsis-vertical" />
-                                                                </button>
+                                                                <div class="dropdown">
+                                                                    <a class="tableButton" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                        <i className="fa-solid fa-ellipsis-vertical" />
+                                                                    </a>
+                                                                    <ul class="dropdown-menu actionBtnDropdowns">
+                                                                        <li className='dropdown-item'><a class="clearButton text-align-start" href="#"><i class="fa-regular fa-pen-to-square me-2"></i> Edit</a></li>
+                                                                        <li className='dropdown-item'><a class="clearButton text-align-start" href="#"><i class="fa-regular fa-circle-pause me-2"></i> Pause</a></li>
+                                                                    </ul>
+                                                                </div>
                                                             </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
+                                            </div>
+                                            <div className="tableHeader mb-3">
+                                                <PaginationComponent
+                                                // pageNumber={(e) => setPageNumber(e)}
+                                                // totalPage={extension.last_page}
+                                                // from={(pageNumber - 1) * extension.per_page + 1}
+                                                // to={extension.to}
+                                                // total={extension.total}
+                                                />
                                             </div>
                                         </div>
                                     </div>

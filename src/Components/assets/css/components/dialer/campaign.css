@@ -73,12 +73,6 @@
     font-size: 10px;
 }
 
-.avatar-container {
-    position: relative;
-    width: 100%;
-    padding-bottom: 18px;
-}
-
 .avatar {
     position: absolute;
     width: 23px;
@@ -182,6 +176,10 @@
     justify-content: flex-start;
 }
 
+.specialProgressWrap:hover .specialProgressWrapDetails {
+    display: block;
+}
+
 .specialProgress {
     background: transparent;
     width: 100%;
@@ -214,7 +212,7 @@
 }
 
 .specialProgressText {
-    margin-left: 10px;
+    margin-left: 5px;
 }
 
 .specialProgressText p {
@@ -229,4 +227,69 @@
     color: var(--color-subtext);
     text-wrap: nowrap;
     font-size: 12px;
+}
+
+.specialProgressWrapDetails {
+    display: none;
+    position: absolute;
+    top: 10px;
+    /* left: 0; */
+    z-index: 1;
+    background-color: var(--ele-color);
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    width: 200px;
+    padding: 5px;
+}
+
+.specialProgressWrapDetails ul {
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    padding: 5px;
+    list-style: none;
+    margin: 0;
+}
+
+.specialProgressWrapDetails ul li {
+    padding-bottom: 5px;
+}
+
+.specialProgressWrapDetails ul li:last-child {
+    border-top: 1px solid var(--border-color);
+    padding-top: 5px;
+    padding-bottom: 0;
+}
+
+.avatar-container {
+    display: flex;
+    position: relative;
+}
+
+.avatar-container i {
+    background-color: var(--ui-accent);
+    color: #fff;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 2px solid #fff;
+}
+
+.avatar-container i:not(:first-child) {
+    margin-left: -13px;
+}
+
+.avatar-container span {
+    background-color: var(--webUtilGray);
+    color: #fff;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    margin-left: -13px;
 }
