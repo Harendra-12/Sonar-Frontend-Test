@@ -1,0 +1,212 @@
+.campaignPage {
+    --bg-color-light: #f0f4f5;
+    /* Background color */
+    --text-color-dark: #070708;
+    /* Dark text color */
+    --font-color-primary: #1bc595;
+    /* Primary font color */
+    --font-color-secondary: #75aef9;
+    /* Secondary font color */
+    --font-color-warning: #f8bb63;
+    /* Warning font color */
+    --font-color-danger: #ed9393;
+    /* Danger font color */
+    --font-color-info: #5cddb9;
+    /* Info font color */
+    --font-color-neutral: #6d6d6d;
+    /* Neutral font color */
+    --font-color-muted: #616161;
+    /* Muted font color */
+    --border-color-light: #e6e6e6;
+    /* Light border color */
+    --border-color-light-grey: #ebebeb;
+    /* Light grey border color */
+    --box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    /* Box shadow */
+    --highlight-color: #0d6efd;
+    /* Highlight color */
+    --button-hover-color: #f0f0f0;
+    /* Button hover color */
+    --button-focus-color: #FFFF;
+    /* Button focus color */
+    --button-height: 2rem;
+    /* Button height */
+    --button-color: #edd;
+    /* Button color */
+    --bs-font-sans-serif: "Encode Sans Semi Expanded", sans-serif;
+
+}
+
+/* body {
+    background-color: var(--bg-color-light);
+
+    font-family: var(--bs-font-sans-serif) !important;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+} */
+
+.phone-calls {
+    font-size: 20px;
+}
+
+#control {
+    bottom: 10px;
+    width: 19px;
+    height: 19px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.phone-call {
+    height: 20px;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #c5f83f;
+    color: #202020;
+    border-radius: 5px;
+    font-size: 10px;
+}
+
+.progress-container {
+    width: 100px;
+    height: 27px;
+    background-color: #f3f3f3 !important;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.progress-bar {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    overflow: hidden;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #f8f8f8 !important;
+    transition: width .6s ease;
+}
+
+.segment {
+    height: 100%;
+}
+
+.red {
+    background-color: #9cd114;
+    width: 40%;
+}
+
+.pink {
+    background-color: #b9c9d1;
+    width: 60%;
+}
+
+.avatar-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 18px;
+}
+
+.avatar {
+    position: absolute;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+}
+
+.avatar1 {
+    top: 0;
+    left: 0px;
+}
+
+.avatar2 {
+    top: 0;
+    left: 10px;
+    z-index: 1;
+}
+
+.avatar3 {
+    top: 0px;
+    left: 22px;
+    z-index: 2;
+}
+
+.avatar4 {
+    top: 0px;
+    left: 34px;
+    z-index: 3;
+}
+
+.avatar5 {
+    top: 0px;
+    left: 47px;
+    z-index: 4;
+}
+
+.avatar6 {
+    top: 0px;
+    left: 60px;
+    z-index: 4;
+}
+
+/* tbody {
+    background-color: var(--bg-color-light) !important;
+} */
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--bg-color-light);
+    min-width: 160px;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+    z-index: 1;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.test-demos {
+    height: 15px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #7797a7;
+    color: #fff !important;
+    border-radius: 5px;
+}
+
+.border-test {
+    border: 1px solid rgb(194, 194, 194);
+    margin: 5px;
+    border-radius: 4px;
+    padding: 4px;
+}
