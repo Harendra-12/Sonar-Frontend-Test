@@ -79,145 +79,118 @@ function Campaigns() {
                                                             <td>Gateway</td>
                                                             <td className="">
                                                                 <div
-                                                                    className="d-flex align-items-center justify-content-start  dropdown"
+                                                                    className="specialProgressWrap  dropdown"
                                                                     style={{ cursor: "pointer" }}
                                                                 >
-                                                                    <div className="progress-container">
-                                                                        <div className="progress-bar ">
-                                                                            <div className="segment red" />
-                                                                            <div className="segment green" />
-                                                                            <div className="segment pink " />
-                                                                        </div>
-                                                                        <div className="dropdown-content">
-                                                                            <div>
-                                                                                <div className="">
-                                                                                    <div className="d-flex align-items-center justify-content-start">
-                                                                                        <p
-                                                                                            className="text-paragraph p-1 m-0"
-                                                                                            style={{ fontSize: 10, fontWeight: 500 }}
-                                                                                        >
-                                                                                            LEADS IN TOTAL
-                                                                                        </p>
-                                                                                        <span className="test-demos">1000</span>
+                                                                    <div className="specialProgress">
+                                                                        <div className='segment success' style={{ width: '85%' }}></div>
+                                                                        <div className='segment fail' style={{ width: '5%' }}></div>
+                                                                        <div className='segment pending' style={{ width: '10%' }}></div>
+                                                                    </div>
+                                                                    <div className="dropdown-content">
+                                                                        <div>
+                                                                            <div className="">
+                                                                                <div className="d-flex align-items-center justify-content-start">
+                                                                                    <p
+                                                                                        className="text-paragraph p-1 m-0"
+                                                                                        style={{ fontSize: 10, fontWeight: 500 }}
+                                                                                    >
+                                                                                        LEADS IN TOTAL
+                                                                                    </p>
+                                                                                    <span className="test-demos">1000</span>
+                                                                                </div>
+                                                                                <div className="border-test">
+                                                                                    <p
+                                                                                        style={{
+                                                                                            color: "rgb(92, 92, 92)",
+                                                                                            fontSize: 12,
+                                                                                            fontWeight: 400
+                                                                                        }}
+                                                                                        className="p-0 m-0"
+                                                                                    >
+                                                                                        Completed records
+                                                                                    </p>
+                                                                                    <div className="specialProgressWrap">
+                                                                                        <div className="specialProgress">
+                                                                                            <div className='segment success' style={{ width: '85%' }}></div>
+                                                                                            <div className='segment fail' style={{ width: '5%' }}></div>
+                                                                                            <div className='segment pending' style={{ width: '10%' }}></div>
+                                                                                        </div>
+                                                                                        <div className="specialProgressText">
+                                                                                            <p>0.00%</p>
+                                                                                            <span>0 of 1000</span>
+                                                                                        </div>
                                                                                     </div>
-                                                                                    <div className="border-test">
-                                                                                        <p
-                                                                                            style={{
-                                                                                                color: "rgb(92, 92, 92)",
-                                                                                                fontSize: 12,
-                                                                                                fontWeight: 400
-                                                                                            }}
-                                                                                            className="p-0 m-0"
-                                                                                        >
-                                                                                            Completed records
-                                                                                        </p>
-                                                                                        <div className="d-flex align-items-center justify-content-start">
-                                                                                            <div className="progress-container">
-                                                                                                <div className="progress-bar ">
-                                                                                                    <div className="segment red" />
-                                                                                                    <div className="segment green" />
-                                                                                                    <div className="segment pink " />
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div className="text-paragraph p-1">
-                                                                                                <p>0.00%</p>
-                                                                                                <span style={{ textWrap: "nowrap" }}>
-                                                                                                    0 of 1000
-                                                                                                </span>
-                                                                                            </div>
+                                                                                    <p
+                                                                                        style={{
+                                                                                            color: "rgb(92, 92, 92)",
+                                                                                            fontSize: 12,
+                                                                                            fontWeight: 400
+                                                                                        }}
+                                                                                        className="p-0 m-0"
+                                                                                    >
+                                                                                        Failed records
+                                                                                    </p>
+                                                                                    <div className="specialProgressWrap">
+                                                                                        <div className="specialProgress">
+                                                                                            <div className='segment success' style={{ width: '85%' }}></div>
+                                                                                            <div className='segment fail' style={{ width: '5%' }}></div>
+                                                                                            <div className='segment pending' style={{ width: '10%' }}></div>
                                                                                         </div>
-                                                                                        <p
-                                                                                            style={{
-                                                                                                color: "rgb(92, 92, 92)",
-                                                                                                fontSize: 12,
-                                                                                                fontWeight: 400
-                                                                                            }}
-                                                                                            className="p-0 m-0"
-                                                                                        >
-                                                                                            Failed records
-                                                                                        </p>
-                                                                                        <div className="d-flex align-items-center justify-content-start">
-                                                                                            <div className="progress-container">
-                                                                                                <div className="progress-bar ">
-                                                                                                    <div
-                                                                                                        style={{ width: 0 }}
-                                                                                                        className="segment red"
-                                                                                                    />
-                                                                                                    <div className="segment green" />
-                                                                                                    <div className="segment pink" />
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div className="text-paragraph p-1">
-                                                                                                <p>0.00%</p>
-                                                                                                <span style={{ textWrap: "nowrap" }}>
-                                                                                                    0 of 1000
-                                                                                                </span>
-                                                                                            </div>
+                                                                                        <div className="specialProgressText">
+                                                                                            <p>0.00%</p>
+                                                                                            <span>0 of 1000</span>
                                                                                         </div>
-                                                                                        <p
-                                                                                            style={{
-                                                                                                color: "rgb(92, 92, 92)",
-                                                                                                fontSize: 12,
-                                                                                                fontWeight: 400
-                                                                                            }}
-                                                                                            className="p-0 m-0"
-                                                                                        >
-                                                                                            Request records
-                                                                                        </p>
-                                                                                        <div className="d-flex align-items-center justify-content-start">
-                                                                                            <div className="progress-container">
-                                                                                                <div className="progress-bar ">
-                                                                                                    <div
-                                                                                                        style={{ width: 0 }}
-                                                                                                        className="segment red"
-                                                                                                    />
-                                                                                                    <div className="segment green" />
-                                                                                                    <div className="segment pink" />
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div className="text-paragraph p-1">
-                                                                                                <p>0.00%</p>
-                                                                                                <span style={{ textWrap: "nowrap" }}>
-                                                                                                    0 of 1000
-                                                                                                </span>
-                                                                                            </div>
+                                                                                    </div>
+                                                                                    <p
+                                                                                        style={{
+                                                                                            color: "rgb(92, 92, 92)",
+                                                                                            fontSize: 12,
+                                                                                            fontWeight: 400
+                                                                                        }}
+                                                                                        className="p-0 m-0"
+                                                                                    >
+                                                                                        Request records
+                                                                                    </p>
+                                                                                    <div className="specialProgressWrap">
+                                                                                        <div className="specialProgress">
+                                                                                            <div className='segment success' style={{ width: '85%' }}></div>
+                                                                                            <div className='segment fail' style={{ width: '5%' }}></div>
+                                                                                            <div className='segment pending' style={{ width: '10%' }}></div>
                                                                                         </div>
-                                                                                        <p
-                                                                                            style={{
-                                                                                                color: "rgb(92, 92, 92)",
-                                                                                                fontSize: 12,
-                                                                                                fontWeight: 400
-                                                                                            }}
-                                                                                            className="p-0 m-0"
-                                                                                        >
-                                                                                            Untouched records
-                                                                                        </p>
-                                                                                        <div className="d-flex align-items-center justify-content-start">
-                                                                                            <div className="progress-container">
-                                                                                                <div className="progress-bar ">
-                                                                                                    <div
-                                                                                                        style={{ width: 0 }}
-                                                                                                        className="segment red"
-                                                                                                    />
-                                                                                                    <div className="segment green" />
-                                                                                                    <div className="segment pink" />
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div className="text-paragraph p-1">
-                                                                                                <p>0.00%</p>
-                                                                                                <span style={{ textWrap: "nowrap" }}>
-                                                                                                    0 of 1000
-                                                                                                </span>
-                                                                                            </div>
+                                                                                        <div className="specialProgressText">
+                                                                                            <p>0.00%</p>
+                                                                                            <span>0 of 1000</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <p
+                                                                                        style={{
+                                                                                            color: "rgb(92, 92, 92)",
+                                                                                            fontSize: 12,
+                                                                                            fontWeight: 400
+                                                                                        }}
+                                                                                        className="p-0 m-0"
+                                                                                    >
+                                                                                        Untouched records
+                                                                                    </p>
+                                                                                    <div className="specialProgressWrap">
+                                                                                        <div className="specialProgress">
+                                                                                            <div className='segment success' style={{ width: '85%' }}></div>
+                                                                                            <div className='segment fail' style={{ width: '5%' }}></div>
+                                                                                            <div className='segment pending' style={{ width: '10%' }}></div>
+                                                                                        </div>
+                                                                                        <div className="specialProgressText">
+                                                                                            <p>0.00%</p>
+                                                                                            <span>0 of 1000</span>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div className="text-paragraph p-1">
-                                                                        <p>1.00%</p>
-                                                                        <span style={{ textWrap: "nowrap" }}>10 of 1000</span>
+                                                                    <div className="specialProgressText">
+                                                                        <p>0.00%</p>
+                                                                        <span>0 of 1000</span>
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -278,17 +251,15 @@ function Campaigns() {
                                                             <td>1800123465</td>
                                                             <td>Gateway</td>
                                                             <td>
-                                                                <div className="d-flex align-items-center justify-content-start">
-                                                                    <div className="progress-container">
-                                                                        <div className="progress-bar ">
-                                                                            <div style={{ width: 0 }} className="segment red" />
-                                                                            <div className="segment green" />
-                                                                            <div className="segment pink" />
-                                                                        </div>
+                                                                <div className="specialProgressWrap">
+                                                                    <div className="specialProgress">
+                                                                        <div className='segment success' style={{ width: '85%' }}></div>
+                                                                        <div className='segment fail' style={{ width: '5%' }}></div>
+                                                                        <div className='segment pending' style={{ width: '10%' }}></div>
                                                                     </div>
-                                                                    <div className="text-paragraph p-1">
+                                                                    <div className="specialProgressText">
                                                                         <p>0.00%</p>
-                                                                        <span style={{ textWrap: "nowrap" }}>0 of 1000</span>
+                                                                        <span>0 of 1000</span>
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -349,20 +320,15 @@ function Campaigns() {
                                                             <td>1800123465</td>
                                                             <td>Gateway</td>
                                                             <td>
-                                                                <div className="d-flex align-items-center justify-content-start">
-                                                                    <div className="progress-container dropdown">
-                                                                        <div className="progress-bar ">
-                                                                            <div className="segment red" />
-                                                                            <div className="segment green" />
-                                                                            <div
-                                                                                style={{ backgroundColor: "#e83b6d", width: 40 }}
-                                                                                className="segment pink"
-                                                                            />
-                                                                        </div>
+                                                                <div className="specialProgressWrap">
+                                                                    <div className="specialProgress">
+                                                                        <div className='segment success' style={{ width: '85%' }}></div>
+                                                                        <div className='segment fail' style={{ width: '5%' }}></div>
+                                                                        <div className='segment pending' style={{ width: '10%' }}></div>
                                                                     </div>
-                                                                    <div className="text-paragraph p-1">
-                                                                        <p>1.00%</p>
-                                                                        <span style={{ textWrap: "nowrap" }}>10 of 1000</span>
+                                                                    <div className="specialProgressText">
+                                                                        <p>0.00%</p>
+                                                                        <span>0 of 1000</span>
                                                                     </div>
                                                                 </div>
                                                             </td>

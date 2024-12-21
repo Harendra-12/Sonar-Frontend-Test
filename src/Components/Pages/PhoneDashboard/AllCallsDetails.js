@@ -102,7 +102,7 @@ function AllCallsDetails() {
                               </div>
                             </div>
                             <div className="col-xl-6 col-xxl-6 mt-2">
-                              <div className="itemWrapperb a">
+                              <div className="itemWrapperb d">
                                 <div className="heading">Missed Calls</div>
                                 {/* <div className="data-number">{callDetails.missed}</div> */}
                                 <div className="data-number">
@@ -210,7 +210,7 @@ function AllCallsDetails() {
                               </div>
                             </div>
                             <div className="col-xl-6 col-xxl-6 mt-2">
-                              <div className="itemWrapperb a">
+                              <div className="itemWrapperb b">
                                 <div className="heading">
                                   Inbound Calls Completed
                                 </div>
@@ -237,7 +237,7 @@ function AllCallsDetails() {
                               </div>
                             </div>
                             <div className="col-xl-6 col-xxl-6 mt-2">
-                              <div className="itemWrapperb a">
+                              <div className="itemWrapperb d">
                                 <div className="heading">Missed Inbound Calls</div>
                                 <div className="data-number">
                                   {
@@ -351,7 +351,7 @@ function AllCallsDetails() {
                               </div>
                             </div>
                             <div className="col-xl-6 col-xxl-6 mt-2">
-                              <div className="itemWrapperb a">
+                              <div className="itemWrapperb b">
                                 <div className="heading">
                                   Outbound Calls Completed
                                 </div>
@@ -378,7 +378,7 @@ function AllCallsDetails() {
                               </div>
                             </div>
                             <div className="col-xl-6 col-xxl-6 mt-2">
-                              <div className="itemWrapperb a">
+                              <div className="itemWrapperb d">
                                 <div className="heading">Missed Outbound Calls</div>
                                 <div className="data-number">
                                   {outboundCall.filter(

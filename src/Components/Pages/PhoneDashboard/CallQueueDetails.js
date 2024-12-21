@@ -81,16 +81,16 @@ const CallQueueDetails = () => {
                 </div>
               </div>
               <div className="col-xl-1b">
-                <div className="itemWrapperb b agents">
+                <div className="itemWrapperb a agents">
                   <div className="heading">Agents</div>
                   <div className="d-flex justify-content-between">
                     <div className="group">
                       <div className="data-number">{call.agents.length}</div>
                       <div className="label2">Total</div>
                     </div>
-                    <div className="border-start" />
+                    <div style={{ borderLeft: '1px solid var(--border-color)' }} />
                     <div className="group">
-                      <div className="data-number">
+                      <div className="data-number" style={{ color: 'var(--funky-boy3)' }}>
                         {
                           call.agents.filter(
                             (agent) => agent.status === "available"
@@ -99,22 +99,22 @@ const CallQueueDetails = () => {
                       </div>
                       <div className="label2">Active</div>
                     </div>
-                    <div className="border-start" />
+                    <div style={{ borderLeft: '1px solid var(--border-color)' }} />
                     <div className="group">
-                      <div className="data-number">
+                      <div className="data-number" style={{ color: 'var(--funky-boy4)' }}>
                         {
                           call.agents.filter(
                             (agent) => agent.status !== "available"
                           ).length
                         }
                       </div>
-                      <div className="label2">Logged off</div>
+                      <div className="label2">Offline</div>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="col-xl-1b">
-                <div className="itemWrapperb c">
+                <div className="itemWrapperb a">
                   <div className="heading">Total Calls</div>
                   <div className="data-number">
                     {
@@ -128,7 +128,7 @@ const CallQueueDetails = () => {
                 </div>
               </div>
               <div className="col-xl-1b">
-                <div className="itemWrapperb d">
+                <div className="itemWrapperb b">
                   <div className="heading">Total Calls Completed</div>
                   <div className="data-number">
                     {
@@ -158,7 +158,7 @@ const CallQueueDetails = () => {
                 </div>
               </div>
               <div className="col-xl-1b">
-                <div className="itemWrapperb c">
+                <div className="itemWrapperb d">
                   <div className="heading">Missed Calls</div>
                   <div className="data-number">
                     {
@@ -188,7 +188,7 @@ const CallQueueDetails = () => {
                 </div>
               </div>
               <div className="col-xl-1b">
-                <div className="itemWrapperb a">
+                <div className="itemWrapperb c">
                   <div className="heading">Active Calls</div>
                   <div className="data-number">
                     {
@@ -200,7 +200,7 @@ const CallQueueDetails = () => {
                 </div>
               </div>
               <div className="col-xl-1b">
-                <div className="itemWrapperb d">
+                <div className="itemWrapperb a">
                   <div className="heading">Total Spent</div>
                   <div className="data-number">$0.00</div>
                   <div className="label2">N/A</div>

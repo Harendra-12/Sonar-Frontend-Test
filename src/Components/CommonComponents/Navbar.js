@@ -392,7 +392,8 @@ function Navbar() {
                         "/call-blocking-add",
                         "/agents",
                         "/agents-add",
-                        "/agents-edit"
+                        "/agents-edit",
+                        "/call-dashboard"
                       ])
                         ? "show"
                         : ""
@@ -407,6 +408,14 @@ function Navbar() {
                                 <i className="fa-regular fa-regular fa-list-dropdown"></i>
                               </div> */}
                               <div className="itemTitle">Call Dashboard</div>
+                            </NavLink>
+                          </li>
+                          <li className="tabItem ">
+                            <NavLink to="/call-dashboard">
+                              {/* <div className="iconHolder">
+                                <i className="fa-regular fa-regular fa-list-dropdown"></i>
+                              </div> */}
+                              <div className="itemTitle">Active Calls</div>
                             </NavLink>
                           </li>
                           <li className="tabItem">
@@ -661,7 +670,7 @@ function Navbar() {
                           <li className="tabItem ">
                             <NavLink
                               to="/campaigns"
-                              onClick={() => featureUnderdevelopment()}
+                              onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
                                   ["/campaigns-add", "/campaigns-edit"].some(
