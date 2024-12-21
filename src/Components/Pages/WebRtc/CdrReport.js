@@ -705,6 +705,8 @@ function CdrReport() {
                                             : <span><i class="fa-solid fa-headset me-1" style={{ color: 'var(--color2)' }}></i> Internal</span>
                                       }
                                       </td>
+
+                                      
                                       <td>
                                         {item["Caller-Orig-Caller-ID-Name"]}
                                       </td>
