@@ -80,9 +80,6 @@ const CallCenter = () => {
               <div className="newHeader">
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
-                    <button class="clearButton2 text-dark" onClick={() => featureUnderdevelopment()}>
-                      <i class="fa-solid fa-chevron-left fs-4"></i>
-                    </button>{" "}
                     Call Center{" "}
                   </h3>
                 </div>

@@ -443,7 +443,7 @@ function Call({
       `sip:${otherPartyExtension}@${process.env.REACT_APP_BACKEND_IP}`,
       {
         earlyMedia: true,
-          inviteWithSdp: true,
+        inviteWithSdp: true,
         sessionDescriptionHandlerOptions: {
           constraints: {
             audio: true,
@@ -468,32 +468,32 @@ function Call({
         },
       }
     );
-    
+
     const sdh = apiData.sessionDescriptionHandler;
 
     // Check if remoteMediaStream is available
     if (sdh && sdh._remoteMediaStream) {
       const remoteStream = sdh._remoteMediaStream;
-    
+
       // Listen for tracks being added to the remote stream
       remoteStream.onaddtrack = () => {
         console.log("Remote track added:", remoteStream);
         playRemoteStream(remoteStream);
       };
-    
+
       // If tracks are already present, attach immediately
       if (remoteStream.getTracks().length > 0) {
         console.log("Remote stream tracks available immediately:", remoteStream);
         playRemoteStream(remoteStream);
       }
     }
-    
+
     // Function to play the remote stream
     function playRemoteStream(stream) {
       const audioElement = document.createElement("audio");
       audioElement.srcObject = stream;
       audioElement.autoplay = true;
-    
+
       audioElement.play().catch((e) => {
         console.error("Error playing early media stream:", e);
       });
@@ -583,9 +583,6 @@ function Call({
                 <div className="newHeader">
                   <div className="col-auto" style={{ padding: "0 10px" }}>
                     <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
-                      <button class="clearButton2 text-dark" onClick={() => featureUnderdevelopment()}>
-                        <i class="fa-solid fa-chevron-left fs-4"></i>
-                      </button>{" "}
                       Calls{" "}
                       <button
                         class="clearButton2"
