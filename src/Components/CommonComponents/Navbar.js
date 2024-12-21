@@ -609,6 +609,7 @@ function Navbar() {
                           "/leads",
                           "/lead-add",
                           "/lead-edit",
+                          "/campaigns"
                         ])
                           ? "true"
                           : "false"
@@ -627,6 +628,7 @@ function Navbar() {
                         "/leads",
                         "/lead-add",
                         "/lead-edit",
+                        "/campaigns"
                       ])
                         ? "show"
                         : ""
@@ -657,12 +659,12 @@ function Navbar() {
                           </li>
 
                           <li className="tabItem ">
-                            <a
-                              // to="/extensions"
+                            <NavLink
+                              to="/campaigns"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
+                                  ["/campaigns-add", "/campaigns-edit"].some(
                                     (path) =>
                                       window.location.pathname.includes(path)
                                   )
@@ -674,7 +676,7 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Campaign</div>
-                            </a>
+                            </NavLink>
                           </li>
 
                           <li className="tabItem ">
@@ -1598,8 +1600,8 @@ function Navbar() {
                           {account?.permissions?.includes(248) ||
                             account?.permissions?.includes(250) ? (
                             <li className="tabItem ">
-                              <NavLink
-                                to="/mail-settings"
+                              <a
+                                // to="/dashboard"
                                 onClick={backToTop}
                                 type="button"
                                 className={({ isActive }) =>
@@ -1615,7 +1617,7 @@ function Navbar() {
                                 }
                               >
                                 <div className="itemTitle">Hardwares</div>
-                              </NavLink>
+                              </a>
                             </li>
                           ) : null}
                           <li className="tabItem ">

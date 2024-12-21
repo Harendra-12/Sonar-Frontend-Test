@@ -1,191 +1,422 @@
 import React from 'react'
 import Header from '../../../CommonComponents/Header'
-import PaginationComponent from '../../../CommonComponents/PaginationComponent'
-import { backToTop } from '../../../GlobalFunction/globalFunction';
-import { useNavigate } from 'react-router-dom';
 
 function Campaigns() {
-    const navigate = useNavigate();
     return (
-        <main className="mainContent">
-            <section id="phonePage">
-                <div className="container-fluid">
-                    <div className="row">
-                        <Header title="Campaigns" />
-                        <div className="overviewTableWrapper">
-                            <div className="overviewTableChild">
-                                <div className="d-flex flex-wrap">
-                                    <div className="col-12">
-                                        <div className="heading">
-                                            <div className="content">
-                                                <h4>Campaign</h4>
-                                            </div>
-                                            <div className="buttonGroup">
-                                                <button
-                                                    effect="ripple"
-                                                    className="panelButton gray"
-                                                    onClick={() => {
-                                                        navigate(-1);
-                                                        backToTop();
-                                                    }}
-                                                >
-                                                    <span className="text">Back</span>
-                                                    <span className="icon">
-                                                        <i class="fa-solid fa-caret-left"></i>
-                                                    </span>
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    className="panelButton"
-                                                >
-                                                    <span className="text">Add</span>
-                                                    <span className="icon">
-                                                        <i className="fa-solid fa-plus"></i>
-                                                    </span>
-                                                </button>
+        <>
+            <main className='mainContent'>
+                <section className="campaignPage">
+                    <div className="container-fluid">
+                        <div className="row">
+                            <Header title="Dialer" />
+                            <div className='overviewTableWrapper'>
+                                <div className='overviewTableChild'>
+                                    <div className='d-flex flex-wrap'>
+                                        <div class="col-12">
+                                            <div class="heading">
+                                                <div class="content">
+                                                    <h4>Campaigns</h4>
+                                                    <p>You can see the list of campaigns</p>
+                                                </div>
+                                                <div class="buttonGroup">
+                                                    <button class="panelButton gray">
+                                                        <span class="text">Back</span>
+                                                        <span class="icon"><i class="fa-solid fa-caret-left"></i></span>
+                                                    </button>
+                                                    <button class="panelButton">
+                                                        <span class="text">Create</span>
+                                                        <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="col-12" style={{ overflow: "auto", padding: "25px 20px 0" }}>
-                                        <div className="tableHeader">
-                                            <div className="showEntries">
-                                                <label>Show</label>
-                                                <select
-                                                    className="formItem"
-                                                // value={itemsPerPage}
-                                                // onChange={(e) => setItemsPerPage(e.target.value)}
-                                                >
-                                                    <option value={10}>10</option>
-                                                    <option value={20}>20</option>
-                                                    <option value={30}>30</option>
-                                                </select>
-                                                <label>entries</label>
+                                        <div className='col-12' style={{ overflow: 'auto', padding: '25px 20px 0px' }}>
+                                            <div class="tableHeader">
+                                                <div class="showEntries">
+                                                    <label>Show</label>
+                                                    <select class="formItem">
+                                                        <option value="10">10</option>
+                                                        <option value="20">20</option>
+                                                        <option value="30">30</option>
+                                                    </select>
+                                                    <label>entries</label>
+                                                </div>
+                                                <div class="searchBox">
+                                                    <label>Search:</label>
+                                                    <input type="text" class="formItem" value="" />
+                                                </div>
                                             </div>
-                                            <div className="searchBox position-relative">
-                                                <label>Search:</label>
-                                                <input
-                                                    type="search"
-                                                    name="Search"
-                                                    placeholder="Search"
-                                                    className="formItem"
-                                                // onChange={() => featureUnderdevelopment()}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="tableContainer">
-                                            <table>
-                                                <thead>
-                                                    <tr>
-                                                        <th>Id</th>
-                                                        <th>Campaign Name</th>
-                                                        <th>Active</th>
-                                                        <th>Dial Method</th>
-                                                        <th>SQL Dialing</th>
-                                                        <th>Speed</th>
-                                                        <th>Logged In</th>
-                                                        <th>Talking</th>
-                                                        <th>Waiting</th>
-                                                        <th>Paused</th>
-                                                        <th>Wrap</th>
-                                                        <th>Drop Rate </th>
-                                                        <th style={{ textAlign: 'center' }}>Edit</th>
-                                                        <th style={{ textAlign: 'center' }}>Delete</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>78</td>
-                                                        <td>xyz</td>
-                                                        <td><div className="my-auto position-relative mx-1">
-                                                            <label className="switch">
-                                                                <input
-                                                                    type="checkbox"
-                                                                    id="showAllCheck"
-                                                                />
-                                                                <span className="slider round" />
-                                                            </label>
-                                                        </div>
-                                                        </td>
-                                                        <td>
-                                                            <div><select name="" id="" class="formItem ">
-                                                                <option value="">Auto Dial</option>
-
-                                                            </select>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div className="my-auto position-relative mx-1">
-                                                                <label className="switch">
-                                                                    <input
-                                                                        type="checkbox"
-                                                                        id="showAllCheck"
-                                                                    />
-                                                                    <span className="slider round" />
-                                                                </label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div className="slidecontainer">
-                                                                <input
-                                                                    type="range"
-
-                                                                    // value={sliderValue}
-                                                                    // onChange={handleSliderChange}
-                                                                    className="sliders"
-                                                                // id="myRange"
-                                                                />
-                                                                <div className='text-center'>
-                                                                    <p className='p-0 mb-0'>26 </p>
+                                            <div className='tableContainer'>
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th />
+                                                            <th>Name</th>
+                                                            <th>Mode</th>
+                                                            <th>DID(s)</th>
+                                                            <th>Gateway</th>
+                                                            <th>Progress</th>
+                                                            <th>Agents</th>
+                                                            <th>Records</th>
+                                                            <th />
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <div className="d-flex align-items-center justify-content-start ">
+                                                                    <div className="phone-call">
+                                                                        <i className="fa-solid fa-phone" />
+                                                                    </div>
+                                                                    <div>
+                                                                        <span className="ms-1">Running</span>
+                                                                    </div>
                                                                 </div>
-
-                                                            </div>
-
-                                                        </td>
-                                                        <td>0</td>
-                                                        <td> 0</td>
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                        <td> 0</td>
-
-                                                        <td>
-                                                            0%
-                                                        </td>
-
-                                                        <td>
-                                                            <button
-                                                                className="tableButton edit mx-auto"
-                                                            >
-                                                                <i class="fa-solid fa-pen"></i>
-                                                            </button>
-                                                        </td>
-                                                        <td>
-                                                            <button
-                                                                className="tableButton delete mx-auto"
-                                                            >
-                                                                <i class="fa-solid fa-trash"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div className="tableHeader mb-3">
-                                            <PaginationComponent
-                                            // pageNumber={(e) => setPageNumber(e)}
-                                            // totalPage={callCenter.totalPage}
-                                            // from={callCenter.from}
-                                            // to={callCenter.to}
-                                            // total={callCenter.total}
-                                            />
+                                                            </td>
+                                                            <td><b>motor cycle gear with a 15% discount</b></td>
+                                                            <td>Broadcast</td>
+                                                            <td>1800123465</td>
+                                                            <td>Gateway</td>
+                                                            <td className="">
+                                                                <div
+                                                                    className="d-flex align-items-center justify-content-start  dropdown"
+                                                                    style={{ cursor: "pointer" }}
+                                                                >
+                                                                    <div className="progress-container">
+                                                                        <div className="progress-bar ">
+                                                                            <div className="segment red" />
+                                                                            <div className="segment green" />
+                                                                            <div className="segment pink " />
+                                                                        </div>
+                                                                        <div className="dropdown-content">
+                                                                            <div>
+                                                                                <div className="">
+                                                                                    <div className="d-flex align-items-center justify-content-start">
+                                                                                        <p
+                                                                                            className="text-paragraph p-1 m-0"
+                                                                                            style={{ fontSize: 10, fontWeight: 500 }}
+                                                                                        >
+                                                                                            LEADS IN TOTAL
+                                                                                        </p>
+                                                                                        <span className="test-demos">1000</span>
+                                                                                    </div>
+                                                                                    <div className="border-test">
+                                                                                        <p
+                                                                                            style={{
+                                                                                                color: "rgb(92, 92, 92)",
+                                                                                                fontSize: 12,
+                                                                                                fontWeight: 400
+                                                                                            }}
+                                                                                            className="p-0 m-0"
+                                                                                        >
+                                                                                            Completed records
+                                                                                        </p>
+                                                                                        <div className="d-flex align-items-center justify-content-start">
+                                                                                            <div className="progress-container">
+                                                                                                <div className="progress-bar ">
+                                                                                                    <div className="segment red" />
+                                                                                                    <div className="segment green" />
+                                                                                                    <div className="segment pink " />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="text-paragraph p-1">
+                                                                                                <p>0.00%</p>
+                                                                                                <span style={{ textWrap: "nowrap" }}>
+                                                                                                    0 of 1000
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <p
+                                                                                            style={{
+                                                                                                color: "rgb(92, 92, 92)",
+                                                                                                fontSize: 12,
+                                                                                                fontWeight: 400
+                                                                                            }}
+                                                                                            className="p-0 m-0"
+                                                                                        >
+                                                                                            Failed records
+                                                                                        </p>
+                                                                                        <div className="d-flex align-items-center justify-content-start">
+                                                                                            <div className="progress-container">
+                                                                                                <div className="progress-bar ">
+                                                                                                    <div
+                                                                                                        style={{ width: 0 }}
+                                                                                                        className="segment red"
+                                                                                                    />
+                                                                                                    <div className="segment green" />
+                                                                                                    <div className="segment pink" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="text-paragraph p-1">
+                                                                                                <p>0.00%</p>
+                                                                                                <span style={{ textWrap: "nowrap" }}>
+                                                                                                    0 of 1000
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <p
+                                                                                            style={{
+                                                                                                color: "rgb(92, 92, 92)",
+                                                                                                fontSize: 12,
+                                                                                                fontWeight: 400
+                                                                                            }}
+                                                                                            className="p-0 m-0"
+                                                                                        >
+                                                                                            Request records
+                                                                                        </p>
+                                                                                        <div className="d-flex align-items-center justify-content-start">
+                                                                                            <div className="progress-container">
+                                                                                                <div className="progress-bar ">
+                                                                                                    <div
+                                                                                                        style={{ width: 0 }}
+                                                                                                        className="segment red"
+                                                                                                    />
+                                                                                                    <div className="segment green" />
+                                                                                                    <div className="segment pink" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="text-paragraph p-1">
+                                                                                                <p>0.00%</p>
+                                                                                                <span style={{ textWrap: "nowrap" }}>
+                                                                                                    0 of 1000
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <p
+                                                                                            style={{
+                                                                                                color: "rgb(92, 92, 92)",
+                                                                                                fontSize: 12,
+                                                                                                fontWeight: 400
+                                                                                            }}
+                                                                                            className="p-0 m-0"
+                                                                                        >
+                                                                                            Untouched records
+                                                                                        </p>
+                                                                                        <div className="d-flex align-items-center justify-content-start">
+                                                                                            <div className="progress-container">
+                                                                                                <div className="progress-bar ">
+                                                                                                    <div
+                                                                                                        style={{ width: 0 }}
+                                                                                                        className="segment red"
+                                                                                                    />
+                                                                                                    <div className="segment green" />
+                                                                                                    <div className="segment pink" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="text-paragraph p-1">
+                                                                                                <p>0.00%</p>
+                                                                                                <span style={{ textWrap: "nowrap" }}>
+                                                                                                    0 of 1000
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="text-paragraph p-1">
+                                                                        <p>1.00%</p>
+                                                                        <span style={{ textWrap: "nowrap" }}>10 of 1000</span>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div>
+                                                                    <div className="avatar-container">
+                                                                        <img
+                                                                            src="https://randomuser.me/api/portraits/men/1.jpg"
+                                                                            alt="Avatar 1"
+                                                                            className="avatar avatar1"
+                                                                        />
+                                                                        <img
+                                                                            src="https://randomuser.me/api/portraits/men/2.jpg"
+                                                                            alt="Avatar 2"
+                                                                            className="avatar avatar2"
+                                                                        />
+                                                                        <img
+                                                                            src="https://randomuser.me/api/portraits/men/3.jpg"
+                                                                            alt="Avatar 3"
+                                                                            className="avatar avatar3"
+                                                                        />
+                                                                        <img
+                                                                            src="https://randomuser.me/api/portraits/men/4.jpg"
+                                                                            alt="Avatar 4"
+                                                                            className="avatar avatar4"
+                                                                        />
+                                                                        <img
+                                                                            src="https://randomuser.me/api/portraits/men/5.jpg"
+                                                                            alt="Avatar 5"
+                                                                            className="avatar avatar5"
+                                                                        />
+                                                                        <img src="" alt="Avatar 6" className="avatar avatar6" />
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td><span className='ellipsis'>Customerlist.xls</span></td>
+                                                            <td>
+                                                                <button className="tableButton">
+                                                                    <i className="fa-solid fa-ellipsis-vertical" />
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <div className="d-flex align-items-center justify-content-start ">
+                                                                    <div className="phone-call">
+                                                                        <i className="fa-solid fa-id-card" />
+                                                                    </div>
+                                                                    <div>
+                                                                        <span className="ms-1">Ready</span>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <b>10% discount on all product</b>
+                                                            </td>
+                                                            <td>Broadcast</td>
+                                                            <td>1800123465</td>
+                                                            <td>Gateway</td>
+                                                            <td>
+                                                                <div className="d-flex align-items-center justify-content-start">
+                                                                    <div className="progress-container">
+                                                                        <div className="progress-bar ">
+                                                                            <div style={{ width: 0 }} className="segment red" />
+                                                                            <div className="segment green" />
+                                                                            <div className="segment pink" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="text-paragraph p-1">
+                                                                        <p>0.00%</p>
+                                                                        <span style={{ textWrap: "nowrap" }}>0 of 1000</span>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div>
+                                                                    <div className="avatar-container">
+                                                                        <img
+                                                                            src="https://randomuser.me/api/portraits/men/1.jpg"
+                                                                            alt="Avatar 1"
+                                                                            className="avatar avatar1"
+                                                                        />
+                                                                        <img
+                                                                            src="https://randomuser.me/api/portraits/men/2.jpg"
+                                                                            alt="Avatar 2"
+                                                                            className="avatar avatar2"
+                                                                        />
+                                                                        <img
+                                                                            src="https://randomuser.me/api/portraits/men/3.jpg"
+                                                                            alt="Avatar 3"
+                                                                            className="avatar avatar3"
+                                                                        />
+                                                                        <img
+                                                                            src="https://randomuser.me/api/portraits/men/4.jpg"
+                                                                            alt="Avatar 4"
+                                                                            className="avatar avatar4"
+                                                                        />
+                                                                        <img
+                                                                            src="https://randomuser.me/api/portraits/men/5.jpg"
+                                                                            alt="Avatar 5"
+                                                                            className="avatar avatar5"
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td><span className='ellipsis'>Customerlist.xls</span></td>
+                                                            <td>
+                                                                <button className="tableButton">
+                                                                    <i className="fa-solid fa-ellipsis-vertical" />
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <div className="d-flex align-items-center justify-content-start ">
+                                                                    <div
+                                                                        style={{ backgroundColor: "#f2c333" }}
+                                                                        className="phone-call"
+                                                                    >
+                                                                        <i className="fa-solid fa-pause" />
+                                                                    </div>
+                                                                    <div>
+                                                                        <span className="ms-1">Paused</span>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td><b>motor cycle euiptment upto 30 discount</b></td>
+                                                            <td>Broadcast</td>
+                                                            <td>1800123465</td>
+                                                            <td>Gateway</td>
+                                                            <td>
+                                                                <div className="d-flex align-items-center justify-content-start">
+                                                                    <div className="progress-container dropdown">
+                                                                        <div className="progress-bar ">
+                                                                            <div className="segment red" />
+                                                                            <div className="segment green" />
+                                                                            <div
+                                                                                style={{ backgroundColor: "#e83b6d", width: 40 }}
+                                                                                className="segment pink"
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="text-paragraph p-1">
+                                                                        <p>1.00%</p>
+                                                                        <span style={{ textWrap: "nowrap" }}>10 of 1000</span>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div>
+                                                                    <div className="avatar-container">
+                                                                        <img
+                                                                            src="https://randomuser.me/api/portraits/men/1.jpg"
+                                                                            alt="Avatar 1"
+                                                                            className="avatar avatar1"
+                                                                        />
+                                                                        <img
+                                                                            src="https://randomuser.me/api/portraits/men/2.jpg"
+                                                                            alt="Avatar 2"
+                                                                            className="avatar avatar2"
+                                                                        />
+                                                                        <img
+                                                                            src="https://randomuser.me/api/portraits/men/3.jpg"
+                                                                            alt="Avatar 3"
+                                                                            className="avatar avatar3"
+                                                                        />
+                                                                        <img
+                                                                            src="https://randomuser.me/api/portraits/men/4.jpg"
+                                                                            alt="Avatar 4"
+                                                                            className="avatar avatar4"
+                                                                        />
+                                                                        <img
+                                                                            src="https://randomuser.me/api/portraits/men/5.jpg"
+                                                                            alt="Avatar 5"
+                                                                            className="avatar avatar5"
+                                                                        />
+                                                                        <img src="" alt="Avatar 6" className="avatar avatar6" />
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td><span className='ellipsis'>Customerlist.xls</span></td>
+                                                            <td>
+                                                                <button className="tableButton">
+                                                                    <i className="fa-solid fa-ellipsis-vertical" />
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
-        </main >
+                </section>
+            </main>
+        </>
     )
 }
 
