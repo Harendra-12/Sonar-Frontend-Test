@@ -298,7 +298,48 @@ function CdrReport() {
       }
     }
   };
+  function formatTime(seconds) {
+    const hours = Math.floor(seconds / 3600)
+      .toString()
+      .padStart(2, "0");
+    const minutes = Math.floor((seconds % 3600) / 60)
+      .toString()
+      .padStart(2, "0");
+    const secs = (seconds % 60).toString().padStart(2, "0");
+    return `${hours}:${minutes}:${secs}`;
+  }
+  function exportToCSV(data, filename = "data.csv") {
+    if (!data || !data.length) {
+      console.error("No data to export.");
+      return;
+    }
 
+    // Extract headers from the keys of the first object
+    const headers = Object.keys(data[0]);
+
+    // Map data rows into CSV format
+    const rows = data.map((obj) =>
+      headers.map((header) => JSON.stringify(obj[header] || "")).join(",")
+    );
+
+    // Combine headers and rows into a single string
+    const csvContent = [headers.join(","), ...rows].join("\n");
+
+    // Create a blob and trigger download
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+
+    link.href = url;
+    link.download = filename;
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+
+    // Cleanup
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -342,6 +383,17 @@ function CdrReport() {
                                 : "fa-regular fa-arrows-rotate fs-5"
                             }
                           ></i>
+                        </span>
+                      </button>
+                      <button
+                        effect="ripple"
+                        className="panelButton"
+                        onClick={() => exportToCSV(cdr?.data)}
+                        disabled={loading}
+                      >
+                        <span className="text">Export</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-file-export"></i>
                         </span>
                       </button>
                     </div>
@@ -599,15 +651,18 @@ function CdrReport() {
                         <tr>
                           <th>#</th>
                           <th>Call Direction</th>
+                          <th>Caller Name</th>
                           <th>Call Type</th>
+                          <th>Tag</th>
                           <th>Origin</th>
-                          <th>Destination</th>
+                          <th>Via/Route</th>
                           <th>Destination Extension</th>
                           <th>Date</th>
                           <th>Time</th>
                           <th>Recording</th>
                           <th>Duration</th>
                           <th>Hangup Cause</th>
+                          <th>Dial-Status</th>
                           <th>Charge</th>
                           <th>Block</th>
                         </tr>
@@ -641,7 +696,11 @@ function CdrReport() {
                                         {(pageNumber - 1) * 20 + (index + 1)}
                                       </td>
                                       <td>{item["Call-Direction"]}</td>
+                                      <td>
+                                        {item["Caller-Orig-Caller-ID-Name"]}
+                                      </td>
                                       <td>{item["application_state"]}</td>
+                                      <td>{item["tag"]}</td>
                                       <td>{item["variable_sip_from_user"]}</td>
                                       <td>
                                         {item["application_state"] ===
@@ -649,7 +708,9 @@ function CdrReport() {
                                         item["application_state"] ===
                                           "eavesdrop"
                                           ? item["other_leg_destination_number"]
-                                          : item["variable_sip_to_user"]}
+                                          : item["variable_sip_to_user"]}{" "}
+                                        {item["application_state_name"] &&
+                                          `(${item["application_state_name"]})`}
                                       </td>
                                       <td>
                                         {item["application_state_to_ext"]}
@@ -693,15 +754,19 @@ function CdrReport() {
                                             // />
                                           )}
                                       </td>
-                                      <td>{item["variable_billsec"]}</td>
                                       <td>
-                                        {item["variable_DIALSTATUS"] === null
+                                        {formatTime(item["variable_billsec"])}
+                                      </td>
+                                      <td>
+                                        {item["Hangup-Cause"]}
+                                        {/* {item["variable_DIALSTATUS"] === null
                                           ? item["Hangup-Cause"]
                                           : item["variable_DIALSTATUS"] ===
                                             "NO_USER_RESPONSE"
                                           ? "BUSY"
-                                          : item["variable_DIALSTATUS"]}
+                                          : item["variable_DIALSTATUS"]} */}
                                       </td>
+                                      <td>{item["variable_DIALSTATUS"]}</td>
                                       <td>{item["call_cost"]}</td>
                                       <td>
                                         {" "}

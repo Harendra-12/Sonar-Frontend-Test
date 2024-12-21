@@ -329,7 +329,7 @@ const UsersEdit = () => {
     setSelectedPermission(newSelectedPermission);
     setParentChecked({ ...parentChecked, [item]: newParentChecked });
   };
-
+  // console.log(errors);
   return (
     <>
       <style>
@@ -853,7 +853,7 @@ const UsersEdit = () => {
                             Assign an extension to the newly created user.
                           </label>
                         </div>
-                        <div className="col-6">
+                        <div className="col-8">
                           <div className="row">
                             <div
                               className={
@@ -869,6 +869,7 @@ const UsersEdit = () => {
                                 <option value="" disabled>
                                   Available Extensions
                                 </option>
+                                <option value="">None</option>
                                 {filterExtensions &&
                                   filterExtensions.map((extension, key) => {
                                     return (
@@ -879,7 +880,7 @@ const UsersEdit = () => {
                                   })}
                               </select>
                             </div>
-                            {watch().extension_id && (
+                            {/* {watch().extension_id && (
                               <div className="col-4">
                                 <button
                                   effect="ripple"
@@ -895,7 +896,7 @@ const UsersEdit = () => {
                                   </span>
                                 </button>
                               </div>
-                            )}
+                            )} */}
                           </div>
                         </div>
                       </div>
@@ -920,10 +921,23 @@ const UsersEdit = () => {
                         </span>
                       </button> */}
                       <button
-                        className="panelButton gray m-0 float-end"
-                        onClick={() => setPopUp(false)}
+                        type="button"
+                        effect="ripple"
+                        className="panelButton"
+                        onClick={() => {
+                          if (Object.keys(errors).length === 0) {
+                            handleFormSubmit();
+                          } else {
+                            setPopUp(false);
+                          }
+                        }}
                       >
-                        <span className="text">Close</span>
+                        <span className="text">Save</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-floppy-disk"></i>
+                        </span>
+                      </button>
+                      <button className="" onClick={() => setPopUp(false)}>
                         <span className="icon">
                           <i class="fa-solid fa-xmark"></i>
                         </span>
