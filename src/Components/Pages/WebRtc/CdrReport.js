@@ -650,13 +650,13 @@ function CdrReport() {
                       <thead>
                         <tr>
                           <th>#</th>
-                          <th>Call Direction</th>
+                          <th>Direction</th>
                           <th>Caller Name</th>
                           <th>Call Type</th>
                           <th>Tag</th>
                           <th>Origin</th>
                           <th>Via/Route</th>
-                          <th>Destination Extension</th>
+                          <th>Extension</th>
                           <th>Date</th>
                           <th>Time</th>
                           <th>Recording</th>
