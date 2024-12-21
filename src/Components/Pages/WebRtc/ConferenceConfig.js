@@ -27,7 +27,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
   const account = useSelector((state) => state.account);
   // const [conferenceId, setConferenceId] = useState("");
   const [error, setError] = useState("");
-  const [selectedTab, setselectedTab] = useState("nav-gen-tab");
+  const [selectedTab, setselectedTab] = useState("nav-voicemail-tab");
 
   useEffect(() => {
     async function getData() {

@@ -128,6 +128,7 @@ import MeetingReports from "./Components/Pages/Agents/MeetingReports";
 import CallRecording from "./Components/Pages/Setting/CallRecording";
 import Fax from "./Components/Pages/Setting/FaxSettings";
 import FaxSettings from "./Components/Pages/Setting/FaxSettings";
+import Meeting from "./Components/Pages/Meeting/Meeting";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -189,6 +190,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/conference" element={<ConferenceJoin />} />
           <Route path="/conference-join" element={<DummyRegistration />} />
+          <Route path="/meeting-room" element={<Meeting />} />
 
           <Route element={<ProtectedRoute />} />
           <Route path="/dashboard" element={<Dashboard />} />
