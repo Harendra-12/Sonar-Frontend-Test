@@ -504,7 +504,10 @@ const ExtensionsEdit = () => {
       setLoading(false);
     }
   });
-
+  const forwardStatus = watch("forward", "disabled");
+  const directListValue = (value) => {
+    setValue("direct_extension", value[0]);
+  };
   console.log(watch());
 
   const handleAddMusic = () => {
@@ -2127,6 +2130,89 @@ const ExtensionsEdit = () => {
                                   </select>
                                 </div>
                               </div>
+
+                              <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="">Forward DID</label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Want to forword DID.
+                            </label>
+                          </div>
+                          <div
+                            className={`col-${forwardStatus != "disabled"
+                              ? "3 pe-2 ms-auto"
+                              : "6"
+                              }`}
+                          >
+                            {forwardStatus != "disabled" && (
+                              <div className="formLabel">
+                                <label>Type</label>
+                              </div>
+                            )}
+                            <select
+                              className="formItem"
+                              name="forward"
+                              id="selectFormRow"
+                              {...register("forward")}
+                              defaultValue={"disabled"}
+                            >
+                              <option value="disabled">Disable</option>
+                              <option value="pstn">PSTN</option>
+                              <option value="direct">Direct</option>
+                            </select>
+                          </div>
+                          {forwardStatus === "pstn" && (
+                            <div className="col-3">
+                              <div className="formLabel">
+                                <label>PSTN</label>
+                              </div>
+                              <input
+                                type="number"
+                                name="forward_to"
+                                className="formItem"
+                                {...register("forward_to", {
+                                  required: "PSTN is required",
+                                  pattern: {
+                                    value: /^[0-9]*$/,
+                                    message: "Only digits are allowed",
+                                  },
+                                  minLength: {
+                                    value: 10,
+                                    message: "Must be at least 10 digits",
+                                  },
+
+                                  ...noSpecialCharactersValidator,
+                                })}
+                              />
+                              {errors.forward_to && (
+                                <ErrorMessage
+                                  text={errors.forward_to.message}
+                                />
+                              )}
+                            </div>
+                          )}
+                          {forwardStatus === "direct" && (
+                            <div className="col-3">
+                              <div className="formLabel">
+                                <label>Extension</label>
+                              </div>
+                              <ActionList
+                                getDropdownValue={directListValue}
+                                value={watch().direct_extension}
+                                title={null}
+                                label={null}
+                                {...register("direct_extension", {
+                                  requiredValidator,
+                                })}
+                              />
+                              {errors.direct_extension && (
+                                <ErrorMessage
+                                  text={errors.direct_extension.message}
+                                />
+                              )}
+                            </div>
+                          )}
+                        </div>
                             </form>
                           </div>
                         </div>

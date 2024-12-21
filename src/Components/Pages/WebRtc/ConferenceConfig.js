@@ -27,7 +27,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
   const account = useSelector((state) => state.account);
   // const [conferenceId, setConferenceId] = useState("");
   const [error, setError] = useState("");
-  const [selectedTab, setselectedTab] = useState("nav-gen-tab");
+  const [selectedTab, setselectedTab] = useState("nav-voicemail-tab");
 
   useEffect(() => {
     async function getData() {
@@ -146,12 +146,12 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Create / Join a Conference</h4>
+                        <h4>Join a Conference</h4>
                         <p>
                           An extension is a destinations that can be called.
                         </p>
                       </div>
-                      <div className="buttonGroup">
+                      {/* <div className="buttonGroup">
                         <button
                           type="button"
                           effect="ripple"
@@ -173,7 +173,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                             <i class="fa-solid fa-floppy-disk"></i>
                           </span>
                         </button>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                   <div
@@ -185,7 +185,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                     <form action="#" className="tangoNavs">
                       <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                          {allConferences?.data?.length &&
+                          {/* {allConferences?.data?.length &&
                             allConferences?.data?.length > 0 ? (
                             <button
                               className={`nav-link ${selectedTab == "nav-all-tab" ? "active" : ""
@@ -218,7 +218,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                             onClick={() => setselectedTab("nav-gen-tab")}
                           >
                             Create
-                          </button>
+                          </button> */}
                           <button
                             className={`nav-link ${selectedTab == "nav-voicemail-tab"
                               ? "active"

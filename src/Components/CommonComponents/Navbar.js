@@ -533,24 +533,16 @@ function Navbar() {
                           ) : null}
 
                           <li className="tabItem ">
-                            <a
-                              // to="/extensions"
-                              onClick={() => featureUnderdevelopment()}
-                              className={({ isActive }) =>
-                                isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
-                                    (path) =>
-                                      window.location.pathname.includes(path)
-                                  )
-                                  ? "nav-link active"
-                                  : "nav-link"
-                              }
+                          <NavLink
+                              to="/meeting-room"
+                              onClick={backToTop}
+                              type="button"
                             >
                               {/* <div className="iconHolder">
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Meeting Rooms</div>
-                            </a>
+                            </NavLink>
                           </li>
 
                           <li className="tabItem ">

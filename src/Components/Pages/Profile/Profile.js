@@ -118,9 +118,9 @@ const Profile = () => {
   };
 
   const handleSetExtension = () => {
-    if (selectedExtension === "") {
-      return;
-    }
+    // if (selectedExtension === "") {
+    //   return;
+    // }
 
     const PreExisting = userWithExtension.some(
       (item) => item.extension == selectedExtension
@@ -333,6 +333,7 @@ const Profile = () => {
                                         setSelectedExtension(e.target.value);
                                       }}
                                     >
+                                      <option value={""}>None</option>
                                       {extensionAll?.data?.map(
                                         (item, index) => {
                                           const foundUser =
@@ -403,7 +404,10 @@ const Profile = () => {
                       <div className="content w-100">
                         <h5 className=" me-2">All details</h5>
                         <div className="mt-2">
-                          <div className=" d-flex align-items-center justify-content-between " style={{ height: '25px' }}>
+                          <div
+                            className=" d-flex align-items-center justify-content-between "
+                            style={{ height: "25px" }}
+                          >
                             <p className=" me-2">Country:</p>
 
                             <p className="imgwidth d-flex ms-2 me-2">
@@ -414,7 +418,10 @@ const Profile = () => {
                               {accountDetails?.billing_address[0].country}
                             </p>
                           </div>
-                          <div className=" d-flex align-items-center justify-content-between " style={{ height: '25px' }}>
+                          <div
+                            className=" d-flex align-items-center justify-content-between "
+                            style={{ height: "25px" }}
+                          >
                             <p className=" me-2">Language:</p>
                             <div>
                               <p className="imgwidth d-flex  ms-2 me-2">
@@ -426,7 +433,10 @@ const Profile = () => {
                               </p>
                             </div>
                           </div>
-                          <div className=" d-flex align-items-center justify-content-between " style={{ height: '25px' }}>
+                          <div
+                            className=" d-flex align-items-center justify-content-between "
+                            style={{ height: "25px" }}
+                          >
                             <p className=" me-2">TimeZone:</p>
 
                             <p className=" ms-2 me-2">
@@ -637,7 +647,9 @@ const Profile = () => {
                   <h4>Warning!</h4>
                   <p>
                     {preassignedExtension
-                      ? `By Confirming this, ${selectedExtension} extension will be assigned to you and pre-assigned user will be unassigned of any extension. `
+                      ? selectedExtension != ""
+                        ? `By Confirming this, ${selectedExtension} extension will be assigned to you and pre-assigned user will be unassigned of any extension. `
+                        : `By Confirming this, Assigned extension will be removed from your account`
                       : `By Confirming this, ${selectedExtension} extension will be assigned to you.`}
                     ?
                   </p>
