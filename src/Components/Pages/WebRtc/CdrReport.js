@@ -657,7 +657,7 @@ function CdrReport() {
                           <th>Tag</th>
                           <th>Origin</th>
                           <th>Via/Route</th>
-                          <th>Destination</th>
+                          <th>Extension</th>
                           <th>Date</th>
                           <th>Time</th>
                           <th>Recording</th>
