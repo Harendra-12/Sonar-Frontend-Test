@@ -187,6 +187,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Settings</div>
               </div>
             </li> */}
+            {account.user_role?.roles?.name!=="Agent"?
             <li>
               <div
                 // to="/call-dashboard"
@@ -201,6 +202,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Call Dashboard</div>
               </div>
             </li>
+            :""}
             <li style={{ cursor: "pointer" }}>
               <div
                 // to="/call-center"

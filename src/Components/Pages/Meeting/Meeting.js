@@ -64,8 +64,8 @@ function Meeting() {
                                                 <button
                                                     type="button"
                                                     className="panelButton disabled"
-                                                    disabled
                                                     title="You do not have permission to add"
+                                                    onClick={() => navigate("/meeting-add")}
                                                 >
                                                     <span className="text">Add</span>
                                                     <span className="icon">
