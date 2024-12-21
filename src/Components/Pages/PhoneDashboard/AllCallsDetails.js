@@ -77,7 +77,7 @@ function AllCallsDetails() {
                               </div>
                             </div>
                             <div className="col-xl-6 col-xxl-6 mt-2">
-                              <div className="itemWrapperb a">
+                              <div className="itemWrapperb b">
                                 <div className="heading">Total Calls Completed</div>
                                 <div className="data-number">
                                   {

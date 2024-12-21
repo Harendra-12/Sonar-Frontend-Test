@@ -411,12 +411,12 @@ function Navbar() {
                             </NavLink>
                           </li>
                           <li className="tabItem ">
-                            <NavLink to="/call-dashboard">
+                            <a onClick={() => featureUnderdevelopment()}>
                               {/* <div className="iconHolder">
                                 <i className="fa-regular fa-regular fa-list-dropdown"></i>
                               </div> */}
                               <div className="itemTitle">Active Calls</div>
-                            </NavLink>
+                            </a>
                           </li>
                           <li className="tabItem">
                             <NavLink
@@ -533,7 +533,7 @@ function Navbar() {
                           ) : null}
 
                           <li className="tabItem ">
-                          <NavLink
+                            <NavLink
                               to="/meeting-room"
                               onClick={backToTop}
                               type="button"
