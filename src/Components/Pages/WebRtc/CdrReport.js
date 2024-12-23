@@ -652,10 +652,10 @@ function CdrReport() {
                         <tr>
                           <th>#</th>
                           <th>Direction</th>
-                          <th>Caller Name</th>
                           <th>Call Type</th>
+                          <th>Caller Name</th>
+                          <th>Caller No.</th>
                           <th>Tag</th>
-                          <th>Origin</th>
                           <th>Via/Route</th>
                           <th>Extension</th>
                           <th>Date</th>
@@ -706,13 +706,13 @@ function CdrReport() {
                                       }
                                       </td>
 
-
+                                      <td>{item["application_state"]}</td>
                                       <td>
                                         {item["Caller-Orig-Caller-ID-Name"]}
                                       </td>
-                                      <td>{item["application_state"]}</td>
-                                      <td>{item["tag"]}</td>
                                       <td>{item["variable_sip_from_user"]}</td>
+                                      <td>{item["tag"]}</td>
+                                     
                                       <td>
                                         {item["application_state"] ===
                                           "intercept" ||
