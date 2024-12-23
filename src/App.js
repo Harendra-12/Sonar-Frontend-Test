@@ -128,6 +128,8 @@ import MeetingReports from "./Components/Pages/Agents/MeetingReports";
 import CallRecording from "./Components/Pages/Setting/CallRecording";
 import Fax from "./Components/Pages/Setting/FaxSettings";
 import FaxSettings from "./Components/Pages/Setting/FaxSettings";
+import AddOns from "./Components/Pages/Stores/AddOns";
+import Extension from "./Components/Pages/Stores/Extension";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -326,6 +328,14 @@ function App() {
           <Route path="/agent-reports" element={<AgentReport />} />
           <Route path="/meeting-reports" element={<MeetingReports />} />
           {/*Agents path */}
+
+
+           {/*Addon path */}
+           <Route path="/add-ons" element={<AddOns />} />
+           <Route path="/store-extension" element={<Extension />} />
+
+
+
 
           {/* Settings Path */}
           <Route path="/fax-settings" element={<FaxSettings />} />

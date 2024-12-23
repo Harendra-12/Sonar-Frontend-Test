@@ -1,0 +1,268 @@
+/* Root Variables for Colors */
+:root {
+    --primary-color: rgb(24, 141, 236);
+
+    /* --text-light-gray: #6a6a6a; */
+    --button-hover-color: #0056b3;
+    --background-color: #fff;
+    --border-color: rgb(119, 119, 119);
+}
+
+/* Product Grid */
+.product-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    text-align: center;
+}
+
+/* Image Styling */
+.product-container .product-image {
+    width: 100%;
+    height: auto;
+    max-width: 260px;
+    margin: 0 auto 10px;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.product-image:hover {
+    transform: scale(1.1);
+}
+
+/* Product Title */
+.product-container .product-title p,
+.product-container .product-title {
+    color: var(--secondary-color);
+    font-weight: 600;
+    font-style: normal;
+    font-size: 16px;
+    font-family: 'neue_haas_grotesk_display_pro', Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.product-container .product-title .text-smalls {
+    color: var(--text-gray);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.product-container .borders-left-small {
+    border-left: 2px solid gray;
+}
+
+.product-container .total-price-month {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+/* Product Description */
+.product-container .product-description {
+    font-weight: 400;
+    color: var(--text-light-gray);
+    font-size: 12px;
+}
+
+/* Product Price */
+.product-container .teext-color .product-price {
+    color: var(--secondary-color);
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+}
+
+/* Add to Cart Button */
+.product-container .add-to-cart p {
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--primary-color);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    height: 22px;
+    width: 90px;
+    color: var(--primary-color);
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s;
+    overflow: hidden;
+    z-index: 1;
+
+
+    
+    &:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* background-color:rgb(24, 141, 236); */
+        color: white;
+        /* border-radius: 10rem; */
+        z-index: -2;
+    }
+
+    &:before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0%;
+        height: 100%;
+        background-color: rgb(24, 141, 236);
+        color: white;
+        transition: all .3s;
+        /* border-radius: 10rem; */
+        z-index: -1;
+    }
+
+    &:hover {
+        color: #fff;
+
+        &:before {
+            width: 100%;
+        }
+    }
+
+}
+
+.product-container .add-to-cart p:hover {
+    color: var(--background-color);
+}
+
+.product-container .add-to-cart p::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 100%;
+    background-color: var(--primary-color);
+    bottom: 0;
+    left: 0;
+    transition: width 0.3s;
+    z-index: -1;
+}
+
+.product-container .add-to-cart p:hover::before {
+    width: 100%;
+}
+
+
+
+
+.offcanvas-body {
+    padding: 8px;
+}
+
+.offcanvas-sider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+/* Offcanvas Styling */
+.offcanvas-sider img {
+    height: 165px;
+    width: 231px;
+}
+
+
+.offcanvas-sider .offcanvas-text-side p {
+    color: var(--secondary-color);
+    border-radius: 4px;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 17px;
+    font-family: 'neue_haas_grotesk_display_pro', Helvetica, Arial, sans-serif;
+    margin: 0px;
+    padding: 0px;
+}
+
+
+.offcanvas-sider .offcanvas-text-side .text-font-small {
+    color: var(--text-gray);
+    font-size: 10px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 10px;
+}
+
+.offcanvas-sider .btn-add p {
+    color: var(--background-color);
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    font-size: 13px;
+    height: 25px;
+    width: 66px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   
+}
+
+.offcanvas-text-side .text-number p {
+    color: var(--secondary-color);
+    font-weight: 500;
+    font-style: normal;
+    font-size: 35px;
+    margin-bottom: 15px;
+    text-align: center;
+
+    margin: 0px;
+    padding: 0px;
+}
+
+.offcanvas-text-side span {
+    color: var(--secondary-color);
+    font-weight: 400;
+    font-style: normal;
+    font-size: 12px !important;
+    /* margin-bottom: 15px; */
+    text-align: center;
+   
+    margin: 0px;
+    padding: 0px;
+}
+.offcanvas-custom {
+    background-color: #404146; /* Dark background */
+    color: #ffffff; /* White text */
+  }
+  .offcanvas-custom  offcanvas-custom{
+   
+    color: #ffffff; /* White text */
+  }
+
+  .offcanvas-custom a {
+    color: #ffdd57; /* Custom link color */
+  }
+  .offcanvas-custom a:hover {
+    color: #ffc107; /* Link hover color */
+  }
+/* Paragraph Section */
+.paragrap {
+    padding: 15px;
+}
+
+.paragrap .para-hading p {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.paragrap ul{
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--secondary-color);
+    padding: 10px;
+}
