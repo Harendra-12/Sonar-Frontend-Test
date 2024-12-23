@@ -124,7 +124,7 @@ const Socket = () => {
   const account = useSelector((state) => state.account);
   const token = localStorage.getItem("token");
   const socketRef = useRef(null);
-
+  const RoomID = useSelector((state) => state.RoomID);
   // Function to send messages
   const sendMessage = (data) => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
@@ -186,6 +186,16 @@ const Socket = () => {
                 type: "SET_CONFERENCESCREENSHARESTATUS",
                 conferenceScreenShareStatus: result,
               });
+              break;
+            case "conferenceMessage":
+              if (
+                result["room_id"] == RoomID) {
+                // Store conference message as an object with previous data
+                dispatch({
+                  type: "SET_CONFERENCEMESSAGE",
+                  conferenceMessage:result
+                })
+              }
               break;
             default:
               console.log("Unhandled WebSocket message key:", key);

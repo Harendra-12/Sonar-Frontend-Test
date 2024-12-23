@@ -741,7 +741,7 @@ export const DummySipRegisteration = ({
                     >
                       <div className="row">
                         {toggleMessages && (
-                          <div className="col-lg-3 col-xl-3 col-12 p-3">
+                          <div className="col-lg-3 col-xl-3 col-12">
                             <ConferenceMessages 
                             sendMessage={sendMessage} 
                             conferenceId={locationState.state.room_id} 
@@ -749,8 +749,7 @@ export const DummySipRegisteration = ({
                           </div>
                         )}
                         <div
-                          className={`"col-lg-${toggleMessages ? "9" : "12"
-                            } col-xl-${toggleMessages ? "9" : "12"} col-12" px-0`}
+                          className={"col-xl-12 col-12 px-0"}
                         >
                           <div
                             className="videoBody py-0"

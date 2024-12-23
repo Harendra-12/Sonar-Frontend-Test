@@ -8,7 +8,7 @@ import {
 import CircularLoader from "../../Loader/CircularLoader";
 import { ConferenceCall } from "./ConferenceCall";
 import ContentLoader from "../../Loader/ContentLoader";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId, conferenceId, conferenceToggle, pin, setPin }) => {
   const [conferenceName, setConferenceName] = useState("");
@@ -22,6 +22,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
   const [moh, setMoh] = useState("");
   const [allConferences, setAllConferences] = useState([]);
   const [conferenceRefresh, setConferenceRefresh] = useState(0);
+  const dispatch = useDispatch();
   // const [conferenceToggle, setConferenceToggle] = useState(false);
   const sessions = useSelector((state) => state.sessions);
   const account = useSelector((state) => state.account);
@@ -115,6 +116,10 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
       }
 
       setConferenceId(parts[1]); // Set "8" as the conference ID
+      dispatch({
+        type:"SET_ROOMID",
+        RoomID: parts[1]
+      })
       setConferenceToggle(true);
       setError(""); // Clear error if validation passes
     } catch (err) {

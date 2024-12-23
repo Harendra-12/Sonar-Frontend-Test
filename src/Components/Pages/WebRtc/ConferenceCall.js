@@ -679,8 +679,8 @@ export const ConferenceCall = ({
                     <div className="videoCallWrapper">
                       <div className="row">
                         {toggleMessages && (
-                          <div className="col-lg-3 col-xl-3 col-12 p-3">
-                            <ConferenceMessages sendMessage={sendMessage} conferenceId={conferenceId} userName={name}/>
+                          <div className="col-lg-3 col-xl-3 col-12">
+                            <ConferenceMessages sendMessage={sendMessage} conferenceId={conferenceId} userName={name} setToggleMessages={setToggleMessages}/>
                           </div>
                         )}
                         <div

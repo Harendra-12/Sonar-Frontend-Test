@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 
-function ConferenceMessages({ sendMessage, userName, conferenceId }) {
+function ConferenceMessages({ sendMessage, userName, conferenceId, setToggleMessages }) {
     const [messageInput, setMessageInput] = useState("");
     const conferenceMessage = useSelector((state) => state.conferenceMessage);
     console.log("conferenceMessage", conferenceMessage);
@@ -22,6 +22,11 @@ function ConferenceMessages({ sendMessage, userName, conferenceId }) {
             <div className="contactHeader py-3">
                 <div>
                     <h4>Messages</h4>
+                </div>
+                <div >
+        <button className='clearButton2 xl' onClick={()=>setToggleMessages(false)}>
+        <i className='fa-solid fa-xmark'></i>
+        </button>
                 </div>
             </div>
             <div className="messageContent">

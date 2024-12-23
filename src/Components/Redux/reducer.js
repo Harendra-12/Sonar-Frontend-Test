@@ -63,6 +63,7 @@ var memberId = null;
 var newAddedDid = null;
 var conferenceScreenShareStatus = null;
 var conferenceMessage = [];
+var RoomID = "";
 
 const initialState = {
   account,
@@ -129,6 +130,7 @@ const initialState = {
   newAddedDid,
   conferenceScreenShareStatus,
   conferenceMessage,
+  RoomID,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -295,6 +297,11 @@ const counterReducer = (state = initialState, action) => {
       return {
         ...state,
         conferenceMessage:[...state.conferenceMessage, action.conferenceMessage] ,
+      };
+      case "SET_ROOMID":
+      return {
+        ...state,
+        RoomID: action.RoomID,
       };
     default:
       return state;
