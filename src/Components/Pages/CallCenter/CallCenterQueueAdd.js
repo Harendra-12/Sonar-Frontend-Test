@@ -46,7 +46,8 @@ function CallCenterQueueAdd() {
   const [showMusicHold, setShowMusicHold] = useState(false);
   const [uploadedMusicHold, setUploadedMusicHold] = useState();
   const [musicRefreshHold, setMusicRefreshHold] = useState(0);
-
+  const [bulkUploadSelectedAgents, setBulkUploadSelectedAgents] = useState([]);
+  const [bulkAddPopUp, setBulkAddPopUp] = useState(false);
   const {
     register,
     setError: setErr,
@@ -56,7 +57,11 @@ function CallCenterQueueAdd() {
     reset,
     setValue,
     watch,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      status: true, // Set the default value for "status" to true
+    },
+  });
   useEffect(() => {
     // Calling user and sound api to get user and sound data
     async function getData() {
@@ -160,10 +165,14 @@ function CallCenterQueueAdd() {
   // Remove agent
   function removeAgenet(id) {
     const updatedAgent = agent.filter((item) => item.id !== id);
-    if (validateAgents()) {
+    setAgent(updatedAgent);
+
+    const allFieldsFilled = updatedAgent.every(
+      (item) => item.name.trim() !== "" && item.password.trim() !== ""
+    );
+    if (allFieldsFilled) {
       clearErrors("agent");
     }
-    setAgent(updatedAgent);
   }
 
   // Handle agent change
@@ -216,7 +225,7 @@ function CallCenterQueueAdd() {
     );
     return allFieldsFilled;
   };
-
+  console.log("agentagentagent", agent);
   // Validate unique agents
   const validateUniqueAgents = () => {
     const agentValues = agent.map((item) => item.name);
@@ -343,7 +352,60 @@ function CallCenterQueueAdd() {
     setValue("moh_sound", "");
     setShowMusicHold(true);
   };
+  const handleCheckboxChange = (item) => {
+    setBulkUploadSelectedAgents((prevSelected) => {
+      if (prevSelected.some((agent) => agent.name === item.name)) {
+        // If the item is already in the array, remove it
+        return prevSelected.filter((agent) => agent.name !== item.name);
+      } else {
+        // Otherwise, add the item
+        return [...prevSelected, item];
+      }
+    });
+  };
+  const handleBulkUpload = (selectedAgents) => {
+    console.log(selectedAgents);
+    const newAgents = [...agent]; // Copy the current agent array
 
+    selectedAgents.forEach((selectedAgent) => {
+      const existingAgentIndex = newAgents.findIndex(
+        (a) => a.name === selectedAgent.id
+      );
+
+      if (existingAgentIndex === -1) {
+        // Add new agent if it doesn't already exist
+        newAgents.push({
+          name: `${selectedAgent.id}`,
+          contact: `user/${selectedAgent.extension?.extension}@${selectedAgent.domain?.domain_name}`,
+
+          id: Math.floor(Math.random() * 10000),
+
+          level: "0",
+          position: "0",
+          type: "callback",
+          password: "1234",
+
+          call_timeout: "",
+          max_no_answer: "",
+          no_answer_delay_time: "",
+
+          reject_delay_time: "",
+
+          reserve_agents: 0,
+
+          "truncate-agents-on-load": 0,
+          "truncate-tiers-on-load": 0,
+          time_base_score: "queue",
+
+          wrap_up_time: "",
+          busy_delay_time: "",
+        });
+      }
+    });
+
+    setAgent(newAgents); // Update the agent state
+    setBulkAddPopUp(false);
+  };
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -1101,6 +1163,7 @@ function CallCenterQueueAdd() {
                 </form>
               </div>
               <div className="col-12" style={{ padding: "20px 23px" }}>
+                <button onClick={() => setBulkAddPopUp(true)}>Bulk Add</button>
                 <form className="row">
                   <div className="formRow col-xl-12 border-0">
                     {agent &&
@@ -1599,6 +1662,70 @@ function CallCenterQueueAdd() {
           musicRefresh={musicRefreshHold}
           listArray={["hold"]}
         />
+      )}
+      {bulkAddPopUp ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-3">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-circle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-2">
+                  <div></div>
+                  {user
+                    .filter(
+                      (user) => !agent.some((agent) => user.id == agent.name)
+                    )
+                    .map((item, index) => {
+                      return (
+                        <div key={index}>
+                          <div className="row g-2">
+                            <div className="col-2">
+                              <span>{index + 1}</span>
+                            </div>
+                            <div className="col-5">
+                              <span>{item.name}</span>
+                            </div>
+                            <div className="col-3">
+                              <input
+                                type="checkbox"
+                                onChange={() => handleCheckboxChange(item)} // Call handler on change
+                                checked={bulkUploadSelectedAgents.some(
+                                  (agent) => agent.name === item.name
+                                )} // Keep checkbox state in sync
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  <button
+                    onClick={() => handleBulkUpload(bulkUploadSelectedAgents)}
+                    className="btn btn-primary"
+                  >
+                    Done
+                  </button>
+                  <button
+                    className="panelButton mx-1"
+                    onClick={() => {
+                      setBulkAddPopUp(false);
+                    }}
+                  >
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i class="fa-light fa-xmark"></i>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
       )}
     </main>
   );

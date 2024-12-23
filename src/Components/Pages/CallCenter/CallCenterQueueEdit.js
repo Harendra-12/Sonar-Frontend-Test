@@ -48,6 +48,8 @@ function CallCenterQueueEdit() {
   const [showMusicHold, setShowMusicHold] = useState(false);
   const [uploadedMusicHold, setUploadedMusicHold] = useState();
   const [musicRefreshHold, setMusicRefreshHold] = useState(0);
+  const [bulkAddPopUp, setBulkAddPopUp] = useState(false);
+  const [bulkUploadSelectedAgents, setBulkUploadSelectedAgents] = useState([]);
   // Define the initial state of the form
   const [agent, setAgent] = useState([
     {
@@ -261,7 +263,7 @@ function CallCenterQueueEdit() {
 
   const validateAgents = () => {
     const allFieldsFilled = agent.every(
-      (item) => item.name.trim() !== "" && item.password.trim() !== ""
+      (item) => item?.name?.trim() !== "" && item?.password?.trim() !== ""
     );
     return allFieldsFilled;
   };
@@ -400,13 +402,14 @@ function CallCenterQueueEdit() {
 
   // Delete destination based on previously present or newely added
   async function deleteDestination(id) {
+    const updatedArr = agent.filter((item) => item.id !== id);
     if (checkPrevDestination(id)) {
       setLoading(true);
       const deleteGroup = await generalDeleteFunction(
         `/call-center-agent/destroy/${id}`
       );
       if (deleteGroup.status) {
-        const updatedDestination = agent.filter((item) => item.id !== id);
+        const updatedDestination = updatedArr;
         if (validateAgents()) {
           clearErrors("agent");
         }
@@ -418,10 +421,17 @@ function CallCenterQueueEdit() {
         toast.error(deleteGroup.message);
       }
     } else {
-      setAgent(agent.filter((item) => item.id !== id));
+      setAgent(updatedArr);
+    }
+
+    const allFieldsFilled = updatedArr.every(
+      (item) => item?.name?.trim() !== "" && item?.password?.trim() !== ""
+    );
+    if (allFieldsFilled) {
+      clearErrors("agent");
     }
   }
-
+  // console.log(user);
   // Handle advance click
   function handleAdvance(id) {
     if (advance.includes(id)) {
@@ -442,6 +452,71 @@ function CallCenterQueueEdit() {
     setValue("moh_sound", "");
     setShowMusicHold(true);
   };
+
+  console.log(user, agent);
+  const handleCheckboxChange = (item) => {
+    setBulkUploadSelectedAgents((prevSelected) => {
+      if (prevSelected.some((agent) => agent.name === item.name)) {
+        // If the item is already in the array, remove it
+        return prevSelected.filter((agent) => agent.name !== item.name);
+      } else {
+        // Otherwise, add the item
+        return [...prevSelected, item];
+      }
+    });
+  };
+  console.log("bulkUploadSelectedAgents", bulkUploadSelectedAgents);
+
+  const handleBulkUpload = (selectedAgents) => {
+    console.log(selectedAgents);
+    const newAgents = [...agent]; // Copy the current agent array
+
+    selectedAgents.forEach((selectedAgent) => {
+      const existingAgentIndex = newAgents.findIndex(
+        (a) => a.name === selectedAgent.id
+      );
+
+      if (existingAgentIndex === -1) {
+        // Add new agent if it doesn't already exist
+        newAgents.push({
+          name: `${selectedAgent.id}`,
+          contact: `user/${selectedAgent.extension?.extension}@${selectedAgent.domain?.domain_name}`,
+
+          id: Math.floor(Math.random() * 10000),
+
+          level: "0",
+          position: "0",
+          type: "callback",
+          password: "1234",
+
+          call_timeout: "",
+          max_no_answer: "",
+          no_answer_delay_time: "",
+
+          reject_delay_time: "",
+
+          reserve_agents: 0,
+
+          "truncate-agents-on-load": 0,
+          "truncate-tiers-on-load": 0,
+          time_base_score: "queue",
+
+          wrap_up_time: "",
+          busy_delay_time: "",
+        });
+      }
+    });
+
+    setAgent(newAgents); // Update the agent state
+    setBulkAddPopUp(false);
+  };
+  function truncateString(str) {
+    if (str.length > 8) {
+      return str.substring(0, 8) + "...";
+    }
+    return str; // Return the string as is if it's 8 characters or less
+  }
+  console.log(user, agent);
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -1250,6 +1325,7 @@ function CallCenterQueueEdit() {
               </div> */}
                   </form>
                 </div>
+                <button onClick={() => setBulkAddPopUp(true)}>Bulk Add</button>
                 <div className="col-12" style={{ padding: "20px 23px" }}>
                   <form className="row">
                     <div className="formRow col-xl-12 border-0">
@@ -1323,8 +1399,15 @@ function CallCenterQueueEdit() {
                                               value={userItem.id}
                                               key={userItem.id}
                                             >
-                                              {userItem.username} (
-                                              {userItem.extension?.extension})
+                                              {userItem.alias
+                                                ? truncateString(
+                                                    userItem?.alias
+                                                  )
+                                                : truncateString(
+                                                    userItem?.name
+                                                  )}
+                                              {/* {userItem.username} (
+                                              {userItem.extension?.extension}) */}
                                             </option>
                                           ))}
                                       <option
@@ -1777,6 +1860,70 @@ function CallCenterQueueEdit() {
           musicRefresh={musicRefreshHold}
           listArray={["hold"]}
         />
+      )}
+      {bulkAddPopUp ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-3">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-circle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-2">
+                  <div></div>
+                  {user
+                    .filter(
+                      (user) => !agent.some((agent) => user.id == agent.name)
+                    )
+                    .map((item, index) => {
+                      return (
+                        <div key={index}>
+                          <div className="row g-2">
+                            <div className="col-2">
+                              <span>{index + 1}</span>
+                            </div>
+                            <div className="col-5">
+                              <span>{item.name}</span>
+                            </div>
+                            <div className="col-3">
+                              <input
+                                type="checkbox"
+                                onChange={() => handleCheckboxChange(item)} // Call handler on change
+                                checked={bulkUploadSelectedAgents.some(
+                                  (agent) => agent.name === item.name
+                                )} // Keep checkbox state in sync
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  <button
+                    onClick={() => handleBulkUpload(bulkUploadSelectedAgents)}
+                    className="btn btn-primary"
+                  >
+                    Done
+                  </button>
+                  <button
+                    className="panelButton mx-1"
+                    onClick={() => {
+                      setBulkAddPopUp(false);
+                    }}
+                  >
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i class="fa-light fa-xmark"></i>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
       )}
     </main>
   );

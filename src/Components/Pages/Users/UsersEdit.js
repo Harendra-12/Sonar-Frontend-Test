@@ -520,6 +520,22 @@ const UsersEdit = () => {
                         </div>
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
+                            <label htmlFor="">Alias/Nickname</label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              name="extension"
+                              className="formItem"
+                              {...register("alias", {
+                                ...noSpecialCharactersValidator,
+                              })}
+                              onKeyDown={restrictToAllowedChars}
+                            />
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-12">
+                          <div className="formLabel">
                             <label htmlFor="selectFormRow">
                               Time Zone <span className="text-danger">*</span>
                             </label>
