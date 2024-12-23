@@ -357,7 +357,9 @@ function Navbar() {
                           "/call-blocking-add",
                           "/agents",
                           "/agents-add",
-                          "/agents-edit"
+                          "/agents-edit",
+                          "/meeting-room",
+                          "/meeting-add"
                         ])
                           ? "true"
                           : "false"
@@ -393,7 +395,9 @@ function Navbar() {
                         "/agents",
                         "/agents-add",
                         "/agents-edit",
-                        "/call-dashboard"
+                        "/call-dashboard",
+                        "/meeting-room",
+                        "/meeting-add"
                       ])
                         ? "show"
                         : ""
