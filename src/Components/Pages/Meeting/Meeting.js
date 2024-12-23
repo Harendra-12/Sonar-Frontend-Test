@@ -30,14 +30,14 @@ function Meeting() {
             <section id="phonePage">
                 <div className="container-fluid">
                     <div className="row">
-                        <Header title="Conference" />
+                        <Header title="Meeting Rooms" />
                         <div className="overviewTableWrapper">
                             <div className="overviewTableChild">
                                 <div className="d-flex flex-wrap">
                                     <div className="col-12">
                                         <div className="heading">
                                             <div className="content">
-                                                <h4>Conference List
+                                                <h4>Meeting Rooms
                                                     <button className="clearButton" onClick={() => setRefreshState(refreshState + 1)} disabled={loading}>
                                                         <i className={
                                                             loading
@@ -67,7 +67,7 @@ function Meeting() {
                                                     title="You do not have permission to add"
                                                     onClick={() => navigate("/meeting-add")}
                                                 >
-                                                    <span className="text">Add</span>
+                                                    <span className="text">Create</span>
                                                     <span className="icon">
                                                         <i className="fa-solid fa-plus"></i>
                                                     </span>
@@ -122,7 +122,7 @@ function Meeting() {
                                                 </thead>
                                                 <tbody>
                                                     {loading ? (
-                                                        <SkeletonTableLoader col={9} row={15} />
+                                                        <SkeletonTableLoader col={7} row={15} />
                                                     ) : (
                                                         <>
                                                             {conference &&
