@@ -122,7 +122,7 @@ function Meeting() {
                                                 </thead>
                                                 <tbody>
                                                     {loading ? (
-                                                        <SkeletonTableLoader col={9} row={15} />
+                                                        <SkeletonTableLoader col={7} row={15} />
                                                     ) : (
                                                         <>
                                                             {conference &&

@@ -706,7 +706,7 @@ function CdrReport() {
                                       }
                                       </td>
 
-                                      
+
                                       <td>
                                         {item["Caller-Orig-Caller-ID-Name"]}
                                       </td>
@@ -784,7 +784,7 @@ function CdrReport() {
                                         <button
                                           disabled={isBlocked}
                                           effect="ripple"
-                                          className="tableButton delete ms-0"
+                                          className={`tableButton ${isBlocked ? "delete" : "warning"} ms-0`}
                                           // style={{ height: "34px" }}
                                           onClick={() => {
                                             setSelectedNumberToBlock(
