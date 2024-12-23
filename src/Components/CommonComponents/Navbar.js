@@ -541,6 +541,17 @@ function Navbar() {
                               to="/meeting-room"
                               onClick={backToTop}
                               type="button"
+                              className={({ isActive }) =>
+                                isActive ||
+                                  [
+                                    "/meeting-room",
+                                    "/meeting-add",
+                                  ].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
                             >
                               {/* <div className="iconHolder">
                                   <i className="fa-regular fa-phone-office" />

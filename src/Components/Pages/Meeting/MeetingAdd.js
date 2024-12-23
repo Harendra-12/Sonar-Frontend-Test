@@ -79,7 +79,7 @@ function MeetingAdd() {
         <main className="mainContent">
             <section id="phonePage">
                 <div className="container-fluid px-0">
-                    <Header title="Conference Add" />
+                    <Header title="Meeting Rooms" />
                 </div>
                 <div className="overviewTableWrapper">
                     <div className="overviewTableChild">
@@ -90,7 +90,7 @@ function MeetingAdd() {
                             <div className="col-12">
                                 <div className="heading">
                                     <div className="content">
-                                        <h4>Conference Add</h4>
+                                        <h4>Create Meeting Room</h4>
                                         <p>
                                             Create a new conference and configure it.
                                         </p>
