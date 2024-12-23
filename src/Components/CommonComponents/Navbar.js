@@ -767,7 +767,7 @@ function Navbar() {
                       data-bs-target="#collapse7"
                       aria-expanded={
                         isChildActive([
-                          ""
+                          "/call-tracker"
                         ])
                           ? "true"
                           : "false"
