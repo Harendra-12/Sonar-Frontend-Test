@@ -43,12 +43,12 @@
   font-size: 19px;
 }
 
-.clearButton2:disabled{
+.clearButton2:disabled {
   color: #4a4a4a !important;
   background: none !important;
 }
 
-.clearButton2.danger{
+.clearButton2.danger {
   color: red
 }
 
@@ -469,7 +469,7 @@
 
 .appPanelButtonCaller.active,
 .appPanelButtonCallerRect.active {
-  background-color: #000;
+  background-color: #a53e3f;
 }
 
 .appPanelButtonCaller.active i,

@@ -604,6 +604,8 @@ export const ConferenceCall = ({
                 left: "0px",
                 // width: "calc(100% - 210px)",
                 height: "100%",
+                width: '-webkit-fill-available',
+                zIndex: 9,
                 marginRight:
                   sessions.length > 0 && Object.keys(sessions).length > 0
                     ? "250px"
@@ -680,14 +682,10 @@ export const ConferenceCall = ({
                     <div className="videoCallWrapper">
                       <div className="row">
                         {toggleMessages && (
-                          <div className="col-lg-3 col-xl-3 col-12 p-3">
-                            <ConferenceMessages />
-                          </div>
+                          <ConferenceMessages />
                         )}
                         <div
-                          className={`"col-lg-${
-                            toggleMessages ? "9" : "12"
-                          } col-xl-${toggleMessages ? "9" : "12"} col-12" px-0`}
+                          className={"col-xl-12 col-12 px-0"}
                         >
                           <div className="videoBody py-0">
                             {notification && (
@@ -713,14 +711,14 @@ export const ConferenceCall = ({
                                                         </button> */}
                               </div>
                               <div className="participantWrapper pb-2">
-                                <div className="videoHolder">
+                                <div className="videoHolder w-auto d-flex align-items-center">
                                   <div className="activeGuyName">
                                     {conferenceScreenShareStatus?.sharedMessage ==
-                                    true
+                                      true
                                       ? conferenceScreenShareStatus.user
                                       : selectedConferenceUser?.name === ""
-                                      ? selectedConferenceUser?.name
-                                      : name}
+                                        ? selectedConferenceUser?.name
+                                        : name}
                                   </div>
                                   {dummySession !== "" ? (
                                     // &&
@@ -742,14 +740,14 @@ export const ConferenceCall = ({
                                     <div className="justify-content-center h-100 d-flex align-items-center text-white fs-1">
                                       <div
                                         className="contactViewProfileHolder"
-                                        //check if shared screen global state is true then show his name
+                                      //check if shared screen global state is true then show his name
                                       >
                                         {conferenceScreenShareStatus?.sharedMessage ==
-                                        true
+                                          true
                                           ? conferenceScreenShareStatus.user
                                           : selectedConferenceUser?.name !== ""
-                                          ? selectedConferenceUser?.name
-                                          : name}
+                                            ? selectedConferenceUser?.name
+                                            : name}
                                       </div>
                                     </div>
                                   )}
@@ -862,9 +860,8 @@ export const ConferenceCall = ({
                               {/* )} */}
                             </div>
                             <div
-                              className={`conferenceParticipantsWrapper ${
-                                participantMiniview ? "" : "hidden"
-                              }`}
+                              className={`conferenceParticipantsWrapper ${participantMiniview ? "" : "hidden"
+                                }`}
                             >
                               <div className="py-2 px-3 pe-2">
                                 <button
@@ -880,9 +877,8 @@ export const ConferenceCall = ({
                                   }}
                                 >
                                   <i
-                                    class={`fa-regular fa-chevron-${
-                                      participantMiniview ? "right" : "left"
-                                    }`}
+                                    class={`fa-regular fa-chevron-${participantMiniview ? "right" : "left"
+                                      }`}
                                   ></i>
                                 </button>
 
@@ -1001,10 +997,7 @@ export const ConferenceCall = ({
                                     );
                                   })}
                                 </ul>
-                                <div
-                                  className="position-absolute d-flex"
-                                  style={{ bottom: 20, right: 10 }}
-                                >
+                                <div className="d-flex justify-content-end">
                                   <button className="toggleButton">
                                     Mute All
                                   </button>

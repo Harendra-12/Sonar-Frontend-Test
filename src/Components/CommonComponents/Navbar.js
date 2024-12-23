@@ -255,10 +255,7 @@ function Navbar() {
                       aria-expanded={
                         isChildActive([
                           "/get-did",
-
                           "/port-number",
-                          "/did-config",
-                          "/did-add",
                           "/port-number-add",
                           "/port-number-edit",
                         ])
@@ -343,7 +340,7 @@ function Navbar() {
                           "/extensions-edit",
                           "/extensions-add",
                           "/device-provisioning-add",
-                          "device-provisioning-edit",
+                          "/device-provisioning-edit",
                           "/did-listing",
                           "/did-config",
                           "/did-add",
@@ -380,7 +377,7 @@ function Navbar() {
                         "/extensions-edit",
                         "/extensions-add",
                         "/device-provisioning-add",
-                        "device-provisioning-edit",
+                        "/device-provisioning-edit",
                         "/did-listing",
                         "/did-config",
                         "/did-add",
@@ -448,10 +445,11 @@ function Navbar() {
                                 to="/extensions"
                                 className={({ isActive }) =>
                                   isActive ||
-                                    ["/extensions-add", "/extensions-edit"].some(
-                                      (path) =>
-                                        window.location.pathname.includes(path)
-                                    )
+                                    ["/extensions-add", "/extensions-edit", "/device-provisioning-add",
+                                      "/device-provisioning-edit"].some(
+                                        (path) =>
+                                          window.location.pathname.includes(path)
+                                      )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -769,9 +767,7 @@ function Navbar() {
                       data-bs-target="#collapse7"
                       aria-expanded={
                         isChildActive([
-                          "/get-did",
-                          "/did-config",
-                          "/did-add",
+                          ""
                         ])
                           ? "true"
                           : "false"
