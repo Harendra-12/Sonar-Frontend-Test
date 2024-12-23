@@ -175,7 +175,7 @@ function DidListing() {
                         </thead>
                         <tbody>
                           {loading ? (
-                            <SkeletonTableLoader col={5} row={15} />
+                            <SkeletonTableLoader col={6} row={15} />
                           ) : (
                             <>
                               {did &&
