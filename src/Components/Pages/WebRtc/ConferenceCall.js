@@ -681,7 +681,7 @@ export const ConferenceCall = ({
                       <div className="row">
                         {toggleMessages && (
                           <div className="col-lg-3 col-xl-3 col-12 p-3">
-                            <ConferenceMessages />
+                            <ConferenceMessages sendMessage={sendMessage} />
                           </div>
                         )}
                         <div
