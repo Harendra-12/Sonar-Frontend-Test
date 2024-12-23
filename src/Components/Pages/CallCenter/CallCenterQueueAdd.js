@@ -364,47 +364,77 @@ function CallCenterQueueAdd() {
     });
   };
   const handleBulkUpload = (selectedAgents) => {
-    console.log(selectedAgents);
-    const newAgents = [...agent]; // Copy the current agent array
+    if (agent.length === 1 && agent[0].name === "") {
+      const newAgents = selectedAgents.map((selectedAgent) => ({
+        name: `${selectedAgent.id}`,
+        contact: `user/${selectedAgent.extension?.extension}@${selectedAgent.domain?.domain_name}`,
 
-    selectedAgents.forEach((selectedAgent) => {
-      const existingAgentIndex = newAgents.findIndex(
-        (a) => a.name === selectedAgent.id
-      );
+        id: Math.floor(Math.random() * 10000),
 
-      if (existingAgentIndex === -1) {
-        // Add new agent if it doesn't already exist
-        newAgents.push({
-          name: `${selectedAgent.id}`,
-          contact: `user/${selectedAgent.extension?.extension}@${selectedAgent.domain?.domain_name}`,
+        level: "0",
+        position: "0",
+        type: "callback",
+        password: "1234",
 
-          id: Math.floor(Math.random() * 10000),
+        call_timeout: "",
+        max_no_answer: "",
+        no_answer_delay_time: "",
 
-          level: "0",
-          position: "0",
-          type: "callback",
-          password: "1234",
+        reject_delay_time: "",
 
-          call_timeout: "",
-          max_no_answer: "",
-          no_answer_delay_time: "",
+        reserve_agents: 0,
 
-          reject_delay_time: "",
+        "truncate-agents-on-load": 0,
+        "truncate-tiers-on-load": 0,
+        time_base_score: "queue",
 
-          reserve_agents: 0,
+        wrap_up_time: "",
+        busy_delay_time: "",
+      }));
 
-          "truncate-agents-on-load": 0,
-          "truncate-tiers-on-load": 0,
-          time_base_score: "queue",
+      setAgent(newAgents); // Replace the entire destination state
+    } else {
+      const newAgents = [...agent]; // Copy the current agent array
 
-          wrap_up_time: "",
-          busy_delay_time: "",
-        });
-      }
-    });
+      selectedAgents.forEach((selectedAgent) => {
+        const existingAgentIndex = newAgents.findIndex(
+          (a) => a.name === selectedAgent.id
+        );
 
-    setAgent(newAgents); // Update the agent state
-    setBulkAddPopUp(false);
+        if (existingAgentIndex === -1) {
+          // Add new agent if it doesn't already exist
+          newAgents.push({
+            name: `${selectedAgent.id}`,
+            contact: `user/${selectedAgent.extension?.extension}@${selectedAgent.domain?.domain_name}`,
+
+            id: Math.floor(Math.random() * 10000),
+
+            level: "0",
+            position: "0",
+            type: "callback",
+            password: "1234",
+
+            call_timeout: "",
+            max_no_answer: "",
+            no_answer_delay_time: "",
+
+            reject_delay_time: "",
+
+            reserve_agents: 0,
+
+            "truncate-agents-on-load": 0,
+            "truncate-tiers-on-load": 0,
+            time_base_score: "queue",
+
+            wrap_up_time: "",
+            busy_delay_time: "",
+          });
+        }
+      });
+
+      setAgent(newAgents); // Update the agent state
+      setBulkAddPopUp(false);
+    }
   };
   return (
     <main className="mainContent">
@@ -1703,7 +1733,10 @@ function CallCenterQueueAdd() {
                       );
                     })}
                   <button
-                    onClick={() => handleBulkUpload(bulkUploadSelectedAgents)}
+                    onClick={() => {
+                      handleBulkUpload(bulkUploadSelectedAgents);
+                      setBulkAddPopUp(false);
+                    }}
                     className="btn btn-primary"
                   >
                     Done

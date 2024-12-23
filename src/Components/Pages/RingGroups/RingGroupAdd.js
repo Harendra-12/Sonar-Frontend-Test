@@ -485,27 +485,41 @@ const RingGroupAdd = () => {
   };
 
   const handleBulkDestinationUpload = (selectedDestinations) => {
-    const newDestinations = [...destination]; // Copy the current destination array
-
-    selectedDestinations.forEach((selectedDestination) => {
-      const existingDestinationIndex = newDestinations.findIndex(
-        (d) => d.name === selectedDestination.name
-      );
-
-      if (existingDestinationIndex === -1) {
-        // Add new destination if it doesn't already exist
-        newDestinations.push({
+    if (destination.length === 1 && destination[0].destination === "") {
+      const newDestinations = selectedDestinations.map(
+        (selectedDestination) => ({
           id: Math.floor(Math.random() * 10000),
           destination: selectedDestination?.extension?.extension,
           delay: 0,
           timeOut: "30",
-
           status: "inactive",
-        });
-      }
-    });
+        })
+      );
 
-    setDestination(newDestinations); // Update the destination state
+      setDestination(newDestinations); // Replace the entire destination state
+    } else {
+      const newDestinations = [...destination]; // Copy the current destination array
+
+      selectedDestinations.forEach((selectedDestination) => {
+        const existingDestinationIndex = newDestinations.findIndex(
+          (d) => d.name === selectedDestination.name
+        );
+
+        if (existingDestinationIndex === -1) {
+          // Add new destination if it doesn't already exist
+          newDestinations.push({
+            id: Math.floor(Math.random() * 10000),
+            destination: selectedDestination?.extension?.extension,
+            delay: 0,
+            timeOut: "30",
+
+            status: "inactive",
+          });
+        }
+      });
+
+      setDestination(newDestinations); // Update the destination state
+    }
   };
   return (
     <main className="mainContent">

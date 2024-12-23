@@ -1901,7 +1901,10 @@ function CallCenterQueueEdit() {
                       );
                     })}
                   <button
-                    onClick={() => handleBulkUpload(bulkUploadSelectedAgents)}
+                    onClick={() => {
+                      handleBulkUpload(bulkUploadSelectedAgents);
+                      setBulkAddPopUp(false);
+                    }}
                     className="btn btn-primary"
                   >
                     Done
