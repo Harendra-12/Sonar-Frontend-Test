@@ -14,6 +14,7 @@ import { act } from "react";
 import ConferenceVideo from "./ConferenceVideo";
 import { use } from "react";
 import ConferenceLoader from "../../Loader/ConferenceLoader";
+import ConferenceMessages from "./ConferenceMessages";
 
 export const DummySipRegisteration = ({
   webSocketServer,
@@ -44,6 +45,7 @@ export const DummySipRegisteration = ({
   const dispatch = useDispatch();
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [screenTogglehit, setScreenTogglehit] = useState(0);
+  const conferenceMessage = useSelector((state) => state.conferenceMessage);
   const sendMessage = (data) => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
       socketRef.current.send(JSON.stringify(data)); // Send JSON data
@@ -196,7 +198,7 @@ export const DummySipRegisteration = ({
             if (
               confLists.status &&
               confLists?.data !==
-                `-ERR Conference ${locationState.state.room_id} not found\n`
+              `-ERR Conference ${locationState.state.room_id} not found\n`
             ) {
               setConfList(
                 JSON?.parse?.(confLists?.data)
@@ -257,15 +259,15 @@ export const DummySipRegisteration = ({
         // console.log("WebSocket connection successful.");
       };
       socket.onmessage = (event) => {
-        console.log(JSON.parse(event.data));
+        // console.log(JSON.parse(event.data));
         if (typeof JSON.parse(event.data) === "string") {
           if (JSON.parse(JSON.parse(event.data))["key"] === "Conference") {
             // console.log("Conference Data", JSON.parse(JSON.parse(event.data))["result"]);
 
             setConferenceData(
               JSON.parse(JSON.parse(event.data))["result"]["Conference-Name"] ==
-                locationState.state.room_id &&
-                JSON.parse(JSON.parse(event.data))["result"]
+              locationState.state.room_id &&
+              JSON.parse(JSON.parse(event.data))["result"]
             );
           } else if (
             JSON.parse(JSON.parse(event.data))["key"] === "screenShare"
@@ -276,6 +278,19 @@ export const DummySipRegisteration = ({
                 "result"
               ],
             });
+          } else if (
+            JSON.parse(JSON.parse(event.data))["key"] === "conferenceMessage"
+          ) {
+            if (
+              JSON.parse(JSON.parse(event.data))["result"]["room_id"] == locationState.state.room_id) {
+              // Store conference message as an object with previous data
+              dispatch({
+                type: "SET_CONFERENCEMESSAGE",
+                conferenceMessage:JSON.parse(JSON.parse(event.data))["result"]
+              })
+            }
+            console.log("Conference Message", JSON.parse(JSON.parse(event.data))["result"]["room_id"],locationState.state.room_id);
+            
           }
         } else {
         }
@@ -340,7 +355,7 @@ export const DummySipRegisteration = ({
             hold: conferenceData["Hold"],
             isYou:
               conferenceData["Caller-Caller-ID-Name"] ===
-              locationState.state.name
+                locationState.state.name
                 ? true
                 : false,
             deaf: false,
@@ -381,7 +396,7 @@ export const DummySipRegisteration = ({
               hold: conferenceData["Hold"],
               isYou:
                 conferenceData["Caller-Caller-ID-Name"] ===
-                locationState.state.name
+                  locationState.state.name
                   ? true
                   : false,
               deaf: false,
@@ -436,7 +451,7 @@ export const DummySipRegisteration = ({
               hold: conferenceData["Hold"],
               isYou:
                 conferenceData["Caller-Caller-ID-Name"] ===
-                locationState.state.name
+                  locationState.state.name
                   ? true
                   : false,
               deaf: false,
@@ -608,7 +623,7 @@ export const DummySipRegisteration = ({
           return prevList; // Return the original list if no match is found
         });
       } else {
-        console.log("conferenceData", conferenceData);
+        // console.log("conferenceData", conferenceData);
       }
     }
   }, [conferenceData]);
@@ -727,65 +742,15 @@ export const DummySipRegisteration = ({
                       <div className="row">
                         {toggleMessages && (
                           <div className="col-lg-3 col-xl-3 col-12 p-3">
-                            <div className="messageOverlay">
-                              <div className="contactHeader py-3">
-                                <div>
-                                  <h4>Messages</h4>
-                                </div>
-                              </div>
-                              <div className="messageContent">
-                                <div className="messageList">
-                                  <div className="messageItem sender">
-                                    <div className="second">
-                                      <h6>
-                                        1003,<span>3:48</span>
-                                      </h6>
-                                      <div className="messageDetails">
-                                        <p>hi</p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="messageInput">
-                                  <textarea
-                                    type="text"
-                                    name=""
-                                    className="input"
-                                    placeholder="Please enter your message"
-                                    defaultValue={""}
-                                    rows={2}
-                                  />
-                                  <div className="col-12 d-flex justify-content-between align-items-center">
-                                    <div className="d-flex">
-                                      <button className="clearButton2">
-                                        <i className="fa-regular fa-image" />
-                                      </button>
-                                      <button className="clearButton2">
-                                        <i className="fa-solid fa-paperclip" />
-                                      </button>
-                                      <button className="clearButton2">
-                                        <i className="fa-regular fa-face-smile" />
-                                      </button>
-                                    </div>
-                                    <div>
-                                      <button
-                                        effect="ripple"
-                                        className="clearColorButton dark"
-                                      >
-                                        Send Now{" "}
-                                        <i className="fa-solid fa-paper-plane-top" />
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+                            <ConferenceMessages 
+                            sendMessage={sendMessage} 
+                            conferenceId={locationState.state.room_id} 
+                            userName={currentUser?.name} />
                           </div>
                         )}
                         <div
-                          className={`"col-lg-${
-                            toggleMessages ? "9" : "12"
-                          } col-xl-${toggleMessages ? "9" : "12"} col-12" px-0`}
+                          className={`"col-lg-${toggleMessages ? "9" : "12"
+                            } col-xl-${toggleMessages ? "9" : "12"} col-12" px-0`}
                         >
                           <div
                             className="videoBody py-0"
@@ -817,11 +782,11 @@ export const DummySipRegisteration = ({
                                 <div className="videoHolder">
                                   <div className="activeGuyName">
                                     {conferenceScreenShareStatus?.sharedMessage ==
-                                    true
+                                      true
                                       ? conferenceScreenShareStatus.user
                                       : selectedConferenceUser?.name !== ""
-                                      ? selectedConferenceUser?.name
-                                      : currentUser?.name}
+                                        ? selectedConferenceUser?.name
+                                        : currentUser?.name}
                                     {/* {locationState?.name} */}
                                   </div>
                                   {dummySession !== "" ? (
@@ -844,11 +809,11 @@ export const DummySipRegisteration = ({
                                     <div className="justify-content-center h-100 d-flex align-items-center text-white fs-1">
                                       <div className="contactViewProfileHolder">
                                         {conferenceScreenShareStatus?.sharedMessage ==
-                                        true
+                                          true
                                           ? conferenceScreenShareStatus?.user
                                           : selectedConferenceUser?.name !== ""
-                                          ? selectedConferenceUser?.name
-                                          : currentUser?.name}
+                                            ? selectedConferenceUser?.name
+                                            : currentUser?.name}
                                       </div>
                                     </div>
                                   )}
@@ -983,9 +948,8 @@ export const DummySipRegisteration = ({
                               {/* )} */}
                             </div>
                             <div
-                              className={`conferenceParticipantsWrapper ${
-                                participantMiniview ? "" : "hidden"
-                              }`}
+                              className={`conferenceParticipantsWrapper ${participantMiniview ? "" : "hidden"
+                                }`}
                             >
                               <div className="py-2 px-3 pe-2">
                                 <button
@@ -1001,9 +965,8 @@ export const DummySipRegisteration = ({
                                   }}
                                 >
                                   <i
-                                    class={`fa-regular fa-chevron-${
-                                      participantMiniview ? "right" : "left"
-                                    }`}
+                                    class={`fa-regular fa-chevron-${participantMiniview ? "right" : "left"
+                                      }`}
                                   ></i>
                                 </button>
                                 {confList.map((item, index) => {

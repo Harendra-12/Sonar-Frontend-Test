@@ -62,6 +62,7 @@ var permissionRefresh = 0;
 var memberId = null;
 var newAddedDid = null;
 var conferenceScreenShareStatus = null;
+var conferenceMessage = [];
 
 const initialState = {
   account,
@@ -127,6 +128,7 @@ const initialState = {
   memberId,
   newAddedDid,
   conferenceScreenShareStatus,
+  conferenceMessage,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -289,7 +291,11 @@ const counterReducer = (state = initialState, action) => {
         ...state,
         conferenceScreenShareStatus: action.conferenceScreenShareStatus,
       };
-
+      case "SET_CONFERENCEMESSAGE":
+      return {
+        ...state,
+        conferenceMessage:[...state.conferenceMessage, action.conferenceMessage] ,
+      };
     default:
       return state;
   }
