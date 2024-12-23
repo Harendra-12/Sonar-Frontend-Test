@@ -219,7 +219,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                           >
                             Create
                           </button> */}
-                          <button
+                          {/* <button
                             className={`nav-link ${selectedTab == "nav-voicemail-tab"
                               ? "active"
                               : ""
@@ -236,7 +236,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                             }
                           >
                             Join
-                          </button>
+                          </button> */}
                         </div>
                       </nav>
                       {loading ? (

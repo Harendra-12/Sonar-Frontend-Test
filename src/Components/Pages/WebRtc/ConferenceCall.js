@@ -621,9 +621,6 @@ export const ConferenceCall = ({
                           <h3
                             style={{ fontFamily: "Outfit", marginBottom: "0" }}
                           >
-                            <button class="clearButton text-dark">
-                              <i class="fa-solid fa-chevron-left fs-4"></i>
-                            </button>{" "}
                             Conference{" "}
                           </h3>
                         </div>
