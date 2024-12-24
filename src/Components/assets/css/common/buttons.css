@@ -719,7 +719,7 @@
 .tableButton.nottif::after {
   content: '\f071';
   font-family: 'FontAwesome';
-  font-size: 12px;
+  font-size: 10px;
   color: #ffffff;
   position: absolute;
   top: -7px;
