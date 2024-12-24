@@ -181,7 +181,7 @@ function CallDashboard() {
                       <div className="col-12">
                         <div className="heading">
                           <div className="content">
-                            <h4> Call Dashboard</h4>
+                            <h4> Active Calls</h4>
                             <p>You can see all of the active calls here</p>
                           </div>
                         </div>

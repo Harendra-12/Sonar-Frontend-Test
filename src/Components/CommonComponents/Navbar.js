@@ -356,7 +356,8 @@ function Navbar() {
                           "/agents-add",
                           "/agents-edit",
                           "/meeting-room",
-                          "/meeting-add"
+                          "/meeting-add",
+                          "/active-calls"
                         ])
                           ? "true"
                           : "false"
@@ -394,7 +395,8 @@ function Navbar() {
                         "/agents-edit",
                         "/call-dashboard",
                         "/meeting-room",
-                        "/meeting-add"
+                        "/meeting-add",
+                        "/active-calls"
                       ])
                         ? "show"
                         : ""
@@ -412,12 +414,15 @@ function Navbar() {
                             </NavLink>
                           </li>
                           <li className="tabItem ">
-                            <a onClick={() => featureUnderdevelopment()}>
+                            <NavLink
+                              to="/active-calls"
+                              onClick={backToTop}
+                            >
                               {/* <div className="iconHolder">
                                 <i className="fa-regular fa-regular fa-list-dropdown"></i>
                               </div> */}
                               <div className="itemTitle">Active Calls</div>
-                            </a>
+                            </NavLink>
                           </li>
                           <li className="tabItem">
                             <NavLink

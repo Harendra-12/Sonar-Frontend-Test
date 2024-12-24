@@ -251,7 +251,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule, setac
               }
               effect="ripple"
             >
-              <i className="fa-solid fa-microphone-slash" />
+              <i className={`fa-solid fa-microphone${isMuted ? "-slash" : ""}`} />
             </button>
             <button
               onClick={() => {
