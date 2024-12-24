@@ -128,7 +128,7 @@ function CdrReport() {
   useEffect(() => {
     const getRingGroupDashboardData = async () => {
       if (account && account.id) {
-        const apidata = await generalGetFunction(`/spam/all`);
+        const apidata = await generalGetFunction(`/spam/all?all`);
         // console.log(apidata);
         if (apidata?.status) {
           setCallBlock(apidata.data);
@@ -675,7 +675,7 @@ function CdrReport() {
                           <>
                             {cdr?.data &&
                               cdr?.data?.map((item, index) => {
-                                const isBlocked = callBlock.some((block) => {
+                                const isBlocked = callBlock?.some((block) => {
                                   if (item["Call-Direction"] == "inbound") {
                                     return (
                                       item["Caller-Caller-ID-Number"] ==

@@ -27,12 +27,14 @@ const CallBlocking = () => {
     const [type, setType] = useState("");
     const [number, setNumber] = useState("");
     const [deletePopup, setDeletePopup] = useState(false);
+    const [searchValue,setSearchValue] = useState("")
 
     useEffect(() => {
+        setLoading(true);
         const getRingGroupDashboardData = async () => {
             if (account && account.id) {
                 const apidata = await generalGetFunction(
-                    `/spam/all`
+                    `/spam/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
                 );
                 console.log(apidata);
                 if (apidata?.status) {
@@ -46,7 +48,7 @@ const CallBlocking = () => {
             }
         };
         getRingGroupDashboardData();
-    }, [pageNumber]);
+    }, [pageNumber,itemsPerPage,searchValue]);
 
 
 
@@ -158,13 +160,15 @@ const CallBlocking = () => {
                                                         setItemsPerPage(e.target.value);
                                                     }}
                                                 >
-                                                    <option value={10}>Max</option>
+                                                    <option value={10}>10</option>
+                                                    <option value={20}>20</option>
+                                                    <option value={30}>30</option>
                                                 </select>
                                                 <label>entries</label>
                                             </div>
                                             <div className="searchBox">
                                                 <label>Search:</label>
-                                                <input type="search" className="formItem" onChange={() => featureUnderdevelopment()} />
+                                                <input type="search" className="formItem" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
                                             </div>
                                         </div>
                                         <div className="tableContainer">
@@ -182,7 +186,7 @@ const CallBlocking = () => {
                                                     ) : (
                                                         <>
                                                             {callBlock &&
-                                                                callBlock?.map((item, index) => {
+                                                                callBlock.data?.map((item, index) => {
                                                                     return (
                                                                         <tr key={index}>
                                                                             <td
@@ -222,6 +226,19 @@ const CallBlocking = () => {
                                                     )}
                                                 </tbody>
                                             </table>
+                                        </div>
+                                        <div className="tableHeader mb-3">
+                                            {callBlock && callBlock?.data?.length > 0 ? (
+                                                <PaginationComponent
+                                                    pageNumber={(e) => setPageNumber(e)}
+                                                    totalPage={callBlock.last_page}
+                                                    from={callBlock.from}
+                                                    to={callBlock.to}
+                                                    total={callBlock.total}
+                                                />
+                                            ) : (
+                                                ""
+                                            )}
                                         </div>
                                     </div>
                                 </div>
