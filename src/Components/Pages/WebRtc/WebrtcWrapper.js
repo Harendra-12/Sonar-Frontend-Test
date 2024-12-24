@@ -198,6 +198,13 @@ const WebrtcWrapper = () => {
   }, [dummySession]);
   return (
     <>
+      <style>
+        {`
+          body{
+            overflow-x: hidden;
+          }
+      `}
+      </style>
       <SIPProvider options={options}>
         <SideNavbarApp
           setactivePage={setactivePage}
@@ -447,7 +454,7 @@ const WebrtcWrapper = () => {
               </div>
             </section>
             {sessions.find((session) => session.mode === "video") &&
-            callProgressId ? (
+              callProgressId ? (
               <VideoCall
                 setHangupRefresh={setHangupRefresh}
                 hangupRefresh={hangupRefresh}
