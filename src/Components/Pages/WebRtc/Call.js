@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Dialpad from "./Dialpad";
 import CallDetails from "./CallDetails";
 import { useDispatch, useSelector } from "react-redux";
@@ -51,58 +51,152 @@ function Call({
   const { sessionManager, connectStatus } = useSIPProvider();
   const [refreshCalls, setRefreshCalls] = useState(0);
   const [clickedExtension, setClickedExtension] = useState(null);
+  //========================================================================================
+  const targetRef = useRef(null); // Reference to the target div
+  const currentPage = useRef(1);
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true); // To check if more data is available
 
+  const fetchData = useCallback(async () => {
+    if (isLoading || !hasMore) return;
+
+    setIsLoading(true);
+
+    try {
+      const apiData = await generalGetFunction(
+        `/call-details-phone?page_number=${currentPage.current}`
+      );
+      // const result = await response.json();
+
+      if (apiData.status) {
+        console.log(apiData);
+        const result = apiData.data.calls.reverse();
+        if (result.length === 0) {
+          setHasMore(false); // No more data
+        } else {
+          setData((prevData) => [...prevData, ...result]);
+          currentPage.current += 1;
+          setLoading(false);
+          // setPage((prevPage) => prevPage + 1);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [page]);
+
+  useEffect(() => {
+    // Initial fetch
+    fetchData();
+  }, [fetchData]);
+
+  const debounce = (func, delay) => {
+    let timer;
+    return function (...args) {
+      clearTimeout(timer);
+      timer = setTimeout(() => func.apply(this, args), delay);
+    };
+  };
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const target = entries[0];
+        if (target.isIntersecting && !isLoading && hasMore) {
+          fetchData();
+        }
+      },
+      {
+        root: null, // Defaults to the viewport
+        rootMargin: "100px", // Preload when 100px away from the bottom
+        threshold: 1.0, // Fully visible
+      }
+    );
+
+    if (targetRef.current) {
+      observer.observe(targetRef.current);
+    }
+
+    return () => {
+      if (targetRef.current) {
+        observer.unobserve(targetRef.current);
+      }
+    };
+  }, [fetchData, isLoading, hasMore]);
+  //========================================================================================
   function handleHideDialpad(value) {
     setDialpadShow(value);
   }
 
-  useEffect(() => {
-    if (allCall && allCall.calls) {
-      const apiData = allCall;
-      setAllApiData(apiData.calls.reverse());
+  // useEffect(() => {
+  //   if (data.length > 0) {
+  //     // const apiData = allCall;
+  //     setAllApiData(data.reverse());
 
-      const uniqueArray = [
-        ...new Map(
-          apiData.calls
-            .filter((item) => {
-              // Remove items with application_state == "conference"
-              if (item.application_state === "conference") {
-                return false;
-              }
-              // Apply the filter condition if 'applyFilter' is true
-              if (!isCustomerAdmin) {
-                return (
-                  item["Caller-Callee-ID-Number"] === extension ||
-                  item["Caller-Caller-ID-Number"] === extension
-                );
-              }
-              // If applyFilter is false, return all items
-              return true;
-            })
-            .reverse()
-            .map((item) => [item, item])
-        ).values(),
-      ];
+  //     // const uniqueArray = [
+  //     //   ...new Map(
+  //     //     apiData.calls
+  //     //       .filter((item) => {
+  //     //         // Remove items with application_state == "conference"
+  //     //         if (item.application_state === "conference") {
+  //     //           return false;
+  //     //         }
+  //     //         // Apply the filter condition if 'applyFilter' is true
+  //     //         if (!isCustomerAdmin) {
+  //     //           return (
+  //     //             item["Caller-Callee-ID-Number"] === extension ||
+  //     //             item["Caller-Caller-ID-Number"] === extension
+  //     //           );
+  //     //         }
+  //     //         // If applyFilter is false, return all items
+  //     //         return true;
+  //     //       })
+  //     //       .reverse()
+  //     //       .map((item) => [item, item])
+  //     //   ).values(),
+  //     // ];
 
-      setAllCalls(uniqueArray.reverse());
-      setLoading(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allCall, isCustomerAdmin, refreshCalls]);
+  //     setAllCalls(data.reverse());
+  //     setLoading(false);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [allCall, isCustomerAdmin, refreshCalls]);
+  console.log("allCalls", allCalls, data);
+  // useEffect(() => {
+  //   console.log("This is account", account && account.account_id);
 
-  useEffect(() => {
-    console.log("This is account", account && account.account_id);
+  //   setLoading(true);
+  //   if (account && account.account_id) {
+  //     dispatch({
+  //       type: "SET_CALLDETAILSREFRESH",
+  //       callDetailsRefresh: callDetailsRefresh + 1,
+  //     });
+  //   } else {
+  //     navigate("/");
+  //   }
+  // }, [account, navigate, hangupRefresh, refreshCalls]);
 
-    setLoading(true);
-    if (account && account.account_id) {
-      dispatch({
-        type: "SET_CALLDETAILSREFRESH",
-        callDetailsRefresh: callDetailsRefresh + 1,
-      });
-    } else {
-      navigate("/");
-    }
-  }, [account, navigate, hangupRefresh, refreshCalls]);
+  // useEffect(() => {
+  //   const getCdrPhoneData = async () => {
+  //     //https://ucaas.webvio.in/backend/api/call-details-phone?search=77777&page_number=2&date_range=2024-12-01,2024-12-17&date=2024-12-01&page_number=1
+  //     const apiData = await generalGetFunction(
+  //       `/call-details-phone?page_number=1`
+  //     );
+  //     if (apiData?.status) {
+  //       console.log(apiData);
+  //     } else {
+  //       console.log("erroor happend");
+  //     }
+  //   };
+  //   getCdrPhoneData();
+  // }, [account, navigate, hangupRefresh, refreshCalls]);
 
   // user data filter based on the extension
   useEffect(() => {
@@ -167,17 +261,17 @@ function Call({
 
     setCallHistory(
       filteredCalls[0] &&
-      allApiData.filter((item) => {
-        if (!isCustomerAdmin) {
-          return (
-            (item["Caller-Callee-ID-Number"] === extension &&
-              item["Caller-Caller-ID-Number"] === clickedExtension) ||
-            (item["Caller-Caller-ID-Number"] === extension &&
-              item["Caller-Callee-ID-Number"] === clickedExtension)
-          );
-        }
-        return true;
-      })
+        allApiData.filter((item) => {
+          if (!isCustomerAdmin) {
+            return (
+              (item["Caller-Callee-ID-Number"] === extension &&
+                item["Caller-Caller-ID-Number"] === clickedExtension) ||
+              (item["Caller-Caller-ID-Number"] === extension &&
+                item["Caller-Callee-ID-Number"] === clickedExtension)
+            );
+          }
+          return true;
+        })
     );
   }, [allCalls, clickStatus, searchQuery]);
 
@@ -186,7 +280,8 @@ function Call({
     const min = Math.floor((duration / 60) % 60);
     const hour = Math.floor(duration / 3600);
     return (
-      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${sec ? sec + " sec" : ""
+      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${
+        sec ? sec + " sec" : ""
       }` || "0 sec"
     );
   };
@@ -220,8 +315,8 @@ function Call({
     const displayName = matchingContact
       ? matchingContact.name
       : item["Caller-Callee-ID-Number"] === extension
-        ? item["Caller-Caller-ID-Number"]
-        : item["Caller-Callee-ID-Number"];
+      ? item["Caller-Caller-ID-Number"]
+      : item["Caller-Callee-ID-Number"];
 
     const matchingCalleeContactForAdmin = allContact.find(
       (contact) => contact.did === item["Caller-Callee-ID-Number"]
@@ -235,26 +330,27 @@ function Call({
         key={item.id}
         onClick={() => handleCallItemClick(item)}
         onDoubleClick={() => handleDoubleClickCall(item)}
-        className={`callListItem ${item["Caller-Callee-ID-Number"] === extension &&
+        className={`callListItem ${
+          item["Caller-Callee-ID-Number"] === extension &&
           item["variable_billsec"] > 0 &&
           !isCustomerAdmin
-          ? "incoming"
-          : item["Caller-Caller-ID-Number"] === extension && !isCustomerAdmin
+            ? "incoming"
+            : item["Caller-Caller-ID-Number"] === extension && !isCustomerAdmin
             ? "outgoing"
             : item["Caller-Callee-ID-Number"] === extension &&
               item["variable_billsec"] === 0 &&
               !isCustomerAdmin
-              ? "missed"
-              : item["Call-Direction"] === "voicemail" && !isCustomerAdmin
-                ? "voicemail"
-                : ""
-          } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
+            ? "missed"
+            : item["Call-Direction"] === "voicemail" && !isCustomerAdmin
+            ? "voicemail"
+            : ""
+        } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
       >
         <div className="row justify-content-between">
           <div className="col-xl-12 d-flex">
             <div
               className="profileHolder"
-            // id={"profileOfflineNav"}
+              // id={"profileOfflineNav"}
             >
               <i className="fa-light fa-user fs-5"></i>
             </div>
@@ -267,8 +363,8 @@ function Call({
                   {displayName
                     ? displayName
                     : item.caller_user
-                      ? item.caller_user.username
-                      : "USER XYZ"}
+                    ? item.caller_user.username
+                    : "USER XYZ"}
                 </h4>
                 <h5 style={{ paddingLeft: 20 }}>
                   {item["Caller-Callee-ID-Number"] === extension
@@ -310,7 +406,9 @@ function Call({
             )}
 
             {item["variable_billsec"] > 0 && (
-              <div className={`col-3 mx-auto ${isCustomerAdmin ? "my-auto" : ""}`}>
+              <div
+                className={`col-3 mx-auto ${isCustomerAdmin ? "my-auto" : ""}`}
+              >
                 <div className="contactTags">
                   <span data-id="2" className="duration">
                     Duration: {formatTime(item["variable_billsec"])}
@@ -398,7 +496,7 @@ function Call({
     });
   };
 
-  const groupedCalls = groupCallsByDate(previewCalls);
+  const groupedCalls = groupCallsByDate(data);
 
   const sortedGroupedCalls = sortKeys(Object.keys(groupedCalls)).reduce(
     (acc, date) => {
@@ -458,13 +556,13 @@ function Call({
             mode === "audio"
               ? true
               : {
-                mandatory: {
-                  minWidth: 1280,
-                  minHeight: 720,
-                  minFrameRate: 30,
+                  mandatory: {
+                    minWidth: 1280,
+                    minHeight: 720,
+                    minFrameRate: 30,
+                  },
+                  optional: [{ facingMode: "user" }],
                 },
-                optional: [{ facingMode: "user" }],
-              },
         },
       }
     );
@@ -483,7 +581,10 @@ function Call({
 
       // If tracks are already present, attach immediately
       if (remoteStream.getTracks().length > 0) {
-        console.log("Remote stream tracks available immediately:", remoteStream);
+        console.log(
+          "Remote stream tracks available immediately:",
+          remoteStream
+        );
         playRemoteStream(remoteStream);
       }
     }
@@ -706,14 +807,22 @@ function Call({
                           <input
                             type="date"
                             className="formItem"
-                            style={{ background: 'var(--searchBg)', borderColor: 'var(--border-color)', borderRadius: '5px' }}
+                            style={{
+                              background: "var(--searchBg)",
+                              borderColor: "var(--border-color)",
+                              borderRadius: "5px",
+                            }}
                           />
                         </div>
                         <div className="col-6">
                           <input
                             type="date"
                             className="formItem"
-                            style={{ background: 'var(--searchBg)', borderColor: 'var(--border-color)', borderRadius: '5px' }}
+                            style={{
+                              background: "var(--searchBg)",
+                              borderColor: "var(--border-color)",
+                              borderRadius: "5px",
+                            }}
                           />
                         </div>
                       </div>
@@ -801,10 +910,7 @@ function Call({
                       className="callList"
                       onClick={() => setSelectedModule("callDetails")}
                     >
-                      {loading &&
-                        (callDetailsRefresh == 0 ||
-                          callDetailsRefresh == 1 ||
-                          callDetailsRefresh == 2) ? (
+                      {loading ? (
                         <ContentLoader />
                       ) : Object.keys(groupedCalls).length > 0 ? (
                         sortKeys(Object.keys(groupedCalls)).map((date) => (
@@ -840,6 +946,20 @@ function Call({
                             </div>
                           </div>
                         </div>
+                      )}
+                      {isLoading ? (
+                        <div className="text-center">
+                          <i
+                            class={
+                              isLoading
+                                ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                : "fa-regular fa-arrows-rotate fs-5 "
+                            }
+                            style={{ color: "var(--webUtilGray)" }}
+                          ></i>
+                        </div>
+                      ) : (
+                        <div ref={targetRef}></div>
                       )}
                     </div>
                   </div>
