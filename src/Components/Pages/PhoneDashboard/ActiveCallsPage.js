@@ -51,6 +51,154 @@ function ActiveCallsPage() {
                                             </div>
                                         </div>
                                     </div>
+                                    {/* <div className='col-6 pe-3' style={{ padding: "5px 20px 0", borderRight: "1px solid var(--border-color)" }}>
+                                        <nav className='tangoNavs'>
+                                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                                <button class="nav-link active" id="nav-rgall-tab" data-bs-toggle="tab" data-bs-target="#nav-rgall" type="button" role="tab" aria-controls="nav-rgall" aria-selected="true">Active Ring Group Calls</button>
+                                                <button class="nav-link" id="nav-rgringing-tab" data-bs-toggle="tab" data-bs-target="#nav-rgringing" type="button" role="tab" aria-controls="nav-rgringing" aria-selected="false">Ringing Ring Group Calls</button>
+                                            </div>
+                                        </nav>
+                                        <div class="tab-content" id="nav-tabContent">
+                                            <div class="tab-pane fade show active" id="nav-rgall" role="tabpanel" aria-labelledby="nav-rgall-tab" tabindex="0">
+                                                <div className="tableContainer" style={{ height: '40vh' }}>
+                                                    <table>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Profile</th>
+                                                                <th>Created</th>
+                                                                <th>CID Number</th>
+                                                                <th>Destination</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td>10000</td>
+                                                                <td>162626</td>
+                                                                <td>61611</td>
+                                                                <td>1302</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td>10000</td>
+                                                                <td>162626</td>
+                                                                <td>61611</td>
+                                                                <td>1302</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-content" id="nav-tabContent">
+                                            <div class="tab-pane fade" id="nav-rgringing" role="tabpanel" aria-labelledby="nav-rgringing-tab" tabindex="0">
+                                                <div className="tableContainer" style={{ height: '40vh' }}>
+                                                    <table>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Profile</th>
+                                                                <th>Created</th>
+                                                                <th>CID Number</th>
+                                                                <th>Destination</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td>10000</td>
+                                                                <td>162626</td>
+                                                                <td>61611</td>
+                                                                <td>1302</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td>10000</td>
+                                                                <td>162626</td>
+                                                                <td>61611</td>
+                                                                <td>1302</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='col-6 pe-3' style={{ padding: "5px 20px 0", borderRight: "1px solid var(--border-color)" }}>
+                                        <nav className='tangoNavs'>
+                                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                                <button class="nav-link active" id="nav-ccall-tab" data-bs-toggle="tab" data-bs-target="#nav-ccall" type="button" role="tab" aria-controls="nav-ccall" aria-selected="true">Active Queue Calls</button>
+                                                <button class="nav-link" id="nav-ccringing-tab" data-bs-toggle="tab" data-bs-target="#nav-ccringing" type="button" role="tab" aria-controls="nav-ccringing" aria-selected="false">Ringing Queue Calls</button>
+                                            </div>
+                                        </nav>
+                                        <div class="tab-content" id="nav-tabContent">
+                                            <div class="tab-pane fade show active" id="nav-ccall" role="tabpanel" aria-labelledby="nav-ccall-tab" tabindex="0">
+                                                <div className="tableContainer" style={{ height: '40vh' }}>
+                                                    <table>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Profile</th>
+                                                                <th>Created</th>
+                                                                <th>CID Number</th>
+                                                                <th>Destination</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td>10000</td>
+                                                                <td>162626</td>
+                                                                <td>61611</td>
+                                                                <td>1302</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td>10000</td>
+                                                                <td>162626</td>
+                                                                <td>61611</td>
+                                                                <td>1302</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-content" id="nav-tabContent">
+                                            <div class="tab-pane fade" id="nav-ccringing" role="tabpanel" aria-labelledby="nav-ccringing-tab" tabindex="0">
+                                                <div className="tableContainer" style={{ height: '40vh' }}>
+                                                    <table>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Profile</th>
+                                                                <th>Created</th>
+                                                                <th>CID Number</th>
+                                                                <th>Destination</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td>10000</td>
+                                                                <td>162626</td>
+                                                                <td>61611</td>
+                                                                <td>1302</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td>10000</td>
+                                                                <td>162626</td>
+                                                                <td>61611</td>
+                                                                <td>1302</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> */}
                                     <div
                                         className="col-7 pe-3"
                                         style={{ overflow: "auto", padding: "5px 20px 0", borderRight: "1px solid var(--border-color)" }}
@@ -58,6 +206,7 @@ function ActiveCallsPage() {
                                         <nav className='tangoNavs mb-3'>
                                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                                 <button class="nav-link active" id="nav-desk-tab">All Active Calls</button>
+                                                <button class="nav-link disabled ms-auto pe-0" id="nav-disabled-tab">Total Calls: 0</button>
                                             </div>
                                         </nav>
                                         <div className="tableContainer">
@@ -71,6 +220,7 @@ function ActiveCallsPage() {
                                         <nav className='tangoNavs mb-3'>
                                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                                 <button class="nav-link active" id="nav-desk-tab">All Ringing Calls</button>
+                                                <button class="nav-link disabled ms-auto pe-0" id="nav-disabled-tab">Total Calls: 0</button>
                                             </div>
                                         </nav>
                                         <div className="tableContainer">
@@ -80,7 +230,8 @@ function ActiveCallsPage() {
                                                         <th>#</th>
                                                         <th>From </th>
                                                         <th>To</th>
-                                                        <th>Call at</th>
+                                                        <th>Started at</th>
+                                                        <th>Tag</th>
                                                     </tr>
                                                 </thead>
 
@@ -93,6 +244,7 @@ function ActiveCallsPage() {
                                                                     <td>{item.cid_name}</td>
                                                                     <td>{item.presence_id.split("@")[0]}</td>
                                                                     <td>{item.created.split(" ")[1]}</td>
+                                                                    <td>{item.name.split("/")[1]}</td>
                                                                 </tr>
                                                             )
                                                         })

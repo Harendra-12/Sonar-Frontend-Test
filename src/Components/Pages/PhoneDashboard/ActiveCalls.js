@@ -120,10 +120,10 @@ function ActiveCalls({ isWebrtc }) {
         <thead>
           <tr>
             <th>#</th>
-            <th>Profile</th>
-            <th>Created</th>
+            <th>Call Started</th>
             {/* <th>CID Name</th> */}
             <th>CID Number</th>
+            <th>Tag</th>
             <th>Destination</th>
             {isWebrtc !== false && <th>Action</th>}
             {/* <th>Intercept</th>
@@ -142,10 +142,10 @@ function ActiveCalls({ isWebrtc }) {
                 return (
                   <tr>
                     <td>{key + 1}</td>
-                    <td>{item.name.split("/")[1]}</td>
                     <td>{item.created.split(" ")[1]}</td>
                     {/* <td>{item.b_cid_name}</td> */}
                     <td>{item.cid_num}</td>
+                    <td>{item.name.split("/")[1]}</td>
                     <td>
                       {item?.dest.includes("set:valet_ticket")
                         ? extractLastNumber(item?.accountcode)
