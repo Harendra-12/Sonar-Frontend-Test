@@ -1690,7 +1690,7 @@ function CallCenterQueueAdd() {
       {bulkAddPopUp ? (
         <div className="addNewContactPopup">
           <div className="row">
-            <div className="col-12 heading">
+            <div className="col-12 heading mb-0">
               <i className="fa-light fa-user-plus" />
               <h5>Add People to the selected Queue</h5>
               <p>
@@ -1698,19 +1698,6 @@ function CallCenterQueueAdd() {
                 organized and efficient
               </p>
               <div className="border-bottom col-12" />
-            </div>
-            <div className="col-xl-12">
-              <div className="formLabel">
-                <label htmlFor="">Full Name</label>
-              </div>
-              <div className="col-12">
-                <input
-                  type="text"
-                  className="formItem"
-                  placeholder="Full Name"
-                  name="name"
-                />
-              </div>
             </div>
             <div className="col-xl-12 mt-3">
               {user

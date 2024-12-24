@@ -281,7 +281,8 @@ function CallDashboard() {
                                 <th>#</th>
                                 <th>From </th>
                                 <th>To</th>
-                                <th>Call at</th>
+                                <th>Started at</th>
+                                <th>Tag</th>
                               </tr>
                             </thead>
 
@@ -294,6 +295,7 @@ function CallDashboard() {
                                       <td>{item.cid_name}</td>
                                       <td>{item.presence_id.split("@")[0]}</td>
                                       <td>{item.created.split(" ")[1]}</td>
+                                      <td>{item.name.split("/")[1]}</td>
                                     </tr>
                                   )
                                 })
