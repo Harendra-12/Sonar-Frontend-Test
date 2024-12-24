@@ -329,7 +329,7 @@ const UsersEdit = () => {
     setSelectedPermission(newSelectedPermission);
     setParentChecked({ ...parentChecked, [item]: newParentChecked });
   };
-
+  // console.log(errors);
   return (
     <>
       <style>
@@ -520,6 +520,22 @@ const UsersEdit = () => {
                         </div>
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
+                            <label htmlFor="">Alias/Nickname</label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              name="extension"
+                              className="formItem"
+                              {...register("alias", {
+                                ...noSpecialCharactersValidator,
+                              })}
+                              onKeyDown={restrictToAllowedChars}
+                            />
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-12">
+                          <div className="formLabel">
                             <label htmlFor="selectFormRow">
                               Time Zone <span className="text-danger">*</span>
                             </label>
@@ -606,8 +622,8 @@ const UsersEdit = () => {
                                   e.target.value === ""
                                     ? ""
                                     : roleName.permissions.map((item) => {
-                                      return item.permission_id;
-                                    })
+                                        return item.permission_id;
+                                      })
                                 );
                               }}
                             >
@@ -649,7 +665,11 @@ const UsersEdit = () => {
                                   name="extension_id"
                                   value={watch().extension_id}
                                   {...register("extension_id")}
-                                  disabled={watch().extension_id == ""}
+                                  // disabled
+                                  disabled={
+                                    watch().extension_id != "" ||
+                                    watch().extension_id != null
+                                  }
                                 >
                                   <option value="" disabled>
                                     Available Extensions
@@ -673,10 +693,10 @@ const UsersEdit = () => {
                                       e.preventDefault();
                                       setPopUp(true);
                                     }}
-                                  // onClick={(e) => {
-                                  //   e.preventDefault();
-                                  //   setValue("extension_id", null);
-                                  // }}
+                                    // onClick={(e) => {
+                                    //   e.preventDefault();
+                                    //   setValue("extension_id", null);
+                                    // }}
                                   >
                                     <span className="text">Edit</span>
                                     {/* <span className="icon">
@@ -849,7 +869,7 @@ const UsersEdit = () => {
                             Assign an extension to the newly created user.
                           </label>
                         </div>
-                        <div className="col-6">
+                        <div className="col-8">
                           <div className="row">
                             <div
                               className={
@@ -865,6 +885,7 @@ const UsersEdit = () => {
                                 <option value="" disabled>
                                   Available Extensions
                                 </option>
+                                <option value="">None</option>
                                 {filterExtensions &&
                                   filterExtensions.map((extension, key) => {
                                     return (
@@ -875,7 +896,7 @@ const UsersEdit = () => {
                                   })}
                               </select>
                             </div>
-                            {watch().extension_id && (
+                            {/* {watch().extension_id && (
                               <div className="col-4">
                                 <button
                                   effect="ripple"
@@ -891,7 +912,7 @@ const UsersEdit = () => {
                                   </span>
                                 </button>
                               </div>
-                            )}
+                            )} */}
                           </div>
                         </div>
                       </div>
@@ -916,10 +937,23 @@ const UsersEdit = () => {
                         </span>
                       </button> */}
                       <button
-                        className="panelButton gray m-0 float-end"
-                        onClick={() => setPopUp(false)}
+                        type="button"
+                        effect="ripple"
+                        className="panelButton"
+                        onClick={() => {
+                          if (Object.keys(errors).length === 0) {
+                            handleFormSubmit();
+                          } else {
+                            setPopUp(false);
+                          }
+                        }}
                       >
-                        <span className="text">Close</span>
+                        <span className="text">Save</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-floppy-disk"></i>
+                        </span>
+                      </button>
+                      <button className="" onClick={() => setPopUp(false)}>
                         <span className="icon">
                           <i class="fa-solid fa-xmark"></i>
                         </span>

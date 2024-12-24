@@ -199,7 +199,10 @@ const ExtensionsEdit = () => {
             onbusy: apiData.data.onbusy,
             onbusyTo: apiData.data.onbusyTo,
             noanswer: apiData.data.noanswer,
+
             // noanswerTo: apiData.data.noanswerTo,
+            forward: apiData.data.forward,
+            forward_to: apiData.data.forward_to,
             notregistered: apiData.data.notregistered,
             notregisteredTo: apiData.data.notregisteredTo,
             followme: apiData.data.followme,
@@ -366,6 +369,8 @@ const ExtensionsEdit = () => {
           moh_sound: data.moh,
           notregisteredTo: data.notregisteredTo,
           noanswer: data.noanswer == "Disabled" ? 0 : 1,
+          forward: data.forward,
+          forward_to: data.forward_to,
 
           callforward: data.noanswer == "Forward" ? 1 : 0,
           callforwardTo: data.noanswer === "Forward" ? data.noanswerTo : "",
@@ -423,6 +428,16 @@ const ExtensionsEdit = () => {
           directoryExtensionVisible: data.directoryExtensionVisible,
           maxRegistration: data.maxRegistration,
           limitMax: data.limitMax,
+          forward: data.forward,
+          forward_to: data.forward_to,
+          // if (data.forward === "pstn") {
+          //   data.forward_to = data.forward_to || "";
+          // } else if (data.forward === "direct") {
+          //   data.forward_to = data.direct_extension || "";
+          // } else {
+          //   data.forward_to = "";
+          // }
+          // direct_extension: data.direct_extension,
           limitDestinations: data.limitDestinations,
           voicemailEnabled: data.voicemailEnabled,
           voiceEmailTo: data.voiceEmailTo,
@@ -504,7 +519,10 @@ const ExtensionsEdit = () => {
       setLoading(false);
     }
   });
-
+  const forwardStatus = watch("forward", "disabled");
+  const directListValue = (value) => {
+    setValue("direct_extension", value[0]);
+  };
   console.log(watch());
 
   const handleAddMusic = () => {
@@ -513,6 +531,27 @@ const ExtensionsEdit = () => {
   };
 
   console.log(watch());
+
+  // useEffect(() => {
+  //   if (watch("forward") === "disabled") {
+  //     setValue("forward_to", "");
+  //     setValue("direct_extension", "");
+  //   } else if (watch("forward") === "pstn") {
+  //     setValue("direct_extension", "");
+  //   } else if (watch("forward") === "extension") {
+  //     setValue("forward_to", "");
+  //   } else if (watch("forward") === "call center") {
+  //     setValue("forward_to", "");
+  //   } else if (watch("forward") === "ring group") {
+  //     setValue("forward_to", "");
+  //   } else if (watch("forward") === "ivr") {
+  //     setValue("forward_to", "");
+  //   }
+  // }, [watch("forward")]);
+
+  const forwardToValue = (value) => {
+    setValue("forward_to", value[0]);
+  };
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -2126,6 +2165,105 @@ const ExtensionsEdit = () => {
                                     <option>Outgoing</option>
                                   </select>
                                 </div>
+                              </div>
+
+                              <div className="formRow col-xl-3">
+                                <div className="formLabel">
+                                  <label htmlFor="">Forward DID</label>
+                                  <label
+                                    htmlFor="data"
+                                    className="formItemDesc"
+                                  >
+                                    Want to forword DID.
+                                  </label>
+                                </div>
+                                <div
+                                  className={`col-${
+                                    forwardStatus != "disabled"
+                                      ? "3 pe-2 ms-auto"
+                                      : "6"
+                                  }`}
+                                >
+                                  {forwardStatus != "disabled" && (
+                                    <div className="formLabel">
+                                      <label>Type</label>
+                                    </div>
+                                  )}
+                                  <select
+                                    className="formItem"
+                                    name="forward"
+                                    id="selectFormRow"
+                                    {...register("forward")}
+                                    defaultValue={"disabled"}
+                                  >
+                                    <option value="disabled">Disable</option>
+                                    <option value="pstn">PSTN</option>
+                                    {/* <option value="direct">Direct</option> */}
+                                    <option value="extension">Extension</option>
+                                    <option value="call center">
+                                      Call Center
+                                    </option>
+                                    <option value="ring group">
+                                      Ring Group
+                                    </option>
+                                    <option value="ivr">IVR</option>
+                                  </select>
+                                </div>
+
+                                {watch("forward") !== "pstn" &&
+                                  watch("forward") !== "disabled" && (
+                                    <div className="col-3">
+                                      <div className="formLabel">
+                                        <label>Extension</label>
+                                      </div>
+                                      <ActionList
+                                        category={watch().forward}
+                                        title={null}
+                                        label={null}
+                                        getDropdownValue={forwardToValue}
+                                        value={watch().forward_to}
+                                        {...register(
+                                          "forward_to",
+                                          requiredValidator
+                                        )}
+                                      />
+                                      {errors.forward_to && (
+                                        <ErrorMessage
+                                          text={errors.forward_to.message}
+                                        />
+                                      )}
+                                    </div>
+                                  )}
+                                {watch("forward") === "pstn" && (
+                                  <div className="col-3">
+                                    <div className="formLabel">
+                                      <label>PSTN</label>
+                                    </div>
+                                    <input
+                                      type="number"
+                                      name="forward_to"
+                                      className="formItem"
+                                      {...register("forward_to", {
+                                        required: "PSTN is required",
+                                        pattern: {
+                                          value: /^[0-9]*$/,
+                                          message: "Only digits are allowed",
+                                        },
+                                        // minLength: {
+                                        //   value: 10,
+                                        //   message: "Must be at least 10 digits",
+                                        // },
+
+                                        ...noSpecialCharactersValidator,
+                                      })}
+                                    />
+                                    {errors.forward_to && (
+                                      <ErrorMessage
+                                        text={errors.forward_to.message}
+                                      />
+                                    )}
+                                  </div>
+                                )}
                               </div>
                             </form>
                           </div>

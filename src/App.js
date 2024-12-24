@@ -130,6 +130,9 @@ import Fax from "./Components/Pages/Setting/FaxSettings";
 import FaxSettings from "./Components/Pages/Setting/FaxSettings";
 import AddOns from "./Components/Pages/Stores/AddOns";
 import Extension from "./Components/Pages/Stores/Extension";
+import Meeting from "./Components/Pages/Meeting/Meeting";
+import MeetingAdd from "./Components/Pages/Meeting/MeetingAdd";
+import ActiveCallsPage from "./Components/Pages/PhoneDashboard/ActiveCallsPage";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -191,6 +194,8 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/conference" element={<ConferenceJoin />} />
           <Route path="/conference-join" element={<DummyRegistration />} />
+          <Route path="/meeting-room" element={<Meeting />} />
+          <Route path="/meeting-add" element={<MeetingAdd />} />
 
           <Route element={<ProtectedRoute />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -208,6 +213,7 @@ function App() {
           <Route path="/master" element={<Master />} />
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/phone-dashboard" element={<PhoneDashboard />} />
+          <Route path="/active-calls" element={<ActiveCallsPage />} />
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
           {/* Ring Groups Path Start */}
@@ -330,9 +336,9 @@ function App() {
           {/*Agents path */}
 
 
-           {/*Addon path */}
-           <Route path="/add-ons" element={<AddOns />} />
-           <Route path="/store-extension" element={<Extension />} />
+          {/*Addon path */}
+          <Route path="/add-ons" element={<AddOns />} />
+          <Route path="/store-extension" element={<Extension />} />
 
 
 

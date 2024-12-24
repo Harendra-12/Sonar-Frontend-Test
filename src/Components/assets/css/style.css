@@ -44,7 +44,8 @@
 @import url('./components/conference/conferenceSettings.css');
 @import url('./components/conference/participantSlider.css');
 @import url('./components/clickToCall.css');
-@import url('./components/dialerDashboard.css');
+@import url('./components/dialer/dialerDashboard.css');
+@import url('./components/dialer/campaign.css');
 @import url('./components/conferenceLoader.css');
 @import url('./components/addon.css');
 @import url('./components/store-extension.css');

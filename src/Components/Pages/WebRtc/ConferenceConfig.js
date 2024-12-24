@@ -8,7 +8,7 @@ import {
 import CircularLoader from "../../Loader/CircularLoader";
 import { ConferenceCall } from "./ConferenceCall";
 import ContentLoader from "../../Loader/ContentLoader";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId, conferenceId, conferenceToggle, pin, setPin }) => {
   const [conferenceName, setConferenceName] = useState("");
@@ -22,12 +22,13 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
   const [moh, setMoh] = useState("");
   const [allConferences, setAllConferences] = useState([]);
   const [conferenceRefresh, setConferenceRefresh] = useState(0);
+  const dispatch = useDispatch();
   // const [conferenceToggle, setConferenceToggle] = useState(false);
   const sessions = useSelector((state) => state.sessions);
   const account = useSelector((state) => state.account);
   // const [conferenceId, setConferenceId] = useState("");
   const [error, setError] = useState("");
-  const [selectedTab, setselectedTab] = useState("nav-gen-tab");
+  const [selectedTab, setselectedTab] = useState("nav-voicemail-tab");
 
   useEffect(() => {
     async function getData() {
@@ -115,6 +116,10 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
       }
 
       setConferenceId(parts[1]); // Set "8" as the conference ID
+      dispatch({
+        type:"SET_ROOMID",
+        RoomID: parts[1]
+      })
       setConferenceToggle(true);
       setError(""); // Clear error if validation passes
     } catch (err) {
@@ -146,12 +151,12 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Create / Join a Conference</h4>
+                        <h4>Join a Conference</h4>
                         <p>
                           An extension is a destinations that can be called.
                         </p>
                       </div>
-                      <div className="buttonGroup">
+                      {/* <div className="buttonGroup">
                         <button
                           type="button"
                           effect="ripple"
@@ -173,7 +178,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                             <i class="fa-solid fa-floppy-disk"></i>
                           </span>
                         </button>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                   <div
@@ -185,7 +190,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                     <form action="#" className="tangoNavs">
                       <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                          {allConferences?.data?.length &&
+                          {/* {allConferences?.data?.length &&
                             allConferences?.data?.length > 0 ? (
                             <button
                               className={`nav-link ${selectedTab == "nav-all-tab" ? "active" : ""
@@ -218,8 +223,8 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                             onClick={() => setselectedTab("nav-gen-tab")}
                           >
                             Create
-                          </button>
-                          <button
+                          </button> */}
+                          {/* <button
                             className={`nav-link ${selectedTab == "nav-voicemail-tab"
                               ? "active"
                               : ""
@@ -236,7 +241,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                             }
                           >
                             Join
-                          </button>
+                          </button> */}
                         </div>
                       </nav>
                       {loading ? (

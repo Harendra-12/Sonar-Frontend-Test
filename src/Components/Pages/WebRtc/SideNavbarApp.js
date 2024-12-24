@@ -95,7 +95,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Messages</div>
               </div>
             </li>
-            <li style={{ cursor: "pointer" }}>
+            {/* <li style={{ cursor: "pointer" }}>
               <div
                 // to="/message"
                 onClick={() => setactivePage("email")}
@@ -108,8 +108,8 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 </div>
                 <div className="itemTitle">Email</div>
               </div>
-            </li>
-            <li style={{ cursor: "pointer" }}>
+            </li> */}
+            {/* <li style={{ cursor: "pointer" }}>
               <div
                 // to="/efax"
                 onClick={() => setactivePage("e-fax")}
@@ -122,7 +122,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 </div>
                 <div className="itemTitle">eFax</div>
               </div>
-            </li>
+            </li> */}
             <li style={{ cursor: "pointer" }}>
               <div
                 onClick={() => setactivePage("all-voice-mails")}
@@ -187,6 +187,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Settings</div>
               </div>
             </li> */}
+            {account.user_role?.roles?.name!=="Agent"?
             <li>
               <div
                 // to="/call-dashboard"
@@ -201,6 +202,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Call Dashboard</div>
               </div>
             </li>
+            :""}
             <li style={{ cursor: "pointer" }}>
               <div
                 // to="/call-center"

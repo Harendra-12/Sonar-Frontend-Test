@@ -14,6 +14,7 @@ import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import { toast } from "react-toastify";
+import Tippy from "@tippyjs/react";
 
 function CdrReport() {
   const dispatch = useDispatch();
@@ -127,7 +128,7 @@ function CdrReport() {
   useEffect(() => {
     const getRingGroupDashboardData = async () => {
       if (account && account.id) {
-        const apidata = await generalGetFunction(`/spam/all`);
+        const apidata = await generalGetFunction(`/spam/all?all`);
         // console.log(apidata);
         if (apidata?.status) {
           setCallBlock(apidata.data);
@@ -298,7 +299,48 @@ function CdrReport() {
       }
     }
   };
+  function formatTime(seconds) {
+    const hours = Math.floor(seconds / 3600)
+      .toString()
+      .padStart(2, "0");
+    const minutes = Math.floor((seconds % 3600) / 60)
+      .toString()
+      .padStart(2, "0");
+    const secs = (seconds % 60).toString().padStart(2, "0");
+    return `${hours}:${minutes}:${secs}`;
+  }
+  function exportToCSV(data, filename = "data.csv") {
+    if (!data || !data.length) {
+      console.error("No data to export.");
+      return;
+    }
 
+    // Extract headers from the keys of the first object
+    const headers = Object.keys(data[0]);
+
+    // Map data rows into CSV format
+    const rows = data.map((obj) =>
+      headers.map((header) => JSON.stringify(obj[header] || "")).join(",")
+    );
+
+    // Combine headers and rows into a single string
+    const csvContent = [headers.join(","), ...rows].join("\n");
+
+    // Create a blob and trigger download
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+
+    link.href = url;
+    link.download = filename;
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+
+    // Cleanup
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -342,6 +384,17 @@ function CdrReport() {
                                 : "fa-regular fa-arrows-rotate fs-5"
                             }
                           ></i>
+                        </span>
+                      </button>
+                      <button
+                        effect="ripple"
+                        className="panelButton"
+                        onClick={() => exportToCSV(cdr?.data)}
+                        disabled={loading}
+                      >
+                        <span className="text">Export</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-file-export"></i>
                         </span>
                       </button>
                     </div>
@@ -491,7 +544,7 @@ function CdrReport() {
                             setPageNumber(1);
                           }}
                           value={callDirection}
-                          // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                        // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                         >
                           <option value={""}>All Calls</option>
                           <option value={"inbound"}>Inbound Calls</option>
@@ -598,28 +651,31 @@ function CdrReport() {
                       <thead>
                         <tr>
                           <th>#</th>
-                          <th>Call Direction</th>
+                          <th>Direction</th>
                           <th>Call Type</th>
-                          <th>Origin</th>
-                          <th>Destination</th>
-                          <th>Destination Extension</th>
+                          <th>Caller Name</th>
+                          <th>Caller No.</th>
+                          <th>Tag</th>
+                          <th>Via/Route</th>
+                          <th>Extension</th>
                           <th>Date</th>
                           <th>Time</th>
                           <th>Recording</th>
                           <th>Duration</th>
                           <th>Hangup Cause</th>
+                          <th>Dial-Status</th>
                           <th>Charge</th>
                           <th>Block</th>
                         </tr>
                       </thead>
                       <tbody>
                         {loading ? (
-                          <SkeletonTableLoader col={12} row={15} />
+                          <SkeletonTableLoader col={16} row={15} />
                         ) : (
                           <>
                             {cdr?.data &&
                               cdr?.data?.map((item, index) => {
-                                const isBlocked = callBlock.some((block) => {
+                                const isBlocked = callBlock?.some((block) => {
                                   if (item["Call-Direction"] == "inbound") {
                                     return (
                                       item["Caller-Caller-ID-Number"] ==
@@ -640,16 +696,32 @@ function CdrReport() {
                                       <td>
                                         {(pageNumber - 1) * 20 + (index + 1)}
                                       </td>
-                                      <td>{item["Call-Direction"]}</td>
+                                      <td>{item["Call-Direction"] === "inbound" ?
+                                        <span><i class="fa-solid fa-phone-arrow-down-left me-1" style={{ color: 'var(--funky-boy3)' }}></i> Inbound</span>
+                                        : item["Call-Direction"] === "outbound" ?
+                                          <span><i class="fa-solid fa-phone-arrow-up-right me-1" style={{ color: 'var(--color3)' }}></i> Outbound</span>
+                                          : item["Call-Direction"] === "missed" ?
+                                            <span><i class="fa-solid fa-phone-missed me-1" style={{ color: 'var(--funky-boy3)' }}></i> Missed</span>
+                                            : <span><i class="fa-solid fa-headset me-1" style={{ color: 'var(--color2)' }}></i> Internal</span>
+                                      }
+                                      </td>
+
                                       <td>{item["application_state"]}</td>
+                                      <td>
+                                        {item["Caller-Orig-Caller-ID-Name"]}
+                                      </td>
                                       <td>{item["variable_sip_from_user"]}</td>
+                                      <td>{item["tag"]}</td>
+                                     
                                       <td>
                                         {item["application_state"] ===
                                           "intercept" ||
-                                        item["application_state"] ===
+                                          item["application_state"] ===
                                           "eavesdrop"
                                           ? item["other_leg_destination_number"]
-                                          : item["variable_sip_to_user"]}
+                                          : item["variable_sip_to_user"]}{" "}
+                                        {item["application_state_name"] &&
+                                          `(${item["application_state_name"]})`}
                                       </td>
                                       <td>
                                         {item["application_state_to_ext"]}
@@ -693,84 +765,90 @@ function CdrReport() {
                                             // />
                                           )}
                                       </td>
-                                      <td>{item["variable_billsec"]}</td>
                                       <td>
-                                        {item["variable_DIALSTATUS"] === null
+                                        {formatTime(item["variable_billsec"])}
+                                      </td>
+                                      <td>
+                                        {item["Hangup-Cause"]}
+                                        {/* {item["variable_DIALSTATUS"] === null
                                           ? item["Hangup-Cause"]
                                           : item["variable_DIALSTATUS"] ===
                                             "NO_USER_RESPONSE"
                                           ? "BUSY"
-                                          : item["variable_DIALSTATUS"]}
+                                          : item["variable_DIALSTATUS"]} */}
                                       </td>
+                                      <td>{item["variable_DIALSTATUS"]}</td>
                                       <td>{item["call_cost"]}</td>
                                       <td>
                                         {" "}
                                         <button
                                           disabled={isBlocked}
                                           effect="ripple"
-                                          className="panelButton delete ms-0"
-                                          style={{ height: "34px" }}
+                                          className={`tableButton ${isBlocked ? "delete" : "warning"} ms-0`}
+                                          // style={{ height: "34px" }}
                                           onClick={() => {
                                             setSelectedNumberToBlock(
                                               item["Call-Direction"] ===
                                                 "inbound"
                                                 ? item[
-                                                    "Caller-Caller-ID-Number"
-                                                  ]
+                                                "Caller-Caller-ID-Number"
+                                                ]
                                                 : item["Call-Direction"] ===
                                                   "outbound"
-                                                ? item[
-                                                    "Caller-Callee-ID-Number"
+                                                  ? item[
+                                                  "Caller-Callee-ID-Number"
                                                   ]
-                                                : "N/A"
+                                                  : "N/A"
                                             );
                                             setPopUp(true);
                                           }}
                                         >
-                                          <span className="text">
+                                          {/* <span className="text">
                                             {isBlocked ? "Blocked" : "Block"}
-                                          </span>
-                                          <span className="icon">
+                                          </span> */}
+                                          {/* <span className="icon"> */}
+                                          <Tippy content={isBlocked ? "Blocked" : "Block"}>
                                             <i class="fa-solid fa-ban"></i>
-                                          </span>
+                                          </Tippy>
+                                          {/* </span> */}
                                         </button>
                                       </td>
                                     </tr>
                                     {currentPlaying ===
                                       item["recording_path"] && (
-                                      <tr>
-                                        <td colSpan={99}>
-                                          <div className="audio-container mx-2">
-                                            <audio
-                                              controls={true}
-                                              ref={thisAudioRef}
-                                              onEnded={() => {
-                                                setCurrentPlaying(null);
-                                              }}
-                                            >
-                                              <source
-                                                src={item["recording_path"]}
-                                                type="audio/mpeg"
-                                              />
-                                            </audio>
+                                        <tr>
+                                          <td colSpan={99}>
+                                            <div className="audio-container mx-2">
+                                              <audio
+                                                controls={true}
+                                                ref={thisAudioRef}
+                                                onEnded={() => {
+                                                  setCurrentPlaying(null);
+                                                }}
+                                              >
+                                                <source
+                                                  src={item["recording_path"]}
+                                                  type="audio/mpeg"
+                                                />
+                                              </audio>
 
-                                            <button
-                                              className="audioCustomButton"
+                                              <button
+                                                className="audioCustomButton"
                                               // onClick={() =>
                                               //   handleAudioDownload(
                                               //     clickedVoiceMail.recording_path
                                               //   )
                                               // }
-                                            >
-                                              <i className="fa-sharp fa-solid fa-download" />
-                                            </button>
-                                            {/* <button className="audioCustomButton ms-1">
+                                              >
+                                                <i className="fa-sharp fa-solid fa-download" />
+                                              </button>
+                                              {/* <button className="audioCustomButton ms-1">
                               <i className="fa-sharp fa-solid fa-box-archive" />
                             </button> */}
-                                          </div>
-                                        </td>
-                                      </tr>
-                                    )}
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      )}
                                   </>
                                 );
                               })}

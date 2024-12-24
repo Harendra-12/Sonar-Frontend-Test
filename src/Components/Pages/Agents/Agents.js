@@ -25,7 +25,7 @@ function Agents() {
                                             </div>
                                             <div className="buttonGroup">
                                                 <button
-                                                    onClick={() => { navigate('-1'); backToTop() }}
+                                                    onClick={() => { navigate(-1); backToTop() }}
                                                     effect="ripple"
                                                     className="panelButton gray" >
                                                     <span className="text">Back</span>
@@ -38,7 +38,6 @@ function Agents() {
                                                 <button
                                                     onClick={() => { navigate('/agents-add'); backToTop() }}
                                                     className="panelButton"
-                                                    style={{ cursor: "not-allowed" }}
                                                 >
                                                     <span className="text">Add</span>
                                                     <span className="icon">

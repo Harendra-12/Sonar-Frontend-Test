@@ -109,9 +109,6 @@ function CallDashboard() {
                 <div className="newHeader">
                   <div className="col-auto" style={{ padding: "0 10px" }}>
                     <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
-                      <button class="clearButton2 text-dark" onClick={() => featureUnderdevelopment()}>
-                        <i class="fa-solid fa-chevron-left fs-4"></i>
-                      </button>{" "}
                       Call Dashboard{" "}
                     </h3>
                   </div>
@@ -184,7 +181,7 @@ function CallDashboard() {
                       <div className="col-12">
                         <div className="heading">
                           <div className="content">
-                            <h4> Call Dashboard</h4>
+                            <h4> Active Calls</h4>
                             <p>You can see all of the active calls here</p>
                           </div>
                         </div>
@@ -284,7 +281,8 @@ function CallDashboard() {
                                 <th>#</th>
                                 <th>From </th>
                                 <th>To</th>
-                                <th>Call at</th>
+                                <th>Started at</th>
+                                <th>Tag</th>
                               </tr>
                             </thead>
 
@@ -297,6 +295,7 @@ function CallDashboard() {
                                       <td>{item.cid_name}</td>
                                       <td>{item.presence_id.split("@")[0]}</td>
                                       <td>{item.created.split(" ")[1]}</td>
+                                      <td>{item.name.split("/")[1]}</td>
                                     </tr>
                                   )
                                 })

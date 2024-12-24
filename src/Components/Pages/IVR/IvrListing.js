@@ -90,13 +90,19 @@ const IvrListing = () => {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>IVR Master
-                          <button className="clearButton" onClick={() => setRefreshState(true)}>
-                            <i className={
-                              loading
-                                ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
-                                : "fa-regular fa-arrows-rotate fs-5"
-                            }></i>
+                        <h4>
+                          IVR Master
+                          <button
+                            className="clearButton"
+                            onClick={() => setRefreshState(true)}
+                          >
+                            <i
+                              className={
+                                loading
+                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                  : "fa-regular fa-arrows-rotate fs-5"
+                              }
+                            ></i>
                           </button>
                         </h4>
                       </div>

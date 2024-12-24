@@ -542,6 +542,25 @@ const UsersAdd = () => {
                             )}
                           </div>
                         </div>
+                        <div className="formRow col-xl-12">
+                          <div className="formLabel">
+                            <label htmlFor="">Alias/Nickname</label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              name="extension"
+                              className="formItem"
+                              {...register("alias", {
+                                ...noSpecialCharactersValidator,
+                              })}
+                              onKeyDown={restrictToAllowedChars}
+                            />
+                            {errors.alias && (
+                              <ErrorMessage text={errors.alias.message} />
+                            )}
+                          </div>
+                        </div>
                         {/* <div className="formRow col-xl-12">
                                         <div className="formLabel">
                                             <label htmlFor="selectFormRow">Language</label>

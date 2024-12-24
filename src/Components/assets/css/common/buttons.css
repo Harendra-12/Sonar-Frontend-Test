@@ -43,12 +43,12 @@
   font-size: 19px;
 }
 
-.clearButton2:disabled{
+.clearButton2:disabled {
   color: #4a4a4a !important;
   background: none !important;
 }
 
-.clearButton2.danger{
+.clearButton2.danger {
   color: red
 }
 
@@ -469,7 +469,7 @@
 
 .appPanelButtonCaller.active,
 .appPanelButtonCallerRect.active {
-  background-color: #000;
+  background-color: #a53e3f;
 }
 
 .appPanelButtonCaller.active i,
@@ -714,6 +714,20 @@
 
 .tableButton.warning:hover i {
   color: #ffa500 !important;
+}
+
+.tableButton.nottif::after {
+  content: '\f071';
+  font-family: 'FontAwesome';
+  font-size: 12px;
+  color: #ffffff;
+  position: absolute;
+  top: -7px;
+  background: red;
+  border-radius: 50%;
+  right: -8px;
+  width: 18px;
+  height: 18px;
 }
 
 

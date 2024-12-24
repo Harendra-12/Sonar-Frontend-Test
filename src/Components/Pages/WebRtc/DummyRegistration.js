@@ -9,6 +9,7 @@ function DummyRegistration() {
   const location = useLocation();
   const locationState = location.state;
   console.log("locationState", locationState);
+  const [isVideoOn, setIsVideoOn] = useState(false);
   const navigate = useNavigate();
   const [extension, setExtension] = useState();
   const [password, setPassword] = useState();
@@ -24,7 +25,24 @@ function DummyRegistration() {
       navigate(-1);
     }
   }, [locationState]);
-
+  useEffect(() => {
+    // checkMicrophoneStatus(); // Check mic status when component mounts
+    checkVideoStatus();
+  }, []);
+  const checkVideoStatus = () => {
+    navigator.mediaDevices
+      .getUserMedia({ video: true })
+      .then((stream) => {
+        // Microphone access granted
+        setIsVideoOn(true);
+        // Stop the stream after the check
+      })
+      .catch((err) => {
+        // Microphone access denied or error occurred
+        console.error("Microphone access denied or error:", err);
+        setIsVideoOn(false);
+      });
+  };
   const options = {
     domain: domain,
     webSocketServer: webSocketServer,
@@ -37,6 +55,7 @@ function DummyRegistration() {
             webSocketServer={webSocketServer}
             extension={extension}
             password={password}
+            isVideoOn={isVideoOn}
           />
           <style>
             {`#sidenNav{

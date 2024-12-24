@@ -1,88 +1,51 @@
-import React, { useEffect, useState } from 'react'
-import { useSIPProvider, CONNECT_STATUS } from 'react-sipjs';
-import { Messager, UserAgent } from "sip.js";
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux';
 
-function ConferenceMessages() {
+function ConferenceMessages({ sendMessage, userName, conferenceId, setToggleMessages }) {
     const [messageInput, setMessageInput] = useState("");
-    const sipProvider = useSIPProvider();
-    const [isSIPReady, setIsSIPReady] = useState(false);
-
-    // Check weather user is register with sip or not
-    useEffect(() => {
-        if (sipProvider && sipProvider.connectStatus === CONNECT_STATUS.CONNECTED) {
-            console.log("SIP provider connected", sipProvider.connectStatus);
-
-            setIsSIPReady(true);
-        } else {
-            setIsSIPReady(false);
-        }
-    }, [sipProvider?.connectStatus]);
-    // Logic to recieve messages from differnt users
-    const userAgent = sipProvider?.sessionManager?.userAgent;
-    if (userAgent) {
-        // Setup message delegate to handle incoming messages
-        userAgent.delegate = {
-            onMessage: (message) => {
-                const from =
-                    message?.incomingMessageRequest?.message?.from?.uri?.user.toString();
-                const body = message?.incomingMessageRequest?.message?.body;
-                console.log(`Message from ${from}: ${body}`);
-    
-                // Check if the message is from a conference
-                if (message.isInConference) {
-                    console.log(`Message from conference: ${from}: ${body}`);
-                    // Handle the message as needed for the conference
-                }
-            },
-        };
-    }
-    
+    const conferenceMessage = useSelector((state) => state.conferenceMessage);
+    console.log("conferenceMessage", conferenceMessage);
 
     // Logic to send message
-    const sendMessage = () => {
+    function sendConferenceMessage() {
         if (messageInput.trim() === "") return;
-        if (isSIPReady) {
-            // const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
-            const targetURI = `sip:1003@webs.9.webvio.in`
-            const userAgent = sipProvider?.sessionManager?.userAgent;
-
-            const target = UserAgent.makeURI(targetURI);
-
-            if (target) {
-                try {
-                    const messager = new Messager(userAgent, target, messageInput);
-                    messager.message();
-
-                    console.log("Message sent to:", targetURI);
-                } catch (error) {
-                    console.error("Error sending message:", error);
-                }
-            } else {
-                console.error("Invalid recipient address.");
-            }
-        } else {
-            console.error("UserAgent or session not ready.");
-        }
-    };
+        sendMessage({
+            action: "conferenceMessage",
+            user: userName || "annonymous",
+            sharedMessage: messageInput,
+            room_id: conferenceId,
+        });
+        setMessageInput("");
+    }
     return (
         <div className="messageOverlay">
             <div className="contactHeader py-3">
                 <div>
                     <h4>Messages</h4>
                 </div>
+                <div >
+                    <button className='clearButton2 xl' onClick={() => setToggleMessages(false)}>
+                        <i className='fa-solid fa-xmark'></i>
+                    </button>
+                </div>
             </div>
             <div className="messageContent">
                 <div className="messageList">
-                    <div className="messageItem sender">
-                        <div className="second">
-                            <h6>
-                                1003,<span>3:48</span>
-                            </h6>
-                            <div className="messageDetails">
-                                <p>hi</p>
+
+                    {conferenceMessage?.map((item) => (
+                        <div className="messageItem sender">
+                            <div className="second">
+                                <h6>
+                                    {item.user}
+                                </h6>
+                                <div className="messageDetails">
+                                    <p>{item.sharedMessage}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    ))}
+
+
                 </div>
                 <div className="messageInput">
                     <textarea
@@ -108,7 +71,7 @@ function ConferenceMessages() {
                         </div>
                         <div>
                             <button
-                                onClick={sendMessage}
+                                onClick={sendConferenceMessage}
                                 effect="ripple"
                                 className="clearColorButton dark"
                             >

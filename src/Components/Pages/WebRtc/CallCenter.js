@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import SideNavbarApp from "./SideNavbarApp";
 import { useDispatch, useSelector } from "react-redux";
-import { featureUnderdevelopment, generalGetFunction, generalPutFunction } from "../../GlobalFunction/globalFunction";
+import {
+  featureUnderdevelopment,
+  generalGetFunction,
+  generalPutFunction,
+} from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import ActiveCallSidePanel from "./ActiveCallSidePanel";
@@ -42,7 +46,6 @@ const CallCenter = () => {
 
   useEffect(() => { }, [refreshCenter, callCenterRefresh]);
 
-
   async function logOut() {
     const apiData = await generalGetFunction("/logout");
     localStorage.clear();
@@ -80,7 +83,10 @@ const CallCenter = () => {
               <div className="newHeader">
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
-                    <button class="clearButton2 text-dark" onClick={() => featureUnderdevelopment()}>
+                    <button
+                      class="clearButton2 text-dark"
+                      onClick={() => featureUnderdevelopment()}
+                    >
                       <i class="fa-solid fa-chevron-left fs-4"></i>
                     </button>{" "}
                     Call Center{" "}
@@ -150,7 +156,8 @@ const CallCenter = () => {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Call Center Queue{" "}
+                        <h4>
+                          Call Center Queue{" "}
                           <button
                             disabled={loading}
                             onClick={() => setRefreshCenter(refreshCenter + 1)}
@@ -163,12 +170,13 @@ const CallCenter = () => {
                                   : "fa-regular fa-arrows-rotate fs-5"
                               }
                             ></i>
-                          </button></h4>
+                          </button>
+                        </h4>
                         <p>You can see the status of the agents</p>
                       </div>
                     </div>
                   </div>
-                  <div className="col-12" style={{ padding: '25px 20px 0px' }}>
+                  <div className="col-12" style={{ padding: "25px 20px 0px" }}>
                     <div className="tableContainer mt-0">
                       <table className="callCenter">
                         <thead>
@@ -349,7 +357,7 @@ const CallCenterListItem = ({ item, index, Id }) => {
                     handleLoginLogout(refId, "Available", item?.queue_name);
                 }}
               >
-                Break
+                {isOnBreak ? "Resume" : "Break"}
               </label>
               <label
                 className="tableLabel fail"

@@ -7,7 +7,9 @@ import { ToastContainer, toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 
-function ActiveCalls() {
+
+
+function ActiveCalls({ isWebrtc }) {
   const activeCall = useSelector((state) => state.activeCall);
   const [loading, setLoading] = useState(false);
   const [bargeStatus, setBargeStatus] = useState("disable");
@@ -70,6 +72,22 @@ function ActiveCalls() {
     }
   }
 
+  async function whisper(id, dest,leg) {
+    setLoading(true);
+    const apiData = await generalGetFunction(
+      `/freeswitch/call-whisper/${id}/${dest}/${leg}`
+    );
+
+    if (apiData?.status) {
+      setLoading(false);
+
+      toast.success(apiData.message);
+    } else {
+      setLoading(false);
+      toast.error(apiData.message);
+    }
+  }
+
   useEffect(() => {
     if (bargeStatus === "barge") {
       bargeCall(id);
@@ -77,6 +95,10 @@ function ActiveCalls() {
       interceptCall(id, dest);
     } else if (bargeStatus === "eavesdrop") {
       eavesdropCall(id, dest);
+    } else if(bargeStatus === "whisper-aleg"){
+      whisper(id,dest,"eavesdrop_whisper_aleg=true")
+    }else if(bargeStatus === "whisper-bleg"){
+      whisper(id,dest,"eavesdrop_whisper_bleg=true")
     }
   }, [bargeStatus, id]);
 
@@ -98,15 +120,15 @@ function ActiveCalls() {
         <thead>
           <tr>
             <th>#</th>
-            <th>Profile</th>
-            <th>Created</th>
+            <th>Call Started</th>
             {/* <th>CID Name</th> */}
             <th>CID Number</th>
+            <th>Tag</th>
             <th>Destination</th>
-            <th>Action</th>
+            {isWebrtc !== false && <th>Action</th>}
             {/* <th>Intercept</th>
                         <th>Eavesdrop</th> */}
-            <th className="text-align">Hang Up</th>
+            {isWebrtc !== false && <th className="text-align">Hang Up</th>}
           </tr>
         </thead>
         <tbody>
@@ -120,16 +142,16 @@ function ActiveCalls() {
                 return (
                   <tr>
                     <td>{key + 1}</td>
-                    <td>{item.name.split("/")[1]}</td>
                     <td>{item.created.split(" ")[1]}</td>
                     {/* <td>{item.b_cid_name}</td> */}
                     <td>{item.cid_num}</td>
+                    <td>{item.name.split("/")[1]}</td>
                     <td>
                       {item?.dest.includes("set:valet_ticket")
                         ? extractLastNumber(item?.accountcode)
                         : extractLastNumber(item?.dest)}
                     </td>
-                    <td>
+                    {isWebrtc !== false && <td>
                       <select
                         className="formItem"
                         onChange={(e) => {
@@ -163,8 +185,24 @@ function ActiveCalls() {
                         >
                           Eavesdrop
                         </option>
+                        <option
+                          value="whisper-bleg"
+                          onClick={() => eavesdropCall(item.uuid, item?.dest.includes("set:valet_ticket")
+                            ? extractLastNumber(item?.accountcode)
+                            : extractLastNumber(item?.dest))}
+                        >
+                          Whisper agent
+                        </option>
+                        <option
+                          value="whisper-aleg"
+                          onClick={() => eavesdropCall(item.uuid, item?.dest.includes("set:valet_ticket")
+                            ? extractLastNumber(item?.accountcode)
+                            : extractLastNumber(item?.dest))}
+                        >
+                          Whisper customer
+                        </option>
                       </select>
-                    </td>
+                    </td>}
                     {/* <td onClick={() => bargeCall(item.uuid)}>
                                 <label
                                   className="tableLabel success"
@@ -204,7 +242,7 @@ function ActiveCalls() {
                                   Eavesdrop
                                 </label>
                               </td> */}
-                    <td onClick={() => killCall(item.uuid)}>
+                    {isWebrtc !== false && <td onClick={() => killCall(item.uuid)}>
                       <label
                         className="tableButton delete mx-auto"
                         style={{
@@ -213,7 +251,7 @@ function ActiveCalls() {
                       >
                         <i class=" fa-solid fa-phone-slash"></i>{" "}
                       </label>
-                    </td>
+                    </td>}
                   </tr>
                 );
               })}

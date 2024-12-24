@@ -1,57 +1,85 @@
 import { useEffect, useState } from "react";
-import {useSIPProvider } from "react-sipjs";
+import { useSIPProvider } from "react-sipjs";
 import MediaPermissions from "./MediaPermissions ";
 import AutoAnswer from "./AutoAnswer";
-import { generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
+import {
+  generalGetFunction,
+  generalPostFunction,
+} from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import ConferenceVideo from "./ConferenceVideo";
 import ConferenceLoader from "../../Loader/ConferenceLoader";
 import ConferenceMessages from "./ConferenceMessages";
+import Socket from "../../GlobalFunction/Socket";
 
-export const ConferenceCall = ({ room_id, extension_id, name, setactivePage, activePage, setConferenceToggle ,conferenceToggle,pin}) => {
+export const ConferenceCall = ({
+  room_id,
+  extension_id,
+  name,
+  setactivePage,
+  activePage,
+  setConferenceToggle,
+  conferenceToggle,
+  conferenceId,
+  pin,
+  isVideoOn,
+}) => {
+  const { sendMessage } = Socket();
   const navigate = useNavigate();
   const { sessions: sipSessions, connectAndRegister } = useSIPProvider();
   const { connectStatus, registerStatus } = useSIPProvider();
   const [sipRegisterErrror, setSipRegisterError] = useState(false);
   const dummySession = useSelector((state) => state.dummySession);
-  const conferenceRawData = useSelector((state) => state.conference)
-  const [conferenceData,setConferenceData] = useState([])
+  const conferenceScreenShareStatus = useSelector(
+    (state) => state.conferenceScreenShareStatus
+  );
+  const conferenceRawData = useSelector((state) => state.conference);
+  const [conferenceData, setConferenceData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [confList, setConfList] = useState([])
+  const [confList, setConfList] = useState([]);
   const [toggleMessages, setToggleMessages] = useState(false);
   const [participantMiniview, setParticipantMiniview] = useState(true);
   const [participantList, setParticipantList] = useState(false);
   const [selectedConferenceUser, setSelectedConferenceUser] = useState(null);
-  const [currentUser, setCurrentUser] = useState([])
-  const [notification, setNotification] = useState(false)
-  const [notificationData, setNotificationData] = useState("")
+  const [currentUser, setCurrentUser] = useState({
+    id: "",
+    name: name,
+    uuid: "item.uuid",
+    talking: true,
+    mute_detect: false,
+    hold: false,
+    isYou: true,
+    deaf: false,
+  });
+  const [notification, setNotification] = useState(false);
+  const [notificationData, setNotificationData] = useState("");
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [hours, setHours] = useState(0);
   const account = useSelector((state) => state.account);
   const sessions = useSelector((state) => state.sessions);
   const memeber_id = useSelector((state) => state.memberId);
-  const [numberOfTimeUserVisit, setNumberOfTimeUserVisit] = useState(0)
+  const [numberOfTimeUserVisit, setNumberOfTimeUserVisit] = useState(0);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [screenTogglehit, setScreenTogglehit] = useState(0);
-  
-  useEffect(()=>{
-    if(conferenceRawData["Conference-Name"]===room_id){
-      setConferenceData(conferenceRawData)
+
+  console.log("CurrentUsersss", currentUser);
+
+  useEffect(() => {
+    if (conferenceRawData["Conference-Name"] === room_id) {
+      setConferenceData(conferenceRawData);
     }
-  },[conferenceRawData])
+  }, [conferenceRawData]);
   useEffect(() => {
     if (activePage === "conference") {
-      setNumberOfTimeUserVisit(numberOfTimeUserVisit + 1)
+      setNumberOfTimeUserVisit(numberOfTimeUserVisit + 1);
     }
-
-  }, [activePage])
+  }, [activePage]);
 
   const extension = account?.extension?.extension || "";
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -75,8 +103,8 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage, act
   }, []);
 
   useEffect(() => {
-    setSelectedConferenceUser(currentUser[0])
-  }, [currentUser])
+    setSelectedConferenceUser(currentUser[0]);
+  }, [currentUser]);
   const handleSelectConferenceUser = (item) => {
     setSelectedConferenceUser(item);
   };
@@ -98,54 +126,67 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage, act
   useEffect(() => {
     setTimeout(() => {
       if (connectStatus === "WAIT_REQUEST_CONNECT") {
-        setLoading(true)
-      }
-      else if (sipRegisterErrror) {
+        setLoading(true);
+      } else if (sipRegisterErrror) {
         toast.error("Not connected with server please try again later.");
-        navigate(-1)
-      } else if (connectStatus === "CONNECTED" && registerStatus === "REGISTERED") {
+        navigate(-1);
+      } else if (
+        connectStatus === "CONNECTED" &&
+        registerStatus === "REGISTERED"
+      ) {
         async function startConference() {
-          const response = await generalPostFunction("/conference/start", { user: `user/${extension_id}`, name: name, roomId: room_id, is_guest: 0,pin:pin })
+          const response = await generalPostFunction("/conference/start", {
+            user: `user/${extension_id}`,
+            name: name,
+            roomId: room_id,
+            is_guest: 0,
+            pin: pin,
+          });
 
           if (response.status) {
-            setLoading(false)
-            const confLists = await generalGetFunction(`/conference/${room_id}/details`)
+            setLoading(false);
+            const confLists = await generalGetFunction(
+              `/conference/${room_id}/details`
+            );
             // console.log("confListsss", JSON?.parse?.(confLists?.data));
 
-            if (confLists.status && confLists?.data !== `-ERR Conference ${room_id} not found\n`) {
-              setConfList(JSON?.parse?.(confLists?.data)?.filter((item) => item.conference_name == room_id)?.[0]?.members.map((item) => {
-                return (
-                  {
-                    id: item.id,
-                    caller_id_number: item.caller_id_number,
-                    name: item.caller_id_name,
-                    uuid: item.uuid,
-                    talking: item.flags.talking,
-                    mute_detect: (item.flags.mute_detect),
-                    hold: item.flags.hold,
-                    isYou: item.caller_id_name === name ? true : false,
-                    deaf: false,
-                    isModerator:item.flags.is_moderator
-                  }
-                )
-              }))
+            if (
+              confLists.status &&
+              confLists?.data !== `-ERR Conference ${room_id} not found\n`
+            ) {
+              setConfList(
+                JSON?.parse?.(confLists?.data)
+                  ?.filter((item) => item.conference_name == room_id)?.[0]
+                  ?.members.map((item) => {
+                    return {
+                      id: item.id,
+                      caller_id_number: item.caller_id_number,
+                      name: item.caller_id_name,
+                      uuid: item.uuid,
+                      talking: item.flags.talking,
+                      mute_detect: item.flags.mute_detect,
+                      hold: item.flags.hold,
+                      isYou: item.caller_id_name === name ? true : false,
+                      deaf: false,
+                      isModerator: item.flags.is_moderator,
+                    };
+                  })
+              );
             }
-          }else{
-            setLoading(false)
-            setConferenceToggle(false)
+          } else {
+            setLoading(false);
+            setConferenceToggle(false);
           }
-
         }
         // if(numberOfTimeUserVisit === 0 && activePage === "conference"){
-        startConference()
+        startConference();
         // }
       } else {
         toast.error("Not connected with server please try again later.");
-        navigate(-1)
+        navigate(-1);
       }
-    }, [3000])
-
-  }, [connectStatus, sipRegisterErrror])
+    }, [3000]);
+  }, [connectStatus, sipRegisterErrror]);
 
   // Monitor incoming SIP sessions
   const incomingSessionsArray = Object.keys(sipSessions).filter(
@@ -154,198 +195,269 @@ export const ConferenceCall = ({ room_id, extension_id, name, setactivePage, act
       sipSessions[id].logger.category === "sip.Invitation"
   );
 
-console.log("conferenceDataaa", conferenceData,confList);
+  console.log("conferenceDataaa", conferenceData, confList);
 
   // Monitor incoming data from web socket accound to its action type
   useEffect(() => {
     if (conferenceData) {
       // Check if conferencedata.calleridname is previously present in conflist
-      if (conferenceData.Action === "add-member" && !confList.some(item => item.caller_id_number === conferenceData["Channel-Presence-ID"])) {
-        setNotification(false)
-        setNotification(true)
-        setNotificationData(`${conferenceData["Caller-Caller-ID-Name"]} joined the conference`);
+      if (
+        conferenceData.Action === "add-member" &&
+        !confList.some(
+          (item) =>
+            item.caller_id_number === conferenceData["Channel-Presence-ID"]
+        )
+      ) {
+        setNotification(false);
+        setNotification(true);
+        setNotificationData(
+          `${conferenceData["Caller-Caller-ID-Name"]} joined the conference`
+        );
         setTimeout(() => {
-          setNotification(false)
-        }, [3000])
-        setConfList(prevList => [...prevList, {
-          id: conferenceData["Member-ID"],
-          name: conferenceData["Caller-Caller-ID-Name"],
-          caller_id_number: conferenceData["Channel-Presence-ID"],
-          uuid: conferenceData["Core-UUID"],
-          talking: conferenceData["Talking"],
-          mute_detect: conferenceData["Mute-Detect"]==="true"?true:false,
-          hold: conferenceData["Hold"],
-          isYou: conferenceData["Caller-Caller-ID-Name"] === name ? true : false,
-          deaf: false,
-          isModerator:conferenceData["Member-Type"]==="member"?false:true
-        }]);
+          setNotification(false);
+        }, [3000]);
+        setConfList((prevList) => [
+          ...prevList,
+          {
+            id: conferenceData["Member-ID"],
+            name: conferenceData["Caller-Caller-ID-Name"],
+            caller_id_number: conferenceData["Channel-Presence-ID"],
+            uuid: conferenceData["Core-UUID"],
+            talking: conferenceData["Talking"],
+            mute_detect:
+              conferenceData["Mute-Detect"] === "true" ? true : false,
+            hold: conferenceData["Hold"],
+            isYou:
+              conferenceData["Caller-Caller-ID-Name"] === name ? true : false,
+            deaf: false,
+            isModerator:
+              conferenceData["Member-Type"] === "member" ? false : true,
+          },
+        ]);
 
         // Here i want to change the id on current user
         if (conferenceData["Channel-Presence-ID"] === extension_id) {
           setCurrentUser((prevState) => ({
             ...prevState,
             id: conferenceData["Member-ID"],
-            isModerator:conferenceData["Member-Type"]==="member"?false:true
+            isModerator:
+              conferenceData["Member-Type"] === "member" ? false : true,
           }));
         }
-
-
       } else if (conferenceData.Action === "stop-talking") {
-        if (!confList.some(item => item.caller_id_number === conferenceData["Channel-Presence-ID"])) {
-          setConfList(prevList => [...prevList, {
-            id: conferenceData["Member-ID"],
-            name: conferenceData["Caller-Caller-ID-Name"],
-            caller_id_number: conferenceData["Channel-Presence-ID"],
-            uuid: conferenceData["Core-UUID"],
-            talking: conferenceData["Talking"],
-            mute_detect: conferenceData["Mute-Detect"]==="true"?true:false,
-            hold: conferenceData["Hold"],
-            isYou: conferenceData["Caller-Caller-ID-Name"] === name ? true : false,
-            deaf: false,
-            isModerator:conferenceData["Member-Type"]==="member"?false:true
-          }]);
+        if (
+          !confList.some(
+            (item) =>
+              item.caller_id_number === conferenceData["Channel-Presence-ID"]
+          )
+        ) {
+          setConfList((prevList) => [
+            ...prevList,
+            {
+              id: conferenceData["Member-ID"],
+              name: conferenceData["Caller-Caller-ID-Name"],
+              caller_id_number: conferenceData["Channel-Presence-ID"],
+              uuid: conferenceData["Core-UUID"],
+              talking: conferenceData["Talking"],
+              mute_detect:
+                conferenceData["Mute-Detect"] === "true" ? true : false,
+              hold: conferenceData["Hold"],
+              isYou:
+                conferenceData["Caller-Caller-ID-Name"] === name ? true : false,
+              deaf: false,
+              isModerator:
+                conferenceData["Member-Type"] === "member" ? false : true,
+            },
+          ]);
         }
 
         if (conferenceData["Channel-Presence-ID"] === extension_id) {
           setCurrentUser((prevState) => ({
             ...prevState,
             id: conferenceData["Member-ID"],
-            isModerator:conferenceData["Member-Type"]==="member"?false:true
+            isModerator:
+              conferenceData["Member-Type"] === "member" ? false : true,
           }));
         }
         // Update the list with the updated values
-        setConfList(prevList => prevList.map(item => {
-          if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
-            return {
-              ...item,
-              talking: false,
-            };
-          }
-          return item;
-        }));
-
+        setConfList((prevList) =>
+          prevList.map((item) => {
+            if (
+              item.caller_id_number === conferenceData["Channel-Presence-ID"]
+            ) {
+              return {
+                ...item,
+                talking: false,
+              };
+            }
+            return item;
+          })
+        );
       } else if (conferenceData.Action === "start-talking") {
-        if (!confList.some(item => item.caller_id_number === conferenceData["Channel-Presence-ID"])) {
-          setConfList(prevList => [...prevList, {
-            id: conferenceData["Member-ID"],
-            name: conferenceData["Caller-Caller-ID-Name"],
-            caller_id_number: conferenceData["Channel-Presence-ID"],
-            uuid: conferenceData["Core-UUID"],
-            talking: conferenceData["Talking"],
-            mute_detect: conferenceData["Mute-Detect"]==="true"?true:false,
-            hold: conferenceData["Hold"],
-            isYou: conferenceData["Caller-Caller-ID-Name"] === name ? true : false,
-            deaf: false,
-            isModerator:conferenceData["Member-Type"]==="member"?false:true
-          }]);
+        if (
+          !confList.some(
+            (item) =>
+              item.caller_id_number === conferenceData["Channel-Presence-ID"]
+          )
+        ) {
+          setConfList((prevList) => [
+            ...prevList,
+            {
+              id: conferenceData["Member-ID"],
+              name: conferenceData["Caller-Caller-ID-Name"],
+              caller_id_number: conferenceData["Channel-Presence-ID"],
+              uuid: conferenceData["Core-UUID"],
+              talking: conferenceData["Talking"],
+              mute_detect:
+                conferenceData["Mute-Detect"] === "true" ? true : false,
+              hold: conferenceData["Hold"],
+              isYou:
+                conferenceData["Caller-Caller-ID-Name"] === name ? true : false,
+              deaf: false,
+              isModerator:
+                conferenceData["Member-Type"] === "member" ? false : true,
+            },
+          ]);
         }
 
         if (conferenceData["Channel-Presence-ID"] === extension_id) {
           setCurrentUser((prevState) => ({
             ...prevState,
             id: conferenceData["Member-ID"],
-            isModerator:conferenceData["Member-Type"]==="member"?false:true
+            isModerator:
+              conferenceData["Member-Type"] === "member" ? false : true,
           }));
         }
         // Update the list with the updated values
-        setConfList(prevList => prevList.map(item => {
-          if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
-            return {
-              ...item,
-              talking: true,
-            };
-          }
-          return item;
-        }));
-
+        setConfList((prevList) =>
+          prevList.map((item) => {
+            if (
+              item.caller_id_number === conferenceData["Channel-Presence-ID"]
+            ) {
+              return {
+                ...item,
+                talking: true,
+              };
+            }
+            return item;
+          })
+        );
       } else if (conferenceData.Action === "mute-member") {
         // Update the list with the updated values
-        setConfList(prevList => prevList.map(item => {
-          if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
-            return {
-              ...item,
-              mute_detect: true,
-              talking: false,
-            };
-          }
-          return item;
-        }));
+        setConfList((prevList) =>
+          prevList.map((item) => {
+            if (
+              item.caller_id_number === conferenceData["Channel-Presence-ID"]
+            ) {
+              return {
+                ...item,
+                mute_detect: true,
+                talking: false,
+              };
+            }
+            return item;
+          })
+        );
         if (conferenceData["Channel-Presence-ID"] === extension_id) {
           setCurrentUser((prevState) => ({
             ...prevState,
             id: conferenceData["Member-ID"],
             mute_detect: true,
-            isModerator:conferenceData["Member-Type"]==="member"?false:true
+            isModerator:
+              conferenceData["Member-Type"] === "member" ? false : true,
           }));
         }
       } else if (conferenceData.Action === "unmute-member") {
         // Update the list with the updated values
-        setConfList(prevList => prevList.map(item => {
-          if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
-            return {
-              ...item,
-              mute_detect: false
-            };
-          }
-          return item;
-        }));
+        setConfList((prevList) =>
+          prevList.map((item) => {
+            if (
+              item.caller_id_number === conferenceData["Channel-Presence-ID"]
+            ) {
+              return {
+                ...item,
+                mute_detect: false,
+              };
+            }
+            return item;
+          })
+        );
         if (conferenceData["Channel-Presence-ID"] === extension_id) {
           setCurrentUser((prevState) => ({
             ...prevState,
             id: conferenceData["Member-ID"],
             mute_detect: false,
-            isModerator:conferenceData["Member-Type"]==="member"?false:true
+            isModerator:
+              conferenceData["Member-Type"] === "member" ? false : true,
           }));
         }
       } else if (conferenceData.Action === "deaf-member") {
         // Update the list with the updated values
-        setConfList(prevList => prevList.map(item => {
-          if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
-            return {
-              ...item,
-              deaf: true,
-            };
-          }
-          return item;
-        }));
+        setConfList((prevList) =>
+          prevList.map((item) => {
+            if (
+              item.caller_id_number === conferenceData["Channel-Presence-ID"]
+            ) {
+              return {
+                ...item,
+                deaf: true,
+              };
+            }
+            return item;
+          })
+        );
         if (conferenceData["Channel-Presence-ID"] === extension_id) {
           setCurrentUser((prevState) => ({
             ...prevState,
             id: conferenceData["Member-ID"],
-            isModerator:conferenceData["Member-Type"]==="member"?false:true
+            isModerator:
+              conferenceData["Member-Type"] === "member" ? false : true,
           }));
         }
       } else if (conferenceData.Action === "undeaf-member") {
         // Update the list with the updated values
-        setConfList(prevList => prevList.map(item => {
-          if (item.caller_id_number === conferenceData["Channel-Presence-ID"]) {
-            return {
-              ...item,
-              deaf: false,
-            };
-          }
-          return item;
-        }));
+        setConfList((prevList) =>
+          prevList.map((item) => {
+            if (
+              item.caller_id_number === conferenceData["Channel-Presence-ID"]
+            ) {
+              return {
+                ...item,
+                deaf: false,
+              };
+            }
+            return item;
+          })
+        );
         if (conferenceData["Channel-Presence-ID"] === extension_id) {
           setCurrentUser((prevState) => ({
             ...prevState,
             id: conferenceData["Member-ID"],
-            isModerator:conferenceData["Member-Type"]==="member"?false:true
+            isModerator:
+              conferenceData["Member-Type"] === "member" ? false : true,
           }));
         }
-      } else if (conferenceData.Action === "del-member" || conferenceData.Action === "hup-member") {
-        if(currentUser.caller_id_number === conferenceData["Channel-Presence-ID"]) {
+      } else if (
+        conferenceData.Action === "del-member" ||
+        conferenceData.Action === "hup-member"
+      ) {
+        if (
+          currentUser.caller_id_number === conferenceData["Channel-Presence-ID"]
+        ) {
           setactivePage("call");
         }
-        setNotification(false)
-        setNotification(true)
-        setNotificationData(`${conferenceData["Caller-Caller-ID-Name"]} has left the conference`);
+        setNotification(false);
+        setNotification(true);
+        setNotificationData(
+          `${conferenceData["Caller-Caller-ID-Name"]} has left the conference`
+        );
         setTimeout(() => {
-          setNotification(false)
-        }, [3000])
-        setConfList(prevList => {
+          setNotification(false);
+        }, [3000]);
+        setConfList((prevList) => {
           const index = prevList.findIndex(
-            item => item.caller_id_number === conferenceData["Channel-Presence-ID"]
+            (item) =>
+              item.caller_id_number === conferenceData["Channel-Presence-ID"]
           );
           if (index !== -1) {
             const newList = [...prevList];
@@ -356,30 +468,30 @@ console.log("conferenceDataaa", conferenceData,confList);
         });
       }
     }
-  }, [conferenceData])
+  }, [conferenceData]);
 
   // Handle calling action for current user
   async function callAction(action) {
     const parsedData = {
       action: action,
       room_id: room_id,
-      member: String(currentUser?.id)
-    }
-    generalPostFunction(`conference/action`, parsedData).then(res => {
+      member: String(currentUser?.id),
+    };
+    generalPostFunction(`conference/action`, parsedData).then((res) => {
       if (res.status && action === "hup") {
-        localStorage.removeItem("memberId")
+        localStorage.removeItem("memberId");
         dispatch({
           type: "SET_MEMBERID",
-          memberId: null
-        })
+          memberId: null,
+        });
         dispatch({
           type: "SET_DUMMYSION",
           dummySession: "",
         });
         setConferenceToggle(false);
-        setactivePage("call")
+        setactivePage("call");
       }
-    })
+    });
     if (action === "deaf") {
       //    update current user state
       setCurrentUser((prevState) => ({
@@ -389,12 +501,12 @@ console.log("conferenceDataaa", conferenceData,confList);
     } else if (action === "undeaf") {
       setCurrentUser((prevState) => ({
         ...prevState,
-        deaf: false
+        deaf: false,
       }));
     } else if (action === "tmute") {
       setCurrentUser((prevState) => ({
         ...prevState,
-        mute_detect: !(currentUser.mute_detect)
+        mute_detect: !currentUser.mute_detect,
       }));
     }
   }
@@ -414,15 +526,18 @@ console.log("conferenceDataaa", conferenceData,confList);
 
   // Store memeber ID in local storage so that we can access it later
   useEffect(() => {
-    if (currentUser.id !== "" && currentUser.id !== null && currentUser.id !== undefined) {
+    if (
+      currentUser.id !== "" &&
+      currentUser.id !== null &&
+      currentUser.id !== undefined
+    ) {
       localStorage.setItem("memberId", currentUser?.id);
       dispatch({
         type: "SET_MEMBERID",
-        memberId: currentUser?.id
-      })
+        memberId: currentUser?.id,
+      });
     }
-
-  }, [currentUser.id])
+  }, [currentUser.id]);
 
   // Check if there is any previous memeber is present if yes then first hangup it
   useEffect(() => {
@@ -430,40 +545,58 @@ console.log("conferenceDataaa", conferenceData,confList);
       const parsedData = {
         action: "hup",
         room_id: room_id,
-        member: String(memeber_id)
-      }
-      generalPostFunction(`conference/action`, parsedData).then(res => {
-        localStorage.removeItem("memberId")
+        member: String(memeber_id),
+      };
+      generalPostFunction(`conference/action`, parsedData).then((res) => {
+        localStorage.removeItem("memberId");
         dispatch({
           type: "SET_MEMBERID",
-          memberId: null
-        })
-      })
+          memberId: null,
+        });
+      });
     }
-  }, [])
-
-  
+  }, []);
+  console.log("selectedConferenceUser", conferenceScreenShareStatus);
   // Handle moderator action
-  async function moderatorAction(action,id) {
+  async function moderatorAction(action, id) {
     const parsedData = {
       action: action,
       room_id: room_id,
       member: String(id),
     };
-    generalPostFunction(`conference/action`, parsedData)
+    generalPostFunction(`conference/action`, parsedData);
   }
+  // console.log(screenTogglehit);
+
+  // Set name of current user when he joins the conference
+  useEffect(() => {
+    if (currentUser.id !== "") {
+      const parsedData = {
+        action: "vid-banner",
+        room_id: room_id,
+        member: `${String(currentUser?.id)} '${currentUser?.name}'`,
+      };
+      generalPostFunction(`conference/action`, parsedData);
+    }
+  }, [currentUser.id]);
   return (
-    <div className="profileDropdowns" style={{ top: "55px", right: "-40px", display: activePage !== "conference" ? "none" : "" }}>
+    <div
+      className="profileDropdowns"
+      style={{
+        top: "55px",
+        right: "-40px",
+        display: activePage !== "conference" ? "none" : "",
+      }}
+    >
       <MediaPermissions />
       {incomingSessionsArray.map((item, index) => {
-        return (
-          <AutoAnswer id={item} />
-        )
+        return <AutoAnswer id={item} isVideoOn={isVideoOn} />;
       })}
-      {
-        loading ?
-          <ConferenceLoader /> :
-          dummySession && <>
+      {loading ? (
+        <ConferenceLoader />
+      ) : (
+        dummySession && (
+          <>
             <main
               className="mainContentApp position-absolute"
               style={{
@@ -471,6 +604,8 @@ console.log("conferenceDataaa", conferenceData,confList);
                 left: "0px",
                 // width: "calc(100% - 210px)",
                 height: "100%",
+                width: '-webkit-fill-available',
+                zIndex: 9,
                 marginRight:
                   sessions.length > 0 && Object.keys(sessions).length > 0
                     ? "250px"
@@ -483,10 +618,9 @@ console.log("conferenceDataaa", conferenceData,confList);
                     <div className="col-12 ps-xl-0">
                       <div className="newHeader">
                         <div className="col-auto" style={{ padding: "0 10px" }}>
-                          <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
-                            <button class="clearButton text-dark">
-                              <i class="fa-solid fa-chevron-left fs-4"></i>
-                            </button>{" "}
+                          <h3
+                            style={{ fontFamily: "Outfit", marginBottom: "0" }}
+                          >
                             Conference{" "}
                           </h3>
                         </div>
@@ -513,7 +647,10 @@ console.log("conferenceDataaa", conferenceData,confList);
                                 data-bs-toggle="dropdown"
                                 aria-expanded="false"
                               >
-                                <div class="profileHolder" id="profileOnlineNav">
+                                <div
+                                  class="profileHolder"
+                                  id="profileOnlineNav"
+                                >
                                   <img
                                     src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
                                     alt="profile"
@@ -541,23 +678,31 @@ console.log("conferenceDataaa", conferenceData,confList);
                     </div>
                     <div className="videoCallWrapper">
                       <div className="row">
-                        {toggleMessages && <div className="col-lg-3 col-xl-3 col-12 p-3">
-                          <ConferenceMessages />
-                        </div>}
-                        <div className={`"col-lg-${toggleMessages ? "9" : "12"} col-xl-${toggleMessages ? "9" : "12"} col-12" px-0`}>
+                        {toggleMessages && (
+                          <div className="col-lg-3 col-xl-3 col-12">
+                            <ConferenceMessages sendMessage={sendMessage} conferenceId={conferenceId} userName={name} setToggleMessages={setToggleMessages}/>
+                          </div>
+                        )}
+                        <div
+                          className={"col-xl-12 col-12 px-0"}
+                        >
                           <div className="videoBody py-0">
-                            {notification &&
+                            {notification && (
                               <div className="NotificationBell">
                                 <i className="fa-solid fa-bell"></i>
                                 <div className="content">
                                   {notificationData}
                                 </div>
                               </div>
-                            }
+                            )}
                             <div className="participant active ">
                               <div className="heading">
                                 <h4>
-                                  Conference <span>{hours === 0 ? "" : `${hours}:`}{minutes}:{seconds}</span>
+                                  Conference{" "}
+                                  <span>
+                                    {hours === 0 ? "" : `${hours}:`}
+                                    {minutes}:{seconds}
+                                  </span>
                                 </h4>
                                 {/* <button className="clearButton">
                                                             <i class="fa-sharp fa-solid fa-circle-plus"></i> Add
@@ -565,20 +710,46 @@ console.log("conferenceDataaa", conferenceData,confList);
                                                         </button> */}
                               </div>
                               <div className="participantWrapper pb-2">
-                                <div className="videoHolder">
-                                  <div className="activeGuyName">{selectedConferenceUser?.name === "" ? selectedConferenceUser?.name : name}</div>
-                                  {dummySession !== ""  ?
-                                    (
-                                      <ConferenceVideo id={dummySession} setIsScreenSharing={setIsScreenSharing} isScreenSharing={isScreenSharing} screenTogglehit={screenTogglehit} />
-                                    )
-                                    :
-                                    (
-                                      <div className="justify-content-center h-100 d-flex align-items-center text-white fs-1">
-                                        <div className="contactViewProfileHolder">
-                                          {(selectedConferenceUser?.name === "" ? selectedConferenceUser?.name : name)}
-                                        </div>
+                                <div className="videoHolder w-auto d-flex align-items-center">
+                                  <div className="activeGuyName">
+                                    {conferenceScreenShareStatus?.sharedMessage ==
+                                      true
+                                      ? conferenceScreenShareStatus.user
+                                      : selectedConferenceUser?.name === ""
+                                        ? selectedConferenceUser?.name
+                                        : name}
+                                  </div>
+                                  {dummySession !== "" ? (
+                                    // &&
+                                    // conferenceScreenShareStatus?.shareStatus ==
+                                    //   true
+                                    //and if screenshare true then 1 :2
+                                    <ConferenceVideo
+                                      currentUser={currentUser}
+                                      conferenceId={conferenceId}
+                                      id={dummySession}
+                                      setIsScreenSharing={setIsScreenSharing}
+                                      isScreenSharing={isScreenSharing}
+                                      screenTogglehit={screenTogglehit}
+                                      isVideoOn={isVideoOn}
+                                      userName={name}
+                                      sendMessage={sendMessage}
+                                    />
+                                  ) : (
+                                    <div className="justify-content-center h-100 d-flex align-items-center text-white fs-1">
+                                      <div
+                                        className="contactViewProfileHolder"
+                                      //check if shared screen global state is true then show his name
+                                      >
+                                        {conferenceScreenShareStatus?.sharedMessage ==
+                                          true
+                                          ? conferenceScreenShareStatus.user
+                                          : selectedConferenceUser?.name !== ""
+                                            ? selectedConferenceUser?.name
+                                            : name}
                                       </div>
-                                    )}
+                                    </div>
+                                  )}
                                   <div
                                     className="activeGuyName"
                                     style={{
@@ -586,22 +757,64 @@ console.log("conferenceDataaa", conferenceData,confList);
                                       top: "inherit",
                                       width: "45px",
                                     }}
-                                    onClick={() => { callAction(confList.filter((item) => item.isYou)[0]?.deaf ? "undeaf" : "deaf") }}
+                                    onClick={() => {
+                                      callAction(
+                                        confList.filter((item) => item.isYou)[0]
+                                          ?.deaf
+                                          ? "undeaf"
+                                          : "deaf"
+                                      );
+                                    }}
                                   >
-                                    {currentUser?.deaf ? <i class="fa-sharp fa-solid active fa-volume-slash"></i> : <i class="fa-sharp fa-solid fa-volume"></i>}
-
+                                    {currentUser?.deaf ? (
+                                      <i class="fa-sharp fa-solid active fa-volume-slash"></i>
+                                    ) : (
+                                      <i class="fa-sharp fa-solid fa-volume"></i>
+                                    )}
                                   </div>
                                 </div>
                                 <div className="videoControls">
-                                  <button className={currentUser?.mute_detect?"appPanelButtonCallerRect active":"appPanelButtonCallerRect"} onClick={() => { callAction("tmute") }}>
-                                    {currentUser?.mute_detect ? <i class="fa-light fa-microphone-slash"></i> : <i class="fa-light fa-microphone"></i>}
+                                  <button
+                                    className={
+                                      currentUser?.mute_detect
+                                        ? "appPanelButtonCallerRect active"
+                                        : "appPanelButtonCallerRect"
+                                    }
+                                    onClick={() => {
+                                      callAction("tmute");
+                                    }}
+                                  >
+                                    {currentUser?.mute_detect ? (
+                                      <i class="fa-light fa-microphone-slash"></i>
+                                    ) : (
+                                      <i class="fa-light fa-microphone"></i>
+                                    )}
                                   </button>
-                                  <button className="appPanelButtonCallerRect" >
+                                  <button className="appPanelButtonCallerRect">
                                     <i class="fa-light fa-video"></i>
                                   </button>
-                                  <button className="appPanelButtonCallerRect" onClick={() => setScreenTogglehit(screenTogglehit+1)}>
-                                    <i class="fa-sharp fa-light fa-screencast"></i>
-                                  </button>
+                                  {isScreenSharing ? (
+                                    <button
+                                      className="appPanelButtonCallerRect gap-2"
+                                      onClick={() =>
+                                        setScreenTogglehit(screenTogglehit + 1)
+                                      }
+                                    >
+                                      <i class="fa-sharp fa-light fa-screencast"></i>
+
+                                      <i className="text-danger fas fa-dot-circle"></i>
+                                    </button>
+                                  ) : (
+                                    <button
+                                      className="appPanelButtonCallerRect"
+                                      onClick={() =>
+                                        setScreenTogglehit(screenTogglehit + 1)
+                                      }
+                                    >
+                                      <i class="fa-sharp fa-light fa-screencast"></i>
+                                    </button>
+                                  )}
+
                                   <button
                                     className="appPanelButtonCallerRect"
                                     style={{
@@ -613,10 +826,28 @@ console.log("conferenceDataaa", conferenceData,confList);
                                   >
                                     Leave Call
                                   </button>
-                                  <button className={toggleMessages?"appPanelButtonCallerRect active":"appPanelButtonCallerRect"} onClick={() => setToggleMessages(!toggleMessages)}>
+                                  <button
+                                    className={
+                                      toggleMessages
+                                        ? "appPanelButtonCallerRect active"
+                                        : "appPanelButtonCallerRect"
+                                    }
+                                    onClick={() =>
+                                      setToggleMessages(!toggleMessages)
+                                    }
+                                  >
                                     <i class="fa-light fa-messages"></i>
                                   </button>
-                                  <button className={participantList?"appPanelButtonCallerRect active":"appPanelButtonCallerRect"} onClick={() => setParticipantList(!participantList)}>
+                                  <button
+                                    className={
+                                      participantList
+                                        ? "appPanelButtonCallerRect active"
+                                        : "appPanelButtonCallerRect"
+                                    }
+                                    onClick={() =>
+                                      setParticipantList(!participantList)
+                                    }
+                                  >
                                     <i class="fa-light fa-users"></i>
                                   </button>
                                   <button className="appPanelButtonCallerRect">
@@ -627,10 +858,27 @@ console.log("conferenceDataaa", conferenceData,confList);
                               </div>
                               {/* )} */}
                             </div>
-                            <div className={`conferenceParticipantsWrapper ${participantMiniview ? "" : "hidden"}`}>
+                            <div
+                              className={`conferenceParticipantsWrapper ${participantMiniview ? "" : "hidden"
+                                }`}
+                            >
                               <div className="py-2 px-3 pe-2">
-                                <button onClick={() => setParticipantMiniview(!participantMiniview)} className="clearButton2 xl position-absolute" style={{ left: '-20px', top: '50%', transform: 'translateY(-50%)', zIndex: '9' }}>
-                                  <i class={`fa-regular fa-chevron-${participantMiniview ? "right" : "left"}`}></i>
+                                <button
+                                  onClick={() =>
+                                    setParticipantMiniview(!participantMiniview)
+                                  }
+                                  className="clearButton2 xl position-absolute"
+                                  style={{
+                                    left: "-20px",
+                                    top: "50%",
+                                    transform: "translateY(-50%)",
+                                    zIndex: "9",
+                                  }}
+                                >
+                                  <i
+                                    class={`fa-regular fa-chevron-${participantMiniview ? "right" : "left"
+                                      }`}
+                                  ></i>
                                 </button>
 
                                 {confList.map((item, index) => {
@@ -648,57 +896,159 @@ console.log("conferenceDataaa", conferenceData,confList);
                                 })}
                               </div>
                             </div>
-                            {participantList && <div className="participantMemberList">
-                              <div className="mb-3">
-                                <button className="clearButton2 xl ms-auto" onClick={() => setParticipantList(false)}><i class={`fa-regular fa-xmark`}></i></button>
-                              </div>
-                              <div>
-                                <div style={{ color: 'rgb(194, 194, 194)', fontSize: '14px', fontWeight: '600', marginBottom: '16px' }}>Meeting Participants ({confList.length})</div>
-                                {/* <button className="panelButton static">
+                            {participantList && (
+                              <div className="participantMemberList">
+                                <div className="mb-3">
+                                  <button
+                                    className="clearButton2 xl ms-auto"
+                                    onClick={() => setParticipantList(false)}
+                                  >
+                                    <i class={`fa-regular fa-xmark`}></i>
+                                  </button>
+                                </div>
+                                <div>
+                                  <div
+                                    style={{
+                                      color: "rgb(194, 194, 194)",
+                                      fontSize: "14px",
+                                      fontWeight: "600",
+                                      marginBottom: "16px",
+                                    }}
+                                  >
+                                    Meeting Participants ({confList.length})
+                                  </div>
+                                  {/* <button className="panelButton static">
                                   <span className="text"><i class="fa-solid fa-circle-plus"></i> Add Participant</span>
                                 </button> */}
-                              </div>
-                              <div class="col-12 mt-3">
-                                <input type="search" name="Search" id="headerSearch" placeholder="Search" style={{ backgroundColor: 'transparent', color: '#f5f5f5' }} />
-                              </div>
-                              <ul>
-                                {confList.map((item, index) => {
-                                  return (
-                                    <li>
-                                      <div className="d-flex align-items-center">
-                                        <div className="profileHolder">
-                                          {/* {getInitials(item.name)} */}
-                                          <i class="fa-light fa-user"></i>
+                                </div>
+                                <div class="col-12 mt-3">
+                                  <input
+                                    type="search"
+                                    name="Search"
+                                    id="headerSearch"
+                                    placeholder="Search"
+                                    style={{
+                                      backgroundColor: "transparent",
+                                      color: "#f5f5f5",
+                                    }}
+                                  />
+                                </div>
+                                <ul>
+                                  {confList.map((item, index) => {
+                                    return (
+                                      <li>
+                                        <div className="d-flex align-items-center">
+                                          <div className="profileHolder">
+                                            {/* {getInitials(item.name)} */}
+                                            <i class="fa-light fa-user"></i>
+                                          </div>
+                                          <span className="ms-2">
+                                            {item.name}
+                                          </span>
                                         </div>
-                                        <span className="ms-2">{item.name}</span>
-                                      </div>
-                                      <div className="d-flex">
-                                        <button onClick={() =>{if(currentUser.isModerator){moderatorAction("tmute", item.id)}}} disabled={!currentUser.isModerator} className="clearButton2 me-2" style={{ width: '30px', height: '30px', fontSize: '16px' }}><i class={!item.mute_detect ? "fa-light fa-microphone" : "fa-light fa-microphone-slash"}></i></button>
-                                        <button onClick={() =>{if(currentUser.isModerator){moderatorAction("kick", item.id)}}} disabled={!currentUser.isModerator} className="clearButton2 danger" style={{ width: '30px', height: '30px', fontSize: '16px' }}><i class="fa-light fa-user-minus"></i></button>
-                                      </div>
-                                    </li>
-                                  );
-                                })}
-                               
-                              </ul>
-                              <div className="position-absolute d-flex" style={{ bottom: 20, right: 10 }}>
-                                <button className="toggleButton">Mute All</button>
-                                <div className="dropdown contactHeader" type="button" data-bs-toggle="dropdown" aria-expanded="true">
-                                  <button className="ms-3 toggleButton"><i class="fa-solid fa-ellipsis"></i></button>
-                                  <ul className="dropdown-menu" data-popper-placement="top-end">
-                                    <li><a className="dropdown-item">Stop everyone's video</a></li>
-                                    <li className="d-block">
-                                      <p className="my-0" style={{ padding: '5px 10px', fontSize: '13px' }}>Allow attendees to: </p>
-                                      <ul className="my-0">
-                                        <li className="dropdown-item d-block"><i className="fa-solid fa-check me-2"></i>Unmute themselves</li>
-                                        <li className="dropdown-item d-block"><i className="fa-solid fa-check me-2"></i>Start their video</li>
-                                      </ul>
-                                    </li>
-                                    <li><a className="dropdown-item text-danger">Kick User</a></li>
-                                  </ul>
+                                        <div className="d-flex">
+                                          <button
+                                            onClick={() => {
+                                              if (currentUser.isModerator) {
+                                                moderatorAction(
+                                                  "tmute",
+                                                  item.id
+                                                );
+                                              }
+                                            }}
+                                            disabled={!currentUser.isModerator}
+                                            className="clearButton2 me-2"
+                                            style={{
+                                              width: "30px",
+                                              height: "30px",
+                                              fontSize: "16px",
+                                            }}
+                                          >
+                                            <i
+                                              class={
+                                                !item.mute_detect
+                                                  ? "fa-light fa-microphone"
+                                                  : "fa-light fa-microphone-slash"
+                                              }
+                                            ></i>
+                                          </button>
+                                          <button
+                                            onClick={() => {
+                                              if (currentUser.isModerator) {
+                                                moderatorAction(
+                                                  "kick",
+                                                  item.id
+                                                );
+                                              }
+                                            }}
+                                            disabled={!currentUser.isModerator}
+                                            className="clearButton2 danger"
+                                            style={{
+                                              width: "30px",
+                                              height: "30px",
+                                              fontSize: "16px",
+                                            }}
+                                          >
+                                            <i class="fa-light fa-user-minus"></i>
+                                          </button>
+                                        </div>
+                                      </li>
+                                    );
+                                  })}
+                                </ul>
+                                <div className="d-flex justify-content-end">
+                                  <button className="toggleButton">
+                                    Mute All
+                                  </button>
+                                  <div
+                                    className="dropdown contactHeader"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="true"
+                                  >
+                                    <button className="ms-3 toggleButton">
+                                      <i class="fa-solid fa-ellipsis"></i>
+                                    </button>
+                                    <ul
+                                      className="dropdown-menu"
+                                      data-popper-placement="top-end"
+                                    >
+                                      <li>
+                                        <a className="dropdown-item">
+                                          Stop everyone's video
+                                        </a>
+                                      </li>
+                                      <li className="d-block">
+                                        <p
+                                          className="my-0"
+                                          style={{
+                                            padding: "5px 10px",
+                                            fontSize: "13px",
+                                          }}
+                                        >
+                                          Allow attendees to:{" "}
+                                        </p>
+                                        <ul className="my-0">
+                                          <li className="dropdown-item d-block">
+                                            <i className="fa-solid fa-check me-2"></i>
+                                            Unmute themselves
+                                          </li>
+                                          <li className="dropdown-item d-block">
+                                            <i className="fa-solid fa-check me-2"></i>
+                                            Start their video
+                                          </li>
+                                        </ul>
+                                      </li>
+                                      <li>
+                                        <a className="dropdown-item text-danger">
+                                          Kick User
+                                        </a>
+                                      </li>
+                                    </ul>
+                                  </div>
                                 </div>
                               </div>
-                            </div>}
+                            )}
                           </div>
                         </div>
                       </div>
@@ -708,7 +1058,8 @@ console.log("conferenceDataaa", conferenceData,confList);
               </section>
             </main>
           </>
-      }
+        )
+      )}
     </div>
   );
 };
@@ -737,14 +1088,17 @@ const ConferenceUserTab = ({
         className="participant"
         data-mic={!item.mute_detect}
         //   data-pin="true"
-        data-speaker={!(item.deaf)}
+        data-speaker={!item.deaf}
         data-speaking={item.talking}
         style={{ cursor: "pointer" }}
         onClick={() => handleSelectConferenceUser(item)}
       >
         {videoCallToggle ? (
           <div>
-            <img alt="" src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png" />
+            <img
+              alt=""
+              src="https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/HjH5lgeHeix7kfhup/videoblocks-31_man-successful_4k_rwpcr0ar3_thumbnail-1080_11.png"
+            />
           </div>
         ) : (
           <div className="participantWrapper">
@@ -765,4 +1119,3 @@ const ConferenceUserTab = ({
     </>
   );
 };
-

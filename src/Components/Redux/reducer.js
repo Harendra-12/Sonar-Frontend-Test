@@ -61,6 +61,9 @@ var rolesRefresh = 0;
 var permissionRefresh = 0;
 var memberId = null;
 var newAddedDid = null;
+var conferenceScreenShareStatus = null;
+var conferenceMessage = [];
+var RoomID = "";
 
 const initialState = {
   account,
@@ -125,6 +128,9 @@ const initialState = {
   permissionRefresh,
   memberId,
   newAddedDid,
+  conferenceScreenShareStatus,
+  conferenceMessage,
+  RoomID,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -282,7 +288,21 @@ const counterReducer = (state = initialState, action) => {
         ...state,
         newAddDid: action.newAddDid,
       };
-
+    case "SET_CONFERENCESCREENSHARESTATUS":
+      return {
+        ...state,
+        conferenceScreenShareStatus: action.conferenceScreenShareStatus,
+      };
+      case "SET_CONFERENCEMESSAGE":
+      return {
+        ...state,
+        conferenceMessage:[...state.conferenceMessage, action.conferenceMessage] ,
+      };
+      case "SET_ROOMID":
+      return {
+        ...state,
+        RoomID: action.RoomID,
+      };
     default:
       return state;
   }

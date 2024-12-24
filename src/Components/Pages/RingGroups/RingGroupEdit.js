@@ -59,6 +59,10 @@ const RingGroupEdit = () => {
   const [showMusic, setShowMusic] = useState(false);
   const [uploadedMusic, setUploadedMusic] = useState();
   const [musicRefresh, setMusicRefresh] = useState(0);
+  const [showTimeoutDestinationToggle, setShowTimeoutDestinationToggle] =
+    useState(false);
+  const [bulkAddPopUp, setBulkAddPopUp] = useState(false);
+  const [bulkUploadSelectedAgents, setBulkUploadSelectedAgents] = useState([]);
   const {
     register,
     watch,
@@ -69,7 +73,12 @@ const RingGroupEdit = () => {
     reset,
     setValue,
     control,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      status: true, // Set the default value for "status" to true
+      timeout_destination: "",
+    },
+  });
 
   // Handle destination
   const [destination, setDestination] = useState([
@@ -404,7 +413,7 @@ const RingGroupEdit = () => {
     newDestination[index]["destination"] = value;
     setDestination(newDestination);
   };
-
+  console.log(watch());
   // Function to add a new destination field
   const addNewDestination = () => {
     setDestination([
@@ -449,6 +458,9 @@ const RingGroupEdit = () => {
     } else {
       setDestination(destination.filter((item) => item.id !== id));
     }
+    if (destinationValidation) {
+      clearErrors("destinations");
+    }
   }
 
   const destinationValidation = () => {
@@ -465,6 +477,10 @@ const RingGroupEdit = () => {
         type: "manual",
         message: "All fields are required",
       });
+      return;
+    }
+    if (data.timeout_destination != "" && !data.call_timeout) {
+      toast.error("Please Mention call timeout for timeout destination");
       return;
     }
     const payLoad = {
@@ -537,7 +553,49 @@ const RingGroupEdit = () => {
     setValue("ring_back", "");
     setShowMusic(true);
   };
+  function truncateString(str) {
+    if (str.length > 8) {
+      return str.substring(0, 8) + "...";
+    }
+    return str; // Return the string as is if it's 8 characters or less
+  }
 
+  const handleCheckboxChange = (item) => {
+    setBulkUploadSelectedAgents((prevSelected) => {
+      if (prevSelected.some((agent) => agent.name === item.name)) {
+        // If the item is already in the array, remove it
+        return prevSelected.filter((agent) => agent.name !== item.name);
+      } else {
+        // Otherwise, add the item
+        return [...prevSelected, item];
+      }
+    });
+  };
+
+  const handleBulkDestinationUpload = (selectedDestinations) => {
+    const newDestinations = [...destination]; // Copy the current destination array
+
+    selectedDestinations.forEach((selectedDestination) => {
+      const existingDestinationIndex = newDestinations.findIndex(
+        (d) => d.name === selectedDestination.name
+      );
+
+      if (existingDestinationIndex === -1) {
+        // Add new destination if it doesn't already exist
+        newDestinations.push({
+          id: Math.floor(Math.random() * 10000),
+          destination: selectedDestination?.extension?.extension,
+          delay: 0,
+          timeOut: "30",
+
+          status: "inactive",
+        });
+      }
+    });
+
+    setDestination(newDestinations); // Update the destination state
+  };
+  console.log(user, destination);
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -857,35 +915,59 @@ const RingGroupEdit = () => {
                               onChange={(e) => {
                                 if (e.target.value == "extension") {
                                   setTimeoutDestPstnToggle(false);
+                                  setShowTimeoutDestinationToggle(true);
+                                  if (watch().call_timeout == "") {
+                                    setValue("call_timeout", `${60}`);
+                                  }
                                   setValue("timeout_destination", "");
                                 } else if (e.target.value == "pstn") {
                                   setTimeoutDestPstnToggle(true);
+                                  setShowTimeoutDestinationToggle(true);
+                                  if (watch().call_timeout == "") {
+                                    setValue("call_timeout", `${60}`);
+                                  }
+                                  setValue("timeout_destination", "");
+                                } else if (e.target.value == "") {
+                                  setTimeoutDestPstnToggle(true);
+                                  setShowTimeoutDestinationToggle(false);
                                   setValue("timeout_destination", "");
                                 }
                               }}
                               id="selectFormRow"
-                              defaultValue={"extension"}
+                              defaultValue={""}
                             >
+                              <option value="">Disabled</option>
                               <option value="extension">Extension</option>
                               <option value="pstn">PSTN</option>
                             </select>
                           </div>
                           <div className="col-7">
-                            {timeoutDestPstnToggle ? (
+                            {showTimeoutDestinationToggle ? (
+                              timeoutDestPstnToggle ? (
+                                <input
+                                  placeholder="PSTN"
+                                  className="formItem"
+                                  {...register("timeout_destination", {
+                                    ...numberValidator,
+                                  })}
+                                ></input>
+                              ) : (
+                                <ActionList
+                                  title={null}
+                                  label={null}
+                                  getDropdownValue={actionListValue}
+                                  value={watch().timeout_destination}
+                                />
+                              )
+                            ) : (
                               <input
-                                placeholder="PSTN"
+                                placeholder="None"
+                                disabled
                                 className="formItem"
                                 {...register("timeout_destination", {
                                   ...numberValidator,
                                 })}
                               ></input>
-                            ) : (
-                              <ActionList
-                                title={null}
-                                label={null}
-                                getDropdownValue={actionListValue}
-                                value={watch().timeout_destination}
-                              />
                             )}
                           </div>
                           {errors?.timeout_destination && (
@@ -1238,6 +1320,9 @@ const RingGroupEdit = () => {
                   </form>
                 </div>
                 <div className="col-12" style={{ padding: "20px 23px" }}>
+                  <button onClick={() => setBulkAddPopUp(true)}>
+                    Bulk Add
+                  </button>
                   <form className="row">
                     <div className="formRow col-xl-12">
                       {destination.map((item, index) => {
@@ -1361,8 +1446,9 @@ const RingGroupEdit = () => {
                                             value={item.extension?.extension}
                                             key={item.id}
                                           >
-                                            {item.username}(
-                                            {item.extension?.extension})
+                                            {item.alias
+                                              ? truncateString(item?.alias)
+                                              : truncateString(item?.name)}
                                           </option>
                                         );
                                       })}
@@ -1543,6 +1629,76 @@ const RingGroupEdit = () => {
           musicRefresh={musicRefresh}
           listArray={["ringback"]}
         />
+      )}
+
+      {bulkAddPopUp ? (
+        <div className="addNewContactPopup">
+          <div className="row">
+            <div className="col-12 heading mb-0">
+              <i className="fa-light fa-user-plus" />
+              <h5>Add People to the selected Queue</h5>
+              <p>
+                Add people to yourqueue effortlessly, keeping your connections
+                organized and efficient
+              </p>
+              <div className="border-bottom col-12" />
+            </div>
+            <div className="col-12 mt-3">
+              {user
+                .filter(
+                  (user) =>
+                    !destination.some(
+                      (agent) =>
+                        user.extension.extension == agent.destination
+                    )
+                )
+                .map((item, index) => {
+                  return (
+                    <div key={index}>
+                      <div className="row g-2">
+                        <div className="col-auto">
+                          <label className="formLabel">{index + 1}.</label>
+                        </div>
+                        <div className="col">
+                          <label className="formLabel details">{item.name}</label>
+                        </div>
+                        <div className="col-auto ms-auto">
+                          <input
+                            type="checkbox"
+                            onChange={() => handleCheckboxChange(item)} // Call handler on change
+                            checked={bulkUploadSelectedAgents.some(
+                              (agent) => agent.name === item.name
+                            )} // Keep checkbox state in sync
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+            <div className="col-xl-12 mt-4">
+              <div className="d-flex justify-content-between">
+                <button className="panelButton gray ms-0" onClick={() => {
+                  setBulkAddPopUp(false);
+                }}
+                >
+                  <span className="text">Close</span>
+                  <span className="icon">
+                    <i className="fa-solid fa-caret-left" />
+                  </span>
+                </button>
+                <button className="panelButton me-0" onClick={() => { handleBulkDestinationUpload(bulkUploadSelectedAgents); setBulkAddPopUp(false); }}>
+                  <span className="text">Done</span>
+                  <span className="icon">
+                    <i className="fa-solid fa-check" />
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
       )}
     </main>
   );

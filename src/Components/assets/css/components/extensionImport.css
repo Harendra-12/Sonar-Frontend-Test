@@ -331,7 +331,7 @@ form.tangoNavs .nav-tabs {
 }
 
 .overviewTableWrapper .tableContainer {
-    height: calc(100vh - 328px);
+    height: calc(100vh - 340px);
 }
 
 .formItem option:disabled {
@@ -429,4 +429,13 @@ form.tangoNavs .nav-tabs {
     color: var(--form-input-text);
     font-size: 14px;
     margin-bottom: 5px;
+}
+
+.actionBtnDropdowns {
+    background-color: var(--nav-color);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    color: #fff;
+    width: max-content;
 }

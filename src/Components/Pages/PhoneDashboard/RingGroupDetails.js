@@ -88,7 +88,7 @@ const RingGroup = () => {
                 </div>
               </div>
               <div className="col-xl-1b">
-                <div className="itemWrapperb d">
+                <div className="itemWrapperb a">
                   <div className="heading">Total Calls</div>
                   <div className="data-number">
                     {
@@ -102,7 +102,7 @@ const RingGroup = () => {
                 </div>
               </div>
               <div className="col-xl-1b">
-                <div className="itemWrapperb d">
+                <div className="itemWrapperb b">
                   <div className="heading">Total Calls Completed</div>
                   <div className="data-number">
                     {
@@ -132,7 +132,7 @@ const RingGroup = () => {
                 </div>
               </div>
               <div className="col-xl-1b">
-                <div className="itemWrapperb c">
+                <div className="itemWrapperb d">
                   <div className="heading">Missed Calls</div>
                   <div className="data-number">
                     {
@@ -162,7 +162,7 @@ const RingGroup = () => {
                 </div>
               </div>
               <div className="col-xl-1b">
-                <div className="itemWrapperb a">
+                <div className="itemWrapperb c">
                   <div className="heading">Active Calls</div>
                   <div className="data-number">
                     {
@@ -174,14 +174,14 @@ const RingGroup = () => {
                 </div>
               </div>
               <div className="col-xl-1b">
-                <div className="itemWrapperb d">
+                <div className="itemWrapperb a">
                   <div className="heading">Total Extensions</div>
                   <div className="data-number">0</div>
                   <div className="label2">N/A</div>
                 </div>
               </div>
               <div className="col-xl-1b">
-                <div className="itemWrapperb d">
+                <div className="itemWrapperb a">
                   <div className="heading">Total Spent</div>
                   <div className="data-number">$0.00</div>
                   <div className="label2">N/A</div>

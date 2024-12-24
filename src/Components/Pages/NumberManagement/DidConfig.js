@@ -66,7 +66,7 @@ const DidConfig = () => {
         "stick_agent_type",
         locationData.configuration.stick_agent_type || ""
       );
-
+      setValue("tag", locationData.configuration.tag || "");
       setValue(
         "record",
         locationData.configuration.record === 0 ? false : true || ""
@@ -241,7 +241,7 @@ const DidConfig = () => {
       <main className="mainContent">
         <section id="phonePage">
           <div className="container-fluid px-0">
-            <Header title="DID Management" />
+            <Header title="Number Configuration" />
             {/* <div id="subPageHeader">
               <div className="col-xl-9 my-auto">
                 <p className="mb-0">
@@ -431,8 +431,8 @@ const DidConfig = () => {
                           </div>
                           <div
                             className={`col-${forwardStatus != "disabled"
-                              ? "3 pe-2 ms-auto"
-                              : "6"
+                                ? "3 pe-2 ms-auto"
+                                : "6"
                               }`}
                           >
                             {forwardStatus != "disabled" && (
@@ -575,10 +575,16 @@ const DidConfig = () => {
                           </div>
                           <div className="col-6">
                             <input
-                              type="number"
+                              type="text"
                               name="forward_to"
                               className="formItem"
+                              {...register("tag", {
+                                ...requiredValidator,
+                              })}
                             />
+                            {errors?.tag && (
+                              <ErrorMessage text={errors.tag.message} />
+                            )}
                           </div>
                         </div>
 
@@ -675,9 +681,9 @@ const DidConfig = () => {
                           </div>
                           <div
                             className={`col-${watch().sticky_agent_enable == "true" ||
-                              watch().sticky_agent_enable == 1
-                              ? "2 pe-2 ms-auto"
-                              : "6"
+                                watch().sticky_agent_enable == 1
+                                ? "2 pe-2 ms-auto"
+                                : "6"
                               }`}
                           >
                             {watch().sticky_agent_enable === "true" ||
@@ -768,9 +774,9 @@ const DidConfig = () => {
                             <div className="row">
                               <div
                                 className={`col-${watch().spam_filter_type == "1" ||
-                                  watch().spam_filter_type == "2"
-                                  ? "12"
-                                  : "4"
+                                    watch().spam_filter_type == "2"
+                                    ? "12"
+                                    : "4"
                                   } pe-1 ms-auto`}
                               >
                                 {watch().spam_filter_type != "1" && (

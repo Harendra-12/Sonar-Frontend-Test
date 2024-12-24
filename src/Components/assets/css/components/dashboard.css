@@ -1,8 +1,8 @@
 :root {
-    --funky-boy1: #ff2365;
+    --funky-boy1: #ff0000;
     --funky-boy2: #4749e6;
     --funky-boy3: #31c07d;
-    --funky-boy4: #ff0000;
+    --funky-boy4: #ff2365;
     --funky-boy4-trans: #ff999930;
 }
 
@@ -266,7 +266,7 @@
 
 .itemWrapper.b .data-number,
 .itemWrapperb.b .data-number {
-    color: var(--ui-accent);
+    color: var(--funky-boy3);
 }
 
 .itemWrapper.b .data-number2 h5 {
@@ -279,7 +279,7 @@
 }
 
 .itemWrapperb.c .data-number {
-    color: var(--funky-boy1);
+    color: var(--color3);
 }
 
 .itemWrapper.d .data-number,
