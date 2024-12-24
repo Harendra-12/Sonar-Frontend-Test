@@ -196,7 +196,7 @@ function DidListing() {
                                       </td>
                                       <td className="text-center">
                                         <div class="dropdown">
-                                          <a class={`tableButton ${item.configuration !== null ? "" : "warning"}`} href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <a class={`tableButton ${item.configuration !== null ? "" : "nottif"}`} href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i className="fa-solid fa-ellipsis-vertical" />
                                           </a>
                                           <ul class="dropdown-menu actionBtnDropdowns">

@@ -7,7 +7,9 @@ import { ToastContainer, toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 
-function ActiveCalls() {
+
+
+function ActiveCalls({ isWebrtc }) {
   const activeCall = useSelector((state) => state.activeCall);
   const [loading, setLoading] = useState(false);
   const [bargeStatus, setBargeStatus] = useState("disable");
@@ -103,10 +105,10 @@ function ActiveCalls() {
             {/* <th>CID Name</th> */}
             <th>CID Number</th>
             <th>Destination</th>
-            <th>Action</th>
+            {isWebrtc !== false && <th>Action</th>}
             {/* <th>Intercept</th>
                         <th>Eavesdrop</th> */}
-            <th className="text-align">Hang Up</th>
+            {isWebrtc !== false && <th className="text-align">Hang Up</th>}
           </tr>
         </thead>
         <tbody>
@@ -129,7 +131,7 @@ function ActiveCalls() {
                         ? extractLastNumber(item?.accountcode)
                         : extractLastNumber(item?.dest)}
                     </td>
-                    <td>
+                    {isWebrtc !== false && <td>
                       <select
                         className="formItem"
                         onChange={(e) => {
@@ -164,7 +166,7 @@ function ActiveCalls() {
                           Eavesdrop
                         </option>
                       </select>
-                    </td>
+                    </td>}
                     {/* <td onClick={() => bargeCall(item.uuid)}>
                                 <label
                                   className="tableLabel success"
@@ -204,7 +206,7 @@ function ActiveCalls() {
                                   Eavesdrop
                                 </label>
                               </td> */}
-                    <td onClick={() => killCall(item.uuid)}>
+                    {isWebrtc !== false && <td onClick={() => killCall(item.uuid)}>
                       <label
                         className="tableButton delete mx-auto"
                         style={{
@@ -213,7 +215,7 @@ function ActiveCalls() {
                       >
                         <i class=" fa-solid fa-phone-slash"></i>{" "}
                       </label>
-                    </td>
+                    </td>}
                   </tr>
                 );
               })}
