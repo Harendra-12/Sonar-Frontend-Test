@@ -70,6 +70,22 @@ function ActiveCalls() {
     }
   }
 
+  async function whisper(id, dest,leg) {
+    setLoading(true);
+    const apiData = await generalGetFunction(
+      `/freeswitch/call-whisper/${id}/${dest}/${leg}`
+    );
+
+    if (apiData?.status) {
+      setLoading(false);
+
+      toast.success(apiData.message);
+    } else {
+      setLoading(false);
+      toast.error(apiData.message);
+    }
+  }
+
   useEffect(() => {
     if (bargeStatus === "barge") {
       bargeCall(id);
@@ -77,6 +93,10 @@ function ActiveCalls() {
       interceptCall(id, dest);
     } else if (bargeStatus === "eavesdrop") {
       eavesdropCall(id, dest);
+    } else if(bargeStatus === "whisper-aleg"){
+      whisper(id,dest,"eavesdrop_whisper_aleg=true")
+    }else if(bargeStatus === "whisper-bleg"){
+      whisper(id,dest,"eavesdrop_whisper_bleg=true")
     }
   }, [bargeStatus, id]);
 
@@ -162,6 +182,22 @@ function ActiveCalls() {
                             : extractLastNumber(item?.dest))}
                         >
                           Eavesdrop
+                        </option>
+                        <option
+                          value="whisper-bleg"
+                          onClick={() => eavesdropCall(item.uuid, item?.dest.includes("set:valet_ticket")
+                            ? extractLastNumber(item?.accountcode)
+                            : extractLastNumber(item?.dest))}
+                        >
+                          Whisper agent
+                        </option>
+                        <option
+                          value="whisper-aleg"
+                          onClick={() => eavesdropCall(item.uuid, item?.dest.includes("set:valet_ticket")
+                            ? extractLastNumber(item?.accountcode)
+                            : extractLastNumber(item?.dest))}
+                        >
+                          Whisper customer
                         </option>
                       </select>
                     </td>

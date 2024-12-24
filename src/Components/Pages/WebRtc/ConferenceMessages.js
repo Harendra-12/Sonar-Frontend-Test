@@ -24,9 +24,9 @@ function ConferenceMessages({ sendMessage, userName, conferenceId, setToggleMess
                     <h4>Messages</h4>
                 </div>
                 <div >
-        <button className='clearButton2 xl' onClick={()=>setToggleMessages(false)}>
-        <i className='fa-solid fa-xmark'></i>
-        </button>
+                    <button className='clearButton2 xl' onClick={() => setToggleMessages(false)}>
+                        <i className='fa-solid fa-xmark'></i>
+                    </button>
                 </div>
             </div>
             <div className="messageContent">
