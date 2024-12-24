@@ -142,14 +142,14 @@ const RingGroupAdd = () => {
 
   // Handle destination
   const [destination, setDestination] = useState([
-    {
-      id: Math.floor(Math.random() * 10000),
-      destination: "",
-      delay: 0,
-      timeOut: "30",
-      // prompt: "",
-      status: "active",
-    },
+    // {
+    //   id: Math.floor(Math.random() * 10000),
+    //   destination: "",
+    //   delay: 0,
+    //   timeOut: "30",
+    //   // prompt: "",
+    //   status: "active",
+    // },
     // {
     //   id: 2,
     //   destination: "",
@@ -222,9 +222,9 @@ const RingGroupAdd = () => {
       });
     }
   };
-  if (destination.length === 0) {
-    addNewDestination();
-  }
+  // if (destination.length === 0) {
+  //   addNewDestination();
+  // }
 
   const validateAgents = () => {
     const allFieldsFilled = destination.every(
@@ -1500,7 +1500,7 @@ const RingGroupAdd = () => {
                                 </button>
                               </div>
                             )}
-                            {index === 0 ? (
+                            {/* {index === 0 ? (
                               <div className="mt-auto">
                                 <button
                                   onClick={() => addNewDestination()}
@@ -1516,7 +1516,7 @@ const RingGroupAdd = () => {
                               </div>
                             ) : (
                               ""
-                            )}
+                            )} */}
                           </div>
                         );
                       })}
