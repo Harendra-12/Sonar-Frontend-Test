@@ -1711,7 +1711,7 @@ function CallCenterQueueAdd() {
                         <div className="col-auto">
                           <label className="formLabel">{index + 1}.</label>
                         </div>
-                        <div className="col-5">
+                        <div className="col">
                           <label className="formLabel details">{item.name}</label>
                         </div>
                         <div className="col-auto ms-auto">
