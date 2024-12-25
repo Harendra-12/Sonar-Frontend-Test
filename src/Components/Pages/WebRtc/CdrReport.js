@@ -15,6 +15,7 @@ import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
+import { set } from "react-hook-form";
 
 function CdrReport() {
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ function CdrReport() {
   const [debounceCallDestinationFlag, setDebounceCallDestinationFlag] =
     useState("");
   const [hangupCause, setHagupCause] = useState("");
+  const [hangupStatus, setHangupStatus] = useState("");
   const [filterBy, setFilterBy] = useState("date");
   const [startDateFlag, setStartDateFlag] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -164,7 +166,8 @@ function CdrReport() {
         destination: callDestination,
         start_date: startDate,
         end_date: endDate,
-        hangupCause,
+        variable_DIALSTATUS:hangupCause,
+        hangupCause:hangupStatus
       }
     );
 
@@ -203,6 +206,7 @@ function CdrReport() {
     startDate,
     endDate,
     hangupCause,
+    hangupStatus,
     refresh,
   ]);
 
@@ -571,7 +575,7 @@ function CdrReport() {
                           <option value={"ringgroup"}>Ring Group</option>
                         </select>
                       </div>
-                      <div className="formRow border-0 pe-xl-0">
+                      <div className="formRow border-0 ">
                         <label className="formLabel text-start mb-0 w-100">
                           Hangup Cause
                         </label>
@@ -583,17 +587,33 @@ function CdrReport() {
                           }}
                         >
                           <option value={""}>All</option>
-                          <option value={"SUCCESS"}>SUCCESS</option>
-                          <option value={"BUSY"}>BUSY</option>
-                          <option value={"NOANSWER"}>NOANSWER</option>
-                          <option value={"NOT CONNECTED"}>NOT CONNECTED</option>
+                          <option value={"SUCCESS"}>Success</option>
+                          <option value={"BUSY"}>Busy</option>
+                          <option value={"NOANSWER"}>No Answer</option>
+                          <option value={"NOT CONNECTED"}>Not Connected</option>
                           <option value={"USER_NOT_REGISTERED"}>
-                            USER NOT REGISTERED
+                            User Not Register
                           </option>
                           <option value={"SUBSCRIBER_ABSENT"}>
-                            SUBSCRIBER_ABSENT
+                            Subscriber Absent
                           </option>
-                          <option value={"CANCEL"}>CANCEL</option>
+                          <option value={"CANCEL"}>Cancel</option>
+                        </select>
+                      </div>
+                      <div className="formRow border-0 pe-xl-0">
+                        <label className="formLabel text-start mb-0 w-100">
+                        Hangup status
+                        </label>
+                        <select
+                          className="formItem"
+                          onChange={(e) => {
+                            setHangupStatus(e.target.value);
+                            setPageNumber(1);
+                          }}
+                        >
+                          <option value={""}>All</option>
+                          <option value={"MEDIA_TIMEOUT"}>Media Timeout</option>
+                          <option value={"NORMAL_CLEARING"}>Normal Clear</option>
                         </select>
                       </div>
                       {/* <Link
@@ -663,7 +683,7 @@ function CdrReport() {
                           <th>Recording</th>
                           <th>Duration</th>
                           <th>Hangup Cause</th>
-                          <th>Dial-Status</th>
+                          <th>hangup Status</th>
                           <th>Charge</th>
                           <th>Block</th>
                         </tr>
