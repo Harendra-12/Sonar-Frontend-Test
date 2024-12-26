@@ -50,6 +50,8 @@ function CallCenterQueueEdit() {
   const [musicRefreshHold, setMusicRefreshHold] = useState(0);
   const [bulkAddPopUp, setBulkAddPopUp] = useState(false);
   const [bulkUploadSelectedAgents, setBulkUploadSelectedAgents] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectAll, setSelectAll] = useState(false);
   // Define the initial state of the form
   const [agent, setAgent] = useState([
     {
@@ -218,9 +220,9 @@ function CallCenterQueueEdit() {
       },
     ]);
   }
-  if (agent.length === 0) {
-    addNewAgent();
-  }
+  // if (agent.length === 0) {
+  //   addNewAgent();
+  // }
 
   // Handle agent change
   const handleAgentChange = (event, index) => {
@@ -272,9 +274,11 @@ function CallCenterQueueEdit() {
   const validateUniqueAgents = () => {
     const agentValues = agent.map((item) => item.name);
     const uniqueValues = [...new Set(agentValues)];
-    return agentValues.length === uniqueValues.length;
+    return agentValues.length == uniqueValues.length;
   };
-
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
   // Handle form submit and validation
   const handleFormSubmit = handleSubmit(async (data) => {
     if (!validateAgents()) {
@@ -284,7 +288,10 @@ function CallCenterQueueEdit() {
       });
       return;
     }
-
+    if (agent.length === 0) {
+      toast.error("Please add at least one agent");
+      return;
+    }
     const { recording_enabled } = data;
 
     const payload = {
@@ -456,7 +463,7 @@ function CallCenterQueueEdit() {
   console.log(user, agent);
   const handleCheckboxChange = (item) => {
     setBulkUploadSelectedAgents((prevSelected) => {
-      if (prevSelected.some((agent) => agent.name === item.name)) {
+      if (prevSelected.some((agent) => agent.name == item.name)) {
         // If the item is already in the array, remove it
         return prevSelected.filter((agent) => agent.name !== item.name);
       } else {
@@ -465,7 +472,7 @@ function CallCenterQueueEdit() {
       }
     });
   };
-  console.log("bulkUploadSelectedAgents", bulkUploadSelectedAgents);
+  console.log(user, agent);
 
   const handleBulkUpload = (selectedAgents) => {
     console.log(selectedAgents);
@@ -473,10 +480,10 @@ function CallCenterQueueEdit() {
 
     selectedAgents.forEach((selectedAgent) => {
       const existingAgentIndex = newAgents.findIndex(
-        (a) => a.name === selectedAgent.id
+        (a) => a.name == selectedAgent.id
       );
 
-      if (existingAgentIndex === -1) {
+      if (existingAgentIndex == -1) {
         // Add new agent if it doesn't already exist
         newAgents.push({
           name: `${selectedAgent.id}`,
@@ -516,7 +523,42 @@ function CallCenterQueueEdit() {
     }
     return str; // Return the string as is if it's 8 characters or less
   }
-  console.log(user, agent);
+  const filteredUsers = user?.filter(
+    (user) =>
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (user?.extension?.extension || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+  );
+
+  // Filter out agents already added
+  const availableUsers = filteredUsers?.filter(
+    (user) => !agent.some((agent) => user.id == agent.name)
+  );
+
+  // Handle Select All
+  const handleSelectAll = () => {
+    const newSelectAllState = !selectAll; // Toggle Select All state
+    setSelectAll(newSelectAllState);
+
+    if (newSelectAllState) {
+      // Add all visible users to bulkUploadSelectedAgents
+      availableUsers.forEach((item) => {
+        if (
+          !bulkUploadSelectedAgents.some((agent) => agent.name == item.name)
+        ) {
+          handleCheckboxChange(item);
+        }
+      });
+    } else {
+      // Remove all visible users from bulkUploadSelectedAgents
+      availableUsers.forEach((item) => {
+        if (bulkUploadSelectedAgents.some((agent) => agent.name == item.name)) {
+          handleCheckboxChange(item);
+        }
+      });
+    }
+  };
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -1325,10 +1367,14 @@ function CallCenterQueueEdit() {
               </div> */}
                   </form>
                 </div>
-                <button onClick={() => setBulkAddPopUp(true)} className="panelButton m-3  " ><span className="text">Bulk Add</span>
-                  <span className="icon">
-                    <i class="fa-solid fa-plus"></i>
-                  </span></button>
+                <button
+                  onClick={() => {
+                    if (user.length !== agent.length) setBulkAddPopUp(true);
+                    else toast.warn("All agent selected");
+                  }}
+                >
+                  Add Agents
+                </button>
                 <div className="col-12" style={{ padding: "20px 23px" }}>
                   <form className="row">
                     <div className="formRow col-xl-12 border-0">
@@ -1347,14 +1393,16 @@ function CallCenterQueueEdit() {
                                 <label>{index + 1}.</label>
                               </div>
                               <div
-                                className={`row col-${advance.includes(item.id)
-                                  ? "11"
-                                  : "xxl-5 col-xl-6"
-                                  }`}
+                                className={`row col-${
+                                  advance.includes(item.id)
+                                    ? "11"
+                                    : "xxl-5 col-xl-6"
+                                }`}
                               >
                                 <div
-                                  className={`col-${advance.includes(item.id) ? "2" : "4"
-                                    } ps-0 pe-2`}
+                                  className={`col-${
+                                    advance.includes(item.id) ? "2" : "4"
+                                  } ps-0 pe-2`}
                                 >
                                   <div className="formLabel">
                                     {index === 0 ? (
@@ -1369,6 +1417,7 @@ function CallCenterQueueEdit() {
                                   <div className="position-relative">
                                     <select
                                       type="text"
+                                      disabled
                                       name="name"
                                       value={item.name}
                                       onChange={(e) =>
@@ -1386,11 +1435,11 @@ function CallCenterQueueEdit() {
                                             // Keep the current agent for this index and exclude already selected ones in other indexes
                                             return (
                                               userItem.id ==
-                                              agent[index]?.name || // Keep the current agent for this index
+                                                agent[index]?.name || // Keep the current agent for this index
                                               !agent.some(
                                                 (agentItem, agentIndex) =>
                                                   agentItem.name ==
-                                                  userItem.id &&
+                                                    userItem.id &&
                                                   agentIndex != index
                                               ) // Exclude agents selected in other rows
                                             );
@@ -1402,11 +1451,11 @@ function CallCenterQueueEdit() {
                                             >
                                               {userItem.alias
                                                 ? truncateString(
-                                                  userItem?.alias
-                                                )
+                                                    userItem?.alias
+                                                  )
                                                 : truncateString(
-                                                  userItem?.name
-                                                )}
+                                                    userItem?.name
+                                                  )}
                                               {/* {userItem.username} (
                                               {userItem.extension?.extension}) */}
                                             </option>
@@ -1422,8 +1471,9 @@ function CallCenterQueueEdit() {
                                   </div>
                                 </div>
                                 <div
-                                  className={`col-${advance.includes(item.id) ? "2" : "4"
-                                    } ps-0 pe-2`}
+                                  className={`col-${
+                                    advance.includes(item.id) ? "2" : "4"
+                                  } ps-0 pe-2`}
                                 >
                                   <div className="formLabel">
                                     {index === 0 ? (
@@ -1446,8 +1496,9 @@ function CallCenterQueueEdit() {
                                   </div>
                                 </div>
                                 <div
-                                  className={`col-${advance.includes(item.id) ? "1" : "2"
-                                    } ps-0 pe-2`}
+                                  className={`col-${
+                                    advance.includes(item.id) ? "1" : "2"
+                                  } ps-0 pe-2`}
                                 >
                                   <div className="formLabel">
                                     {index === 0 ? (
@@ -1479,8 +1530,9 @@ function CallCenterQueueEdit() {
                                   </select>
                                 </div>
                                 <div
-                                  className={`col-${advance.includes(item.id) ? "1" : "2"
-                                    } ps-0 pe-2`}
+                                  className={`col-${
+                                    advance.includes(item.id) ? "1" : "2"
+                                  } ps-0 pe-2`}
                                 >
                                   <div className="formLabel">
                                     {index === 0 ? (
@@ -1764,14 +1816,16 @@ function CallCenterQueueEdit() {
                                   >
                                     <button
                                       type="button"
-                                      className={`tableButton edit my-auto ${agent.length < 2 ? "me-2" : ""
-                                        }`}
+                                      className={`tableButton edit my-auto ${
+                                        agent.length < 2 ? "me-2" : ""
+                                      }`}
                                     >
                                       <i
-                                        className={`fa-solid fa-${advance.includes(item.id)
-                                          ? "gear"
-                                          : "gears"
-                                          }`}
+                                        className={`fa-solid fa-${
+                                          advance.includes(item.id)
+                                            ? "gear"
+                                            : "gears"
+                                        }`}
                                       ></i>
                                     </button>
                                   </div>
@@ -1793,7 +1847,7 @@ function CallCenterQueueEdit() {
                                   </div>
                                 )}
 
-                                {index === agent.length - 1 &&
+                                {/* {index === agent.length - 1 &&
                                   index !== (user && user.length - 1) ? (
                                   <div
                                     onClick={addNewAgent}
@@ -1811,7 +1865,7 @@ function CallCenterQueueEdit() {
                                   </div>
                                 ) : (
                                   ""
-                                )}
+                                )} */}
                               </div>
                             </div>
                           );
@@ -1869,11 +1923,38 @@ function CallCenterQueueEdit() {
               </p>
               <div className="border-bottom col-12" />
             </div>
+            <div className="col-xl-12">
+              <div className="formLabel">
+                <label htmlFor="">Full Name</label>
+              </div>
+              <div className="col-12">
+                <input
+                  type="text"
+                  className="formItem"
+                  placeholder="Full Name"
+                  name="name"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                />
+                <button onClick={handleSelectAll}>
+                  {selectAll ? "Deselect all" : "Select all"}{" "}
+                </button>
+                <button onClick={() => navigate("/users-add")}>Add User</button>
+              </div>
+            </div>
             <div className="col-xl-12 mt-3">
-              {user
+              {/* {user
                 .filter(
-                  (user) => !agent.some((agent) => user.id == agent.name)
+                  (user) =>
+                    // Filter logic: checks name or extension against search query
+                    user.name
+                      .toLowerCase()
+                      .includes(searchQuery.toLowerCase()) ||
+                    (user?.extension?.extension || "")
+                      .toLowerCase()
+                      .includes(searchQuery.toLowerCase())
                 )
+                .filter((user) => !agent.some((agent) => user.id == agent.name))
                 .map((item, index) => {
                   return (
                     <div key={index}>
@@ -1882,34 +1963,81 @@ function CallCenterQueueEdit() {
                           <label className="formLabel">{index + 1}.</label>
                         </div>
                         <div className="col-5">
-                          <label className="formLabel details">{item.name}</label>
+                          <label className="formLabel details">
+                            {item.alias ? item.alias : item.name}
+                          </label>
                         </div>
                         <div className="col-auto ms-auto">
                           <input
                             type="checkbox"
                             onChange={() => handleCheckboxChange(item)} // Call handler on change
                             checked={bulkUploadSelectedAgents.some(
-                              (agent) => agent.name === item.name
+                              (agent) => agent.name == item.name
                             )} // Keep checkbox state in sync
                           />
                         </div>
                       </div>
                     </div>
                   );
-                })}
+                })} */}
+              {user
+                .sort((a, b) => {
+                  const aMatches =
+                    a.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    (a?.extension?.extension || "")
+                      .toLowerCase()
+                      .includes(searchQuery.toLowerCase());
+                  const bMatches =
+                    b.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    (b?.extension?.extension || "")
+                      .toLowerCase()
+                      .includes(searchQuery.toLowerCase());
+                  // Items that match come first
+                  return bMatches - aMatches;
+                })
+                .filter((user) => !agent.some((agent) => user.id == agent.name)) // Exclude agents already in `agent`
+                .map((item, index) => (
+                  <div key={item.id || index}>
+                    <div className="row g-2">
+                      <div className="col-auto">
+                        <label className="formLabel">{index + 1}.</label>
+                      </div>
+                      <div className="col-5">
+                        <label className="formLabel details">{item.name}</label>
+                      </div>
+                      <div className="col-3 details formLabel">
+                        {item?.extension?.extension}
+                      </div>
+                      <div className="col-auto ms-auto">
+                        <input
+                          type="checkbox"
+                          onChange={() => handleCheckboxChange(item)} // Call handler on change
+                          checked={bulkUploadSelectedAgents.some(
+                            (agent) => agent.name == item.name
+                          )} // Keep checkbox state in sync
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
             </div>
             <div className="col-xl-12 mt-4">
               <div className="d-flex justify-content-between">
-                <button className="panelButton gray ms-0" onClick={() => {
-                  setBulkAddPopUp(false);
-                }}
+                <button
+                  className="panelButton gray ms-0"
+                  onClick={() => {
+                    setBulkAddPopUp(false);
+                  }}
                 >
                   <span className="text">Close</span>
                   <span className="icon">
                     <i className="fa-solid fa-caret-left" />
                   </span>
                 </button>
-                <button className="panelButton me-0" onClick={() => handleBulkUpload(bulkUploadSelectedAgents)}>
+                <button
+                  className="panelButton me-0"
+                  onClick={() => handleBulkUpload(bulkUploadSelectedAgents)}
+                >
                   <span className="text">Done</span>
                   <span className="icon">
                     <i className="fa-solid fa-check" />

@@ -57,6 +57,8 @@ const RingGroupAdd = () => {
     useState(false);
   const [bulkAddPopUp, setBulkAddPopUp] = useState(false);
   const [bulkUploadSelectedAgents, setBulkUploadSelectedAgents] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectAll, setSelectAll] = useState(false);
 
   const {
     register,
@@ -142,14 +144,14 @@ const RingGroupAdd = () => {
 
   // Handle destination
   const [destination, setDestination] = useState([
-    {
-      id: Math.floor(Math.random() * 10000),
-      destination: "",
-      delay: 0,
-      timeOut: "30",
-      // prompt: "",
-      status: "active",
-    },
+    // {
+    //   id: Math.floor(Math.random() * 10000),
+    //   destination: "",
+    //   delay: 0,
+    //   timeOut: "30",
+    //   // prompt: "",
+    //   status: "active",
+    // },
     // {
     //   id: 2,
     //   destination: "",
@@ -222,9 +224,9 @@ const RingGroupAdd = () => {
       });
     }
   };
-  if (destination.length === 0) {
-    addNewDestination();
-  }
+  // if (destination.length === 0) {
+  //   addNewDestination();
+  // }
 
   const validateAgents = () => {
     const allFieldsFilled = destination.every(
@@ -360,6 +362,10 @@ const RingGroupAdd = () => {
       });
       return;
     }
+    if (destination.length === 0) {
+      toast.error("Please add at least one destination");
+      return;
+    }
     if (data.timeout_destination != "" && !data.call_timeout) {
       toast.error("Please Mention call timeout for timeout destination");
       return;
@@ -473,10 +479,17 @@ const RingGroupAdd = () => {
     return str; // Return the string as is if it's 8 characters or less
   }
   const handleCheckboxChange = (item) => {
+    console.log(item, bulkUploadSelectedAgents);
     setBulkUploadSelectedAgents((prevSelected) => {
-      if (prevSelected.some((agent) => agent.name === item.name)) {
+      if (
+        prevSelected.some(
+          (agent) => agent.extension.extension == item.extension.extension
+        )
+      ) {
         // If the item is already in the array, remove it
-        return prevSelected.filter((agent) => agent.name !== item.name);
+        return prevSelected.filter(
+          (agent) => agent.extension.extension != item.extension.extension
+        );
       } else {
         // Otherwise, add the item
         return [...prevSelected, item];
@@ -519,6 +532,56 @@ const RingGroupAdd = () => {
       });
 
       setDestination(newDestinations); // Update the destination state
+    }
+    setBulkUploadSelectedAgents([]);
+    setSelectAll(false);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredUsers = user?.filter(
+    (user) =>
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (user?.extension?.extension || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+  );
+
+  const availableUsers = filteredUsers?.filter(
+    (user) =>
+      !destination.some(
+        (agent) => user.extension.extension == agent.destination
+      )
+  );
+  console.log(destination, user, availableUsers, bulkUploadSelectedAgents);
+  const handleSelectAll = () => {
+    const newSelectAllState = !selectAll; // Toggle Select All state
+    setSelectAll(newSelectAllState);
+
+    if (newSelectAllState) {
+      // Add all visible users to bulkUploadSelectedAgents
+      availableUsers.forEach((item) => {
+        if (
+          !bulkUploadSelectedAgents.some(
+            (agent) => agent.extension.extension == item.extension.extension
+          )
+        ) {
+          handleCheckboxChange(item);
+        }
+      });
+    } else {
+      // Remove all visible users from bulkUploadSelectedAgents
+      availableUsers.forEach((item) => {
+        if (
+          bulkUploadSelectedAgents.some(
+            (agent) => agent.extension.extension == item.extension.extension
+          )
+        ) {
+          handleCheckboxChange(item);
+        }
+      });
     }
   };
   return (
@@ -915,16 +978,16 @@ const RingGroupAdd = () => {
                               )),
                           })}
                           onKeyDown={restrictToNumbers}
-                        // {...register("call_timeout", {
-                        //   ...requiredValidator,
-                        //   ...noSpecialCharactersValidator,
-                        //   ...minValidator(
-                        //     destination.reduce(
-                        //       (max, obj) => Math.max(max, obj.delay),
-                        //       0
-                        //     )
-                        //   ),
-                        // })}
+                          // {...register("call_timeout", {
+                          //   ...requiredValidator,
+                          //   ...noSpecialCharactersValidator,
+                          //   ...minValidator(
+                          //     destination.reduce(
+                          //       (max, obj) => Math.max(max, obj.delay),
+                          //       0
+                          //     )
+                          //   ),
+                          // })}
                         />
                         {errors.call_timeout && (
                           <ErrorMessage text={errors.call_timeout.message} />
@@ -1260,10 +1323,17 @@ const RingGroupAdd = () => {
                   </form>
                 </div>
                 <div className="col-12" style={{ padding: "20px 23px" }}>
-                  <button onClick={() => setBulkAddPopUp(true)} className="panelButton ms-auto  " ><span className="text">Bulk Add</span>
-                  <span className="icon">
-                    <i class="fa-solid fa-plus"></i>
-                  </span></button>
+                  <button
+                    // onClick={() => setBulkAddPopUp(true)}
+
+                    onClick={() => {
+                      if (user.length !== destination.length)
+                        setBulkAddPopUp(true);
+                      else toast.warn("All agent selected");
+                    }}
+                  >
+                    Add Agent
+                  </button>
                   <form className="row">
                     <div className="formRow col-xl-12">
                       {destination.map((item, index) => {
@@ -1336,6 +1406,7 @@ const RingGroupAdd = () => {
                         </div> */}
                               <div className="position-relative">
                                 <select
+                                  disabled
                                   type="text"
                                   name="destination"
                                   value={item.destination}
@@ -1359,14 +1430,14 @@ const RingGroupAdd = () => {
                                       .filter((item1) => {
                                         return (
                                           item1.extension.extension ==
-                                          destination[index]?.destination ||
+                                            destination[index]?.destination ||
                                           !destination.some(
                                             (
                                               destinationItem,
                                               destinationIndex
                                             ) =>
                                               destinationItem.destination ==
-                                              item1.extension.extension &&
+                                                item1.extension.extension &&
                                               destinationIndex != index
                                           )
                                         );
@@ -1487,8 +1558,9 @@ const RingGroupAdd = () => {
                               ""
                             ) : (
                               <div
-                                className={`me-2 h-100 m${index === 0 ? "t" : "y"
-                                  }-auto`}
+                                className={`me-2 h-100 m${
+                                  index === 0 ? "t" : "y"
+                                }-auto`}
                               >
                                 <button
                                   type="button"
@@ -1499,7 +1571,7 @@ const RingGroupAdd = () => {
                                 </button>
                               </div>
                             )}
-                            {index === 0 ? (
+                            {/* {index === 0 ? (
                               <div className="mt-auto">
                                 <button
                                   onClick={() => addNewDestination()}
@@ -1515,7 +1587,7 @@ const RingGroupAdd = () => {
                               </div>
                             ) : (
                               ""
-                            )}
+                            )} */}
                           </div>
                         );
                       })}
@@ -1585,67 +1657,158 @@ const RingGroupAdd = () => {
         />
       )}
       {bulkAddPopUp ? (
-        <div className="addNewContactPopup">
-          <div className="row">
-            <div className="col-12 heading mb-0">
-              <i className="fa-light fa-user-plus" />
-              <h5>Add People to the selected Queue</h5>
-              <p>
-                Add people to yourqueue effortlessly, keeping your connections
-                organized and efficient
-              </p>
-              <div className="border-bottom col-12" />
-            </div>
-            <div className="col-12 mt-3">
-              {user
-                .filter(
-                  (user) =>
-                    !destination.some(
-                      (agent) =>
-                        user.extension.extension == agent.destination
-                    )
-                )
-                .map((item, index) => {
-                  return (
-                    <div key={index}>
-                      <div className="row g-2">
-                        <div className="col-auto">
-                          <label className="formLabel">{index + 1}.</label>
-                        </div>
-                        <div className="col">
-                          <label className="formLabel details">{item.name}</label>
-                        </div>
-                        <div className="col-auto ms-auto">
-                          <input
-                            type="checkbox"
-                            onChange={() => handleCheckboxChange(item)} // Call handler on change
-                            checked={bulkUploadSelectedAgents.some(
-                              (agent) => agent.name === item.name
-                            )} // Keep checkbox state in sync
-                          />
-                        </div>
-                      </div>
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-3">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-circle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-2">
+                  <div className="col-xl-12">
+                    <div className="formLabel">
+                      <label htmlFor="">Full Name</label>
                     </div>
-                  );
-                })}
-            </div>
-            <div className="col-xl-12 mt-4">
-              <div className="d-flex justify-content-between">
-                <button className="panelButton gray ms-0" onClick={() => {
-                  setBulkAddPopUp(false);
-                }}
-                >
-                  <span className="text">Close</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-caret-left" />
-                  </span>
-                </button>
-                <button className="panelButton me-0" onClick={() => { handleBulkDestinationUpload(bulkUploadSelectedAgents); setBulkAddPopUp(false); }}>
-                  <span className="text">Done</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-check" />
-                  </span>
-                </button>
+                    <div className="col-12">
+                      <input
+                        type="text"
+                        className="formItem"
+                        placeholder="Full Name"
+                        name="name"
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                      />
+                      <button onClick={handleSelectAll}>
+                        {selectAll ? "Deselect all" : "Select all"}{" "}
+                      </button>
+                      <button onClick={() => navigate("/users-add")}>
+                        Add User
+                      </button>
+                    </div>
+                  </div>
+                  {/* {user
+                    .filter(
+                      (user) =>
+                        // Filter logic: checks name or extension against search query
+                        user.name
+                          .toLowerCase()
+                          .includes(searchQuery.toLowerCase()) ||
+                        (user?.extension?.extension || "")
+                          .toLowerCase()
+                          .includes(searchQuery.toLowerCase())
+                    )
+
+                    .filter(
+                      (user) =>
+                        !destination.some(
+                          (agent) =>
+                            user.extension.extension == agent.destination
+                        )
+                    )
+                    .map((item, index) => {
+                      return (
+                        <div key={index}>
+                          <div className="row g-2">
+                            <div className="col-2">
+                              <span>{index + 1}</span>
+                            </div>
+                            <div className="col-5">
+                              <span>{item.name}</span>
+                            </div>
+                            <div className="col-2">
+                              <span>{item.extension.extension}</span>
+                            </div>
+                            <div className="col-3">
+                              <input
+                                type="checkbox"
+                                onChange={() => handleCheckboxChange(item)} // Call handler on change
+                                checked={bulkUploadSelectedAgents.some(
+                                  (agent) => agent.name === item.name
+                                )} // Keep checkbox state in sync
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })} */}
+                  {user
+                    .sort((a, b) => {
+                      const aMatches =
+                        a.name
+                          .toLowerCase()
+                          .includes(searchQuery.toLowerCase()) ||
+                        (a?.extension?.extension || "")
+                          .toLowerCase()
+                          .includes(searchQuery.toLowerCase());
+                      const bMatches =
+                        b.name
+                          .toLowerCase()
+                          .includes(searchQuery.toLowerCase()) ||
+                        (b?.extension?.extension || "")
+                          .toLowerCase()
+                          .includes(searchQuery.toLowerCase());
+                      // Sort: matching items come first
+                      return bMatches - aMatches;
+                    })
+                    .filter(
+                      (user) =>
+                        !destination.some(
+                          (agent) =>
+                            user.extension.extension == agent.destination
+                        )
+                    )
+                    .map((item, index) => {
+                      return (
+                        <div key={item.id || index}>
+                          <div className="row g-2">
+                            <div className="col-2">
+                              <span>{index + 1}</span>
+                            </div>
+                            <div className="col-5">
+                              <span>{item.name}</span>
+                            </div>
+                            <div className="col-2">
+                              <span>{item.extension.extension}</span>
+                            </div>
+                            <div className="col-3">
+                              <input
+                                type="checkbox"
+                                onChange={() => handleCheckboxChange(item)} // Call handler on change
+                                checked={bulkUploadSelectedAgents.some(
+                                  (agent) => agent.name === item.name
+                                )} // Keep checkbox state in sync
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+
+                  <button
+                    onClick={() => {
+                      handleBulkDestinationUpload(bulkUploadSelectedAgents);
+                      setBulkAddPopUp(false);
+                    }}
+                    className="btn btn-primary"
+                  >
+                    Done
+                  </button>
+                  <button
+                    className="panelButton mx-1"
+                    onClick={() => {
+                      setBulkAddPopUp(false);
+                      setBulkUploadSelectedAgents([]);
+                      setSelectAll(false);
+                    }}
+                  >
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i class="fa-light fa-xmark"></i>
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

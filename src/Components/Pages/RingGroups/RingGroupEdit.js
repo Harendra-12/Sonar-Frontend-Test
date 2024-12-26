@@ -63,6 +63,9 @@ const RingGroupEdit = () => {
     useState(false);
   const [bulkAddPopUp, setBulkAddPopUp] = useState(false);
   const [bulkUploadSelectedAgents, setBulkUploadSelectedAgents] = useState([]);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectAll, setSelectAll] = useState(false);
   const {
     register,
     watch,
@@ -278,6 +281,9 @@ const RingGroupEdit = () => {
   const actionListValue = (value) => {
     setValue("timeout_destination", value[0]);
   };
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
 
   // Custom styles for react-select
   const customStyles = {
@@ -479,6 +485,10 @@ const RingGroupEdit = () => {
       });
       return;
     }
+    if (destination.length === 0) {
+      toast.error("Please add at least one destination");
+      return;
+    }
     if (data.timeout_destination != "" && !data.call_timeout) {
       toast.error("Please Mention call timeout for timeout destination");
       return;
@@ -571,31 +581,86 @@ const RingGroupEdit = () => {
       }
     });
   };
-
+  const filteredUsers = user?.filter(
+    (user) =>
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (user?.extension?.extension || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+  );
+  const availableUsers = filteredUsers?.filter(
+    (user) =>
+      !destination.some(
+        (agent) => user.extension.extension == agent.destination
+      )
+  );
   const handleBulkDestinationUpload = (selectedDestinations) => {
-    const newDestinations = [...destination]; // Copy the current destination array
-
-    selectedDestinations.forEach((selectedDestination) => {
-      const existingDestinationIndex = newDestinations.findIndex(
-        (d) => d.name === selectedDestination.name
-      );
-
-      if (existingDestinationIndex === -1) {
-        // Add new destination if it doesn't already exist
-        newDestinations.push({
+    if (destination.length === 1 && destination[0].destination === "") {
+      const newDestinations = selectedDestinations.map(
+        (selectedDestination) => ({
           id: Math.floor(Math.random() * 10000),
           destination: selectedDestination?.extension?.extension,
           delay: 0,
           timeOut: "30",
-
           status: "inactive",
-        });
-      }
-    });
+        })
+      );
 
-    setDestination(newDestinations); // Update the destination state
+      setDestination(newDestinations); // Replace the entire destination state
+    } else {
+      const newDestinations = [...destination]; // Copy the current destination array
+
+      selectedDestinations.forEach((selectedDestination) => {
+        const existingDestinationIndex = newDestinations.findIndex(
+          (d) => d.name === selectedDestination.name
+        );
+
+        if (existingDestinationIndex === -1) {
+          // Add new destination if it doesn't already exist
+          newDestinations.push({
+            id: Math.floor(Math.random() * 10000),
+            destination: selectedDestination?.extension?.extension,
+            delay: 0,
+            timeOut: "30",
+
+            status: "inactive",
+          });
+        }
+      });
+
+      setDestination(newDestinations); // Update the destination state
+    }
+    setBulkUploadSelectedAgents([]);
+    setSelectAll(false);
   };
-  console.log(user, destination);
+  const handleSelectAll = () => {
+    const newSelectAllState = !selectAll; // Toggle Select All state
+    setSelectAll(newSelectAllState);
+
+    if (newSelectAllState) {
+      // Add all visible users to bulkUploadSelectedAgents
+      availableUsers.forEach((item) => {
+        if (
+          !bulkUploadSelectedAgents.some(
+            (agent) => agent.extension.extension == item.extension.extension
+          )
+        ) {
+          handleCheckboxChange(item);
+        }
+      });
+    } else {
+      // Remove all visible users from bulkUploadSelectedAgents
+      availableUsers.forEach((item) => {
+        if (
+          bulkUploadSelectedAgents.some(
+            (agent) => agent.extension.extension == item.extension.extension
+          )
+        ) {
+          handleCheckboxChange(item);
+        }
+      });
+    }
+  };
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -998,16 +1063,16 @@ const RingGroupEdit = () => {
                               )),
                           })}
                           onKeyDown={restrictToNumbers}
-                        // {...register("call_timeout", {
-                        //   ...requiredValidator,
-                        //   ...noSpecialCharactersValidator,
-                        //   ...minValidator(
-                        //     destination.reduce(
-                        //       (max, obj) => Math.max(max, obj.delay),
-                        //       0
-                        //     )
-                        //   ),
-                        // })}
+                          // {...register("call_timeout", {
+                          //   ...requiredValidator,
+                          //   ...noSpecialCharactersValidator,
+                          //   ...minValidator(
+                          //     destination.reduce(
+                          //       (max, obj) => Math.max(max, obj.delay),
+                          //       0
+                          //     )
+                          //   ),
+                          // })}
                         />
                         {errors.call_timeout && (
                           <ErrorMessage text={errors.call_timeout.message} />
@@ -1399,6 +1464,7 @@ const RingGroupEdit = () => {
                                   type="text"
                                   name="destination"
                                   value={item.destination}
+                                  disabled
                                   onChange={(e) => {
                                     const selectedValue = e.target.value;
                                     if (selectedValue === "addUser") {
@@ -1429,14 +1495,14 @@ const RingGroupEdit = () => {
                                       .filter((item1) => {
                                         return (
                                           item1.extension.extension ==
-                                          destination[index]?.destination ||
+                                            destination[index]?.destination ||
                                           !destination.some(
                                             (
                                               destinationItem,
                                               destinationIndex
                                             ) =>
                                               destinationItem.destination ==
-                                              item1.extension.extension &&
+                                                item1.extension.extension &&
                                               destinationIndex != index
                                           )
                                         );
@@ -1575,8 +1641,9 @@ const RingGroupEdit = () => {
                               ""
                             ) : (
                               <div
-                                className={`col-auto h-100 m${index === 0 ? "t" : "y"
-                                  }-auto`}
+                                className={`col-auto h-100 m${
+                                  index === 0 ? "t" : "y"
+                                }-auto`}
                               >
                                 <button
                                   type="button"
@@ -1587,7 +1654,7 @@ const RingGroupEdit = () => {
                                 </button>
                               </div>
                             )}
-                            {index === 0 ? (
+                            {/* {index === 0 ? (
                               <div className="mt-auto">
                                 <button
                                   onClick={() => addNewDestination()}
@@ -1603,7 +1670,7 @@ const RingGroupEdit = () => {
                               </div>
                             ) : (
                               ""
-                            )}
+                            )} */}
                           </div>
                         );
                       })}
@@ -1633,67 +1700,105 @@ const RingGroupEdit = () => {
       )}
 
       {bulkAddPopUp ? (
-        <div className="addNewContactPopup">
-          <div className="row">
-            <div className="col-12 heading mb-0">
-              <i className="fa-light fa-user-plus" />
-              <h5>Add People to the selected Queue</h5>
-              <p>
-                Add people to yourqueue effortlessly, keeping your connections
-                organized and efficient
-              </p>
-              <div className="border-bottom col-12" />
-            </div>
-            <div className="col-12 mt-3">
-              {user
-                .filter(
-                  (user) =>
-                    !destination.some(
-                      (agent) =>
-                        user.extension.extension == agent.destination
-                    )
-                )
-                .map((item, index) => {
-                  return (
-                    <div key={index}>
-                      <div className="row g-2">
-                        <div className="col-auto">
-                          <label className="formLabel">{index + 1}.</label>
-                        </div>
-                        <div className="col">
-                          <label className="formLabel details">{item.name}</label>
-                        </div>
-                        <div className="col-auto ms-auto">
-                          <input
-                            type="checkbox"
-                            onChange={() => handleCheckboxChange(item)} // Call handler on change
-                            checked={bulkUploadSelectedAgents.some(
-                              (agent) => agent.name === item.name
-                            )} // Keep checkbox state in sync
-                          />
-                        </div>
-                      </div>
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-3">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-circle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-2">
+                  <div className="col-xl-12">
+                    <div className="formLabel">
+                      <label htmlFor="">Full Name</label>
                     </div>
-                  );
-                })}
-            </div>
-            <div className="col-xl-12 mt-4">
-              <div className="d-flex justify-content-between">
-                <button className="panelButton gray ms-0" onClick={() => {
-                  setBulkAddPopUp(false);
-                }}
-                >
-                  <span className="text">Close</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-caret-left" />
-                  </span>
-                </button>
-                <button className="panelButton me-0" onClick={() => { handleBulkDestinationUpload(bulkUploadSelectedAgents); setBulkAddPopUp(false); }}>
-                  <span className="text">Done</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-check" />
-                  </span>
-                </button>
+                    <div className="col-12">
+                      <input
+                        type="text"
+                        className="formItem"
+                        placeholder="Full Name"
+                        name="name"
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                      />
+                      <button onClick={handleSelectAll}>
+                        {selectAll ? "Deselect all" : "Select all"}{" "}
+                      </button>
+                      <button onClick={() => navigate("/users-add")}>
+                        Add User
+                      </button>
+                    </div>
+                  </div>
+                  {user
+                    .filter(
+                      (user) =>
+                        // Filter logic: checks name or extension against search query
+                        user.name
+                          .toLowerCase()
+                          .includes(searchQuery.toLowerCase()) ||
+                        (user?.extension?.extension || "")
+                          .toLowerCase()
+                          .includes(searchQuery.toLowerCase())
+                    )
+
+                    .filter(
+                      (user) =>
+                        !destination.some(
+                          (agent) =>
+                            user.extension.extension == agent.destination
+                        )
+                    )
+                    .map((item, index) => {
+                      return (
+                        <div key={index}>
+                          <div className="row g-2">
+                            <div className="col-2">
+                              <span>{index + 1}</span>
+                            </div>
+                            <div className="col-5">
+                              <span>{item.name}</span>
+                            </div>
+                            <div className="col-2">
+                              <span>{item.extension.extension}</span>
+                            </div>
+                            <div className="col-3">
+                              <input
+                                type="checkbox"
+                                onChange={() => handleCheckboxChange(item)} // Call handler on change
+                                checked={bulkUploadSelectedAgents.some(
+                                  (agent) => agent.name === item.name
+                                )} // Keep checkbox state in sync
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  <button
+                    onClick={() => {
+                      handleBulkDestinationUpload(bulkUploadSelectedAgents);
+                      setBulkAddPopUp(false);
+                    }}
+                    className="btn btn-primary"
+                  >
+                    Done
+                  </button>
+                  <button
+                    className="panelButton mx-1"
+                    onClick={() => {
+                      setBulkAddPopUp(false);
+                      setBulkUploadSelectedAgents([]);
+                      setSelectAll(false);
+                    }}
+                  >
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i class="fa-light fa-xmark"></i>
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
