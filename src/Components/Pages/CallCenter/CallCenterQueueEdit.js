@@ -1395,11 +1395,6 @@ function CallCenterQueueEdit() {
                                     ? "11"
                                     : "xxl-5 col-xl-6"
                                 }`}
-                                className={`row col-${
-                                  advance.includes(item.id)
-                                    ? "11"
-                                    : "xxl-5 col-xl-6"
-                                }`}
                               >
                                 <div
                                   className={`col-${
@@ -1823,11 +1818,6 @@ function CallCenterQueueEdit() {
                                       }`}
                                     >
                                       <i
-                                        className={`fa-solid fa-${
-                                          advance.includes(item.id)
-                                            ? "gear"
-                                            : "gears"
-                                        }`}
                                         className={`fa-solid fa-${
                                           advance.includes(item.id)
                                             ? "gear"
