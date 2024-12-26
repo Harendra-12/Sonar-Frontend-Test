@@ -64,8 +64,8 @@ function Call({
       );
       if (apiData.status) {
         console.log(apiData);
-        setAllApiData(apiData.data.data.reverse());
-        const result = apiData.data.data.reverse();
+        setAllApiData(apiData.data.calls.reverse());
+        const result = apiData.data.calls.reverse();
         setRawData(apiData.data)
         setData([...data, ...result]);
         setLoading(false);
@@ -90,7 +90,7 @@ function Call({
   const handleScroll = () => {
     const div = callListRef.current;
     if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
-      if (!isLoading && rawData?.current_page !== rawData?.last_page) {
+      if (!isLoading && currentPage !== rawData?.last_page) {
         setCurrentPage(currentPage + 1);
       }
 

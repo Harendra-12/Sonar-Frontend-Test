@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-// import { Link } from 'react-router-dom'
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {  useLocation, useNavigate } from "react-router-dom";
 import {
   backToTop,
   generalDeleteFunction,
@@ -8,17 +7,12 @@ import {
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
-
-import CircularLoader from "../../Loader/CircularLoader";
-import Select from "react-select";
-import { useForm, Controller } from "react-hook-form";
+import {  toast } from "react-toastify";
+import { useForm} from "react-hook-form";
 import {
-  emailValidator,
   lengthValidator,
   minValidator,
   nameNumberValidator,
-  nameValidator,
   noSpecialCharactersValidator,
   numberValidator,
   requiredValidator,
@@ -75,7 +69,6 @@ const RingGroupEdit = () => {
     clearErrors,
     reset,
     setValue,
-    control,
   } = useForm({
     defaultValues: {
       status: true, // Set the default value for "status" to true
@@ -284,73 +277,6 @@ const RingGroupEdit = () => {
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
-
-  // Custom styles for react-select
-  const customStyles = {
-    control: (provided, state) => ({
-      ...provided,
-      // border: '1px solid var(--color4)',
-      border: "1px solid #ababab",
-      borderRadius: "2px",
-      outline: "none",
-      fontSize: "14px",
-      width: "100%",
-      minHeight: "32px",
-      height: "32px",
-      boxShadow: state.isFocused ? "none" : provided.boxShadow,
-      "&:hover": {
-        borderColor: "none",
-      },
-    }),
-    valueContainer: (provided) => ({
-      ...provided,
-      height: "32px",
-      padding: "0 6px",
-    }),
-    input: (provided) => ({
-      ...provided,
-      margin: "0",
-    }),
-    indicatorSeparator: (provided) => ({
-      display: "none",
-    }),
-    indicatorsContainer: (provided) => ({
-      ...provided,
-      height: "32px",
-    }),
-    dropdownIndicator: (provided) => ({
-      ...provided,
-      color: "#202020",
-      "&:hover": {
-        color: "#202020",
-      },
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      paddingLeft: "15px",
-      paddingTop: 0,
-      paddingBottom: 0,
-      // backgroundColor: state.isSelected ? "transparent" : "transparent",
-      "&:hover": {
-        backgroundColor: "#0055cc",
-        color: "#fff",
-      },
-      fontSize: "14px",
-    }),
-    menu: (provided) => ({
-      ...provided,
-      margin: 0,
-      padding: 0,
-    }),
-    menuList: (provided) => ({
-      ...provided,
-      padding: 0,
-      margin: 0,
-      maxHeight: "150px",
-      overflowY: "auto",
-    }),
-  };
-
   // Function to handle changes in destination fields
   const handleDestinationChange = (index, event) => {
     const { name, value } = event.target;
@@ -489,10 +415,10 @@ const RingGroupEdit = () => {
       toast.error("Please add at least one destination");
       return;
     }
-    if (data.timeout_destination != "" && !data.call_timeout) {
-      toast.error("Please Mention call timeout for timeout destination");
-      return;
-    }
+    // if (data.timeout_destination != "" && !data.call_timeout) {
+    //   toast.error("Please Mention call timeout for timeout destination");
+    //   return;
+    // }
     const payLoad = {
       ...data,
       ...{

@@ -191,7 +191,7 @@ function ActiveCalls({ isWebrtc }) {
                             ? extractLastNumber(item?.accountcode)
                             : extractLastNumber(item?.dest))}
                         >
-                          Whisper agent
+                          Whisper caller
                         </option>
                         <option
                           value="whisper-aleg"
@@ -199,7 +199,7 @@ function ActiveCalls({ isWebrtc }) {
                             ? extractLastNumber(item?.accountcode)
                             : extractLastNumber(item?.dest))}
                         >
-                          Whisper customer
+                          Whisper callee
                         </option>
                       </select>
                     </td>}
