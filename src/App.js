@@ -133,6 +133,7 @@ import Extension from "./Components/Pages/Stores/Extension";
 import Meeting from "./Components/Pages/Meeting/Meeting";
 import MeetingAdd from "./Components/Pages/Meeting/MeetingAdd";
 import ActiveCallsPage from "./Components/Pages/PhoneDashboard/ActiveCallsPage";
+import CallDashboardProvider from "./Components/Pages/CallDashboardProvider/CallDashboardProvider";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -340,6 +341,9 @@ function App() {
           <Route path="/add-ons" element={<AddOns />} />
           <Route path="/store-extension" element={<Extension />} />
 
+          {/*CallDashboardProvider */}
+          <Route path="/call-dashboard-provider" element={<CallDashboardProvider/>} />
+          {/* <Route path="/store-extension" element={<Extension />} /> */}
 
 
 

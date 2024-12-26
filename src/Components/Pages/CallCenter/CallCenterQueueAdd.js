@@ -1193,7 +1193,10 @@ function CallCenterQueueAdd() {
                   </form>
                 </div>
                 <div className="col-12" style={{ padding: "20px 23px" }}>
-                  <button onClick={() => setBulkAddPopUp(true)}>Bulk Add</button>
+                  <button onClick={() => setBulkAddPopUp(true)} className="panelButton m-3  " ><span className="text">Bulk Add</span>
+                  <span className="icon">
+                    <i class="fa-solid fa-plus"></i>
+                  </span></button>
                   <form className="row">
                     <div className="formRow col-xl-12 border-0">
                       {agent &&

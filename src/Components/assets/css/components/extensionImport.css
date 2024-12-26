@@ -122,6 +122,11 @@ label.status.missing::before {
     font-weight: 700;
 }
 
+.formWidth{
+    width: 90px !important;
+}
+
+
 .formItem:not([type="file"]):focus,
 .formItem:not([type="file"]):hover {
     border: 1px solid var(--color2);

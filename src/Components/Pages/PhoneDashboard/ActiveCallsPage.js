@@ -31,7 +31,7 @@ function ActiveCallsPage() {
                                     <div className="col-7" style={{ borderRight: "1px solid var(--border-color)" }}>
                                         <div className="heading">
                                             <div className="content">
-                                                <h4>Active Calls</h4>
+                                                <h4>Active Calls </h4>
                                                 <p>You can see all of the active calls here</p>
                                             </div>
                                         </div>
@@ -201,6 +201,40 @@ function ActiveCallsPage() {
                                                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                                     <button class="nav-link active" id="nav-rgroup-tab" data-bs-toggle="tab" data-bs-target="#nav-rgroup" type="button" role="tab" aria-controls="nav-rgroup" aria-selected="true">Ring Group</button>
                                                     <button class="nav-link" id="nav-ccenter-tab" data-bs-toggle="tab" data-bs-target="#nav-ccenter" type="button" role="tab" aria-controls="nav-ccenter" aria-selected="false">Call Center</button>
+                                                    <div className='me-3'>
+                                                            <select
+                                                                className="formItem  formWidth"
+                                                                name="" >
+                                                                <option disabled value="">
+                                                                    Select Role type
+                                                                </option>
+                                                                <option>Tags</option>
+                                                                <option>Direction</option>
+                                                            </select>
+                                                        </div>
+                                                        <div>
+                                                            <select
+                                                                className="formItem formWidth"
+                                                                name="" >
+                                                                <option disabled value="">
+                                                                    Select Role type
+                                                                </option>
+                                                                <option>Tags</option>
+                                                                <option>Direction</option>
+                                                            </select>
+                                                        </div>
+                                                    <div className='d-flex align-items-center justify-content-end'> 
+                                                         {/* <button
+                                                        effect="ripple"
+                                                        className="panelButton float-right"
+                                                    >
+                                                        <span className="text">Reset</span>
+                                                        <span className="icon">
+                                                            <i class="fa-solid fa-rotate-right"></i>
+                                                        </span>
+                                                    </button> */}
+                                                        
+                                                    </div>
                                                 </div>
                                             </nav>
                                             <div class="tab-content" id="nav-tabContent">
@@ -273,7 +307,30 @@ function ActiveCallsPage() {
                                         <nav className='tangoNavs mb-3'>
                                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                                 <button class="nav-link active" id="nav-desk-tab">All Active Calls</button>
+                                                <div className='me-3'>
+                                                            <select
+                                                                className="formItem  formWidth"
+                                                                name="" >
+                                                                <option disabled value="">
+                                                                    Select Role type
+                                                                </option>
+                                                                <option>Tags</option>
+                                                                <option>Direction</option>
+                                                            </select>
+                                                        </div>
+                                                        <div>
+                                                            <select
+                                                                className="formItem formWidth"
+                                                                name="" >
+                                                                <option disabled value="">
+                                                                    Select Role type
+                                                                </option>
+                                                                <option>Tags</option>
+                                                                <option>Direction</option>
+                                                            </select>
+                                                        </div>
                                                 <button class="nav-link disabled ms-auto pe-0" id="nav-disabled-tab">Total Calls: 0</button>
+                                               
                                             </div>
                                         </nav>
                                         <div className="tableContainer">
@@ -289,6 +346,28 @@ function ActiveCallsPage() {
                                                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                                     <button class="nav-link active" id="nav-rgroupring-tab" data-bs-toggle="tab" data-bs-target="#nav-rgroupring" type="button" role="tab" aria-controls="nav-rgroupring" aria-selected="true">Ring Group</button>
                                                     <button class="nav-link" id="nav-ccenterring-tab" data-bs-toggle="tab" data-bs-target="#nav-ccenterring" type="button" role="tab" aria-controls="nav-ccenterring" aria-selected="false">Call Center</button>
+                                                    <div className='me-3'>
+                                                            <select
+                                                                className="formItem formWidth"
+                                                                name="" >
+                                                                <option disabled value="">
+                                                                    Select Role type
+                                                                </option>
+                                                                <option>Tags</option>
+                                                                <option>Direction</option>
+                                                            </select>
+                                                        </div>
+                                                        <div>
+                                                            <select
+                                                                className="formItem formWidth"
+                                                                name="" >
+                                                                <option disabled value="">
+                                                                    Select Role type
+                                                                </option>
+                                                                <option>Tags</option>
+                                                                <option>Direction</option>
+                                                            </select>
+                                                        </div>
                                                 </div>
                                             </nav>
                                             <div class="tab-content" id="nav-tabContent">
@@ -361,6 +440,28 @@ function ActiveCallsPage() {
                                         <nav className='tangoNavs mb-3'>
                                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                                 <button class="nav-link active" id="nav-desk-tab">All Ringing Calls</button>
+                                                <div className='me-3'>
+                                                            <select
+                                                                className="formItem formWidth "
+                                                                name="" >
+                                                                <option disabled value="">
+                                                                    Select Role type
+                                                                </option>
+                                                                <option>Tags</option>
+                                                                <option>Direction</option>
+                                                            </select>
+                                                        </div>
+                                                        <div>
+                                                            <select
+                                                                className="formItem formWidth"
+                                                                name="" >
+                                                                <option disabled value="">
+                                                                    Select Role type
+                                                                </option>
+                                                                <option>Tags</option>
+                                                                <option>Direction</option>
+                                                            </select>
+                                                        </div>
                                                 <button class="nav-link disabled ms-auto pe-0" id="nav-disabled-tab">Total Calls: 0</button>
                                             </div>
                                         </nav>
