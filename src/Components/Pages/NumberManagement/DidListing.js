@@ -6,6 +6,7 @@ import {
   generalDeleteFunction,
   generalGetFunction,
   generalPostFunction,
+  generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import ContentLoader from "../../Loader/ContentLoader";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,12 +29,25 @@ function DidListing({ page }) {
   useEffect(() => {
     if (didAll) {
       // setLoading(false);
-      setDid(didAll);
+      if(page==="number"){
+        setDid(didAll);
+      }else if(page==="pbx"){
+        setDid(didAll.filter((item) => item.usage === "pbx"));
+      }else if(page==="dialer"){
+        setDid(didAll.filter((item) => item.usage === "dialer"));
+      }
+      
       async function getData() {
         const apiData = await generalGetFunction(`/did/all`);
         if (apiData?.status) {
           setLoading(false);
-          setDid(apiData.data);
+          if(page==="number"){
+            setDid(apiData.data);
+          }else if(page==="pbx"){
+            setDid(apiData.data.filter((item) => item.usages === "pbx"));
+          }else if(page==="dialer"){
+            setDid(apiData.data.filter((item) => item.usages === "dialer"));
+          }
           dispatch({
             type: "SET_DIDALL",
             didAll: apiData.data,
@@ -49,7 +63,13 @@ function DidListing({ page }) {
         const apiData = await generalGetFunction(`/did/all`);
         if (apiData?.status) {
           setLoading(false);
-          setDid(apiData.data);
+          if(page==="number"){
+            setDid(apiData.data);
+          }else if(page==="pbx"){
+            setDid(apiData.data.filter((item) => item.usages === "pbx"));
+          }else if(page==="dialer"){
+            setDid(apiData.data.filter((item) => item.usages === "dialer"));
+          }
           dispatch({
             type: "SET_DIDALL",
             didAll: apiData.data,
@@ -62,7 +82,7 @@ function DidListing({ page }) {
       getData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshDid]);
+  }, [refreshDid, page]);
 
   const handleClick = async (id) => {
     setLoading(true);
@@ -118,7 +138,7 @@ function DidListing({ page }) {
     const parsedData = {
       usages: usages
     }
-    const apiData = await generalPostFunction(`/did/update/${id}`, parsedData)
+    const apiData = await generalPutFunction(`/did/update/${id}`, parsedData)
     if (apiData.status) {
       toast.success(apiData.message)
       setRefreshDid(refreshDid + 1)
