@@ -1341,7 +1341,7 @@ const RingGroupAdd = () => {
                       </button>
                     </div>
                   </div>
-                  <form className="row" style={{ padding: "0px 23px 20px" }}>
+                  {destination.length > 0 && <form className="row" style={{ padding: "0px 23px 20px" }}>
                     <div className="formRow col-xl-12">
                       {destination.map((item, index) => {
                         return (
@@ -1605,7 +1605,7 @@ const RingGroupAdd = () => {
                         Add destinations and parameters to the ring group.
                       </label>
                     </div>
-                  </form>
+                  </form>}
                 </div>
               </div>
             </div>

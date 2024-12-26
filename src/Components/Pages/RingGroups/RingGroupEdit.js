@@ -1063,16 +1063,16 @@ const RingGroupEdit = () => {
                               )),
                           })}
                           onKeyDown={restrictToNumbers}
-                          // {...register("call_timeout", {
-                          //   ...requiredValidator,
-                          //   ...noSpecialCharactersValidator,
-                          //   ...minValidator(
-                          //     destination.reduce(
-                          //       (max, obj) => Math.max(max, obj.delay),
-                          //       0
-                          //     )
-                          //   ),
-                          // })}
+                        // {...register("call_timeout", {
+                        //   ...requiredValidator,
+                        //   ...noSpecialCharactersValidator,
+                        //   ...minValidator(
+                        //     destination.reduce(
+                        //       (max, obj) => Math.max(max, obj.delay),
+                        //       0
+                        //     )
+                        //   ),
+                        // })}
                         />
                         {errors.call_timeout && (
                           <ErrorMessage text={errors.call_timeout.message} />
@@ -1384,12 +1384,21 @@ const RingGroupEdit = () => {
               </div> */}
                   </form>
                 </div>
-                <div className="col-12" style={{ padding: "20px 23px" }}>
-                  <button onClick={() => setBulkAddPopUp(true)} className="panelButton ms-auto  " ><span className="text">Bulk Add</span>
-                  <span className="icon">
-                    <i class="fa-solid fa-plus"></i>
-                  </span></button>
-                  <form className="row">
+                <div className="col-12">
+                  <div class="heading bg-transparent border-bottom-0">
+                    <div class="content">
+                      <h4>List of Agents</h4>
+                      <p>You can see the list of agents in this ring group.</p>
+                    </div>
+                    <div class="buttonGroup">
+                      <button onClick={() => setBulkAddPopUp(true)} className="panelButton ms-auto  " ><span className="text">Bulk</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-plus"></i>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                  <form className="row" style={{ padding: "0px 23px 20px" }}>
                     <div className="formRow col-xl-12">
                       {destination.map((item, index) => {
                         return (
@@ -1495,14 +1504,14 @@ const RingGroupEdit = () => {
                                       .filter((item1) => {
                                         return (
                                           item1.extension.extension ==
-                                            destination[index]?.destination ||
+                                          destination[index]?.destination ||
                                           !destination.some(
                                             (
                                               destinationItem,
                                               destinationIndex
                                             ) =>
                                               destinationItem.destination ==
-                                                item1.extension.extension &&
+                                              item1.extension.extension &&
                                               destinationIndex != index
                                           )
                                         );
@@ -1641,9 +1650,8 @@ const RingGroupEdit = () => {
                               ""
                             ) : (
                               <div
-                                className={`col-auto h-100 m${
-                                  index === 0 ? "t" : "y"
-                                }-auto`}
+                                className={`col-auto h-100 m${index === 0 ? "t" : "y"
+                                  }-auto`}
                               >
                                 <button
                                   type="button"
