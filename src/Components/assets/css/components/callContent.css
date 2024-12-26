@@ -363,6 +363,7 @@
     background-color: var(--ele-color);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     padding: 20px;
+    z-index: 9;
 }
 
 .addNewContactPopup .heading {
