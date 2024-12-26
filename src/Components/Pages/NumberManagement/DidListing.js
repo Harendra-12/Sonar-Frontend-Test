@@ -21,7 +21,9 @@ function DidListing({ page }) {
   const newAddDid = useSelector((state) => state.newAddDid);
   const dispatch = useDispatch();
   const [usagesPopup, setUsagesPopup] = useState(false);
+  const [usages,setUsages]=useState("")
   const [id, setId] = useState('');
+  const [refreshDid,setRefreshDid]=useState(0)
 
   useEffect(() => {
     if (didAll) {
@@ -60,7 +62,7 @@ function DidListing({ page }) {
       getData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [refreshDid]);
 
   const handleClick = async (id) => {
     setLoading(true);
@@ -114,11 +116,12 @@ function DidListing({ page }) {
 
   async function handleUsagesEdit(id) {
     const parsedData = {
-      id: id
+      usages: usages
     }
-    const apiData = await generalPostFunction("/edit-did")
+    const apiData = await generalPostFunction(`/did/update/${id}`,parsedData)
     if (apiData.status) {
       toast.success(apiData.message)
+      setRefreshDid(refreshDid + 1)
     } else {
       toast.error(apiData.message)
     }
@@ -328,9 +331,10 @@ function DidListing({ page }) {
                     <p>
                       Please select the options you want to assign to this DID
                     </p>
-                  <select>
-                    <option>select</option>
-                    <option>select</option>
+                  <select value={usages} onChange={(e) => { setUsages(e.target.value) }}>
+                    <option value="">None</option>
+                    <option value="pbx">PBX</option>
+                    <option value="dialer">Dialer</option>
                   </select>
                   </p>
                   <div className="d-flex justify-content-between">
@@ -338,9 +342,8 @@ function DidListing({ page }) {
                     <button
                       className="panelButton m-0"
                       onClick={() => {
-                        // setForce(true);
+                        handleUsagesEdit(id);
                         setUsagesPopup(false);
-                        // navigate(`${redirectRoutes}`);
                       }}
                     >
                       <span className="text">Lets Go!</span>
@@ -353,7 +356,6 @@ function DidListing({ page }) {
                       onClick={() => {
                         setUsagesPopup(false);
                         setId("");
-                        // setDeleteToggle(false);
                       }}
                     >
                       <span className="text">Cancel</span>
