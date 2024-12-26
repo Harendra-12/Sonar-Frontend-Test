@@ -57,6 +57,8 @@ const RingGroupAdd = () => {
     useState(false);
   const [bulkAddPopUp, setBulkAddPopUp] = useState(false);
   const [bulkUploadSelectedAgents, setBulkUploadSelectedAgents] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectAll, setSelectAll] = useState(false);
 
   const {
     register,
@@ -473,10 +475,17 @@ const RingGroupAdd = () => {
     return str; // Return the string as is if it's 8 characters or less
   }
   const handleCheckboxChange = (item) => {
+    console.log(item, bulkUploadSelectedAgents);
     setBulkUploadSelectedAgents((prevSelected) => {
-      if (prevSelected.some((agent) => agent.name === item.name)) {
+      if (
+        prevSelected.some(
+          (agent) => agent.extension.extension == item.extension.extension
+        )
+      ) {
         // If the item is already in the array, remove it
-        return prevSelected.filter((agent) => agent.name !== item.name);
+        return prevSelected.filter(
+          (agent) => agent.extension.extension != item.extension.extension
+        );
       } else {
         // Otherwise, add the item
         return [...prevSelected, item];
@@ -519,6 +528,54 @@ const RingGroupAdd = () => {
       });
 
       setDestination(newDestinations); // Update the destination state
+    }
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredUsers = user?.filter(
+    (user) =>
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (user?.extension?.extension || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+  );
+
+  const availableUsers = filteredUsers?.filter(
+    (user) =>
+      !destination.some(
+        (agent) => user.extension.extension == agent.destination
+      )
+  );
+  console.log(destination, user, availableUsers, bulkUploadSelectedAgents);
+  const handleSelectAll = () => {
+    const newSelectAllState = !selectAll; // Toggle Select All state
+    setSelectAll(newSelectAllState);
+
+    if (newSelectAllState) {
+      // Add all visible users to bulkUploadSelectedAgents
+      availableUsers.forEach((item) => {
+        if (
+          !bulkUploadSelectedAgents.some(
+            (agent) => agent.destination == item.extension.extension
+          )
+        ) {
+          handleCheckboxChange(item);
+        }
+      });
+    } else {
+      // Remove all visible users from bulkUploadSelectedAgents
+      availableUsers.forEach((item) => {
+        if (
+          bulkUploadSelectedAgents.some(
+            (agent) => agent.destination == item.extension.extension
+          )
+        ) {
+          handleCheckboxChange(item);
+        }
+      });
     }
   };
   return (
@@ -1262,7 +1319,7 @@ const RingGroupAdd = () => {
                 </div>
                 <div className="col-12" style={{ padding: "20px 23px" }}>
                   <button onClick={() => setBulkAddPopUp(true)}>
-                    Bulk Add
+                    Add Agent
                   </button>
                   <form className="row">
                     <div className="formRow col-xl-12">
@@ -1596,7 +1653,24 @@ const RingGroupAdd = () => {
                   </div>
                 </div>
                 <div className="col-10 ps-2">
-                  <div></div>
+                  <div className="col-xl-12">
+                    <div className="formLabel">
+                      <label htmlFor="">Full Name</label>
+                    </div>
+                    <div className="col-12">
+                      <input
+                        type="text"
+                        className="formItem"
+                        placeholder="Full Name"
+                        name="name"
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                      />
+                      <button onClick={handleSelectAll}>
+                        {selectAll ? "Deselect all" : "Select all"}{" "}
+                      </button>
+                    </div>
+                  </div>
                   {user
                     .filter(
                       (user) =>
@@ -1614,6 +1688,9 @@ const RingGroupAdd = () => {
                             </div>
                             <div className="col-5">
                               <span>{item.name}</span>
+                            </div>
+                            <div className="col-2">
+                              <span>{item.extension.extension}</span>
                             </div>
                             <div className="col-3">
                               <input
