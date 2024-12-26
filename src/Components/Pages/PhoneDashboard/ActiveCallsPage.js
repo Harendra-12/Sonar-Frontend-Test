@@ -28,7 +28,7 @@ function ActiveCallsPage() {
                         <div className="overviewTableWrapper">
                             <div className="overviewTableChild">
                                 <div className="d-flex flex-wrap">
-                                    <div className="col-7" style={{ borderRight: "1px solid var(--border-color)" }}>
+                                    <div className="col-xxl-7 col-xl-6" style={{ borderRight: "1px solid var(--border-color)" }}>
                                         <div className="heading">
                                             <div className="content">
                                                 <h4>Active Calls </h4>
@@ -36,7 +36,7 @@ function ActiveCallsPage() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-5">
+                                    <div className="col-xxl-5 col-xl-6">
                                         <div className="heading">
                                             <div className="content">
                                                 <h4>Ringing Calls</h4>
@@ -193,7 +193,7 @@ function ActiveCallsPage() {
                                         </div>
                                     </div> */}
                                     <div
-                                        className="col-7 pe-3"
+                                        className="col-xxl-7 col-xl-6 pe-3"
                                         style={{ overflow: "auto", padding: "5px 20px 0", borderRight: "1px solid var(--border-color)" }}
                                     >
                                         <>
@@ -337,7 +337,7 @@ function ActiveCallsPage() {
                                         </div>
                                     </div>
                                     <div
-                                        className="col-5 ps-3"
+                                        className="col-xxl-5 col-xl-6 ps-3"
                                         style={{ overflow: "auto", padding: "5px 20px 0" }}
                                     >
                                         <>
