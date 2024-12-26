@@ -404,7 +404,8 @@ function App() {
           <Route path="/rate-card" element={<RateCharge />} />
           <Route path="/edit-rate-charge" element={<RateChargeEdit />} />
           <Route path="/get-did" element={<GetDid />} />
-          <Route path="/did-listing" element={<DidListing />} />
+          <Route path="/did-listing-pbx" element={<DidListing page="pbx"/>} />
+          <Route path="/did-listing" element={<DidListing page="number"/>} />
           <Route path="/did-config" element={<DidConfig />} />
           <Route
             path="/port-number"

@@ -48,6 +48,7 @@ function CdrReport() {
   const [callBlockRefresh, setCallBlockRefresh] = useState(0);
   const [selectedNumberToBlock, setSelectedNumberToBlock] = useState(null);
   const [popUp, setPopUp] = useState(false);
+  const [itemsPerPage,setItemsPerPage] = useState(20);
 
   const thisAudioRef = useRef(null);
   console.log(cdr, callBlock);
@@ -158,7 +159,7 @@ function CdrReport() {
       return queryParams ? `${baseApiUrl}&${queryParams}` : baseApiUrl;
     };
     const finalUrl = buildUrl(
-      `/cdr?account=${account.account_id}&page=${pageNumber}`,
+      `/cdr?account=${account.account_id}&page=${pageNumber}&row_per_page=${itemsPerPage}`,
       {
         callDirection,
         application_state: callType,
@@ -166,8 +167,8 @@ function CdrReport() {
         destination: callDestination,
         start_date: startDate,
         end_date: endDate,
-        variable_DIALSTATUS:hangupCause,
-        hangupCause:hangupStatus
+        variable_DIALSTATUS: hangupCause,
+        hangupCause: hangupStatus
       }
     );
 
@@ -208,6 +209,7 @@ function CdrReport() {
     hangupCause,
     hangupStatus,
     refresh,
+    itemsPerPage,
   ]);
 
   const getDateRange = (period) => {
@@ -408,6 +410,25 @@ function CdrReport() {
                   className="col-12"
                   style={{ overflow: "auto", padding: "25px 20px 0" }}
                 >
+                    <div className="tableHeader">
+                      <div className="showEntries">
+                        <label>Show</label>
+                        <select
+                          className="formItem"
+                          value={itemsPerPage}
+                          onChange={(e) => setItemsPerPage(e.target.value)}
+                        >
+                          <option value={20}>20</option>
+                          <option value={30}>30</option>
+                          <option value={40}>40</option>
+                          <option value={50}>50</option>
+                          <option value={60}>60</option>
+                          <option value={70}>70</option>
+                          <option value={80}>80</option>
+                        </select>
+                        <label>entries</label>
+                      </div>
+                    </div>
                   <div className="tableHeader">
                     <div className="d-flex justify-content-xl-end">
                       <div className="formRow border-0 ps-xl-0">
@@ -602,7 +623,7 @@ function CdrReport() {
                       </div>
                       <div className="formRow border-0 pe-xl-0">
                         <label className="formLabel text-start mb-0 w-100">
-                        Hangup status
+                          Hangup status
                         </label>
                         <select
                           className="formItem"
@@ -666,6 +687,7 @@ function CdrReport() {
                 </Link> */}
                     </div>
                   </div>
+
                   <div className="tableContainer">
                     <table>
                       <thead>
@@ -714,7 +736,7 @@ function CdrReport() {
                                   <>
                                     <tr key={index} className="cdrTableRow">
                                       <td>
-                                        {(pageNumber - 1) * 20 + (index + 1)}
+                                        {(pageNumber - 1) * Number(itemsPerPage) + (index + 1)}
                                       </td>
                                       <td>{item["Call-Direction"] === "inbound" ?
                                         <span><i class="fa-solid fa-phone-arrow-down-left me-1" style={{ color: 'var(--funky-boy3)' }}></i> Inbound</span>
@@ -732,7 +754,7 @@ function CdrReport() {
                                       </td>
                                       <td>{item["variable_sip_from_user"]}</td>
                                       <td>{item["tag"]}</td>
-                                     
+
                                       <td>
                                         {item["application_state"] ===
                                           "intercept" ||
