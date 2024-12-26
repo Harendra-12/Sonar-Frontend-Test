@@ -49,42 +49,43 @@ function Call({
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [rawData,setRawData]= useState([]);
+  const [rawData, setRawData] = useState([]);
+  const [filterBy, setFilterBy] = useState("date");
+  const [startDateFlag, setStartDateFlag] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDateFlag, setEndDateFlag] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [filterState, setfilterState] = useState("all");
 
+  console.log(startDate, endDate);
   useEffect(() => {
     async function fetchData() {
-      if(currentPage === 1){
+      if (currentPage === 1) {
         setLoading(true);
-      }else{
+      } else {
         setIsLoading(true);
       }
-      
+
       const apiData = await generalGetFunction(
-        `/call-details-phone?page_number=${currentPage}`
+        filterBy == "date"
+          ? `/call-details-phone?page_number=${currentPage}&date=${startDate}`
+          : `/call-details-phone?page_number=${currentPage}&date_range=${startDate},${endDate}`
       );
       if (apiData.status) {
         console.log(apiData);
         setAllApiData(apiData.data.calls.reverse());
         const result = apiData.data.calls.reverse();
-        setRawData(apiData.data)
+        setRawData(apiData.data);
         setData([...data, ...result]);
         setLoading(false);
         setIsLoading(false);
-      }else{
+      } else {
         setLoading(false);
         setIsLoading(false);
       }
     }
     fetchData();
-  }, [currentPage]);
-
-  // const debounce = (func, delay) => {
-  //   let timer;
-  //   return function (...args) {
-  //     clearTimeout(timer);
-  //     timer = setTimeout(() => func.apply(this, args), delay);
-  //   };
-  // };
+  }, [currentPage, startDate, endDate]);
 
   const callListRef = useRef(null);
   const handleScroll = () => {
@@ -93,14 +94,25 @@ function Call({
       if (!isLoading && currentPage !== rawData?.last_page) {
         setCurrentPage(currentPage + 1);
       }
-
     }
   };
 
   function handleHideDialpad(value) {
     setDialpadShow(value);
   }
-
+  useEffect(() => {
+    if (filterBy === "date" && startDateFlag !== "") {
+      setStartDate(startDateFlag);
+      setEndDate(startDateFlag);
+    } else if (
+      filterBy === "date_range" &&
+      endDateFlag !== "" &&
+      startDateFlag !== ""
+    ) {
+      setStartDate(startDateFlag);
+      setEndDate(endDateFlag);
+    }
+  }, [startDateFlag, endDateFlag, filterBy]);
   useEffect(() => {
     let filteredCalls = [];
     switch (clickStatus) {
@@ -160,20 +172,20 @@ function Call({
           : filteredCalls[0]["Caller-Callee-ID-Number"]
       );
     }
-
+    console.log("filteredCalls", filteredCalls);
     setCallHistory(
       filteredCalls[0] &&
-      allApiData.filter((item) => {
-        if (!isCustomerAdmin) {
-          return (
-            (item["Caller-Callee-ID-Number"] === extension &&
-              item["Caller-Caller-ID-Number"] === clickedExtension) ||
-            (item["Caller-Caller-ID-Number"] === extension &&
-              item["Caller-Callee-ID-Number"] === clickedExtension)
-          );
-        }
-        return true;
-      })
+        allApiData.filter((item) => {
+          if (!isCustomerAdmin) {
+            return (
+              (item["Caller-Callee-ID-Number"] === extension &&
+                item["Caller-Caller-ID-Number"] === clickedExtension) ||
+              (item["Caller-Caller-ID-Number"] === extension &&
+                item["Caller-Callee-ID-Number"] === clickedExtension)
+            );
+          }
+          return true;
+        })
     );
   }, [allCalls, clickStatus, searchQuery]);
 
@@ -182,7 +194,8 @@ function Call({
     const min = Math.floor((duration / 60) % 60);
     const hour = Math.floor(duration / 3600);
     return (
-      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${sec ? sec + " sec" : ""
+      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${
+        sec ? sec + " sec" : ""
       }` || "0 sec"
     );
   };
@@ -216,8 +229,8 @@ function Call({
     const displayName = matchingContact
       ? matchingContact.name
       : item["Caller-Callee-ID-Number"] === extension
-        ? item["Caller-Caller-ID-Number"]
-        : item["Caller-Callee-ID-Number"];
+      ? item["Caller-Caller-ID-Number"]
+      : item["Caller-Callee-ID-Number"];
 
     const matchingCalleeContactForAdmin = allContact.find(
       (contact) => contact.did === item["Caller-Callee-ID-Number"]
@@ -231,26 +244,27 @@ function Call({
         key={item.id}
         onClick={() => handleCallItemClick(item)}
         onDoubleClick={() => handleDoubleClickCall(item)}
-        className={`callListItem ${item["Caller-Callee-ID-Number"] === extension &&
-            item["variable_billsec"] > 0 &&
-            !isCustomerAdmin
+        className={`callListItem ${
+          item["Caller-Callee-ID-Number"] === extension &&
+          item["variable_billsec"] > 0 &&
+          !isCustomerAdmin
             ? "incoming"
             : item["Caller-Caller-ID-Number"] === extension && !isCustomerAdmin
-              ? "outgoing"
-              : item["Caller-Callee-ID-Number"] === extension &&
-                item["variable_billsec"] === 0 &&
-                !isCustomerAdmin
-                ? "missed"
-                : item["Call-Direction"] === "voicemail" && !isCustomerAdmin
-                  ? "voicemail"
-                  : ""
-          } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
+            ? "outgoing"
+            : item["Caller-Callee-ID-Number"] === extension &&
+              item["variable_billsec"] === 0 &&
+              !isCustomerAdmin
+            ? "missed"
+            : item["Call-Direction"] === "voicemail" && !isCustomerAdmin
+            ? "voicemail"
+            : ""
+        } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
       >
         <div className="row justify-content-between">
           <div className="col-xl-12 d-flex">
             <div
               className="profileHolder"
-            // id={"profileOfflineNav"}
+              // id={"profileOfflineNav"}
             >
               <i className="fa-light fa-user fs-5"></i>
             </div>
@@ -263,8 +277,8 @@ function Call({
                   {displayName
                     ? displayName
                     : item.caller_user
-                      ? item.caller_user.username
-                      : "USER XYZ"}
+                    ? item.caller_user.username
+                    : "USER XYZ"}
                 </h4>
                 <h5 style={{ paddingLeft: 20 }}>
                   {item["Caller-Callee-ID-Number"] === extension
@@ -337,8 +351,14 @@ function Call({
 
   useEffect(() => {
     if (clickedExtension) {
-      const filteredHistory = allApiData.filter((item) => {
+      const filteredHistory = data.filter((item) => {
         if (!isCustomerAdmin) {
+          console.log(
+            extension,
+            clickedExtension,
+            item["Caller-Callee-ID-Number"],
+            item["Caller-Caller-ID-Number"]
+          );
           return (
             (item["Caller-Callee-ID-Number"] === extension &&
               item["Caller-Caller-ID-Number"] === clickedExtension) ||
@@ -348,6 +368,8 @@ function Call({
         }
         return item["Caller-Callee-ID-Number"] === clickedExtension;
       });
+
+      console.log("filteredHistory", filteredHistory);
       setCallHistory(filteredHistory);
     }
   }, [clickedExtension, allApiData, extension]);
@@ -456,13 +478,13 @@ function Call({
             mode === "audio"
               ? true
               : {
-                mandatory: {
-                  minWidth: 1280,
-                  minHeight: 720,
-                  minFrameRate: 30,
+                  mandatory: {
+                    minWidth: 1280,
+                    minHeight: 720,
+                    minFrameRate: 30,
+                  },
+                  optional: [{ facingMode: "user" }],
                 },
-                optional: [{ facingMode: "user" }],
-              },
         },
       }
     );
@@ -702,8 +724,25 @@ function Call({
                       />
                     </div>
                     <div className="col-xl-5 col-12">
+                      <div className="formRow border-0 ps-xl-0">
+                        <label className="formLabel text-start mb-0 w-100">
+                          Date Filter
+                        </label>
+                        <select
+                          className="formItem"
+                          value={filterBy}
+                          onChange={(e) => {
+                            setFilterBy(e.target.value);
+                            setStartDateFlag("");
+                            setEndDateFlag("");
+                          }}
+                        >
+                          <option value={"date"}>Only Date</option>
+                          <option value={"date_range"}>Date Range</option>
+                        </select>
+                      </div>
                       <div className="d-flex">
-                        <div className="col-6 pe-2">
+                        {/* <div className="col-6 pe-2">
                           <input
                             type="date"
                             className="formItem"
@@ -724,7 +763,60 @@ function Call({
                               borderRadius: "5px",
                             }}
                           />
-                        </div>
+                        </div> */}
+
+                        {filterBy === "date" && (
+                          <div className="formRow border-0">
+                            <label className="formLabel text-start mb-0 w-100">
+                              Choose Date
+                            </label>
+                            <input
+                              type="date"
+                              className="formItem"
+                              max={new Date().toISOString().split("T")[0]}
+                              value={startDateFlag}
+                              onChange={(e) => {
+                                setStartDateFlag(e.target.value);
+                                // setPageNumber(1);
+                              }}
+                            />
+                          </div>
+                        )}
+                        {filterBy === "date_range" && (
+                          <>
+                            <div className="formRow border-0">
+                              <label className="formLabel text-start mb-0 w-100">
+                                From
+                              </label>
+                              <input
+                                type="date"
+                                className="formItem"
+                                max={new Date().toISOString().split("T")[0]}
+                                value={startDateFlag}
+                                onChange={(e) => {
+                                  setStartDateFlag(e.target.value);
+                                  // setPageNumber(1);
+                                }}
+                              />
+                            </div>
+                            <div className="formRow border-0">
+                              <label className="formLabel text-start mb-0 w-100">
+                                To
+                              </label>
+                              <input
+                                type="date"
+                                className="formItem"
+                                max={new Date().toISOString().split("T")[0]}
+                                value={endDateFlag}
+                                onChange={(e) => {
+                                  setEndDateFlag(e.target.value);
+                                  // setPageNumber(1);
+                                }}
+                                min={startDateFlag} // Prevent selecting an end date before the start date
+                              />
+                            </div>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
