@@ -13,13 +13,15 @@ import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 
-function DidListing() {
+function DidListing({ page }) {
   const [did, setDid] = useState();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const didAll = useSelector((state) => state.didAll);
   const newAddDid = useSelector((state) => state.newAddDid);
   const dispatch = useDispatch();
+  const [usagesPopup, setUsagesPopup] = useState(false);
+  const [id, setId] = useState('');
 
   useEffect(() => {
     if (didAll) {
@@ -110,6 +112,17 @@ function DidListing() {
     }
   }, [newAddDid, did]);
 
+  async function handleUsagesEdit(id) {
+    const parsedData = {
+      id: id
+    }
+    const apiData = await generalPostFunction("/edit-did")
+    if (apiData.status) {
+      toast.success(apiData.message)
+    } else {
+      toast.error(apiData.message)
+    }
+  }
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -140,16 +153,18 @@ function DidListing() {
                             <i class="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        <Link
-                          to="/did-add"
-                          effect="ripple"
-                          className="panelButton"
-                        >
-                          <span className="text">Add</span>
-                          <span className="icon">
-                            <i class="fa-solid fa-plus"></i>
-                          </span>
-                        </Link>
+                        {page === "number" ?
+                          <Link
+                            to="/did-add"
+                            effect="ripple"
+                            className="panelButton"
+                          >
+                            <span className="text">Add</span>
+                            <span className="icon">
+                              <i class="fa-solid fa-plus"></i>
+                            </span>
+                          </Link>
+                          : ""}
                       </div>
                     </div>
                   </div>
@@ -165,12 +180,21 @@ function DidListing() {
                             <th>E911</th>
                             <th>Cname</th>
                             <th>SMS</th>
-                            <th style={{ width: 80, textAlign: "center" }}>
-                              Options
-                            </th>
-                            <th style={{ width: 135, textAlign: "center" }}>
-                              Default Caller DID
-                            </th>
+                            {page === "pbx" ? <>
+                              <th style={{ width: 80, textAlign: "center" }}>
+                                Options
+                              </th>
+                              <th style={{ width: 135, textAlign: "center" }}>
+                                Default Caller DID
+                              </th>
+                            </> : ""}
+                            {page === "number" ?
+                              <>
+                                <th>Usages</th>
+                                <th>Edit Usages</th>
+                              </> : ""
+                            }
+
                           </tr>
                         </thead>
                         <tbody>
@@ -194,120 +218,84 @@ function DidListing() {
                                       <td style={{ cursor: "default" }}>
                                         {item?.sms}
                                       </td>
-                                      <td className="text-center">
-                                        <div class="dropdown">
-                                          <a class={`tableButton ${item.configuration !== null ? "" : "nottif"}`} href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i className="fa-solid fa-ellipsis-vertical" />
-                                          </a>
-                                          <ul class="dropdown-menu actionBtnDropdowns">
-                                            <li className='dropdown-item'>
-                                              <Tippy
-                                                content={
-                                                  item.configuration !== null
-                                                    ? "Update the configuration"
-                                                    : "Not Configured! Click to configure"
-                                                }
-                                              >
-                                                <a class="clearButton text-align-start"
-                                                  onClick={() =>
-                                                    navigate(`/did-config`, {
-                                                      state: item,
-                                                    })
-                                                  }>
-                                                  <i class={`fa-regular fa-${item.configuration !== null ? "gear" : "triangle-exclamation"} me-2`}></i> {item.configuration !== null ? "Update" : "Configure"}
-                                                </a>
-                                              </Tippy>
-                                            </li>
-                                            {item.configuration !== null && (
+                                      {page === "pbx" ? <>
+                                        <td className="text-center">
+                                          <div class="dropdown">
+                                            <a class={`tableButton ${item.configuration !== null ? "" : "nottif"}`} href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                              <i className="fa-solid fa-ellipsis-vertical" />
+                                            </a>
+                                            <ul class="dropdown-menu actionBtnDropdowns">
                                               <li className='dropdown-item'>
-                                                <Tippy content="Reset configuration of this DID">
+                                                <Tippy
+                                                  content={
+                                                    item.configuration !== null
+                                                      ? "Update the configuration"
+                                                      : "Not Configured! Click to configure"
+                                                  }
+                                                >
                                                   <a class="clearButton text-align-start"
                                                     onClick={() =>
-                                                      handleClick(
-                                                        item.configuration.id
-                                                      )
-                                                    }
-                                                  ><i class="fa-regular fa-arrows-rotate me-2"></i> Reset
+                                                      navigate(`/did-config`, {
+                                                        state: item,
+                                                      })
+                                                    }>
+                                                    <i class={`fa-regular fa-${item.configuration !== null ? "gear" : "triangle-exclamation"} me-2`}></i> {item.configuration !== null ? "Update" : "Configure"}
                                                   </a>
                                                 </Tippy>
                                               </li>
-                                            )}
-                                          </ul>
-                                        </div>
-                                      </td>
-                                      {/* <td style={{ cursor: "default" }}>
-                                        <Tippy
-                                          content={
-                                            item.configuration !== null
-                                              ? "Update the configuration"
-                                              : "Not Configured! Click to configure"
-                                          }
-                                        >
-                                          <button
-                                            onClick={() =>
-                                              navigate(`/did-config`, {
-                                                state: item,
-                                              })
-                                            }
-                                            className={
-                                              item.configuration !== null
-                                                ? "tableButton mx-auto"
-                                                : "tableButton warning mx-auto"
+                                              {item.configuration !== null && (
+                                                <li className='dropdown-item'>
+                                                  <Tippy content="Reset configuration of this DID">
+                                                    <a class="clearButton text-align-start"
+                                                      onClick={() =>
+                                                        handleClick(
+                                                          item.configuration.id
+                                                        )
+                                                      }
+                                                    ><i class="fa-regular fa-arrows-rotate me-2"></i> Reset
+                                                    </a>
+                                                  </Tippy>
+                                                </li>
+                                              )}
+                                            </ul>
+                                          </div>
+                                        </td>
+                                        <td style={{ cursor: "default" }}>
+                                          <Tippy
+                                            content={
+                                              item.default_outbound === 1
+                                                ? "This DID is set as default"
+                                                : "Set this DID default"
                                             }
                                           >
-                                            <i
-                                              className={
-                                                item.configuration !== null
-                                                  ? "fa-solid fa-gear text-success"
-                                                  : "fa-solid fa-triangle-exclamation"
-                                              }
-                                            ></i>
-                                          </button>
-                                        </Tippy>
-                                      </td> */}
-                                      {/* <td style={{ cursor: "default" }}>
-                                        {" "}
-                                        {item.configuration !== null && (
-                                          <Tippy content="Reset configuration of this DID">
                                             <button
-                                              className="tableButton delete mx-auto"
-                                              style={{ cursor: "pointer" }}
-                                              onClick={() =>
-                                                handleClick(
-                                                  item.configuration.id
-                                                )
+                                              className={
+                                                item.default_outbound === 1
+                                                  ? "tableButton edit mx-auto"
+                                                  : "tableButton empty mx-auto"
                                               }
+                                              style={{ cursor: "pointer" }}
+                                              onClick={() => {
+                                                if (item.default_outbound === 0) {
+                                                  handleClickDefault(item.id);
+                                                }
+                                              }}
                                             >
-                                              <i class="fa-solid fa-arrows-rotate"></i>
+                                              <i class="fa-solid fa-headset"></i>
                                             </button>
                                           </Tippy>
-                                        )}
-                                      </td> */}
-                                      <td style={{ cursor: "default" }}>
-                                        <Tippy
-                                          content={
-                                            item.default_outbound === 1
-                                              ? "This DID is set as default"
-                                              : "Set this DID default"
-                                          }
-                                        >
-                                          <button
-                                            className={
-                                              item.default_outbound === 1
-                                                ? "tableButton edit mx-auto"
-                                                : "tableButton empty mx-auto"
-                                            }
-                                            style={{ cursor: "pointer" }}
-                                            onClick={() => {
-                                              if (item.default_outbound === 0) {
-                                                handleClickDefault(item.id);
-                                              }
-                                            }}
-                                          >
-                                            <i class="fa-solid fa-headset"></i>
-                                          </button>
-                                        </Tippy>
-                                      </td>
+                                        </td>
+                                      </> : ""}
+                                      {page === "number" ?
+                                        <>
+                                          <td style={{ cursor: "default" }}>
+                                            {item.usages}
+                                          </td>
+                                          <td style={{ cursor: "default" }} onClick={() => { setUsagesPopup(true); setId(item.id) }}>
+                                            EDIT
+                                          </td>
+                                        </>
+                                        : ""}
                                     </tr>
                                   );
                                 })}
@@ -323,6 +311,65 @@ function DidListing() {
           </div>
         </div>
       </section>
+      {usagesPopup ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-4">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-triangle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-0">
+                  <h4>Warning!</h4>
+                  <p>
+
+                    <p>
+                      Please select the options you want to assign to this DID
+                    </p>
+                  <select>
+                    <option>select</option>
+                    <option>select</option>
+                  </select>
+                  </p>
+                  <div className="d-flex justify-content-between">
+
+                    <button
+                      className="panelButton m-0"
+                      onClick={() => {
+                        // setForce(true);
+                        setUsagesPopup(false);
+                        // navigate(`${redirectRoutes}`);
+                      }}
+                    >
+                      <span className="text">Lets Go!</span>
+                      <span className="icon">
+                        <i class="fa-solid fa-check"></i>
+                      </span>
+                    </button>
+                    <button
+                      className="panelButton gray m-0 float-end"
+                      onClick={() => {
+                        setUsagesPopup(false);
+                        setId("");
+                        // setDeleteToggle(false);
+                      }}
+                    >
+                      <span className="text">Cancel</span>
+                      <span className="icon">
+                        <i class="fa-solid fa-xmark"></i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </main>
   );
 }

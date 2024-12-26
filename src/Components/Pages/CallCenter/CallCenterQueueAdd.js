@@ -1764,7 +1764,7 @@ function CallCenterQueueAdd() {
       {bulkAddPopUp ? (
         <div className="addNewContactPopup">
           <div className="row">
-            <div className="col-12 heading">
+            <div className="col-12 heading mb-0">
               <i className="fa-light fa-user-plus" />
               <h5>Add People to the selected Queue</h5>
               <p>

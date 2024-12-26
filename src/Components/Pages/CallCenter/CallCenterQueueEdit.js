@@ -1395,6 +1395,11 @@ function CallCenterQueueEdit() {
                                     ? "11"
                                     : "xxl-5 col-xl-6"
                                 }`}
+                                className={`row col-${
+                                  advance.includes(item.id)
+                                    ? "11"
+                                    : "xxl-5 col-xl-6"
+                                }`}
                               >
                                 <div
                                   className={`col-${
@@ -1823,6 +1828,11 @@ function CallCenterQueueEdit() {
                                             ? "gear"
                                             : "gears"
                                         }`}
+                                        className={`fa-solid fa-${
+                                          advance.includes(item.id)
+                                            ? "gear"
+                                            : "gears"
+                                        }`}
                                       ></i>
                                     </button>
                                   </div>
@@ -1911,7 +1921,7 @@ function CallCenterQueueEdit() {
       {bulkAddPopUp ? (
         <div className="addNewContactPopup">
           <div className="row">
-            <div className="col-12 heading">
+            <div className="col-12 heading mb-0">
               <i className="fa-light fa-user-plus" />
               <h5>Add People to the selected Queue</h5>
               <p>

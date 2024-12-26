@@ -11,7 +11,7 @@ import DoughnutChart from "../../CommonComponents/DoughnutChart";
 import GraphChart from "../../CommonComponents/GraphChart";
 
 function PhoneDashboard() {
-  const [calls, setCalls] = useState(false);
+  const [calls, setCalls] = useState(true);
   const [group, setGroup] = useState(false);
   const [queue, setQueue] = useState(false);
   const navigate = useNavigate();

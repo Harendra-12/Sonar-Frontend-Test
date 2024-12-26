@@ -43,7 +43,7 @@ function AllCallsDetails() {
                     <div class="accordion-item">
                       <h2 class="accordion-header">
                         <button
-                          class="accordion-button collapsed px-3"
+                          class="accordion-button px-3"
                           type="button"
                           data-bs-toggle="collapse"
                           data-bs-target="#collapse1"
@@ -60,7 +60,7 @@ function AllCallsDetails() {
                           </div>
                         </button>
                       </h2>
-                      <div id="collapse1" class="accordion-collapse collapse pb-1">
+                      <div id="collapse1" class="accordion-collapse collapse pb-1 show">
                         <div className="accordion-body">
                           <div class="row col-12 mx-auto gx-xxl-3 gx-xl-2">
                             <div className="col-xl-6 col-xxl-6 mt-2">
@@ -170,7 +170,7 @@ function AllCallsDetails() {
                     <div class="accordion-item">
                       <h2 class="accordion-header">
                         <button
-                          class="accordion-button collapsed px-3"
+                          class="accordion-button px-3"
                           type="button"
                           data-bs-toggle="collapse"
                           data-bs-target="#collapse2"
@@ -191,7 +191,7 @@ function AllCallsDetails() {
                           </div>
                         </button>
                       </h2>
-                      <div id="collapse2" class="accordion-collapse collapse pb-1">
+                      <div id="collapse2" class="accordion-collapse collapse pb-1 show">
                         <div class="accordion-body">
                           <div className="row col-12 mx-auto gx-xxl-3 gx-xl-2">
                             <div className="col-xl-6 col-xxl-6 mt-2">
@@ -311,7 +311,7 @@ function AllCallsDetails() {
                     <div className="accordion-item">
                       <h2 class="accordion-header">
                         <button
-                          class="accordion-button collapsed px-3"
+                          class="accordion-button px-3"
                           type="button"
                           data-bs-toggle="collapse"
                           data-bs-target="#collapse3"
@@ -332,7 +332,7 @@ function AllCallsDetails() {
                           </div>
                         </button>
                       </h2>
-                      <div id="collapse3" class="accordion-collapse collapse pb-1">
+                      <div id="collapse3" class="accordion-collapse collapse pb-1 show">
                         <div className="accordion-body">
                           <div className="row col-12 mx-auto gx-xxl-3 gx-xl-2">
                             <div className="col-xl-6 col-xxl-6 mt-2">

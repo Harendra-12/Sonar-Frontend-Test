@@ -231,18 +231,15 @@ function Navbar() {
                             ""
                           )}
 
-                          <li className="tabItem">
+                          {/* <li className="tabItem">
                             <NavLink
                               to="/change-password"
                               onClick={backToTop}
                               className="nav-link"
                             >
-                              {/* <div className="iconHolder">
-                                <i class="fa-regular fa-unlock"></i>
-                              </div> */}
                               <div className="itemTitle">Change Password</div>
                             </NavLink>
-                          </li>
+                          </li> */}
                         </ul>
                       </div>
                     </div>
@@ -322,6 +319,19 @@ function Navbar() {
                               </NavLink>
                             </li>
                           ) : null}
+
+                          <li className="tabItem">
+                            <NavLink
+                              to="/did-listing"
+                              onClick={backToTop}
+                              className="nav-link"
+                            >
+                              {/* <div className="iconHolder">
+                                <i className="fa-regular fa-swap-arrows" />
+                              </div> */}
+                              <div className="itemTitle">Number Configuration</div>
+                            </NavLink>
+                          </li>
                         </ul>
                       </div>
                     </div>
@@ -426,7 +436,7 @@ function Navbar() {
                           </li>
                           <li className="tabItem">
                             <NavLink
-                              to="/did-listing"
+                              to="/did-listing-pbx"
                               onClick={backToTop}
                               className={({ isActive }) =>
                                 isActive ||
