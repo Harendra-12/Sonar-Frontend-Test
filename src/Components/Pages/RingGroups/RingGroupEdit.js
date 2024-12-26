@@ -1384,21 +1384,21 @@ const RingGroupEdit = () => {
               </div> */}
                   </form>
                 </div>
-                <div className="col-12">
+                <div className="col-12" >
                   <div class="heading bg-transparent border-bottom-0">
                     <div class="content">
                       <h4>List of Agents</h4>
                       <p>You can see the list of agents in this ring group.</p>
                     </div>
                     <div class="buttonGroup">
-                      <button onClick={() => setBulkAddPopUp(true)} className="panelButton ms-auto  " ><span className="text">Bulk</span>
+                      <button onClick={() => setBulkAddPopUp(true)} className="panelButton ms-auto  " ><span className="text">Add</span>
                         <span className="icon">
                           <i class="fa-solid fa-plus"></i>
                         </span>
                       </button>
                     </div>
                   </div>
-                  <form className="row" style={{ padding: "0px 23px 20px" }}>
+                  {destination.length > 0 && <form className="row" style={{ padding: "0px 23px 20px" }}>
                     <div className="formRow col-xl-12">
                       {destination.map((item, index) => {
                         return (
@@ -1689,7 +1689,7 @@ const RingGroupEdit = () => {
                         Add destinations and parameters to the ring group.
                       </label>
                     </div>
-                  </form>
+                  </form>}
                 </div>
               </div>
             </div>
@@ -1707,39 +1707,51 @@ const RingGroupEdit = () => {
         />
       )}
 
-      {bulkAddPopUp ? (
-        <div className="popup">
-          <div className="container h-100">
-            <div className="row h-100 justify-content-center align-items-center">
-              <div className="row content col-xl-3">
-                <div className="col-2 px-0">
-                  <div className="iconWrapper">
-                    <i className="fa-duotone fa-circle-exclamation"></i>
-                  </div>
+      {
+        bulkAddPopUp ? (
+          <div className="addNewContactPopup">
+            <div className="row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-light fa-user-plus" />
+                <h5>Add People to the selected Ring Group</h5>
+                {/* <p>
+                Add people to yourqueue effortlessly, keeping your connections
+                organized and efficient
+              </p> */}
+                {/* <div className="border-bottom col-12" /> */}
+              </div>
+              <div className="col-xl-12">
+                <div className="col-12 d-flex justify-content-between align-items-center">
+                  <input
+                    type="text"
+                    className="formItem"
+                    placeholder="Search"
+                    name="name"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                  />
+                  <button className="tableButton ms-2" onClick={() => navigate("/users-add")}><i className="fa-solid fa-user-plus"></i></button>
                 </div>
-                <div className="col-10 ps-2">
-                  <div className="col-xl-12">
-                    <div className="formLabel">
-                      <label htmlFor="">Full Name</label>
-                    </div>
-                    <div className="col-12">
-                      <input
-                        type="text"
-                        className="formItem"
-                        placeholder="Full Name"
-                        name="name"
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                      />
-                      <button onClick={handleSelectAll}>
-                        {selectAll ? "Deselect all" : "Select all"}{" "}
-                      </button>
-                      <button onClick={() => navigate("/users-add")}>
-                        Add User
-                      </button>
-                    </div>
-                  </div>
-                  {user
+              </div>
+              <div className="col-xl-12 mt-3">
+                <div className="tableContainer mt-0" style={{ maxHeight: "calc(100vh - 400px)" }}>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>S.No</th>
+                        <th>Name</th>
+                        <th>Extension</th>
+                        <th>
+                          <input
+                            type="checkbox"
+                            onChange={handleSelectAll} // Call handler on change
+                            checked={selectAll ? true : false} // Keep checkbox state in sync
+                          />
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* {user
                     .filter(
                       (user) =>
                         // Filter logic: checks name or extension against search query
@@ -1783,18 +1795,59 @@ const RingGroupEdit = () => {
                           </div>
                         </div>
                       );
-                    })}
+                    })} */}
+                      {user
+                        .sort((a, b) => {
+                          const aMatches =
+                            a.name
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase()) ||
+                            (a?.extension?.extension || "")
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase());
+                          const bMatches =
+                            b.name
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase()) ||
+                            (b?.extension?.extension || "")
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase());
+                          // Sort: matching items come first
+                          return bMatches - aMatches;
+                        })
+                        .filter(
+                          (user) =>
+                            !destination.some(
+                              (agent) =>
+                                user.extension.extension == agent.destination
+                            )
+                        )
+                        .map((item, index) => {
+                          return (
+                            <tr key={item.id || index}>
+                              <td>{index + 1}</td>
+                              <td>{item.name}</td>
+                              <td>{item.extension.extension}</td>
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  onChange={() => handleCheckboxChange(item)} // Call handler on change
+                                  checked={bulkUploadSelectedAgents.some(
+                                    (agent) => agent.name === item.name
+                                  )} // Keep checkbox state in sync
+                                />
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className="col-xl-12 mt-2">
+                <div className="d-flex justify-content-between">
                   <button
-                    onClick={() => {
-                      handleBulkDestinationUpload(bulkUploadSelectedAgents);
-                      setBulkAddPopUp(false);
-                    }}
-                    className="btn btn-primary"
-                  >
-                    Done
-                  </button>
-                  <button
-                    className="panelButton mx-1"
+                    className="panelButton gray ms-0"
                     onClick={() => {
                       setBulkAddPopUp(false);
                       setBulkUploadSelectedAgents([]);
@@ -1806,14 +1859,26 @@ const RingGroupEdit = () => {
                       <i class="fa-light fa-xmark"></i>
                     </span>
                   </button>
+                  <button
+                    onClick={() => {
+                      handleBulkDestinationUpload(bulkUploadSelectedAgents);
+                      setBulkAddPopUp(false);
+                    }}
+                    className="panelButton"
+                  >
+                    <span className="text">Done</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-check" />
+                    </span>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        ""
-      )}
+        ) : (
+          ""
+        )
+      }
     </main>
   );
 };
