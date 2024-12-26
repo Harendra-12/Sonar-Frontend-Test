@@ -21,9 +21,9 @@ function DidListing({ page }) {
   const newAddDid = useSelector((state) => state.newAddDid);
   const dispatch = useDispatch();
   const [usagesPopup, setUsagesPopup] = useState(false);
-  const [usages,setUsages]=useState("")
+  const [usages, setUsages] = useState("")
   const [id, setId] = useState('');
-  const [refreshDid,setRefreshDid]=useState(0)
+  const [refreshDid, setRefreshDid] = useState(0)
 
   useEffect(() => {
     if (didAll) {
@@ -118,7 +118,7 @@ function DidListing({ page }) {
     const parsedData = {
       usages: usages
     }
-    const apiData = await generalPostFunction(`/did/update/${id}`,parsedData)
+    const apiData = await generalPostFunction(`/did/update/${id}`, parsedData)
     if (apiData.status) {
       toast.success(apiData.message)
       setRefreshDid(refreshDid + 1)
@@ -295,7 +295,9 @@ function DidListing({ page }) {
                                             {item.usages}
                                           </td>
                                           <td style={{ cursor: "default" }} onClick={() => { setUsagesPopup(true); setId(item.id) }}>
-                                            EDIT
+                                            <button className="tableButton edit">
+                                              <i className="fa-solid fa-pen"></i>
+                                            </button>
                                           </td>
                                         </>
                                         : ""}
@@ -321,24 +323,20 @@ function DidListing({ page }) {
               <div className="row content col-xl-4">
                 <div className="col-2 px-0">
                   <div className="iconWrapper">
-                    <i className="fa-duotone fa-triangle-exclamation"></i>
+                    <i className="fa-duotone fa-circle-exclamation"></i>
                   </div>
                 </div>
                 <div className="col-10 ps-0">
-                  <h4>Warning!</h4>
+                  <h4>Confirmation!</h4>
                   <p>
-
-                    <p>
-                      Please select the options you want to assign to this DID
-                    </p>
-                  <select value={usages} onChange={(e) => { setUsages(e.target.value) }}>
+                    Please select the options you want to assign to this DID
+                  </p>
+                  <select className="formItem" value={usages} onChange={(e) => { setUsages(e.target.value) }}>
                     <option value="">None</option>
                     <option value="pbx">PBX</option>
                     <option value="dialer">Dialer</option>
                   </select>
-                  </p>
-                  <div className="d-flex justify-content-between">
-
+                  <div className="d-flex justify-content-between mt-3">
                     <button
                       className="panelButton m-0"
                       onClick={() => {
