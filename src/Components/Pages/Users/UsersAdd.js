@@ -115,6 +115,18 @@ const UsersAdd = () => {
   }, [allUser, extensionAll]);
 
   // filter only those extension that are not assign with any user
+  console.log(extension, user);
+  // useEffect(() => {
+  //   if (extension && user) {
+  //     setFilterExtensions(
+  //       extension.filter((item) => {
+  //         return !user.some((userItem) => {
+  //           return userItem.extension_id == item.id;
+  //         });
+  //       })
+  //     );
+  //   }
+  // }, [extension, user]);
   useEffect(() => {
     if (extension && user) {
       setFilterExtensions(
@@ -289,7 +301,7 @@ const UsersAdd = () => {
     setSelectedPermission(newSelectedPermission);
     setParentChecked({ ...parentChecked, [item]: newParentChecked });
   };
-
+  console.log(filterExtensions);
   return (
     <>
       <style>
