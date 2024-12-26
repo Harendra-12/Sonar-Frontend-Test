@@ -249,6 +249,10 @@ function CallCenterQueueAdd() {
       setLoading(false);
       return;
     }
+    if (agent.length === 0) {
+      toast.error("Please add at least one agent");
+      return;
+    }
 
     const { recording_enabled } = data;
 
@@ -1789,10 +1793,11 @@ function CallCenterQueueAdd() {
                 <button onClick={handleSelectAll}>
                   {selectAll ? "Deselect all" : "Select all"}{" "}
                 </button>
+                <button onClick={() => navigate("/users-add")}>Add User</button>
               </div>
             </div>
             <div className="col-xl-12 mt-3">
-              {user
+              {/* {user
                 .filter(
                   (user) =>
                     // Filter logic: checks name or extension against search query
@@ -1806,6 +1811,46 @@ function CallCenterQueueAdd() {
                 .filter((user) => !agent.some((agent) => user.id == agent.name)) // Exclude agents already in `agent`
                 .map((item, index) => (
                   <div key={index}>
+                    <div className="row g-2">
+                      <div className="col-auto">
+                        <label className="formLabel">{index + 1}.</label>
+                      </div>
+                      <div className="col-5">
+                        <label className="formLabel details">{item.name}</label>
+                      </div>
+                      <div className="col-3 details formLabel">
+                        {item?.extension?.extension}
+                      </div>
+                      <div className="col-auto ms-auto">
+                        <input
+                          type="checkbox"
+                          onChange={() => handleCheckboxChange(item)} // Call handler on change
+                          checked={bulkUploadSelectedAgents.some(
+                            (agent) => agent.name == item.name
+                          )} // Keep checkbox state in sync
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))} */}
+              {user
+                .sort((a, b) => {
+                  const aMatches =
+                    a.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    (a?.extension?.extension || "")
+                      .toLowerCase()
+                      .includes(searchQuery.toLowerCase());
+                  const bMatches =
+                    b.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    (b?.extension?.extension || "")
+                      .toLowerCase()
+                      .includes(searchQuery.toLowerCase());
+                  // Items that match come first
+                  return bMatches - aMatches;
+                })
+                .filter((user) => !agent.some((agent) => user.id == agent.name)) // Exclude agents already in `agent`
+                .map((item, index) => (
+                  <div key={item.id || index}>
                     <div className="row g-2">
                       <div className="col-auto">
                         <label className="formLabel">{index + 1}.</label>
