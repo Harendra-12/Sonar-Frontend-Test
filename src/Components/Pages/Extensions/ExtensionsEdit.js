@@ -2169,7 +2169,7 @@ const ExtensionsEdit = () => {
 
                               <div className="formRow col-xl-3">
                                 <div className="formLabel">
-                                  <label htmlFor="">Forward DID</label>
+                                  <label htmlFor="">Forward Extension</label>
                                   <label
                                     htmlFor="data"
                                     className="formItemDesc"
