@@ -128,9 +128,12 @@ import MeetingReports from "./Components/Pages/Agents/MeetingReports";
 import CallRecording from "./Components/Pages/Setting/CallRecording";
 import Fax from "./Components/Pages/Setting/FaxSettings";
 import FaxSettings from "./Components/Pages/Setting/FaxSettings";
+import AddOns from "./Components/Pages/Stores/AddOns";
 import Meeting from "./Components/Pages/Meeting/Meeting";
 import MeetingAdd from "./Components/Pages/Meeting/MeetingAdd";
 import ActiveCallsPage from "./Components/Pages/PhoneDashboard/ActiveCallsPage";
+import CallDashboardProvider from "./Components/Pages/CallDashboardProvider/CallDashboardProvider";
+import ExtensionStore from "./Components/Pages/Stores/ExtensionStore";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -333,6 +336,17 @@ function App() {
           <Route path="/meeting-reports" element={<MeetingReports />} />
           {/*Agents path */}
 
+
+          {/*Addon path */}
+          <Route path="/add-ons" element={<AddOns />} />
+          <Route path="/store-extension" element={<ExtensionStore />} />
+
+          {/*CallDashboardProvider */}
+          <Route path="/call-dashboard-provider" element={<CallDashboardProvider />} />
+          {/* <Route path="/store-extension" element={<Extension />} /> */}
+
+
+
           {/* Settings Path */}
           <Route path="/fax-settings" element={<FaxSettings />} />
           <Route path="/call-recording" element={<CallRecording />} />
@@ -404,8 +418,8 @@ function App() {
           <Route path="/rate-card" element={<RateCharge />} />
           <Route path="/edit-rate-charge" element={<RateChargeEdit />} />
           <Route path="/get-did" element={<GetDid />} />
-          <Route path="/did-listing-pbx" element={<DidListing page="pbx"/>} />
-          <Route path="/did-listing" element={<DidListing page="number"/>} />
+          <Route path="/did-listing-pbx" element={<DidListing page="pbx" />} />
+          <Route path="/did-listing" element={<DidListing page="number" />} />
           <Route path="/did-config" element={<DidConfig />} />
           <Route
             path="/port-number"

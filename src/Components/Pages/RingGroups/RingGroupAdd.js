@@ -887,7 +887,6 @@ const RingGroupAdd = () => {
                               ></input>
                             )}
                           </div>
-
                           {errors?.timeout_destination && (
                             <ErrorMessage
                               text={errors?.timeout_destination?.message}
@@ -1261,9 +1260,10 @@ const RingGroupAdd = () => {
                   </form>
                 </div>
                 <div className="col-12" style={{ padding: "20px 23px" }}>
-                  <button onClick={() => setBulkAddPopUp(true)}>
-                    Bulk Add
-                  </button>
+                  <button onClick={() => setBulkAddPopUp(true)} className="panelButton ms-auto  " ><span className="text">Bulk Add</span>
+                  <span className="icon">
+                    <i class="fa-solid fa-plus"></i>
+                  </span></button>
                   <form className="row">
                     <div className="formRow col-xl-12">
                       {destination.map((item, index) => {
