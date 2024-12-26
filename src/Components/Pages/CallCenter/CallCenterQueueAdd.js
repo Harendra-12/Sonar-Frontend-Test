@@ -63,6 +63,7 @@ function CallCenterQueueAdd() {
   } = useForm({
     defaultValues: {
       status: true, // Set the default value for "status" to true
+      call_timeout: `${160}`,
     },
   });
   useEffect(() => {

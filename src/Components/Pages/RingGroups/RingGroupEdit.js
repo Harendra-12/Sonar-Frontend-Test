@@ -73,6 +73,7 @@ const RingGroupEdit = () => {
     defaultValues: {
       status: true, // Set the default value for "status" to true
       timeout_destination: "",
+      call_timeout: `${160}`,
     },
   });
 
@@ -1310,21 +1311,17 @@ const RingGroupEdit = () => {
               </div> */}
                   </form>
                 </div>
-                <div className="col-12" >
-                  <div class="heading bg-transparent border-bottom-0">
-                    <div class="content">
-                      <h4>List of Agents</h4>
-                      <p>You can see the list of agents in this ring group.</p>
-                    </div>
-                    <div class="buttonGroup">
-                      <button onClick={() => setBulkAddPopUp(true)} className="panelButton ms-auto  " ><span className="text">Add</span>
-                        <span className="icon">
-                          <i class="fa-solid fa-plus"></i>
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                  {destination.length > 0 && <form className="row" style={{ padding: "0px 23px 20px" }}>
+                <div className="col-12" style={{ padding: "20px 23px" }}>
+                  <button
+                    onClick={() => setBulkAddPopUp(true)}
+                    className="panelButton ms-auto  "
+                  >
+                    <span className="text">Bulk Add</span>
+                    <span className="icon">
+                      <i class="fa-solid fa-plus"></i>
+                    </span>
+                  </button>
+                  <form className="row">
                     <div className="formRow col-xl-12">
                       {destination.map((item, index) => {
                         return (

@@ -74,6 +74,7 @@ const RingGroupAdd = () => {
     defaultValues: {
       status: true, // Set the default value for "status" to true
       timeout_destination: "",
+      call_timeout: `${160}`,
     },
   });
   useEffect(() => {

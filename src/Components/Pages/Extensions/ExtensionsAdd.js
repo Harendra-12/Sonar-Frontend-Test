@@ -39,7 +39,12 @@ const ExtensionsAdd = () => {
     formState: { errors },
     handleSubmit,
     reset,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      // status: true, // Set the default value for "status" to true
+      callTimeOut: `${160}`,
+    },
+  });
 
   const account = useSelector((state) => state.account);
   useEffect(() => {
@@ -248,8 +253,8 @@ const ExtensionsAdd = () => {
                                 <ErrorMessage text={errors.extension.message} />
                               )}
                               <label htmlFor="data" className="formItemDesc">
-                                Enter the numeric extension. The default configuration
-                                allows 2 - 15 digit extensions.
+                                Enter the numeric extension. The default
+                                configuration allows 2 - 15 digit extensions.
                               </label>
                             </div>
                           </div>
@@ -321,7 +326,9 @@ const ExtensionsAdd = () => {
                                 })}
                               />
                               {errors.account_code && (
-                                <ErrorMessage text={errors.account_code.message} />
+                                <ErrorMessage
+                                  text={errors.account_code.message}
+                                />
                               )}
                               <br />
                               <label htmlFor="data" className="formItemDesc">
@@ -343,7 +350,9 @@ const ExtensionsAdd = () => {
                                 })}
                               />
                               {errors.effectiveCallerIdName && (
-                                <ErrorMessage text={errors.effectiveCallerIdName.message} />
+                                <ErrorMessage
+                                  text={errors.effectiveCallerIdName.message}
+                                />
                               )}
                               <br />
                               <label htmlFor="data" className="formItemDesc">
@@ -353,7 +362,9 @@ const ExtensionsAdd = () => {
                           </div>
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <label htmlFor="">Effective Caller ID Number</label>
+                              <label htmlFor="">
+                                Effective Caller ID Number
+                              </label>
                             </div>
                             <div className="col-12">
                               <input
@@ -389,7 +400,9 @@ const ExtensionsAdd = () => {
                                 })}
                               />
                               {errors.outbundCallerIdName && (
-                                <ErrorMessage text={errors.outbundCallerIdName.message} />
+                                <ErrorMessage
+                                  text={errors.outbundCallerIdName.message}
+                                />
                               )}
                               <br />
                               <label htmlFor="data" className="formItemDesc">
@@ -399,7 +412,9 @@ const ExtensionsAdd = () => {
                           </div>
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <label htmlFor="">Outbound Caller ID Number</label>
+                              <label htmlFor="">
+                                Outbound Caller ID Number
+                              </label>
                             </div>
                             <div className="col-12">
                               <input
@@ -412,11 +427,14 @@ const ExtensionsAdd = () => {
                                 })}
                               />
                               {errors.outbundCallerIdNumber && (
-                                <ErrorMessage text={errors.outbundCallerIdNumber.message} />
+                                <ErrorMessage
+                                  text={errors.outbundCallerIdNumber.message}
+                                />
                               )}
                               <br />
                               <label htmlFor="data" className="formItemDesc">
-                                Enter the external (public) caller ID number here.
+                                Enter the external (public) caller ID number
+                                here.
                               </label>
                             </div>
                           </div>
@@ -434,7 +452,9 @@ const ExtensionsAdd = () => {
                                 })}
                               />
                               {errors.emergencyCallerIdName && (
-                                <ErrorMessage text={errors.emergencyCallerIdName.message} />
+                                <ErrorMessage
+                                  text={errors.emergencyCallerIdName.message}
+                                />
                               )}
                               <br />
                               <label htmlFor="data" className="formItemDesc">
@@ -444,7 +464,9 @@ const ExtensionsAdd = () => {
                           </div>
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <label htmlFor="">Emergency Caller ID Number</label>
+                              <label htmlFor="">
+                                Emergency Caller ID Number
+                              </label>
                             </div>
                             <div className="col-12">
                               <input
@@ -487,7 +509,8 @@ const ExtensionsAdd = () => {
                               </select>
                               <br />
                               <label htmlFor="data" className="formItemDesc">
-                                Choose whether to record local, inbound, outbound, or all.
+                                Choose whether to record local, inbound,
+                                outbound, or all.
                               </label>
                             </div>
                           </div>
@@ -505,7 +528,9 @@ const ExtensionsAdd = () => {
                                 })}
                               />
                               {errors.description && (
-                                <ErrorMessage text={errors.description.message} />
+                                <ErrorMessage
+                                  text={errors.description.message}
+                                />
                               )}
                               <br />
                               <label htmlFor="data" className="formItemDesc">
@@ -525,7 +550,9 @@ const ExtensionsAdd = () => {
                         <form className="row col-12 mx-auto">
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <label htmlFor="selectFormRow">Voicemail Enabled</label>
+                              <label htmlFor="selectFormRow">
+                                Voicemail Enabled
+                              </label>
                             </div>
                             <div className="col-12">
                               <select
@@ -560,7 +587,9 @@ const ExtensionsAdd = () => {
                                 })}
                               />
                               {errors.voicemail_password && (
-                                <ErrorMessage text={errors.voicemail_password.message} />
+                                <ErrorMessage
+                                  text={errors.voicemail_password.message}
+                                />
                               )}
                               <label htmlFor="data" className="formItemDesc">
                                 Enter the numeric voicemail password here.
@@ -569,7 +598,9 @@ const ExtensionsAdd = () => {
                           </div>
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <label htmlFor="selectFormRow">Voicemail Mail To</label>
+                              <label htmlFor="selectFormRow">
+                                Voicemail Mail To
+                              </label>
                             </div>
                             <div className="col-12">
                               <input
@@ -582,17 +613,22 @@ const ExtensionsAdd = () => {
                                 })}
                               />
                               {errors.voiceEmailTo && (
-                                <ErrorMessage text={errors.voiceEmailTo.message} />
+                                <ErrorMessage
+                                  text={errors.voiceEmailTo.message}
+                                />
                               )}
                               <br />
                               <label htmlFor="data" className="formItemDesc">
-                                Enter the email address to send voicemail to (optional).
+                                Enter the email address to send voicemail to
+                                (optional).
                               </label>
                             </div>
                           </div>
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <label htmlFor="selectFormRow">Voicemail File</label>
+                              <label htmlFor="selectFormRow">
+                                Voicemail File
+                              </label>
                             </div>
                             <div className="col-12">
                               <select
@@ -605,22 +641,28 @@ const ExtensionsAdd = () => {
                                 <option value={""} disabled>
                                   Select Voicemail File
                                 </option>
-                                <option value="audio">Audio File Attachment</option>
-                                <option value="listen">Listen Link (Login Required)</option>
+                                <option value="audio">
+                                  Audio File Attachment
+                                </option>
+                                <option value="listen">
+                                  Listen Link (Login Required)
+                                </option>
                                 <option value="download">
                                   Download Link (No Login Required)
                                 </option>
                               </select>
                               <br />
                               <label htmlFor="data" className="formItemDesc">
-                                Select a listening option to include with the email
-                                notification.
+                                Select a listening option to include with the
+                                email notification.
                               </label>
                             </div>
                           </div>
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <label htmlFor="selectFormRow">Voicemail Keep Local</label>
+                              <label htmlFor="selectFormRow">
+                                Voicemail Keep Local
+                              </label>
                             </div>
 
                             <div className="col-12">
@@ -636,8 +678,8 @@ const ExtensionsAdd = () => {
                               </select>
                               <br />
                               <label htmlFor="data" className="formItemDesc">
-                                Choose whether to keep the voicemail in the system after
-                                sending the email notification.
+                                Choose whether to keep the voicemail in the
+                                system after sending the email notification.
                               </label>
                             </div>
                           </div>
@@ -665,7 +707,9 @@ const ExtensionsAdd = () => {
                                 })}
                               />
                               {errors.directoryFullname && (
-                                <ErrorMessage text={errors.directoryFullname.message} />
+                                <ErrorMessage
+                                  text={errors.directoryFullname.message}
+                                />
                               )}
 
                               <br />
@@ -692,14 +736,16 @@ const ExtensionsAdd = () => {
                               </select>
                               <br />
                               <label htmlFor="data" className="formItemDesc">
-                                Select whether announce the extension when calling the
-                                directory.
+                                Select whether announce the extension when
+                                calling the directory.
                               </label>
                             </div>
                           </div>
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <label htmlFor="selectFormRow">Max Registrations</label>
+                              <label htmlFor="selectFormRow">
+                                Max Registrations
+                              </label>
                             </div>
                             <div className="col-12">
                               <input
@@ -712,11 +758,14 @@ const ExtensionsAdd = () => {
                                 })}
                               />
                               {errors.maxRegistration && (
-                                <ErrorMessage text={errors.maxRegistration.message} />
+                                <ErrorMessage
+                                  text={errors.maxRegistration.message}
+                                />
                               )}
                               <br />
                               <label htmlFor="data" className="formItemDesc">
-                                Enter the maximum concurrent registrations allowed.
+                                Enter the maximum concurrent registrations
+                                allowed.
                               </label>
                             </div>
                           </div>
@@ -739,14 +788,16 @@ const ExtensionsAdd = () => {
                               )}
                               <br />
                               <label htmlFor="data" className="formItemDesc">
-                                Enter the maximum number of concurrent outbound calls
-                                allowed.
+                                Enter the maximum number of concurrent outbound
+                                calls allowed.
                               </label>
                             </div>
                           </div>
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <label htmlFor="selectFormRow">Limit Destination</label>
+                              <label htmlFor="selectFormRow">
+                                Limit Destination
+                              </label>
                             </div>
                             <div className="col-12">
                               <input
@@ -759,12 +810,14 @@ const ExtensionsAdd = () => {
                                 })}
                               />
                               {errors.limitDestinations && (
-                                <ErrorMessage text={errors.limitDestinations.message} />
+                                <ErrorMessage
+                                  text={errors.limitDestinations.message}
+                                />
                               )}
                               <br />
                               <label htmlFor="data" className="formItemDesc">
-                                Enter the destination to send the calls when the max number
-                                of outgoing calls has been reached.
+                                Enter the destination to send the calls when the
+                                max number of outgoing calls has been reached.
                               </label>
                             </div>
                           </div>
@@ -786,8 +839,8 @@ const ExtensionsAdd = () => {
                               </select>
                               <br />
                               <label htmlFor="data" className="formItemDesc">
-                                Select the notification type, and enter the appropriate
-                                destination.
+                                Select the notification type, and enter the
+                                appropriate destination.
                               </label>
                             </div>
                           </div>
@@ -805,7 +858,9 @@ const ExtensionsAdd = () => {
                                 })}
                               />
                               {errors.tollAllowValue && (
-                                <ErrorMessage text={errors.tollAllowValue.message} />
+                                <ErrorMessage
+                                  text={errors.tollAllowValue.message}
+                                />
                               )}
                               <br />
                               <label htmlFor="data" className="formItemDesc">
@@ -816,7 +871,9 @@ const ExtensionsAdd = () => {
                           </div>
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <label htmlFor="selectFormRow">Call Timeout</label>
+                              <label htmlFor="selectFormRow">
+                                Call Timeout
+                              </label>
                             </div>
                             <div className="col-12">
                               <input
@@ -829,12 +886,14 @@ const ExtensionsAdd = () => {
                                 })}
                               />
                               {errors.callTimeOut && (
-                                <ErrorMessage text={errors.callTimeOut.message} />
+                                <ErrorMessage
+                                  text={errors.callTimeOut.message}
+                                />
                               )}
                               <br />
                               <label htmlFor="data" className="formItemDesc">
-                                Enter the ring time (delay in seconds) before sending a call
-                                to voicemail.
+                                Enter the ring time (delay in seconds) before
+                                sending a call to voicemail.
                               </label>
                             </div>
                           </div>
@@ -856,8 +915,8 @@ const ExtensionsAdd = () => {
                               )}
                               <br />
                               <label htmlFor="data" className="formItemDesc">
-                                Enter the user call group here. Groups available by default:
-                                sales, support, billing.
+                                Enter the user call group here. Groups available
+                                by default: sales, support, billing.
                               </label>
                             </div>
                           </div>
@@ -878,7 +937,8 @@ const ExtensionsAdd = () => {
                               </select>
                               <br />
                               <label htmlFor="data" className="formItemDesc">
-                                Choose whether to enable or disable call screening.
+                                Choose whether to enable or disable call
+                                screening.
                               </label>
                             </div>
                           </div>
@@ -920,11 +980,6 @@ const ExtensionsAdd = () => {
                   </label>
                 </div>
               </div> */}
-
-
-
-
-
 
                     <div />
                   </form>

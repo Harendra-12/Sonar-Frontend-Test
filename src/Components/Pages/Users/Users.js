@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   backToTop,
+  generalDeleteFunction,
   generalGetFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
@@ -37,6 +38,8 @@ const Users = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [refreshState, setRefreshState] = useState(false);
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
+  // const [popUpDelete, setPopUpDelete] = useState(false);
+  const [deleteId, setDeleteId] = useState();
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
       setOnlineUSer(
@@ -150,6 +153,23 @@ const Users = () => {
     }
   };
 
+  const handleDelete = async (deleteId) => {
+    setPopUp(false);
+    const apiData = await generalDeleteFunction(`/user/${deleteId}`);
+
+    if (apiData.status) {
+      const updatedData = user.data.filter((item) => item.id !== deleteId);
+      setUser({ ...user, data: updatedData });
+      setFilterUser(updatedData);
+      dispatch({
+        type: "SET_USERSBYACCOUNT",
+        usersByAccount: { ...user, data: updatedData },
+      });
+    } else {
+      toast.error(apiData.error);
+    }
+    setDeleteId(deleteId);
+  };
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -266,6 +286,7 @@ const Users = () => {
                             <th>Online</th>
                             <th>Edit</th>
                             <th>Status</th>
+                            <th>Delete</th>
                           </tr>
                         </thead>
                         <tbody className="">
@@ -382,6 +403,17 @@ const Users = () => {
                                           </label>
                                         </div>
                                       </td>
+                                      <td>
+                                        <button
+                                          className="tableButton delete"
+                                          onClick={() => {
+                                            setPopUp(true);
+                                            setDeleteId(item.id);
+                                          }}
+                                        >
+                                          <i className="fa-solid fa-trash" />
+                                        </button>
+                                      </td>
                                     </tr>
                                   );
                                 })}
@@ -431,6 +463,9 @@ const Users = () => {
                 <div className="col-10 ps-0">
                   <h4>Warning!</h4>
                   <p>
+                    {deleteId
+                      ? "Are you sure you want to delete this user?"
+                      : ""}
                     {error
                       ? error
                       : selectedUser?.id
@@ -447,6 +482,8 @@ const Users = () => {
                         // setForce(true);
                         if (selectedUser?.id) {
                           handleUpdateStatusUser(selectedUser?.id);
+                        } else if (deleteId) {
+                          handleDelete(deleteId);
                         } else {
                           setPopUp(false);
                           navigate("/roles");
@@ -462,7 +499,10 @@ const Users = () => {
                     </button>
                     <button
                       className="panelButton gray m-0 float-end"
-                      onClick={() => setPopUp(false)}
+                      onClick={() => {
+                        setPopUp(false);
+                        setDeleteId();
+                      }}
                     >
                       <span className="text">Cancel</span>
                       <span className="icon">

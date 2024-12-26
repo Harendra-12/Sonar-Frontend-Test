@@ -78,7 +78,12 @@ function CallCenterQueueEdit() {
     reset,
     setValue,
     watch,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      // status: true, // Set the default value for "status" to true
+      call_timeout: `${160}`,
+    },
+  });
 
   // Calling api for getting user data and call center queue data
   useEffect(() => {

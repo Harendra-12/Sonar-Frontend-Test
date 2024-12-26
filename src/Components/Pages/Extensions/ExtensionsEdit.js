@@ -134,7 +134,12 @@ const ExtensionsEdit = () => {
     setError,
     setValue,
     clearErrors,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      // status: true, // Set the default value for "status" to true
+      callTimeOut: `${160}`,
+    },
+  });
 
   const account = useSelector((state) => state.account);
   useEffect(() => {
