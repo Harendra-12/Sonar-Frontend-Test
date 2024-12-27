@@ -37,7 +37,7 @@ function Navbar() {
   const location = useLocation();
 
   const isChildActive = (childPaths) => {
-    return childPaths.some((path) => location.pathname.includes(path));
+    return childPaths.some((path) => location.pathname === path);
   };
 
   return (
