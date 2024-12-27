@@ -73,9 +73,9 @@ function Call({
       );
       if (apiData.status) {
         console.log(apiData);
-        setAllApiData(apiData.data.calls.reverse());
-        const result = apiData.data.calls.reverse();
-        setRawData(apiData.data);
+        setAllApiData(apiData.data.data.data.reverse());
+        const result = apiData.data.data.data.reverse();
+        setRawData(apiData.data.data);
         setData([...data, ...result]);
         setLoading(false);
         setIsLoading(false);
