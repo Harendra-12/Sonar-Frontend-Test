@@ -872,7 +872,7 @@ function Call({
                       >
                         <i className="fa-light fa-phone" />
                       </button>
-                      <button
+                      {/* <button
                         onClick={() => setClickStatus("incoming")}
                         className={
                           clickStatus === "incoming"
@@ -907,7 +907,7 @@ function Call({
                         data-category="missed"
                       >
                         <i className="fa-light fa-phone-missed" />
-                      </button>
+                      </button> */}
                       {/* <button
                         onClick={() => setClickStatus("voicemail")}
                         className={
