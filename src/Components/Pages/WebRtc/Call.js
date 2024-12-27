@@ -56,6 +56,8 @@ function Call({
   const [endDateFlag, setEndDateFlag] = useState("");
   const [endDate, setEndDate] = useState("");
   const [filterState, setfilterState] = useState("all");
+  const [firstTimeClickedExtension, setFirstTimeClickedExtension] =
+    useState(false);
 
   console.log(startDate, endDate);
   useEffect(() => {
@@ -142,7 +144,7 @@ function Call({
         break;
       case "all":
       default:
-        filteredCalls = allCalls;
+        filteredCalls = data;
         break;
     }
     // search functionality
@@ -164,15 +166,17 @@ function Call({
     if (clickedCall == null) {
       setClickedCall(filteredCalls[0]);
     }
+    console.log("filteredCalls", data, filteredCalls, clickStatus);
 
-    if (filteredCalls[0]) {
+    if (filteredCalls[0] && !firstTimeClickedExtension) {
       setClickedExtension(
         filteredCalls[0]["Caller-Callee-ID-Number"] === extension
           ? filteredCalls[0]["Caller-Caller-ID-Number"]
           : filteredCalls[0]["Caller-Callee-ID-Number"]
       );
+      setFirstTimeClickedExtension(true);
     }
-    console.log("filteredCalls", filteredCalls);
+
     setCallHistory(
       filteredCalls[0] &&
         allApiData.filter((item) => {
@@ -187,8 +191,8 @@ function Call({
           return true;
         })
     );
-  }, [allCalls, clickStatus, searchQuery]);
-
+  }, [data, clickStatus, searchQuery]);
+  console.log(clickedExtension);
   const formatTime = (duration) => {
     const sec = Math.floor(duration % 60);
     const min = Math.floor((duration / 60) % 60);
