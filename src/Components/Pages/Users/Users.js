@@ -270,7 +270,6 @@ const Users = () => {
                           placeholder="Search"
                           value={userInput}
                           onChange={(e) => setuserInput(e.target.value)}
-                          style={{ paddingRight: 100 }}
                         />
                       </div>
                     </div>
