@@ -255,6 +255,7 @@ function Navbar() {
                           "/port-number",
                           "/port-number-add",
                           "/port-number-edit",
+                          "/did-listing",
                         ])
                           ? "true"
                           : "false"
@@ -273,6 +274,7 @@ function Navbar() {
                         "/port-number",
                         "/port-number-add",
                         "/port-number-edit",
+                        "/did-listing",
                       ])
                         ? "show"
                         : ""
@@ -351,7 +353,7 @@ function Navbar() {
                           "/extensions-add",
                           "/device-provisioning-add",
                           "/device-provisioning-edit",
-                          "/did-listing",
+                          "/did-listing-pbx",
                           "/did-config",
                           "/did-add",
                           "/ring-groups",
@@ -389,7 +391,7 @@ function Navbar() {
                         "/extensions-add",
                         "/device-provisioning-add",
                         "/device-provisioning-edit",
-                        "/did-listing",
+                        "/did-listing-pbx",
                         "/did-config",
                         "/did-add",
                         "/ring-groups",
