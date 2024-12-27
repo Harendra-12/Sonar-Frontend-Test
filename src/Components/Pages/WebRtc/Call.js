@@ -56,6 +56,8 @@ function Call({
   const [endDateFlag, setEndDateFlag] = useState("");
   const [endDate, setEndDate] = useState("");
   const [filterState, setfilterState] = useState("all");
+  const [firstTimeClickedExtension, setFirstTimeClickedExtension] =
+    useState(false);
 
   console.log(startDate, endDate);
   useEffect(() => {
@@ -68,13 +70,13 @@ function Call({
 
       const apiData = await generalGetFunction(
         filterBy == "date"
-          ? `/call-details-phone?page_number=${currentPage}&date=${startDate}`
-          : `/call-details-phone?page_number=${currentPage}&date_range=${startDate},${endDate}`
+          ? `/call-details-phone?page_number=${currentPage}&date=${startDate}&search=${searchQuery}`
+          : `/call-details-phone?page_number=${currentPage}&date_range=${startDate},${endDate}&search=${searchQuery}`
       );
       if (apiData.status) {
         console.log(apiData);
-        setAllApiData(apiData.data.data.data.reverse());
-        const result = apiData.data.data.data.reverse();
+        setAllApiData(apiData.data.data.reverse());
+        const result = apiData.data.data.reverse();
         setRawData(apiData.data.data);
         setData([...data, ...result]);
         setLoading(false);
@@ -85,7 +87,7 @@ function Call({
       }
     }
     fetchData();
-  }, [currentPage, startDate, endDate]);
+  }, [currentPage, startDate, endDate, searchQuery]);
 
   const callListRef = useRef(null);
   const handleScroll = () => {
@@ -142,59 +144,61 @@ function Call({
         break;
       case "all":
       default:
-        filteredCalls = allCalls;
+        filteredCalls = data;
         break;
     }
     // search functionality
-    if (searchQuery) {
-      const lowerCaseSearchQuery = searchQuery.toLowerCase();
-      filteredCalls = filteredCalls.filter((call) => {
-        return (
-          call.caller_user?.username
-            ?.toLowerCase()
-            .includes(lowerCaseSearchQuery) ||
-          call["Caller-Callee-ID-Number"]
-            .toString()
-            .toLowerCase()
-            .includes(lowerCaseSearchQuery)
-        );
-      });
-    }
+    // if (searchQuery) {
+    //   const lowerCaseSearchQuery = searchQuery.toLowerCase();
+    //   filteredCalls = filteredCalls.filter((call) => {
+    //     return (
+    //       call.caller_user?.username
+    //         ?.toLowerCase()
+    //         .includes(lowerCaseSearchQuery) ||
+    //       call["Caller-Callee-ID-Number"]
+    //         .toString()
+    //         .toLowerCase()
+    //         .includes(lowerCaseSearchQuery)
+    //     );
+    //   });
+    // }
     setPreviewCalls(filteredCalls);
     if (clickedCall == null) {
       setClickedCall(filteredCalls[0]);
     }
 
-    if (filteredCalls[0]) {
+    if (filteredCalls[0] && !firstTimeClickedExtension) {
       setClickedExtension(
         filteredCalls[0]["Caller-Callee-ID-Number"] === extension
           ? filteredCalls[0]["Caller-Caller-ID-Number"]
           : filteredCalls[0]["Caller-Callee-ID-Number"]
       );
+      setFirstTimeClickedExtension(true);
     }
-    console.log("filteredCalls", filteredCalls);
+
     setCallHistory(
       filteredCalls[0] &&
-      allApiData.filter((item) => {
-        if (!isCustomerAdmin) {
-          return (
-            (item["Caller-Callee-ID-Number"] === extension &&
-              item["Caller-Caller-ID-Number"] === clickedExtension) ||
-            (item["Caller-Caller-ID-Number"] === extension &&
-              item["Caller-Callee-ID-Number"] === clickedExtension)
-          );
-        }
-        return true;
-      })
+        allApiData.filter((item) => {
+          if (!isCustomerAdmin) {
+            return (
+              (item["Caller-Callee-ID-Number"] === extension &&
+                item["Caller-Caller-ID-Number"] === clickedExtension) ||
+              (item["Caller-Caller-ID-Number"] === extension &&
+                item["Caller-Callee-ID-Number"] === clickedExtension)
+            );
+          }
+          return true;
+        })
     );
-  }, [allCalls, clickStatus, searchQuery]);
-
+  }, [data, clickStatus]);
+  console.log(clickedExtension);
   const formatTime = (duration) => {
     const sec = Math.floor(duration % 60);
     const min = Math.floor((duration / 60) % 60);
     const hour = Math.floor(duration / 3600);
     return (
-      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${sec ? sec + " sec" : ""
+      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${
+        sec ? sec + " sec" : ""
       }` || "0 sec"
     );
   };
@@ -228,8 +232,8 @@ function Call({
     const displayName = matchingContact
       ? matchingContact.name
       : item["Caller-Callee-ID-Number"] === extension
-        ? item["Caller-Caller-ID-Number"]
-        : item["Caller-Callee-ID-Number"];
+      ? item["Caller-Caller-ID-Number"]
+      : item["Caller-Callee-ID-Number"];
 
     const matchingCalleeContactForAdmin = allContact.find(
       (contact) => contact.did === item["Caller-Callee-ID-Number"]
@@ -243,26 +247,27 @@ function Call({
         key={item.id}
         onClick={() => handleCallItemClick(item)}
         onDoubleClick={() => handleDoubleClickCall(item)}
-        className={`callListItem ${item["Caller-Callee-ID-Number"] === extension &&
+        className={`callListItem ${
+          item["Caller-Callee-ID-Number"] === extension &&
           item["variable_billsec"] > 0 &&
           !isCustomerAdmin
-          ? "incoming"
-          : item["Caller-Caller-ID-Number"] === extension && !isCustomerAdmin
+            ? "incoming"
+            : item["Caller-Caller-ID-Number"] === extension && !isCustomerAdmin
             ? "outgoing"
             : item["Caller-Callee-ID-Number"] === extension &&
               item["variable_billsec"] === 0 &&
               !isCustomerAdmin
-              ? "missed"
-              : item["Call-Direction"] === "voicemail" && !isCustomerAdmin
-                ? "voicemail"
-                : ""
-          } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
+            ? "missed"
+            : item["Call-Direction"] === "voicemail" && !isCustomerAdmin
+            ? "voicemail"
+            : ""
+        } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
       >
         <div className="row justify-content-between">
           <div className="col-xl-12 d-flex">
             <div
               className="profileHolder"
-            // id={"profileOfflineNav"}
+              // id={"profileOfflineNav"}
             >
               <i className="fa-light fa-user fs-5"></i>
             </div>
@@ -275,8 +280,8 @@ function Call({
                   {displayName
                     ? displayName
                     : item.caller_user
-                      ? item.caller_user.username
-                      : "USER XYZ"}
+                    ? item.caller_user.username
+                    : "USER XYZ"}
                 </h4>
                 <h5 style={{ paddingLeft: 20 }}>
                   {item["Caller-Callee-ID-Number"] === extension
@@ -476,13 +481,13 @@ function Call({
             mode === "audio"
               ? true
               : {
-                mandatory: {
-                  minWidth: 1280,
-                  minHeight: 720,
-                  minFrameRate: 30,
+                  mandatory: {
+                    minWidth: 1280,
+                    minHeight: 720,
+                    minFrameRate: 30,
+                  },
+                  optional: [{ facingMode: "user" }],
                 },
-                optional: [{ facingMode: "user" }],
-              },
         },
       }
     );
@@ -735,7 +740,11 @@ function Call({
                               setStartDateFlag("");
                               setEndDateFlag("");
                             }}
-                            style={{ background: 'var(--searchBg)', borderColor: 'var(--border-color)', borderRadius: '5px' }}
+                            style={{
+                              background: "var(--searchBg)",
+                              borderColor: "var(--border-color)",
+                              borderRadius: "5px",
+                            }}
                           >
                             <option value={"date"}>Only Date</option>
                             <option value={"date_range"}>Date Range</option>
@@ -779,7 +788,11 @@ function Call({
                                   setStartDateFlag(e.target.value);
                                   // setPageNumber(1);
                                 }}
-                                style={{ background: 'var(--searchBg)', borderColor: 'var(--border-color)', borderRadius: '5px' }}
+                                style={{
+                                  background: "var(--searchBg)",
+                                  borderColor: "var(--border-color)",
+                                  borderRadius: "5px",
+                                }}
                               />
                             </div>
                           )}
@@ -798,7 +811,11 @@ function Call({
                                     setStartDateFlag(e.target.value);
                                     // setPageNumber(1);
                                   }}
-                                  style={{ background: 'var(--searchBg)', borderColor: 'var(--border-color)', borderRadius: '5px' }}
+                                  style={{
+                                    background: "var(--searchBg)",
+                                    borderColor: "var(--border-color)",
+                                    borderRadius: "5px",
+                                  }}
                                 />
                               </div>
                               <div className="">
@@ -815,7 +832,11 @@ function Call({
                                     // setPageNumber(1);
                                   }}
                                   min={startDateFlag} // Prevent selecting an end date before the start date
-                                  style={{ background: 'var(--searchBg)', borderColor: 'var(--border-color)', borderRadius: '5px' }}
+                                  style={{
+                                    background: "var(--searchBg)",
+                                    borderColor: "var(--border-color)",
+                                    borderRadius: "5px",
+                                  }}
                                 />
                               </div>
                             </>
