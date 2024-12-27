@@ -144,7 +144,6 @@ const RingGroupEdit = () => {
         } else {
           navigate("/");
         }
-
         if (ringData?.status) {
           setLoading(false);
 
