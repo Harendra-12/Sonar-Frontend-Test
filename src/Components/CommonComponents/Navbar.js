@@ -106,7 +106,7 @@ function Navbar() {
                       data-bs-toggle="collapse"
                       data-bs-target="#collapse8"
                       aria-expanded={
-                        isChildActive(["/my-profile", "/change-password"])
+                        isChildActive(["/my-profile", "/change-password", "/admin/package", "/users", "/users-edit", "/users-add", "/roles", "/master"])
                           ? "true"
                           : "false"
                       }

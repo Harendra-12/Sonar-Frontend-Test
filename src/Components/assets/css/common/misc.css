@@ -662,6 +662,12 @@ input[type=number] {
     color: var(--immortalBlack);
 }
 
+.contactTagsAddEdit span {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .contactTags span.removableTag:hover::before {
     content: '\f057';
     font-family: 'Font Awesome 5 Pro';
