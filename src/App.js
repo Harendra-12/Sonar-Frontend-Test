@@ -135,6 +135,7 @@ import ActiveCallsPage from "./Components/Pages/PhoneDashboard/ActiveCallsPage";
 import CallDashboardProvider from "./Components/Pages/CallDashboardProvider/CallDashboardProvider";
 import ExtensionStore from "./Components/Pages/Stores/ExtensionStore";
 import CallDesposition from "./Components/Pages/DialerModule/CallDesposition";
+import KnowledgeBase from "./Components/Pages/Support/KnowledgeBase";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -659,6 +660,14 @@ function App() {
           <Route path="/lead-edit" element={<LeadEdit />} />
           <Route path="/lead-add" element={<LeadAdd />} />
           {/* ------ Leads */}
+
+
+          {/* ------ Support  */}
+          <Route path="/knowledge-base" element={<KnowledgeBase />} />
+          {/* <Route path="/Call-desposition" element={<CallDesposition />} /> */}
+          {/* ------ Support  */}
+
+
 
           {/* ------ Campaigns */}
           <Route path="/campaigns" element={<Campaigns />} />
