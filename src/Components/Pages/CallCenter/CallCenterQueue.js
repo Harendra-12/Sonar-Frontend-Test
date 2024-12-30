@@ -221,7 +221,7 @@ function CallCenterQueue() {
       setLoading(false);
     }
   };
-
+  //test
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -234,13 +234,20 @@ function CallCenterQueue() {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Call Center Queue List
-                          <button className="clearButton" onClick={() => setRefreshState(refreshState + 1)} disabled={loading}>
-                            <i className={
-                              loading
-                                ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
-                                : "fa-regular fa-arrows-rotate fs-5"
-                            }></i>
+                        <h4>
+                          Call Center Queue List
+                          <button
+                            className="clearButton"
+                            onClick={() => setRefreshState(refreshState + 1)}
+                            disabled={loading}
+                          >
+                            <i
+                              className={
+                                loading
+                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                  : "fa-regular fa-arrows-rotate fs-5"
+                              }
+                            ></i>
                           </button>
                         </h4>
                       </div>
@@ -466,7 +473,7 @@ function CallCenterQueue() {
                                       );
                                     })}
                                   {callCenter &&
-                                    callCenter.data.length === 0 ? (
+                                  callCenter.data.length === 0 ? (
                                     <td colSpan={99}>
                                       <EmptyPrompt
                                         name="Call Center"
@@ -520,7 +527,8 @@ function CallCenterQueue() {
                       ? error
                       : "Are you sure you want to delete this queue?"}
                     {selectedCallCenter?.id &&
-                      `Are you sure you want to ${selectedCallCenter?.status == 1 ? "disable" : "enable"
+                      `Are you sure you want to ${
+                        selectedCallCenter?.status == 1 ? "disable" : "enable"
                       } the queue ${selectedCallCenter?.queue_name}?`}
                   </p>
                   <div className="mt-2 d-flex justify-content-between">

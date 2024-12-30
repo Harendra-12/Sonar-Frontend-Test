@@ -155,7 +155,12 @@ const Extensions = () => {
                         <Link
                           // to="/extensions-add"
                           to="#"
-                          onClick={() => window.open("https://ucaas.webvio.in:3001/", "_blank")}
+                          onClick={() =>
+                            window.open(
+                              "https://ucaas.webvio.in:3001/",
+                              "_blank"
+                            )
+                          }
                           effect="ripple"
                           className="panelButton"
                         >
@@ -200,11 +205,11 @@ const Extensions = () => {
                         <thead>
                           <tr>
                             <th>Extensions</th>
-                            {/* <th>User</th> */}
+                            <th>Name</th>
                             {/* <th>Domains</th> */}
                             <th>Effective CID Name</th>
                             <th>Outbound CID Name</th>
-                            <th>Call Group</th>
+                            <th>Usage</th>
                             {/* <th>Call Screen</th> */}
                             <th>Description</th>
                             <th className="text-center">Status</th>
@@ -230,7 +235,9 @@ const Extensions = () => {
                             </tr>
                           ) : (
                             <>
-                              {loading ? (<SkeletonTableLoader col={8} row={15} />) : (
+                              {loading ? (
+                                <SkeletonTableLoader col={9} row={15} />
+                              ) : (
                                 ""
                               )}
                               {extension &&
@@ -250,7 +257,15 @@ const Extensions = () => {
                                         }
                                       >
                                         {item.extension}{" "}
-                                        {foundUser ? `(${foundUser.name})` : ""}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          navigate(
+                                            `/extensions-edit?id=${item.id}`
+                                          )
+                                        }
+                                      >
+                                        {foundUser ? `${foundUser.name}` : ""}
                                       </td>
                                       {/* <td
                               onClick={() =>
@@ -284,7 +299,7 @@ const Extensions = () => {
                                           )
                                         }
                                       >
-                                        {item.callgroup}
+                                        {item.usage}
                                       </td>
                                       {/* <td
                                         onClick={() =>

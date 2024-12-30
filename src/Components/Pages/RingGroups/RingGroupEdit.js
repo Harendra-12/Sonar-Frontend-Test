@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-// import { Link } from 'react-router-dom'
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   backToTop,
   generalDeleteFunction,
@@ -8,17 +7,12 @@ import {
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
-
-import CircularLoader from "../../Loader/CircularLoader";
-import Select from "react-select";
-import { useForm, Controller } from "react-hook-form";
+import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
 import {
-  emailValidator,
   lengthValidator,
   minValidator,
   nameNumberValidator,
-  nameValidator,
   noSpecialCharactersValidator,
   numberValidator,
   requiredValidator,
@@ -63,6 +57,9 @@ const RingGroupEdit = () => {
     useState(false);
   const [bulkAddPopUp, setBulkAddPopUp] = useState(false);
   const [bulkUploadSelectedAgents, setBulkUploadSelectedAgents] = useState([]);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectAll, setSelectAll] = useState(false);
   const {
     register,
     watch,
@@ -72,11 +69,11 @@ const RingGroupEdit = () => {
     clearErrors,
     reset,
     setValue,
-    control,
   } = useForm({
     defaultValues: {
       status: true, // Set the default value for "status" to true
       timeout_destination: "",
+      call_timeout: `${160}`,
     },
   });
 
@@ -147,7 +144,6 @@ const RingGroupEdit = () => {
         } else {
           navigate("/");
         }
-
         if (ringData?.status) {
           setLoading(false);
 
@@ -278,73 +274,9 @@ const RingGroupEdit = () => {
   const actionListValue = (value) => {
     setValue("timeout_destination", value[0]);
   };
-
-  // Custom styles for react-select
-  const customStyles = {
-    control: (provided, state) => ({
-      ...provided,
-      // border: '1px solid var(--color4)',
-      border: "1px solid #ababab",
-      borderRadius: "2px",
-      outline: "none",
-      fontSize: "14px",
-      width: "100%",
-      minHeight: "32px",
-      height: "32px",
-      boxShadow: state.isFocused ? "none" : provided.boxShadow,
-      "&:hover": {
-        borderColor: "none",
-      },
-    }),
-    valueContainer: (provided) => ({
-      ...provided,
-      height: "32px",
-      padding: "0 6px",
-    }),
-    input: (provided) => ({
-      ...provided,
-      margin: "0",
-    }),
-    indicatorSeparator: (provided) => ({
-      display: "none",
-    }),
-    indicatorsContainer: (provided) => ({
-      ...provided,
-      height: "32px",
-    }),
-    dropdownIndicator: (provided) => ({
-      ...provided,
-      color: "#202020",
-      "&:hover": {
-        color: "#202020",
-      },
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      paddingLeft: "15px",
-      paddingTop: 0,
-      paddingBottom: 0,
-      // backgroundColor: state.isSelected ? "transparent" : "transparent",
-      "&:hover": {
-        backgroundColor: "#0055cc",
-        color: "#fff",
-      },
-      fontSize: "14px",
-    }),
-    menu: (provided) => ({
-      ...provided,
-      margin: 0,
-      padding: 0,
-    }),
-    menuList: (provided) => ({
-      ...provided,
-      padding: 0,
-      margin: 0,
-      maxHeight: "150px",
-      overflowY: "auto",
-    }),
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
   };
-
   // Function to handle changes in destination fields
   const handleDestinationChange = (index, event) => {
     const { name, value } = event.target;
@@ -479,10 +411,14 @@ const RingGroupEdit = () => {
       });
       return;
     }
-    if (data.timeout_destination != "" && !data.call_timeout) {
-      toast.error("Please Mention call timeout for timeout destination");
+    if (destination.length === 0) {
+      toast.error("Please add at least one destination");
       return;
     }
+    // if (data.timeout_destination != "" && !data.call_timeout) {
+    //   toast.error("Please Mention call timeout for timeout destination");
+    //   return;
+    // }
     const payLoad = {
       ...data,
       ...{
@@ -571,31 +507,86 @@ const RingGroupEdit = () => {
       }
     });
   };
-
+  const filteredUsers = user?.filter(
+    (user) =>
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (user?.extension?.extension || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+  );
+  const availableUsers = filteredUsers?.filter(
+    (user) =>
+      !destination.some(
+        (agent) => user.extension.extension == agent.destination
+      )
+  );
   const handleBulkDestinationUpload = (selectedDestinations) => {
-    const newDestinations = [...destination]; // Copy the current destination array
-
-    selectedDestinations.forEach((selectedDestination) => {
-      const existingDestinationIndex = newDestinations.findIndex(
-        (d) => d.name === selectedDestination.name
-      );
-
-      if (existingDestinationIndex === -1) {
-        // Add new destination if it doesn't already exist
-        newDestinations.push({
+    if (destination.length === 1 && destination[0].destination === "") {
+      const newDestinations = selectedDestinations.map(
+        (selectedDestination) => ({
           id: Math.floor(Math.random() * 10000),
           destination: selectedDestination?.extension?.extension,
           delay: 0,
           timeOut: "30",
-
           status: "inactive",
-        });
-      }
-    });
+        })
+      );
 
-    setDestination(newDestinations); // Update the destination state
+      setDestination(newDestinations); // Replace the entire destination state
+    } else {
+      const newDestinations = [...destination]; // Copy the current destination array
+
+      selectedDestinations.forEach((selectedDestination) => {
+        const existingDestinationIndex = newDestinations.findIndex(
+          (d) => d.name === selectedDestination.name
+        );
+
+        if (existingDestinationIndex === -1) {
+          // Add new destination if it doesn't already exist
+          newDestinations.push({
+            id: Math.floor(Math.random() * 10000),
+            destination: selectedDestination?.extension?.extension,
+            delay: 0,
+            timeOut: "30",
+
+            status: "inactive",
+          });
+        }
+      });
+
+      setDestination(newDestinations); // Update the destination state
+    }
+    setBulkUploadSelectedAgents([]);
+    setSelectAll(false);
   };
-  console.log(user, destination);
+  const handleSelectAll = () => {
+    const newSelectAllState = !selectAll; // Toggle Select All state
+    setSelectAll(newSelectAllState);
+
+    if (newSelectAllState) {
+      // Add all visible users to bulkUploadSelectedAgents
+      availableUsers.forEach((item) => {
+        if (
+          !bulkUploadSelectedAgents.some(
+            (agent) => agent.extension.extension == item.extension.extension
+          )
+        ) {
+          handleCheckboxChange(item);
+        }
+      });
+    } else {
+      // Remove all visible users from bulkUploadSelectedAgents
+      availableUsers.forEach((item) => {
+        if (
+          bulkUploadSelectedAgents.some(
+            (agent) => agent.extension.extension == item.extension.extension
+          )
+        ) {
+          handleCheckboxChange(item);
+        }
+      });
+    }
+  };
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -1320,10 +1311,15 @@ const RingGroupEdit = () => {
                   </form>
                 </div>
                 <div className="col-12" style={{ padding: "20px 23px" }}>
-                  <button onClick={() => setBulkAddPopUp(true)} className="panelButton ms-auto  " ><span className="text">Bulk Add</span>
-                  <span className="icon">
-                    <i class="fa-solid fa-plus"></i>
-                  </span></button>
+                  <button
+                    onClick={() => setBulkAddPopUp(true)}
+                    className="panelButton ms-auto  "
+                  >
+                    <span className="text">Bulk Add</span>
+                    <span className="icon">
+                      <i class="fa-solid fa-plus"></i>
+                    </span>
+                  </button>
                   <form className="row">
                     <div className="formRow col-xl-12">
                       {destination.map((item, index) => {
@@ -1399,6 +1395,7 @@ const RingGroupEdit = () => {
                                   type="text"
                                   name="destination"
                                   value={item.destination}
+                                  disabled
                                   onChange={(e) => {
                                     const selectedValue = e.target.value;
                                     if (selectedValue === "addUser") {
@@ -1587,7 +1584,7 @@ const RingGroupEdit = () => {
                                 </button>
                               </div>
                             )}
-                            {index === 0 ? (
+                            {/* {index === 0 ? (
                               <div className="mt-auto">
                                 <button
                                   onClick={() => addNewDestination()}
@@ -1603,7 +1600,7 @@ const RingGroupEdit = () => {
                               </div>
                             ) : (
                               ""
-                            )}
+                            )} */}
                           </div>
                         );
                       })}
@@ -1637,58 +1634,167 @@ const RingGroupEdit = () => {
           <div className="row">
             <div className="col-12 heading mb-0">
               <i className="fa-light fa-user-plus" />
-              <h5>Add People to the selected Queue</h5>
-              <p>
+              <h5>Add People to the selected Ring Group</h5>
+              {/* <p>
                 Add people to yourqueue effortlessly, keeping your connections
                 organized and efficient
-              </p>
-              <div className="border-bottom col-12" />
+              </p> */}
+              {/* <div className="border-bottom col-12" /> */}
             </div>
-            <div className="col-12 mt-3">
-              {user
-                .filter(
-                  (user) =>
-                    !destination.some(
-                      (agent) =>
-                        user.extension.extension == agent.destination
+            <div className="col-xl-12">
+              <div className="col-12 d-flex justify-content-between align-items-center">
+                <input
+                  type="text"
+                  className="formItem"
+                  placeholder="Search"
+                  name="name"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                />
+                <button
+                  className="tableButton ms-2"
+                  onClick={() => navigate("/users-add")}
+                >
+                  <i className="fa-solid fa-user-plus"></i>
+                </button>
+              </div>
+            </div>
+            <div className="col-xl-12 mt-3">
+              <div
+                className="tableContainer mt-0"
+                style={{ maxHeight: "calc(100vh - 400px)" }}
+              >
+                <table>
+                  <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <th>Name</th>
+                      <th>Extension</th>
+                      <th>
+                        <input
+                          type="checkbox"
+                          onChange={handleSelectAll} // Call handler on change
+                          checked={selectAll ? true : false} // Keep checkbox state in sync
+                        />
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* {user
+                    .filter(
+                      (user) =>
+                        // Filter logic: checks name or extension against search query
+                        user.name
+                          .toLowerCase()
+                          .includes(searchQuery.toLowerCase()) ||
+                        (user?.extension?.extension || "")
+                          .toLowerCase()
+                          .includes(searchQuery.toLowerCase())
                     )
-                )
-                .map((item, index) => {
-                  return (
-                    <div key={index}>
-                      <div className="row g-2">
-                        <div className="col-auto">
-                          <label className="formLabel">{index + 1}.</label>
+
+                    .filter(
+                      (user) =>
+                        !destination.some(
+                          (agent) =>
+                            user.extension.extension == agent.destination
+                        )
+                    )
+                    .map((item, index) => {
+                      return (
+                        <div key={index}>
+                          <div className="row g-2">
+                            <div className="col-2">
+                              <span>{index + 1}</span>
+                            </div>
+                            <div className="col-5">
+                              <span>{item.name}</span>
+                            </div>
+                            <div className="col-2">
+                              <span>{item.extension.extension}</span>
+                            </div>
+                            <div className="col-3">
+                              <input
+                                type="checkbox"
+                                onChange={() => handleCheckboxChange(item)} // Call handler on change
+                                checked={bulkUploadSelectedAgents.some(
+                                  (agent) => agent.name === item.name
+                                )} // Keep checkbox state in sync
+                              />
+                            </div>
+                          </div>
                         </div>
-                        <div className="col">
-                          <label className="formLabel details">{item.name}</label>
-                        </div>
-                        <div className="col-auto ms-auto">
-                          <input
-                            type="checkbox"
-                            onChange={() => handleCheckboxChange(item)} // Call handler on change
-                            checked={bulkUploadSelectedAgents.some(
-                              (agent) => agent.name === item.name
-                            )} // Keep checkbox state in sync
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+                      );
+                    })} */}
+                    {user
+                      .sort((a, b) => {
+                        const aMatches =
+                          a.name
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase()) ||
+                          (a?.extension?.extension || "")
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase());
+                        const bMatches =
+                          b.name
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase()) ||
+                          (b?.extension?.extension || "")
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase());
+                        // Sort: matching items come first
+                        return bMatches - aMatches;
+                      })
+                      .filter(
+                        (user) =>
+                          !destination.some(
+                            (agent) =>
+                              user.extension.extension == agent.destination
+                          )
+                      )
+                      .map((item, index) => {
+                        return (
+                          <tr key={item.id || index}>
+                            <td>{index + 1}</td>
+                            <td>{item.name}</td>
+                            <td>{item.extension.extension}</td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                onChange={() => handleCheckboxChange(item)} // Call handler on change
+                                checked={bulkUploadSelectedAgents.some(
+                                  (agent) => agent.name === item.name
+                                )} // Keep checkbox state in sync
+                              />
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </table>
+              </div>
             </div>
-            <div className="col-xl-12 mt-4">
+            <div className="col-xl-12 mt-2">
               <div className="d-flex justify-content-between">
-                <button className="panelButton gray ms-0" onClick={() => {
-                  setBulkAddPopUp(false);
-                }}
+                <button
+                  className="panelButton gray ms-0"
+                  onClick={() => {
+                    setBulkAddPopUp(false);
+                    setBulkUploadSelectedAgents([]);
+                    setSelectAll(false);
+                  }}
                 >
                   <span className="text">Close</span>
                   <span className="icon">
-                    <i className="fa-solid fa-caret-left" />
+                    <i class="fa-light fa-xmark"></i>
                   </span>
                 </button>
-                <button className="panelButton me-0" onClick={() => { handleBulkDestinationUpload(bulkUploadSelectedAgents); setBulkAddPopUp(false); }}>
+                <button
+                  onClick={() => {
+                    handleBulkDestinationUpload(bulkUploadSelectedAgents);
+                    setBulkAddPopUp(false);
+                  }}
+                  className="panelButton"
+                >
                   <span className="text">Done</span>
                   <span className="icon">
                     <i className="fa-solid fa-check" />

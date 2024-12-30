@@ -1,11 +1,11 @@
 /* Root Variables for Colors */
-:root {
+.product-container {
     --primary-color: rgb(24, 141, 236);
 
     /* --text-light-gray: #6a6a6a; */
     --button-hover-color: #0056b3;
     --background-color: #fff;
-    --border-color: rgb(119, 119, 119);
+    /* --border-color: rgb(119, 119, 119); */
 }
 
 /* Product Grid */
@@ -94,7 +94,6 @@
     z-index: 1;
 
 
-    
     &:after {
         content: '';
         position: absolute;
@@ -209,7 +208,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-   
 }
 
 .offcanvas-text-side .text-number p {
@@ -231,25 +229,34 @@
     font-size: 12px !important;
     /* margin-bottom: 15px; */
     text-align: center;
-   
+
     margin: 0px;
     padding: 0px;
 }
-.offcanvas-custom {
-    background-color: #404146; /* Dark background */
-    color: #ffffff; /* White text */
-  }
-  .offcanvas-custom  offcanvas-custom{
-   
-    color: #ffffff; /* White text */
-  }
 
-  .offcanvas-custom a {
-    color: #ffdd57; /* Custom link color */
-  }
-  .offcanvas-custom a:hover {
-    color: #ffc107; /* Link hover color */
-  }
+.offcanvas-custom {
+    background-color: #404146;
+    /* Dark background */
+    color: #ffffff;
+    /* White text */
+}
+
+.offcanvas-custom offcanvas-custom {
+
+    color: #ffffff;
+    /* White text */
+}
+
+.offcanvas-custom a {
+    color: #ffdd57;
+    /* Custom link color */
+}
+
+.offcanvas-custom a:hover {
+    color: #ffc107;
+    /* Link hover color */
+}
+
 /* Paragraph Section */
 .paragrap {
     padding: 15px;
@@ -260,7 +267,7 @@
     font-weight: 600;
 }
 
-.paragrap ul{
+.paragrap ul {
     font-size: 13px;
     font-weight: 400;
     color: var(--secondary-color);

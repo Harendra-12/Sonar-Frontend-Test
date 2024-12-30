@@ -869,11 +869,11 @@ const UsersEdit = () => {
                             Assign an extension to the newly created user.
                           </label>
                         </div>
-                        <div className="col-8">
+                        <div className="col-12">
                           <div className="row">
                             <div
                               className={
-                                watch().extension_id ? "col-8" : "col-12"
+                                watch().extension_id ? "col-5" : "col-5"
                               }
                             >
                               <select
@@ -894,6 +894,22 @@ const UsersEdit = () => {
                                       </option>
                                     );
                                   })}
+                              </select>
+                            </div>
+                            <div
+                              className={`${
+                                watch().extension_id ? "col-5" : "col-5"
+                              }`}
+                            >
+                              <select
+                                className="formItem"
+                                name="extension_id"
+                                // value={watch().extension_id}
+                                // {...register("extension_id")}
+                              >
+                                <option value="pbx">PBX</option>
+                                <option value="dialer">Dialer</option>
+                                <option value="both">Both</option>
                               </select>
                             </div>
                             {/* {watch().extension_id && (

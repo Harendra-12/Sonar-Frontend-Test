@@ -48,6 +48,9 @@ function CallCenterQueueAdd() {
   const [musicRefreshHold, setMusicRefreshHold] = useState(0);
   const [bulkUploadSelectedAgents, setBulkUploadSelectedAgents] = useState([]);
   const [bulkAddPopUp, setBulkAddPopUp] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectAll, setSelectAll] = useState(false);
+
   const {
     register,
     setError: setErr,
@@ -60,6 +63,7 @@ function CallCenterQueueAdd() {
   } = useForm({
     defaultValues: {
       status: true, // Set the default value for "status" to true
+      call_timeout: `${160}`,
     },
   });
   useEffect(() => {
@@ -113,30 +117,32 @@ function CallCenterQueueAdd() {
 
   // Define agent with some default values
   const [agent, setAgent] = useState([
-    {
-      id: Math.floor(Math.random() * 10000),
-      name: "",
-      level: "0",
-      position: "0",
-      type: "callback",
-      password: "1234",
-      contact: "",
-      call_timeout: "",
-      busy_delay_time: "",
-      reject_delay_time: "",
-      max_no_answer: "",
-      no_answer_delay_time: "",
-      wrap_up_time: "",
-      reserve_agents: 0,
-      "truncate-agents-on-load": 0,
-      "truncate-tiers-on-load": 0,
-    },
+    // {
+    //   id: Math.floor(Math.random() * 10000),
+    //   name: "",
+    //   level: "0",
+    //   position: "0",
+    //   type: "callback",
+    //   password: "1234",
+    //   contact: "",
+    //   call_timeout: "",
+    //   busy_delay_time: "",
+    //   reject_delay_time: "",
+    //   max_no_answer: "",
+    //   no_answer_delay_time: "",
+    //   wrap_up_time: "",
+    //   reserve_agents: 0,
+    //   "truncate-agents-on-load": 0,
+    //   "truncate-tiers-on-load": 0,
+    // },
   ]);
 
   const actionListValue = (value) => {
     setValue("queue_timeout_action", value[0]);
   };
-
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
   // This is for new agent add
   function addNewAgent() {
     setAgent([
@@ -214,9 +220,9 @@ function CallCenterQueueAdd() {
     }
   };
 
-  if (agent.length === 0) {
-    addNewAgent();
-  }
+  // if (agent.length === 0) {
+  //   addNewAgent();
+  // }
 
   // Validate agents
   const validateAgents = () => {
@@ -242,6 +248,10 @@ function CallCenterQueueAdd() {
         message: "Agent name and password required in all rows",
       });
       setLoading(false);
+      return;
+    }
+    if (agent.length === 0) {
+      toast.error("Please add at least one agent");
       return;
     }
 
@@ -354,9 +364,9 @@ function CallCenterQueueAdd() {
   };
   const handleCheckboxChange = (item) => {
     setBulkUploadSelectedAgents((prevSelected) => {
-      if (prevSelected.some((agent) => agent.name === item.name)) {
+      if (prevSelected.some((agent) => agent.name == item.name)) {
         // If the item is already in the array, remove it
-        return prevSelected.filter((agent) => agent.name !== item.name);
+        return prevSelected.filter((agent) => agent.name != item.name);
       } else {
         // Otherwise, add the item
         return [...prevSelected, item];
@@ -364,7 +374,7 @@ function CallCenterQueueAdd() {
     });
   };
   const handleBulkUpload = (selectedAgents) => {
-    if (agent.length === 1 && agent[0].name === "") {
+    if (agent.length == 1 && agent[0].name == "") {
       const newAgents = selectedAgents.map((selectedAgent) => ({
         name: `${selectedAgent.id}`,
         contact: `user/${selectedAgent.extension?.extension}@${selectedAgent.domain?.domain_name}`,
@@ -398,10 +408,10 @@ function CallCenterQueueAdd() {
 
       selectedAgents.forEach((selectedAgent) => {
         const existingAgentIndex = newAgents.findIndex(
-          (a) => a.name === selectedAgent.id
+          (a) => a.name == selectedAgent.id
         );
 
-        if (existingAgentIndex === -1) {
+        if (existingAgentIndex == -1) {
           // Add new agent if it doesn't already exist
           newAgents.push({
             name: `${selectedAgent.id}`,
@@ -434,6 +444,42 @@ function CallCenterQueueAdd() {
 
       setAgent(newAgents); // Update the agent state
       setBulkAddPopUp(false);
+    }
+  };
+
+  const filteredUsers = user.filter(
+    (user) =>
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (user?.extension?.extension || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+  );
+
+  // Filter out agents already added
+  const availableUsers = filteredUsers.filter(
+    (user) => !agent.some((agent) => user.id == agent.name)
+  );
+
+  const handleSelectAll = () => {
+    const newSelectAllState = !selectAll; // Toggle Select All state
+    setSelectAll(newSelectAllState);
+
+    if (newSelectAllState) {
+      // Add all visible users to bulkUploadSelectedAgents
+      availableUsers.forEach((item) => {
+        if (
+          !bulkUploadSelectedAgents.some((agent) => agent.name == item.name)
+        ) {
+          handleCheckboxChange(item);
+        }
+      });
+    } else {
+      // Remove all visible users from bulkUploadSelectedAgents
+      availableUsers.forEach((item) => {
+        if (bulkUploadSelectedAgents.some((agent) => agent.name == item.name)) {
+          handleCheckboxChange(item);
+        }
+      });
     }
   };
   return (
@@ -507,7 +553,10 @@ function CallCenterQueueAdd() {
                 </div>
                 <div
                   className="col-12"
-                  style={{ padding: "25px 23px", borderBottom: "1px solid #ddd" }}
+                  style={{
+                    padding: "25px 23px",
+                    borderBottom: "1px solid #ddd",
+                  }}
                 >
                   <form action="#" className="tangoNavs mb-0">
                     <nav>
@@ -592,7 +641,8 @@ function CallCenterQueueAdd() {
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
                               <label htmlFor="">
-                                Queue Name <span className="text-danger">*</span>
+                                Queue Name{" "}
+                                <span className="text-danger">*</span>
                               </label>
                               <label htmlFor="data" className="formItemDesc">
                                 Enter the queue name.
@@ -610,7 +660,9 @@ function CallCenterQueueAdd() {
                                 onKeyDown={restrictToAllowedChars}
                               />
                               {errors.queue_name && (
-                                <ErrorMessage text={errors.queue_name.message} />
+                                <ErrorMessage
+                                  text={errors.queue_name.message}
+                                />
                               )}
                             </div>
                           </div>
@@ -763,8 +815,8 @@ function CallCenterQueueAdd() {
                             <div className="formLabel">
                               <label htmlFor="">Discard Abandoned After</label>
                               <label htmlFor="data" className="formItemDesc">
-                                The number of seconds before the abandoned call is
-                                removed from the queue.
+                                The number of seconds before the abandoned call
+                                is removed from the queue.
                               </label>
                             </div>
                             <div className="col-xl-6 col-12">
@@ -875,7 +927,9 @@ function CallCenterQueueAdd() {
 
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <label htmlFor="">Tier Rule No Agent No Wait</label>
+                              <label htmlFor="">
+                                Tier Rule No Agent No Wait
+                              </label>
                             </div>
                             <div className="col-xl-6 col-12">
                               <select
@@ -1192,433 +1246,456 @@ function CallCenterQueueAdd() {
               </div> */}
                   </form>
                 </div>
-                <div className="col-12" style={{ padding: "20px 23px" }}>
-                  <button onClick={() => setBulkAddPopUp(true)} className="panelButton m-3  " ><span className="text">Bulk Add</span>
-                  <span className="icon">
-                    <i class="fa-solid fa-plus"></i>
-                  </span></button>
-                  <form className="row">
+                <div className="col-12">
+                  <div class="heading bg-transparent border-bottom-0">
+                    <div class="content">
+                      <h4>List of Agents</h4>
+                      <p>You can see the list of agents in this ring group.</p>
+                    </div>
+                    <div class="buttonGroup">
+                      <button type="button" class="panelButton"
+                        onClick={() => {
+                          if (user.length !== agent.length) setBulkAddPopUp(true);
+                          else toast.warn("All agent selected");
+                        }}
+                      >
+                        <span class="text">Add</span>
+                        <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                      </button>
+                    </div>
+                  </div>
+                  {agent.length > 0 && <form className="row" style={{ padding: "0px 23px 20px" }}>
                     <div className="formRow col-xl-12 border-0">
-                      {agent &&
-                        agent.map((item, index) => {
-                          return (
+                      {agent && agent.map((item, index) => {
+                        return (
+                          <div
+                            className="row pb-3 pt-2 ps-3 col-12"
+                            key={index}
+                            style={{ borderBottom: "1px solid #8f8f8f47" }}
+                          >
                             <div
-                              className="row pb-3 pt-2 ps-3 col-12"
-                              key={index}
-                              style={{ borderBottom: "1px solid #8f8f8f47" }}
+                              className="formLabel pe-2 m-0"
+                              style={{ width: "30px" }}
+                            >
+                              <label>{index + 1}.</label>
+                            </div>
+                            <div
+                              className={`row col-${advance.includes(item.id)
+                                ? "11"
+                                : "xxl-5 col-xl-6"
+                                }`}
                             >
                               <div
-                                className="formLabel pe-2 m-0"
-                                style={{ width: "30px" }}
+                                className={`col-${advance.includes(item.id) ? "2" : "4"
+                                  } ps-0 pe-2`}
                               >
-                                <label>{index + 1}.</label>
+                                <div className="formLabel">
+                                  {index === 0 ? (
+                                    <label htmlFor="">
+                                      Agent Name{" "}
+                                      <span className="text-danger">*</span>
+                                    </label>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                                <div className="position-relative">
+                                  <select
+                                    disabled
+                                    type="text"
+                                    name="name"
+                                    value={item.name}
+                                    onChange={(e) =>
+                                      handleAgentChange(e, index)
+                                    }
+                                    className="formItem"
+                                    placeholder="Destination"
+                                  >
+                                    <option value="" disabled>
+                                      Choose agent
+                                    </option>
+                                    {user &&
+                                      user
+                                        .filter((userItem) => {
+                                          return (
+                                            userItem.id ==
+                                            agent[index]?.name ||
+                                            !agent.some(
+                                              (agentItem, agentIndex) =>
+                                                agentItem.name ==
+                                                userItem.id &&
+                                                agentIndex != index
+                                            )
+                                          );
+                                        })
+                                        .map((userItem) => (
+                                          <option
+                                            value={userItem.id}
+                                            key={userItem.id}
+                                          >
+                                            {userItem.username} (
+                                            {userItem.extension?.extension})
+                                          </option>
+                                        ))}
+                                    <option
+                                      value="addUser"
+                                      className="text-center border bg-info-subtle fs-6 fw-bold text-info"
+                                      style={{ cursor: "pointer" }}
+                                    >
+                                      Add User
+                                    </option>
+                                  </select>
+                                </div>
                               </div>
                               <div
-                                className={`row col-${advance.includes(item.id)
-                                  ? "11"
-                                  : "xxl-5 col-xl-6"
-                                  }`}
+                                className={`col-${advance.includes(item.id) ? "2" : "4"
+                                  } ps-0 pe-2`}
                               >
-                                <div
-                                  className={`col-${advance.includes(item.id) ? "2" : "4"
-                                    } ps-0 pe-2`}
+                                <div className="formLabel">
+                                  {index === 0 ? (
+                                    <label htmlFor="">Password</label>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                                <div className="position-relative">
+                                  <input
+                                    type="text"
+                                    name="password"
+                                    value={item.password}
+                                    onChange={(e) =>
+                                      handleAgentChange(e, index)
+                                    }
+                                    className="formItem"
+                                    placeholder="Password"
+                                  />
+                                </div>
+                              </div>
+                              <div
+                                className={`col-${advance.includes(item.id) ? "1" : "2"
+                                  } ps-0 pe-2`}
+                              >
+                                <div className="formLabel">
+                                  {index === 0 ? (
+                                    <label htmlFor="">Tier Level</label>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                                <select
+                                  className="formItem me-0"
+                                  style={{ width: "100%" }}
+                                  name="level"
+                                  value={item.level}
+                                  onChange={(e) =>
+                                    handleAgentChange(e, index)
+                                  }
+                                  id="selectFormRow"
                                 >
-                                  <div className="formLabel">
-                                    {index === 0 ? (
-                                      <label htmlFor="">
-                                        Agent Name{" "}
-                                        <span className="text-danger">*</span>
-                                      </label>
-                                    ) : (
-                                      ""
-                                    )}
-                                  </div>
-                                  <div className="position-relative">
-                                    <select
-                                      type="text"
-                                      name="name"
-                                      value={item.name}
-                                      onChange={(e) =>
-                                        handleAgentChange(e, index)
-                                      }
-                                      className="formItem"
-                                      placeholder="Destination"
+                                  <option value={0}>0</option>
+                                  <option value={1}>1</option>
+                                  <option value={2}>2</option>
+                                  <option value={3}>3</option>
+                                  <option value={4}>4</option>
+                                  <option value={5}>5</option>
+                                  <option value={6}>6</option>
+                                  <option value={7}>7</option>
+                                  <option value={8}>8</option>
+                                  <option value={9}>9</option>
+                                </select>
+                              </div>
+                              <div
+                                className={`col-${advance.includes(item.id) ? "1" : "2"
+                                  } ps-0 pe-2`}
+                              >
+                                <div className="formLabel">
+                                  {index === 0 ? (
+                                    <label
+                                      htmlFor=""
+                                      style={{ whiteSpace: "nowrap" }}
                                     >
-                                      <option value="" disabled>
-                                        Choose agent
-                                      </option>
-                                      {user &&
-                                        user
-                                          .filter((userItem) => {
-                                            return (
-                                              userItem.id == agent[index]?.name ||
-                                              !agent.some(
-                                                (agentItem, agentIndex) =>
-                                                  agentItem.name == userItem.id &&
-                                                  agentIndex != index
-                                              )
-                                            );
-                                          })
-                                          .map((userItem) => (
-                                            <option
-                                              value={userItem.id}
-                                              key={userItem.id}
-                                            >
-                                              {userItem.username} (
-                                              {userItem.extension?.extension})
-                                            </option>
-                                          ))}
-                                      <option
-                                        value="addUser"
-                                        className="text-center border bg-info-subtle fs-6 fw-bold text-info"
-                                        style={{ cursor: "pointer" }}
-                                      >
-                                        Add User
-                                      </option>
-                                    </select>
-                                  </div>
+                                      Tier Position
+                                    </label>
+                                  ) : (
+                                    ""
+                                  )}
                                 </div>
-                                <div
-                                  className={`col-${advance.includes(item.id) ? "2" : "4"
-                                    } ps-0 pe-2`}
+                                <select
+                                  className="formItem me-0"
+                                  style={{ width: "100%" }}
+                                  name="position"
+                                  value={item.position}
+                                  onChange={(e) =>
+                                    handleAgentChange(e, index)
+                                  }
+                                  id="selectFormRow"
                                 >
-                                  <div className="formLabel">
-                                    {index === 0 ? (
-                                      <label htmlFor="">Password</label>
-                                    ) : (
-                                      ""
-                                    )}
-                                  </div>
-                                  <div className="position-relative">
-                                    <input
-                                      type="text"
-                                      name="password"
-                                      value={item.password}
-                                      onChange={(e) =>
-                                        handleAgentChange(e, index)
-                                      }
-                                      className="formItem"
-                                      placeholder="Password"
-                                    />
-                                  </div>
-                                </div>
-                                <div
-                                  className={`col-${advance.includes(item.id) ? "1" : "2"
-                                    } ps-0 pe-2`}
-                                >
-                                  <div className="formLabel">
-                                    {index === 0 ? (
-                                      <label htmlFor="">Tier Level</label>
-                                    ) : (
-                                      ""
-                                    )}
-                                  </div>
-                                  <select
-                                    className="formItem me-0"
-                                    style={{ width: "100%" }}
-                                    name="level"
-                                    value={item.level}
-                                    onChange={(e) => handleAgentChange(e, index)}
-                                    id="selectFormRow"
-                                  >
-                                    <option value={0}>0</option>
-                                    <option value={1}>1</option>
-                                    <option value={2}>2</option>
-                                    <option value={3}>3</option>
-                                    <option value={4}>4</option>
-                                    <option value={5}>5</option>
-                                    <option value={6}>6</option>
-                                    <option value={7}>7</option>
-                                    <option value={8}>8</option>
-                                    <option value={9}>9</option>
-                                  </select>
-                                </div>
-                                <div
-                                  className={`col-${advance.includes(item.id) ? "1" : "2"
-                                    } ps-0 pe-2`}
-                                >
-                                  <div className="formLabel">
-                                    {index === 0 ? (
-                                      <label
-                                        htmlFor=""
-                                        style={{ whiteSpace: "nowrap" }}
-                                      >
-                                        Tier Position
-                                      </label>
-                                    ) : (
-                                      ""
-                                    )}
-                                  </div>
-                                  <select
-                                    className="formItem me-0"
-                                    style={{ width: "100%" }}
-                                    name="position"
-                                    value={item.position}
-                                    onChange={(e) => handleAgentChange(e, index)}
-                                    id="selectFormRow"
-                                  >
-                                    <option value={0}>0</option>
-                                    <option value={1}>1</option>
-                                    <option value={2}>2</option>
-                                    <option value={3}>3</option>
-                                    <option value={4}>4</option>
-                                    <option value={5}>5</option>
-                                    <option value={6}>6</option>
-                                    <option value={7}>7</option>
-                                    <option value={8}>8</option>
-                                    <option value={9}>9</option>
-                                  </select>
-                                </div>
-
-                                {advance.includes(item.id) && (
-                                  <>
-                                    <div className="col-2 ps-0 pe-2">
-                                      <div className="formLabel">
-                                        {index === 0 ? (
-                                          <label htmlFor="">Call Timeout</label>
-                                        ) : (
-                                          ""
-                                        )}
-                                      </div>
-                                      <div className="position-relative">
-                                        <input
-                                          type="number"
-                                          name="call_timeout"
-                                          value={item.call_timeout}
-                                          onChange={(e) =>
-                                            handleAgentChange(e, index)
-                                          }
-                                          className="formItem"
-                                          placeholder="Call Timeout"
-                                        />
-                                      </div>
-                                    </div>
-                                    <div className="col-2 ps-0 pe-2">
-                                      <div className="formLabel">
-                                        {index === 0 ? (
-                                          <label htmlFor="">Reject Delay</label>
-                                        ) : (
-                                          ""
-                                        )}
-                                      </div>
-                                      <div className="position-relative">
-                                        <input
-                                          type="number"
-                                          name="reject_delay_time"
-                                          value={item.reject_delay_time}
-                                          onChange={(e) =>
-                                            handleAgentChange(e, index)
-                                          }
-                                          className="formItem"
-                                          placeholder="Reject Delay"
-                                        />
-                                      </div>
-                                    </div>
-
-                                    <div className="col-2 ps-0 pe-2">
-                                      <div className="formLabel">
-                                        {index === 0 ? (
-                                          <label htmlFor="">Max No Answer</label>
-                                        ) : (
-                                          ""
-                                        )}
-                                      </div>
-                                      <div className="position-relative">
-                                        <input
-                                          type="number"
-                                          name="max_no_answer"
-                                          value={item.max_no_answer}
-                                          onChange={(e) =>
-                                            handleAgentChange(e, index)
-                                          }
-                                          className="formItem"
-                                          placeholder="Max No Answer"
-                                        />
-                                      </div>
-                                    </div>
-
-                                    <div className="col-2 ps-0 pe-2">
-                                      <div className="formLabel">
-                                        {index === 0 ? (
-                                          <label htmlFor="">Busy Delay</label>
-                                        ) : (
-                                          ""
-                                        )}
-                                      </div>
-                                      <div className="position-relative">
-                                        <input
-                                          type="number"
-                                          name="busy_delay_time"
-                                          value={item.busy_delay_time}
-                                          onChange={(e) =>
-                                            handleAgentChange(e, index)
-                                          }
-                                          className="formItem"
-                                          placeholder="Busy Delay"
-                                        />
-                                      </div>
-                                    </div>
-
-                                    <div className="col-2 ps-0 pe-2">
-                                      <div className="formLabel">
-                                        {index === 0 ? (
-                                          <label htmlFor="">
-                                            No Answer Delay
-                                          </label>
-                                        ) : (
-                                          ""
-                                        )}
-                                      </div>
-                                      <div className="position-relative">
-                                        <input
-                                          type="number"
-                                          name="no_answer_delay_time"
-                                          value={item.no_answer_delay_time}
-                                          onChange={(e) =>
-                                            handleAgentChange(e, index)
-                                          }
-                                          className="formItem"
-                                          placeholder="No Answer Delay"
-                                        />
-                                      </div>
-                                    </div>
-
-                                    <div className="col-2 ps-0 pe-2">
-                                      <div className="formLabel">
-                                        {index === 0 ? (
-                                          <label htmlFor="">Wrap Up Time</label>
-                                        ) : (
-                                          ""
-                                        )}
-                                      </div>
-                                      <div className="position-relative">
-                                        <input
-                                          type="number"
-                                          name="wrap_up_time"
-                                          value={item.wrap_up_time}
-                                          onChange={(e) =>
-                                            handleAgentChange(e, index)
-                                          }
-                                          className="formItem"
-                                          placeholder="Wrap Up Time"
-                                        />
-                                      </div>
-                                    </div>
-
-                                    <div className="col-2 ps-0 pe-2">
-                                      <div className="formLabel">
-                                        {index === 0 ? (
-                                          <label htmlFor="">Reserve Agents</label>
-                                        ) : (
-                                          ""
-                                        )}
-                                      </div>
-                                      <select
-                                        className="formItem me-0"
-                                        style={{ width: "100%" }}
-                                        name="reserve_agents"
-                                        value={item.reserve_agents}
-                                        onChange={(e) =>
-                                          handleAgentChange(e, index)
-                                        }
-                                        id="selectFormRow"
-                                      >
-                                        <option value={0}>False</option>
-                                        <option value={1}>True</option>
-                                      </select>
-                                    </div>
-
-                                    <div className="col-2 ps-0 pe-2">
-                                      <div className="formLabel">
-                                        {index === 0 ? (
-                                          <label htmlFor="">
-                                            Truncate agents on load
-                                          </label>
-                                        ) : (
-                                          ""
-                                        )}
-                                      </div>
-                                      <select
-                                        className="formItem me-0"
-                                        style={{ width: "100%" }}
-                                        name="truncate-agents-on-load"
-                                        value={item["truncate-agents-on-load"]}
-                                        onChange={(e) =>
-                                          handleAgentChange(e, index)
-                                        }
-                                        id="selectFormRow"
-                                      >
-                                        <option value={0}>False</option>
-                                        <option value={1}>True</option>
-                                      </select>
-                                    </div>
-
-                                    <div className="col-2 ps-0 pe-2">
-                                      <div className="formLabel">
-                                        {index === 0 ? (
-                                          <label htmlFor="">
-                                            Truncate tiers on load
-                                          </label>
-                                        ) : (
-                                          ""
-                                        )}
-                                      </div>
-                                      <select
-                                        className="formItem me-0"
-                                        style={{ width: "100%" }}
-                                        name="truncate-tiers-on-load"
-                                        value={item["truncate-tiers-on-load"]}
-                                        onChange={(e) =>
-                                          handleAgentChange(e, index)
-                                        }
-                                        id="selectFormRow"
-                                      >
-                                        <option value={0}>False</option>
-                                        <option value={1}>True</option>
-                                      </select>
-                                    </div>
-                                  </>
-                                )}
+                                  <option value={0}>0</option>
+                                  <option value={1}>1</option>
+                                  <option value={2}>2</option>
+                                  <option value={3}>3</option>
+                                  <option value={4}>4</option>
+                                  <option value={5}>5</option>
+                                  <option value={6}>6</option>
+                                  <option value={7}>7</option>
+                                  <option value={8}>8</option>
+                                  <option value={9}>9</option>
+                                </select>
                               </div>
 
-                              <div className="row col mt-xxl-0 mt-xl-2">
-                                {
-                                  <div
-                                    onClick={() => handleAdvance(item.id)}
-                                    className="col-auto px-0 mt-auto"
+                              {advance.includes(item.id) && (
+                                <>
+                                  <div className="col-2 ps-0 pe-2">
+                                    <div className="formLabel">
+                                      {index === 0 ? (
+                                        <label htmlFor="">Call Timeout</label>
+                                      ) : (
+                                        ""
+                                      )}
+                                    </div>
+                                    <div className="position-relative">
+                                      <input
+                                        type="number"
+                                        name="call_timeout"
+                                        value={item.call_timeout}
+                                        onChange={(e) =>
+                                          handleAgentChange(e, index)
+                                        }
+                                        className="formItem"
+                                        placeholder="Call Timeout"
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="col-2 ps-0 pe-2">
+                                    <div className="formLabel">
+                                      {index === 0 ? (
+                                        <label htmlFor="">Reject Delay</label>
+                                      ) : (
+                                        ""
+                                      )}
+                                    </div>
+                                    <div className="position-relative">
+                                      <input
+                                        type="number"
+                                        name="reject_delay_time"
+                                        value={item.reject_delay_time}
+                                        onChange={(e) =>
+                                          handleAgentChange(e, index)
+                                        }
+                                        className="formItem"
+                                        placeholder="Reject Delay"
+                                      />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-2 ps-0 pe-2">
+                                    <div className="formLabel">
+                                      {index === 0 ? (
+                                        <label htmlFor="">
+                                          Max No Answer
+                                        </label>
+                                      ) : (
+                                        ""
+                                      )}
+                                    </div>
+                                    <div className="position-relative">
+                                      <input
+                                        type="number"
+                                        name="max_no_answer"
+                                        value={item.max_no_answer}
+                                        onChange={(e) =>
+                                          handleAgentChange(e, index)
+                                        }
+                                        className="formItem"
+                                        placeholder="Max No Answer"
+                                      />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-2 ps-0 pe-2">
+                                    <div className="formLabel">
+                                      {index === 0 ? (
+                                        <label htmlFor="">Busy Delay</label>
+                                      ) : (
+                                        ""
+                                      )}
+                                    </div>
+                                    <div className="position-relative">
+                                      <input
+                                        type="number"
+                                        name="busy_delay_time"
+                                        value={item.busy_delay_time}
+                                        onChange={(e) =>
+                                          handleAgentChange(e, index)
+                                        }
+                                        className="formItem"
+                                        placeholder="Busy Delay"
+                                      />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-2 ps-0 pe-2">
+                                    <div className="formLabel">
+                                      {index === 0 ? (
+                                        <label htmlFor="">
+                                          No Answer Delay
+                                        </label>
+                                      ) : (
+                                        ""
+                                      )}
+                                    </div>
+                                    <div className="position-relative">
+                                      <input
+                                        type="number"
+                                        name="no_answer_delay_time"
+                                        value={item.no_answer_delay_time}
+                                        onChange={(e) =>
+                                          handleAgentChange(e, index)
+                                        }
+                                        className="formItem"
+                                        placeholder="No Answer Delay"
+                                      />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-2 ps-0 pe-2">
+                                    <div className="formLabel">
+                                      {index === 0 ? (
+                                        <label htmlFor="">Wrap Up Time</label>
+                                      ) : (
+                                        ""
+                                      )}
+                                    </div>
+                                    <div className="position-relative">
+                                      <input
+                                        type="number"
+                                        name="wrap_up_time"
+                                        value={item.wrap_up_time}
+                                        onChange={(e) =>
+                                          handleAgentChange(e, index)
+                                        }
+                                        className="formItem"
+                                        placeholder="Wrap Up Time"
+                                      />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-2 ps-0 pe-2">
+                                    <div className="formLabel">
+                                      {index === 0 ? (
+                                        <label htmlFor="">
+                                          Reserve Agents
+                                        </label>
+                                      ) : (
+                                        ""
+                                      )}
+                                    </div>
+                                    <select
+                                      className="formItem me-0"
+                                      style={{ width: "100%" }}
+                                      name="reserve_agents"
+                                      value={item.reserve_agents}
+                                      onChange={(e) =>
+                                        handleAgentChange(e, index)
+                                      }
+                                      id="selectFormRow"
+                                    >
+                                      <option value={0}>False</option>
+                                      <option value={1}>True</option>
+                                    </select>
+                                  </div>
+
+                                  <div className="col-2 ps-0 pe-2">
+                                    <div className="formLabel">
+                                      {index === 0 ? (
+                                        <label htmlFor="">
+                                          Truncate agents on load
+                                        </label>
+                                      ) : (
+                                        ""
+                                      )}
+                                    </div>
+                                    <select
+                                      className="formItem me-0"
+                                      style={{ width: "100%" }}
+                                      name="truncate-agents-on-load"
+                                      value={item["truncate-agents-on-load"]}
+                                      onChange={(e) =>
+                                        handleAgentChange(e, index)
+                                      }
+                                      id="selectFormRow"
+                                    >
+                                      <option value={0}>False</option>
+                                      <option value={1}>True</option>
+                                    </select>
+                                  </div>
+
+                                  <div className="col-2 ps-0 pe-2">
+                                    <div className="formLabel">
+                                      {index === 0 ? (
+                                        <label htmlFor="">
+                                          Truncate tiers on load
+                                        </label>
+                                      ) : (
+                                        ""
+                                      )}
+                                    </div>
+                                    <select
+                                      className="formItem me-0"
+                                      style={{ width: "100%" }}
+                                      name="truncate-tiers-on-load"
+                                      value={item["truncate-tiers-on-load"]}
+                                      onChange={(e) =>
+                                        handleAgentChange(e, index)
+                                      }
+                                      id="selectFormRow"
+                                    >
+                                      <option value={0}>False</option>
+                                      <option value={1}>True</option>
+                                    </select>
+                                  </div>
+                                </>
+                              )}
+                            </div>
+
+                            <div className="row col mt-xxl-0 mt-xl-2">
+                              {
+                                <div
+                                  onClick={() => handleAdvance(item.id)}
+                                  className="col-auto px-0 mt-auto"
+                                >
+                                  <button
+                                    type="button"
+                                    className={`tableButton edit my-auto ${agent.length < 2 ? "me-2" : ""
+                                      }`}
                                   >
-                                    <button
-                                      type="button"
-                                      className={`tableButton edit my-auto ${agent.length < 2 ? "me-2" : ""
+                                    <i
+                                      className={`fa-solid fa-${advance.includes(item.id)
+                                        ? "gear"
+                                        : "gears"
                                         }`}
-                                    >
-                                      <i
-                                        className={`fa-solid fa-${advance.includes(item.id)
-                                          ? "gear"
-                                          : "gears"
-                                          }`}
-                                      ></i>
-                                    </button>
-                                  </div>
-                                }
+                                    ></i>
+                                  </button>
+                                </div>
+                              }
 
-                                {agent.length === 1 ? (
-                                  ""
-                                ) : (
-                                  <div
-                                    onClick={() => removeAgenet(item.id)}
-                                    className="col-auto px-0 mt-auto mx-2"
+                              {agent.length === 1 ? (
+                                ""
+                              ) : (
+                                <div
+                                  onClick={() => removeAgenet(item.id)}
+                                  className="col-auto px-0 mt-auto mx-2"
+                                >
+                                  <button
+                                    type="button"
+                                    className="tableButton delete"
                                   >
-                                    <button
-                                      type="button"
-                                      className="tableButton delete"
-                                    >
-                                      <i className="fa-solid fa-trash"></i>
-                                    </button>
-                                  </div>
-                                )}
+                                    <i className="fa-solid fa-trash"></i>
+                                  </button>
+                                </div>
+                              )}
 
-                                {index === agent.length - 1 &&
+                              {/* {index === agent.length - 1 &&
                                   index !== (user && user.length - 1) ? (
                                   <div
                                     onClick={addNewAgent}
@@ -1637,16 +1714,16 @@ function CallCenterQueueAdd() {
                                   </div>
                                 ) : (
                                   ""
-                                )}
-                              </div>
+                                )} */}
                             </div>
-                          );
-                        })}
+                          </div>
+                        );
+                      })}
                       {errors.agent && (
                         <ErrorMessage text={errors.agent.message} />
                       )}
                     </div>
-                  </form>
+                  </form>}
                 </div>
               </div>
             </div>
@@ -1696,53 +1773,135 @@ function CallCenterQueueAdd() {
             <div className="col-12 heading mb-0">
               <i className="fa-light fa-user-plus" />
               <h5>Add People to the selected Queue</h5>
-              <p>
+              {/* <p>
                 Add people to yourqueue effortlessly, keeping your connections
                 organized and efficient
-              </p>
-              <div className="border-bottom col-12" />
+              </p> */}
+              {/* <div className="border-bottom col-12" /> */}
+            </div>
+            <div className="col-xl-12">
+              <div className="col-12 d-flex justify-content-between align-items-center">
+                <input
+                  type="text"
+                  className="formItem"
+                  placeholder="Search"
+                  name="name"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                />
+                <button className="tableButton ms-2" onClick={() => navigate("/users-add")}><i className="fa-solid fa-user-plus"></i></button>
+              </div>
             </div>
             <div className="col-xl-12 mt-3">
-              {user
+              {/* {user
                 .filter(
-                  (user) => !agent.some((agent) => user.id == agent.name)
+                  (user) =>
+                    // Filter logic: checks name or extension against search query
+                    user.name
+                      .toLowerCase()
+                      .includes(searchQuery.toLowerCase()) ||
+                    (user?.extension?.extension || "")
+                      .toLowerCase()
+                      .includes(searchQuery.toLowerCase())
                 )
-                .map((item, index) => {
-                  return (
-                    <div key={index}>
-                      <div className="row g-2">
-                        <div className="col-auto">
-                          <label className="formLabel">{index + 1}.</label>
-                        </div>
-                        <div className="col">
-                          <label className="formLabel details">{item.name}</label>
-                        </div>
-                        <div className="col-auto ms-auto">
-                          <input
-                            type="checkbox"
-                            onChange={() => handleCheckboxChange(item)} // Call handler on change
-                            checked={bulkUploadSelectedAgents.some(
-                              (agent) => agent.name === item.name
-                            )} // Keep checkbox state in sync
-                          />
-                        </div>
+                .filter((user) => !agent.some((agent) => user.id == agent.name)) // Exclude agents already in `agent`
+                .map((item, index) => (
+                  <div key={index}>
+                    <div className="row g-2">
+                      <div className="col-auto">
+                        <label className="formLabel">{index + 1}.</label>
+                      </div>
+                      <div className="col-5">
+                        <label className="formLabel details">{item.name}</label>
+                      </div>
+                      <div className="col-3 details formLabel">
+                        {item?.extension?.extension}
+                      </div>
+                      <div className="col-auto ms-auto">
+                        <input
+                          type="checkbox"
+                          onChange={() => handleCheckboxChange(item)} // Call handler on change
+                          checked={bulkUploadSelectedAgents.some(
+                            (agent) => agent.name == item.name
+                          )} // Keep checkbox state in sync
+                        />
                       </div>
                     </div>
-                  );
-                })}
+                  </div>
+                ))} */}
+              <div className="tableContainer mt-0" style={{ maxHeight: "calc(100vh - 400px)" }}>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <th>Name</th>
+                      <th>Extension</th>
+                      <th>
+                        <input
+                          type="checkbox"
+                          onChange={handleSelectAll} // Call handler on change
+                          checked={selectAll ? true : false} // Keep checkbox state in sync
+                        />
+                        {/* <button onClick={handleSelectAll}>
+                          {selectAll ? "Deselect all" : "Select all"}{" "}
+                        </button> */}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {user
+                      .sort((a, b) => {
+                        const aMatches =
+                          a.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          (a?.extension?.extension || "")
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase());
+                        const bMatches =
+                          b.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          (b?.extension?.extension || "")
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase());
+                        // Items that match come first
+                        return bMatches - aMatches;
+                      })
+                      .filter((user) => !agent.some((agent) => user.id == agent.name)) // Exclude agents already in `agent`
+                      .map((item, index) => (
+                        <tr key={item.id || index}>
+                          <td>{index + 1}.</td>
+                          <td>{item.name}</td>
+                          <td>{item?.extension?.extension}</td>
+                          <td>
+                            <input
+                              type="checkbox"
+                              onChange={() => handleCheckboxChange(item)} // Call handler on change
+                              checked={bulkUploadSelectedAgents.some(
+                                (agent) => agent.name == item.name
+                              )} // Keep checkbox state in sync
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-            <div className="col-xl-12 mt-4">
+            <div className="col-xl-12 mt-2">
               <div className="d-flex justify-content-between">
-                <button className="panelButton gray ms-0" onClick={() => {
-                  setBulkAddPopUp(false);
-                }}
+                <button
+                  className="panelButton gray ms-0"
+                  onClick={() => {
+                    setBulkAddPopUp(false);
+                  }}
                 >
                   <span className="text">Close</span>
                   <span className="icon">
                     <i className="fa-solid fa-caret-left" />
                   </span>
                 </button>
-                <button className="panelButton me-0" onClick={() => handleBulkUpload(bulkUploadSelectedAgents)}>
+                <button
+                  className="panelButton me-0"
+                  onClick={() => handleBulkUpload(bulkUploadSelectedAgents)}
+                >
                   <span className="text">Done</span>
                   <span className="icon">
                     <i className="fa-solid fa-check" />

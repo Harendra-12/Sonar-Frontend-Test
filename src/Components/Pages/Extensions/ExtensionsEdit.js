@@ -134,7 +134,12 @@ const ExtensionsEdit = () => {
     setError,
     setValue,
     clearErrors,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      // status: true, // Set the default value for "status" to true
+      callTimeOut: `${160}`,
+    },
+  });
 
   const account = useSelector((state) => state.account);
   useEffect(() => {
@@ -2169,7 +2174,7 @@ const ExtensionsEdit = () => {
 
                               <div className="formRow col-xl-3">
                                 <div className="formLabel">
-                                  <label htmlFor="">Forward DID</label>
+                                  <label htmlFor="">Forward Extension</label>
                                   <label
                                     htmlFor="data"
                                     className="formItemDesc"

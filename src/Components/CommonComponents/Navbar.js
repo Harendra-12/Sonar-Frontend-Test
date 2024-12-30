@@ -37,7 +37,7 @@ function Navbar() {
   const location = useLocation();
 
   const isChildActive = (childPaths) => {
-    return childPaths.some((path) => location.pathname.includes(path));
+    return childPaths.some((path) => location.pathname === path);
   };
 
   return (
@@ -106,7 +106,7 @@ function Navbar() {
                       data-bs-toggle="collapse"
                       data-bs-target="#collapse8"
                       aria-expanded={
-                        isChildActive(["/my-profile", "/change-password"])
+                        isChildActive(["/my-profile", "/change-password", "/admin/package", "/users", "/users-edit", "/users-add", "/roles", "/master"])
                           ? "true"
                           : "false"
                       }
@@ -231,18 +231,15 @@ function Navbar() {
                             ""
                           )}
 
-                          <li className="tabItem">
+                          {/* <li className="tabItem">
                             <NavLink
                               to="/change-password"
                               onClick={backToTop}
                               className="nav-link"
                             >
-                              {/* <div className="iconHolder">
-                                <i class="fa-regular fa-unlock"></i>
-                              </div> */}
                               <div className="itemTitle">Change Password</div>
                             </NavLink>
-                          </li>
+                          </li> */}
                         </ul>
                       </div>
                     </div>
@@ -258,6 +255,7 @@ function Navbar() {
                           "/port-number",
                           "/port-number-add",
                           "/port-number-edit",
+                          "/did-listing",
                         ])
                           ? "true"
                           : "false"
@@ -276,6 +274,7 @@ function Navbar() {
                         "/port-number",
                         "/port-number-add",
                         "/port-number-edit",
+                        "/did-listing",
                       ])
                         ? "show"
                         : ""
@@ -322,6 +321,19 @@ function Navbar() {
                               </NavLink>
                             </li>
                           ) : null}
+
+                          <li className="tabItem">
+                            <NavLink
+                              to="/did-listing"
+                              onClick={backToTop}
+                              className="nav-link"
+                            >
+                              {/* <div className="iconHolder">
+                                <i className="fa-regular fa-swap-arrows" />
+                              </div> */}
+                              <div className="itemTitle">Number Configuration</div>
+                            </NavLink>
+                          </li>
                         </ul>
                       </div>
                     </div>
@@ -341,7 +353,7 @@ function Navbar() {
                           "/extensions-add",
                           "/device-provisioning-add",
                           "/device-provisioning-edit",
-                          "/did-listing",
+                          "/did-listing-pbx",
                           "/did-config",
                           "/did-add",
                           "/ring-groups",
@@ -379,7 +391,7 @@ function Navbar() {
                         "/extensions-add",
                         "/device-provisioning-add",
                         "/device-provisioning-edit",
-                        "/did-listing",
+                        "/did-listing-pbx",
                         "/did-config",
                         "/did-add",
                         "/ring-groups",
@@ -426,7 +438,7 @@ function Navbar() {
                           </li>
                           <li className="tabItem">
                             <NavLink
-                              to="/did-listing"
+                              to="/did-listing-pbx"
                               onClick={backToTop}
                               className={({ isActive }) =>
                                 isActive ||

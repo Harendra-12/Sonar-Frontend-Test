@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Dialpad from "./Dialpad";
 import CallDetails from "./CallDetails";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,25 +16,19 @@ import {
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 
 function Call({
-  setHangupRefresh,
-  hangupRefresh,
   selectedModule,
   setSelectedModule,
   isCustomerAdmin,
   isMicOn,
   isVideoOn,
-  activePage,
   setactivePage,
   allContact,
   setExtensionFromCdrMessage,
 }) {
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
-  const allCall = useSelector((state) => state.allCall);
-  const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const [dialpadShow, setDialpadShow] = useState(false);
   const [clickStatus, setClickStatus] = useState("all");
-  const callProgress = useSelector((state) => state.callProgress);
   const videoCall = useSelector((state) => state.videoCall);
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
@@ -51,154 +45,76 @@ function Call({
   const { sessionManager, connectStatus } = useSIPProvider();
   const [refreshCalls, setRefreshCalls] = useState(0);
   const [clickedExtension, setClickedExtension] = useState(null);
-  //========================================================================================
   const targetRef = useRef(null); // Reference to the target div
-  const currentPage = useRef(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
-  const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true); // To check if more data is available
+  const [rawData, setRawData] = useState([]);
+  const [filterBy, setFilterBy] = useState("date");
+  const [startDateFlag, setStartDateFlag] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDateFlag, setEndDateFlag] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [filterState, setfilterState] = useState("all");
+  const [firstTimeClickedExtension, setFirstTimeClickedExtension] =
+    useState(false);
 
-  const fetchData = useCallback(async () => {
-    if (isLoading || !hasMore) return;
+  console.log(startDate, endDate);
+  useEffect(() => {
+    async function fetchData() {
+      if (currentPage === 1) {
+        setLoading(true);
+      } else {
+        setIsLoading(true);
+      }
 
-    setIsLoading(true);
-
-    try {
       const apiData = await generalGetFunction(
-        `/call-details-phone?page_number=${currentPage.current}`
+        filterBy == "date"
+          ? `/call-details-phone?page_number=${currentPage}&date=${startDate}&search=${searchQuery}`
+          : `/call-details-phone?page_number=${currentPage}&date_range=${startDate},${endDate}&search=${searchQuery}`
       );
-      // const result = await response.json();
-
       if (apiData.status) {
         console.log(apiData);
-        const result = apiData.data.calls.reverse();
-        if (result.length === 0) {
-          setHasMore(false); // No more data
-        } else {
-          setData((prevData) => [...prevData, ...result]);
-          currentPage.current += 1;
-          setLoading(false);
-          // setPage((prevPage) => prevPage + 1);
-        }
+        setAllApiData(apiData.data.data.reverse());
+        const result = apiData.data.data.reverse();
+        setRawData(apiData.data.data);
+        setData([...data, ...result]);
+        setLoading(false);
+        setIsLoading(false);
+      } else {
+        setLoading(false);
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setIsLoading(false);
     }
-  }, [page]);
-
-  useEffect(() => {
-    // Initial fetch
     fetchData();
-  }, [fetchData]);
+  }, [currentPage, startDate, endDate, searchQuery]);
 
-  const debounce = (func, delay) => {
-    let timer;
-    return function (...args) {
-      clearTimeout(timer);
-      timer = setTimeout(() => func.apply(this, args), delay);
-    };
+  const callListRef = useRef(null);
+  const handleScroll = () => {
+    const div = callListRef.current;
+    if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
+      if (!isLoading && currentPage !== rawData?.last_page) {
+        setCurrentPage(currentPage + 1);
+      }
+    }
   };
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const target = entries[0];
-        if (target.isIntersecting && !isLoading && hasMore) {
-          fetchData();
-        }
-      },
-      {
-        root: null, // Defaults to the viewport
-        rootMargin: "100px", // Preload when 100px away from the bottom
-        threshold: 1.0, // Fully visible
-      }
-    );
-
-    if (targetRef.current) {
-      observer.observe(targetRef.current);
-    }
-
-    return () => {
-      if (targetRef.current) {
-        observer.unobserve(targetRef.current);
-      }
-    };
-  }, [fetchData, isLoading, hasMore]);
-  //========================================================================================
   function handleHideDialpad(value) {
     setDialpadShow(value);
   }
-
-  // useEffect(() => {
-  //   if (data.length > 0) {
-  //     // const apiData = allCall;
-  //     setAllApiData(data.reverse());
-
-  //     // const uniqueArray = [
-  //     //   ...new Map(
-  //     //     apiData.calls
-  //     //       .filter((item) => {
-  //     //         // Remove items with application_state == "conference"
-  //     //         if (item.application_state === "conference") {
-  //     //           return false;
-  //     //         }
-  //     //         // Apply the filter condition if 'applyFilter' is true
-  //     //         if (!isCustomerAdmin) {
-  //     //           return (
-  //     //             item["Caller-Callee-ID-Number"] === extension ||
-  //     //             item["Caller-Caller-ID-Number"] === extension
-  //     //           );
-  //     //         }
-  //     //         // If applyFilter is false, return all items
-  //     //         return true;
-  //     //       })
-  //     //       .reverse()
-  //     //       .map((item) => [item, item])
-  //     //   ).values(),
-  //     // ];
-
-  //     setAllCalls(data.reverse());
-  //     setLoading(false);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [allCall, isCustomerAdmin, refreshCalls]);
-  console.log("allCalls", allCalls, data);
-  // useEffect(() => {
-  //   console.log("This is account", account && account.account_id);
-
-  //   setLoading(true);
-  //   if (account && account.account_id) {
-  //     dispatch({
-  //       type: "SET_CALLDETAILSREFRESH",
-  //       callDetailsRefresh: callDetailsRefresh + 1,
-  //     });
-  //   } else {
-  //     navigate("/");
-  //   }
-  // }, [account, navigate, hangupRefresh, refreshCalls]);
-
-  // useEffect(() => {
-  //   const getCdrPhoneData = async () => {
-  //     //https://ucaas.webvio.in/backend/api/call-details-phone?search=77777&page_number=2&date_range=2024-12-01,2024-12-17&date=2024-12-01&page_number=1
-  //     const apiData = await generalGetFunction(
-  //       `/call-details-phone?page_number=1`
-  //     );
-  //     if (apiData?.status) {
-  //       console.log(apiData);
-  //     } else {
-  //       console.log("erroor happend");
-  //     }
-  //   };
-  //   getCdrPhoneData();
-  // }, [account, navigate, hangupRefresh, refreshCalls]);
-
-  // user data filter based on the extension
+  useEffect(() => {
+    if (filterBy === "date" && startDateFlag !== "") {
+      setStartDate(startDateFlag);
+      setEndDate(startDateFlag);
+    } else if (
+      filterBy === "date_range" &&
+      endDateFlag !== "" &&
+      startDateFlag !== ""
+    ) {
+      setStartDate(startDateFlag);
+      setEndDate(endDateFlag);
+    }
+  }, [startDateFlag, endDateFlag, filterBy]);
   useEffect(() => {
     let filteredCalls = [];
     switch (clickStatus) {
@@ -228,35 +144,36 @@ function Call({
         break;
       case "all":
       default:
-        filteredCalls = allCalls;
+        filteredCalls = data;
         break;
     }
     // search functionality
-    if (searchQuery) {
-      const lowerCaseSearchQuery = searchQuery.toLowerCase();
-      filteredCalls = filteredCalls.filter((call) => {
-        return (
-          call.caller_user?.username
-            ?.toLowerCase()
-            .includes(lowerCaseSearchQuery) ||
-          call["Caller-Callee-ID-Number"]
-            .toString()
-            .toLowerCase()
-            .includes(lowerCaseSearchQuery)
-        );
-      });
-    }
+    // if (searchQuery) {
+    //   const lowerCaseSearchQuery = searchQuery.toLowerCase();
+    //   filteredCalls = filteredCalls.filter((call) => {
+    //     return (
+    //       call.caller_user?.username
+    //         ?.toLowerCase()
+    //         .includes(lowerCaseSearchQuery) ||
+    //       call["Caller-Callee-ID-Number"]
+    //         .toString()
+    //         .toLowerCase()
+    //         .includes(lowerCaseSearchQuery)
+    //     );
+    //   });
+    // }
     setPreviewCalls(filteredCalls);
     if (clickedCall == null) {
       setClickedCall(filteredCalls[0]);
     }
 
-    if (filteredCalls[0]) {
+    if (filteredCalls[0] && !firstTimeClickedExtension) {
       setClickedExtension(
         filteredCalls[0]["Caller-Callee-ID-Number"] === extension
           ? filteredCalls[0]["Caller-Caller-ID-Number"]
           : filteredCalls[0]["Caller-Callee-ID-Number"]
       );
+      setFirstTimeClickedExtension(true);
     }
 
     setCallHistory(
@@ -273,8 +190,8 @@ function Call({
           return true;
         })
     );
-  }, [allCalls, clickStatus, searchQuery]);
-
+  }, [data, clickStatus]);
+  console.log(clickedExtension);
   const formatTime = (duration) => {
     const sec = Math.floor(duration % 60);
     const min = Math.floor((duration / 60) % 60);
@@ -437,8 +354,14 @@ function Call({
 
   useEffect(() => {
     if (clickedExtension) {
-      const filteredHistory = allApiData.filter((item) => {
+      const filteredHistory = data.filter((item) => {
         if (!isCustomerAdmin) {
+          console.log(
+            extension,
+            clickedExtension,
+            item["Caller-Callee-ID-Number"],
+            item["Caller-Caller-ID-Number"]
+          );
           return (
             (item["Caller-Callee-ID-Number"] === extension &&
               item["Caller-Caller-ID-Number"] === clickedExtension) ||
@@ -448,6 +371,8 @@ function Call({
         }
         return item["Caller-Callee-ID-Number"] === clickedExtension;
       });
+
+      console.log("filteredHistory", filteredHistory);
       setCallHistory(filteredHistory);
     }
   }, [clickedExtension, allApiData, extension]);
@@ -789,9 +714,9 @@ function Call({
                     <i className="fa-light fa-mobile-retro" /> Dial Number
                   </button>
                 </div>
-                <div className="col-12 mt-3" style={{ padding: "0 10px" }}>
+                <div className="col-12" style={{ padding: "0 10px" }}>
                   <div className="d-flex">
-                    <div className="col-xl-7 col-12 pe-2">
+                    <div className="col-xl-6 col-12 pe-2 mt-auto">
                       <input
                         type="search"
                         name="Search"
@@ -801,9 +726,32 @@ function Call({
                         onChange={(e) => setSearchQuery(e.target.value)}
                       />
                     </div>
-                    <div className="col-xl-5 col-12">
-                      <div className="d-flex">
-                        <div className="col-6 pe-2">
+                    <div className="col-xl-6 col-12">
+                      <div className="d-flex justify-content-between">
+                        <div className="">
+                          <label className="formLabel text-start mb-0 w-100">
+                            Date Filter
+                          </label>
+                          <select
+                            className="formItem"
+                            value={filterBy}
+                            onChange={(e) => {
+                              setFilterBy(e.target.value);
+                              setStartDateFlag("");
+                              setEndDateFlag("");
+                            }}
+                            style={{
+                              background: "var(--searchBg)",
+                              borderColor: "var(--border-color)",
+                              borderRadius: "5px",
+                            }}
+                          >
+                            <option value={"date"}>Only Date</option>
+                            <option value={"date_range"}>Date Range</option>
+                          </select>
+                        </div>
+                        <div className="d-flex">
+                          {/* <div className="col-6 pe-2">
                           <input
                             type="date"
                             className="formItem"
@@ -824,6 +772,75 @@ function Call({
                               borderRadius: "5px",
                             }}
                           />
+                        </div> */}
+
+                          {filterBy === "date" && (
+                            <div className="ms-2">
+                              <label className="formLabel text-start mb-0 w-100">
+                                Choose Date
+                              </label>
+                              <input
+                                type="date"
+                                className="formItem"
+                                max={new Date().toISOString().split("T")[0]}
+                                value={startDateFlag}
+                                onChange={(e) => {
+                                  setStartDateFlag(e.target.value);
+                                  // setPageNumber(1);
+                                }}
+                                style={{
+                                  background: "var(--searchBg)",
+                                  borderColor: "var(--border-color)",
+                                  borderRadius: "5px",
+                                }}
+                              />
+                            </div>
+                          )}
+                          {filterBy === "date_range" && (
+                            <>
+                              <div className="mx-2">
+                                <label className="formLabel text-start mb-0 w-100">
+                                  From
+                                </label>
+                                <input
+                                  type="date"
+                                  className="formItem"
+                                  max={new Date().toISOString().split("T")[0]}
+                                  value={startDateFlag}
+                                  onChange={(e) => {
+                                    setStartDateFlag(e.target.value);
+                                    // setPageNumber(1);
+                                  }}
+                                  style={{
+                                    background: "var(--searchBg)",
+                                    borderColor: "var(--border-color)",
+                                    borderRadius: "5px",
+                                  }}
+                                />
+                              </div>
+                              <div className="">
+                                <label className="formLabel text-start mb-0 w-100">
+                                  To
+                                </label>
+                                <input
+                                  type="date"
+                                  className="formItem"
+                                  max={new Date().toISOString().split("T")[0]}
+                                  value={endDateFlag}
+                                  onChange={(e) => {
+                                    setEndDateFlag(e.target.value);
+                                    // setPageNumber(1);
+                                  }}
+                                  min={startDateFlag} // Prevent selecting an end date before the start date
+                                  style={{
+                                    background: "var(--searchBg)",
+                                    borderColor: "var(--border-color)",
+                                    borderRadius: "5px",
+                                  }}
+                                />
+                              </div>
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -855,7 +872,7 @@ function Call({
                       >
                         <i className="fa-light fa-phone" />
                       </button>
-                      <button
+                      {/* <button
                         onClick={() => setClickStatus("incoming")}
                         className={
                           clickStatus === "incoming"
@@ -890,7 +907,7 @@ function Call({
                         data-category="missed"
                       >
                         <i className="fa-light fa-phone-missed" />
-                      </button>
+                      </button> */}
                       {/* <button
                         onClick={() => setClickStatus("voicemail")}
                         className={
@@ -908,6 +925,8 @@ function Call({
                   <div className="tab-content">
                     <div
                       className="callList"
+                      ref={callListRef}
+                      onScroll={handleScroll}
                       onClick={() => setSelectedModule("callDetails")}
                     >
                       {loading ? (

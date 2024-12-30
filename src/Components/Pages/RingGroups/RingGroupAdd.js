@@ -57,6 +57,8 @@ const RingGroupAdd = () => {
     useState(false);
   const [bulkAddPopUp, setBulkAddPopUp] = useState(false);
   const [bulkUploadSelectedAgents, setBulkUploadSelectedAgents] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectAll, setSelectAll] = useState(false);
 
   const {
     register,
@@ -72,6 +74,7 @@ const RingGroupAdd = () => {
     defaultValues: {
       status: true, // Set the default value for "status" to true
       timeout_destination: "",
+      call_timeout: `${160}`,
     },
   });
   useEffect(() => {
@@ -142,14 +145,14 @@ const RingGroupAdd = () => {
 
   // Handle destination
   const [destination, setDestination] = useState([
-    {
-      id: Math.floor(Math.random() * 10000),
-      destination: "",
-      delay: 0,
-      timeOut: "30",
-      // prompt: "",
-      status: "active",
-    },
+    // {
+    //   id: Math.floor(Math.random() * 10000),
+    //   destination: "",
+    //   delay: 0,
+    //   timeOut: "30",
+    //   // prompt: "",
+    //   status: "active",
+    // },
     // {
     //   id: 2,
     //   destination: "",
@@ -222,9 +225,9 @@ const RingGroupAdd = () => {
       });
     }
   };
-  if (destination.length === 0) {
-    addNewDestination();
-  }
+  // if (destination.length === 0) {
+  //   addNewDestination();
+  // }
 
   const validateAgents = () => {
     const allFieldsFilled = destination.every(
@@ -360,6 +363,10 @@ const RingGroupAdd = () => {
       });
       return;
     }
+    if (destination.length === 0) {
+      toast.error("Please add at least one destination");
+      return;
+    }
     if (data.timeout_destination != "" && !data.call_timeout) {
       toast.error("Please Mention call timeout for timeout destination");
       return;
@@ -473,10 +480,17 @@ const RingGroupAdd = () => {
     return str; // Return the string as is if it's 8 characters or less
   }
   const handleCheckboxChange = (item) => {
+    console.log(item, bulkUploadSelectedAgents);
     setBulkUploadSelectedAgents((prevSelected) => {
-      if (prevSelected.some((agent) => agent.name === item.name)) {
+      if (
+        prevSelected.some(
+          (agent) => agent.extension.extension == item.extension.extension
+        )
+      ) {
         // If the item is already in the array, remove it
-        return prevSelected.filter((agent) => agent.name !== item.name);
+        return prevSelected.filter(
+          (agent) => agent.extension.extension != item.extension.extension
+        );
       } else {
         // Otherwise, add the item
         return [...prevSelected, item];
@@ -519,6 +533,56 @@ const RingGroupAdd = () => {
       });
 
       setDestination(newDestinations); // Update the destination state
+    }
+    setBulkUploadSelectedAgents([]);
+    setSelectAll(false);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredUsers = user?.filter(
+    (user) =>
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (user?.extension?.extension || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+  );
+
+  const availableUsers = filteredUsers?.filter(
+    (user) =>
+      !destination.some(
+        (agent) => user.extension.extension == agent.destination
+      )
+  );
+  console.log(destination, user, availableUsers, bulkUploadSelectedAgents);
+  const handleSelectAll = () => {
+    const newSelectAllState = !selectAll; // Toggle Select All state
+    setSelectAll(newSelectAllState);
+
+    if (newSelectAllState) {
+      // Add all visible users to bulkUploadSelectedAgents
+      availableUsers.forEach((item) => {
+        if (
+          !bulkUploadSelectedAgents.some(
+            (agent) => agent.extension.extension == item.extension.extension
+          )
+        ) {
+          handleCheckboxChange(item);
+        }
+      });
+    } else {
+      // Remove all visible users from bulkUploadSelectedAgents
+      availableUsers.forEach((item) => {
+        if (
+          bulkUploadSelectedAgents.some(
+            (agent) => agent.extension.extension == item.extension.extension
+          )
+        ) {
+          handleCheckboxChange(item);
+        }
+      });
     }
   };
   return (
@@ -1259,12 +1323,26 @@ const RingGroupAdd = () => {
               </div> */}
                   </form>
                 </div>
-                <div className="col-12" style={{ padding: "20px 23px" }}>
-                  <button onClick={() => setBulkAddPopUp(true)} className="panelButton ms-auto  " ><span className="text">Bulk Add</span>
-                  <span className="icon">
-                    <i class="fa-solid fa-plus"></i>
-                  </span></button>
-                  <form className="row">
+                <div className="col-12" >
+                  <div class="heading bg-transparent border-bottom-0">
+                    <div class="content">
+                      <h4>List of Agents</h4>
+                      <p>You can see the list of agents in this ring group.</p>
+                    </div>
+                    <div class="buttonGroup">
+                      <button type="button" class="panelButton"
+                        onClick={() => {
+                          if (user.length !== destination.length)
+                            setBulkAddPopUp(true);
+                          else toast.warn("All agent selected");
+                        }}
+                      >
+                        <span class="text">Add</span>
+                        <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                      </button>
+                    </div>
+                  </div>
+                  {destination.length > 0 && <form className="row" style={{ padding: "0px 23px 20px" }}>
                     <div className="formRow col-xl-12">
                       {destination.map((item, index) => {
                         return (
@@ -1336,6 +1414,7 @@ const RingGroupAdd = () => {
                         </div> */}
                               <div className="position-relative">
                                 <select
+                                  disabled
                                   type="text"
                                   name="destination"
                                   value={item.destination}
@@ -1499,7 +1578,7 @@ const RingGroupAdd = () => {
                                 </button>
                               </div>
                             )}
-                            {index === 0 ? (
+                            {/* {index === 0 ? (
                               <div className="mt-auto">
                                 <button
                                   onClick={() => addNewDestination()}
@@ -1515,7 +1594,7 @@ const RingGroupAdd = () => {
                               </div>
                             ) : (
                               ""
-                            )}
+                            )} */}
                           </div>
                         );
                       })}
@@ -1527,7 +1606,7 @@ const RingGroupAdd = () => {
                         Add destinations and parameters to the ring group.
                       </label>
                     </div>
-                  </form>
+                  </form>}
                 </div>
               </div>
             </div>
@@ -1574,86 +1653,191 @@ const RingGroupAdd = () => {
           ""
         )} */}
       </section>
-      {showMusic && (
-        <AddMusic
-          show={showMusic}
-          setShow={setShowMusic}
-          setUploadedMusic={setUploadedMusic}
-          setMusicRefresh={setMusicRefresh}
-          musicRefresh={musicRefresh}
-          listArray={["ringback"]}
-        />
-      )}
-      {bulkAddPopUp ? (
-        <div className="addNewContactPopup">
-          <div className="row">
-            <div className="col-12 heading mb-0">
-              <i className="fa-light fa-user-plus" />
-              <h5>Add People to the selected Queue</h5>
-              <p>
+      {
+        showMusic && (
+          <AddMusic
+            show={showMusic}
+            setShow={setShowMusic}
+            setUploadedMusic={setUploadedMusic}
+            setMusicRefresh={setMusicRefresh}
+            musicRefresh={musicRefresh}
+            listArray={["ringback"]}
+          />
+        )
+      }
+      {
+        bulkAddPopUp ? (
+          <div className="addNewContactPopup">
+            <div className="row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-light fa-user-plus" />
+                <h5>Add People to the selected Ring Group</h5>
+                {/* <p>
                 Add people to yourqueue effortlessly, keeping your connections
                 organized and efficient
-              </p>
-              <div className="border-bottom col-12" />
-            </div>
-            <div className="col-12 mt-3">
-              {user
-                .filter(
-                  (user) =>
-                    !destination.some(
-                      (agent) =>
-                        user.extension.extension == agent.destination
-                    )
-                )
-                .map((item, index) => {
-                  return (
-                    <div key={index}>
-                      <div className="row g-2">
-                        <div className="col-auto">
-                          <label className="formLabel">{index + 1}.</label>
-                        </div>
-                        <div className="col">
-                          <label className="formLabel details">{item.name}</label>
-                        </div>
-                        <div className="col-auto ms-auto">
+              </p> */}
+                {/* <div className="border-bottom col-12" /> */}
+              </div>
+              <div className="col-xl-12">
+                <div className="col-12 d-flex justify-content-between align-items-center">
+                  <input
+                    type="text"
+                    className="formItem"
+                    placeholder="Search"
+                    name="name"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                  />
+                  <button className="tableButton ms-2" onClick={() => navigate("/users-add")}><i className="fa-solid fa-user-plus"></i></button>
+                </div>
+              </div>
+              <div className="col-xl-12 mt-3">
+                <div className="tableContainer mt-0" style={{ maxHeight: "calc(100vh - 400px)" }}>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>S.No</th>
+                        <th>Name</th>
+                        <th>Extension</th>
+                        <th>
                           <input
                             type="checkbox"
-                            onChange={() => handleCheckboxChange(item)} // Call handler on change
-                            checked={bulkUploadSelectedAgents.some(
-                              (agent) => agent.name === item.name
-                            )} // Keep checkbox state in sync
+                            onChange={handleSelectAll} // Call handler on change
+                            checked={selectAll ? true : false} // Keep checkbox state in sync
                           />
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* {user
+                    .filter(
+                      (user) =>
+                        // Filter logic: checks name or extension against search query
+                        user.name
+                          .toLowerCase()
+                          .includes(searchQuery.toLowerCase()) ||
+                        (user?.extension?.extension || "")
+                          .toLowerCase()
+                          .includes(searchQuery.toLowerCase())
+                    )
+
+                    .filter(
+                      (user) =>
+                        !destination.some(
+                          (agent) =>
+                            user.extension.extension == agent.destination
+                        )
+                    )
+                    .map((item, index) => {
+                      return (
+                        <div key={index}>
+                          <div className="row g-2">
+                            <div className="col-2">
+                              <span>{index + 1}</span>
+                            </div>
+                            <div className="col-5">
+                              <span>{item.name}</span>
+                            </div>
+                            <div className="col-2">
+                              <span>{item.extension.extension}</span>
+                            </div>
+                            <div className="col-3">
+                              <input
+                                type="checkbox"
+                                onChange={() => handleCheckboxChange(item)} // Call handler on change
+                                checked={bulkUploadSelectedAgents.some(
+                                  (agent) => agent.name === item.name
+                                )} // Keep checkbox state in sync
+                              />
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  );
-                })}
-            </div>
-            <div className="col-xl-12 mt-4">
-              <div className="d-flex justify-content-between">
-                <button className="panelButton gray ms-0" onClick={() => {
-                  setBulkAddPopUp(false);
-                }}
-                >
-                  <span className="text">Close</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-caret-left" />
-                  </span>
-                </button>
-                <button className="panelButton me-0" onClick={() => { handleBulkDestinationUpload(bulkUploadSelectedAgents); setBulkAddPopUp(false); }}>
-                  <span className="text">Done</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-check" />
-                  </span>
-                </button>
+                      );
+                    })} */}
+                      {user
+                        .sort((a, b) => {
+                          const aMatches =
+                            a.name
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase()) ||
+                            (a?.extension?.extension || "")
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase());
+                          const bMatches =
+                            b.name
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase()) ||
+                            (b?.extension?.extension || "")
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase());
+                          // Sort: matching items come first
+                          return bMatches - aMatches;
+                        })
+                        .filter(
+                          (user) =>
+                            !destination.some(
+                              (agent) =>
+                                user.extension.extension == agent.destination
+                            )
+                        )
+                        .map((item, index) => {
+                          return (
+                            <tr key={item.id || index}>
+                              <td>{index + 1}</td>
+                              <td>{item.name}</td>
+                              <td>{item.extension.extension}</td>
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  onChange={() => handleCheckboxChange(item)} // Call handler on change
+                                  checked={bulkUploadSelectedAgents.some(
+                                    (agent) => agent.name === item.name
+                                  )} // Keep checkbox state in sync
+                                />
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className="col-xl-12 mt-2">
+                <div className="d-flex justify-content-between">
+                  <button
+                    className="panelButton gray ms-0"
+                    onClick={() => {
+                      setBulkAddPopUp(false);
+                      setBulkUploadSelectedAgents([]);
+                      setSelectAll(false);
+                    }}
+                  >
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i class="fa-light fa-xmark"></i>
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleBulkDestinationUpload(bulkUploadSelectedAgents);
+                      setBulkAddPopUp(false);
+                    }}
+                    className="panelButton"
+                  >
+                    <span className="text">Done</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-check" />
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        ""
-      )}
-    </main>
+        ) : (
+          ""
+        )
+      }
+    </main >
   );
 };
 
