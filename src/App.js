@@ -134,6 +134,7 @@ import MeetingAdd from "./Components/Pages/Meeting/MeetingAdd";
 import ActiveCallsPage from "./Components/Pages/PhoneDashboard/ActiveCallsPage";
 import CallDashboardProvider from "./Components/Pages/CallDashboardProvider/CallDashboardProvider";
 import ExtensionStore from "./Components/Pages/Stores/ExtensionStore";
+import CallDesposition from "./Components/Pages/DialerModule/CallDesposition";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -650,6 +651,7 @@ function App() {
 
           {/* ------ Dashboard  */}
           <Route path="/dialer-dashboard" element={<DialerDashboard />} />
+          <Route path="/Call-desposition" element={<CallDesposition />} />
           {/* ------ Dashboard  */}
 
           {/* ------ Leads */}
