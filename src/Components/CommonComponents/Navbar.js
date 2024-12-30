@@ -1193,9 +1193,8 @@ function Navbar() {
                               </NavLink>
                             </li>
                             <li className="tabItem ">
-                              <a
-                                // to="/extensions"
-                                onClick={() => featureUnderdevelopment()}
+                              <NavLink
+                                to="/call-center-report"
                                 className={({ isActive }) =>
                                   isActive ||
                                     ["/extensions-add", "/extensions-edit"].some(
@@ -1210,12 +1209,11 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                                 <div className="itemTitle">Call Queues</div>
-                              </a>
+                              </NavLink>
                             </li>
                             <li className="tabItem ">
-                              <a
-                                // to="/extensions"
-                                onClick={() => featureUnderdevelopment()}
+                              <NavLink
+                                to="/ring-group-report"
                                 className={({ isActive }) =>
                                   isActive ||
                                     ["/extensions-add", "/extensions-edit"].some(
@@ -1230,7 +1228,7 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                                 <div className="itemTitle">Ring Groups</div>
-                              </a>
+                              </NavLink>
                             </li>
                             <li className="tabItem ">
                               <a

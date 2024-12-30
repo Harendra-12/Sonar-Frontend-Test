@@ -92,7 +92,7 @@ const DidConfig = () => {
       setValue("dtmf_length", locationData.configuration.dtmf_length || "3");
       setValue("dtmf_retries", locationData.configuration.dtmf_retries || "3");
       setValue(
-        "dtmf_retry_file_sound	",
+        "dtmf_retry_file_sound",
         locationData.configuration.dtmf_retry_file_sound || "1"
       );
     } else {

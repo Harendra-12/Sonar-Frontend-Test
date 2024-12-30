@@ -25,7 +25,7 @@ function AllCallsDetails() {
       setAllCalls(callDetails.calls);
     }
   }, [callDetails]);
-  console.log("allCalls", allCalls);
+  console.log("allCalls", callDetails);
 
   return (
     <>
@@ -66,12 +66,9 @@ function AllCallsDetails() {
                             <div className="col-xl-6 col-xxl-6 mt-2">
                               <div className="itemWrapperb a">
                                 <div className="heading">Total Calls</div>
-                                <div className="data-number">{allCalls.length}</div>
+                                <div className="data-number">{callDetails.totalCalls}</div>
                                 <div className="label2">
-                                  {(
-                                    (allCalls.length / allCalls.length) *
-                                    100
-                                  ).toFixed(2) || 0}
+                                  {100}
                                   % of total calls
                                 </div>
                               </div>
@@ -81,21 +78,13 @@ function AllCallsDetails() {
                                 <div className="heading">Total Calls Completed</div>
                                 <div className="data-number">
                                   {
-                                    allCalls.filter(
-                                      (call) =>
-                                        call["variable_DIALSTATUS"] === "SUCCESS"
-                                    ).length
+                                    callDetails.success
                                   }
                                 </div>
                                 <div className="label2">
                                   Percentage{" "}
                                   {(
-                                    (allCalls.filter(
-                                      (call) =>
-                                        call["variable_DIALSTATUS"] === "SUCCESS"
-                                    ).length /
-                                      allCalls.length) *
-                                    100
+                                    (callDetails.success * 100) /callDetails.totalCalls
                                   ).toFixed(2)}
                                   %
                                 </div>
@@ -107,21 +96,13 @@ function AllCallsDetails() {
                                 {/* <div className="data-number">{callDetails.missed}</div> */}
                                 <div className="data-number">
                                   {
-                                    allCalls.filter(
-                                      (call) =>
-                                        call["variable_DIALSTATUS"] !== "SUCCESS"
-                                    ).length
+                                    callDetails.missed
                                   }
                                 </div>
                                 <div className="label2">
                                   Percentage{" "}
                                   {(
-                                    (allCalls.filter(
-                                      (call) =>
-                                        call["variable_DIALSTATUS"] !== "SUCCESS"
-                                    ).length /
-                                      allCalls.length) *
-                                    100
+                                    (callDetails.missed * 100) /callDetails.totalCalls
                                   ).toFixed(2)}
                                   %
                                 </div>
@@ -138,12 +119,9 @@ function AllCallsDetails() {
                                   {activeCall.length}
                                 </div>
                                 <div className="label2">
-                                  Percentage{" "}
-                                  {(
-                                    (activeCall.length / activeCall.length) *
-                                    100
-                                  ).toFixed(2)}
-                                  %
+                                  Active Calls{" "}
+                                  {}
+                                  
                                 </div>
                               </div>
                             </div>
@@ -198,13 +176,10 @@ function AllCallsDetails() {
                               <div className="itemWrapperb a">
                                 <div className="heading">Total Inbound Calls</div>
                                 <div className="data-number">
-                                  {inboundCall.length}
+                                  {callDetails.inbound.total}
                                 </div>
                                 <div className="label2">
-                                  {(
-                                    (inboundCall.length / inboundCall.length) *
-                                    100
-                                  ).toFixed(2)}
+                                  {100}
                                   % of total calls
                                 </div>
                               </div>
@@ -216,21 +191,14 @@ function AllCallsDetails() {
                                 </div>
                                 <div className="data-number">
                                   {
-                                    inboundCall.filter(
-                                      (call) =>
-                                        call["variable_DIALSTATUS"] === "SUCCESS"
-                                    ).length
+                                    callDetails.inbound.completed
                                   }
                                 </div>
                                 <div className="label2">
                                   Percentage{" "}
                                   {(
-                                    (inboundCall.filter(
-                                      (call) =>
-                                        call["variable_DIALSTATUS"] === "SUCCESS"
-                                    ).length /
-                                      inboundCall.length) *
-                                    100
+                                    (callDetails.inbound.completed * 100) /
+                                    callDetails.inbound.total
                                   ).toFixed(2)}
                                   %
                                 </div>
@@ -241,21 +209,14 @@ function AllCallsDetails() {
                                 <div className="heading">Missed Inbound Calls</div>
                                 <div className="data-number">
                                   {
-                                    inboundCall.filter(
-                                      (call) =>
-                                        call["variable_DIALSTATUS"] !== "SUCCESS"
-                                    ).length
+                                    callDetails.inbound.missed
                                   }
                                 </div>
                                 <div className="label2">
                                   Percentage{" "}
                                   {(
-                                    (inboundCall.filter(
-                                      (call) =>
-                                        call["variable_DIALSTATUS"] !== "SUCCESS"
-                                    ).length /
-                                      inboundCall.length) *
-                                    100
+                                   (callDetails.inbound.missed * 100) /
+                                    callDetails.inbound.total
                                   ).toFixed(2)}
                                   %
                                 </div>
@@ -276,15 +237,8 @@ function AllCallsDetails() {
                                   }
                                 </div>
                                 <div className="label2">
-                                  Percentage{" "}
-                                  {(
-                                    (activeCall.filter(
-                                      (call) => call.direction === "inbound"
-                                    ).length /
-                                      activeCall.length) *
-                                    100
-                                  ).toFixed(2)}
-                                  %
+                                  Active Calls{" "}
+                                 
                                 </div>
                               </div>
                             </div>
@@ -339,13 +293,10 @@ function AllCallsDetails() {
                               <div className="itemWrapperb a">
                                 <div className="heading">Total Outbound Calls</div>
                                 <div className="data-number">
-                                  {outboundCall.length}
+                                  {callDetails.outbound.total}
                                 </div>
                                 <div className="label2">
-                                  {(
-                                    (outboundCall.length / outboundCall.length) *
-                                    100
-                                  ).toFixed(2) || 0}
+                                  {100}
                                   % of total calls
                                 </div>
                               </div>
@@ -357,21 +308,14 @@ function AllCallsDetails() {
                                 </div>
                                 <div className="data-number">
                                   {
-                                    outboundCall.filter(
-                                      (call) =>
-                                        call["variable_DIALSTATUS"] === "SUCCESS"
-                                    ).length
+                                    callDetails.outbound.completed
                                   }
                                 </div>
                                 <div className="label2">
                                   Percentage{" "}
                                   {(
-                                    (outboundCall.filter(
-                                      (call) =>
-                                        call["variable_DIALSTATUS"] === "SUCCESS"
-                                    ).length /
-                                      outboundCall.length) *
-                                    100
+                                    (callDetails.outbound.completed * 100) /
+                                    callDetails.outbound.total
                                   ).toFixed(2) || 0}
                                   %
                                 </div>
@@ -381,20 +325,15 @@ function AllCallsDetails() {
                               <div className="itemWrapperb d">
                                 <div className="heading">Missed Outbound Calls</div>
                                 <div className="data-number">
-                                  {outboundCall.filter(
-                                    (call) =>
-                                      call["variable_DIALSTATUS"] !== "SUCCESS"
-                                  ).length || 0}
+                                  {
+                                    callDetails.outbound.missed
+                                  }
                                 </div>
                                 <div className="label2">
                                   Percentage{" "}
                                   {(
-                                    (outboundCall.filter(
-                                      (call) =>
-                                        call["variable_DIALSTATUS"] !== "SUCCESS"
-                                    ).length /
-                                      outboundCall.length) *
-                                    100
+                                    (callDetails.outbound.missed * 100) /
+                                    callDetails.outbound.total
                                   ).toFixed(2) || 0}
                                   %
                                 </div>
@@ -411,13 +350,8 @@ function AllCallsDetails() {
                                   }
                                 </div>
                                 <div className="label2">
-                                  Percentage{" "}
-                                  {
-                                    activeCall.filter(
-                                      (call) => call.direction === "outbound"
-                                    ).length
-                                  }
-                                  %
+                                  Active Calls{" "}
+                                  
                                 </div>
                               </div>
                             </div>

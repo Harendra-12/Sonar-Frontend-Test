@@ -386,11 +386,19 @@ function App() {
             path="/cdr-report"
             element={
               permission?.includes(86) ? (
-                <CdrReport />
+                <CdrReport page="all" />
               ) : (
                 <Navigate to="/dashboard" replace />
               )
             }
+          />
+          <Route
+            path="/ring-group-report"
+            element={<CdrReport page="ringgroup" />}
+          />
+          <Route
+            path="/call-center-report"
+            element={<CdrReport page="callcenter" />}
           />
           {/* <Route path="/efax" element={<EFax />} />
           <Route path="/call-dashboard" element={<CallDashboardPage />} /> */}

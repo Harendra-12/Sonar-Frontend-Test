@@ -114,6 +114,8 @@ function ActiveCalls({ isWebrtc }) {
       return null;
     }
   }
+
+  console.log(activeCall);
   return (
     <>
       <table>
