@@ -148,7 +148,7 @@ const ActionList = ({
       // border: '1px solid var(--color4)',
       border: "1px solid var(--color4);",
       borderRadius: "3px",
-      backgroundColor: 'var(--ele-color)',
+      backgroundColor: "var(--ele-color)",
       outline: "none",
       fontSize: "14px",
       width: "100%",
@@ -166,12 +166,12 @@ const ActionList = ({
     }),
     singleValue: (provided) => ({
       ...provided,
-      color: 'var(--form-input-text)'
+      color: "var(--form-input-text)",
     }),
     input: (provided) => ({
       ...provided,
       margin: "0",
-      color: 'var(--form-input-text)'
+      color: "var(--form-input-text)",
     }),
     indicatorSeparator: (provided) => ({
       display: "none",
@@ -211,7 +211,7 @@ const ActionList = ({
       margin: 0,
       maxHeight: "150px",
       overflowY: "auto",
-      color: 'var(--form-input-text)'
+      color: "var(--form-input-text)",
     }),
   };
 
