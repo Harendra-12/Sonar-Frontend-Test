@@ -48,160 +48,21 @@ function AgentsEdits() {
                                     </div>
                                 </div>
                                 <div className="col-12 formScroller" style={{ padding: '25px 23px' }}>
-                                    <form action="#" className="row">
-                                        <div className="formRow col-xl-3">
-                                            <div className="formLabel">
-                                                <label className="text-dark">Username</label>
-                                                {/* <label htmlFor="data" className="formItemDesc">
-                                                    Full legal name of the current owner.
-                                                </label> */}
-                                            </div>
-                                            <div className="col-6">
-                                                <input
-                                                    type="text"
-                                                    name="extension"
-                                                    className="formItem" />
-
-                                            </div>
+                                    <nav>
+                                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                            <button class="nav-link active" id="nav-user-tab" data-bs-toggle="tab" data-bs-target="#nav-user" type="button" role="tab" aria-controls="nav-user" aria-selected="true">User Configuration</button>
+                                            <button class="nav-link" id="nav-exten-tab" data-bs-toggle="tab" data-bs-target="#nav-exten" type="button" role="tab" aria-controls="nav-exten" aria-selected="false">Extension Configuration</button>
                                         </div>
-                                        <div className="formRow col-xl-3">
-                                            <div className="formLabel pe-2 col-2">
-                                                <label className="text-dark">Email</label>
-
-                                            </div>
-                                            <div className="col-6">
-                                                <input
-                                                    type="text"
-                                                    name="extension"
-                                                    className="formItem" />
-
-                                            </div>
-                                        </div>
-                                        <div className="formRow col-xl-3">
-                                            <div className="formLabel pe-2 col-2">
-                                                <label className="text-dark">First Name</label>
-                                                {/* <label htmlFor="data" className="formItemDesc">
-                                                    The address associated with the current number.
-                                                </label> */}
-                                            </div>
-                                            <div className="col-6">
-                                                <input
-                                                    type="text"
-                                                    name="extension"
-                                                    className="formItem" />
-
-                                            </div>
-                                        </div>
-                                        <div className="formRow col-xl-3">
-                                            <div className="formLabel">
-                                                <label className="text-dark">Last Name</label>
-                                                <label htmlFor="data" className="formItemDesc">
-                                                    Some carriers require a PIN for porting.
-                                                </label>
-                                            </div>
-                                            <div className="col-6">
-                                                <input
-                                                    type="text"
-                                                    name="extension"
-                                                    className="formItem" />
-
-                                            </div>
-                                        </div>
-                                        <div className="formRow col-xl-3">
-                                            <div className="formLabel">
-                                                <label className="text-dark">Time Zone</label>
-
-                                            </div>
-                                            <div className="col-6">
-                                                <select
-                                                    className="formItem"
-                                                    name="" >
-                                                    <option disabled value="">
-                                                        Select Time Zone
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div className="formRow col-xl-3">
-                                            <div className="formLabel">
-                                                <label className="text-dark">Status</label>
-                                                <br />
-                                                <label htmlFor="data" className="formItemDesc">
-                                                    Set the user's presence.
-                                                </label>
-                                            </div>
-                                            <div className="col-6">
-                                                <input
-                                                    type="text"
-                                                    name="extension"
-                                                    className="formItem"
-                                                />
-
-                                            </div>
-                                        </div>
-                                        <div className="formRow col-xl-3">
-                                            <div className="formLabel">
-                                                <label className="text-dark">Role Type</label>
-                                                <label htmlFor="data" className="formItemDesc">
-                                                    Select Default to enable login or to disable login select Virtual.
-                                                </label>
-                                            </div>
-                                            <div className="col-6">
-                                                <select
-                                                    className="formItem"
-                                                    name="" >
-                                                    <option disabled value="">
-                                                        Select Role type
-                                                    </option>
-                                                </select>
-                                            </div>
-
-                                        </div>
-                                        <div className="formRow col-xl-3">
-                                            <div className="formLabel">
-                                                <label className="text-dark">Select extension</label>
-                                                <label htmlFor="data" className="formItemDesc">
-                                                    Assign an extension to the newly created user.
-                                                </label>
-                                            </div>
-                                            <div className="col-6">
-                                                <select
-                                                    className="formItem"
-                                                    name="" >
-                                                    <option disabled value="">
-                                                        Select Time Zone
-                                                    </option>
-                                                </select>
-
-                                            </div>
-
-                                        </div>
-
-                                        <div className="formRow col-xl-3">
-                                            <div className="formLabel">
-                                                <label className="text-dark">New Password</label>
-                                                <label htmlFor="data" className="formItemDesc">
-                                                    Set new password to user.
-                                                </label>
-                                            </div>
-                                            <div className="col-6">
-                                                <input
-                                                    type="text"
-                                                    name="extension"
-                                                    className="formItem"
-                                                />
-                                            </div>
-
-                                        </div>
-                                    </form>
+                                    </nav>
+                                    <div class="tab-content" id="nav-tabContent" style={{ border: '1px solid var(--border-color)', borderTop: 'none', borderRadius: '0 0 5px 5px' }}>
+                                        <div class="tab-pane fade show active" id="nav-user" role="tabpanel" aria-labelledby="nav-user-tab" tabindex="0">...</div>
+                                        <div class="tab-pane fade" id="nav-exten" role="tabpanel" aria-labelledby="nav-exten-tab" tabindex="0">...</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </section>
-
-
             </main>
         </>
     )
