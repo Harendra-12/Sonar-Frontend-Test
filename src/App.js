@@ -660,7 +660,7 @@ function App() {
 
           {/* ------ Dashboard  */}
           <Route path="/dialer-dashboard" element={<DialerDashboard />} />
-          <Route path="/Call-desposition" element={<CallDesposition />} />
+          <Route path="/call-desposition" element={<CallDesposition />} />
           {/* ------ Dashboard  */}
 
           {/* ------ Leads */}
@@ -672,7 +672,6 @@ function App() {
 
           {/* ------ Support  */}
           <Route path="/knowledge-base" element={<KnowledgeBase />} />
-          {/* <Route path="/Call-desposition" element={<CallDesposition />} /> */}
           {/* ------ Support  */}
 
 

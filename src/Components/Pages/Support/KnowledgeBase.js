@@ -9,13 +9,17 @@ function KnowledgeBase() {
                 <div className="container-fluid">
                     <div className="row">
                         <Header title="Knowledge Base" />
+                    </div>
+                </div>
+                <div className='container'>
+                    <div className='row'>
                         <div className="overviewTableWrapper0">
                             <div className="overviewTableChild0">
                                 <div className="d-flex flex-wrap">
                                     <div className="col-12">
                                         <div className="heading">
                                             <div className="content mt-5 d-flex align-items-center justify-content-center">
-                                                <h5 style={{ fontSize: "32px"}} >How can we help you?</h5>
+                                                <h5 style={{ fontSize: "32px" }} >How can we help you?</h5>
                                                 {/* <p>You can see the list of Call Desposition</p> */}
                                             </div>
                                             {/* <div className="buttonGroup">
@@ -175,7 +179,7 @@ function KnowledgeBase() {
                                                                         </video>
                                                                         <div class="heading">
                                                                             <h4>Call Dashboard Provider</h4>
-                                                                        <p>Customize how you want your main company number to ring.</p></div>
+                                                                            <p>Customize how you want your main company number to ring.</p></div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -193,7 +197,7 @@ function KnowledgeBase() {
                                                                         </video>
                                                                         <div class="heading">
                                                                             <h4>Company call handling</h4>
-                                                                        <p>Use the Admin Portal to set up phone settings for users within your account.</p></div>
+                                                                            <p>Use the Admin Portal to set up phone settings for users within your account.</p></div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -211,7 +215,7 @@ function KnowledgeBase() {
                                                                         </video>
                                                                         <div class="heading">
                                                                             <h4>Personal call handling</h4>
-                                                                        <p>Set up where calls ring, when greetings play, and what happens to missed calls.</p></div>
+                                                                            <p>Set up where calls ring, when greetings play, and what happens to missed calls.</p></div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -229,7 +233,7 @@ function KnowledgeBase() {
                                                                         </video>
                                                                         <div class="heading">
                                                                             <h4>Active Call Management</h4>
-                                                                        <p>Mute, record, transfer, and park active calls.</p></div>
+                                                                            <p>Mute, record, transfer, and park active calls.</p></div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -247,7 +251,7 @@ function KnowledgeBase() {
                                                                         </video>
                                                                         <div class="heading">
                                                                             <h4>Call forwarding</h4>
-                                                                        <p>Learn how to send calls to voicemail, forward to another number, or play an announcement.</p></div>
+                                                                            <p>Learn how to send calls to voicemail, forward to another number, or play an announcement.</p></div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -265,7 +269,7 @@ function KnowledgeBase() {
                                                                         </video>
                                                                         <div class="heading">
                                                                             <h4>Voice mail setup</h4>
-                                                                        <p>Learn how to send calls to voicemail, forward to another number, or play an announcement.</p></div>
+                                                                            <p>Learn how to send calls to voicemail, forward to another number, or play an announcement.</p></div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -285,16 +289,16 @@ function KnowledgeBase() {
                                                         <div className="itemWrapper a d-flex align-items-center  justify-content-between ">
                                                             <div className="heading ">
                                                                 <div className="d-flex align-items-center justify-content-between ">
-                                                                <div className="col-3">
-                                                                <i class="fa-solid fa-computer float-start"></i>
+                                                                    <div className="col-3">
+                                                                        <i class="fa-solid fa-computer float-start"></i>
                                                                     </div>
                                                                     <div>
-                                                                    <h6>Check System status</h6>
-                                                                    <p>Get RingCentral’s live connectivity updates.</p>
+                                                                        <h6>Check System status</h6>
+                                                                        <p>Get RingCentral’s live connectivity updates.</p>
                                                                     </div>
-                                                                    
-                                                                
-                                                                   
+
+
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -304,14 +308,14 @@ function KnowledgeBase() {
                                                         <div className="itemWrapper a d-flex align-items-center  justify-content-center ">
                                                             <div className="heading ">
                                                                 <div className="d-flex align-items-center  justify-content-between ">
-                                                                <div className="col-3 text-end">
-                                                                    <i class="fa-solid fa-users float-start"></i>
+                                                                    <div className="col-3 text-end">
+                                                                        <i class="fa-solid fa-users float-start"></i>
                                                                     </div>
-                                                                <div>
-                                                                    <h6>Learn community</h6>
-                                                                    <p>Discuss solutions and ideas with other RingCentral users.</p>
+                                                                    <div>
+                                                                        <h6>Learn community</h6>
+                                                                        <p>Discuss solutions and ideas with other RingCentral users.</p>
                                                                     </div>
-                                                                 
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -321,19 +325,19 @@ function KnowledgeBase() {
                                                         <div className="itemWrapper a d-flex align-items-center  justify-content-center ">
                                                             <div className="heading">
                                                                 <div className="d-flex align-items-center  justify-content-space-between ">
-                                                                <div className="col-3 text-start0">
-                                                                    <i class="fa-solid fa-file-lines float-start"></i>
+                                                                    <div className="col-3 text-start0">
+                                                                        <i class="fa-solid fa-file-lines float-start"></i>
                                                                     </div>
-                                                                <div>
-                                                                    <h6>Explore release notes</h6>
-                                                                    <p>Stay updated with the latest RingCentral updates.</p>
+                                                                    <div>
+                                                                        <h6>Explore release notes</h6>
+                                                                        <p>Stay updated with the latest RingCentral updates.</p>
                                                                     </div>
-                                                                   
+
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                   
+
                                                 </div>
                                             </div>
                                         </div>
