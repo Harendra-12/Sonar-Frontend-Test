@@ -867,6 +867,7 @@ function CdrReport({page}) {
                                               <audio
                                                 controls={true}
                                                 ref={thisAudioRef}
+                                                autoPlay={true}
                                                 onEnded={() => {
                                                   setCurrentPlaying(null);
                                                 }}

@@ -12,17 +12,17 @@ function AllCallsDetails() {
   const [allCalls, setAllCalls] = useState([]);
   const [extensionDataLoading, setExtensionDataLoading] = useState(true);
   useEffect(() => {
-    if (callDetails.calls) {
+    if (callDetails?.calls) {
       setExtensionDataLoading(false);
       setInboundCall(
-        callDetails.calls.filter((call) => call["Call-Direction"] === "inbound")
+        callDetails?.calls.filter((call) => call["Call-Direction"] === "inbound")
       );
       setOutboundCall(
-        callDetails.calls.filter(
+        callDetails?.calls.filter(
           (call) => call["Call-Direction"] === "outbound"
         )
       );
-      setAllCalls(callDetails.calls);
+      setAllCalls(callDetails?.calls);
     }
   }, [callDetails]);
   console.log("allCalls", callDetails);
@@ -66,7 +66,7 @@ function AllCallsDetails() {
                             <div className="col-xl-6 col-xxl-6 mt-2">
                               <div className="itemWrapperb a">
                                 <div className="heading">Total Calls</div>
-                                <div className="data-number">{callDetails.totalCalls}</div>
+                                <div className="data-number">{callDetails?.totalCalls}</div>
                                 <div className="label2">
                                   {100}
                                   % of total calls
@@ -78,13 +78,13 @@ function AllCallsDetails() {
                                 <div className="heading">Total Calls Completed</div>
                                 <div className="data-number">
                                   {
-                                    callDetails.success
+                                    callDetails?.success
                                   }
                                 </div>
                                 <div className="label2">
                                   Percentage{" "}
                                   {(
-                                    (callDetails.success * 100) /callDetails.totalCalls
+                                    (callDetails?.success * 100) /callDetails?.totalCalls
                                   ).toFixed(2)}
                                   %
                                 </div>
@@ -93,16 +93,16 @@ function AllCallsDetails() {
                             <div className="col-xl-6 col-xxl-6 mt-2">
                               <div className="itemWrapperb d">
                                 <div className="heading">Missed Calls</div>
-                                {/* <div className="data-number">{callDetails.missed}</div> */}
+                                {/* <div className="data-number">{callDetails?.missed}</div> */}
                                 <div className="data-number">
                                   {
-                                    callDetails.missed
+                                    callDetails?.missed
                                   }
                                 </div>
                                 <div className="label2">
                                   Percentage{" "}
                                   {(
-                                    (callDetails.missed * 100) /callDetails.totalCalls
+                                    (callDetails?.missed * 100) /callDetails?.totalCalls
                                   ).toFixed(2)}
                                   %
                                 </div>
@@ -176,7 +176,7 @@ function AllCallsDetails() {
                               <div className="itemWrapperb a">
                                 <div className="heading">Total Inbound Calls</div>
                                 <div className="data-number">
-                                  {callDetails.inbound.total}
+                                  {callDetails?.inbound?.total}
                                 </div>
                                 <div className="label2">
                                   {100}
@@ -191,14 +191,14 @@ function AllCallsDetails() {
                                 </div>
                                 <div className="data-number">
                                   {
-                                    callDetails.inbound.completed
+                                    callDetails?.inbound?.completed
                                   }
                                 </div>
                                 <div className="label2">
                                   Percentage{" "}
                                   {(
-                                    (callDetails.inbound.completed * 100) /
-                                    callDetails.inbound.total
+                                    (callDetails?.inbound?.completed * 100) /
+                                    callDetails?.inbound?.total
                                   ).toFixed(2)}
                                   %
                                 </div>
@@ -209,14 +209,14 @@ function AllCallsDetails() {
                                 <div className="heading">Missed Inbound Calls</div>
                                 <div className="data-number">
                                   {
-                                    callDetails.inbound.missed
+                                    callDetails?.inbound?.missed
                                   }
                                 </div>
                                 <div className="label2">
                                   Percentage{" "}
                                   {(
-                                   (callDetails.inbound.missed * 100) /
-                                    callDetails.inbound.total
+                                   (callDetails?.inbound?.missed * 100) /
+                                    callDetails?.inbound?.total
                                   ).toFixed(2)}
                                   %
                                 </div>
@@ -293,7 +293,7 @@ function AllCallsDetails() {
                               <div className="itemWrapperb a">
                                 <div className="heading">Total Outbound Calls</div>
                                 <div className="data-number">
-                                  {callDetails.outbound.total}
+                                  {callDetails?.outbound?.total}
                                 </div>
                                 <div className="label2">
                                   {100}
@@ -308,14 +308,14 @@ function AllCallsDetails() {
                                 </div>
                                 <div className="data-number">
                                   {
-                                    callDetails.outbound.completed
+                                    callDetails?.outbound?.completed
                                   }
                                 </div>
                                 <div className="label2">
                                   Percentage{" "}
                                   {(
-                                    (callDetails.outbound.completed * 100) /
-                                    callDetails.outbound.total
+                                    (callDetails?.outbound?.completed * 100) /
+                                    callDetails?.outbound?.total
                                   ).toFixed(2) || 0}
                                   %
                                 </div>
@@ -326,14 +326,14 @@ function AllCallsDetails() {
                                 <div className="heading">Missed Outbound Calls</div>
                                 <div className="data-number">
                                   {
-                                    callDetails.outbound.missed
+                                    callDetails?.outbound?.missed
                                   }
                                 </div>
                                 <div className="label2">
                                   Percentage{" "}
                                   {(
-                                    (callDetails.outbound.missed * 100) /
-                                    callDetails.outbound.total
+                                    (callDetails?.outbound?.missed * 100) /
+                                    callDetails?.outbound?.total
                                   ).toFixed(2) || 0}
                                   %
                                 </div>
