@@ -233,7 +233,6 @@ function ActiveCallsPage() {
                                                             <i class="fa-solid fa-rotate-right"></i>
                                                         </span>
                                                     </button> */}
-
                                                     </div>
                                                 </div>
                                             </nav>

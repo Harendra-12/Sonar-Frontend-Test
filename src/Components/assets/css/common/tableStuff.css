@@ -211,6 +211,51 @@ table td.incoming::after {
     display: flex;
     align-items: center;
     overflow: hidden;
+
+
+}
+
+
+
+/* .searchBoxlable{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    
+    
+} */
+
+
+.searchBoxlable .inputWrappers {
+    position: relative;
+    display: flex;
+    align-items: center;
+    /* border: 2px solid #ccc; */
+    border-radius: 4px;
+    padding: 0;
+    /* No padding for container */
+
+}
+
+ .inputWrappers .form-left {
+    padding-left: 2.375rem;
+}
+
+
+
+/* Style for the search icon */
+.inputWrappers .searchIcon {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+
 }
 
 .formCustomAutoComplete {
