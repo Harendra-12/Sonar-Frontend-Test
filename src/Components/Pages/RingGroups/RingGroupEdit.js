@@ -1315,7 +1315,7 @@ const RingGroupEdit = () => {
                     onClick={() => setBulkAddPopUp(true)}
                     className="panelButton ms-auto  "
                   >
-                    <span className="text">Bulk Addsssss</span>
+                    <span className="text">Bulk Add</span>
                     <span className="icon">
                       <i class="fa-solid fa-plus"></i>
                     </span>
