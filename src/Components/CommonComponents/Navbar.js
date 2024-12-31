@@ -119,7 +119,9 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse8"
-                      className={`accordion-collapse collapse ${isChildActive(["/my-profile", "/change-password", "/admin/package", "/users", "/users-edit", "/users-add", "/roles", "/master"])
+                      className={`accordion-collapse collapse ${isChildActive(["/my-profile", "/change-password", "/admin/package", "/users", "/users-edit", "/users-add", "/roles", "/master", "/extensions",
+                        "/extensions-edit",
+                        "/extensions-add",])
                         ? "show"
                         : ""
                         }`}
@@ -175,6 +177,30 @@ function Navbar() {
                                   <i class="fa-regular fa-users-gear"></i>
                                 </div> */}
                                 <div className="itemTitle">Users</div>
+                              </NavLink>
+                            </li>
+                          ) : null}
+
+                          {account?.permissions?.includes(176) ||
+                            account?.permissions?.includes(178) ? (
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/extensions"
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    ["/extensions-add", "/extensions-edit", "/device-provisioning-add",
+                                      "/device-provisioning-edit"].some(
+                                        (path) =>
+                                          window.location.pathname.includes(path)
+                                      )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                                <div className="itemTitle">Extensions</div>
                               </NavLink>
                             </li>
                           ) : null}
@@ -347,10 +373,7 @@ function Navbar() {
                       aria-expanded={
                         isChildActive([
                           "/phone-dashboard",
-                          "/extensions",
                           "/voice-music",
-                          "/extensions-edit",
-                          "/extensions-add",
                           "/device-provisioning-add",
                           "/device-provisioning-edit",
                           "/did-listing-pbx",
@@ -455,30 +478,6 @@ function Navbar() {
                               <div className="itemTitle">Number Configuration</div>
                             </NavLink>
                           </li>
-                          {account?.permissions?.includes(176) ||
-                            account?.permissions?.includes(178) ? (
-                            <li className="tabItem ">
-                              <NavLink
-                                to="/extensions"
-                                className={({ isActive }) =>
-                                  isActive ||
-                                    ["/extensions-add", "/extensions-edit", "/device-provisioning-add",
-                                      "/device-provisioning-edit"].some(
-                                        (path) =>
-                                          window.location.pathname.includes(path)
-                                      )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                              >
-                                {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
-                                <div className="itemTitle">Extensions</div>
-                              </NavLink>
-                            </li>
-                          ) : null}
-
                           <li className="tabItem ">
                             <NavLink
                               to="/agents"
@@ -1102,7 +1101,7 @@ function Navbar() {
                       </button>
                       <div
                         id="collapse4"
-                        className={`accordion-collapse collapse ${isChildActive(["/cdr-report", "/agent-reports", "/meeting-reports"]) ? "show" : ""
+                        className={`accordion-collapse collapse ${isChildActive(["/cdr-report", "/agent-reports", "/meeting-reports","/call-center-report","/ring-group-report"]) ? "show" : ""
                           }`}
                         data-bs-parent="#sidenNav"
                       >

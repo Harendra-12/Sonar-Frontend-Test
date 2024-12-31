@@ -665,7 +665,7 @@ function Music() {
                           <input
                             type="text"
                             className="mb-3 formItem"
-                            value={setSelectedMusicName}
+                            value={selectedMusicName}
                             onChange={(e) => setSelectedMusicName(e.target.value)}
                           ></input>
                         </div>
@@ -673,7 +673,7 @@ function Music() {
                           <select
                             name="music"
                             className="formItem"
-                            value={selecetdMusicType.type}
+                            value={selecetdMusicType}
                             onChange={(e) => setSelectedMusicType(e.target.value)}
                           >
                             <option value="hold">Hold</option>
