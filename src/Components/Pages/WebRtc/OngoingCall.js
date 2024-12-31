@@ -129,7 +129,7 @@ function OngoingCall({
     if (destNumber.length > 3) {
       const dialog = session.dialog;
       const transferTo = `sip:${destNumber}@${account.domain.domain_name}`;
-
+      console.log(transferTo);
       if (session.state !== "Established") {
         toast.warn("cannot transfer call: session is not established");
         return;
@@ -147,15 +147,15 @@ function OngoingCall({
           session.userAgent,
           UserAgent.makeURI(transferTo)
         );
-
+        console.log(replacementSession);
         if (target) {
           // Initiate the refer request
-          const referRequest = dialog.refer(replacementSession);
-          // const referRequest = dialog.refer(target, {
-          //   extraHeaders: Object.entries(customHeaders).map(
-          //     ([key, value]) => `${key}: ${value}`
-          //   ),
-          // });
+          // const referRequest = dialog.refer(replacementSession);
+          const referRequest = dialog.refer(replacementSession, {
+            extraHeaders: Object.entries(customHeaders).map(
+              ([key, value]) => `${key}: ${value}`
+            ),
+          });
 
           // Add event listeners for accepted and rejected states
           referRequest.delegate = {
