@@ -136,6 +136,8 @@ import CallDashboardProvider from "./Components/Pages/CallDashboardProvider/Call
 import ExtensionStore from "./Components/Pages/Stores/ExtensionStore";
 import CallDesposition from "./Components/Pages/DialerModule/CallDesposition";
 import KnowledgeBase from "./Components/Pages/Support/KnowledgeBase";
+import AgentsPbx from "./Components/Pages/Agents/AgentsPbx";
+import AgentsDialer from "./Components/Pages/Agents/AgentsDialer";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -329,25 +331,26 @@ function App() {
           <Route path="/call-settings" element={<CallSettings />} />
           {/* Extensions Path End */}
 
-
           {/*Agents path */}
-          <Route path="/agents" element={<Agents />} />
+          <Route path="/agents" element={<AgentsPbx />} />
+          <Route path="/agents-dialer" element={<AgentsDialer />} />
           <Route path="/agents-edit" element={<AgentsEdits />} />
+          <Route path="/agents-edit-dialer" element={<AgentsEdits />} />
           <Route path="/agents-add" element={<AgentsAdd />} />
           <Route path="/agent-reports" element={<AgentReport />} />
           <Route path="/meeting-reports" element={<MeetingReports />} />
           {/*Agents path */}
-
 
           {/*Addon path */}
           <Route path="/add-ons" element={<AddOns />} />
           <Route path="/store-extension" element={<ExtensionStore />} />
 
           {/*CallDashboardProvider */}
-          <Route path="/call-dashboard-provider" element={<CallDashboardProvider />} />
+          <Route
+            path="/call-dashboard-provider"
+            element={<CallDashboardProvider />}
+          />
           {/* <Route path="/store-extension" element={<Extension />} /> */}
-
-
 
           {/* Settings Path */}
           <Route path="/fax-settings" element={<FaxSettings />} />
@@ -669,12 +672,9 @@ function App() {
           <Route path="/lead-add" element={<LeadAdd />} />
           {/* ------ Leads */}
 
-
           {/* ------ Support  */}
           <Route path="/knowledge-base" element={<KnowledgeBase />} />
           {/* ------ Support  */}
-
-
 
           {/* ------ Campaigns */}
           <Route path="/campaigns" element={<Campaigns />} />

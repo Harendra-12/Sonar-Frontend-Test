@@ -213,7 +213,7 @@ const Users = () => {
                           </span>
                         </button>
                         {account?.permissions?.includes(442) &&
-                          roles?.length > 1 ? (
+                        roles?.length > 1 ? (
                           <Link
                             // to="/users-add"
                             // onClick={backToTop}
@@ -281,7 +281,7 @@ const Users = () => {
                             <th>Extension</th>
                             {/* <th>Account ID</th> */}
                             <th>Role</th>
-                            {/* <th>Domain</th> */}
+                            <th>Usage</th>
                             <th>Online</th>
                             <th>Edit</th>
                             <th>Status</th>
@@ -300,41 +300,41 @@ const Users = () => {
                               <td></td>
                             </tr>
                           ) : // </div>
-                            loading ? (
-                              <SkeletonTableLoader col={7} row={15} />
-                            ) : (
-                              <>
-                                {user &&
-                                  filterUser?.map((item, index) => {
-                                    const isCustomerAdmin =
-                                      account.email === item.email;
+                          loading ? (
+                            <SkeletonTableLoader col={7} row={15} />
+                          ) : (
+                            <>
+                              {user &&
+                                filterUser?.map((item, index) => {
+                                  const isCustomerAdmin =
+                                    account.email === item.email;
 
-                                    // Skip rendering the row if isCustomerAdmin is true
-                                    if (isCustomerAdmin) {
-                                      return null; // Return null to avoid rendering the row
-                                    }
+                                  // Skip rendering the row if isCustomerAdmin is true
+                                  if (isCustomerAdmin) {
+                                    return null; // Return null to avoid rendering the row
+                                  }
 
-                                    return (
-                                      <tr key={index}>
-                                        <td
-                                          onClick={() =>
-                                            navigate(`/users-edit`, {
-                                              state: item,
-                                            })
-                                          }
-                                        >
-                                          {item.username}
-                                        </td>
-                                        <td
-                                          onClick={() =>
-                                            navigate(`/users-edit`, {
-                                              state: item,
-                                            })
-                                          }
-                                        >
-                                          {item.extension?.extension || "N/A"}
-                                        </td>
-                                        {/* <td
+                                  return (
+                                    <tr key={index}>
+                                      <td
+                                        onClick={() =>
+                                          navigate(`/users-edit`, {
+                                            state: item,
+                                          })
+                                        }
+                                      >
+                                        {item.username}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          navigate(`/users-edit`, {
+                                            state: item,
+                                          })
+                                        }
+                                      >
+                                        {item.extension?.extension || "N/A"}
+                                      </td>
+                                      {/* <td
                                           onClick={() =>
                                             navigate(`/users-edit`, {
                                               state: item,
@@ -343,81 +343,90 @@ const Users = () => {
                                         >
                                           {item.account_id}
                                         </td> */}
-                                        <td
+                                      <td
+                                        onClick={() =>
+                                          navigate(`/users-edit`, {
+                                            state: item,
+                                          })
+                                        }
+                                      >
+                                        {item?.user_role?.roles?.name}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          navigate(`/users-edit`, {
+                                            state: item,
+                                          })
+                                        }
+                                      >
+                                        {item?.usages}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          navigate(`/users-edit`, {
+                                            state: item,
+                                          })
+                                        }
+                                      >
+                                        <span
+                                          className={
+                                            onlineUser.includes(item.id)
+                                              ? "extensionStatus online"
+                                              : "extensionStatus"
+                                          }
+                                        ></span>
+                                      </td>
+                                      <td>
+                                        <button
+                                          className="tableButton edit"
                                           onClick={() =>
                                             navigate(`/users-edit`, {
                                               state: item,
                                             })
                                           }
                                         >
-                                          {item?.user_role?.roles?.name}
-                                        </td>
-                                        <td
-                                          onClick={() =>
-                                            navigate(`/users-edit`, {
-                                              state: item,
-                                            })
-                                          }
-                                        >
-                                          <span
-                                            className={
-                                              onlineUser.includes(item.id)
-                                                ? "extensionStatus online"
-                                                : "extensionStatus"
-                                            }
-                                          ></span>
-                                        </td>
-                                        <td>
-                                          <button
-                                            className="tableButton edit"
-                                            onClick={() =>
-                                              navigate(`/users-edit`, {
-                                                state: item,
-                                              })
-                                            }
-                                          >
-                                            <i class="fa-solid fa-pencil"></i>
-                                          </button>
-                                        </td>
-                                        <td
-                                        // onClick={() =>
-                                        //   handleStatusChange(item.id, item.status)
-                                        // }
-                                        >
-                                          {/* {item.status === "E"
+                                          <i class="fa-solid fa-pencil"></i>
+                                        </button>
+                                      </td>
+                                      <td
+                                      // onClick={() =>
+                                      //   handleStatusChange(item.id, item.status)
+                                      // }
+                                      >
+                                        {/* {item.status === "E"
                                             ? "Enabled"
                                             : "Disabled"} */}
-                                          <div className="my-auto position-relative mx-1">
-                                            <label className="switch">
-                                              <input
-                                                type="checkbox"
-                                                checked={item.status === "E"}
-                                                onClick={(e) => {
-                                                  setSelectedUser(item);
-                                                  setPopUp(true);
-                                                }}
-                                                id="showAllCheck"
-                                              />
-                                              <span className="slider round" />
-                                            </label>
-                                          </div>
-                                        </td>
-                                        <td>
-                                          <button
-                                            className="tableButton delete"
-                                            onClick={() => {
-                                              setPopUp(true);
-                                              setDeleteId(item.id);
-                                            }}
-                                          >
-                                            <i className="fa-solid fa-trash" />
-                                          </button>
-                                        </td>
-                                      </tr>
-                                    );
-                                  })}
-                              </>
-                            )}
+                                        <div className="my-auto position-relative mx-1">
+                                          <label className="switch">
+                                            <input
+                                              type="checkbox"
+                                              checked={item.status === "E"}
+                                              onClick={(e) => {
+                                                setSelectedUser(item);
+                                                setPopUp(true);
+                                              }}
+                                              id="showAllCheck"
+                                            />
+                                            <span className="slider round" />
+                                          </label>
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <button
+                                          className="tableButton delete"
+                                          onClick={() => {
+                                            setPopUp(true);
+                                            setDeleteId(item.id);
+                                          }}
+                                        >
+                                          <i className="fa-solid fa-trash" />
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                            </>
+                          )}
 
                           {user && user.length === 0 ? (
                             <td colSpan={99}>
@@ -468,9 +477,10 @@ const Users = () => {
                     {error
                       ? error
                       : selectedUser?.id
-                        ? `Are you sure you want to ${selectedUser?.status === "E" ? "disable" : "enable"
+                      ? `Are you sure you want to ${
+                          selectedUser?.status === "E" ? "disable" : "enable"
                         } ${selectedUser?.username}?`
-                        : ""}
+                      : ""}
                   </p>
                   <div className="d-flex justify-content-between">
                     <button
