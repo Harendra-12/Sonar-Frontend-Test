@@ -40,7 +40,6 @@ const CallSettings = (props) => {
     callTimeOut: 30,
     followMeId: "",
   });
-
   // Check weather anything is present inside location or not if not then redirect it to the previous page
   useEffect(() => {
     if (locationData?.id === null || locationData?.id === undefined) {
