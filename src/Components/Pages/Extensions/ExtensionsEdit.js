@@ -30,9 +30,11 @@ import AddMusic from "../../CommonComponents/AddMusic";
 const ExtensionsEdit = () => {
   const navigate = useNavigate();
   const acount = useSelector((state) => state.account);
+  const location = useLocation();
   // const domain = useSelector((state) => state.domain);
   // const { id: domainId = "" } = domain;
   // const [domains, setDomains] = useState();
+  const showHeader = location.pathname == "/extensions-edit";
   const queryParams = new URLSearchParams(useLocation().search);
   const value = queryParams.get("id");
   const [users, setUsers] = useState();
@@ -508,7 +510,7 @@ const ExtensionsEdit = () => {
       if (apiData.status) {
         toast.success(apiData.message);
         await generalGetFunction(`/user/all`);
-        navigate("/extensions");
+        navigate(-1);
       } else {
         if (apiData.message === "Already assigned to a different user") {
           setPopUp(true);
@@ -560,9 +562,10 @@ const ExtensionsEdit = () => {
   return (
     <main className="mainContent">
       <section id="phonePage">
-        <div className="container-fluid px-0">
-          <Header title="Extensions" />
-          {/* <div id="subPageHeader">
+        {showHeader && (
+          <div className="container-fluid px-0">
+            <Header title="Extensions" />
+            {/* <div id="subPageHeader">
             <div className="col-xl-12 ps-2">
               <div className="d-flex justify-content-end">
                 <button
@@ -587,7 +590,9 @@ const ExtensionsEdit = () => {
               </div>
             </div>
           </div> */}
-        </div>
+          </div>
+        )}
+
         <div className="col-xl-12">
           {loading ? (
             <div>

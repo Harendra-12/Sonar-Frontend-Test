@@ -813,6 +813,27 @@ const UsersAdd = () => {
                             </select>
                           </div>
                         </div>
+                        <div className="formRow col-xl-12">
+                          <div className="formLabel">
+                            <label htmlFor="selectFormRow">Select Usage</label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Assign usage to the newly created user.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <select
+                              className="formItem"
+                              name="extension_id"
+                              defaultValue=""
+                              {...register("usages")}
+                            >
+                              <option value="">None</option>
+
+                              <option value="pbx">PBX</option>
+                              <option value="dialer">Dialer</option>
+                            </select>
+                          </div>
+                        </div>
                         {/* <div className="formRow col-xl-12">
                   <div className="formLabel">
                     <label htmlFor="selectFormRow">Domain</label>
