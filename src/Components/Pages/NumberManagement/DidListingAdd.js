@@ -16,6 +16,7 @@ import {
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const DidListingAdd = () => {
   const dispatch = useDispatch();
@@ -53,11 +54,16 @@ const DidListingAdd = () => {
     const apiData = await generalPostFunction("/did/store", payload);
     if (apiData?.status) {
       setLoading(false);
-      dispatch({
-        type: "SET_NEWADDDID",
-        newAddDid: apiData.data,
-      });
-      navigate("/did-listing");
+      toast.success(apiData.message);
+      if (data.usages == "pbx") {
+        dispatch({
+          type: "SET_NEWADDDID",
+          newAddDid: apiData.data,
+        });
+        navigate("/did-listing");
+      } else {
+        navigate(-1);
+      }
     } else {
       setLoading(false);
     }
@@ -223,20 +229,19 @@ const DidListingAdd = () => {
                         </div>
                         <div className="col-6">
                           <select
-                            value={watch().usage}
+                            value={watch().usages}
                             className="formItem"
                             name="did_vendor_id"
                             id="selectFormRow"
-                            {...register("usage", {
-                              ...requiredValidator,
-                            })}
+                            defaultValue={""}
+                            {...register("usages")}
                           >
                             <option value="">None</option>
                             <option value="pbx">PBX</option>
                             <option value="dialer">Dialer</option>
                           </select>
-                          {errors.usage && (
-                            <ErrorMessage text={errors.usage.message} />
+                          {errors.usages && (
+                            <ErrorMessage text={errors.usages.message} />
                           )}
                         </div>
                       </div>
