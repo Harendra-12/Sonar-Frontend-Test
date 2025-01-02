@@ -1970,42 +1970,6 @@ function CallCenterQueueEdit() {
               </div>
             </div>
             <div className="col-xl-12 mt-3">
-              {/* {user
-                .filter(
-                  (user) =>
-                    // Filter logic: checks name or extension against search query
-                    user.name
-                      .toLowerCase()
-                      .includes(searchQuery.toLowerCase()) ||
-                    (user?.extension?.extension || "")
-                      .toLowerCase()
-                      .includes(searchQuery.toLowerCase())
-                )
-                .filter((user) => !agent.some((agent) => user.id == agent.name)) // Exclude agents already in `agent`
-                .map((item, index) => (
-                  <div key={index}>
-                    <div className="row g-2">
-                      <div className="col-auto">
-                        <label className="formLabel">{index + 1}.</label>
-                      </div>
-                      <div className="col-5">
-                        <label className="formLabel details">{item.name}</label>
-                      </div>
-                      <div className="col-3 details formLabel">
-                        {item?.extension?.extension}
-                      </div>
-                      <div className="col-auto ms-auto">
-                        <input
-                          type="checkbox"
-                          onChange={() => handleCheckboxChange(item)} // Call handler on change
-                          checked={bulkUploadSelectedAgents.some(
-                            (agent) => agent.name == item.name
-                          )} // Keep checkbox state in sync
-                        />
-                      </div>
-                    </div>
-                  </div>
-                ))} */}
               <div className="tableContainer mt-0" style={{ maxHeight: "calc(100vh - 400px)" }}>
                 <table>
                   <thead>
@@ -2019,9 +1983,6 @@ function CallCenterQueueEdit() {
                           onChange={handleSelectAll} // Call handler on change
                           checked={selectAll ? true : false} // Keep checkbox state in sync
                         />
-                        {/* <button onClick={handleSelectAll}>
-                          {selectAll ? "Deselect all" : "Select all"}{" "}
-                        </button> */}
                       </th>
                     </tr>
                   </thead>
@@ -2038,7 +1999,6 @@ function CallCenterQueueEdit() {
                           (b?.extension?.extension || "")
                             .toLowerCase()
                             .includes(searchQuery.toLowerCase());
-                        // Items that match come first
                         return bMatches - aMatches;
                       })
                       .filter((user) => !agent.some((agent) => user.id == agent.name)) // Exclude agents already in `agent`
@@ -2053,7 +2013,7 @@ function CallCenterQueueEdit() {
                               onChange={() => handleCheckboxChange(item)} // Call handler on change
                               checked={bulkUploadSelectedAgents.some(
                                 (agent) => agent.name == item.name
-                              )} // Keep checkbox state in sync
+                              )} 
                             />
                           </td>
                         </tr>
