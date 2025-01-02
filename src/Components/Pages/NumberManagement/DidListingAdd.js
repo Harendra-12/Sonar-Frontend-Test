@@ -44,7 +44,7 @@ const DidListingAdd = () => {
     }
     getData();
   }, []);
-
+  console.log(watch());
   const handleFormSubmit = handleSubmit(async (data) => {
     setLoading(true);
     const payload = { ...data, did_vendor_id: Number(data.did_vendor_id) };
@@ -209,6 +209,34 @@ const DidListingAdd = () => {
                           </select>
                           {errors.did_vendor_id && (
                             <ErrorMessage text={errors.did_vendor_id.message} />
+                          )}
+                        </div>
+                      </div>
+                      <div className="formRow col-xl-3">
+                        <div className="formLabel">
+                          <label className="text-dark">
+                            Usage <span className="text-danger">*</span>
+                          </label>
+                          <label htmlFor="data" className="formItemDesc">
+                            Choose Usage for this DID.
+                          </label>
+                        </div>
+                        <div className="col-6">
+                          <select
+                            value={watch().usage}
+                            className="formItem"
+                            name="did_vendor_id"
+                            id="selectFormRow"
+                            {...register("usage", {
+                              ...requiredValidator,
+                            })}
+                          >
+                            <option value="">None</option>
+                            <option value="pbx">PBX</option>
+                            <option value="dialer">Dialer</option>
+                          </select>
+                          {errors.usage && (
+                            <ErrorMessage text={errors.usage.message} />
                           )}
                         </div>
                       </div>
