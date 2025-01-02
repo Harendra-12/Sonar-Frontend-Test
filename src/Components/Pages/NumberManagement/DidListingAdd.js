@@ -16,6 +16,7 @@ import {
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const DidListingAdd = () => {
   const dispatch = useDispatch();
@@ -44,7 +45,7 @@ const DidListingAdd = () => {
     }
     getData();
   }, []);
-
+  console.log(watch());
   const handleFormSubmit = handleSubmit(async (data) => {
     setLoading(true);
     const payload = { ...data, did_vendor_id: Number(data.did_vendor_id) };
@@ -53,11 +54,16 @@ const DidListingAdd = () => {
     const apiData = await generalPostFunction("/did/store", payload);
     if (apiData?.status) {
       setLoading(false);
-      dispatch({
-        type: "SET_NEWADDDID",
-        newAddDid: apiData.data,
-      });
-      navigate("/did-listing");
+      toast.success(apiData.message);
+      if (data.usages == "pbx") {
+        dispatch({
+          type: "SET_NEWADDDID",
+          newAddDid: apiData.data,
+        });
+        navigate("/did-listing");
+      } else {
+        navigate(-1);
+      }
     } else {
       setLoading(false);
     }
@@ -209,6 +215,33 @@ const DidListingAdd = () => {
                           </select>
                           {errors.did_vendor_id && (
                             <ErrorMessage text={errors.did_vendor_id.message} />
+                          )}
+                        </div>
+                      </div>
+                      <div className="formRow col-xl-3">
+                        <div className="formLabel">
+                          <label className="text-dark">
+                            Usage <span className="text-danger">*</span>
+                          </label>
+                          <label htmlFor="data" className="formItemDesc">
+                            Choose Usage for this DID.
+                          </label>
+                        </div>
+                        <div className="col-6">
+                          <select
+                            value={watch().usages}
+                            className="formItem"
+                            name="did_vendor_id"
+                            id="selectFormRow"
+                            defaultValue={""}
+                            {...register("usages")}
+                          >
+                            <option value="">None</option>
+                            <option value="pbx">PBX</option>
+                            <option value="dialer">Dialer</option>
+                          </select>
+                          {errors.usages && (
+                            <ErrorMessage text={errors.usages.message} />
                           )}
                         </div>
                       </div>
