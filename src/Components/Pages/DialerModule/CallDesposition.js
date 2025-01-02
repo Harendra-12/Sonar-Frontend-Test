@@ -5,8 +5,8 @@ import PaginationComponent from '../../CommonComponents/PaginationComponent'
 import Tippy from '@tippyjs/react'
 
 function CallDesposition() {
-  return (
-    <main className="mainContent">
+    return (
+        <main className="mainContent">
             <section id="phonePage">
                 <div className="container-fluid">
                     <div className="row">
@@ -80,18 +80,13 @@ function CallDesposition() {
                                                         <th>Destination</th>
                                                         <th>Call Started</th>
                                                         <th>Time</th>
-                                                     
-                                                        <th>Option</th>
                                                         <th>Category</th>
-                                                        
-                                                     
-                                                       
+                                                        <th>Option</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
 
                                                     <tr>
-                                                       
                                                         <td>1212</td>
                                                         <td>Rishabh</td>
                                                         <td>45544</td>
@@ -100,39 +95,30 @@ function CallDesposition() {
                                                         <td>44565</td>
                                                         <td>cusdn</td>
                                                         <td>12:45</td>
-                                                      
+                                                        <td>Test</td>
                                                         <td>
-                                                        <td className="text-center">
-                                          <div class="dropdown">
-                                            <a class={`tableButton $`} href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                              <i className="fa-solid fa-ellipsis-vertical" />
-                                            </a>
-                                            <ul class="dropdown-menu actionBtnDropdowns">
-                                              <li className='dropdown-item'>
-                                              <Tippy content="Reset configuration of this DID">
-                                                    <a class="clearButton text-align-start"
-                                                      
-                                                    ><i class="fa-regular fa-arrows-rotate me-2"></i> update
-                                                    </a>
-                                                  </Tippy>
-                                              </li>
-                                              { (
-                                                <li className='dropdown-item'>
-                                                  <Tippy content="Reset configuration of this DID">
-                                                    <a class="clearButton text-align-start"
-                                                      
-                                                    ><i class="fa-regular fa-arrows-rotate me-2"></i> Reset
-                                                    </a>
-                                                  </Tippy>
-                                                </li>
-                                              )}
-                                            </ul>
-                                          </div>
-                                        </td>
-                                        <td></td>
+                                                            <div class="dropdown">
+                                                                <a class={`tableButton $`} href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    <i className="fa-solid fa-ellipsis-vertical" />
+                                                                </a>
+                                                                <ul class="dropdown-menu actionBtnDropdowns">
+                                                                    <li className='dropdown-item'>
+                                                                        <Tippy content="Reset configuration of this DID">
+                                                                            <a class="clearButton text-align-start">
+                                                                                <i class="fa-regular fa-pen me-2"></i>Update
+                                                                            </a>
+                                                                        </Tippy>
+                                                                    </li>
+                                                                    <li className='dropdown-item'>
+                                                                        <Tippy content="Reset configuration of this DID">
+                                                                            <a class="clearButton text-align-start">
+                                                                                <i class="fa-regular fa-trash me-2"></i>Delete
+                                                                            </a>
+                                                                        </Tippy>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
                                                         </td>
-                                                       
-                                                        
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -153,8 +139,8 @@ function CallDesposition() {
                     </div>
                 </div>
             </section>
-        </main>
-  )
+        </main >
+    )
 }
 
 export default CallDesposition

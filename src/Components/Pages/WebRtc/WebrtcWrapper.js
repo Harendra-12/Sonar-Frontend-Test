@@ -334,6 +334,7 @@ const WebrtcWrapper = () => {
                   setHangupRefresh={setHangupRefresh}
                   hangupRefresh={hangupRefresh}
                   setSelectedModule={setSelectedModule}
+                  // globalSession={sessions}
                 />
               </div>
             </Rnd>
@@ -454,7 +455,7 @@ const WebrtcWrapper = () => {
               </div>
             </section>
             {sessions.find((session) => session.mode === "video") &&
-              callProgressId ? (
+            callProgressId ? (
               <VideoCall
                 setHangupRefresh={setHangupRefresh}
                 hangupRefresh={hangupRefresh}

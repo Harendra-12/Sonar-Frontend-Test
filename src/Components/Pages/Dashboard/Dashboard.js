@@ -41,7 +41,7 @@ const Dashboard = () => {
     } else {
       setOnlineExtension([0]);
     }
-    generalGetFunction("/freeswitch/checkActiveExtensionOnServer");
+    // generalGetFunction("/freeswitch/checkActiveExtensionOnServer");
   }, [registerUser]);
   console.log(permissions);
 
@@ -1120,10 +1120,16 @@ const Dashboard = () => {
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
-                              <h5>{callCardData.handled.count}</h5>
+                              <h5>{allCall?.totalCalls ? allCall?.totalCalls : <i
+                                class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                              ></i>}</h5>
                               <p>
-                                {callCardData.handled.inboundAnswered} Inbound /{" "}
-                                {callCardData.handled.outboundAnswered} Outbound
+                                {allCall?.inbound?.total ? allCall?.inbound?.total : <i
+                                  class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                                ></i>} Inbound /{" "}
+                                {allCall?.outbound?.total ? allCall?.outbound?.total : <i
+                                  class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                                ></i>} Outbound
                               </p>
                             </div>
                             <div className="col-3">
@@ -1161,10 +1167,16 @@ const Dashboard = () => {
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
-                              <h5>{callCardData.minutes.count}</h5>
+                              <h5>{(allCall?.inbound?.duration + allCall?.outbound?.duration) ? (allCall?.inbound?.duration + allCall?.outbound?.duration) : <i
+                                class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                              ></i>}</h5>
                               <p>
-                                {callCardData.minutes.inboundAnswered} Inbound /{" "}
-                                {callCardData.minutes.outboundConnected}{" "}
+                                {allCall?.inbound?.duration ? allCall?.inbound?.duration : <i
+                                  class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                                ></i>} Inbound /{" "}
+                                {allCall?.outbound?.duration ? allCall?.outbound?.duration : <i
+                                  class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                                ></i>}{" "}
                                 Outbound
                               </p>
                             </div>
@@ -1206,9 +1218,16 @@ const Dashboard = () => {
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
-                              <h5>{callCardData.missedCalls.count}</h5>
+                              <h5>{allCall?.missed ? allCall?.missed : <i
+                                class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                              ></i>}</h5>
                               <p>
-                                {callCardData.missedCalls.callMissed} Calls
+                                {allCall?.inbound?.missed ? allCall?.inbound?.missed : <i
+                                  class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                                ></i>} inbound
+                                Missed/ {allCall?.outbound?.missed ? allCall?.outbound?.missed : <i
+                                  class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                                ></i>} outbound
                                 Missed
                               </p>
                             </div>

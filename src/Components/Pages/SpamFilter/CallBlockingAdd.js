@@ -12,9 +12,23 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+import Select from "react-select";
+import ActionList from "../../CommonComponents/ActionList";
+import { useForm } from "react-hook-form";
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import { requiredValidator } from "../../validations/validation";
+import ActionListMulti from "../../CommonComponents/ActionListMulti";
 
 function CallBlockingAdd() {
   const navigate = useNavigate();
+  const {
+    register,
+    setError: setErr,
+    formState: { errors },
+    handleSubmit,
+    setValue,
+    watch,
+  } = useForm();
   const account = useSelector((state) => state.account);
   const [pageNumber, setPageNumber] = useState(1);
   const [callDirection, setCallDirection] = useState("");
@@ -29,19 +43,30 @@ function CallBlockingAdd() {
   const [debounceCallDestinationFlag, setDebounceCallDestinationFlag] =
     useState("");
   const [selectedCdrToBlock, setSelectedCdrToBlock] = useState([]);
-  async function addBlock() {
-    if (type === "") {
+  const [selectedExtensionType, setSelectedExtensionType] = useState([]);
+  // const [selectedExtensions, setSelectedExtensions] = useState([]);
+
+  const actionListValue = (value) => {
+    // console.log(value);
+    setValue(
+      "extension",
+      value.map((item) => item[0])
+    );
+    // setSelectedExtensions(value);
+  };
+  console.log(watch());
+
+  const handleBlock = handleSubmit(async (data) => {
+    if (data.type === "") {
       toast.error("Please enter type");
-    } else if (number === "") {
+    } else if (data.number === "") {
       toast.error("Please enter number");
-    } else if (number < 99999999 || number > 99999999999999) {
+    } else if (data.number < 99999999 || data.number > 99999999999999) {
       toast.error("Please enter valid number");
     } else {
       setLoading(true);
-      const parsedData = {
-        type: type,
-        number: number,
-      };
+      const parsedData = { ...data, extension: data.extension.join(",") };
+
       const apidata = await generalPostFunction(`/spam/store`, parsedData);
       if (apidata.status) {
         navigate("/call-blocking");
@@ -53,7 +78,32 @@ function CallBlockingAdd() {
         setLoading(false);
       }
     }
-  }
+  });
+  // async function addBlock() {
+  //   if (type === "") {
+  //     toast.error("Please enter type");
+  //   } else if (number === "") {
+  //     toast.error("Please enter number");
+  //   } else if (number < 99999999 || number > 99999999999999) {
+  //     toast.error("Please enter valid number");
+  //   } else {
+  //     setLoading(true);
+  //     const parsedData = {
+  //       type: type,
+  //       number: number,
+  //     };
+  //     const apidata = await generalPostFunction(`/spam/store`, parsedData);
+  //     if (apidata.status) {
+  //       navigate("/call-blocking");
+  //       setLoading(false);
+  //       setType("");
+  //       setNumber("");
+  //       toast.success("Number added to block list");
+  //     } else {
+  //       setLoading(false);
+  //     }
+  //   }
+  // }
   useEffect(() => {
     let timer = setTimeout(() => {
       if (debounceCallDestination.length >= 3) {
@@ -125,6 +175,29 @@ function CallBlockingAdd() {
   const handleUpdateSelectedCdrToBlock = (item) => {
     setSelectedCdrToBlock([...selectedCdrToBlock, item]);
   };
+  function secondsToHHMMSS(input) {
+    // Parse the input to ensure it's a number
+    const totalSeconds = parseInt(input, 10);
+
+    // Return if the input is invalid
+    if (isNaN(totalSeconds) || totalSeconds < 0) {
+      return "Invalid input";
+    }
+
+    // Calculate hours, minutes, and seconds
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    // Format to hh:mm:ss with leading zeros
+    const formattedTime = [
+      hours.toString().padStart(2, "0"),
+      minutes.toString().padStart(2, "0"),
+      seconds.toString().padStart(2, "0"),
+    ].join(":");
+
+    return formattedTime;
+  }
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -175,7 +248,7 @@ function CallBlockingAdd() {
                       <button
                         effect="ripple"
                         className="panelButton"
-                        onClick={addBlock}
+                        onClick={() => handleBlock()}
                       >
                         <span className="text">Save</span>
                         <span className="icon">
@@ -199,8 +272,15 @@ function CallBlockingAdd() {
                       </label>
                     </div>
                     <div className="col-xl-6 col-12">
-                      <select type="text" name="extension" className="formItem">
-                        <option>Inbound</option>
+                      <select
+                        type="text"
+                        name="extension"
+                        className="formItem"
+                        {...register("direction", { ...requiredValidator })}
+                      >
+                        <option value={"inbound"}>Inbound</option>
+                        <option value={"outbound"}>Outbound</option>
+                        <option value={"all"}>All</option>
                       </select>
                       {/* {errors.queue_name && (
                                                 <ErrorMessage text={errors.queue_name.message} />
@@ -213,11 +293,79 @@ function CallBlockingAdd() {
                       <label htmlFor="data" className="formItemDesc">
                         Select the extension to be affected.
                       </label>
+                      {/* <label htmlFor="data" className="formItemDesc">
+                        Selected{" "}
+                        {selectedExtensionType.map((item) => {
+                          return (
+                            <span key={item}>
+                              {item === "extension"
+                                ? "Extension"
+                                : item == "call_center"
+                                ? "Call Center"
+                                : item == "ring_group"
+                                ? "Ring Group"
+                                : item == "ivr"
+                                ? "IVR"
+                                : ""}
+                              {", "}
+                            </span>
+                          );
+                        })}
+                      </label> */}
                     </div>
-                    <div className="col-xl-6 col-12">
-                      <select type="text" name="extension" className="formItem">
-                        <option>All</option>
-                      </select>
+                    <div className=" ">
+                      <div className="formRow">
+                        <div className=" pe-2 ms-auto">
+                          <select
+                            className="formItem"
+                            name="forward"
+                            id="selectFormRow"
+                            // onChange={(e) => setForwardEnable(e.target.value)}
+                            {...register("block_type", {
+                              ...requiredValidator,
+                            })}
+                            onChange={(e) => {
+                              // Trigger react-hook-form's built-in handling
+                              register("block_type").onChange(e);
+
+                              // Clear the "action" field when "usages" changes
+                              setValue("extension", "");
+                            }}
+                          >
+                            <option value="extension">Extension</option>
+                            <option value="call center">Call Center</option>
+                            <option value="ring group">Ring Group</option>
+                            <option value="ivr">IVR</option>
+                            <option value="all">All</option>
+                          </select>
+                          {errors.block_type && (
+                            <ErrorMessage text={errors.block_type.message} />
+                          )}
+                        </div>
+                        <div className="">
+                          {/* <Select isMulti options={[]} /> */}
+                          <ActionListMulti
+                            isDisabled={
+                              watch().block_type === "all" ? true : false
+                            }
+                            category={watch().block_type}
+                            title={null}
+                            label={null}
+                            getDropdownValues={(selectedValues) =>
+                              actionListValue(selectedValues)
+                            }
+                            getSelectedTypes={(types) =>
+                              setSelectedExtensionType(types)
+                            }
+                            value={watch().extension}
+                            {...register("extension", requiredValidator)}
+                            isMultiSelect={true}
+                          />
+                          {errors.extension && (
+                            <ErrorMessage text={errors.extension.message} />
+                          )}
+                        </div>
+                      </div>
                       {/* {errors.queue_name && (
                                                 <ErrorMessage text={errors.queue_name.message} />
                                             )} */}
@@ -235,10 +383,11 @@ function CallBlockingAdd() {
                         type="text"
                         name="extension"
                         className="formItem"
+                        {...register("name", { ...requiredValidator })}
                       />
-                      {/* {errors.queue_name && (
-                                                <ErrorMessage text={errors.queue_name.message} />
-                                            )} */}
+                      {errors.name && (
+                        <ErrorMessage text={errors.name.message} />
+                      )}
                     </div>
                   </div>
                   <div className="formRow col-xl-3">
@@ -249,11 +398,16 @@ function CallBlockingAdd() {
                       </label>
                     </div>
                     <div className="col-xl-6 col-12">
-                      <select type="text" name="extension" className="formItem">
-                        <option>Reject</option>
-                        <option>Hold</option>
-                        <option>Busy</option>
-                        <option>Voicemail</option>
+                      <select
+                        type="text"
+                        name="extension"
+                        className="formItem"
+                        {...register("action", { ...requiredValidator })}
+                      >
+                        <option value={"reject"}>Reject</option>
+                        <option value={"hold"}>Hold</option>
+                        <option value={"busy"}>Busy</option>
+                        <option value={"voicemail"}>Voicemail</option>
                       </select>
                       {/* {errors.queue_name && (
                                                 <ErrorMessage text={errors.queue_name.message} />
@@ -272,6 +426,7 @@ function CallBlockingAdd() {
                         type="text"
                         name="extension"
                         className="formItem"
+                        {...register("description")}
                       />
                       {/* {errors.queue_name && (
                                                 <ErrorMessage text={errors.queue_name.message} />
@@ -290,12 +445,13 @@ function CallBlockingAdd() {
                         type="text"
                         name="extension"
                         className="formItem"
-                        value={number}
-                        onChange={(e) => setNumber(e.target.value)}
+                        // value={number}
+                        {...register("number", { ...requiredValidator })}
+                        // onChange={(e) => setNumber(e.target.value)}
                       />
-                      {/* {errors.queue_name && (
-                                                <ErrorMessage text={errors.queue_name.message} />
-                                            )} */}
+                      {errors.number && (
+                        <ErrorMessage text={errors.number.message} />
+                      )}
                     </div>
                   </div>
                   <div className="formRow col-xl-3">
@@ -310,12 +466,13 @@ function CallBlockingAdd() {
                         type="text"
                         class="formItem"
                         placeholder="DID/PSTN..."
-                        value={type}
-                        onChange={(e) => setType(e.target.value)}
+                        // value={type}
+                        // onChange={(e) => setType(e.target.value)}
+                        {...register("type", { ...requiredValidator })}
                       />
-                      {/* {errors.queue_name && (
-                                                <ErrorMessage text={errors.queue_name.message} />
-                                            )} */}
+                      {errors.type && (
+                        <ErrorMessage text={errors.type.message} />
+                      )}
                     </div>
                   </div>
                 </form>
@@ -359,7 +516,7 @@ function CallBlockingAdd() {
                           setPageNumber(1);
                         }}
                         value={callDirection}
-                      // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                        // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                       >
                         <option value={""}>All Calls</option>
                         <option value={"inbound"}>Inbound Calls</option>
@@ -414,7 +571,7 @@ function CallBlockingAdd() {
                               <td className="d-flex align-items-center gap-2">
                                 <input
                                   type="checkbox"
-                                //   onClick={() => {}}
+                                  //   onClick={() => {}}
                                 ></input>
                                 {item["Call-Direction"]}
                               </td>
@@ -428,7 +585,9 @@ function CallBlockingAdd() {
                                 {" "}
                                 {item["variable_start_stamp"].split(" ")[1]}
                               </td>
-                              <td>{item["variable_billsec"]}</td>
+                              <td>
+                                {secondsToHHMMSS(item["variable_billsec"])}
+                              </td>
                             </tr>
                           );
                         })

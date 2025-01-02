@@ -92,8 +92,8 @@ const DidConfig = () => {
       setValue("dtmf_length", locationData.configuration.dtmf_length || "3");
       setValue("dtmf_retries", locationData.configuration.dtmf_retries || "3");
       setValue(
-        "dtmf_retry_file_sound	",
-        locationData.configuration.dtmf_retry_file_sound || "1"
+        "dtmf_retry_file_sound",
+        locationData.configuration.dtmf_retry_file_sound || ""
       );
     } else {
       setValue("usages", "extension" || []);
@@ -880,8 +880,8 @@ const DidConfig = () => {
                                       id="selectFormRow"
                                       {...register("dtmf_retry_file_sound")}
                                     >
-                                      <option value={1}>
-                                        Select Invalid music file
+                                      <option value={""}>
+                                        None
                                       </option>
                                       {holdMusic &&
                                         holdMusic.map((ring) => {

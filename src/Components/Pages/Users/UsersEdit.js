@@ -24,7 +24,7 @@ const UsersEdit = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const locationState = location.state;
-
+  const showHeader = location.pathname == "/users-edit";
   // const [domains, setDomains] = useState("");
   const [timeZone, setTimeZone] = useState("");
   const [loading, setLoading] = useState(true);
@@ -228,6 +228,8 @@ const UsersEdit = () => {
       account_id: account.account_id,
       permissions: selectedPermission,
       extension_id: data.extension_id,
+      usages: data.usages,
+      alias: data.alias,
       ...(password && password.length > 5 && { password }),
     };
     setLoading(true);
@@ -243,7 +245,7 @@ const UsersEdit = () => {
         allUserRefresh: allUserRefresh + 1,
       });
 
-      navigate("/users"); // Navigate back to the previous page
+      navigate(-1); // Navigate back to the previous page
     } else {
       setLoading(false);
       // const errorMessage = Object.keys(addUser.errors);
@@ -267,7 +269,7 @@ const UsersEdit = () => {
     }
     return result;
   };
-
+  console.log(watch());
   // Handel permission check box click
   // const handleCheckboxChange = (id) => {
   //   if (selectedPermission.includes(id)) {
@@ -341,9 +343,10 @@ const UsersEdit = () => {
       </style>
       <main className="mainContent">
         <section id="phonePage">
-          <div className="container-fluid px-0">
-            <Header title="Users" />
-            {/* <div id="subPageHeader">
+          {showHeader && (
+            <div className="container-fluid px-0">
+              <Header title="Users" />
+              {/* <div id="subPageHeader">
               <div className="col-6 my-1">
                 <p className="mb-0">
                   Edit user information and group membership.
@@ -373,7 +376,8 @@ const UsersEdit = () => {
                 </div>
               </div>
             </div> */}
-          </div>
+            </div>
+          )}
 
           <div className="col-xl-12" style={{ overflow: "auto" }}>
             {loading ? (
@@ -904,6 +908,10 @@ const UsersEdit = () => {
                               <select
                                 className="formItem"
                                 name="extension_id"
+                                value={watch().usages}
+                                {...register("usages", {
+                                  ...requiredValidator,
+                                })}
                                 // value={watch().extension_id}
                                 // {...register("extension_id")}
                               >

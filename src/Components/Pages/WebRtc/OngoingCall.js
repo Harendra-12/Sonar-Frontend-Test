@@ -14,7 +14,13 @@ import { toast } from "react-toastify";
 import { Dialog, UserAgentCore } from "sip.js/lib/core";
 import { featureUnderdevelopment } from "../../GlobalFunction/globalFunction";
 
-function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule, setactivePage }) {
+function OngoingCall({
+  setHangupRefresh,
+  hangupRefresh,
+  setSelectedModule,
+  setactivePage,
+  // globalSession,
+}) {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
@@ -29,7 +35,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule, setac
   const callProgressDestination = useSelector(
     (state) => state.callProgressDestination
   );
-
+  const [showTranferableList, setShowTranferableList] = useState(false);
   const {
     isHeld,
     isMuted,
@@ -41,6 +47,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule, setac
     unmute,
     timer,
   } = useSessionCall(callProgressId);
+  console.log(session);
   const currentSession = globalSession.find(
     (session) => session.id === callProgressId
   );
@@ -118,10 +125,11 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule, setac
 
   const handleAttendedTransfer = async (e) => {
     e.preventDefault();
-    if (attendedTransferNumber.length > 3) {
+    const destNumber = e.target.value;
+    if (destNumber.length > 3) {
       const dialog = session.dialog;
-      const transferTo = `sip:${attendedTransferNumber}@${account.domain.domain_name}`;
-
+      const transferTo = `sip:${destNumber}@${account.domain.domain_name}`;
+      console.log(transferTo);
       if (session.state !== "Established") {
         toast.warn("cannot transfer call: session is not established");
         return;
@@ -135,10 +143,15 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule, setac
         };
 
         const target = UserAgent.makeURI(transferTo);
-
+        const replacementSession = new Inviter(
+          session.userAgent,
+          UserAgent.makeURI(transferTo)
+        );
+        console.log(replacementSession);
         if (target) {
           // Initiate the refer request
-          const referRequest = dialog.refer(target, {
+          // const referRequest = dialog.refer(replacementSession);
+          const referRequest = dialog.refer(replacementSession, {
             extraHeaders: Object.entries(customHeaders).map(
               ([key, value]) => `${key}: ${value}`
             ),
@@ -165,7 +178,78 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule, setac
       toast.error("Invalid destination number");
     }
   };
-  console.log("sessionsssss", session);
+  console.log("sessionssssssssss", globalSession);
+
+  // const handleAttendedTransfer = async (e) => {
+  //   e.preventDefault();
+  //   // console.log(e.target.value);
+  //   const destNumber = e.target.value;
+  //   if (destNumber.length > 3) {
+  //     const transferTo = `sip:${destNumber}@${account.domain.domain_name}`;
+
+  //     if (session.state !== "Established") {
+  //       toast.warn("Cannot transfer call: session is not established");
+  //       return;
+  //     }
+
+  //     try {
+  //       // Step 1: Place the current call on hold
+  //       const dialog = session.dialog;
+  //       await session.invite({
+  //         requestDelegate: {
+  //           onAccept: () => {
+  //             console.log("Current call held successfully.");
+  //           },
+  //           onReject: () => {
+  //             toast.error("Failed to hold the call.");
+  //             throw new Error("Failed to hold the call.");
+  //           },
+  //         },
+  //       });
+
+  //       // Step 2: Initiate a new call to the transfer target
+  //       const targetSession = session.userAgent.invite(transferTo, {
+  //         extraHeaders: [
+  //           `Referred-By: sip:${extension}@${account.domain.domain_name}`,
+  //         ],
+  //         requestDelegate: {
+  //           onAccept: () => {
+  //             console.log("Target party answered the call.");
+  //           },
+  //           onReject: () => {
+  //             toast.error("Failed to connect to the target.");
+  //             throw new Error("Failed to connect to the target.");
+  //           },
+  //         },
+  //       });
+
+  //       // Step 3: Wait for the target party to answer, then bridge the calls
+  //       targetSession.delegate = {
+  //         onInvite: () => {
+  //           console.log("Bridging the calls...");
+  //           try {
+  //             dialog.refer(targetSession.dialog, {
+  //               extraHeaders: [
+  //                 `Referred-By: sip:${extension}@${account.domain.domain_name}`,
+  //               ],
+  //             });
+
+  //             console.log("Attended transfer initiated.");
+  //             toast.success("Call successfully transferred.");
+  //           } catch (error) {
+  //             toast.error("Failed to bridge the calls.");
+  //             console.error("Error during attended transfer:", error);
+  //           }
+  //         },
+  //       };
+  //     } catch (error) {
+  //       console.error("Error during attended transfer:", error);
+  //       toast.error("Error during attended transfer.");
+  //     }
+  //   } else {
+  //     toast.error("Invalid destination number");
+  //   }
+  // };
 
   return (
     <>
@@ -205,6 +289,31 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule, setac
             </div>
           </div>
           <div className="row footer">
+            {showTranferableList && (
+              <div className="parkList">
+                <select
+                  defaultValue={""}
+                  className="formItem"
+                  // onChange={(e) => setParkingNumber(e.target.value)}
+                  onChange={(e) => handleAttendedTransfer(e)}
+                >
+                  <option className="" disabled value={""}>
+                    Select to Transfer
+                  </option>
+
+                  {globalSession.map((item, index) => {
+                    const isCurrent = item.id === session.id;
+                    return (
+                      !isCurrent && (
+                        <option className="" value={item.destination}>
+                          {item.destination}
+                        </option>
+                      )
+                    );
+                  })}
+                </select>
+              </div>
+            )}
             {showParkList && (
               <div className="parkList">
                 <select
@@ -251,7 +360,9 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule, setac
               }
               effect="ripple"
             >
-              <i className={`fa-solid fa-microphone${isMuted ? "-slash" : ""}`} />
+              <i
+                className={`fa-solid fa-microphone${isMuted ? "-slash" : ""}`}
+              />
             </button>
             <button
               onClick={() => {
@@ -267,8 +378,14 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule, setac
               <i className="fa-solid fa-grid" />
             </button>
 
-            <button className="appPanelButtonCaller" effect="ripple" onClick={() => featureUnderdevelopment()}>
-              <i className="fa-solid fa-user-plus" />
+            <button
+              className="appPanelButtonCaller"
+              effect="ripple"
+              onClick={() => setShowTranferableList(!showTranferableList)}
+              // onClick={() => featureUnderdevelopment()}
+            >
+              {/* <i className="fa-solid fa-user-plus" /> */}
+              <i class="fa fa-exchange" aria-hidden="true"></i>
             </button>
             <button
               className={
@@ -284,10 +401,11 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule, setac
               <i className="fa-solid fa-phone-arrow-up-right" />
             </button>
             <button
-              className={` ${showParkList
-                ? "appPanelButtonCaller active"
-                : "appPanelButtonCaller"
-                } `}
+              className={` ${
+                showParkList
+                  ? "appPanelButtonCaller active"
+                  : "appPanelButtonCaller"
+              } `}
               effect="ripple"
               onClick={() => setShowParkList(!showParkList)}
             >
@@ -349,8 +467,8 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule, setac
                       className="dialerInput"
                       disabled={true}
                       value={destNumber}
-                    // onChange={(e) => setDestNumber(e.target.value)}
-                    // onChange={handleInputChange}
+                      // onChange={(e) => setDestNumber(e.target.value)}
+                      // onChange={handleInputChange}
                     />
                   </div>
 
@@ -515,7 +633,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule, setac
                   <div className="mb-2">
                     {/* <span>Outbound ID: (999) 999-9999</span> */}
                   </div>
-                  <div>
+                  <div className="">
                     <input
                       type="text"
                       placeholder=""
@@ -525,6 +643,7 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule, setac
                         setattendedTransferNumber(e.target.value)
                       }
                     />
+
                     <buton
                       className="clearButton"
                       style={{ marginLeft: "-30px" }}
@@ -536,6 +655,17 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule, setac
                     >
                       <i class="fa-light fa-delete-left"></i>
                     </buton>
+                    {/* <buton
+                      className="clearButton "
+                      // style={{ marginLeft: "-30px" }}
+                      onClick={() =>
+                        setattendedTransferNumber(
+                          attendedTransferNumber.slice(0, -1)
+                        )
+                      }
+                    >
+                      <i class="fa fa-exchange" aria-hidden="true"></i>
+                    </buton> */}
                   </div>
 
                   <div className="dialerWrap mt-2">
@@ -654,7 +784,8 @@ function OngoingCall({ setHangupRefresh, hangupRefresh, setSelectedModule, setac
                       <button
                         className="callButton bg-primary"
                         effect="ripple"
-                        onClick={handleAttendedTransfer}
+                        // onClick={handleAttendedTransfer}
+                        onClick={() => setShowTranferableList(true)}
                       >
                         <i className="fa-solid fa-phone-arrow-up-right" />
                       </button>

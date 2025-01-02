@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
 import { set } from "react-hook-form";
 
-function CdrReport() {
+function CdrReport({page}) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [cdr, setCdr] = useState();
@@ -161,8 +161,8 @@ function CdrReport() {
     const finalUrl = buildUrl(
       `/cdr?account=${account.account_id}&page=${pageNumber}&row_per_page=${itemsPerPage}`,
       {
-        callDirection,
-        application_state: callType,
+        callDirection:callDirection,
+        application_state:page==="all"?callType:page,
         origin: callOrigin,
         destination: callDestination,
         start_date: startDate,
@@ -210,6 +210,7 @@ function CdrReport() {
     hangupStatus,
     refresh,
     itemsPerPage,
+    page
   ]);
 
   const getDateRange = (period) => {
@@ -558,6 +559,7 @@ function CdrReport() {
                           onChange={handleCallDestinationChange}
                         />
                       </div>
+                      {page==="all"?<>
                       <div className="formRow border-0">
                         <label className="formLabel text-start mb-0 w-100">
                           Call Direction
@@ -596,6 +598,7 @@ function CdrReport() {
                           <option value={"ringgroup"}>Ring Group</option>
                         </select>
                       </div>
+                      </>:""}
                       <div className="formRow border-0 ">
                         <label className="formLabel text-start mb-0 w-100">
                           Hangup Cause
@@ -864,6 +867,7 @@ function CdrReport() {
                                               <audio
                                                 controls={true}
                                                 ref={thisAudioRef}
+                                                autoPlay={true}
                                                 onEnded={() => {
                                                   setCurrentPlaying(null);
                                                 }}

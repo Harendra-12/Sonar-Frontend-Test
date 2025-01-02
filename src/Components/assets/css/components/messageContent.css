@@ -24,7 +24,7 @@
     border: none;
 }
 
-.mainContentApp .tabLink .unread {
+.unread {
     border-radius: 50px;
     background-color: var(--ui-accent);
     font-size: 12px;

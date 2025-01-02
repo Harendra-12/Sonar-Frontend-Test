@@ -9,6 +9,7 @@ import {
   fileUploadFunction,
   generalDeleteFunction,
   generalGetFunction,
+  generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import ContentLoader from "../../Loader/ContentLoader";
 import { useSelector, useDispatch } from "react-redux";
@@ -31,6 +32,8 @@ function Music() {
   const dispatch = useDispatch();
   const [musicEditPopup, setMusicEditPopup] = useState(false);
   const [selectedMusicToEdit, setSelectedMusicToEdit] = useState();
+  const [selectedMusicName, setSelectedMusicName] = useState("");
+  const [selecetdMusicType, setSelectedMusicType] = useState("");
   useEffect(() => {
     if (musicAll?.length !== 0) {
       setLoading(false);
@@ -117,6 +120,25 @@ function Music() {
     }
   }
 
+  // Handle edit music
+  async function handleEditMusic(){
+    console.log("Hit music updat e");
+    
+    const parsedData = {
+      name:selectedMusicName,
+      type:selecetdMusicType,
+    }
+    const apiData = await generalPutFunction(`/sound/${selectedMusicToEdit.id}`,parsedData)
+    if (apiData.status) {
+      setLoading(false);
+      setMusicEditPopup(false);
+      setRefresh(refresh + 1);
+      toast.success(apiData.message);
+    } else {
+      setMusicEditPopup(false);
+      setLoading(false);
+    }
+  }
   console.log("This is transition details", music);
   return (
     <main className="mainContent">
@@ -316,6 +338,8 @@ function Music() {
                                             className="tableButton edit"
                                             onClick={() => {
                                               setSelectedMusicToEdit(item);
+                                              setSelectedMusicName(item.name);
+                                              setSelectedMusicType(item.type);
                                               setMusicEditPopup(true);
                                             }}
                                           >
@@ -641,15 +665,16 @@ function Music() {
                           <input
                             type="text"
                             className="mb-3 formItem"
-                            defaultValue={selectedMusicToEdit.name}
+                            value={selectedMusicName}
+                            onChange={(e) => setSelectedMusicName(e.target.value)}
                           ></input>
                         </div>
                         <div className="col-4">
                           <select
                             name="music"
                             className="formItem"
-                            value={selectedMusicToEdit.type}
-                          // onChange={(e) => setNewMusicType(e.target.value)}
+                            value={selecetdMusicType}
+                            onChange={(e) => setSelectedMusicType(e.target.value)}
                           >
                             <option value="hold">Hold</option>
                             <option value="busy">Busy</option>
@@ -664,6 +689,7 @@ function Music() {
                           className="panelButton m-0"
                           onClick={() => {
                             setMusicEditPopup(false);
+                            handleEditMusic();
                           }}
                         >
                           <span className="text">Confirm</span>

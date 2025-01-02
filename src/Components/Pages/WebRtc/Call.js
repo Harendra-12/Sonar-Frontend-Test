@@ -67,27 +67,37 @@ function Call({
       } else {
         setIsLoading(true);
       }
+      const basePaths = {
+        all: "/call-details-phone",
+        incoming: "/cdr/inbound",
+        outgoing: "/cdr/outbound",
+        missed: "/cdr/missed",
+      };
+      const basePath = basePaths[clickStatus] || "";
+      if (basePath) {
+        const dateParam =
+          filterBy === "date"
+            ? `date=${startDate}`
+            : `date_range=${startDate},${endDate}`;
+        const url = `${basePath}?page_number=${currentPage}&${dateParam}&search=${searchQuery}`;
+        const apiData = await generalGetFunction(url);
 
-      const apiData = await generalGetFunction(
-        filterBy == "date"
-          ? `/call-details-phone?page_number=${currentPage}&date=${startDate}&search=${searchQuery}`
-          : `/call-details-phone?page_number=${currentPage}&date_range=${startDate},${endDate}&search=${searchQuery}`
-      );
-      if (apiData.status) {
-        console.log(apiData);
-        setAllApiData(apiData.data.data.reverse());
-        const result = apiData.data.data.reverse();
-        setRawData(apiData.data.data);
-        setData([...data, ...result]);
-        setLoading(false);
-        setIsLoading(false);
-      } else {
-        setLoading(false);
-        setIsLoading(false);
+        if (apiData.status) {
+          console.log(apiData);
+          setAllApiData(apiData.data.data.reverse());
+          const result = apiData.data.data.reverse();
+          setRawData(apiData.data.data);
+          setData([...data, ...result]);
+          setLoading(false);
+          setIsLoading(false);
+        } else {
+          setLoading(false);
+          setIsLoading(false);
+        }
       }
     }
     fetchData();
-  }, [currentPage, startDate, endDate, searchQuery]);
+  }, [currentPage, startDate, endDate, searchQuery, clickStatus, filterBy]);
 
   const callListRef = useRef(null);
   const handleScroll = () => {
@@ -555,7 +565,7 @@ function Call({
       callProgress: mode === "video" ? false : true,
     });
   }
-
+  console.log("clickStatus", clickStatus);
   useEffect(() => {
     if (selectedModule === "onGoingCall") {
       if (videoCall) {
@@ -872,7 +882,7 @@ function Call({
                       >
                         <i className="fa-light fa-phone" />
                       </button>
-                      {/* <button
+                      <button
                         onClick={() => setClickStatus("incoming")}
                         className={
                           clickStatus === "incoming"
@@ -907,7 +917,7 @@ function Call({
                         data-category="missed"
                       >
                         <i className="fa-light fa-phone-missed" />
-                      </button> */}
+                      </button>
                       {/* <button
                         onClick={() => setClickStatus("voicemail")}
                         className={

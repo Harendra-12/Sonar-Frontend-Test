@@ -25,6 +25,8 @@ function DidListing({ page }) {
   const [usages, setUsages] = useState("")
   const [id, setId] = useState('');
   const [refreshDid, setRefreshDid] = useState(0)
+  const [deletePopup, setDeletePopup] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
 
   useEffect(() => {
     if (didAll) {
@@ -146,6 +148,20 @@ function DidListing({ page }) {
       toast.error(apiData.message)
     }
   }
+
+  async function handleDelete(id) {
+    setLoading(true)
+    const apiData = await generalDeleteFunction(`/did/destroy/${id}`)
+    if (apiData.status) {
+      setLoading(false)
+      toast.success(apiData.message)
+      setRefreshDid(refreshDid + 1)
+      setDeleteId('')
+    } else {
+      setLoading(false)
+      // toast.error(apiData.message)
+    }
+  }
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -203,6 +219,7 @@ function DidListing({ page }) {
                             <th>E911</th>
                             <th>Cname</th>
                             <th>SMS</th>
+
                             {page === "pbx" ? <>
                               <th style={{ width: 80, textAlign: "center" }}>
                                 Options
@@ -217,7 +234,7 @@ function DidListing({ page }) {
                                 <th>Edit Usages</th>
                               </> : ""
                             }
-
+                             <th>Delete</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -321,6 +338,9 @@ function DidListing({ page }) {
                                           </td>
                                         </>
                                         : ""}
+                                         <td style={{ cursor: "default" }} onClick={()=>{setDeletePopup(true); setDeleteId(item.id)}}>
+                                            DELETE
+                                          </td>
                                     </tr>
                                   );
                                 })}
@@ -374,6 +394,57 @@ function DidListing({ page }) {
                       onClick={() => {
                         setUsagesPopup(false);
                         setId("");
+                      }}
+                    >
+                      <span className="text">Cancel</span>
+                      <span className="icon">
+                        <i class="fa-solid fa-xmark"></i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+      {deletePopup ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-4">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-circle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-0">
+                  <h4>Confirmation!</h4>
+                  <p>
+                    Are you sure! 
+                    You want to delete this DID
+                  </p>
+                 
+                  <div className="d-flex justify-content-between mt-3">
+                    <button
+                      className="panelButton m-0"
+                      onClick={() => {
+                        handleDelete(deleteId);
+                        setDeletePopup(false);
+                      }}
+                    >
+                      <span className="text">Delete</span>
+                      <span className="icon">
+                        <i class="fa-solid fa-check"></i>
+                      </span>
+                    </button>
+                    <button
+                      className="panelButton gray m-0 float-end"
+                      onClick={() => {
+                        setDeletePopup(false);
+                        setDeleteId("");
                       }}
                     >
                       <span className="text">Cancel</span>
