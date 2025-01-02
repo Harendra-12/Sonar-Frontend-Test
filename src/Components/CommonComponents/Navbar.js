@@ -128,23 +128,22 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse8"
-                      className={`accordion-collapse collapse ${
-                        isChildActive([
-                          "/my-profile",
-                          "/change-password",
-                          "/admin/package",
-                          "/users",
-                          "/users-edit",
-                          "/users-add",
-                          "/roles",
-                          "/master",
-                          "/extensions",
-                          "/extensions-edit",
-                          "/extensions-add",
-                        ])
+                      className={`accordion-collapse collapse ${isChildActive([
+                        "/my-profile",
+                        "/change-password",
+                        "/admin/package",
+                        "/users",
+                        "/users-edit",
+                        "/users-add",
+                        "/roles",
+                        "/master",
+                        "/extensions",
+                        "/extensions-edit",
+                        "/extensions-add",
+                      ])
                           ? "show"
                           : ""
-                      }`}
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -178,7 +177,7 @@ function Navbar() {
                           </li> */}
 
                           {account?.permissions?.includes(440) ||
-                          account?.permissions?.includes(442) ? (
+                            account?.permissions?.includes(442) ? (
                             <li className="tabItem ">
                               <NavLink
                                 to="/users"
@@ -186,9 +185,9 @@ function Navbar() {
                                 type="button"
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/users-add", "/users-edit"].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    ["/users-add", "/users-edit"].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -202,20 +201,20 @@ function Navbar() {
                           ) : null}
 
                           {account?.permissions?.includes(176) ||
-                          account?.permissions?.includes(178) ? (
+                            account?.permissions?.includes(178) ? (
                             <li className="tabItem ">
                               <NavLink
                                 to="/extensions"
                                 className={({ isActive }) =>
                                   isActive ||
-                                  [
-                                    "/extensions-add",
-                                    "/extensions-edit",
-                                    "/device-provisioning-add",
-                                    "/device-provisioning-edit",
-                                  ].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    [
+                                      "/extensions-add",
+                                      "/extensions-edit",
+                                      "/device-provisioning-add",
+                                      "/device-provisioning-edit",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -229,7 +228,7 @@ function Navbar() {
                           ) : null}
 
                           {account?.permissions?.includes(350) ||
-                          account?.permissions?.includes(352) ? (
+                            account?.permissions?.includes(352) ? (
                             <li className="tabItem">
                               <NavLink
                                 to="/roles"
@@ -318,17 +317,16 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse10"
-                      className={`accordion-collapse collapse ${
-                        isChildActive([
-                          "/get-did",
-                          "/port-number",
-                          "/port-number-add",
-                          "/port-number-edit",
-                          "/did-listing",
-                        ])
+                      className={`accordion-collapse collapse ${isChildActive([
+                        "/get-did",
+                        "/port-number",
+                        "/port-number-add",
+                        "/port-number-edit",
+                        "/did-listing",
+                      ])
                           ? "show"
                           : ""
-                      }`}
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -347,19 +345,19 @@ function Navbar() {
                           </li>
 
                           {account?.permissions?.includes(308) ||
-                          account?.permissions?.includes(310) ? (
+                            account?.permissions?.includes(310) ? (
                             <li className="tabItem">
                               <NavLink
                                 to="/port-number"
                                 onClick={backToTop}
                                 className={({ isActive }) =>
                                   isActive ||
-                                  [
-                                    "/port-number-add",
-                                    "/port-number-edit",
-                                  ].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    [
+                                      "/port-number-add",
+                                      "/port-number-edit",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -432,37 +430,36 @@ function Navbar() {
                     </button>
                     <div
                       id="collapseOne"
-                      className={`accordion-collapse collapse ${
-                        isChildActive([
-                          "/phone-dashboard",
-                          "/extensions",
-                          "/voice-music",
-                          "/extensions-edit",
-                          "/extensions-add",
-                          "/device-provisioning-add",
-                          "/device-provisioning-edit",
-                          "/did-listing-pbx",
-                          "/did-config",
-                          "/did-add",
-                          "/ring-groups",
-                          "/ring-groups-add",
-                          "/ring-groups-edit",
-                          "/cal-center-queue",
-                          "/cal-center-queue-add",
-                          "/cal-center-queue-edit",
-                          "/call-blocking",
-                          "/call-blocking-add",
-                          "/agents",
-                          "/agents-add",
-                          "/agents-edit",
-                          "/call-dashboard",
-                          "/meeting-room",
-                          "/meeting-add",
-                          "/active-calls",
-                        ])
+                      className={`accordion-collapse collapse ${isChildActive([
+                        "/phone-dashboard",
+                        "/extensions",
+                        "/voice-music",
+                        "/extensions-edit",
+                        "/extensions-add",
+                        "/device-provisioning-add",
+                        "/device-provisioning-edit",
+                        "/did-listing-pbx",
+                        "/did-config",
+                        "/did-add",
+                        "/ring-groups",
+                        "/ring-groups-add",
+                        "/ring-groups-edit",
+                        "/cal-center-queue",
+                        "/cal-center-queue-add",
+                        "/cal-center-queue-edit",
+                        "/call-blocking",
+                        "/call-blocking-add",
+                        "/agents",
+                        "/agents-add",
+                        "/agents-edit",
+                        "/call-dashboard",
+                        "/meeting-room",
+                        "/meeting-add",
+                        "/active-calls",
+                      ])
                           ? "show"
                           : ""
-                      }`}
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -489,9 +486,9 @@ function Navbar() {
                               onClick={backToTop}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/did-add", "/did-config"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/did-add", "/did-config"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -510,9 +507,9 @@ function Navbar() {
                               onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/agents-add", "/agents-edit"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/agents-add", "/agents-edit"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -525,7 +522,7 @@ function Navbar() {
                           </li>
 
                           {account?.permissions?.includes(344) ||
-                          account?.permissions?.includes(346) ? (
+                            account?.permissions?.includes(346) ? (
                             <li className="tabItem ">
                               <NavLink
                                 to="/ring-groups"
@@ -533,12 +530,12 @@ function Navbar() {
                                 type="button"
                                 className={({ isActive }) =>
                                   isActive ||
-                                  [
-                                    "/ring-groups-add",
-                                    "/ring-groups-edit",
-                                  ].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    [
+                                      "/ring-groups-add",
+                                      "/ring-groups-edit",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -552,7 +549,7 @@ function Navbar() {
                           ) : null}
 
                           {account?.permissions?.includes(62) ||
-                          account?.permissions?.includes(64) ? (
+                            account?.permissions?.includes(64) ? (
                             <li className="tabItem ">
                               <NavLink
                                 to="/cal-center-queue"
@@ -560,12 +557,12 @@ function Navbar() {
                                 type="button"
                                 className={({ isActive }) =>
                                   isActive ||
-                                  [
-                                    "/cal-center-queue-add",
-                                    "/cal-center-queue-edit",
-                                  ].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    [
+                                      "/cal-center-queue-add",
+                                      "/cal-center-queue-edit",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -585,9 +582,9 @@ function Navbar() {
                               type="button"
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/meeting-room", "/meeting-add"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/meeting-room", "/meeting-add"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -618,10 +615,10 @@ function Navbar() {
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/extensions-add", "/extensions-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -679,18 +676,17 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse6"
-                      className={`accordion-collapse collapse ${
-                        isChildActive([
-                          "/dialer-dashboard",
-                          "/leads",
-                          "/lead-add",
-                          "/lead-edit",
-                          "/campaigns",
-                          "/call-desposition",
-                        ])
+                      className={`accordion-collapse collapse ${isChildActive([
+                        "/dialer-dashboard",
+                        "/leads",
+                        "/lead-add",
+                        "/lead-edit",
+                        "/campaigns",
+                        "/call-desposition",
+                      ])
                           ? "show"
                           : ""
-                      }`}
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -701,10 +697,10 @@ function Navbar() {
                               onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/extensions-add", "/extensions-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -722,10 +718,10 @@ function Navbar() {
                               onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/campaigns-add", "/campaigns-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/campaigns-add", "/campaigns-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -743,9 +739,9 @@ function Navbar() {
                               onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/lead-add", "/lead-edit"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/lead-add", "/lead-edit"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -763,10 +759,10 @@ function Navbar() {
                               // onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/agents", "/agents-edit", "/agents-add"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/agents", "/agents-edit", "/agents-add"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -784,9 +780,9 @@ function Navbar() {
                               onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/call-desposition"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/call-desposition"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -818,9 +814,8 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse7"
-                      className={`accordion-collapse collapse ${
-                        isChildActive([]) ? "show" : ""
-                      }`}
+                      className={`accordion-collapse collapse ${isChildActive([]) ? "show" : ""
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -831,10 +826,10 @@ function Navbar() {
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/extensions-add", "/extensions-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -852,10 +847,10 @@ function Navbar() {
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/extensions-add", "/extensions-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -875,10 +870,10 @@ function Navbar() {
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/extensions-add", "/extensions-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -896,10 +891,10 @@ function Navbar() {
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/extensions-add", "/extensions-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -917,10 +912,10 @@ function Navbar() {
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/extensions-add", "/extensions-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -1020,7 +1015,7 @@ function Navbar() {
                     </NavLink>
                   </li> */}
                   {account?.permissions?.includes(230) ||
-                  account?.permissions?.includes(232) ? (
+                    account?.permissions?.includes(232) ? (
                     <li className="dashboard ">
                       <NavLink
                         to="/ivr"
@@ -1028,9 +1023,9 @@ function Navbar() {
                         type="button"
                         className={({ isActive }) =>
                           isActive ||
-                          ["/ivr-add", "/ivr-edit"].some((path) =>
-                            window.location.pathname.includes(path)
-                          )
+                            ["/ivr-add", "/ivr-edit"].some((path) =>
+                              window.location.pathname.includes(path)
+                            )
                             ? "nav-link active"
                             : "nav-link"
                         }
@@ -1086,7 +1081,7 @@ function Navbar() {
                     </a>
                   </li> */}
 
-                  {account?.extension || isCustomerAdmin ? (
+                  {/* {account?.extension || isCustomerAdmin ? (
                     <li className="dashboard ">
                       <a
                         href="/webrtc"
@@ -1102,7 +1097,7 @@ function Navbar() {
                     </li>
                   ) : (
                     ""
-                  )}
+                  )} */}
 
                   {account?.permissions?.includes(86) ? (
                     <li className="">
@@ -1127,17 +1122,16 @@ function Navbar() {
                       </button>
                       <div
                         id="collapse4"
-                        className={`accordion-collapse collapse ${
-                          isChildActive([
-                            "/cdr-report",
-                            "/agent-reports",
-                            "/meeting-reports",
-                            "/call-center-report",
-                            "/ring-group-report",
-                          ])
+                        className={`accordion-collapse collapse ${isChildActive([
+                          "/cdr-report",
+                          "/agent-reports",
+                          "/meeting-reports",
+                          "/call-center-report",
+                          "/ring-group-report",
+                        ])
                             ? "show"
                             : ""
-                        }`}
+                          }`}
                         data-bs-parent="#sidenNav"
                       >
                         <div className="menuWrapper">
@@ -1174,10 +1168,10 @@ function Navbar() {
                                 onClick={() => featureUnderdevelopment()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
-                                    (path) =>
-                                      window.location.pathname.includes(path)
-                                  )
+                                    ["/extensions-add", "/extensions-edit"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1196,10 +1190,10 @@ function Navbar() {
                                 onClick={() => featureUnderdevelopment()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
-                                    (path) =>
-                                      window.location.pathname.includes(path)
-                                  )
+                                    ["/extensions-add", "/extensions-edit"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1216,9 +1210,9 @@ function Navbar() {
                                 onClick={() => backToTop()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/agent-reports"].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    ["/agent-reports"].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1234,10 +1228,10 @@ function Navbar() {
                                 to="/call-center-report"
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
-                                    (path) =>
-                                      window.location.pathname.includes(path)
-                                  )
+                                    ["/extensions-add", "/extensions-edit"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1253,10 +1247,10 @@ function Navbar() {
                                 to="/ring-group-report"
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
-                                    (path) =>
-                                      window.location.pathname.includes(path)
-                                  )
+                                    ["/extensions-add", "/extensions-edit"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1273,10 +1267,10 @@ function Navbar() {
                                 onClick={() => featureUnderdevelopment()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
-                                    (path) =>
-                                      window.location.pathname.includes(path)
-                                  )
+                                    ["/extensions-add", "/extensions-edit"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1295,10 +1289,10 @@ function Navbar() {
                                 onClick={() => featureUnderdevelopment()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
-                                    (path) =>
-                                      window.location.pathname.includes(path)
-                                  )
+                                    ["/extensions-add", "/extensions-edit"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1315,9 +1309,9 @@ function Navbar() {
                                 onClick={() => backToTop()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/meeting-reports"].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    ["/meeting-reports"].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1356,21 +1350,20 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse9"
-                      className={`accordion-collapse collapse ${
-                        isChildActive([
-                          "/card-details",
-                          "/card-transaction-list",
-                          "/wallet-transaction-list",
-                        ])
+                      className={`accordion-collapse collapse ${isChildActive([
+                        "/card-details",
+                        "/card-transaction-list",
+                        "/wallet-transaction-list",
+                      ])
                           ? "show"
                           : ""
-                      }`}
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
                           {account?.permissions?.includes(470) ||
-                          account?.permissions?.includes(470) ? (
+                            account?.permissions?.includes(470) ? (
                             <li className="tabItem">
                               <NavLink
                                 to="/card-details"
@@ -1410,7 +1403,7 @@ function Navbar() {
                             </NavLink>
                           </li> */}
                           {account?.permissions?.includes(80) ||
-                          account?.permissions?.includes(82) ? (
+                            account?.permissions?.includes(82) ? (
                             <li className="tabItem">
                               <NavLink
                                 to="/card-transaction-list"
@@ -1426,7 +1419,7 @@ function Navbar() {
                           ) : null}
 
                           {account?.permissions?.includes(470) ||
-                          account?.permissions?.includes(472) ? (
+                            account?.permissions?.includes(472) ? (
                             <li className="tabItem">
                               <NavLink
                                 to="/wallet-transaction-list"
@@ -1447,10 +1440,10 @@ function Navbar() {
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/extensions-add", "/extensions-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -1488,15 +1481,14 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse5"
-                      className={`accordion-collapse collapse ${
-                        isChildActive([
-                          "/mail-settings",
-                          "/fax-settings",
-                          "/call-recording",
-                        ])
+                      className={`accordion-collapse collapse ${isChildActive([
+                        "/mail-settings",
+                        "/fax-settings",
+                        "/call-recording",
+                      ])
                           ? "show"
                           : ""
-                      }`}
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -1507,10 +1499,10 @@ function Navbar() {
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/extensions-add", "/extensions-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -1527,9 +1519,9 @@ function Navbar() {
                               onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/fax-settings"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/fax-settings"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -1541,7 +1533,7 @@ function Navbar() {
                             </NavLink>
                           </li>
                           {account?.permissions?.includes(248) ||
-                          account?.permissions?.includes(250) ? (
+                            account?.permissions?.includes(250) ? (
                             <li className="tabItem ">
                               <NavLink
                                 to="/mail-settings"
@@ -1549,12 +1541,12 @@ function Navbar() {
                                 type="button"
                                 className={({ isActive }) =>
                                   isActive ||
-                                  [
-                                    "/mail-settings-add",
-                                    "/mail-settings-edit",
-                                  ].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    [
+                                      "/mail-settings-add",
+                                      "/mail-settings-edit",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1569,9 +1561,9 @@ function Navbar() {
                               onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/call-recording"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/call-recording"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -1605,11 +1597,10 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse11"
-                      className={`accordion-collapse collapse ${
-                        isChildActive(["/add-ons", "/store-extension"])
+                      className={`accordion-collapse collapse ${isChildActive(["/add-ons", "/store-extension"])
                           ? "show"
                           : ""
-                      }`}
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -1620,9 +1611,9 @@ function Navbar() {
                               onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/store-extension"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/store-extension"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -1639,9 +1630,9 @@ function Navbar() {
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/plugins"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/plugins"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -1653,7 +1644,7 @@ function Navbar() {
                             </a>
                           </li>
                           {account?.permissions?.includes(248) ||
-                          account?.permissions?.includes(250) ? (
+                            account?.permissions?.includes(250) ? (
                             <li className="tabItem ">
                               <a
                                 // to="/dashboard"
@@ -1661,9 +1652,9 @@ function Navbar() {
                                 type="button"
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/hardwares", "/hardware-add"].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    ["/hardwares", "/hardware-add"].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1678,9 +1669,9 @@ function Navbar() {
                               onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/add-ons"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/add-ons"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -1714,11 +1705,10 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse12"
-                      className={`accordion-collapse collapse ${
-                        isChildActive(["/support", "/knowledge-base"])
+                      className={`accordion-collapse collapse ${isChildActive(["/support", "/knowledge-base"])
                           ? "show"
                           : ""
-                      }`}
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -1729,9 +1719,9 @@ function Navbar() {
                               onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/knowledge-base"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/knowledge-base"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -1748,10 +1738,10 @@ function Navbar() {
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/extensions-add", "/extensions-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -1763,19 +1753,19 @@ function Navbar() {
                             </a>
                           </li>
                           {account?.permissions?.includes(248) ||
-                          account?.permissions?.includes(250) ? (
+                            account?.permissions?.includes(250) ? (
                             <li className="tabItem ">
                               <a
                                 onClick={() => featureUnderdevelopment()}
                                 type="button"
                                 className={({ isActive }) =>
                                   isActive ||
-                                  [
-                                    "/mail-settings-add",
-                                    "/mail-settings-edit",
-                                  ].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    [
+                                      "/mail-settings-add",
+                                      "/mail-settings-edit",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
