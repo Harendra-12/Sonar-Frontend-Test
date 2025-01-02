@@ -986,6 +986,30 @@ function CallCenterQueueEdit() {
                               )}
                             </div>
                           </div>
+                          <div className="formRow col-xl-3">
+                            <div className="formLabel">
+                              <label htmlFor="">Tag</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Set a tag.
+                              </label>
+                            </div>
+                            <div className="col-6">
+                              <input
+                                type="text"
+                                name="extension"
+                                className="formItem"
+                                {...register("tag", {
+                                  ...noSpecialCharactersValidator,
+                                })}
+                                onKeyDown={restrictToAllowedChars}
+                              />
+                              {errors.tag && (
+                                <ErrorMessage
+                                  text={errors.tag.message}
+                                />
+                              )}
+                            </div>
+                          </div>
                         </form>
                       </div>
                       <div

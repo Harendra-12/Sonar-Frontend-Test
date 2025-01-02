@@ -127,8 +127,9 @@ function Header(props) {
           <div className="d-flex justify-content-end align-items-center">
             <div className="my-auto mx-3">
               <Tippy content="Click here to open dialer!">
-                <div
-                  onClick={() => navigate("/webrtc")}
+                <a
+                  href="/webrtc"
+                  target="_blank"
                   style={{ cursor: "pointer" }}
                   className="clearColorButton"
                 >
@@ -136,7 +137,7 @@ function Header(props) {
                   <span className="d-none d-xl-inline-block">
                     Go to Dialer
                   </span>
-                </div>
+                </a>
               </Tippy>
             </div>
             <div>
