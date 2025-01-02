@@ -27,7 +27,7 @@ import ActionList from "../../CommonComponents/ActionList";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import AddMusic from "../../CommonComponents/AddMusic";
 
-const ExtensionsEdit = () => {
+const ExtensionsEdit = ({page}) => {
   const navigate = useNavigate();
   const acount = useSelector((state) => state.account);
   const location = useLocation();
@@ -560,7 +560,7 @@ const ExtensionsEdit = () => {
     setValue("forward_to", value[0]);
   };
   return (
-    <main className="mainContent">
+    <main className={page==="agents" ? "mainContentAgents ms-0" : "mainContent"}>
       <section id="phonePage">
         {showHeader && (
           <div className="container-fluid px-0">

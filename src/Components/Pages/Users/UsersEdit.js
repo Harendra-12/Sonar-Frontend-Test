@@ -19,7 +19,7 @@ import {
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
-const UsersEdit = () => {
+const UsersEdit = ({page}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -341,7 +341,7 @@ const UsersEdit = () => {
         }
       `}
       </style>
-      <main className="mainContent">
+      <main className={page==="agents" ? "mainContentAgents ms-0" : "mainContent"}>
         <section id="phonePage">
           {showHeader && (
             <div className="container-fluid px-0">
