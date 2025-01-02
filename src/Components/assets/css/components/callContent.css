@@ -68,7 +68,7 @@
 }
 
 /* Contact List Item Start*/
-.mainContentApp .tab-content .contactListItem {
+.mainContentApp .contactListItem {
     padding: 15px 10px;
     position: relative;
     border-radius: 0px;
@@ -80,13 +80,13 @@
     min-height: 99.19px;
 }
 
-.mainContentApp .tab-content .contactListItem h4 {
+.mainContentApp .contactListItem h4 {
     font-size: 17px !important;
     margin: 0;
     font-family: Roboto;
 }
 
-.mainContentApp .tab-content .contactListItem h5 {
+.mainContentApp .contactListItem h5 {
     font-size: 14px !important;
     margin: 5px 0 0;
     font-family: Roboto;
@@ -99,7 +99,7 @@
     white-space: nowrap;
 }
 
-.mainContentApp .tab-content .contactListItem h6 {
+.mainContentApp .contactListItem h6 {
     font-size: 12px;
     margin: 0;
     font-family: Outfit;
@@ -107,7 +107,7 @@
     color: #505050;
 }
 
-.mainContentApp .tab-content .contactListItem p.timeAgo,
+.mainContentApp .contactListItem p.timeAgo,
 .callListItem p.timeAgo {
     font-size: 12px !important;
     margin: 0px 0 5px;
@@ -116,7 +116,7 @@
     color: #ababab;
 }
 
-.mainContentApp .tab-content .contactListItem span {
+.mainContentApp .contactListItem span {
     font-size: 17px;
     margin: 0;
     /* font-family: Outfit !important; */
@@ -124,7 +124,7 @@
     color: var(--ui-accent);
 }
 
-.mainContentApp .tab-content .contactListItem::after {
+.mainContentApp .contactListItem::after {
     content: attr(data-bell);
     position: absolute;
     bottom: 10px;
@@ -141,7 +141,7 @@
     color: #fff;
 }
 
-.mainContentApp .tab-content .contactListItem[data-bell=""]::after {
+.mainContentApp .contactListItem[data-bell=""]::after {
     content: none !important;
 }
 
