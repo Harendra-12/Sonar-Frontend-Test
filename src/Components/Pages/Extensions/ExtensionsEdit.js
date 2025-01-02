@@ -27,7 +27,7 @@ import ActionList from "../../CommonComponents/ActionList";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import AddMusic from "../../CommonComponents/AddMusic";
 
-const ExtensionsEdit = ({page}) => {
+const ExtensionsEdit = ({ page }) => {
   const navigate = useNavigate();
   const acount = useSelector((state) => state.account);
   const location = useLocation();
@@ -389,29 +389,29 @@ const ExtensionsEdit = ({page}) => {
             data.callblocking === "Incoming"
               ? 1
               : data.callblocking === "All"
-              ? 1
-              : 0,
+                ? 1
+                : 0,
           blockOutGoingStatus:
             data.callblocking === "Outgoing"
               ? 1
               : data.callblocking === "All"
-              ? 1
-              : 0,
+                ? 1
+                : 0,
           dnd: data.dnd,
           notregistered: data.notregistered,
           followme: data.followme,
           ...(data.followme == 1
             ? {
-                data: [
-                  {
-                    destination: callSetting.followMeDestination,
-                    delay: callSetting.followMeDelay,
-                    timeout: callSetting.followMeTimeOut,
-                    extension_id: value,
-                    prompt: callSetting.followMePrompt,
-                  },
-                ],
-              }
+              data: [
+                {
+                  destination: callSetting.followMeDestination,
+                  delay: callSetting.followMeDelay,
+                  timeout: callSetting.followMeTimeOut,
+                  extension_id: value,
+                  prompt: callSetting.followMePrompt,
+                },
+              ],
+            }
             : {}),
           password: data.password,
           ...(data.user === "" || data.user === null
@@ -471,29 +471,29 @@ const ExtensionsEdit = ({page}) => {
           dnd: data.dnd,
           ...(data.followme == 1
             ? {
-                data: [
-                  {
-                    destination: callSetting.followMeDestination,
-                    delay: callSetting.followMeDelay,
-                    timeout: callSetting.followMeTimeOut,
-                    extension_id: value,
-                    prompt: callSetting.followMePrompt,
-                  },
-                ],
-              }
+              data: [
+                {
+                  destination: callSetting.followMeDestination,
+                  delay: callSetting.followMeDelay,
+                  timeout: callSetting.followMeTimeOut,
+                  extension_id: value,
+                  prompt: callSetting.followMePrompt,
+                },
+              ],
+            }
             : {}),
           blockIncomingStatus:
             data.callblocking === "Incoming"
               ? 1
               : data.callblocking === "All"
-              ? 1
-              : 0,
+                ? 1
+                : 0,
           blockOutGoingStatus:
             data.callblocking === "Outgoing"
               ? 1
               : data.callblocking === "All"
-              ? 1
-              : 0,
+                ? 1
+                : 0,
           description: data.description,
           password: data.password,
           ...(data.user === "" || data.user === null
@@ -560,7 +560,7 @@ const ExtensionsEdit = ({page}) => {
     setValue("forward_to", value[0]);
   };
   return (
-    <main className={page==="agents" ? "mainContentAgents ms-0" : "mainContent"}>
+    <main className={page === "agents" ? "mainContentAgents ms-0" : "mainContent"}>
       <section id="phonePage">
         {showHeader && (
           <div className="container-fluid px-0">
@@ -601,7 +601,7 @@ const ExtensionsEdit = ({page}) => {
           ) : (
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
-                <div className="d-flex flex-wrap">
+                <div className="d-flex flex-wrap" style={{ position: "sticky", top: "0", zIndex: "9" }}>
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
@@ -661,11 +661,11 @@ const ExtensionsEdit = ({page}) => {
                             General{" "}
                             {(errors?.password?.message ||
                               errors?.extension?.message) && (
-                              <i
-                                class="fa fa-exclamation-circle text-danger"
-                                aria-hidden="true"
-                              ></i>
-                            )}
+                                <i
+                                  class="fa fa-exclamation-circle text-danger"
+                                  aria-hidden="true"
+                                ></i>
+                              )}
                           </button>
                           <button
                             class="nav-link"
@@ -2188,11 +2188,10 @@ const ExtensionsEdit = ({page}) => {
                                   </label>
                                 </div>
                                 <div
-                                  className={`col-${
-                                    forwardStatus != "disabled"
+                                  className={`col-${forwardStatus != "disabled"
                                       ? "3 pe-2 ms-auto"
                                       : "6"
-                                  }`}
+                                    }`}
                                 >
                                   {forwardStatus != "disabled" && (
                                     <div className="formLabel">

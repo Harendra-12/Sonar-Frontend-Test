@@ -139,7 +139,7 @@ const ExtensionsAdd = () => {
 
           <div className="overviewTableWrapper">
             <div className="overviewTableChild">
-              <div className="d-flex flex-wrap">
+              <div className="d-flex flex-wrap" style={{ position: "sticky", top: "0", zIndex: "9" }}>
                 <div className="col-12">
                   <div className="heading">
                     <div className="content">

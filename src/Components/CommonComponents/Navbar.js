@@ -115,6 +115,9 @@ function Navbar() {
                           "/users-add",
                           "/roles",
                           "/master",
+                          "/extensions",
+                          "/extensions-edit",
+                          "/extensions-add",
                         ])
                           ? "true"
                           : "false"
@@ -141,8 +144,8 @@ function Navbar() {
                         "/extensions-edit",
                         "/extensions-add",
                       ])
-                          ? "show"
-                          : ""
+                        ? "show"
+                        : ""
                         }`}
                       data-bs-parent="#sidenNav"
                     >
@@ -324,8 +327,8 @@ function Navbar() {
                         "/port-number-edit",
                         "/did-listing",
                       ])
-                          ? "show"
-                          : ""
+                        ? "show"
+                        : ""
                         }`}
                       data-bs-parent="#sidenNav"
                     >
@@ -432,10 +435,7 @@ function Navbar() {
                       id="collapseOne"
                       className={`accordion-collapse collapse ${isChildActive([
                         "/phone-dashboard",
-                        "/extensions",
                         "/voice-music",
-                        "/extensions-edit",
-                        "/extensions-add",
                         "/device-provisioning-add",
                         "/device-provisioning-edit",
                         "/did-listing-pbx",
@@ -457,8 +457,8 @@ function Navbar() {
                         "/meeting-add",
                         "/active-calls",
                       ])
-                          ? "show"
-                          : ""
+                        ? "show"
+                        : ""
                         }`}
                       data-bs-parent="#sidenNav"
                     >
@@ -684,8 +684,8 @@ function Navbar() {
                         "/campaigns",
                         "/call-desposition",
                       ])
-                          ? "show"
-                          : ""
+                        ? "show"
+                        : ""
                         }`}
                       data-bs-parent="#sidenNav"
                     >
@@ -1129,8 +1129,8 @@ function Navbar() {
                           "/call-center-report",
                           "/ring-group-report",
                         ])
-                            ? "show"
-                            : ""
+                          ? "show"
+                          : ""
                           }`}
                         data-bs-parent="#sidenNav"
                       >
@@ -1355,8 +1355,8 @@ function Navbar() {
                         "/card-transaction-list",
                         "/wallet-transaction-list",
                       ])
-                          ? "show"
-                          : ""
+                        ? "show"
+                        : ""
                         }`}
                       data-bs-parent="#sidenNav"
                     >
@@ -1486,8 +1486,8 @@ function Navbar() {
                         "/fax-settings",
                         "/call-recording",
                       ])
-                          ? "show"
-                          : ""
+                        ? "show"
+                        : ""
                         }`}
                       data-bs-parent="#sidenNav"
                     >
@@ -1598,8 +1598,8 @@ function Navbar() {
                     <div
                       id="collapse11"
                       className={`accordion-collapse collapse ${isChildActive(["/add-ons", "/store-extension"])
-                          ? "show"
-                          : ""
+                        ? "show"
+                        : ""
                         }`}
                       data-bs-parent="#sidenNav"
                     >
@@ -1706,8 +1706,8 @@ function Navbar() {
                     <div
                       id="collapse12"
                       className={`accordion-collapse collapse ${isChildActive(["/support", "/knowledge-base"])
-                          ? "show"
-                          : ""
+                        ? "show"
+                        : ""
                         }`}
                       data-bs-parent="#sidenNav"
                     >

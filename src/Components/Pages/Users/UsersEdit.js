@@ -19,7 +19,7 @@ import {
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
-const UsersEdit = ({page}) => {
+const UsersEdit = ({ page }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -341,7 +341,7 @@ const UsersEdit = ({page}) => {
         }
       `}
       </style>
-      <main className={page==="agents" ? "mainContentAgents ms-0" : "mainContent"}>
+      <main className={page === "agents" ? "mainContentAgents ms-0" : "mainContent"}>
         <section id="phonePage">
           {showHeader && (
             <div className="container-fluid px-0">
@@ -379,7 +379,7 @@ const UsersEdit = ({page}) => {
             </div>
           )}
 
-          <div className="col-xl-12" style={{ overflow: "auto" }}>
+          <div className="col-xl-12">
             {loading ? (
               <div colSpan={99}>
                 <CircularLoader />
@@ -389,7 +389,7 @@ const UsersEdit = ({page}) => {
             )}
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
-                <div className="d-flex flex-wrap">
+                <div className="d-flex flex-wrap" style={{ position: "sticky", top: "0", zIndex: "9" }}>
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
@@ -626,8 +626,8 @@ const UsersEdit = ({page}) => {
                                   e.target.value === ""
                                     ? ""
                                     : roleName.permissions.map((item) => {
-                                        return item.permission_id;
-                                      })
+                                      return item.permission_id;
+                                    })
                                 );
                               }}
                             >
@@ -697,10 +697,10 @@ const UsersEdit = ({page}) => {
                                       e.preventDefault();
                                       setPopUp(true);
                                     }}
-                                    // onClick={(e) => {
-                                    //   e.preventDefault();
-                                    //   setValue("extension_id", null);
-                                    // }}
+                                  // onClick={(e) => {
+                                  //   e.preventDefault();
+                                  //   setValue("extension_id", null);
+                                  // }}
                                   >
                                     <span className="text">Edit</span>
                                     {/* <span className="icon">
@@ -901,9 +901,8 @@ const UsersEdit = ({page}) => {
                               </select>
                             </div>
                             <div
-                              className={`${
-                                watch().extension_id ? "col-5" : "col-5"
-                              }`}
+                              className={`${watch().extension_id ? "col-5" : "col-5"
+                                }`}
                             >
                               <select
                                 className="formItem"
@@ -912,8 +911,8 @@ const UsersEdit = ({page}) => {
                                 {...register("usages", {
                                   ...requiredValidator,
                                 })}
-                                // value={watch().extension_id}
-                                // {...register("extension_id")}
+                              // value={watch().extension_id}
+                              // {...register("extension_id")}
                               >
                                 <option value="pbx">PBX</option>
                                 <option value="dialer">Dialer</option>
