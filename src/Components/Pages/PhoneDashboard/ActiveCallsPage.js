@@ -20,6 +20,8 @@ function ActiveCallsPage() {
             )
         );
     }, [activeCall]);
+    console.log("Active call page",activeCall);
+    
     return (
         <main className="mainContent">
             <section id="phonePage">
