@@ -56,6 +56,7 @@ function Messages({
   const dateHeaderRefs = useRef([]); // Store refs for all dateHeader elements
   const visibilityMap = useRef(new Map()); // Track visibility of each ref
   const [refreshstate, setRefreshState] = useState(false);
+  const [groupChatPopUp, setGroupChatPopUp] = useState(false);
 
   console.log("isAnyDateHeaderVisible", contact);
   useEffect(() => {
@@ -837,7 +838,7 @@ function Messages({
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <button
                     className="clearColorButton dark"
-                    onClick={() => featureUnderdevelopment()}
+                    onClick={() => setGroupChatPopUp(true)}
                   >
                     <i class="fa-light fa-pen-to-square"></i> New Chat
                   </button>
@@ -1601,6 +1602,93 @@ function Messages({
             </div>
           </div>
         </section>
+        {groupChatPopUp &&
+          <div className="addNewContactPopup">
+            <div className="row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-light fa-user-plus" />
+                <h5>Create a Group Chat</h5>
+                {/* <p>
+                Add people to yourqueue effortlessly, keeping your connections
+                organized and efficient
+              </p> */}
+                {/* <div className="border-bottom col-12" /> */}
+              </div>
+              <div className="col-xl-12">
+                {/* <div className="col-12 d-flex justify-content-between align-items-center"> */}
+                <div className="formRow px-0">
+                  <div className="formLabel">
+                    <label htmlFor="">
+                      Group Name <span className="text-danger">*</span>
+                    </label>
+                  </div>
+                  <div className="col-xl-6 col-12">
+                    <input type="text" className="formItem" />
+                  </div>
+                </div>
+                {/* </div> */}
+              </div>
+              <div className="col-xl-12 mt-1">
+                <div className="tableContainer mt-0" style={{ maxHeight: "calc(100vh - 400px)" }}>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>S.No</th>
+                        <th>Name</th>
+                        <th>Extension</th>
+                        <th>
+                          <input
+                            type="checkbox"
+                          // onChange={handleSelectAll} // Call handler on change
+                          // checked={selectAll ? true : false} // Keep checkbox state in sync
+                          />
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr key={''}>
+                        <td>1.</td>
+                        <td>Test</td>
+                        <td>1000</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                          // onChange={() => handleCheckboxChange(item)} // Call handler on change
+                          // checked={bulkUploadSelectedAgents.some(
+                          //   (agent) => agent.name == item.name
+                          // )} // Keep checkbox state in sync
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className="col-xl-12 mt-2">
+                <div className="d-flex justify-content-between">
+                  <button
+                    className="panelButton gray ms-0"
+                    onClick={() => {
+                      setGroupChatPopUp(false);
+                    }}
+                  >
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-caret-left" />
+                    </span>
+                  </button>
+                  <button
+                    className="panelButton me-0"
+                  >
+                    <span className="text">Create</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-check" />
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>}
       </main >
       {
         loading ? (
