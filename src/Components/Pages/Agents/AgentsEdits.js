@@ -107,7 +107,7 @@ function AgentsEdits() {
                       aria-labelledby="nav-user-tab"
                       tabindex="0"
                     >
-                      <UsersEdit />
+                      <UsersEdit page="agents" />
                     </div>
                     <div
                       class="tab-pane fade"
@@ -116,7 +116,7 @@ function AgentsEdits() {
                       aria-labelledby="nav-exten-tab"
                       tabindex="0"
                     >
-                      <ExtensionsEdit />
+                      <ExtensionsEdit page="agents"/>
                     </div>
                   </div>
                 </div>
