@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
 import { set } from "react-hook-form";
 
-function CdrReport({page}) {
+function CdrReport({ page }) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [cdr, setCdr] = useState();
@@ -48,7 +48,7 @@ function CdrReport({page}) {
   const [callBlockRefresh, setCallBlockRefresh] = useState(0);
   const [selectedNumberToBlock, setSelectedNumberToBlock] = useState(null);
   const [popUp, setPopUp] = useState(false);
-  const [itemsPerPage,setItemsPerPage] = useState(20);
+  const [itemsPerPage, setItemsPerPage] = useState(20);
 
   const thisAudioRef = useRef(null);
   console.log(cdr, callBlock);
@@ -161,14 +161,15 @@ function CdrReport({page}) {
     const finalUrl = buildUrl(
       `/cdr?account=${account.account_id}&page=${pageNumber}&row_per_page=${itemsPerPage}`,
       {
-        callDirection:callDirection,
-        application_state:page==="all"?callType:page,
+        callDirection: callDirection,
+        application_state: page === "all" ? callType : page,
         origin: callOrigin,
         destination: callDestination,
         start_date: startDate,
         end_date: endDate,
         variable_DIALSTATUS: hangupCause,
-        hangupCause: hangupStatus
+        hangupCause: hangupStatus,
+        charges: page === "billing" ? "give" : ""
       }
     );
 
@@ -411,25 +412,25 @@ function CdrReport({page}) {
                   className="col-12"
                   style={{ overflow: "auto", padding: "25px 20px 0" }}
                 >
-                    <div className="tableHeader">
-                      <div className="showEntries">
-                        <label>Show</label>
-                        <select
-                          className="formItem"
-                          value={itemsPerPage}
-                          onChange={(e) => setItemsPerPage(e.target.value)}
-                        >
-                          <option value={20}>20</option>
-                          <option value={30}>30</option>
-                          <option value={40}>40</option>
-                          <option value={50}>50</option>
-                          <option value={60}>60</option>
-                          <option value={70}>70</option>
-                          <option value={80}>80</option>
-                        </select>
-                        <label>entries</label>
-                      </div>
+                  <div className="tableHeader">
+                    <div className="showEntries">
+                      <label>Show</label>
+                      <select
+                        className="formItem"
+                        value={itemsPerPage}
+                        onChange={(e) => setItemsPerPage(e.target.value)}
+                      >
+                        <option value={20}>20</option>
+                        <option value={30}>30</option>
+                        <option value={40}>40</option>
+                        <option value={50}>50</option>
+                        <option value={60}>60</option>
+                        <option value={70}>70</option>
+                        <option value={80}>80</option>
+                      </select>
+                      <label>entries</label>
                     </div>
+                  </div>
                   <div className="tableHeader">
                     <div className="d-flex justify-content-xl-end">
                       <div className="formRow border-0 ps-xl-0">
@@ -559,46 +560,46 @@ function CdrReport({page}) {
                           onChange={handleCallDestinationChange}
                         />
                       </div>
-                      {page==="all"?<>
-                      <div className="formRow border-0">
-                        <label className="formLabel text-start mb-0 w-100">
-                          Call Direction
-                        </label>
-                        <select
-                          className="formItem"
-                          onChange={(e) => {
-                            setCallDirection(e.target.value);
-                            setPageNumber(1);
-                          }}
-                          value={callDirection}
-                        // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
-                        >
-                          <option value={""}>All Calls</option>
-                          <option value={"inbound"}>Inbound Calls</option>
-                          <option value={"outbound"}>Outbound Calls</option>
-                          <option value={"missed"}>Missed Calls</option>
-                          <option value={"internal"}>Internal Calls</option>
-                        </select>
-                      </div>
-                      <div className="formRow border-0">
-                        <label className="formLabel text-start mb-0 w-100">
-                          Call Type
-                        </label>
-                        <select
-                          className="formItem"
-                          onChange={(e) => {
-                            setCallType(e.target.value);
-                            setPageNumber(1);
-                          }}
-                        >
-                          <option value={""}>All Calls</option>
-                          <option value={"extension"}>Extension</option>
-                          <option value={"voicemail"}>Voice Mail</option>
-                          <option value={"callcenter"}>Call Center</option>
-                          <option value={"ringgroup"}>Ring Group</option>
-                        </select>
-                      </div>
-                      </>:""}
+                      {page === "all" ? <>
+                        <div className="formRow border-0">
+                          <label className="formLabel text-start mb-0 w-100">
+                            Call Direction
+                          </label>
+                          <select
+                            className="formItem"
+                            onChange={(e) => {
+                              setCallDirection(e.target.value);
+                              setPageNumber(1);
+                            }}
+                            value={callDirection}
+                          // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                          >
+                            <option value={""}>All Calls</option>
+                            <option value={"inbound"}>Inbound Calls</option>
+                            <option value={"outbound"}>Outbound Calls</option>
+                            <option value={"missed"}>Missed Calls</option>
+                            <option value={"internal"}>Internal Calls</option>
+                          </select>
+                        </div>
+                        <div className="formRow border-0">
+                          <label className="formLabel text-start mb-0 w-100">
+                            Call Type
+                          </label>
+                          <select
+                            className="formItem"
+                            onChange={(e) => {
+                              setCallType(e.target.value);
+                              setPageNumber(1);
+                            }}
+                          >
+                            <option value={""}>All Calls</option>
+                            <option value={"extension"}>Extension</option>
+                            <option value={"voicemail"}>Voice Mail</option>
+                            <option value={"callcenter"}>Call Center</option>
+                            <option value={"ringgroup"}>Ring Group</option>
+                          </select>
+                        </div>
+                      </> : ""}
                       <div className="formRow border-0 ">
                         <label className="formLabel text-start mb-0 w-100">
                           Hangup Cause
@@ -697,7 +698,9 @@ function CdrReport({page}) {
                         <tr>
                           <th>#</th>
                           <th>Direction</th>
-                          <th>Call Type</th>
+                          {page === "billing" ? "" :
+                            <th>Call Type</th>
+                          }
                           <th>Caller Name</th>
                           <th>Caller No.</th>
                           <th>Tag</th>
@@ -707,10 +710,14 @@ function CdrReport({page}) {
                           <th>Time</th>
                           <th>Recording</th>
                           <th>Duration</th>
-                          <th>Hangup Cause</th>
-                          <th>hangup Status</th>
+                          {page === "billing" ? "" : <>
+                            <th>Hangup Cause</th>
+                            <th>hangup Status</th>
+                          </>}
                           <th>Charge</th>
-                          <th>Block</th>
+                          {page === "billing" ? "" :
+                            <th>Block</th>
+                          }
                         </tr>
                       </thead>
                       <tbody>
@@ -750,8 +757,9 @@ function CdrReport({page}) {
                                             : <span><i class="fa-solid fa-headset me-1" style={{ color: 'var(--color2)' }}></i> Internal</span>
                                       }
                                       </td>
-
-                                      <td>{item["application_state"]}</td>
+                                      {page === "billing" ? "" :
+                                        <td>{item["application_state"]}</td>
+                                      }
                                       <td>
                                         {item["Caller-Orig-Caller-ID-Name"]}
                                       </td>
@@ -813,51 +821,55 @@ function CdrReport({page}) {
                                       <td>
                                         {formatTime(item["variable_billsec"])}
                                       </td>
-                                      <td>
-                                        {item["Hangup-Cause"]}
-                                        {/* {item["variable_DIALSTATUS"] === null
+                                      {page === "billing" ? "" : <>
+                                        <td>
+                                          {item["Hangup-Cause"]}
+                                          {/* {item["variable_DIALSTATUS"] === null
                                           ? item["Hangup-Cause"]
                                           : item["variable_DIALSTATUS"] ===
                                             "NO_USER_RESPONSE"
                                           ? "BUSY"
                                           : item["variable_DIALSTATUS"]} */}
-                                      </td>
-                                      <td>{item["variable_DIALSTATUS"]}</td>
+                                        </td>
+                                        <td>{item["variable_DIALSTATUS"]}</td>
+                                      </>}
                                       <td>{item["call_cost"]}</td>
-                                      <td>
-                                        {" "}
-                                        <button
-                                          disabled={isBlocked}
-                                          effect="ripple"
-                                          className={`tableButton ${isBlocked ? "delete" : "warning"} ms-0`}
-                                          // style={{ height: "34px" }}
-                                          onClick={() => {
-                                            setSelectedNumberToBlock(
-                                              item["Call-Direction"] ===
-                                                "inbound"
-                                                ? item[
-                                                "Caller-Caller-ID-Number"
-                                                ]
-                                                : item["Call-Direction"] ===
-                                                  "outbound"
+                                      {page === "billing" ? "" :
+                                        <td>
+                                          {" "}
+                                          <button
+                                            disabled={isBlocked}
+                                            effect="ripple"
+                                            className={`tableButton ${isBlocked ? "delete" : "warning"} ms-0`}
+                                            // style={{ height: "34px" }}
+                                            onClick={() => {
+                                              setSelectedNumberToBlock(
+                                                item["Call-Direction"] ===
+                                                  "inbound"
                                                   ? item[
-                                                  "Caller-Callee-ID-Number"
+                                                  "Caller-Caller-ID-Number"
                                                   ]
-                                                  : "N/A"
-                                            );
-                                            setPopUp(true);
-                                          }}
-                                        >
-                                          {/* <span className="text">
+                                                  : item["Call-Direction"] ===
+                                                    "outbound"
+                                                    ? item[
+                                                    "Caller-Callee-ID-Number"
+                                                    ]
+                                                    : "N/A"
+                                              );
+                                              setPopUp(true);
+                                            }}
+                                          >
+                                            {/* <span className="text">
                                             {isBlocked ? "Blocked" : "Block"}
                                           </span> */}
-                                          {/* <span className="icon"> */}
-                                          <Tippy content={isBlocked ? "Blocked" : "Block"}>
-                                            <i class="fa-solid fa-ban"></i>
-                                          </Tippy>
-                                          {/* </span> */}
-                                        </button>
-                                      </td>
+                                            {/* <span className="icon"> */}
+                                            <Tippy content={isBlocked ? "Blocked" : "Block"}>
+                                              <i class="fa-solid fa-ban"></i>
+                                            </Tippy>
+                                            {/* </span> */}
+                                          </button>
+                                        </td>
+                                      }
                                     </tr>
                                     {currentPlaying ===
                                       item["recording_path"] && (

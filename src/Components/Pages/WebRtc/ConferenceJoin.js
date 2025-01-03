@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction';
 import { useNavigate } from 'react-router-dom';
 import CircularLoader from '../../Loader/CircularLoader';
@@ -11,21 +11,58 @@ function ConferenceJoin() {
     const urlParams = new URLSearchParams(window.location.search);
     const conferenceId = urlParams.get('type');
     const [name, setName] = useState('')
-    const [pin,setPin] = useState('')
+    const [pin, setPin] = useState('')
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false)
+    const [videoEnable, setVideoEnable] = useState(true)
+    const videoRef = useRef(null);           // Reference to the video element
+    const streamRef = useRef(null);          // Reference to store the media stream  
+    useEffect(() => {
+        // Start the camera on component mount
+        const startCamera = async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                streamRef.current = stream;
+                if (videoRef.current) {
+                    videoRef.current.srcObject = stream;
+                }
+            } catch (error) {
+                console.error("Error accessing the camera:", error);
+            }
+        };
+
+        startCamera();
+
+        // Cleanup on unmount
+        return () => {
+            if (streamRef.current) {
+                streamRef.current.getTracks().forEach((track) => track.stop());
+            }
+        };
+    }, []);
+
+    const toggleVideo = () => {
+        if (streamRef.current) {
+            streamRef.current.getVideoTracks().forEach((track) => {
+                track.enabled = !track.enabled; // Toggle video track
+            });
+            setVideoEnable((prev) => !prev); // Update the state
+        }
+    };
+
+
     async function joinConference() {
         if (name === "") {
             toast.error("Please enter your name");
         } else if (pin === "") {
             toast.error("Please enter your pin");
         } else {
-           
-    
+
+
             // Request microphone access
             try {
                 const mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    
+
                 // Proceed only if microphone access is granted
                 if (mediaStream) {
                     setLoading(true);
@@ -54,7 +91,7 @@ function ConferenceJoin() {
             }
         }
     }
-    
+
     return (
         <>
             <style>
@@ -117,15 +154,20 @@ function ConferenceJoin() {
                                     <div className="loginImgWrapper h-auto bg-transparent">
                                         <div className="content" style={{ padding: '25px' }}>
                                             <div className='conferenceJoinVideo'>
-                                                <video autoPlay={true} loop={true} muted={true}>
-                                                    <source src={require('../../assets/images/testvideo.mp4')} type="video/mp4" />
-                                                </video>
+                                                <video
+                                                    ref={videoRef}
+                                                    autoPlay
+                                                    playsInline
+                                                    style={{
+                                                        transform: "scaleX(-1)", // Flip the video horizontally
+                                                    }}
+                                                ></video>
                                                 <div className='buttonGroup' >
                                                     <button className='clearButton2 xl white'>
                                                         <i class="fa-light fa-microphone"></i>
                                                     </button>
-                                                    <button className='clearButton2 xl white ms-3'>
-                                                        <i class="fa-light fa-camera-slash"></i>
+                                                    <button className='clearButton2 xl white ms-3' onClick={toggleVideo}>
+                                                        <i class={videoEnable ? "fa-light fa-camera" : "fa-light fa-camera-slash"}></i>
                                                     </button>
                                                 </div>
                                             </div>

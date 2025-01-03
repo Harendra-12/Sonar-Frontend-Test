@@ -265,6 +265,7 @@ const WebrtcWrapper = () => {
             conferenceToggle={conferenceToggle}
             pin={pin}
             setPin={setPin}
+            isVideoOn={isVideoOn}
           />
         )}
         {/* {activePage == "videocall" && <VideoCall />} */}

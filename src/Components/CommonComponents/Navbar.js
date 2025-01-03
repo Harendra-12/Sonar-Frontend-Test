@@ -9,7 +9,6 @@ import {
 } from "../GlobalFunction/globalFunction";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import DarkModeToggle from "./DarkModeToggle";
 import { toggleSideNav } from "./Header";
 
 function Navbar() {
@@ -18,7 +17,6 @@ function Navbar() {
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
   const userType = account?.usertype; // "Company"
-  const isCustomerAdmin = account?.email == accountDetails?.email || false;
   const permissions = useSelector((state) => state.permissions || []);
   console.log(permissions);
   async function logOut() {
@@ -610,7 +608,7 @@ function Navbar() {
                           </li>
 
                           <li className="tabItem ">
-                            <a
+                            <Link
                               // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
@@ -627,7 +625,7 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Voice Mail</div>
-                            </a>
+                            </Link>
                           </li>
 
                           <li className="tabItem ">
@@ -821,7 +819,7 @@ function Navbar() {
                       <div className="menuWrapper">
                         <ul className="tabMenu">
                           <li className="tabItem ">
-                            <a
+                            <Link
                               // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
@@ -838,11 +836,11 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Dashboard</div>
-                            </a>
+                            </Link>
                           </li>
 
                           <li className="tabItem ">
-                            <a
+                            <Link
                               // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
@@ -861,11 +859,11 @@ function Navbar() {
                               <div className="itemTitle">
                                 Number Configuration
                               </div>
-                            </a>
+                            </Link>
                           </li>
 
                           <li className="tabItem ">
-                            <a
+                            <Link
                               // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
@@ -882,11 +880,11 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Campaign</div>
-                            </a>
+                            </Link>
                           </li>
 
                           <li className="tabItem ">
-                            <a
+                            <Link
                               // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
@@ -903,11 +901,11 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Buyers</div>
-                            </a>
+                            </Link>
                           </li>
 
                           <li className="tabItem ">
-                            <a
+                            <Link
                               // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
@@ -924,7 +922,7 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Source</div>
-                            </a>
+                            </Link>
                           </li>
                         </ul>
                       </div>
@@ -971,7 +969,7 @@ function Navbar() {
                     </div>
                   </li> */}
                   {/* <li className="tabItem" >
-                        <a
+                        <Link
                           href=""
                           className="nav-link"
                         >
@@ -979,10 +977,10 @@ function Navbar() {
                             <i className="fa-sharp fa-regular fa-group-arrows-rotate" />
                           </div>
                           <div className="itemTitle">Dialplan Manager</div>
-                        </a>
+                        </Link>
                       </li> */}
                   {/* <li className="tabItem" >
-                        <a
+                        <Link
                           href=""
                           className="nav-link"
                         >
@@ -990,10 +988,10 @@ function Navbar() {
                             <i className="fa-sharp fa-regular fa-phone-volume" />
                           </div>
                           <div className="itemTitle">Inbound Routes</div>
-                        </a>
+                        </Link>
                       </li> */}
                   {/* <li className="tabItem" >
-                        <a
+                        <Link
                           href=""
                           className="nav-link"
                         >
@@ -1001,7 +999,7 @@ function Navbar() {
                             <i className="fa-regular fa-phone-arrow-up-right" />
                           </div>
                           <div className="itemTitle">Outbound Routes</div>
-                        </a>
+                        </Link>
                       </li> */}
 
                   {/* <li className="dashboard ">
@@ -1076,14 +1074,14 @@ function Navbar() {
                     </NavLink>
                   </li>
                   {/* <li className="dashboard">
-                    <a>
+                    <Link>
                       <DarkModeToggle marginLeft={"3"} />
-                    </a>
+                    </Link>
                   </li> */}
 
                   {/* {account?.extension || isCustomerAdmin ? (
                     <li className="dashboard ">
-                      <a
+                      <Link
                         href="/webrtc"
                         target="_blank"
                         // onClick={backToTop}
@@ -1093,7 +1091,7 @@ function Navbar() {
                           <i class="fa-regular fa-headset"></i>
                         </div>
                         <div className="itemTitle">Phone</div>
-                      </a>
+                      </Link>
                     </li>
                   ) : (
                     ""
@@ -1163,7 +1161,7 @@ function Navbar() {
                               </li>
                             ) : null}
                             <li className="tabItem ">
-                              <a
+                              <Link
                                 // to="/extensions"
                                 onClick={() => featureUnderdevelopment()}
                                 className={({ isActive }) =>
@@ -1182,10 +1180,10 @@ function Navbar() {
                                 <div className="itemTitle">
                                   Real-Time Analytics
                                 </div>
-                              </a>
+                              </Link>
                             </li>
                             <li className="tabItem ">
-                              <a
+                              <Link
                                 // to="/extensions"
                                 onClick={() => featureUnderdevelopment()}
                                 className={({ isActive }) =>
@@ -1202,7 +1200,7 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                                 <div className="itemTitle">Call Analytics</div>
-                              </a>
+                              </Link>
                             </li>
                             <li className="tabItem ">
                               <NavLink
@@ -1262,7 +1260,7 @@ function Navbar() {
                               </NavLink>
                             </li>
                             <li className="tabItem ">
-                              <a
+                              <Link
                                 // to="/extensions"
                                 onClick={() => featureUnderdevelopment()}
                                 className={({ isActive }) =>
@@ -1281,10 +1279,10 @@ function Navbar() {
                                 <div className="itemTitle">
                                   Dialer Analytics
                                 </div>
-                              </a>
+                              </Link>
                             </li>
                             <li className="tabItem ">
-                              <a
+                              <Link
                                 // to="/extensions"
                                 onClick={() => featureUnderdevelopment()}
                                 className={({ isActive }) =>
@@ -1301,7 +1299,7 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                                 <div className="itemTitle">Call Tracking</div>
-                              </a>
+                              </Link>
                             </li>
                             <li className="tabItem ">
                               <NavLink
@@ -1354,6 +1352,7 @@ function Navbar() {
                         "/card-details",
                         "/card-transaction-list",
                         "/wallet-transaction-list",
+                        "/billing-report",
                       ])
                         ? "show"
                         : ""
@@ -1435,7 +1434,7 @@ function Navbar() {
                           ) : null}
 
                           <li className="tabItem ">
-                            <a
+                            <Link
                               // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
@@ -1452,7 +1451,26 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Rate Card</div>
-                            </a>
+                            </Link>
+                          </li>
+                          <li className="tabItem ">
+                            <NavLink
+                              to="/billing-report"
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Reports</div>
+                            </NavLink>
                           </li>
                         </ul>
                       </div>
@@ -1494,7 +1512,7 @@ function Navbar() {
                       <div className="menuWrapper">
                         <ul className="tabMenu">
                           <li className="tabItem ">
-                            <a
+                            <Link
                               // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
@@ -1511,7 +1529,7 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">General</div>
-                            </a>
+                            </Link>
                           </li>
                           <li className="tabItem">
                             <NavLink
@@ -1625,7 +1643,7 @@ function Navbar() {
                             </NavLink>
                           </li>
                           <li className="tabItem ">
-                            <a
+                            <Link
                               // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
@@ -1641,12 +1659,12 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Plugins</div>
-                            </a>
+                            </Link>
                           </li>
                           {account?.permissions?.includes(248) ||
                             account?.permissions?.includes(250) ? (
                             <li className="tabItem ">
-                              <a
+                              <Link
                                 // to="/dashboard"
                                 onClick={backToTop}
                                 type="button"
@@ -1660,7 +1678,7 @@ function Navbar() {
                                 }
                               >
                                 <div className="itemTitle">Hardwares</div>
-                              </a>
+                              </Link>
                             </li>
                           ) : null}
                           <li className="tabItem ">
@@ -1733,7 +1751,7 @@ function Navbar() {
                             </NavLink>
                           </li>
                           <li className="tabItem ">
-                            <a
+                            <Link
                               // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
@@ -1750,12 +1768,12 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Submit a Ticket</div>
-                            </a>
+                            </Link>
                           </li>
                           {account?.permissions?.includes(248) ||
                             account?.permissions?.includes(250) ? (
                             <li className="tabItem ">
-                              <a
+                              <Link
                                 onClick={() => featureUnderdevelopment()}
                                 type="button"
                                 className={({ isActive }) =>
@@ -1773,7 +1791,7 @@ function Navbar() {
                                 <div className="itemTitle">
                                   Live Chat Support
                                 </div>
-                              </a>
+                              </Link>
                             </li>
                           ) : null}
                         </ul>

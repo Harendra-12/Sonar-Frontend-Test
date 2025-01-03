@@ -405,6 +405,10 @@ function App() {
             path="/call-center-report"
             element={<CdrReport page="callcenter" />}
           />
+          <Route
+            path="/billing-report"
+            element={<CdrReport page="billing" />}
+          />
           {/* <Route path="/efax" element={<EFax />} />
           <Route path="/call-dashboard" element={<CallDashboardPage />} /> */}
           {/* <Route path="/video-call" element={<VideoCall />} />
