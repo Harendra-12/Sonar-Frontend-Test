@@ -392,7 +392,7 @@ const Extensions = () => {
                                             className="tableButton mx-auto"
                                             onClick={() =>
                                               navigate(
-                                                "/device-provisioning-add",
+                                                "/device-provisioning-new",
                                                 {
                                                   state: {
                                                     extension: item.extension,

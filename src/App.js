@@ -138,6 +138,7 @@ import CallDesposition from "./Components/Pages/DialerModule/CallDesposition";
 import KnowledgeBase from "./Components/Pages/Support/KnowledgeBase";
 import AgentsPbx from "./Components/Pages/Agents/AgentsPbx";
 import AgentsDialer from "./Components/Pages/Agents/AgentsDialer";
+import VoiceMailReport from "./Components/Pages/Voice/VoiceMailReport";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -358,6 +359,7 @@ function App() {
           {/* Settings Path */}
 
           {/* Voice path start */}
+          <Route path="/voicemail-report" element={<VoiceMailReport />} />
           <Route path="/voice-music" element={<Music />} />
           {/* Voice path End */}
 

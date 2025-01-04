@@ -49,7 +49,7 @@ function DeviceProvisioningNew() {
                                 <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
                                     <div className='row gx-5'>
                                         <div className='col-xl-6' style={{ borderRight: '1px solid var(--border-color)' }}>
-                                            <form action="#" className="tangoNavs mb-0">
+                                            <form className="tangoNavs mb-0">
                                                 <nav>
                                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                                         <button class="nav-link active" id="nav-desk-tab" data-bs-toggle="tab" data-bs-target="#nav-desk" type="button" role="tab" aria-controls="nav-desk" aria-selected="true">Desktop Phones</button>

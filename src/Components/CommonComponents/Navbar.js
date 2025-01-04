@@ -418,6 +418,7 @@ function Navbar() {
                           "/meeting-room",
                           "/meeting-add",
                           "/active-calls",
+                          "/voicemail-report"
                         ])
                           ? "true"
                           : "false"
@@ -454,6 +455,7 @@ function Navbar() {
                         "/meeting-room",
                         "/meeting-add",
                         "/active-calls",
+                        "/voicemail-report"
                       ])
                         ? "show"
                         : ""
@@ -608,24 +610,12 @@ function Navbar() {
                           </li>
 
                           <li className="tabItem ">
-                            <Link
-                              // to="/extensions"
-                              onClick={() => featureUnderdevelopment()}
-                              className={({ isActive }) =>
-                                isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
-                                    (path) =>
-                                      window.location.pathname.includes(path)
-                                  )
-                                  ? "nav-link active"
-                                  : "nav-link"
-                              }
-                            >
+                            <NavLink to="/voicemail-report">
                               {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
+                                <i class="fa-regular fa-user-music"></i>
+                              </div> */}
                               <div className="itemTitle">Voice Mail</div>
-                            </Link>
+                            </NavLink>
                           </li>
 
                           <li className="tabItem ">
