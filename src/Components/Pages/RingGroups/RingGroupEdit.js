@@ -181,7 +181,12 @@ const RingGroupEdit = () => {
               call_timeout: call_timeout !== null ? call_timeout : "",
             },
           };
-
+          if (updatedEditData.destination_type != "Disabled") {
+            setShowTimeoutDestinationToggle(true);
+            if (updatedEditData.destination_type == "PSTN") {
+              setTimeoutDestPstnToggle(true);
+            }
+          }
           reset(updatedEditData);
 
           if (successMessage) {
@@ -903,33 +908,60 @@ const RingGroupEdit = () => {
                           <div className="col-5">
                             <select
                               className="formItem"
-                              onChange={(e) => {
-                                if (e.target.value == "extension") {
-                                  setTimeoutDestPstnToggle(false);
-                                  setShowTimeoutDestinationToggle(true);
-                                  if (watch().call_timeout == "") {
-                                    setValue("call_timeout", `${60}`);
+                              // onChange={(e) => {
+                              //   if (e.target.value == "Extension") {
+                              //     setTimeoutDestPstnToggle(false);
+                              //     setShowTimeoutDestinationToggle(true);
+                              //     if (watch().call_timeout == "") {
+                              //       setValue("call_timeout", `${60}`);
+                              //     }
+                              //     setValue("timeout_destination", "");
+                              //   } else if (e.target.value == "PSTN") {
+                              //     setTimeoutDestPstnToggle(true);
+                              //     setShowTimeoutDestinationToggle(true);
+                              //     if (watch().call_timeout == "") {
+                              //       setValue("call_timeout", `${60}`);
+                              //     }
+                              //     setValue("timeout_destination", "");
+                              //   } else if (e.target.value == "Disabled") {
+                              //     setTimeoutDestPstnToggle(true);
+                              //     setShowTimeoutDestinationToggle(false);
+                              //     setValue("timeout_destination", "");
+                              //   }
+                              // }}
+                              // {...register("destination_type")}
+                              {...register("destination_type", {
+                                onChange: (e) => {
+                                  const value = e.target.value;
+
+                                  // Custom logic
+                                  if (e.target.value == "Extension") {
+                                    setTimeoutDestPstnToggle(false);
+                                    setShowTimeoutDestinationToggle(true);
+                                    if (watch().call_timeout == "") {
+                                      setValue("call_timeout", `${60}`);
+                                    }
+                                    setValue("timeout_destination", "");
+                                  } else if (e.target.value == "PSTN") {
+                                    setTimeoutDestPstnToggle(true);
+                                    setShowTimeoutDestinationToggle(true);
+                                    if (watch().call_timeout == "") {
+                                      setValue("call_timeout", `${60}`);
+                                    }
+                                    setValue("timeout_destination", "");
+                                  } else if (e.target.value == "Disabled") {
+                                    setTimeoutDestPstnToggle(true);
+                                    setShowTimeoutDestinationToggle(false);
+                                    setValue("timeout_destination", "");
                                   }
-                                  setValue("timeout_destination", "");
-                                } else if (e.target.value == "pstn") {
-                                  setTimeoutDestPstnToggle(true);
-                                  setShowTimeoutDestinationToggle(true);
-                                  if (watch().call_timeout == "") {
-                                    setValue("call_timeout", `${60}`);
-                                  }
-                                  setValue("timeout_destination", "");
-                                } else if (e.target.value == "") {
-                                  setTimeoutDestPstnToggle(true);
-                                  setShowTimeoutDestinationToggle(false);
-                                  setValue("timeout_destination", "");
-                                }
-                              }}
+                                },
+                              })}
                               id="selectFormRow"
-                              defaultValue={""}
+                              defaultValue={"Disabled"}
                             >
-                              <option value="">Disabled</option>
-                              <option value="extension">Extension</option>
-                              <option value="pstn">PSTN</option>
+                              <option value="Disabled">Disabled</option>
+                              <option value="Extension">Extension</option>
+                              <option value="PSTN">PSTN</option>
                             </select>
                           </div>
                           <div className="col-7">
@@ -989,16 +1021,16 @@ const RingGroupEdit = () => {
                               )),
                           })}
                           onKeyDown={restrictToNumbers}
-                        // {...register("call_timeout", {
-                        //   ...requiredValidator,
-                        //   ...noSpecialCharactersValidator,
-                        //   ...minValidator(
-                        //     destination.reduce(
-                        //       (max, obj) => Math.max(max, obj.delay),
-                        //       0
-                        //     )
-                        //   ),
-                        // })}
+                          // {...register("call_timeout", {
+                          //   ...requiredValidator,
+                          //   ...noSpecialCharactersValidator,
+                          //   ...minValidator(
+                          //     destination.reduce(
+                          //       (max, obj) => Math.max(max, obj.delay),
+                          //       0
+                          //     )
+                          //   ),
+                          // })}
                         />
                         {errors.call_timeout && (
                           <ErrorMessage text={errors.call_timeout.message} />
@@ -1448,14 +1480,14 @@ const RingGroupEdit = () => {
                                       .filter((item1) => {
                                         return (
                                           item1.extension.extension ==
-                                          destination[index]?.destination ||
+                                            destination[index]?.destination ||
                                           !destination.some(
                                             (
                                               destinationItem,
                                               destinationIndex
                                             ) =>
                                               destinationItem.destination ==
-                                              item1.extension.extension &&
+                                                item1.extension.extension &&
                                               destinationIndex != index
                                           )
                                         );
@@ -1594,8 +1626,9 @@ const RingGroupEdit = () => {
                               ""
                             ) : (
                               <div
-                                className={`col-auto h-100 m${index === 0 ? "t" : "y"
-                                  }-auto`}
+                                className={`col-auto h-100 m${
+                                  index === 0 ? "t" : "y"
+                                }-auto`}
                               >
                                 <button
                                   type="button"

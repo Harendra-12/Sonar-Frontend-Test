@@ -72,6 +72,7 @@ function Messages({
   const [saveEditToggleGroupNameChange, setSaveEditToggleGroupNameChange] =
     useState(false);
   const [addMember, setAddMember] = useState(false);
+  const [selectedgroupUsers, setSelectedgroupUsers] = useState([]);
 
   const {
     register,
@@ -655,6 +656,7 @@ function Messages({
       const parsedData = {
         name: newTag,
       };
+
       const apiData = await generalPostFunction(`/tags/store`, parsedData);
       if (apiData.status) {
         setLoading(false);
@@ -702,9 +704,22 @@ function Messages({
 
   useEffect(() => {
     const getGroups = async () => {
+      setLoading(true);
       const apiData = await generalGetFunction(`/groups/all`);
       if (apiData?.status) {
         setGroups(apiData.data);
+        const isGroupSelected = apiData.data.find(
+          (group) => group.id == recipient[1]
+        );
+        if (isGroupSelected) {
+          setRecipient([isGroupSelected.group_name, isGroupSelected.id]);
+          setGroupNameEdit(isGroupSelected.group_name);
+          getGroupDataById(isGroupSelected.id);
+          setSelectedgroupUsers(isGroupSelected.groupusers);
+        }
+        setLoading(false);
+      } else {
+        setLoading(false);
       }
     };
     getGroups();
@@ -815,26 +830,20 @@ function Messages({
   const handleCreateGroup = handleSubmit(async (data) => {
     const parsedData = {
       group_name: data.group_name,
+      user_id: groupSelecedAgents.map((agent) => agent.id),
     };
+    setLoading(true);
     const apiData = await generalPostFunction("/groups/store", parsedData);
     if (apiData.status) {
       setGroupRefresh(groupRefresh + 1);
-      const payoad2 = {
-        group_id: apiData.data.id,
-        user_id: groupSelecedAgents.map((agent) => {
-          return { user_id: agent.id, status: agent.status };
-        }),
-      };
-      const addMemberApiData = await generalPostFunction(
-        `/group-users/store`,
-        payoad2
-      );
-      if (addMemberApiData.status) {
-        console.log(addMemberApiData);
-        groupChatPopUp(false);
-      }
 
       toast.success("Group created successfully");
+      setAddMember(false);
+      setGroupChatPopUp(false);
+      setGroupSelecedAgents([]);
+      setLoading(false);
+    } else {
+      setLoading(false);
     }
   });
 
@@ -845,6 +854,7 @@ function Messages({
       //   return { user_id: agent.id, status: agent.status };
       // }),
     };
+    setLoading(true);
     const apiData = await generalPutFunction(
       `/groups/update/${recipient[1]}`,
       parsedData
@@ -853,8 +863,61 @@ function Messages({
       setGroupRefresh(groupRefresh + 1);
       toast.success("Group updated successfully");
       setSaveEditToggleGroupNameChange(false);
+      setLoading(false);
+    } else {
+      setLoading(false);
     }
   };
+
+  const getGroupDataById = async (id) => {
+    const apiData = generalGetFunction(`/groups/show/${id}`);
+    if (apiData.status) {
+      console.log(apiData);
+    }
+  };
+
+  const handleAddNewMemberToGroup = async () => {
+    // const payload = groupSelecedAgents.map((agent) => agent.id);
+    const payLoad = {
+      group_id: recipient[1],
+      user_id: groupSelecedAgents.map((agent) => agent.id),
+    };
+    setLoading(true);
+    const apiData = await generalPostFunction("/group-users/store", payLoad);
+    if (apiData.status) {
+      console.log(apiData);
+      setGroupRefresh(groupRefresh + 1);
+      setGroupChatPopUp(false);
+      setAddMember(false);
+      setGroupSelecedAgents([]);
+      setLoading(false);
+      // setSelectedgroupUsers((prevUsers) => [...prevUsers, ...apiData.data]);
+    } else {
+      setLoading(false);
+      console.log(apiData);
+    }
+  };
+  // console.log(groupSelecedAgents);
+  const handleremoveUserFromGroup = async (id) => {
+    setLoading(true);
+    const apiData = await generalDeleteFunction(
+      `/group-users/destroy/${id}`
+      // payload
+    );
+    if (apiData.status) {
+      console.log(apiData);
+      toast.success(apiData.message);
+      setSelectedgroupUsers(
+        selectedgroupUsers.filter((item) => item.id !== id)
+      );
+      setLoading(false);
+      // setGroupRefresh(groupRefresh + 1);
+    } else {
+      setLoading(false);
+      console.log(apiData);
+    }
+  };
+
   return (
     <>
       <main
@@ -1436,6 +1499,8 @@ function Messages({
                               onClick={() => {
                                 setRecipient([item.group_name, item.id]);
                                 setGroupNameEdit(item.group_name);
+                                getGroupDataById(item.id);
+                                setSelectedgroupUsers(item.groupusers);
                               }}
                             >
                               <div className="row justify-content-between">
@@ -1935,27 +2000,55 @@ function Messages({
                             </div>
                           </div>
                         </div>
-                        <div
-                          data-bell=""
-                          className="contactListItem bg-transparent"
-                          style={{ minHeight: "auto" }}
-                        >
-                          <div className="row justify-content-between">
-                            <div className="col-xl-12 d-flex">
-                              <div className="profileHolder">
-                                <i className="fa-light fa-user fs-5" />
+                        {allAgents
+                          .filter((item) => {
+                            return selectedgroupUsers.some(
+                              (agent) => agent.user_id === item.id
+                            );
+                          })
+                          .map((item) => {
+                            const matchingAgent = selectedgroupUsers.find(
+                              (agent) => agent.user_id === item.id
+                            );
+                            return {
+                              ...item, // Include all existing properties of the agent
+                              agentId: matchingAgent?.id, // Include the user_id from selectedgroupUsers
+                            };
+                          })
+
+                          .map((item, index) => {
+                            return (
+                              <div
+                                data-bell=""
+                                className="contactListItem bg-transparent"
+                                style={{ minHeight: "auto" }}
+                              >
+                                <div className="row justify-content-between">
+                                  <div className="col-xl-12 d-flex">
+                                    <div className="profileHolder">
+                                      <i className="fa-light fa-user fs-5" />
+                                    </div>
+                                    <div className="my-auto ms-2 ms-xl-3">
+                                      <h4>{item.name}</h4>
+                                    </div>
+                                    <div className="col text-end my-auto">
+                                      <button
+                                        class="clearButton2"
+                                        effect="ripple"
+                                        onClick={() =>
+                                          handleremoveUserFromGroup(
+                                            item.agentId
+                                          )
+                                        }
+                                      >
+                                        <i class="fa-regular fa-xmark"></i>
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
-                              <div className="my-auto ms-2 ms-xl-3">
-                                <h4>Abdul Kalam Azad</h4>
-                              </div>
-                              <div className="col text-end my-auto">
-                                <button class="clearButton2" effect="ripple">
-                                  <i class="fa-regular fa-xmark"></i>
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                            );
+                          })}
                       </div>
                     </div>
                   )}
@@ -2076,7 +2169,12 @@ function Messages({
                               })
                               .filter(
                                 (user) =>
-                                  !agent.some((agent) => user.id == agent.name)
+                                  !agent.some(
+                                    (agent) => user.id == agent.name
+                                  ) &&
+                                  !selectedgroupUsers.some(
+                                    (users) => users.user_id == user.id
+                                  )
                               ) // Exclude agents already in `agent`
                               .map((item, index) => (
                                 <tr key={""}>
@@ -2120,6 +2218,7 @@ function Messages({
                     <button
                       className="panelButton me-0"
                       // onClick={() => handleCreateGroup()}
+                      onClick={() => handleAddNewMemberToGroup()}
                     >
                       <span className="text">Add</span>
                       <span className="icon">
@@ -2288,14 +2387,14 @@ function Messages({
               </div>
             </div>
           ))}
+        {loading ? (
+          <div colSpan={99}>
+            <CircularLoader />
+          </div>
+        ) : (
+          ""
+        )}
       </main>
-      {loading ? (
-        <div colSpan={99}>
-          <CircularLoader />
-        </div>
-      ) : (
-        ""
-      )}
     </>
   );
 }
