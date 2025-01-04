@@ -70,7 +70,7 @@ function GlobalCalls() {
       }
     }
     // getData();
-    if (cardListRefresh > 0) {
+    if (cardListRefresh) {
       getData();
     }
   }, [account?.account_id, cardListRefresh]);
@@ -91,7 +91,7 @@ function GlobalCalls() {
       }
     }
     // getData();
-    if (billingListRefresh > 0) {
+    if (billingListRefresh) {
       // console.log("This is billing refresh", billingListRefresh);
       getData();
     }
