@@ -9,8 +9,18 @@ import EmptyPrompt from "../../Loader/EmptyPrompt";
 
 
 
-function ActiveCalls({ isWebrtc }) {
+function ActiveCalls({ isWebrtc,filter }) {
   const activeCall = useSelector((state) => state.activeCall);
+  const [filterCalls,setFilterCalls] = useState([]);
+  useEffect(()=>{
+    if(filter==="all"){
+      setFilterCalls(activeCall)
+    }else if(filter==="ringgroup"){
+      setFilterCalls(activeCall.filter((call) => call.application_state==="ringgroup"))
+    }else if(filter==="callcenter"){
+      setFilterCalls(activeCall.filter((call) => call.application_state==="callcenter"))
+    }
+  },[filter,activeCall])
   const [loading, setLoading] = useState(false);
   const [bargeStatus, setBargeStatus] = useState("disable");
   const [id, setId] = useState("");
@@ -134,8 +144,8 @@ function ActiveCalls({ isWebrtc }) {
           </tr>
         </thead>
         <tbody>
-          {activeCall &&
-            activeCall
+          {filterCalls &&
+            filterCalls
               .filter(
                 (call) =>
                   call.callstate === "ACTIVE" || call.b_callee_direction === "ACTIVE"
