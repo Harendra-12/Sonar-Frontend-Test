@@ -29,8 +29,8 @@ jobs:
         run: |
           
           ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
-            set -e  # Exit immediately if a command exits with a non-zero status
-            set -x  # Uncomment for debugging purposes
+          #  set -e  # Exit immediately if a command exits with a non-zero status
+          #  set -x  # Uncomment for debugging purposes
 
             echo "Navigating to deployment directory: ${{ secrets.DEPLOY_PATH }}"
             cd ${{ secrets.DEPLOY_PATH }}
