@@ -28,7 +28,7 @@ jobs:
       - name: SSH into Debian Server and Build React App
         run: |
           
-          ssh -o -v StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
             set -e  # Exit immediately if a command exits with a non-zero status
             set -x  # Uncomment for debugging purposes
 
