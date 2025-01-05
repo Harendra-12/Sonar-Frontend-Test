@@ -60,7 +60,7 @@ jobs:
             # rm -rf node_modules
 
             # echo "Installing dependencies."
-            # npm install
+             npm install
 
             echo "Building the React app."
             npm run build
