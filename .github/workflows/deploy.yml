@@ -44,8 +44,9 @@ jobs:
               git pull origin Developement
             else
               echo "Git repository not found. Cloning repository."
-              git clone git@github.com:AngelPbx/UcaaS-Frontend.git .
-              git checkout Developement
+              GIT_SSH_COMMAND='ssh -i ~/.ssh/ucaas-testing-frontend' git clone git@github.com:AngelPbx/ucaas-frontend.git .
+              # git clone git@github.com:AngelPbx/UcaaS-Frontend.git .
+              # git checkout Developement
             fi
 
             echo "Listing deployment directory contents:"
