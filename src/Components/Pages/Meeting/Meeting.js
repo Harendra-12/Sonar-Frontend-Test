@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../../CommonComponents/Header';
 import { useNavigate } from 'react-router-dom';
-import { backToTop, generalGetFunction } from '../../GlobalFunction/globalFunction';
+import { backToTop, generalDeleteFunction, generalGetFunction } from '../../GlobalFunction/globalFunction';
 import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
+import { toast } from 'react-toastify';
 
 function Meeting() {
     const [refreshState, setRefreshState] = useState(0);
@@ -11,6 +12,8 @@ function Meeting() {
     const [conference, setConference] = useState([]);
     const [itemsPerPage, setItemsPerPage] = useState(20);
     const [searchValue, setSearchValue] = useState('');
+    const [popUp, setPopUp] = useState(false);
+    const [deleteId, setDeleteId] = useState('');
 
     useEffect(() => {
         async function getData() {
@@ -25,6 +28,20 @@ function Meeting() {
         }
         getData()
     }, [refreshState])
+
+    async function handleDelete() {
+        setLoading(true);
+        const apiData = await generalDeleteFunction(`/conference/${deleteId}`)
+        if (apiData.status) {
+            setLoading(false);
+            setRefreshState(refreshState + 1)
+            setDeleteId('');
+            toast.success(apiData.message);
+        } else {
+            setLoading(false);
+            setDeleteId('');
+        }
+    }
     return (
         <main className="mainContent">
             <section id="phonePage">
@@ -139,27 +156,13 @@ function Meeting() {
                                                                                 <div
                                                                                     className="tableButton delete"
                                                                                     onClick={() => {
-                                                                                        // setPopUp(true);
-                                                                                        // setDeleteToggle(true);
-                                                                                        // setDeleteId(item.id);
+                                                                                        setDeleteId(item.id);
+                                                                                        setPopUp(true);
                                                                                     }}
                                                                                 >
                                                                                     <i class="fa-solid fa-trash"></i>
                                                                                 </div>
                                                                             </td>
-                                                                            {/* <td>
-                                              <button
-                                                className="tableButton edit"
-                                                onClick={() => {
-                                                  setConferenceToggle(true);
-                                                  // setPopUp(true);
-                                                  // setDeleteToggle(true);
-                                                  // setDeleteId(item.id);
-                                                }}
-                                              >
-                                                <i class="fa-solid fa-right-to-bracket"></i>
-                                              </button>
-                                            </td> */}
                                                                         </tr>
                                                                     );
                                                                 })}{" "}
@@ -168,19 +171,6 @@ function Meeting() {
                                                 </tbody>
                                             </table>
                                         </div>
-                                        {/* <div className="tableHeader mb-3">
-                    {callCenter && callCenter?.data?.length > 0 ? (
-                      <PaginationComponent
-                        pageNumber={(e) => setPageNumber(e)}
-                        totalPage={callCenter.totalPage}
-                        from={callCenter.from}
-                        to={callCenter.to}
-                        total={callCenter.total}
-                      />
-                    ) : (
-                      ""
-                    )}
-                  </div> */}
                                     </div>
                                 </div>
                             </div>
@@ -188,6 +178,59 @@ function Meeting() {
                     </div>
                 </div>
             </section>
+            {popUp ? (
+                <div className="popup">
+                    <div className="container h-100">
+                        <div className="row h-100 justify-content-center align-items-center">
+                            <div className="row content col-xl-4">
+                                <div className="col-2 px-0">
+                                    <div className="iconWrapper">
+                                        <i className="fa-duotone fa-triangle-exclamation"></i>
+                                    </div>
+                                </div>
+                                <div className="col-10 ps-0">
+                                    <h4>Warning!</h4>
+                                    <p>
+
+                                        Are you sure you want to delete this Meeting?
+                                    </p>
+                                    <div className="d-flex justify-content-between">
+
+                                        <button
+                                            disabled={loading}
+                                            className="panelButton m-0"
+                                            onClick={() => {
+                                                handleDelete()
+                                                setPopUp(false);
+                                            }}
+                                        >
+                                            <span className="text">Confirm</span>
+                                            <span className="icon">
+                                                <i class="fa-solid fa-check"></i>
+                                            </span>
+                                        </button>
+
+                                        <button
+                                            className="panelButton gray m-0 float-end"
+                                            onClick={() => {
+                                                setPopUp(false);
+                                                setDeleteId("");
+                                            }}
+                                        >
+                                            <span className="text">Cancel</span>
+                                            <span className="icon">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                ""
+            )}
         </main>
     )
 }

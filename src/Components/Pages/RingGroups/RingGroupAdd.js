@@ -410,7 +410,7 @@ const RingGroupAdd = () => {
           delay: 0,
           timeOut: "30",
           // prompt: "",
-          status: "inactive",
+          status: "active",
         },
       ]);
       toast.success(apiData.message);
@@ -506,7 +506,7 @@ const RingGroupAdd = () => {
           destination: selectedDestination?.extension?.extension,
           delay: 0,
           timeOut: "30",
-          status: "inactive",
+          status: "active",
         })
       );
 
@@ -527,7 +527,7 @@ const RingGroupAdd = () => {
             delay: 0,
             timeOut: "30",
 
-            status: "inactive",
+            status: "active",
           });
         }
       });

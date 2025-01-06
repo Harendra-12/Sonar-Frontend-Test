@@ -1,15 +1,70 @@
-import React, { useState } from 'react'
-import { backToTop } from '../../GlobalFunction/globalFunction';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { backToTop, generalPostFunction } from '../../GlobalFunction/globalFunction';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../CommonComponents/Header';
+import { useDispatch, useSelector } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import ErrorMessage from '../../CommonComponents/ErrorMessage';
+import { lengthValidator, numberValidator, requiredValidator, restrictToMacAddress, restrictToNumbers } from '../../validations/validation';
+import CircularLoader from '../../Loader/CircularLoader';
 
 function DeviceProvisioningNew() {
     const [isDeviceChosen, setIsDeviceChosen] = useState(false)
     const navigate = useNavigate();
+    const location = useLocation();
+    const dispatch = useDispatch()
+
+    const deviceProvisioningRefresh = useSelector(
+        (state) => state.deviceProvisioningRefresh
+    );
+    const extensionData = location.state;
+
+    const [loading, setLoading] = useState(true);
+    const {
+        register,
+        formState: { errors },
+        handleSubmit,
+        watch,
+        reset,
+        setValue,
+    } = useForm();
+
+    const handleFormSubmit = handleSubmit(async (data) => {
+        setLoading(true);
+        data.address = extensionData.id;
+        const apiData = await generalPostFunction("/provision/store", data);
+        if (apiData.status) {
+            setLoading(false);
+            toast.success(apiData.message);
+
+            // // after succesfully adding data need to recall the global function to update the global state
+            dispatch({
+                type: "SET_DEVICE_PROVISIONINGREFRESH",
+                deviceProvisioningRefresh: deviceProvisioningRefresh + 1,
+            });
+            reset();
+            navigate(-1);
+        } else {
+            setLoading(false);
+        }
+    });
+
+    useEffect(() => {
+        setValue("address", extensionData.id);
+        setLoading(false);
+    }, [extensionData]);
     return (
         <>
             <main className="mainContent">
                 <section id="phonePage">
+                    {loading ? (
+                        <div colSpan={99}>
+                            <CircularLoader />
+                        </div>
+                    ) : (
+                        ""
+                    )}
                     <div className="container-fluid px-0">
                         <Header title="Device Provisioning" />
                     </div>
@@ -38,8 +93,9 @@ function DeviceProvisioningNew() {
                                                 <button
                                                     effect="ripple"
                                                     className="panelButton"
+                                                    onClick={handleFormSubmit}
                                                 >
-                                                    <span className="text">Save</span>
+                                                    <span className="text" >Save</span>
                                                     <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                                                 </button>
                                             </div>
@@ -144,13 +200,8 @@ function DeviceProvisioningNew() {
                                         </div>
 
                                         {isDeviceChosen && <div className='col-xl-6'>
-                                            <form className='row px-2 tangoNavs'>
-                                                <nav>
-                                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                                        <button class="nav-link active" id="nav-desk-tab" data-bs-toggle="tab" data-bs-target="#nav-desk" type="button" role="tab" aria-controls="nav-desk" aria-selected="true">Configure Device</button>
-                                                    </div>
-                                                </nav>
-                                                <div className="formRow col-xl-12">
+                                            <form>
+                                                <div className="formRow col-xl-3">
                                                     <div className="formLabel">
                                                         <label className="text-dark">Address</label>
                                                         <label htmlFor="data" className="formItemDesc">
@@ -159,16 +210,19 @@ function DeviceProvisioningNew() {
                                                     </div>
                                                     <div className="col-6">
                                                         <input
+                                                            value={extensionData.extension}
+                                                            disabled
                                                             type="text"
+                                                            name="address"
                                                             className="formItem"
                                                         />
-
-                                                        {/* {errors.address && (
-                                                    <ErrorMessage text={errors.address.message} />
-                                                )} */}
+                                                        {errors.address && (
+                                                            <ErrorMessage text={errors.address.message} />
+                                                        )}
                                                     </div>
                                                 </div>
-                                                <div className="formRow col-xl-12">
+
+                                                <div className="formRow col-xl-3">
                                                     <div className="formLabel">
                                                         <label className="text-dark">Transport</label>
                                                         <label htmlFor="data" className="formItemDesc">
@@ -177,13 +231,13 @@ function DeviceProvisioningNew() {
                                                     </div>
                                                     <div className="col-6">
                                                         <select
-                                                            // value={watch().transport}
+                                                            value={watch().transport}
                                                             className="formItem"
                                                             name="transport "
                                                             id="selectFormRow"
-                                                        // {...register("transport", {
-                                                        //     ...requiredValidator,
-                                                        // })}
+                                                            {...register("transport", {
+                                                                ...requiredValidator,
+                                                            })}
                                                         >
                                                             <option disabled value="">
                                                                 Chose a vendor
@@ -195,12 +249,13 @@ function DeviceProvisioningNew() {
                                                             <option value="TLS">TLS</option>
                                                             <option value="TCPOnly">TCP Only</option>
                                                         </select>
-                                                        {/* {errors.transport && (
+                                                        {errors.transport && (
                                                             <ErrorMessage text={errors.transport.message} />
-                                                        )} */}
+                                                        )}
                                                     </div>
                                                 </div>
-                                                <div className="formRow col-xl-12">
+
+                                                <div className="formRow col-xl-3">
                                                     <div className="formLabel">
                                                         <label className="text-dark">Port</label>
                                                         <label htmlFor="data" className="formItemDesc">
@@ -215,14 +270,38 @@ function DeviceProvisioningNew() {
                                                             minLength="3"
                                                             maxLength="4"
                                                             placeholder="5070"
-                                                        // {...register("port", {
-                                                        //     ...requiredValidator,
-                                                        //     ...numberValidator,
-                                                        //     ...lengthValidator(3, 4),
-                                                        // })}
-                                                        // onKeyDown={restrictToNumbers}
+                                                            {...register("port", {
+                                                                ...requiredValidator,
+                                                                ...numberValidator,
+                                                                ...lengthValidator(3, 4),
+                                                            })}
+                                                            onKeyDown={restrictToNumbers}
                                                         />
-                                                        {/* {errors.port && <ErrorMessage text={errors.port.message} />} */}
+                                                        {errors.port && <ErrorMessage text={errors.port.message} />}
+                                                    </div>
+                                                </div>
+
+                                                <div className="formRow col-xl-3">
+                                                    <div className="formLabel">
+                                                        <label className="text-dark">Serial Number</label>
+                                                        <label htmlFor="data" className="formItemDesc">
+                                                            Enter serial number
+                                                        </label>
+                                                    </div>
+                                                    <div className="col-6">
+                                                        <input
+                                                            type="text"
+                                                            name="serial_number"
+                                                            className="formItem"
+                                                            placeholder="124abc"
+                                                            {...register("serial_number", {
+                                                                ...requiredValidator,
+                                                            })}
+                                                            onKeyDown={restrictToMacAddress}
+                                                        />
+                                                        {errors.serial_number && (
+                                                            <ErrorMessage text={errors.serial_number.message} />
+                                                        )}
                                                     </div>
                                                 </div>
                                             </form>

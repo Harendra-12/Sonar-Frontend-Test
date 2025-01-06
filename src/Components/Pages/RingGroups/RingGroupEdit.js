@@ -86,7 +86,7 @@ const RingGroupEdit = () => {
       delay: 0,
       timeOut: "30",
       // prompt: "",
-      status: "inactive",
+      status: "active",
     },
   ]);
 
@@ -533,7 +533,7 @@ const RingGroupEdit = () => {
           destination: selectedDestination?.extension?.extension,
           delay: 0,
           timeOut: "30",
-          status: "inactive",
+          status: "active",
         })
       );
 
@@ -554,7 +554,7 @@ const RingGroupEdit = () => {
             delay: 0,
             timeOut: "30",
 
-            status: "inactive",
+            status: "active",
           });
         }
       });
