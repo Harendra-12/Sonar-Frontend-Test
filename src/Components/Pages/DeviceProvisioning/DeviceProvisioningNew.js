@@ -201,7 +201,7 @@ function DeviceProvisioningNew() {
 
                                         {isDeviceChosen && <div className='col-xl-6'>
                                             <form>
-                                                <div className="formRow col-xl-3">
+                                                <div className="formRow">
                                                     <div className="formLabel">
                                                         <label className="text-dark">Address</label>
                                                         <label htmlFor="data" className="formItemDesc">
@@ -222,7 +222,7 @@ function DeviceProvisioningNew() {
                                                     </div>
                                                 </div>
 
-                                                <div className="formRow col-xl-3">
+                                                <div className="formRow">
                                                     <div className="formLabel">
                                                         <label className="text-dark">Transport</label>
                                                         <label htmlFor="data" className="formItemDesc">
@@ -255,7 +255,7 @@ function DeviceProvisioningNew() {
                                                     </div>
                                                 </div>
 
-                                                <div className="formRow col-xl-3">
+                                                <div className="formRow">
                                                     <div className="formLabel">
                                                         <label className="text-dark">Port</label>
                                                         <label htmlFor="data" className="formItemDesc">
@@ -281,7 +281,7 @@ function DeviceProvisioningNew() {
                                                     </div>
                                                 </div>
 
-                                                <div className="formRow col-xl-3">
+                                                <div className="formRow">
                                                     <div className="formLabel">
                                                         <label className="text-dark">Serial Number</label>
                                                         <label htmlFor="data" className="formItemDesc">
