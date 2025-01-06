@@ -1543,7 +1543,15 @@ function Messages({
                       {recipient[0] ? (
                         <div className="contactHeader">
                           <div>
+                            <h4 className="">
+                              {
+                                contact.find(
+                                  (contact) => contact.extension == recipient[0]
+                                )?.name
+                              }{" "}
+                            </h4>
                             <h4>{recipient[0]}</h4>
+                            {/* <h4>{recipient[0]}</h4> */}
                             <div className="contactTags">
                               {contact
                                 .find(
