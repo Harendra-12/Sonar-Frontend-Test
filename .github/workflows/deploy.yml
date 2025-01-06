@@ -25,7 +25,15 @@ jobs:
 
       - name: Add GitHub to known_hosts
         run: |
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/ucaas-testing-frontend
+          chmod 600 ~/.ssh/ucaas-testing-frontend
+          echo "Host github.com
+            HostName github.com
+            User git
+            IdentityFile ~/.ssh/ucaas-testing-frontend
+            IdentitiesOnly yes" > ~/.ssh/config
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
 
       - name: SSH into Debian Server and Build React App
         run: |
