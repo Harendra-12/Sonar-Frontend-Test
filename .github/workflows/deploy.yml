@@ -43,8 +43,8 @@ jobs:
               echo "Git repository found. Pulling latest changes."
               git pull origin Developement
             else
-              echo "Git repository not found. Cloning repository."
-              GIT_SSH_COMMAND='ssh -i ~/.ssh/ucaas-testing-frontend' git clone git@github.com:AngelPbx/ucaas-frontend.git .
+              echo "Git repository not found. Cloning repository." 
+               GIT_TRACE=1 GIT_SSH_COMMAND='ssh -i ~/.ssh/ucaas-testing-frontend' git clone git@github.com:AngelPbx/UcaaS-Frontend.git .
               # git clone git@github.com:AngelPbx/UcaaS-Frontend.git .
               # git checkout Developement
             fi
