@@ -148,7 +148,7 @@ function ActiveCalls({ isWebrtc,filter }) {
             filterCalls
               .filter(
                 (call) =>
-                  call.callstate === "ACTIVE" || call.b_callee_direction === "ACTIVE"
+                  call.callstate === "ACTIVE" || call.b_callee_direction === "ACTIVE" || call.callstate === "HELD"
               ).map
               ((item, key) => {
                 return (
