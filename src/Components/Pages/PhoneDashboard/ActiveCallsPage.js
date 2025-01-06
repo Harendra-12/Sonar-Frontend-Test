@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import Header from '../../CommonComponents/Header'
-import { backToTop } from '../../GlobalFunction/globalFunction';
-import { useNavigate } from 'react-router-dom';
 import ActiveCalls from './ActiveCalls';
 import { useSelector } from 'react-redux';
-import { colors } from '@mui/material';
 
 function ActiveCallsPage() {
     const activeCall = useSelector((state) => state.activeCall);
@@ -26,7 +23,7 @@ function ActiveCallsPage() {
                                                 <p>You can see all of the active calls here</p>
                                             </div>
                                             <div className="content">
-                                                <p className='fw-bold'>Total Calls: 0</p>
+                                                <p className='fw-bold'>Total Calls: {activeCall.length}</p>
                                                 <p style={{ height: 21 }}></p>
                                             </div>
                                         </div>
@@ -38,7 +35,7 @@ function ActiveCallsPage() {
                                                 <p>You can see all of the ringing calls here</p>
                                             </div>
                                             <div className="content">
-                                                <p className='fw-bold'>Total Calls: 0</p>
+                                                <p className='fw-bold'>Total Calls: {ringingState.length}</p>
                                                 <p style={{ height: 21 }}></p>
                                             </div>
                                         </div>
