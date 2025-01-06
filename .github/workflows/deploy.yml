@@ -1,4 +1,4 @@
-name: DeployJS
+name: DeployJSS
 
 on:
   push:
