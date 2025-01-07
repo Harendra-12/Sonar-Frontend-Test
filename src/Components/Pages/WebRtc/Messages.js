@@ -216,7 +216,7 @@ function Messages({
         if (
           chatHistory[recipient[0]]?.total &&
           chatHistory[recipient[0]].pageNumber * 40 <
-            chatHistory[recipient[0]].total
+          chatHistory[recipient[0]].total
         ) {
           getData(chatHistory[recipient[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
@@ -568,13 +568,13 @@ function Messages({
               mode === "audio"
                 ? true
                 : {
-                    mandatory: {
-                      minWidth: 1280,
-                      minHeight: 720,
-                      minFrameRate: 30,
-                    },
-                    optional: [{ facingMode: "user" }],
+                  mandatory: {
+                    minWidth: 1280,
+                    minHeight: 720,
+                    minFrameRate: 30,
                   },
+                  optional: [{ facingMode: "user" }],
+                },
           },
         }
       );
@@ -1237,9 +1237,9 @@ function Messages({
                                       <p className="timeAgo">
                                         {item?.last_message_data
                                           ? formatRelativeTime(
-                                              item?.last_message_data
-                                                ?.created_at
-                                            )
+                                            item?.last_message_data
+                                              ?.created_at
+                                          )
                                           : ""}
                                       </p>
                                     </div>
@@ -1490,42 +1490,196 @@ function Messages({
                             </Tippy>
                           </h5>
                         </div>
-
-                        {groups.map((item, index) => {
-                          return (
-                            <div
-                              className="contactListItem"
-                              data-bell={""}
-                              onClick={() => {
-                                setRecipient([item.group_name, item.id]);
-                                setGroupNameEdit(item.group_name);
-                                getGroupDataById(item.id);
-                                setSelectedgroupUsers(item.groupusers);
-                              }}
-                            >
-                              <div className="row justify-content-between">
-                                <div className="col-xl-12 d-flex">
+                        {groupChatPopUp ? (
+                          <div
+                            className="addNewContactPopup pb-0"
+                            style={{
+                              position: "static",
+                              transform: "none",
+                              width: "100%",
+                              boxShadow: "none",
+                              background: "transparent",
+                            }}
+                          >
+                            <div className="row">
+                              <div className="col-12 heading mb-0">
+                                <i className="fa-light fa-users" />
+                                <h5>Create a Group Chat</h5>
+                                <p>
+                                  Add people to a group chat effortlessly, keeping your
+                                  connections organized and efficient
+                                </p>
+                                <div className="border-bottom col-12" />
+                              </div>
+                              <div className="col-xl-12 mt-2">
+                                {/* <div className="col-12 d-flex justify-content-between align-items-center"> */}
+                                <div className="formRow px-0">
+                                  <div className="formLabel">
+                                    <label htmlFor="">
+                                      Group Name <span className="text-danger">*</span>
+                                    </label>
+                                  </div>
+                                  <div className="col-xl-6 col-12">
+                                    <input
+                                      {...register("group_name", {
+                                        ...requiredValidator,
+                                      })}
+                                      type="text"
+                                      className="formItem"
+                                    />
+                                    {errors.group_name && (
+                                      <ErrorMessage text={errors.group_name} />
+                                    )}
+                                  </div>
+                                </div>
+                                {/* </div> */}
+                              </div>
+                              <div className="col-xl-12 mt-2">
+                                <div className="col-12 d-flex justify-content-between align-items-center">
+                                  <input
+                                    type="text"
+                                    className="formItem"
+                                    placeholder="Search"
+                                    name="name"
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-xl-12 mt-2">
+                                <div className="col-xl-12 mt-2">
                                   <div
-                                    className="profileHolder"
-                                    id={"profileOfflineNav"}
+                                    className="tableContainer mt-0"
+                                    style={{
+                                      maxHeight: "calc(100vh - 670px)",
+                                    }}
                                   >
-                                    <i className="fa-light fa-users fs-5"></i>
+                                    <table>
+                                      <thead>
+                                        <tr>
+                                          <th>S.No</th>
+                                          <th>Name</th>
+                                          <th>Extension</th>
+                                          <th>
+                                            <input
+                                              type="checkbox"
+                                              onChange={handleSelectAll} // Call handler on change
+                                            // checked={selectAll ? true : false} // Keep checkbox state in sync
+                                            />
+                                          </th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {allAgents
+                                          .sort((a, b) => {
+                                            const aMatches =
+                                              a.name
+                                                .toLowerCase()
+                                                .includes(searchQuery.toLowerCase()) ||
+                                              (a?.extension?.extension || "")
+                                                .toLowerCase()
+                                                .includes(searchQuery.toLowerCase());
+                                            const bMatches =
+                                              b.name
+                                                .toLowerCase()
+                                                .includes(searchQuery.toLowerCase()) ||
+                                              (b?.extension?.extension || "")
+                                                .toLowerCase()
+                                                .includes(searchQuery.toLowerCase());
+                                            // Items that match come first
+                                            return bMatches - aMatches;
+                                          })
+                                          .filter(
+                                            (user) =>
+                                              !agent.some((agent) => user.id == agent.name)
+                                          ) // Exclude agents already in `agent`
+                                          .map((item, index) => (
+                                            <tr key={""}>
+                                              <td>{index + 1}.</td>
+                                              <td>{item.name}</td>
+                                              <td>{item?.extension?.extension}</td>
+                                              <td>
+                                                <input
+                                                  type="checkbox"
+                                                  onChange={() =>
+                                                    handleCheckboxChange(item)
+                                                  } // Call handler on change
+                                                  checked={groupSelecedAgents.some(
+                                                    (agent) => agent.name == item.name
+                                                  )} // Keep checkbox state in sync
+                                                />
+                                              </td>
+                                            </tr>
+                                          ))}
+                                      </tbody>
+                                    </table>
                                   </div>
-                                  <div className="my-auto ms-2 ms-xl-3">
-                                    <h4>{item.group_name}</h4>
-                                    <h5>Alright</h5>
-                                    <div className="contactTags">
-                                      <span data-id="3">Priority</span>
-                                    </div>
-                                  </div>
-                                  <div className="col text-end">
-                                    <p className="timeAgo">5min ago</p>
-                                  </div>
-                                </div>{" "}
+                                </div>
+                              </div>
+                              <div className="col-xl-12 mt-2">
+                                <div className="d-flex justify-content-between">
+                                  <button
+                                    className="panelButton gray ms-0"
+                                    onClick={() => {
+                                      setGroupChatPopUp(false);
+                                      setAddMember(false);
+                                    }}
+                                  >
+                                    <span className="text">Close</span>
+                                    <span className="icon">
+                                      <i className="fa-solid fa-caret-left" />
+                                    </span>
+                                  </button>
+                                  <button
+                                    className="panelButton me-0"
+                                    onClick={() => handleCreateGroup()}
+                                  >
+                                    <span className="text">Create</span>
+                                    <span className="icon">
+                                      <i className="fa-solid fa-check" />
+                                    </span>
+                                  </button>
+                                </div>
                               </div>
                             </div>
-                          );
-                        })}
+                          </div>
+                        ) :
+                          groups.map((item, index) => {
+                            return (
+                              <div
+                                className="contactListItem"
+                                data-bell={""}
+                                onClick={() => {
+                                  setRecipient([item.group_name, item.id]);
+                                  setGroupNameEdit(item.group_name);
+                                  getGroupDataById(item.id);
+                                  setSelectedgroupUsers(item.groupusers);
+                                }}
+                              >
+                                <div className="row justify-content-between">
+                                  <div className="col-xl-12 d-flex">
+                                    <div
+                                      className="profileHolder"
+                                      id={"profileOfflineNav"}
+                                    >
+                                      <i className="fa-light fa-users fs-5"></i>
+                                    </div>
+                                    <div className="my-auto ms-2 ms-xl-3">
+                                      <h4>{item.group_name}</h4>
+                                      <h5>Alright</h5>
+                                      <div className="contactTags">
+                                        <span data-id="3">Priority</span>
+                                      </div>
+                                    </div>
+                                    <div className="col text-end">
+                                      <p className="timeAgo">5min ago</p>
+                                    </div>
+                                  </div>{" "}
+                                </div>
+                              </div>
+                            );
+                          })
+                        }
                       </div>
                     </div>
                   )}
@@ -1548,9 +1702,8 @@ function Messages({
                                 contact.find(
                                   (contact) => contact.extension == recipient[0]
                                 )?.name
-                              }{" "}
+                              }{" "}-{" "}{recipient[0]}
                             </h4>
-                            <h4>{recipient[0]}</h4>
                             {/* <h4>{recipient[0]}</h4> */}
                             <div className="contactTags">
                               {contact
@@ -1701,7 +1854,7 @@ function Messages({
                               const isNewDate =
                                 index === 0 ||
                                 messageDate !==
-                                  arr[index - 1].time?.split(" ")[0];
+                                arr[index - 1].time?.split(" ")[0];
 
                               return (
                                 <React.Fragment key={index}>
@@ -1994,7 +2147,7 @@ function Messages({
                               className="col-xl-12 d-flex"
                               onClick={() => {
                                 setAddMember(true);
-                                setGroupChatPopUp(true);
+                                // setGroupChatPopUp(true);
                               }}
                             >
                               <div className="profileHolder">
@@ -2008,55 +2161,225 @@ function Messages({
                             </div>
                           </div>
                         </div>
-                        {allAgents
-                          .filter((item) => {
-                            return selectedgroupUsers.some(
-                              (agent) => agent.user_id === item.id
-                            );
-                          })
-                          .map((item) => {
-                            const matchingAgent = selectedgroupUsers.find(
-                              (agent) => agent.user_id === item.id
-                            );
-                            return {
-                              ...item, // Include all existing properties of the agent
-                              agentId: matchingAgent?.id, // Include the user_id from selectedgroupUsers
-                            };
-                          })
+                        {addMember ? (
+                          <div
+                            className="addNewContactPopup px-0"
+                            style={{
+                              position: "static",
+                              transform: "none",
+                              width: "100%",
+                              boxShadow: "none",
+                              background: "transparent",
+                            }}
+                          >
+                            <div className="row">
+                              <div className="col-12 heading mb-0">
+                                <i className="fa-light fa-users" />
+                                <h5>Add Members</h5>
+                                {/* <p>
+                                Add people to a group chat effortlessly,
+                                keeping your connections organized and
+                                efficient
+                              </p> */}
+                                <div className="border-bottom col-12" />
+                              </div>
+                              <div className="col-xl-12 mt-2">
+                                {/* <div className="col-12 d-flex justify-content-between align-items-center"> */}
+                                {/* <div className="formRow px-0">
+                                <div className="formLabel">
+                                  <label htmlFor="">
+                                    Group Name{" "}
+                                    <span className="text-danger">*</span>
+                                  </label>
+                                </div>
+                                <div className="col-xl-6 col-12">
+                                  <input
+                                    {...register("group_name", {
+                                      ...requiredValidator,
+                                    })}
+                                    type="text"
+                                    className="formItem"
+                                  />
+                                  {errors.group_name && (
+                                    <ErrorMessage text={errors.group_name} />
+                                  )}
+                                </div>
+                              </div> */}
+                                {/* </div> */}
+                              </div>
 
-                          .map((item, index) => {
-                            return (
-                              <div
-                                data-bell=""
-                                className="contactListItem bg-transparent"
-                                style={{ minHeight: "auto" }}
-                              >
-                                <div className="row justify-content-between">
-                                  <div className="col-xl-12 d-flex">
-                                    <div className="profileHolder">
-                                      <i className="fa-light fa-user fs-5" />
-                                    </div>
-                                    <div className="my-auto ms-2 ms-xl-3">
-                                      <h4>{item.name}</h4>
-                                    </div>
-                                    <div className="col text-end my-auto">
-                                      <button
-                                        class="clearButton2"
-                                        effect="ripple"
-                                        onClick={() =>
-                                          handleremoveUserFromGroup(
-                                            item.agentId
-                                          )
-                                        }
-                                      >
-                                        <i class="fa-regular fa-xmark"></i>
-                                      </button>
-                                    </div>
+                              <div className="col-xl-12 mt-2">
+                                <div className="col-12 d-flex justify-content-between align-items-center">
+                                  <input
+                                    type="text"
+                                    className="formItem"
+                                    placeholder="Search"
+                                    name="name"
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
+                                  />
+                                  {/* <button
+                                    className="tableButton ms-2"
+                                    onClick={() => navigate("/users-add")}
+                                  >
+                                    <i className="fa-solid fa-user-plus"></i>
+                                  </button> */}
+                                </div>
+                              </div>
+                              <div className="col-xl-12 mt-2">
+                                <div className="col-xl-12 mt-2">
+                                  <div
+                                    className="tableContainer mt-0"
+                                    style={{
+                                      maxHeight: "calc(100vh - 400px)",
+                                    }}
+                                  >
+                                    <table>
+                                      <thead>
+                                        <tr>
+                                          <th>S.No</th>
+                                          <th>Name</th>
+                                          <th>Extension</th>
+                                          <th>
+                                            <input
+                                              type="checkbox"
+                                              onChange={handleSelectAll} // Call handler on change
+                                            // checked={selectAll ? true : false} // Keep checkbox state in sync
+                                            />
+                                          </th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {allAgents
+                                          .sort((a, b) => {
+                                            const aMatches =
+                                              a.name
+                                                .toLowerCase()
+                                                .includes(searchQuery.toLowerCase()) ||
+                                              (a?.extension?.extension || "")
+                                                .toLowerCase()
+                                                .includes(searchQuery.toLowerCase());
+                                            const bMatches =
+                                              b.name
+                                                .toLowerCase()
+                                                .includes(searchQuery.toLowerCase()) ||
+                                              (b?.extension?.extension || "")
+                                                .toLowerCase()
+                                                .includes(searchQuery.toLowerCase());
+                                            // Items that match come first
+                                            return bMatches - aMatches;
+                                          })
+                                          .filter(
+                                            (user) =>
+                                              !agent.some(
+                                                (agent) => user.id == agent.name
+                                              ) &&
+                                              !selectedgroupUsers.some(
+                                                (users) => users.user_id == user.id
+                                              )
+                                          ) // Exclude agents already in `agent`
+                                          .map((item, index) => (
+                                            <tr key={""}>
+                                              <td>{index + 1}.</td>
+                                              <td>{item.name}</td>
+                                              <td>{item?.extension?.extension}</td>
+                                              <td>
+                                                <input
+                                                  type="checkbox"
+                                                  onChange={() =>
+                                                    handleCheckboxChange(item)
+                                                  } // Call handler on change
+                                                  checked={groupSelecedAgents.some(
+                                                    (agent) => agent.name == item.name
+                                                  )} // Keep checkbox state in sync
+                                                />
+                                              </td>
+                                            </tr>
+                                          ))}
+                                      </tbody>
+                                    </table>
                                   </div>
                                 </div>
                               </div>
-                            );
-                          })}
+
+                              <div className="col-xl-12 mt-2">
+                                <div className="d-flex justify-content-between">
+                                  <button
+                                    className="panelButton gray ms-0"
+                                    onClick={() => {
+                                      setAddMember(false);
+                                      setGroupChatPopUp(false);
+                                    }}
+                                  >
+                                    <span className="text">Close</span>
+                                    <span className="icon">
+                                      <i className="fa-solid fa-caret-left" />
+                                    </span>
+                                  </button>
+                                  <button
+                                    className="panelButton me-0"
+                                    // onClick={() => handleCreateGroup()}
+                                    onClick={() => handleAddNewMemberToGroup()}
+                                  >
+                                    <span className="text">Add</span>
+                                    <span className="icon">
+                                      <i className="fa-solid fa-check" />
+                                    </span>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) :
+                          allAgents
+                            .filter((item) => {
+                              return selectedgroupUsers.some(
+                                (agent) => agent.user_id === item.id
+                              );
+                            })
+                            .map((item) => {
+                              const matchingAgent = selectedgroupUsers.find(
+                                (agent) => agent.user_id === item.id
+                              );
+                              return {
+                                ...item, // Include all existing properties of the agent
+                                agentId: matchingAgent?.id, // Include the user_id from selectedgroupUsers
+                              };
+                            })
+
+                            .map((item, index) => {
+                              return (
+                                <div
+                                  data-bell=""
+                                  className="contactListItem bg-transparent"
+                                  style={{ minHeight: "auto" }}
+                                >
+                                  <div className="row justify-content-between">
+                                    <div className="col-xl-12 d-flex">
+                                      <div className="profileHolder">
+                                        <i className="fa-light fa-user fs-5" />
+                                      </div>
+                                      <div className="my-auto ms-2 ms-xl-3">
+                                        <h4>{item.name}</h4>
+                                      </div>
+                                      <div className="col text-end my-auto">
+                                        <button
+                                          class="clearButton2"
+                                          effect="ripple"
+                                          onClick={() =>
+                                            handleremoveUserFromGroup(
+                                              item.agentId
+                                            )
+                                          }
+                                        >
+                                          <i class="fa-regular fa-xmark"></i>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })}
                       </div>
                     </div>
                   )}
@@ -2065,336 +2388,7 @@ function Messages({
             </div>
           </div>
         </section>
-        {groupChatPopUp &&
-          (addMember ? (
-            <div
-              className="addNewContactPopup"
-              // style={{
-              //   position: "static",
-              //   transform: "none",
-              //   width: "100%",
-              //   boxShadow: "none",
-              //   background: "transparent",
-              // }}
-            >
-              <div className="row">
-                <div className="col-12 heading mb-0">
-                  <i className="fa-light fa-users" />
-                  <h5>Add Members</h5>
-                  {/* <p>
-                    Add people to a group chat effortlessly,
-                    keeping your connections organized and
-                    efficient
-                  </p> */}
-                  <div className="border-bottom col-12" />
-                </div>
-                <div className="col-xl-12 mt-2">
-                  {/* <div className="col-12 d-flex justify-content-between align-items-center"> */}
-                  {/* <div className="formRow px-0">
-                    <div className="formLabel">
-                      <label htmlFor="">
-                        Group Name{" "}
-                        <span className="text-danger">*</span>
-                      </label>
-                    </div>
-                    <div className="col-xl-6 col-12">
-                      <input
-                        {...register("group_name", {
-                          ...requiredValidator,
-                        })}
-                        type="text"
-                        className="formItem"
-                      />
-                      {errors.group_name && (
-                        <ErrorMessage text={errors.group_name} />
-                      )}
-                    </div>
-                  </div> */}
-                  {/* </div> */}
-                </div>
 
-                <div className="row">
-                  <div className="col-xl-12">
-                    <div className="col-12 d-flex justify-content-between align-items-center">
-                      <input
-                        type="text"
-                        className="formItem"
-                        placeholder="Search"
-                        name="name"
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                      />
-                      {/* <button
-                        className="tableButton ms-2"
-                        onClick={() => navigate("/users-add")}
-                      >
-                        <i className="fa-solid fa-user-plus"></i>
-                      </button> */}
-                    </div>
-                  </div>
-                  <div className="col-xl-12 mt-3">
-                    <div className="col-xl-12 mt-2">
-                      <div
-                        className="tableContainer mt-0"
-                        style={{
-                          maxHeight: "calc(100vh - 400px)",
-                        }}
-                      >
-                        <table>
-                          <thead>
-                            <tr>
-                              <th>S.No</th>
-                              <th>Name</th>
-                              <th>Extension</th>
-                              <th>
-                                <input
-                                  type="checkbox"
-                                  onChange={handleSelectAll} // Call handler on change
-                                  // checked={selectAll ? true : false} // Keep checkbox state in sync
-                                />
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {allAgents
-                              .sort((a, b) => {
-                                const aMatches =
-                                  a.name
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase()) ||
-                                  (a?.extension?.extension || "")
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase());
-                                const bMatches =
-                                  b.name
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase()) ||
-                                  (b?.extension?.extension || "")
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase());
-                                // Items that match come first
-                                return bMatches - aMatches;
-                              })
-                              .filter(
-                                (user) =>
-                                  !agent.some(
-                                    (agent) => user.id == agent.name
-                                  ) &&
-                                  !selectedgroupUsers.some(
-                                    (users) => users.user_id == user.id
-                                  )
-                              ) // Exclude agents already in `agent`
-                              .map((item, index) => (
-                                <tr key={""}>
-                                  <td>{index + 1}.</td>
-                                  <td>{item.name}</td>
-                                  <td>{item?.extension?.extension}</td>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      onChange={() =>
-                                        handleCheckboxChange(item)
-                                      } // Call handler on change
-                                      checked={groupSelecedAgents.some(
-                                        (agent) => agent.name == item.name
-                                      )} // Keep checkbox state in sync
-                                    />
-                                  </td>
-                                </tr>
-                              ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-xl-12 mt-2">
-                  <div className="d-flex justify-content-between">
-                    <button
-                      className="panelButton gray ms-0"
-                      onClick={() => {
-                        setAddMember(false);
-                        setGroupChatPopUp(false);
-                      }}
-                    >
-                      <span className="text">Close</span>
-                      <span className="icon">
-                        <i className="fa-solid fa-caret-left" />
-                      </span>
-                    </button>
-                    <button
-                      className="panelButton me-0"
-                      // onClick={() => handleCreateGroup()}
-                      onClick={() => handleAddNewMemberToGroup()}
-                    >
-                      <span className="text">Add</span>
-                      <span className="icon">
-                        <i className="fa-solid fa-check" />
-                      </span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div
-              className="addNewContactPopup"
-              // style={{
-              //   position: "static",
-              //   transform: "none",
-              //   width: "100%",
-              //   boxShadow: "none",
-              //   background: "transparent",
-              // }}
-            >
-              <div className="row">
-                <div className="col-12 heading mb-0">
-                  <i className="fa-light fa-users" />
-                  <h5>Create a Group Chat</h5>
-                  <p>
-                    Add people to a group chat effortlessly, keeping your
-                    connections organized and efficient
-                  </p>
-                  <div className="border-bottom col-12" />
-                </div>
-                <div className="col-xl-12 mt-2">
-                  {/* <div className="col-12 d-flex justify-content-between align-items-center"> */}
-                  <div className="formRow px-0">
-                    <div className="formLabel">
-                      <label htmlFor="">
-                        Group Name <span className="text-danger">*</span>
-                      </label>
-                    </div>
-                    <div className="col-xl-6 col-12">
-                      <input
-                        {...register("group_name", {
-                          ...requiredValidator,
-                        })}
-                        type="text"
-                        className="formItem"
-                      />
-                      {errors.group_name && (
-                        <ErrorMessage text={errors.group_name} />
-                      )}
-                    </div>
-                  </div>
-                  {/* </div> */}
-                </div>
-
-                <div className="row">
-                  <div className="col-xl-12">
-                    <div className="col-12 d-flex justify-content-between align-items-center">
-                      <input
-                        type="text"
-                        className="formItem"
-                        placeholder="Search"
-                        name="name"
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-xl-12 mt-3">
-                    <div className="col-xl-12 mt-2">
-                      <div
-                        className="tableContainer mt-0"
-                        style={{
-                          maxHeight: "calc(100vh - 400px)",
-                        }}
-                      >
-                        <table>
-                          <thead>
-                            <tr>
-                              <th>S.No</th>
-                              <th>Name</th>
-                              <th>Extension</th>
-                              <th>
-                                <input
-                                  type="checkbox"
-                                  onChange={handleSelectAll} // Call handler on change
-                                  // checked={selectAll ? true : false} // Keep checkbox state in sync
-                                />
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {allAgents
-                              .sort((a, b) => {
-                                const aMatches =
-                                  a.name
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase()) ||
-                                  (a?.extension?.extension || "")
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase());
-                                const bMatches =
-                                  b.name
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase()) ||
-                                  (b?.extension?.extension || "")
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase());
-                                // Items that match come first
-                                return bMatches - aMatches;
-                              })
-                              .filter(
-                                (user) =>
-                                  !agent.some((agent) => user.id == agent.name)
-                              ) // Exclude agents already in `agent`
-                              .map((item, index) => (
-                                <tr key={""}>
-                                  <td>{index + 1}.</td>
-                                  <td>{item.name}</td>
-                                  <td>{item?.extension?.extension}</td>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      onChange={() =>
-                                        handleCheckboxChange(item)
-                                      } // Call handler on change
-                                      checked={groupSelecedAgents.some(
-                                        (agent) => agent.name == item.name
-                                      )} // Keep checkbox state in sync
-                                    />
-                                  </td>
-                                </tr>
-                              ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-xl-12 mt-2">
-                  <div className="d-flex justify-content-between">
-                    <button
-                      className="panelButton gray ms-0"
-                      onClick={() => {
-                        setGroupChatPopUp(false);
-                        setAddMember(false);
-                      }}
-                    >
-                      <span className="text">Close</span>
-                      <span className="icon">
-                        <i className="fa-solid fa-caret-left" />
-                      </span>
-                    </button>
-                    <button
-                      className="panelButton me-0"
-                      onClick={() => handleCreateGroup()}
-                    >
-                      <span className="text">Create</span>
-                      <span className="icon">
-                        <i className="fa-solid fa-check" />
-                      </span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
         {loading ? (
           <div colSpan={99}>
             <CircularLoader />
