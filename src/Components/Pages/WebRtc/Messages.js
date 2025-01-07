@@ -1712,7 +1712,7 @@ function Messages({
                           <div>
                             <h4 className="">
                               {
-                                contact.find(
+                                contact?.find(
                                   (contact) => contact.extension == recipient[0]
                                 )?.name
                               }{" "}-{" "}{recipient[0]}
