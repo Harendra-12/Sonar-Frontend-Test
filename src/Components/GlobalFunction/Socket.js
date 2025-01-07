@@ -176,7 +176,7 @@ const Socket = () => {
               }
               break;
             case "activeCalls":
-              dispatch({ type: "SET_ACTIVECALL", activeCall: result });
+              dispatch({ type: "SET_ACTIVECALL", activeCall: result.filter((item)=>item.application_state!=="conference") });
               break;
             case "Conference":
               dispatch({ type: "SET_CONFERENCE", conference: result });
