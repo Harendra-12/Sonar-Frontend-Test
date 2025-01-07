@@ -37,7 +37,6 @@ function DeviceProvisioningNew() {
         if (apiData.status) {
             setLoading(false);
             toast.success(apiData.message);
-
             // // after succesfully adding data need to recall the global function to update the global state
             dispatch({
                 type: "SET_DEVICE_PROVISIONINGREFRESH",
