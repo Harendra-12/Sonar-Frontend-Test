@@ -1301,41 +1301,54 @@ function Messages({
                         className="callList"
                         style={{ height: "calc(100vh - 270px)" }}
                       >
-                        {onlineUser.map((item) => {
-                          return (
-                            <div
-                              data-bell=""
-                              className={
-                                recipient[0] === item?.extension.extension
-                                  ? "contactListItem selected"
-                                  : "contactListItem"
-                              }
-                            >
+                        <div className="chatHeading">
+                          <h5
+                            data-bs-toggle="collapse"
+                            href="#collapse4"
+                            role="button"
+                            aria-expanded="false"
+                            aria-controls="collapse2"
+                          >
+                            Online <i class="fa-solid fa-chevron-down"></i>
+                          </h5>
+                        </div>
+                        <div className="collapse show" id="collapse4" style={{ borderBottom: "1px solid var(--border-color)" }}>
+                          {onlineUser.map((item) => {
+                            return (
                               <div
-                                onClick={() =>
-                                  setRecipient([
-                                    item?.extension.extension,
-                                    item.id,
-                                  ])
+                                data-bell=""
+                                className={
+                                  recipient[0] === item?.extension.extension
+                                    ? "contactListItem selected"
+                                    : "contactListItem"
                                 }
-                                className="row justify-content-between"
                               >
-                                <div className="col-xl-12 d-flex">
-                                  <div
-                                    className="profileHolder"
-                                    id="profileOnlineNav"
-                                  >
-                                    <i className="fa-light fa-user fs-5"></i>
-                                  </div>
-                                  <div className="my-auto ms-2 ms-xl-3">
-                                    <h4>{item?.username}</h4>
-                                    <h5>{item?.extension.extension}</h5>
+                                <div
+                                  onClick={() =>
+                                    setRecipient([
+                                      item?.extension.extension,
+                                      item.id,
+                                    ])
+                                  }
+                                  className="row justify-content-between"
+                                >
+                                  <div className="col-xl-12 d-flex">
+                                    <div
+                                      className="profileHolder"
+                                      id="profileOnlineNav"
+                                    >
+                                      <i className="fa-light fa-user fs-5"></i>
+                                    </div>
+                                    <div className="my-auto ms-2 ms-xl-3">
+                                      <h4>{item?.username}</h4>
+                                      <h5>{item?.extension.extension}</h5>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          );
-                        })}
+                            );
+                          })}
+                        </div>
                         {onlineUser.length === 0 && (
                           <div className="chatHeading" data-bell={""}>
                             <h5>No Online user found</h5>
