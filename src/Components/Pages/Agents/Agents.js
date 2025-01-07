@@ -8,12 +8,14 @@ import {
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
+import CircularLoader from "../../Loader/CircularLoader";
 
 function Agents({ type }) {
   const navigate = useNavigate();
   const logonUser = useSelector((state) => state.loginUser);
   const [agents, setAgents] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([0]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
@@ -27,10 +29,14 @@ function Agents({ type }) {
   console.log(logonUser);
   useEffect(() => {
     const getData = async () => {
+      setLoading(false);
       const apiData = await generalGetFunction(`/agents?usages=${type}`);
       if (apiData?.status) {
         console.log(apiData);
         setAgents(apiData.data);
+        setLoading(false);
+      } else {
+        setLoading(false);
       }
     };
     getData();
@@ -42,6 +48,7 @@ function Agents({ type }) {
         <div className="container-fluid">
           <div className="row">
             <Header title="Agents" />
+
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
                 <div className="d-flex flex-wrap">
@@ -115,7 +122,7 @@ function Agents({ type }) {
                             {/* <th>Domain</th> */}
                             <th>Online</th>
                             <th>Edit</th>
-                            <th>Status</th>
+                            {/* <th>Status</th> */}
                           </tr>
                         </thead>
                         <tbody className="">
@@ -146,7 +153,7 @@ function Agents({ type }) {
                                     <i className="fa-solid fa-pencil"></i>
                                   </button>
                                 </td>
-                                <td>
+                                {/* <td>
                                   <div className="my-auto position-relative mx-1">
                                     <label className="switch">
                                       <input
@@ -157,7 +164,7 @@ function Agents({ type }) {
                                       <span className="slider round"></span>
                                     </label>
                                   </div>
-                                </td>
+                                </td> */}
                               </tr>
                             );
                           })}
@@ -179,6 +186,11 @@ function Agents({ type }) {
             </div>
           </div>
         </div>
+        {loading && (
+          <div colSpan={99}>
+            <CircularLoader />
+          </div>
+        )}
       </section>
       {/* {popUp ? (
                 <div className="popup">

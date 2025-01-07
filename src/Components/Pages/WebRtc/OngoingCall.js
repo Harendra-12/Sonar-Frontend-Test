@@ -180,10 +180,11 @@ function OngoingCall({
   };
   console.log("sessionssssssssss", globalSession);
 
-  // const handleAttendedTransfer = async (e) => {
+  console.log(destNumber);
+  // const handleAttendedBlindTransfer = async (e) => {
   //   e.preventDefault();
   //   // console.log(e.target.value);
-  //   const destNumber = e.target.value;
+  //   const destNumber = attendedTransferNumber;
   //   if (destNumber.length > 3) {
   //     const transferTo = `sip:${destNumber}@${account.domain.domain_name}`;
 
@@ -208,7 +209,7 @@ function OngoingCall({
   //       });
 
   //       // Step 2: Initiate a new call to the transfer target
-  //       const targetSession = session.userAgent.invite(transferTo, {
+  //       const targetSession = session.invite(transferTo, {
   //         extraHeaders: [
   //           `Referred-By: sip:${extension}@${account.domain.domain_name}`,
   //         ],
@@ -251,6 +252,55 @@ function OngoingCall({
   //   }
   // };
 
+  const handleAttendedBlindTransfer = async (e) => {
+    e.preventDefault();
+    if (attendedTransferNumber.length > 3) {
+      const dialog = session.dialog;
+      const transferTo = `sip:${attendedTransferNumber}@${account.domain.domain_name}`;
+
+      if (session.state !== "Established") {
+        toast.warn("cannot transfer call: session is not established");
+        return;
+      }
+
+      try {
+        const customHeaders = {
+          "X-Custom-Header": "Value",
+          "Refer-To": transferTo,
+          "Referred-By": `sip:${extension}@${account.domain.domain_name}`,
+        };
+
+        const target = UserAgent.makeURI(transferTo);
+
+        if (target) {
+          // Initiate the refer request
+          const referRequest = dialog.refer(target, {
+            extraHeaders: Object.entries(customHeaders).map(
+              ([key, value]) => `${key}: ${value}`
+            ),
+          });
+
+          // Add event listeners for accepted and rejected states
+          referRequest.delegate = {
+            onAccept: () => {
+              console.log("Transfer accepted.");
+            },
+            onReject: () => {
+              console.log("Transfer rejected.");
+            },
+          };
+
+          console.log("Refer request sent. Awaiting response...");
+        } else {
+          console.error("Invalid transfer address.");
+        }
+      } catch (error) {
+        console.error("Error transferring call:", error);
+      }
+    } else {
+      toast.error("Invalid destination number");
+    }
+  };
   return (
     <>
       <div className="audioCall position-relative">
@@ -784,8 +834,8 @@ function OngoingCall({
                       <button
                         className="callButton bg-primary"
                         effect="ripple"
-                        // onClick={handleAttendedTransfer}
-                        onClick={() => setShowTranferableList(true)}
+                        onClick={handleAttendedBlindTransfer}
+                        // onClick={() => setShowTranferableList(true)}
                       >
                         <i className="fa-solid fa-phone-arrow-up-right" />
                       </button>
