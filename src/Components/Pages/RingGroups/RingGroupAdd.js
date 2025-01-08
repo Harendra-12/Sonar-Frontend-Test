@@ -1510,8 +1510,16 @@ const RingGroupAdd = () => {
                                               key={item.id}
                                             >
                                               {item.alias
-                                                ? truncateString(item?.alias)
-                                                : truncateString(item?.name)}
+                                                ? `${truncateString(
+                                                    item?.alias
+                                                  )} - ${
+                                                    item.extension?.extension
+                                                  }`
+                                                : `${truncateString(
+                                                    item?.name
+                                                  )} - ${
+                                                    item.extension?.extension
+                                                  }`}
                                               {/* {item.name}(
                                             {item.extension?.extension}) */}
                                             </option>
