@@ -139,6 +139,7 @@ import KnowledgeBase from "./Components/Pages/Support/KnowledgeBase";
 import AgentsPbx from "./Components/Pages/Agents/AgentsPbx";
 import AgentsDialer from "./Components/Pages/Agents/AgentsDialer";
 import VoiceMailReport from "./Components/Pages/Voice/VoiceMailReport";
+import CampaignCreate from "./Components/Pages/DialerModule/Campaigns/CampaignCreate";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -685,6 +686,7 @@ function App() {
           {/* ------ Campaigns */}
           <Route path="/campaigns" element={<Campaigns />} />
           <Route path="/campaign-analytics" element={<CampaignAnalytics />} />
+          <Route path="/campaign-create" element={<CampaignCreate />} />
           {/* ------ Campaigns */}
 
           {/* Dialer Modules */}

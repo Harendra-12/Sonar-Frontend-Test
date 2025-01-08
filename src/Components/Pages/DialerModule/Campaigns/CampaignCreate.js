@@ -1,25 +1,24 @@
 import React from 'react'
-import Header from '../../../CommonComponents/Header'
-import PaginationComponent from '../../../CommonComponents/PaginationComponent'
+import Header from '../../../CommonComponents/Header';
 import { useNavigate } from 'react-router-dom';
 import { backToTop } from '../../../GlobalFunction/globalFunction';
 
-function LeadEdit() {
+function CampaignCreate() {
     const navigate = useNavigate();
     return (
         <main className="mainContent">
             <section id="phonePage">
                 <div className="container-fluid">
                     <div className="row">
-                        <Header title="Lead Manage" />
+                        <Header title="Campaign Manage" />
                         <div className="overviewTableWrapper">
                             <div className="overviewTableChild">
                                 <div className="d-flex flex-wrap">
                                     <div className="col-12">
                                         <div className="heading">
                                             <div className="content">
-                                                <h4>Lead Edit</h4>
-                                                <p>Manage the config of the lead</p>
+                                                <h4>Campaign Create</h4>
+                                                <p>Create a new campaign</p>
                                             </div>
                                             <div className="buttonGroup">
                                                 <div className='d-flex align-items-center'>
@@ -68,7 +67,7 @@ function LeadEdit() {
                                             <div className="formRow col-xl-3">
                                                 <div className='formLabel'>
                                                     <label>
-                                                        First Name
+                                                        Campaign Name
                                                     </label>
                                                 </div>
                                                 <div className='col-6'>
@@ -81,106 +80,7 @@ function LeadEdit() {
                                             <div className="formRow col-xl-3">
                                                 <div className='formLabel'>
                                                     <label>
-                                                        Last Name
-                                                    </label>
-                                                </div>
-                                                <div className='col-6'>
-                                                    <input
-                                                        type="text"
-                                                        className="formItem" />
-                                                </div>
-                                            </div>
-                                            <div className="formRow col-xl-3">
-                                                <div className='formLabel'>
-                                                    <label>
-                                                        Phone Number
-                                                    </label>
-                                                </div>
-                                                <div className='col-6'>
-                                                    <input
-                                                        type="number"
-                                                        className="formItem" />
-                                                </div>
-                                            </div>
-
-                                            <div className="formRow col-xl-3">
-                                                <div className='formLabel'>
-                                                    <label>
-                                                        Address 1
-                                                    </label>
-                                                </div>
-                                                <div className='col-6'>
-                                                    <input
-                                                        type="text"
-                                                        className="formItem" />
-                                                </div>
-                                            </div>
-                                            <div className="formRow col-xl-3">
-                                                <div className='formLabel'>
-                                                    <label>
-                                                        Address 2
-                                                    </label>
-                                                </div>
-                                                <div className='col-6'>
-                                                    <input
-                                                        type="text"
-                                                        className="formItem" />
-                                                </div>
-                                            </div>
-                                            <div className="formRow col-xl-3">
-                                                <div className='formLabel'>
-                                                    <label>
-                                                        City
-                                                    </label>
-                                                </div>
-                                                <div className='col-6'>
-                                                    <input
-                                                        type="text"
-                                                        className="formItem" />
-                                                </div>
-                                            </div>
-                                            <div className="formRow col-xl-3">
-                                                <div className='formLabel'>
-                                                    <label>
-                                                        State
-                                                    </label>
-                                                </div>
-                                                <div className='col-6'>
-                                                    <input
-                                                        type="text"
-                                                        className="formItem" />
-                                                </div>
-                                            </div>
-
-                                            <div className="formRow col-xl-3">
-                                                <div className='formLabel'>
-                                                    <label>
-                                                        Country
-                                                    </label>
-                                                </div>
-                                                <div className='col-6'>
-                                                    <input
-                                                        type="text"
-                                                        className="formItem" />
-                                                </div>
-                                            </div>
-
-                                            <div className="formRow col-xl-3">
-                                                <div className='formLabel'>
-                                                    <label>
-                                                        Zip Code
-                                                    </label>
-                                                </div>
-                                                <div className='col-6'>
-                                                    <input
-                                                        type="number"
-                                                        className="formItem" />
-                                                </div>
-                                            </div>
-                                            <div className="formRow col-xl-3">
-                                                <div className='formLabel'>
-                                                    <label>
-                                                        Gender
+                                                        Dialing Mode
                                                     </label>
                                                 </div>
                                                 <div className='col-6'>
@@ -189,10 +89,95 @@ function LeadEdit() {
                                                         id=""
                                                         className="formItem "
                                                     >
-                                                        <option value="">Male</option>
-                                                        <option value="">Female</option>
+                                                        <option value="">Broadcast</option>
                                                         <option value="">Other</option>
                                                     </select>
+                                                </div>
+                                            </div>
+                                            <div className="formRow col-xl-3">
+                                                <div className='formLabel'>
+                                                    <label>
+                                                        Select Callee
+                                                    </label>
+                                                </div>
+                                                <div className='col-3 ms-auto pe-2'>
+                                                    <div className="formLabel"><label>Type</label></div>
+                                                    <select
+                                                        name=""
+                                                        id=""
+                                                        className="formItem "
+                                                    >
+                                                        <option value="">Agent</option>
+                                                        <option value="">Ringgroup</option>
+                                                        <option value="">Queue</option>
+                                                    </select>
+                                                </div>
+                                                <div className='col-3'>
+                                                    <div className="formLabel"><label>Extension</label></div>
+                                                    <select
+                                                        name=""
+                                                        id=""
+                                                        className="formItem "
+                                                    >
+                                                        <option value="">1001</option>
+                                                        <option value="">1002</option>
+                                                        <option value="">1003</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div className="formRow col-xl-3">
+                                                <div className='formLabel'>
+                                                    <label>
+                                                        Select DID
+                                                    </label>
+                                                </div>
+                                                <div className='col-6'>
+                                                    <select
+                                                        name=""
+                                                        id=""
+                                                        className="formItem "
+                                                    >
+                                                        <option value="">1001</option>
+                                                        <option value="">1002</option>
+                                                        <option value="">1003</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div className="formRow col-xl-3">
+                                                <div className='formLabel'>
+                                                    <label>
+                                                        No. of Tries
+                                                    </label>
+                                                </div>
+                                                <div className='col-6'>
+                                                    <input
+                                                        type="number"
+                                                        className="formItem" />
+                                                </div>
+                                            </div>
+                                            <div className="formRow col-xl-3">
+                                                <div className='formLabel'>
+                                                    <label>
+                                                        Schedule Time
+                                                    </label>
+                                                </div>
+                                                <div className='col-6'>
+                                                    <input
+                                                        type="number"
+                                                        className="formItem" />
+                                                </div>
+                                            </div>
+                                            <div className="formRow col-xl-3">
+                                                <div className='formLabel'>
+                                                    <label>
+                                                        Select CSV
+                                                    </label>
+                                                </div>
+                                                <div className='col-6'>
+                                                    <input
+                                                        type="file"
+                                                        className="formItem" />
                                                 </div>
                                             </div>
                                         </form>
@@ -203,8 +188,8 @@ function LeadEdit() {
                     </div>
                 </div>
             </section>
-        </main >
+        </main>
     )
 }
 
-export default LeadEdit
+export default CampaignCreate

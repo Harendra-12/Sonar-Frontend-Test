@@ -905,7 +905,7 @@ const RingGroupEdit = () => {
                       </div>
                       <div className="col-6">
                         <div className="row">
-                          <div className="col-5">
+                          <div className={`col-${showTimeoutDestinationToggle ? '5' : '12'}`}>
                             <select
                               className="formItem"
                               // onChange={(e) => {
@@ -964,7 +964,7 @@ const RingGroupEdit = () => {
                               <option value="PSTN">PSTN</option>
                             </select>
                           </div>
-                          <div className="col-7">
+                          {showTimeoutDestinationToggle && <div className="col-7">
                             {showTimeoutDestinationToggle ? (
                               timeoutDestPstnToggle ? (
                                 <input
@@ -992,7 +992,7 @@ const RingGroupEdit = () => {
                                 })}
                               ></input>
                             )}
-                          </div>
+                          </div>}
                           {errors?.timeout_destination && (
                             <ErrorMessage
                               text={errors?.timeout_destination?.message}
@@ -1021,16 +1021,16 @@ const RingGroupEdit = () => {
                               )),
                           })}
                           onKeyDown={restrictToNumbers}
-                          // {...register("call_timeout", {
-                          //   ...requiredValidator,
-                          //   ...noSpecialCharactersValidator,
-                          //   ...minValidator(
-                          //     destination.reduce(
-                          //       (max, obj) => Math.max(max, obj.delay),
-                          //       0
-                          //     )
-                          //   ),
-                          // })}
+                        // {...register("call_timeout", {
+                        //   ...requiredValidator,
+                        //   ...noSpecialCharactersValidator,
+                        //   ...minValidator(
+                        //     destination.reduce(
+                        //       (max, obj) => Math.max(max, obj.delay),
+                        //       0
+                        //     )
+                        //   ),
+                        // })}
                         />
                         {errors.call_timeout && (
                           <ErrorMessage text={errors.call_timeout.message} />
@@ -1480,14 +1480,14 @@ const RingGroupEdit = () => {
                                       .filter((item1) => {
                                         return (
                                           item1.extension.extension ==
-                                            destination[index]?.destination ||
+                                          destination[index]?.destination ||
                                           !destination.some(
                                             (
                                               destinationItem,
                                               destinationIndex
                                             ) =>
                                               destinationItem.destination ==
-                                                item1.extension.extension &&
+                                              item1.extension.extension &&
                                               destinationIndex != index
                                           )
                                         );
@@ -1626,9 +1626,8 @@ const RingGroupEdit = () => {
                               ""
                             ) : (
                               <div
-                                className={`col-auto h-100 m${
-                                  index === 0 ? "t" : "y"
-                                }-auto`}
+                                className={`col-auto h-100 m${index === 0 ? "t" : "y"
+                                  }-auto`}
                               >
                                 <button
                                   type="button"

@@ -18,7 +18,7 @@ function LeadAdd() {
                                     <div className="col-12">
                                         <div className="heading">
                                             <div className="content">
-                                                <h4>Lead Manage</h4>
+                                                <h4>Lead Add</h4>
                                                 <p>Add A new Lead</p>
                                             </div>
                                             <div className="buttonGroup">
@@ -68,87 +68,7 @@ function LeadAdd() {
                                             <div className="formRow col-xl-3">
                                                 <div className='formLabel'>
                                                     <label>
-                                                        List ID
-                                                    </label>
-                                                </div>
-                                                <div className='col-6'>
-                                                    <select
-                                                        name=""
-                                                        id=""
-                                                        className="formItem "
-                                                    >
-                                                        <option value="" disabled>Select List</option>
-
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div className="formRow col-xl-3">
-                                                <div className='formLabel'>
-                                                    <label>
-                                                        Vendor Lead Code
-                                                    </label>
-                                                </div>
-                                                <div className='col-6'>
-                                                    <input
-                                                        type="text"
-                                                        className="formItem" />
-                                                </div>
-                                            </div>
-
-                                            <div className="formRow col-xl-3">
-                                                <div className='formLabel'>
-                                                    <label>
-                                                        Phone Code
-                                                    </label>
-                                                </div>
-                                                <div className='col-6'>
-                                                    <input
-                                                        type="text"
-                                                        className="formItem" />
-                                                </div>
-                                            </div>
-                                            <div className="formRow col-xl-3">
-                                                <div className='formLabel'>
-                                                    <label>
-                                                        Phone Number
-                                                    </label>
-                                                </div>
-                                                <div className='col-6'>
-                                                    <input
-                                                        type="text"
-                                                        className="formItem" />
-                                                </div>
-                                            </div>
-                                            <div className="formRow col-xl-3">
-                                                <div className='formLabel'>
-                                                    <label>
-                                                        Title
-                                                    </label>
-                                                </div>
-                                                <div className='col-6'>
-                                                    <input
-                                                        type="text"
-                                                        className="formItem" />
-                                                </div>
-                                            </div>
-                                            <div className="formRow col-xl-3">
-                                                <div className='formLabel'>
-                                                    <label>
                                                         First Name
-                                                    </label>
-                                                </div>
-                                                <div className='col-6'>
-                                                    <input
-                                                        type="text"
-                                                        className="formItem" />
-                                                </div>
-                                            </div>
-
-                                            <div className="formRow col-xl-3">
-                                                <div className='formLabel'>
-                                                    <label>
-                                                        Middle Initial
                                                     </label>
                                                 </div>
                                                 <div className='col-6'>
@@ -173,7 +93,20 @@ function LeadAdd() {
                                             <div className="formRow col-xl-3">
                                                 <div className='formLabel'>
                                                     <label>
-                                                        Address1
+                                                        Phone Number
+                                                    </label>
+                                                </div>
+                                                <div className='col-6'>
+                                                    <input
+                                                        type="number"
+                                                        className="formItem" />
+                                                </div>
+                                            </div>
+
+                                            <div className="formRow col-xl-3">
+                                                <div className='formLabel'>
+                                                    <label>
+                                                        Address 1
                                                     </label>
                                                 </div>
                                                 <div className='col-6'>
@@ -185,19 +118,7 @@ function LeadAdd() {
                                             <div className="formRow col-xl-3">
                                                 <div className='formLabel'>
                                                     <label>
-                                                        Address2
-                                                    </label>
-                                                </div>
-                                                <div className='col-6'>
-                                                    <input
-                                                        type="text"
-                                                        className="formItem" />
-                                                </div>
-                                            </div>
-                                            <div className="formRow col-xl-3">
-                                                <div className='formLabel'>
-                                                    <label>
-                                                        Address3
+                                                        Address 2
                                                     </label>
                                                 </div>
                                                 <div className='col-6'>
@@ -230,10 +151,11 @@ function LeadAdd() {
                                                         className="formItem" />
                                                 </div>
                                             </div>
+
                                             <div className="formRow col-xl-3">
                                                 <div className='formLabel'>
                                                     <label>
-                                                        Province
+                                                        Country
                                                     </label>
                                                 </div>
                                                 <div className='col-6'>
@@ -242,16 +164,35 @@ function LeadAdd() {
                                                         className="formItem" />
                                                 </div>
                                             </div>
+
                                             <div className="formRow col-xl-3">
                                                 <div className='formLabel'>
                                                     <label>
-                                                        Postal Code
+                                                        Zip Code
                                                     </label>
                                                 </div>
                                                 <div className='col-6'>
                                                     <input
-                                                        type="text"
+                                                        type="number"
                                                         className="formItem" />
+                                                </div>
+                                            </div>
+                                            <div className="formRow col-xl-3">
+                                                <div className='formLabel'>
+                                                    <label>
+                                                        Gender
+                                                    </label>
+                                                </div>
+                                                <div className='col-6'>
+                                                    <select
+                                                        name=""
+                                                        id=""
+                                                        className="formItem "
+                                                    >
+                                                        <option value="">Male</option>
+                                                        <option value="">Female</option>
+                                                        <option value="">Other</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </form>
