@@ -3,19 +3,16 @@ import React, { useEffect, useRef, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import {
   backToTop,
-  featureUnderdevelopment,
   generalGetFunction,
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
-import { set } from "react-hook-form";
 
 function CdrReport({ page }) {
   const dispatch = useDispatch();
@@ -162,7 +159,7 @@ function CdrReport({ page }) {
       `/cdr?account=${account.account_id}&page=${pageNumber}&row_per_page=${itemsPerPage}`,
       {
         callDirection: callDirection,
-        application_state: page === "all" ? callType : page,
+        application_state: page === "all" ? callType :page === "billing"?"pstn": page,
         origin: callOrigin,
         destination: callDestination,
         start_date: startDate,
