@@ -166,7 +166,7 @@ function CdrReport({ page }) {
         end_date: endDate,
         variable_DIALSTATUS: hangupCause,
         hangupCause: hangupStatus,
-        charges: page === "billing" ? "give" : ""
+        charges: page === "billing" ? "give" : "",
       }
     );
 
@@ -208,7 +208,7 @@ function CdrReport({ page }) {
     hangupStatus,
     refresh,
     itemsPerPage,
-    page
+    page,
   ]);
 
   const getDateRange = (period) => {
@@ -557,46 +557,50 @@ function CdrReport({ page }) {
                           onChange={handleCallDestinationChange}
                         />
                       </div>
-                      {page === "all" ? <>
-                        <div className="formRow border-0">
-                          <label className="formLabel text-start mb-0 w-100">
-                            Call Direction
-                          </label>
-                          <select
-                            className="formItem"
-                            onChange={(e) => {
-                              setCallDirection(e.target.value);
-                              setPageNumber(1);
-                            }}
-                            value={callDirection}
-                          // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
-                          >
-                            <option value={""}>All Calls</option>
-                            <option value={"inbound"}>Inbound Calls</option>
-                            <option value={"outbound"}>Outbound Calls</option>
-                            <option value={"missed"}>Missed Calls</option>
-                            <option value={"internal"}>Internal Calls</option>
-                          </select>
-                        </div>
-                        <div className="formRow border-0">
-                          <label className="formLabel text-start mb-0 w-100">
-                            Call Type
-                          </label>
-                          <select
-                            className="formItem"
-                            onChange={(e) => {
-                              setCallType(e.target.value);
-                              setPageNumber(1);
-                            }}
-                          >
-                            <option value={""}>All Calls</option>
-                            <option value={"extension"}>Extension</option>
-                            <option value={"voicemail"}>Voice Mail</option>
-                            <option value={"callcenter"}>Call Center</option>
-                            <option value={"ringgroup"}>Ring Group</option>
-                          </select>
-                        </div>
-                      </> : ""}
+                      {page === "all" ? (
+                        <>
+                          <div className="formRow border-0">
+                            <label className="formLabel text-start mb-0 w-100">
+                              Call Direction
+                            </label>
+                            <select
+                              className="formItem"
+                              onChange={(e) => {
+                                setCallDirection(e.target.value);
+                                setPageNumber(1);
+                              }}
+                              value={callDirection}
+                              // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                            >
+                              <option value={""}>All Calls</option>
+                              <option value={"inbound"}>Inbound Calls</option>
+                              <option value={"outbound"}>Outbound Calls</option>
+                              <option value={"missed"}>Missed Calls</option>
+                              <option value={"internal"}>Internal Calls</option>
+                            </select>
+                          </div>
+                          <div className="formRow border-0">
+                            <label className="formLabel text-start mb-0 w-100">
+                              Call Type
+                            </label>
+                            <select
+                              className="formItem"
+                              onChange={(e) => {
+                                setCallType(e.target.value);
+                                setPageNumber(1);
+                              }}
+                            >
+                              <option value={""}>All Calls</option>
+                              <option value={"extension"}>Extension</option>
+                              <option value={"voicemail"}>Voice Mail</option>
+                              <option value={"callcenter"}>Call Center</option>
+                              <option value={"ringgroup"}>Ring Group</option>
+                            </select>
+                          </div>
+                        </>
+                      ) : (
+                        ""
+                      )}
                       <div className="formRow border-0 ">
                         <label className="formLabel text-start mb-0 w-100">
                           Hangup Cause
@@ -635,7 +639,9 @@ function CdrReport({ page }) {
                         >
                           <option value={""}>All</option>
                           <option value={"MEDIA_TIMEOUT"}>Media Timeout</option>
-                          <option value={"NORMAL_CLEARING"}>Normal Clear</option>
+                          <option value={"NORMAL_CLEARING"}>
+                            Normal Clear
+                          </option>
                         </select>
                       </div>
                       {/* <Link
@@ -695,9 +701,7 @@ function CdrReport({ page }) {
                         <tr>
                           <th>#</th>
                           <th>Direction</th>
-                          {page === "billing" ? "" :
-                            <th>Call Type</th>
-                          }
+                          {page === "billing" ? "" : <th>Call Type</th>}
                           <th>Caller Name</th>
                           <th>Caller No.</th>
                           <th>Tag</th>
@@ -707,14 +711,16 @@ function CdrReport({ page }) {
                           <th>Time</th>
                           <th>Recording</th>
                           <th>Duration</th>
-                          {page === "billing" ? "" : <>
-                            <th>Hangup Cause</th>
-                            <th>hangup Status</th>
-                          </>}
+                          {page === "billing" ? (
+                            ""
+                          ) : (
+                            <>
+                              <th>Hangup Cause</th>
+                              <th>hangup Status</th>
+                            </>
+                          )}
                           <th>Charge</th>
-                          {page === "billing" ? "" :
-                            <th>Block</th>
-                          }
+                          {page === "billing" ? "" : <th>Block</th>}
                         </tr>
                       </thead>
                       <tbody>
@@ -743,20 +749,57 @@ function CdrReport({ page }) {
                                   <>
                                     <tr key={index} className="cdrTableRow">
                                       <td>
-                                        {(pageNumber - 1) * Number(itemsPerPage) + (index + 1)}
+                                        {(pageNumber - 1) *
+                                          Number(itemsPerPage) +
+                                          (index + 1)}
                                       </td>
-                                      <td>{item["Call-Direction"] === "inbound" ?
-                                        <span><i class="fa-solid fa-phone-arrow-down-left me-1" style={{ color: 'var(--funky-boy3)' }}></i> Inbound</span>
-                                        : item["Call-Direction"] === "outbound" ?
-                                          <span><i class="fa-solid fa-phone-arrow-up-right me-1" style={{ color: 'var(--color3)' }}></i> Outbound</span>
-                                          : item["Call-Direction"] === "missed" ?
-                                            <span><i class="fa-solid fa-phone-missed me-1" style={{ color: 'var(--funky-boy3)' }}></i> Missed</span>
-                                            : <span><i class="fa-solid fa-headset me-1" style={{ color: 'var(--color2)' }}></i> Internal</span>
-                                      }
+                                      <td>
+                                        {item["Call-Direction"] ===
+                                        "inbound" ? (
+                                          <span>
+                                            <i
+                                              class="fa-solid fa-phone-arrow-down-left me-1"
+                                              style={{
+                                                color: "var(--funky-boy3)",
+                                              }}
+                                            ></i>{" "}
+                                            Inbound
+                                          </span>
+                                        ) : item["Call-Direction"] ===
+                                          "outbound" ? (
+                                          <span>
+                                            <i
+                                              class="fa-solid fa-phone-arrow-up-right me-1"
+                                              style={{ color: "var(--color3)" }}
+                                            ></i>{" "}
+                                            Outbound
+                                          </span>
+                                        ) : item["Call-Direction"] ===
+                                          "missed" ? (
+                                          <span>
+                                            <i
+                                              class="fa-solid fa-phone-missed me-1"
+                                              style={{
+                                                color: "var(--funky-boy3)",
+                                              }}
+                                            ></i>{" "}
+                                            Missed
+                                          </span>
+                                        ) : (
+                                          <span>
+                                            <i
+                                              class="fa-solid fa-headset me-1"
+                                              style={{ color: "var(--color2)" }}
+                                            ></i>{" "}
+                                            Internal
+                                          </span>
+                                        )}
                                       </td>
-                                      {page === "billing" ? "" :
+                                      {page === "billing" ? (
+                                        ""
+                                      ) : (
                                         <td>{item["application_state"]}</td>
-                                      }
+                                      )}
                                       <td>
                                         {item["Caller-Orig-Caller-ID-Name"]}
                                       </td>
@@ -766,7 +809,7 @@ function CdrReport({ page }) {
                                       <td>
                                         {item["application_state"] ===
                                           "intercept" ||
-                                          item["application_state"] ===
+                                        item["application_state"] ===
                                           "eavesdrop"
                                           ? item["other_leg_destination_number"]
                                           : item["variable_sip_to_user"]}{" "}
@@ -795,13 +838,24 @@ function CdrReport({ page }) {
                                           item["variable_billsec"] > 0 && (
                                             <button
                                               className="tableButton px-2 mx-0"
-                                              onClick={() =>
-                                                handlePlaying(
-                                                  item["recording_path"]
-                                                )
-                                              }
+                                              onClick={() => {
+                                                if (
+                                                  item["recording_path"] ==
+                                                  currentPlaying
+                                                ) {
+                                                  setCurrentPlaying("");
+                                                } else {
+                                                  handlePlaying(
+                                                    item["recording_path"]
+                                                  );
+                                                }
+                                              }}
                                             >
-                                              <i className="fa-duotone fa-play"></i>
+                                              {currentPlaying ? (
+                                                <i className="fa-solid fa-stop"></i>
+                                              ) : (
+                                                <i className="fa-solid fa-play"></i>
+                                              )}
                                             </button>
 
                                             // <MusicPlayer
@@ -818,40 +872,48 @@ function CdrReport({ page }) {
                                       <td>
                                         {formatTime(item["variable_billsec"])}
                                       </td>
-                                      {page === "billing" ? "" : <>
-                                        <td>
-                                          {item["Hangup-Cause"]}
-                                          {/* {item["variable_DIALSTATUS"] === null
+                                      {page === "billing" ? (
+                                        ""
+                                      ) : (
+                                        <>
+                                          <td>
+                                            {item["Hangup-Cause"]}
+                                            {/* {item["variable_DIALSTATUS"] === null
                                           ? item["Hangup-Cause"]
                                           : item["variable_DIALSTATUS"] ===
                                             "NO_USER_RESPONSE"
                                           ? "BUSY"
                                           : item["variable_DIALSTATUS"]} */}
-                                        </td>
-                                        <td>{item["variable_DIALSTATUS"]}</td>
-                                      </>}
+                                          </td>
+                                          <td>{item["variable_DIALSTATUS"]}</td>
+                                        </>
+                                      )}
                                       <td>{item["call_cost"]}</td>
-                                      {page === "billing" ? "" :
+                                      {page === "billing" ? (
+                                        ""
+                                      ) : (
                                         <td>
                                           {" "}
                                           <button
                                             disabled={isBlocked}
                                             effect="ripple"
-                                            className={`tableButton ${isBlocked ? "delete" : "warning"} ms-0`}
+                                            className={`tableButton ${
+                                              isBlocked ? "delete" : "warning"
+                                            } ms-0`}
                                             // style={{ height: "34px" }}
                                             onClick={() => {
                                               setSelectedNumberToBlock(
                                                 item["Call-Direction"] ===
                                                   "inbound"
                                                   ? item[
-                                                  "Caller-Caller-ID-Number"
-                                                  ]
+                                                      "Caller-Caller-ID-Number"
+                                                    ]
                                                   : item["Call-Direction"] ===
                                                     "outbound"
-                                                    ? item[
-                                                    "Caller-Callee-ID-Number"
+                                                  ? item[
+                                                      "Caller-Callee-ID-Number"
                                                     ]
-                                                    : "N/A"
+                                                  : "N/A"
                                               );
                                               setPopUp(true);
                                             }}
@@ -860,50 +922,54 @@ function CdrReport({ page }) {
                                             {isBlocked ? "Blocked" : "Block"}
                                           </span> */}
                                             {/* <span className="icon"> */}
-                                            <Tippy content={isBlocked ? "Blocked" : "Block"}>
+                                            <Tippy
+                                              content={
+                                                isBlocked ? "Blocked" : "Block"
+                                              }
+                                            >
                                               <i class="fa-solid fa-ban"></i>
                                             </Tippy>
                                             {/* </span> */}
                                           </button>
                                         </td>
-                                      }
+                                      )}
                                     </tr>
                                     {currentPlaying ===
                                       item["recording_path"] && (
-                                        <tr>
-                                          <td colSpan={99}>
-                                            <div className="audio-container mx-2">
-                                              <audio
-                                                controls={true}
-                                                ref={thisAudioRef}
-                                                autoPlay={true}
-                                                onEnded={() => {
-                                                  setCurrentPlaying(null);
-                                                }}
-                                              >
-                                                <source
-                                                  src={item["recording_path"]}
-                                                  type="audio/mpeg"
-                                                />
-                                              </audio>
+                                      <tr>
+                                        <td colSpan={99}>
+                                          <div className="audio-container mx-2">
+                                            <audio
+                                              controls={true}
+                                              ref={thisAudioRef}
+                                              autoPlay={true}
+                                              onEnded={() => {
+                                                setCurrentPlaying(null);
+                                              }}
+                                            >
+                                              <source
+                                                src={item["recording_path"]}
+                                                type="audio/mpeg"
+                                              />
+                                            </audio>
 
-                                              <button
-                                                className="audioCustomButton"
+                                            <button
+                                              className="audioCustomButton"
                                               // onClick={() =>
                                               //   handleAudioDownload(
                                               //     clickedVoiceMail.recording_path
                                               //   )
                                               // }
-                                              >
-                                                <i className="fa-sharp fa-solid fa-download" />
-                                              </button>
-                                              {/* <button className="audioCustomButton ms-1">
+                                            >
+                                              <i className="fa-sharp fa-solid fa-download" />
+                                            </button>
+                                            {/* <button className="audioCustomButton ms-1">
                               <i className="fa-sharp fa-solid fa-box-archive" />
                             </button> */}
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      )}
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    )}
                                   </>
                                 );
                               })}
