@@ -23,6 +23,7 @@ const CallCenter = () => {
   const [refreshCenter, setRefreshCenter] = useState(0);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [callCenterData, setCallCenterData] = useState(null);
 
   const Id = account?.id || "";
 
@@ -35,6 +36,19 @@ const CallCenter = () => {
   }, [refreshCenter]);
 
   useEffect(() => {
+    const getData = async () => {
+      const apiData = await generalGetFunction("/call-center-agent/all");
+      if (apiData?.status) {
+        setCallCenterData(apiData.data);
+        console.log(apiData);
+      } else {
+        console.log(apiData);
+      }
+    };
+    getData();
+  }, []);
+
+  useEffect(() => {
     if (callCenter.length > 0) {
       setLoading(false);
       const AssignedCallcenter = [...callCenter].filter((queue) =>
@@ -44,7 +58,7 @@ const CallCenter = () => {
     }
   }, [Id, callCenter]);
 
-  useEffect(() => { }, [refreshCenter, callCenterRefresh]);
+  useEffect(() => {}, [refreshCenter, callCenterRefresh]);
 
   async function logOut() {
     const apiData = await generalGetFunction("/logout");

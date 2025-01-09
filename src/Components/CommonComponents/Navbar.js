@@ -9,7 +9,6 @@ import {
 } from "../GlobalFunction/globalFunction";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import DarkModeToggle from "./DarkModeToggle";
 import { toggleSideNav } from "./Header";
 
 function Navbar() {
@@ -18,7 +17,6 @@ function Navbar() {
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
   const userType = account?.usertype; // "Company"
-  const isCustomerAdmin = account?.email == accountDetails?.email || false;
   const permissions = useSelector((state) => state.permissions || []);
   console.log(permissions);
   async function logOut() {
@@ -115,6 +113,9 @@ function Navbar() {
                           "/users-add",
                           "/roles",
                           "/master",
+                          "/extensions",
+                          "/extensions-edit",
+                          "/extensions-add",
                         ])
                           ? "true"
                           : "false"
@@ -128,23 +129,22 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse8"
-                      className={`accordion-collapse collapse ${
-                        isChildActive([
-                          "/my-profile",
-                          "/change-password",
-                          "/admin/package",
-                          "/users",
-                          "/users-edit",
-                          "/users-add",
-                          "/roles",
-                          "/master",
-                          "/extensions",
-                          "/extensions-edit",
-                          "/extensions-add",
-                        ])
-                          ? "show"
-                          : ""
-                      }`}
+                      className={`accordion-collapse collapse ${isChildActive([
+                        "/my-profile",
+                        "/change-password",
+                        "/admin/package",
+                        "/users",
+                        "/users-edit",
+                        "/users-add",
+                        "/roles",
+                        "/master",
+                        "/extensions",
+                        "/extensions-edit",
+                        "/extensions-add",
+                      ])
+                        ? "show"
+                        : ""
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -178,7 +178,7 @@ function Navbar() {
                           </li> */}
 
                           {account?.permissions?.includes(440) ||
-                          account?.permissions?.includes(442) ? (
+                            account?.permissions?.includes(442) ? (
                             <li className="tabItem ">
                               <NavLink
                                 to="/users"
@@ -186,9 +186,9 @@ function Navbar() {
                                 type="button"
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/users-add", "/users-edit"].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    ["/users-add", "/users-edit"].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -202,20 +202,20 @@ function Navbar() {
                           ) : null}
 
                           {account?.permissions?.includes(176) ||
-                          account?.permissions?.includes(178) ? (
+                            account?.permissions?.includes(178) ? (
                             <li className="tabItem ">
                               <NavLink
                                 to="/extensions"
                                 className={({ isActive }) =>
                                   isActive ||
-                                  [
-                                    "/extensions-add",
-                                    "/extensions-edit",
-                                    "/device-provisioning-add",
-                                    "/device-provisioning-edit",
-                                  ].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    [
+                                      "/extensions-add",
+                                      "/extensions-edit",
+                                      "/device-provisioning-add",
+                                      "/device-provisioning-edit",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -229,7 +229,7 @@ function Navbar() {
                           ) : null}
 
                           {account?.permissions?.includes(350) ||
-                          account?.permissions?.includes(352) ? (
+                            account?.permissions?.includes(352) ? (
                             <li className="tabItem">
                               <NavLink
                                 to="/roles"
@@ -318,17 +318,16 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse10"
-                      className={`accordion-collapse collapse ${
-                        isChildActive([
-                          "/get-did",
-                          "/port-number",
-                          "/port-number-add",
-                          "/port-number-edit",
-                          "/did-listing",
-                        ])
-                          ? "show"
-                          : ""
-                      }`}
+                      className={`accordion-collapse collapse ${isChildActive([
+                        "/get-did",
+                        "/port-number",
+                        "/port-number-add",
+                        "/port-number-edit",
+                        "/did-listing",
+                      ])
+                        ? "show"
+                        : ""
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -347,19 +346,19 @@ function Navbar() {
                           </li>
 
                           {account?.permissions?.includes(308) ||
-                          account?.permissions?.includes(310) ? (
+                            account?.permissions?.includes(310) ? (
                             <li className="tabItem">
                               <NavLink
                                 to="/port-number"
                                 onClick={backToTop}
                                 className={({ isActive }) =>
                                   isActive ||
-                                  [
-                                    "/port-number-add",
-                                    "/port-number-edit",
-                                  ].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    [
+                                      "/port-number-add",
+                                      "/port-number-edit",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -419,6 +418,7 @@ function Navbar() {
                           "/meeting-room",
                           "/meeting-add",
                           "/active-calls",
+                          "/voicemail-report"
                         ])
                           ? "true"
                           : "false"
@@ -432,37 +432,34 @@ function Navbar() {
                     </button>
                     <div
                       id="collapseOne"
-                      className={`accordion-collapse collapse ${
-                        isChildActive([
-                          "/phone-dashboard",
-                          "/extensions",
-                          "/voice-music",
-                          "/extensions-edit",
-                          "/extensions-add",
-                          "/device-provisioning-add",
-                          "/device-provisioning-edit",
-                          "/did-listing-pbx",
-                          "/did-config",
-                          "/did-add",
-                          "/ring-groups",
-                          "/ring-groups-add",
-                          "/ring-groups-edit",
-                          "/cal-center-queue",
-                          "/cal-center-queue-add",
-                          "/cal-center-queue-edit",
-                          "/call-blocking",
-                          "/call-blocking-add",
-                          "/agents",
-                          "/agents-add",
-                          "/agents-edit",
-                          "/call-dashboard",
-                          "/meeting-room",
-                          "/meeting-add",
-                          "/active-calls",
-                        ])
-                          ? "show"
-                          : ""
-                      }`}
+                      className={`accordion-collapse collapse ${isChildActive([
+                        "/phone-dashboard",
+                        "/voice-music",
+                        "/device-provisioning-add",
+                        "/device-provisioning-edit",
+                        "/did-listing-pbx",
+                        "/did-config",
+                        "/did-add",
+                        "/ring-groups",
+                        "/ring-groups-add",
+                        "/ring-groups-edit",
+                        "/cal-center-queue",
+                        "/cal-center-queue-add",
+                        "/cal-center-queue-edit",
+                        "/call-blocking",
+                        "/call-blocking-add",
+                        "/agents",
+                        "/agents-add",
+                        "/agents-edit",
+                        "/call-dashboard",
+                        "/meeting-room",
+                        "/meeting-add",
+                        "/active-calls",
+                        "/voicemail-report"
+                      ])
+                        ? "show"
+                        : ""
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -489,9 +486,9 @@ function Navbar() {
                               onClick={backToTop}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/did-add", "/did-config"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/did-add", "/did-config"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -510,9 +507,9 @@ function Navbar() {
                               onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/agents-add", "/agents-edit"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/agents-add", "/agents-edit"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -525,7 +522,7 @@ function Navbar() {
                           </li>
 
                           {account?.permissions?.includes(344) ||
-                          account?.permissions?.includes(346) ? (
+                            account?.permissions?.includes(346) ? (
                             <li className="tabItem ">
                               <NavLink
                                 to="/ring-groups"
@@ -533,12 +530,12 @@ function Navbar() {
                                 type="button"
                                 className={({ isActive }) =>
                                   isActive ||
-                                  [
-                                    "/ring-groups-add",
-                                    "/ring-groups-edit",
-                                  ].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    [
+                                      "/ring-groups-add",
+                                      "/ring-groups-edit",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -552,7 +549,7 @@ function Navbar() {
                           ) : null}
 
                           {account?.permissions?.includes(62) ||
-                          account?.permissions?.includes(64) ? (
+                            account?.permissions?.includes(64) ? (
                             <li className="tabItem ">
                               <NavLink
                                 to="/cal-center-queue"
@@ -560,12 +557,12 @@ function Navbar() {
                                 type="button"
                                 className={({ isActive }) =>
                                   isActive ||
-                                  [
-                                    "/cal-center-queue-add",
-                                    "/cal-center-queue-edit",
-                                  ].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    [
+                                      "/cal-center-queue-add",
+                                      "/cal-center-queue-edit",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -585,9 +582,9 @@ function Navbar() {
                               type="button"
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/meeting-room", "/meeting-add"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/meeting-room", "/meeting-add"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -613,24 +610,12 @@ function Navbar() {
                           </li>
 
                           <li className="tabItem ">
-                            <a
-                              // to="/extensions"
-                              onClick={() => featureUnderdevelopment()}
-                              className={({ isActive }) =>
-                                isActive ||
-                                ["/extensions-add", "/extensions-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
-                                  ? "nav-link active"
-                                  : "nav-link"
-                              }
-                            >
+                            <NavLink to="/voicemail-report">
                               {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
+                                <i class="fa-regular fa-user-music"></i>
+                              </div> */}
                               <div className="itemTitle">Voice Mail</div>
-                            </a>
+                            </NavLink>
                           </li>
 
                           <li className="tabItem ">
@@ -679,18 +664,17 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse6"
-                      className={`accordion-collapse collapse ${
-                        isChildActive([
-                          "/dialer-dashboard",
-                          "/leads",
-                          "/lead-add",
-                          "/lead-edit",
-                          "/campaigns",
-                          "/call-desposition",
-                        ])
-                          ? "show"
-                          : ""
-                      }`}
+                      className={`accordion-collapse collapse ${isChildActive([
+                        "/dialer-dashboard",
+                        "/leads",
+                        "/lead-add",
+                        "/lead-edit",
+                        "/campaigns",
+                        "/call-desposition",
+                      ])
+                        ? "show"
+                        : ""
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -701,10 +685,10 @@ function Navbar() {
                               onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/extensions-add", "/extensions-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -722,10 +706,10 @@ function Navbar() {
                               onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/campaigns-add", "/campaigns-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/campaigns-add", "/campaigns-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -743,9 +727,9 @@ function Navbar() {
                               onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/lead-add", "/lead-edit"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/lead-add", "/lead-edit"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -763,10 +747,10 @@ function Navbar() {
                               // onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/agents", "/agents-edit", "/agents-add"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/agents", "/agents-edit", "/agents-add"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -784,9 +768,9 @@ function Navbar() {
                               onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/call-desposition"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/call-desposition"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -818,23 +802,22 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse7"
-                      className={`accordion-collapse collapse ${
-                        isChildActive([]) ? "show" : ""
-                      }`}
+                      className={`accordion-collapse collapse ${isChildActive([]) ? "show" : ""
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
                           <li className="tabItem ">
-                            <a
+                            <Link
                               // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/extensions-add", "/extensions-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -843,19 +826,19 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Dashboard</div>
-                            </a>
+                            </Link>
                           </li>
 
                           <li className="tabItem ">
-                            <a
+                            <Link
                               // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/extensions-add", "/extensions-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -866,19 +849,19 @@ function Navbar() {
                               <div className="itemTitle">
                                 Number Configuration
                               </div>
-                            </a>
+                            </Link>
                           </li>
 
                           <li className="tabItem ">
-                            <a
+                            <Link
                               // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/extensions-add", "/extensions-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -887,19 +870,19 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Campaign</div>
-                            </a>
+                            </Link>
                           </li>
 
                           <li className="tabItem ">
-                            <a
+                            <Link
                               // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/extensions-add", "/extensions-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -908,19 +891,19 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Buyers</div>
-                            </a>
+                            </Link>
                           </li>
 
                           <li className="tabItem ">
-                            <a
+                            <Link
                               // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/extensions-add", "/extensions-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -929,7 +912,7 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Source</div>
-                            </a>
+                            </Link>
                           </li>
                         </ul>
                       </div>
@@ -976,7 +959,7 @@ function Navbar() {
                     </div>
                   </li> */}
                   {/* <li className="tabItem" >
-                        <a
+                        <Link
                           href=""
                           className="nav-link"
                         >
@@ -984,10 +967,10 @@ function Navbar() {
                             <i className="fa-sharp fa-regular fa-group-arrows-rotate" />
                           </div>
                           <div className="itemTitle">Dialplan Manager</div>
-                        </a>
+                        </Link>
                       </li> */}
                   {/* <li className="tabItem" >
-                        <a
+                        <Link
                           href=""
                           className="nav-link"
                         >
@@ -995,10 +978,10 @@ function Navbar() {
                             <i className="fa-sharp fa-regular fa-phone-volume" />
                           </div>
                           <div className="itemTitle">Inbound Routes</div>
-                        </a>
+                        </Link>
                       </li> */}
                   {/* <li className="tabItem" >
-                        <a
+                        <Link
                           href=""
                           className="nav-link"
                         >
@@ -1006,7 +989,7 @@ function Navbar() {
                             <i className="fa-regular fa-phone-arrow-up-right" />
                           </div>
                           <div className="itemTitle">Outbound Routes</div>
-                        </a>
+                        </Link>
                       </li> */}
 
                   {/* <li className="dashboard ">
@@ -1020,7 +1003,7 @@ function Navbar() {
                     </NavLink>
                   </li> */}
                   {account?.permissions?.includes(230) ||
-                  account?.permissions?.includes(232) ? (
+                    account?.permissions?.includes(232) ? (
                     <li className="dashboard ">
                       <NavLink
                         to="/ivr"
@@ -1028,9 +1011,9 @@ function Navbar() {
                         type="button"
                         className={({ isActive }) =>
                           isActive ||
-                          ["/ivr-add", "/ivr-edit"].some((path) =>
-                            window.location.pathname.includes(path)
-                          )
+                            ["/ivr-add", "/ivr-edit"].some((path) =>
+                              window.location.pathname.includes(path)
+                            )
                             ? "nav-link active"
                             : "nav-link"
                         }
@@ -1081,14 +1064,14 @@ function Navbar() {
                     </NavLink>
                   </li>
                   {/* <li className="dashboard">
-                    <a>
+                    <Link>
                       <DarkModeToggle marginLeft={"3"} />
-                    </a>
+                    </Link>
                   </li> */}
 
-                  {account?.extension || isCustomerAdmin ? (
+                  {/* {account?.extension || isCustomerAdmin ? (
                     <li className="dashboard ">
-                      <a
+                      <Link
                         href="/webrtc"
                         target="_blank"
                         // onClick={backToTop}
@@ -1098,11 +1081,11 @@ function Navbar() {
                           <i class="fa-regular fa-headset"></i>
                         </div>
                         <div className="itemTitle">Phone</div>
-                      </a>
+                      </Link>
                     </li>
                   ) : (
                     ""
-                  )}
+                  )} */}
 
                   {account?.permissions?.includes(86) ? (
                     <li className="">
@@ -1127,17 +1110,16 @@ function Navbar() {
                       </button>
                       <div
                         id="collapse4"
-                        className={`accordion-collapse collapse ${
-                          isChildActive([
-                            "/cdr-report",
-                            "/agent-reports",
-                            "/meeting-reports",
-                            "/call-center-report",
-                            "/ring-group-report",
-                          ])
-                            ? "show"
-                            : ""
-                        }`}
+                        className={`accordion-collapse collapse ${isChildActive([
+                          "/cdr-report",
+                          "/agent-reports",
+                          "/meeting-reports",
+                          "/call-center-report",
+                          "/ring-group-report",
+                        ])
+                          ? "show"
+                          : ""
+                          }`}
                         data-bs-parent="#sidenNav"
                       >
                         <div className="menuWrapper">
@@ -1169,15 +1151,15 @@ function Navbar() {
                               </li>
                             ) : null}
                             <li className="tabItem ">
-                              <a
+                              <Link
                                 // to="/extensions"
                                 onClick={() => featureUnderdevelopment()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
-                                    (path) =>
-                                      window.location.pathname.includes(path)
-                                  )
+                                    ["/extensions-add", "/extensions-edit"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1188,18 +1170,18 @@ function Navbar() {
                                 <div className="itemTitle">
                                   Real-Time Analytics
                                 </div>
-                              </a>
+                              </Link>
                             </li>
                             <li className="tabItem ">
-                              <a
+                              <Link
                                 // to="/extensions"
                                 onClick={() => featureUnderdevelopment()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
-                                    (path) =>
-                                      window.location.pathname.includes(path)
-                                  )
+                                    ["/extensions-add", "/extensions-edit"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1208,7 +1190,7 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                                 <div className="itemTitle">Call Analytics</div>
-                              </a>
+                              </Link>
                             </li>
                             <li className="tabItem ">
                               <NavLink
@@ -1216,9 +1198,9 @@ function Navbar() {
                                 onClick={() => backToTop()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/agent-reports"].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    ["/agent-reports"].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1234,10 +1216,10 @@ function Navbar() {
                                 to="/call-center-report"
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
-                                    (path) =>
-                                      window.location.pathname.includes(path)
-                                  )
+                                    ["/extensions-add", "/extensions-edit"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1253,10 +1235,10 @@ function Navbar() {
                                 to="/ring-group-report"
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
-                                    (path) =>
-                                      window.location.pathname.includes(path)
-                                  )
+                                    ["/extensions-add", "/extensions-edit"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1268,15 +1250,15 @@ function Navbar() {
                               </NavLink>
                             </li>
                             <li className="tabItem ">
-                              <a
+                              <Link
                                 // to="/extensions"
                                 onClick={() => featureUnderdevelopment()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
-                                    (path) =>
-                                      window.location.pathname.includes(path)
-                                  )
+                                    ["/extensions-add", "/extensions-edit"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1287,18 +1269,18 @@ function Navbar() {
                                 <div className="itemTitle">
                                   Dialer Analytics
                                 </div>
-                              </a>
+                              </Link>
                             </li>
                             <li className="tabItem ">
-                              <a
+                              <Link
                                 // to="/extensions"
                                 onClick={() => featureUnderdevelopment()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
-                                    (path) =>
-                                      window.location.pathname.includes(path)
-                                  )
+                                    ["/extensions-add", "/extensions-edit"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1307,7 +1289,7 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                                 <div className="itemTitle">Call Tracking</div>
-                              </a>
+                              </Link>
                             </li>
                             <li className="tabItem ">
                               <NavLink
@@ -1315,9 +1297,9 @@ function Navbar() {
                                 onClick={() => backToTop()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/meeting-reports"].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    ["/meeting-reports"].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1356,21 +1338,21 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse9"
-                      className={`accordion-collapse collapse ${
-                        isChildActive([
-                          "/card-details",
-                          "/card-transaction-list",
-                          "/wallet-transaction-list",
-                        ])
-                          ? "show"
-                          : ""
-                      }`}
+                      className={`accordion-collapse collapse ${isChildActive([
+                        "/card-details",
+                        "/card-transaction-list",
+                        "/wallet-transaction-list",
+                        "/billing-report",
+                      ])
+                        ? "show"
+                        : ""
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
                           {account?.permissions?.includes(470) ||
-                          account?.permissions?.includes(470) ? (
+                            account?.permissions?.includes(470) ? (
                             <li className="tabItem">
                               <NavLink
                                 to="/card-details"
@@ -1410,7 +1392,7 @@ function Navbar() {
                             </NavLink>
                           </li> */}
                           {account?.permissions?.includes(80) ||
-                          account?.permissions?.includes(82) ? (
+                            account?.permissions?.includes(82) ? (
                             <li className="tabItem">
                               <NavLink
                                 to="/card-transaction-list"
@@ -1426,7 +1408,7 @@ function Navbar() {
                           ) : null}
 
                           {account?.permissions?.includes(470) ||
-                          account?.permissions?.includes(472) ? (
+                            account?.permissions?.includes(472) ? (
                             <li className="tabItem">
                               <NavLink
                                 to="/wallet-transaction-list"
@@ -1442,15 +1424,15 @@ function Navbar() {
                           ) : null}
 
                           <li className="tabItem ">
-                            <a
+                            <Link
                               // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/extensions-add", "/extensions-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -1459,7 +1441,26 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Rate Card</div>
-                            </a>
+                            </Link>
+                          </li>
+                          <li className="tabItem ">
+                            <NavLink
+                              to="/billing-report"
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Reports</div>
+                            </NavLink>
                           </li>
                         </ul>
                       </div>
@@ -1488,29 +1489,28 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse5"
-                      className={`accordion-collapse collapse ${
-                        isChildActive([
-                          "/mail-settings",
-                          "/fax-settings",
-                          "/call-recording",
-                        ])
-                          ? "show"
-                          : ""
-                      }`}
+                      className={`accordion-collapse collapse ${isChildActive([
+                        "/mail-settings",
+                        "/fax-settings",
+                        "/call-recording",
+                      ])
+                        ? "show"
+                        : ""
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
                           <li className="tabItem ">
-                            <a
+                            <Link
                               // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/extensions-add", "/extensions-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -1519,7 +1519,7 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">General</div>
-                            </a>
+                            </Link>
                           </li>
                           <li className="tabItem">
                             <NavLink
@@ -1527,9 +1527,9 @@ function Navbar() {
                               onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/fax-settings"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/fax-settings"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -1541,7 +1541,7 @@ function Navbar() {
                             </NavLink>
                           </li>
                           {account?.permissions?.includes(248) ||
-                          account?.permissions?.includes(250) ? (
+                            account?.permissions?.includes(250) ? (
                             <li className="tabItem ">
                               <NavLink
                                 to="/mail-settings"
@@ -1549,12 +1549,12 @@ function Navbar() {
                                 type="button"
                                 className={({ isActive }) =>
                                   isActive ||
-                                  [
-                                    "/mail-settings-add",
-                                    "/mail-settings-edit",
-                                  ].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    [
+                                      "/mail-settings-add",
+                                      "/mail-settings-edit",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1569,9 +1569,9 @@ function Navbar() {
                               onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/call-recording"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/call-recording"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -1605,11 +1605,10 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse11"
-                      className={`accordion-collapse collapse ${
-                        isChildActive(["/add-ons", "/store-extension"])
-                          ? "show"
-                          : ""
-                      }`}
+                      className={`accordion-collapse collapse ${isChildActive(["/add-ons", "/store-extension"])
+                        ? "show"
+                        : ""
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -1620,9 +1619,9 @@ function Navbar() {
                               onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/store-extension"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/store-extension"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -1634,14 +1633,14 @@ function Navbar() {
                             </NavLink>
                           </li>
                           <li className="tabItem ">
-                            <a
+                            <Link
                               // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/plugins"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/plugins"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -1650,26 +1649,26 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Plugins</div>
-                            </a>
+                            </Link>
                           </li>
                           {account?.permissions?.includes(248) ||
-                          account?.permissions?.includes(250) ? (
+                            account?.permissions?.includes(250) ? (
                             <li className="tabItem ">
-                              <a
+                              <Link
                                 // to="/dashboard"
                                 onClick={backToTop}
                                 type="button"
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/hardwares", "/hardware-add"].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    ["/hardwares", "/hardware-add"].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
                               >
                                 <div className="itemTitle">Hardwares</div>
-                              </a>
+                              </Link>
                             </li>
                           ) : null}
                           <li className="tabItem ">
@@ -1678,9 +1677,9 @@ function Navbar() {
                               onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/add-ons"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/add-ons"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -1714,11 +1713,10 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse12"
-                      className={`accordion-collapse collapse ${
-                        isChildActive(["/support", "/knowledge-base"])
-                          ? "show"
-                          : ""
-                      }`}
+                      className={`accordion-collapse collapse ${isChildActive(["/support", "/knowledge-base"])
+                        ? "show"
+                        : ""
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -1729,9 +1727,9 @@ function Navbar() {
                               onClick={() => backToTop()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/knowledge-base"].some((path) =>
-                                  window.location.pathname.includes(path)
-                                )
+                                  ["/knowledge-base"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -1743,15 +1741,15 @@ function Navbar() {
                             </NavLink>
                           </li>
                           <li className="tabItem ">
-                            <a
+                            <Link
                               // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/extensions-add", "/extensions-edit"].some(
-                                  (path) =>
-                                    window.location.pathname.includes(path)
-                                )
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -1760,22 +1758,22 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Submit a Ticket</div>
-                            </a>
+                            </Link>
                           </li>
                           {account?.permissions?.includes(248) ||
-                          account?.permissions?.includes(250) ? (
+                            account?.permissions?.includes(250) ? (
                             <li className="tabItem ">
-                              <a
+                              <Link
                                 onClick={() => featureUnderdevelopment()}
                                 type="button"
                                 className={({ isActive }) =>
                                   isActive ||
-                                  [
-                                    "/mail-settings-add",
-                                    "/mail-settings-edit",
-                                  ].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    [
+                                      "/mail-settings-add",
+                                      "/mail-settings-edit",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1783,7 +1781,7 @@ function Navbar() {
                                 <div className="itemTitle">
                                   Live Chat Support
                                 </div>
-                              </a>
+                              </Link>
                             </li>
                           ) : null}
                         </ul>

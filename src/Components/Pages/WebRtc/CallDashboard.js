@@ -188,7 +188,7 @@ function CallDashboard() {
                       </div>
                       <div className="col-12" style={{ padding: '25px 20px 0px' }}>
                         <div className="tableContainer mt-0">
-                          <ActiveCalls />
+                          <ActiveCalls filter="all" isWebrtc={true} />
                         </div>
                       </div>
                     </div>

@@ -410,7 +410,7 @@ const RingGroupAdd = () => {
           delay: 0,
           timeOut: "30",
           // prompt: "",
-          status: "inactive",
+          status: "active",
         },
       ]);
       toast.success(apiData.message);
@@ -506,7 +506,7 @@ const RingGroupAdd = () => {
           destination: selectedDestination?.extension?.extension,
           delay: 0,
           timeOut: "30",
-          status: "inactive",
+          status: "active",
         })
       );
 
@@ -527,7 +527,7 @@ const RingGroupAdd = () => {
             delay: 0,
             timeOut: "30",
 
-            status: "inactive",
+            status: "active",
           });
         }
       });
@@ -893,33 +893,60 @@ const RingGroupAdd = () => {
                           <div className="col-5">
                             <select
                               className="formItem"
-                              onChange={(e) => {
-                                if (e.target.value == "extension") {
-                                  setTimeoutDestPstnToggle(false);
-                                  setShowTimeoutDestinationToggle(true);
-                                  if (watch().call_timeout == "") {
-                                    setValue("call_timeout", `${60}`);
+                              // onChange={(e) => {
+                              //   if (e.target.value == "Extension") {
+                              //     setTimeoutDestPstnToggle(false);
+                              //     setShowTimeoutDestinationToggle(true);
+                              //     if (watch().call_timeout == "") {
+                              //       setValue("call_timeout", `${60}`);
+                              //     }
+                              //     setValue("timeout_destination", "");
+                              //   } else if (e.target.value == "PSTN") {
+                              //     setTimeoutDestPstnToggle(true);
+                              //     setShowTimeoutDestinationToggle(true);
+                              //     if (watch().call_timeout == "") {
+                              //       setValue("call_timeout", `${60}`);
+                              //     }
+                              //     setValue("timeout_destination", "");
+                              //   } else if (e.target.value == "Disabled") {
+                              //     setTimeoutDestPstnToggle(true);
+                              //     setShowTimeoutDestinationToggle(false);
+                              //     setValue("timeout_destination", "");
+                              //   }
+                              // }}
+                              // {...register("destination_type")}
+                              {...register("destination_type", {
+                                onChange: (e) => {
+                                  const value = e.target.value;
+
+                                  // Custom logic
+                                  if (e.target.value == "Extension") {
+                                    setTimeoutDestPstnToggle(false);
+                                    setShowTimeoutDestinationToggle(true);
+                                    if (watch().call_timeout == "") {
+                                      setValue("call_timeout", `${60}`);
+                                    }
+                                    setValue("timeout_destination", "");
+                                  } else if (e.target.value == "PSTN") {
+                                    setTimeoutDestPstnToggle(true);
+                                    setShowTimeoutDestinationToggle(true);
+                                    if (watch().call_timeout == "") {
+                                      setValue("call_timeout", `${60}`);
+                                    }
+                                    setValue("timeout_destination", "");
+                                  } else if (e.target.value == "Disabled") {
+                                    setTimeoutDestPstnToggle(true);
+                                    setShowTimeoutDestinationToggle(false);
+                                    setValue("timeout_destination", "");
                                   }
-                                  setValue("timeout_destination", "");
-                                } else if (e.target.value == "pstn") {
-                                  setTimeoutDestPstnToggle(true);
-                                  setShowTimeoutDestinationToggle(true);
-                                  if (watch().call_timeout == "") {
-                                    setValue("call_timeout", `${60}`);
-                                  }
-                                  setValue("timeout_destination", "");
-                                } else if (e.target.value == "") {
-                                  setTimeoutDestPstnToggle(true);
-                                  setShowTimeoutDestinationToggle(false);
-                                  setValue("timeout_destination", "");
-                                }
-                              }}
+                                },
+                              })}
                               id="selectFormRow"
-                              defaultValue={""}
+                              defaultValue={"Disabled"}
                             >
-                              <option value="">Disabled</option>
-                              <option value="extension">Extension</option>
-                              <option value="pstn">PSTN</option>
+                              <option value="Disabled">Disabled</option>
+                              <option value="Extension">Extension</option>
+                              <option value="PSTN">PSTN</option>
                             </select>
                           </div>
                           <div className="col-7">
@@ -979,16 +1006,16 @@ const RingGroupAdd = () => {
                               )),
                           })}
                           onKeyDown={restrictToNumbers}
-                        // {...register("call_timeout", {
-                        //   ...requiredValidator,
-                        //   ...noSpecialCharactersValidator,
-                        //   ...minValidator(
-                        //     destination.reduce(
-                        //       (max, obj) => Math.max(max, obj.delay),
-                        //       0
-                        //     )
-                        //   ),
-                        // })}
+                          // {...register("call_timeout", {
+                          //   ...requiredValidator,
+                          //   ...noSpecialCharactersValidator,
+                          //   ...minValidator(
+                          //     destination.reduce(
+                          //       (max, obj) => Math.max(max, obj.delay),
+                          //       0
+                          //     )
+                          //   ),
+                          // })}
                         />
                         {errors.call_timeout && (
                           <ErrorMessage text={errors.call_timeout.message} />
@@ -1297,7 +1324,28 @@ const RingGroupAdd = () => {
                         </select>
                       </div>
                     </div>
-
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="selectFormRow">Tag</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Enter the tag.
+                        </label>
+                      </div>
+                      <div className="col-6">
+                        <input
+                          type="text"
+                          name="extension"
+                          className="formItem"
+                          {...register("tag", {
+                            ...noSpecialCharactersValidator,
+                          })}
+                          onKeyDown={restrictToAllowedChars}
+                        />
+                        {errors.tag && (
+                          <ErrorMessage text={errors.tag.message} />
+                        )}
+                      </div>
+                    </div>
                     {/* <div className="formRow  col-xl-3">
                 <div className="d-flex flex-wrap align-items-center">
                   <div className="formLabel">
@@ -1323,14 +1371,16 @@ const RingGroupAdd = () => {
               </div> */}
                   </form>
                 </div>
-                <div className="col-12" >
+                <div className="col-12">
                   <div class="heading bg-transparent border-bottom-0">
                     <div class="content">
                       <h4>List of Agents</h4>
                       <p>You can see the list of agents in this ring group.</p>
                     </div>
                     <div class="buttonGroup">
-                      <button type="button" class="panelButton"
+                      <button
+                        type="button"
+                        class="panelButton"
                         onClick={() => {
                           if (user.length !== destination.length)
                             setBulkAddPopUp(true);
@@ -1338,37 +1388,40 @@ const RingGroupAdd = () => {
                         }}
                       >
                         <span class="text">Add</span>
-                        <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                        <span class="icon">
+                          <i class="fa-solid fa-plus"></i>
+                        </span>
                       </button>
                     </div>
                   </div>
-                  {destination.length > 0 && <form className="row" style={{ padding: "0px 23px 20px" }}>
-                    <div className="formRow col-xl-12">
-                      {destination.map((item, index) => {
-                        return (
-                          <div className="col-12 d-flex justify-content-start mb-2">
-                            <div
-                              className="formLabel pe-2"
-                              style={
-                                index === 0
-                                  ? { marginTop: 32, width: 30 }
-                                  : { width: 30 }
-                              }
-                            >
-                              <label>{index + 1}.</label>
-                            </div>
-                            <div className="col-3 pe-2">
-                              {index === 0 ? (
-                                <div className="formLabel">
-                                  <label htmlFor="">
-                                    Destinations{" "}
-                                    <span className="text-danger">*</span>
-                                  </label>
-                                </div>
-                              ) : (
-                                ""
-                              )}
-                              {/* <div className="position-relative">
+                  {destination.length > 0 && (
+                    <form className="row" style={{ padding: "0px 23px 20px" }}>
+                      <div className="formRow col-xl-12">
+                        {destination.map((item, index) => {
+                          return (
+                            <div className="col-12 d-flex justify-content-start mb-2">
+                              <div
+                                className="formLabel pe-2"
+                                style={
+                                  index === 0
+                                    ? { marginTop: 32, width: 30 }
+                                    : { width: 30 }
+                                }
+                              >
+                                <label>{index + 1}.</label>
+                              </div>
+                              <div className="col-3 pe-2">
+                                {index === 0 ? (
+                                  <div className="formLabel">
+                                    <label htmlFor="">
+                                      Destinations{" "}
+                                      <span className="text-danger">*</span>
+                                    </label>
+                                  </div>
+                                ) : (
+                                  ""
+                                )}
+                                {/* <div className="position-relative">
                           <input
                             type="text"
                             name="destination"
@@ -1412,173 +1465,182 @@ const RingGroupAdd = () => {
                             ""
                           )}
                         </div> */}
-                              <div className="position-relative">
-                                <select
-                                  disabled
-                                  type="text"
-                                  name="destination"
-                                  value={item.destination}
-                                  onChange={(e) => {
-                                    const selectedValue = e.target.value;
-                                    if (selectedValue === "addUser") {
-                                      navigate("/users-add");
-                                    } else {
-                                      handleDestinationChange(index, e);
-                                    }
-                                  }}
-                                  className="formItem"
-                                  placeholder="Destination"
-                                >
-                                  <option value={""} disabled>
-                                    Choose agent
-                                  </option>
-
-                                  {user &&
-                                    user
-                                      .filter((item1) => {
-                                        return (
-                                          item1.extension.extension ==
-                                          destination[index]?.destination ||
-                                          !destination.some(
-                                            (
-                                              destinationItem,
-                                              destinationIndex
-                                            ) =>
-                                              destinationItem.destination ==
-                                              item1.extension.extension &&
-                                              destinationIndex != index
-                                          )
-                                        );
-                                      })
-                                      .map((item) => {
-                                        return (
-                                          <option
-                                            value={item.extension?.extension}
-                                            key={item.id}
-                                          >
-                                            {item.alias
-                                              ? truncateString(item?.alias)
-                                              : truncateString(item?.name)}
-                                            {/* {item.name}(
-                                            {item.extension?.extension}) */}
-                                          </option>
-                                        );
-                                      })}
-                                  <option
-                                    value="addUser"
-                                    className="addmusic"
-                                    style={{ cursor: "pointer" }}
+                                <div className="position-relative">
+                                  <select
+                                    disabled
+                                    type="text"
+                                    name="destination"
+                                    value={item.destination}
+                                    onChange={(e) => {
+                                      const selectedValue = e.target.value;
+                                      if (selectedValue === "addUser") {
+                                        navigate("/users-add");
+                                      } else {
+                                        handleDestinationChange(index, e);
+                                      }
+                                    }}
+                                    className="formItem"
+                                    placeholder="Destination"
                                   >
-                                    Add User
-                                  </option>
+                                    <option value={""} disabled>
+                                      Choose agent
+                                    </option>
+
+                                    {user &&
+                                      user
+                                        .filter((item1) => {
+                                          return (
+                                            item1.extension.extension ==
+                                              destination[index]?.destination ||
+                                            !destination.some(
+                                              (
+                                                destinationItem,
+                                                destinationIndex
+                                              ) =>
+                                                destinationItem.destination ==
+                                                  item1.extension.extension &&
+                                                destinationIndex != index
+                                            )
+                                          );
+                                        })
+                                        .map((item) => {
+                                          return (
+                                            <option
+                                              value={item.extension?.extension}
+                                              key={item.id}
+                                            >
+                                              {item.alias
+                                                ? `${truncateString(
+                                                    item?.alias
+                                                  )} - ${
+                                                    item.extension?.extension
+                                                  }`
+                                                : `${truncateString(
+                                                    item?.name
+                                                  )} - ${
+                                                    item.extension?.extension
+                                                  }`}
+                                              {/* {item.name}(
+                                            {item.extension?.extension}) */}
+                                            </option>
+                                          );
+                                        })}
+                                    <option
+                                      value="addUser"
+                                      className="addmusic"
+                                      style={{ cursor: "pointer" }}
+                                    >
+                                      Add User
+                                    </option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div className="col-2 pe-2">
+                                {index === 0 ? (
+                                  <div className="formLabel">
+                                    <label htmlFor="">Delay</label>
+                                  </div>
+                                ) : (
+                                  ""
+                                )}
+                                <select
+                                  className="formItem me-0"
+                                  style={{ width: "100%" }}
+                                  name="delay"
+                                  id="selectFormRow"
+                                  value={item.delay}
+                                  onChange={(e) => {
+                                    handleDestinationChange(index, e);
+                                  }}
+                                >
+                                  <option>Delay</option>
+                                  {(() => {
+                                    const numbers = [];
+                                    for (let i = 0; i <= 100; i++) {
+                                      if (i % 5 === 0) {
+                                        numbers.push(<span key={i}>{i}</span>);
+                                      }
+                                    }
+                                    return numbers.map((item) => {
+                                      return <option>{item}</option>;
+                                    });
+                                  })()}
                                 </select>
                               </div>
-                            </div>
-                            <div className="col-2 pe-2">
-                              {index === 0 ? (
-                                <div className="formLabel">
-                                  <label htmlFor="">Delay</label>
-                                </div>
-                              ) : (
-                                ""
-                              )}
-                              <select
-                                className="formItem me-0"
-                                style={{ width: "100%" }}
-                                name="delay"
-                                id="selectFormRow"
-                                value={item.delay}
-                                onChange={(e) => {
-                                  handleDestinationChange(index, e);
-                                }}
-                              >
-                                <option>Delay</option>
-                                {(() => {
-                                  const numbers = [];
-                                  for (let i = 0; i <= 100; i++) {
-                                    if (i % 5 === 0) {
-                                      numbers.push(<span key={i}>{i}</span>);
-                                    }
+                              <div className="col-2 pe-2">
+                                {index === 0 ? (
+                                  <div className="formLabel">
+                                    <label htmlFor="">Timeout</label>
+                                  </div>
+                                ) : (
+                                  ""
+                                )}
+                                <select
+                                  className="formItem me-0"
+                                  style={{ width: "100%" }}
+                                  name="timeOut"
+                                  value={item.timeOut}
+                                  onChange={(e) =>
+                                    handleDestinationChange(index, e)
                                   }
-                                  return numbers.map((item) => {
-                                    return <option>{item}</option>;
-                                  });
-                                })()}
-                              </select>
-                            </div>
-                            <div className="col-2 pe-2">
-                              {index === 0 ? (
-                                <div className="formLabel">
-                                  <label htmlFor="">Timeout</label>
-                                </div>
-                              ) : (
-                                ""
-                              )}
-                              <select
-                                className="formItem me-0"
-                                style={{ width: "100%" }}
-                                name="timeOut"
-                                value={item.timeOut}
-                                onChange={(e) =>
-                                  handleDestinationChange(index, e)
-                                }
-                                id="selectFormRow"
-                              >
-                                <option>Timeout</option>
-                                {(() => {
-                                  const numbers = [];
-                                  for (let i = 0; i <= 100; i++) {
-                                    if (i % 5 === 0) {
-                                      numbers.push(<span key={i}>{i}</span>);
-                                    }
-                                  }
-                                  return numbers.map((item) => {
-                                    return <option>{item}</option>;
-                                  });
-                                })()}
-                              </select>
-                            </div>
-                            <div className="col-2 pe-2">
-                              {index === 0 ? (
-                                <div className="formLabel">
-                                  <label htmlFor="">Status</label>
-                                </div>
-                              ) : (
-                                ""
-                              )}
-                              <select
-                                className="formItem me-0"
-                                style={{ width: "100%" }}
-                                value={item.status}
-                                onChange={(e) =>
-                                  handleDestinationChange(index, e)
-                                }
-                                id="selectFormRow"
-                                name="status"
-                              >
-                                <option className="status" value="active">
-                                  True
-                                </option>
-                                <option value="inactive">False</option>
-                              </select>
-                            </div>
-                            {destination.length === 1 ? (
-                              ""
-                            ) : (
-                              <div
-                                className={`me-2 h-100 m${index === 0 ? "t" : "y"
-                                  }-auto`}
-                              >
-                                <button
-                                  type="button"
-                                  onClick={() => deleteDestination(item.id)}
-                                  className="tableButton delete"
+                                  id="selectFormRow"
                                 >
-                                  <i className="fa-solid fa-trash"></i>
-                                </button>
+                                  <option>Timeout</option>
+                                  {(() => {
+                                    const numbers = [];
+                                    for (let i = 0; i <= 100; i++) {
+                                      if (i % 5 === 0) {
+                                        numbers.push(<span key={i}>{i}</span>);
+                                      }
+                                    }
+                                    return numbers.map((item) => {
+                                      return <option>{item}</option>;
+                                    });
+                                  })()}
+                                </select>
                               </div>
-                            )}
-                            {/* {index === 0 ? (
+                              <div className="col-2 pe-2">
+                                {index === 0 ? (
+                                  <div className="formLabel">
+                                    <label htmlFor="">Status</label>
+                                  </div>
+                                ) : (
+                                  ""
+                                )}
+                                <select
+                                  className="formItem me-0"
+                                  style={{ width: "100%" }}
+                                  value={item.status}
+                                  onChange={(e) =>
+                                    handleDestinationChange(index, e)
+                                  }
+                                  id="selectFormRow"
+                                  name="status"
+                                >
+                                  <option className="status" value="active">
+                                    True
+                                  </option>
+                                  <option value="inactive">False</option>
+                                </select>
+                              </div>
+                              {destination.length === 1 ? (
+                                ""
+                              ) : (
+                                <div
+                                  className={`me-2 h-100 m${
+                                    index === 0 ? "t" : "y"
+                                  }-auto`}
+                                >
+                                  <button
+                                    type="button"
+                                    onClick={() => deleteDestination(item.id)}
+                                    className="tableButton delete"
+                                  >
+                                    <i className="fa-solid fa-trash"></i>
+                                  </button>
+                                </div>
+                              )}
+                              {/* {index === 0 ? (
                               <div className="mt-auto">
                                 <button
                                   onClick={() => addNewDestination()}
@@ -1595,18 +1657,19 @@ const RingGroupAdd = () => {
                             ) : (
                               ""
                             )} */}
-                          </div>
-                        );
-                      })}
-                      {errors.destinations && (
-                        <ErrorMessage text={errors.destinations.message} />
-                      )}
+                            </div>
+                          );
+                        })}
+                        {errors.destinations && (
+                          <ErrorMessage text={errors.destinations.message} />
+                        )}
 
-                      <label htmlFor="data" className="formItemDesc">
-                        Add destinations and parameters to the ring group.
-                      </label>
-                    </div>
-                  </form>}
+                        <label htmlFor="data" className="formItemDesc">
+                          Add destinations and parameters to the ring group.
+                        </label>
+                      </div>
+                    </form>
+                  )}
                 </div>
               </div>
             </div>
@@ -1653,63 +1716,68 @@ const RingGroupAdd = () => {
           ""
         )} */}
       </section>
-      {
-        showMusic && (
-          <AddMusic
-            show={showMusic}
-            setShow={setShowMusic}
-            setUploadedMusic={setUploadedMusic}
-            setMusicRefresh={setMusicRefresh}
-            musicRefresh={musicRefresh}
-            listArray={["ringback"]}
-          />
-        )
-      }
-      {
-        bulkAddPopUp ? (
-          <div className="addNewContactPopup">
-            <div className="row">
-              <div className="col-12 heading mb-0">
-                <i className="fa-light fa-user-plus" />
-                <h5>Add People to the selected Ring Group</h5>
-                {/* <p>
+      {showMusic && (
+        <AddMusic
+          show={showMusic}
+          setShow={setShowMusic}
+          setUploadedMusic={setUploadedMusic}
+          setMusicRefresh={setMusicRefresh}
+          musicRefresh={musicRefresh}
+          listArray={["ringback"]}
+        />
+      )}
+      {bulkAddPopUp ? (
+        <div className="addNewContactPopup">
+          <div className="row">
+            <div className="col-12 heading mb-0">
+              <i className="fa-light fa-user-plus" />
+              <h5>Add People to the selected Ring Group</h5>
+              {/* <p>
                 Add people to yourqueue effortlessly, keeping your connections
                 organized and efficient
               </p> */}
-                {/* <div className="border-bottom col-12" /> */}
+              {/* <div className="border-bottom col-12" /> */}
+            </div>
+            <div className="col-xl-12">
+              <div className="col-12 d-flex justify-content-between align-items-center">
+                <input
+                  type="text"
+                  className="formItem"
+                  placeholder="Search"
+                  name="name"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                />
+                <button
+                  className="tableButton ms-2"
+                  onClick={() => navigate("/users-add")}
+                >
+                  <i className="fa-solid fa-user-plus"></i>
+                </button>
               </div>
-              <div className="col-xl-12">
-                <div className="col-12 d-flex justify-content-between align-items-center">
-                  <input
-                    type="text"
-                    className="formItem"
-                    placeholder="Search"
-                    name="name"
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                  />
-                  <button className="tableButton ms-2" onClick={() => navigate("/users-add")}><i className="fa-solid fa-user-plus"></i></button>
-                </div>
-              </div>
-              <div className="col-xl-12 mt-3">
-                <div className="tableContainer mt-0" style={{ maxHeight: "calc(100vh - 400px)" }}>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>S.No</th>
-                        <th>Name</th>
-                        <th>Extension</th>
-                        <th>
-                          <input
-                            type="checkbox"
-                            onChange={handleSelectAll} // Call handler on change
-                            checked={selectAll ? true : false} // Keep checkbox state in sync
-                          />
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {/* {user
+            </div>
+            <div className="col-xl-12 mt-3">
+              <div
+                className="tableContainer mt-0"
+                style={{ maxHeight: "calc(100vh - 400px)" }}
+              >
+                <table>
+                  <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <th>Name</th>
+                      <th>Extension</th>
+                      <th>
+                        <input
+                          type="checkbox"
+                          onChange={handleSelectAll} // Call handler on change
+                          checked={selectAll ? true : false} // Keep checkbox state in sync
+                        />
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* {user
                     .filter(
                       (user) =>
                         // Filter logic: checks name or extension against search query
@@ -1754,90 +1822,89 @@ const RingGroupAdd = () => {
                         </div>
                       );
                     })} */}
-                      {user
-                        .sort((a, b) => {
-                          const aMatches =
-                            a.name
-                              .toLowerCase()
-                              .includes(searchQuery.toLowerCase()) ||
-                            (a?.extension?.extension || "")
-                              .toLowerCase()
-                              .includes(searchQuery.toLowerCase());
-                          const bMatches =
-                            b.name
-                              .toLowerCase()
-                              .includes(searchQuery.toLowerCase()) ||
-                            (b?.extension?.extension || "")
-                              .toLowerCase()
-                              .includes(searchQuery.toLowerCase());
-                          // Sort: matching items come first
-                          return bMatches - aMatches;
-                        })
-                        .filter(
-                          (user) =>
-                            !destination.some(
-                              (agent) =>
-                                user.extension.extension == agent.destination
-                            )
-                        )
-                        .map((item, index) => {
-                          return (
-                            <tr key={item.id || index}>
-                              <td>{index + 1}</td>
-                              <td>{item.name}</td>
-                              <td>{item.extension.extension}</td>
-                              <td>
-                                <input
-                                  type="checkbox"
-                                  onChange={() => handleCheckboxChange(item)} // Call handler on change
-                                  checked={bulkUploadSelectedAgents.some(
-                                    (agent) => agent.name === item.name
-                                  )} // Keep checkbox state in sync
-                                />
-                              </td>
-                            </tr>
-                          );
-                        })}
-                    </tbody>
-                  </table>
-                </div>
+                    {user
+                      .sort((a, b) => {
+                        const aMatches =
+                          a.name
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase()) ||
+                          (a?.extension?.extension || "")
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase());
+                        const bMatches =
+                          b.name
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase()) ||
+                          (b?.extension?.extension || "")
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase());
+                        // Sort: matching items come first
+                        return bMatches - aMatches;
+                      })
+                      .filter(
+                        (user) =>
+                          !destination.some(
+                            (agent) =>
+                              user.extension.extension == agent.destination
+                          )
+                      )
+                      .map((item, index) => {
+                        return (
+                          <tr key={item.id || index}>
+                            <td>{index + 1}</td>
+                            <td>{item.name}</td>
+                            <td>{item.extension.extension}</td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                onChange={() => handleCheckboxChange(item)} // Call handler on change
+                                checked={bulkUploadSelectedAgents.some(
+                                  (agent) => agent.name === item.name
+                                )} // Keep checkbox state in sync
+                              />
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </table>
               </div>
-              <div className="col-xl-12 mt-2">
-                <div className="d-flex justify-content-between">
-                  <button
-                    className="panelButton gray ms-0"
-                    onClick={() => {
-                      setBulkAddPopUp(false);
-                      setBulkUploadSelectedAgents([]);
-                      setSelectAll(false);
-                    }}
-                  >
-                    <span className="text">Close</span>
-                    <span className="icon">
-                      <i class="fa-light fa-xmark"></i>
-                    </span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleBulkDestinationUpload(bulkUploadSelectedAgents);
-                      setBulkAddPopUp(false);
-                    }}
-                    className="panelButton"
-                  >
-                    <span className="text">Done</span>
-                    <span className="icon">
-                      <i className="fa-solid fa-check" />
-                    </span>
-                  </button>
-                </div>
+            </div>
+            <div className="col-xl-12 mt-2">
+              <div className="d-flex justify-content-between">
+                <button
+                  className="panelButton gray ms-0"
+                  onClick={() => {
+                    setBulkAddPopUp(false);
+                    setBulkUploadSelectedAgents([]);
+                    setSelectAll(false);
+                  }}
+                >
+                  <span className="text">Close</span>
+                  <span className="icon">
+                    <i class="fa-light fa-xmark"></i>
+                  </span>
+                </button>
+                <button
+                  onClick={() => {
+                    handleBulkDestinationUpload(bulkUploadSelectedAgents);
+                    setBulkAddPopUp(false);
+                  }}
+                  className="panelButton"
+                >
+                  <span className="text">Done</span>
+                  <span className="icon">
+                    <i className="fa-solid fa-check" />
+                  </span>
+                </button>
               </div>
             </div>
           </div>
-        ) : (
-          ""
-        )
-      }
-    </main >
+        </div>
+      ) : (
+        ""
+      )}
+    </main>
   );
 };
 

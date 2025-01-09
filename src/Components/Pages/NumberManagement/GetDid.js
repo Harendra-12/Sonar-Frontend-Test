@@ -223,7 +223,7 @@ function GetDid() {
           toast.success(apiData.message);
           // dispatch({
           //   type: "SET_NEWADDDID",
-          //   newAddDid: apiData.data,
+          //   newAddDid: apiData.data,2
           // });
           dispatch({
             type: "SET_ACCOUNTDETAILSREFRESH",

@@ -19,7 +19,7 @@ import {
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
-const UsersEdit = () => {
+const UsersEdit = ({ page }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -42,6 +42,9 @@ const UsersEdit = () => {
   const extensionAll = useSelector((state) => state.extensionAll);
   const [password, setPassword] = useState("");
   const [popUp, setPopUp] = useState(false);
+  const [isCustomerAdmin, setIsCustomerAdmin] = useState(
+    locationState.user_role == "Company"
+  );
   const {
     register,
     watch,
@@ -104,10 +107,23 @@ const UsersEdit = () => {
 
             let firstName = "";
             let lastName = "";
+
             const {
               name,
-              user_role: { role_id },
+              user_role, // Default to an empty object if user_role is null or undefined
+              usertype,
             } = data;
+            let role_id = "";
+            // const { role_id = "" } = user_role;
+
+            if (user_role) {
+              role_id = user_role.role_id;
+            } else {
+              role_id = "";
+            }
+            if (usertype == "Company") {
+              setIsCustomerAdmin(true);
+            }
 
             const separateName = name.split(" ");
             if (separateName.length == 1) {
@@ -125,9 +141,13 @@ const UsersEdit = () => {
                 role_id: `${role_id}`,
               },
             };
-
-            setSelectedPermission(newData.permissions);
-            setSelectedRole(newData.user_role["roles"].name);
+            if (!isCustomerAdmin) {
+              console.log(isCustomerAdmin);
+              setSelectedPermission(newData.permissions);
+              if (newData?.user_role) {
+                setSelectedRole(newData?.user_role["roles"]?.name);
+              }
+            }
 
             delete newData.name;
             delete newData.user_role;
@@ -341,7 +361,9 @@ const UsersEdit = () => {
         }
       `}
       </style>
-      <main className="mainContent">
+      <main
+        className={page === "agents" ? "mainContentAgents ms-0" : "mainContent"}
+      >
         <section id="phonePage">
           {showHeader && (
             <div className="container-fluid px-0">
@@ -379,7 +401,7 @@ const UsersEdit = () => {
             </div>
           )}
 
-          <div className="col-xl-12" style={{ overflow: "auto" }}>
+          <div className="col-xl-12">
             {loading ? (
               <div colSpan={99}>
                 <CircularLoader />
@@ -389,7 +411,10 @@ const UsersEdit = () => {
             )}
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
-                <div className="d-flex flex-wrap">
+                <div
+                  className="d-flex flex-wrap"
+                  style={{ position: "sticky", top: "0", zIndex: "9" }}
+                >
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
@@ -599,55 +624,60 @@ const UsersEdit = () => {
                             )}
                           </div>
                         </div>
-                        <div className="formRow col-xl-12">
-                          <div className="formLabel">
-                            <label htmlFor="selectFormRow">
-                              Role Type <span className="text-danger">*</span>
-                            </label>
-                            <label htmlFor="data" className="formItemDesc">
-                              Select Default to enable login or to disable login
-                              select Virtual.
-                            </label>
-                          </div>
-                          <div className="col-6">
-                            <select
-                              className="formItem"
-                              name=""
-                              value={watch().role_id}
-                              {...register("role_id", { ...requiredValidator })}
-                              onChange={(e) => {
-                                const roleName = role.find(
-                                  (item) => item.id == e.target.value
-                                );
+                        {!isCustomerAdmin && (
+                          <div className="formRow col-xl-12">
+                            <div className="formLabel">
+                              <label htmlFor="selectFormRow">
+                                Role Type <span className="text-danger">*</span>
+                              </label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Select Default to enable login or to disable
+                                login select Virtual.
+                              </label>
+                            </div>
+                            <div className="col-6">
+                              <select
+                                className="formItem"
+                                name=""
+                                value={watch().role_id}
+                                {...register("role_id", {
+                                  ...requiredValidator,
+                                })}
+                                onChange={(e) => {
+                                  const roleName = role.find(
+                                    (item) => item.id == e.target.value
+                                  );
 
-                                setValue("role_id", e.target.value);
-                                setSelectedRole(roleName.name);
-                                setSelectedPermission(
-                                  e.target.value === ""
-                                    ? ""
-                                    : roleName.permissions.map((item) => {
-                                        return item.permission_id;
-                                      })
-                                );
-                              }}
-                            >
-                              <option value="" disabled>
-                                Choose Type
-                              </option>
+                                  setValue("role_id", e.target.value);
+                                  setSelectedRole(roleName.name);
+                                  setSelectedPermission(
+                                    e.target.value === ""
+                                      ? ""
+                                      : roleName.permissions.map((item) => {
+                                          return item.permission_id;
+                                        })
+                                  );
+                                }}
+                              >
+                                <option value="" disabled>
+                                  Choose Type
+                                </option>
 
-                              {role.map((item, key) => {
-                                return (
-                                  <option value={item.id} key={key}>
-                                    {item.name}
-                                  </option>
-                                );
-                              })}
-                            </select>
-                            {errors.role_id && (
-                              <ErrorMessage text={errors.role_id.message} />
-                            )}
+                                {role.map((item, key) => {
+                                  return (
+                                    <option value={item.id} key={key}>
+                                      {item.name}
+                                    </option>
+                                  );
+                                })}
+                              </select>
+                              {errors.role_id && (
+                                <ErrorMessage text={errors.role_id.message} />
+                              )}
+                            </div>
                           </div>
-                        </div>
+                        )}
+
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label htmlFor="selectFormRow">

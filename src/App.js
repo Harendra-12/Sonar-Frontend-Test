@@ -138,6 +138,8 @@ import CallDesposition from "./Components/Pages/DialerModule/CallDesposition";
 import KnowledgeBase from "./Components/Pages/Support/KnowledgeBase";
 import AgentsPbx from "./Components/Pages/Agents/AgentsPbx";
 import AgentsDialer from "./Components/Pages/Agents/AgentsDialer";
+import VoiceMailReport from "./Components/Pages/Voice/VoiceMailReport";
+import CampaignCreate from "./Components/Pages/DialerModule/Campaigns/CampaignCreate";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -358,6 +360,7 @@ function App() {
           {/* Settings Path */}
 
           {/* Voice path start */}
+          <Route path="/voicemail-report" element={<VoiceMailReport />} />
           <Route path="/voice-music" element={<Music />} />
           {/* Voice path End */}
 
@@ -404,6 +407,10 @@ function App() {
           <Route
             path="/call-center-report"
             element={<CdrReport page="callcenter" />}
+          />
+          <Route
+            path="/billing-report"
+            element={<CdrReport page="billing" />}
           />
           {/* <Route path="/efax" element={<EFax />} />
           <Route path="/call-dashboard" element={<CallDashboardPage />} /> */}
@@ -679,6 +686,7 @@ function App() {
           {/* ------ Campaigns */}
           <Route path="/campaigns" element={<Campaigns />} />
           <Route path="/campaign-analytics" element={<CampaignAnalytics />} />
+          <Route path="/campaign-create" element={<CampaignCreate />} />
           {/* ------ Campaigns */}
 
           {/* Dialer Modules */}

@@ -159,6 +159,7 @@ const CallBlocking = () => {
                         </select>
                         <label>entries</label>
                       </div>
+
                       <div className="searchBox">
                         <label>Search:</label>
                         <input

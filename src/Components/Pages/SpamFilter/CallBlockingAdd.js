@@ -45,7 +45,10 @@ function CallBlockingAdd() {
   const [selectedCdrToBlock, setSelectedCdrToBlock] = useState([]);
   const [selectedExtensionType, setSelectedExtensionType] = useState([]);
   // const [selectedExtensions, setSelectedExtensions] = useState([]);
+  const [filterBy, setFilterBy] = useState("");
+  const [startDate, setStartDate] = useState("");
 
+  const [endDate, setEndDate] = useState("");
   const actionListValue = (value) => {
     // console.log(value);
     setValue(
@@ -147,8 +150,10 @@ function CallBlockingAdd() {
       `/cdr?account=${account.account_id}&page=${pageNumber}`,
       {
         callDirection,
-
+        start_date: startDate,
+        end_date: endDate,
         destination: callDestination,
+        application_state: "pstn",
       }
     );
 
@@ -170,8 +175,29 @@ function CallBlockingAdd() {
       }
     }
     getData();
-  }, [account, navigate, pageNumber, callDirection, callDestination, refresh]);
-
+  }, [
+    account,
+    navigate,
+    pageNumber,
+    callDirection,
+    callDestination,
+    refresh,
+    endDate,
+    startDate,
+  ]);
+  useEffect(() => {
+    if (
+      filterBy === "7_days" ||
+      filterBy === "1_month" ||
+      filterBy === "3_month"
+    ) {
+      // featureUnderdevelopment();
+      getDateRange(filterBy);
+    } else {
+      setStartDate("");
+      setEndDate("");
+    }
+  }, [filterBy]);
   const handleUpdateSelectedCdrToBlock = (item) => {
     setSelectedCdrToBlock([...selectedCdrToBlock, item]);
   };
@@ -198,6 +224,44 @@ function CallBlockingAdd() {
 
     return formattedTime;
   }
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+  const getDateRange = (period) => {
+    const currentDate = new Date();
+    const formattedCurrentDate = formatDate(currentDate);
+
+    let startDate = new Date();
+
+    switch (period) {
+      case "7_days":
+        startDate.setDate(currentDate.getDate() - 7);
+        break;
+
+      case "1_month":
+        startDate.setMonth(currentDate.getMonth() - 1);
+        break;
+
+      case "3_month":
+        startDate.setMonth(currentDate.getMonth() - 3);
+        break;
+
+      default:
+        throw new Error(
+          "Invalid period. Use 'last7days', 'last1month', or 'last3months'."
+        );
+    }
+
+    const formattedStartDate = formatDate(startDate);
+    setStartDate(formattedStartDate);
+
+    setEndDate(formattedCurrentDate);
+
+    // return { currentDate: formattedCurrentDate, startDate: formattedStartDate };
+  };
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -479,13 +543,36 @@ function CallBlockingAdd() {
               </div>
               <div className="col-12" style={{ padding: "20px 23px" }}>
                 <div className="tableHeader align-items-end mb-3">
-                  <div className="showEntries">
+                  {/* <div className="showEntries">
                     <label>Show</label>
                     <select
                       className="formItem"
                       style={{ width: "max-content" }}
                     >
-                      <option value={10}>Outbound</option>
+                      <option value={20}>20</option>
+                      <option value={30}>30</option>
+                      <option value={40}>40</option>
+                    </select>
+                  </div> */}
+                  <div className="formRow border-0 ps-xl-0">
+                    <label className="formLabel text-start mb-0 w-100">
+                      Date Filter
+                    </label>
+                    <select
+                      className="formItem"
+                      value={filterBy}
+                      onChange={(e) => {
+                        setFilterBy(e.target.value);
+                        // setStartDateFlag("");
+                        // setEndDateFlag("");
+                      }}
+                    >
+                      {/* <option value={"date"}>Only Date</option>
+                      <option value={"date_range"}>Date Range</option> */}
+                      <option value={""}>None</option>
+                      <option value={"7_days"}>Last 7 Days</option>
+                      <option value={"1_month"}>Last 1 Month</option>
+                      <option value={"3_month"}>Last 3 Months</option>
                     </select>
                   </div>
                   <div className="showEntries align-items-end">

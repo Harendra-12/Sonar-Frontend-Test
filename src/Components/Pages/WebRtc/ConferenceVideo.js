@@ -35,7 +35,7 @@ function ConferenceVideo({
     try {
       const localStream = await navigator.mediaDevices.getUserMedia({
         video: isVideoOn,
-        audio: true,
+        audio: false,
       });
       // localVideoRef.current.srcObject = localStream;
       return localStream;

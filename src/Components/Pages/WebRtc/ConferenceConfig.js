@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { toast } from "react-toastify";
 import {
@@ -10,7 +10,7 @@ import { ConferenceCall } from "./ConferenceCall";
 import ContentLoader from "../../Loader/ContentLoader";
 import { useDispatch, useSelector } from "react-redux";
 
-const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId, conferenceId, conferenceToggle, pin, setPin }) => {
+const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId, conferenceId, conferenceToggle, pin, setPin, isVideoOn }) => {
   const [conferenceName, setConferenceName] = useState("");
   const [conferenceType, setConferenceType] = useState("public");
   const [loading, setLoading] = useState(false);
@@ -23,12 +23,45 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
   const [allConferences, setAllConferences] = useState([]);
   const [conferenceRefresh, setConferenceRefresh] = useState(0);
   const dispatch = useDispatch();
-  // const [conferenceToggle, setConferenceToggle] = useState(false);
   const sessions = useSelector((state) => state.sessions);
-  const account = useSelector((state) => state.account);
-  // const [conferenceId, setConferenceId] = useState("");
   const [error, setError] = useState("");
   const [selectedTab, setselectedTab] = useState("nav-voicemail-tab");
+  const videoRef = useRef(null);           // Reference to the video element
+  const streamRef = useRef(null);          // Reference to store the media stream
+  const [videoEnable, setVideoEnable] = useState(true); // State to track video status
+
+  useEffect(() => {
+    // Start the camera on component mount
+    const startCamera = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        streamRef.current = stream;
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      } catch (error) {
+        console.error("Error accessing the camera:", error);
+      }
+    };
+
+    startCamera();
+
+    // Cleanup on unmount
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, []);
+
+  const toggleVideo = () => {
+    if (streamRef.current) {
+      streamRef.current.getVideoTracks().forEach((track) => {
+        track.enabled = !track.enabled; // Toggle video track
+      });
+      setVideoEnable((prev) => !prev); // Update the state
+    }
+  };
 
   useEffect(() => {
     async function getData() {
@@ -117,7 +150,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
 
       setConferenceId(parts[1]); // Set "8" as the conference ID
       dispatch({
-        type:"SET_ROOMID",
+        type: "SET_ROOMID",
         RoomID: parts[1]
       })
       setConferenceToggle(true);
@@ -141,9 +174,6 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
         }}
       >
         <section id="phonePage">
-          <div className="container-fluid px-0">
-            <Header title="Conference Settings" />
-          </div>
           <div className="col-xl-12">
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
@@ -584,15 +614,20 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                   <div className="loginImgWrapper h-auto bg-transparent">
                                     <div className="content" style={{ padding: '25px' }}>
                                       <div className='conferenceJoinVideo'>
-                                        <video autoPlay={true} loop={true} muted={true}>
-                                          <source src={require('../../assets/images/testvideo.mp4')} type="video/mp4" />
-                                        </video>
+                                        <video
+                                          ref={videoRef}
+                                          autoPlay
+                                          playsInline
+                                          style={{
+                                            transform: "scaleX(-1)", // Flip the video horizontally
+                                          }}
+                                        ></video>
                                         <div className='buttonGroup' >
                                           <button className='clearButton2 xl white'>
                                             <i class="fa-light fa-microphone"></i>
                                           </button>
-                                          <button className='clearButton2 xl white ms-3'>
-                                            <i class="fa-light fa-camera-slash"></i>
+                                          <button className='clearButton2 xl white ms-3' onClick={()=>{if(isVideoOn){toggleVideo()}}}>
+                                            <i class={videoEnable && isVideoOn ? "fa-light fa-camera" : "fa-light fa-camera-slash"}></i>
                                           </button>
                                         </div>
                                       </div>

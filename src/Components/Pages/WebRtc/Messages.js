@@ -15,6 +15,9 @@ import CircularLoader from "../../Loader/CircularLoader";
 import { useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
+import { useForm } from "react-hook-form";
+import { requiredValidator } from "../../validations/validation";
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
 
 function Messages({
   setSelectedModule,
@@ -56,8 +59,32 @@ function Messages({
   const dateHeaderRefs = useRef([]); // Store refs for all dateHeader elements
   const visibilityMap = useRef(new Map()); // Track visibility of each ref
   const [refreshstate, setRefreshState] = useState(false);
+  const [groupChatPopUp, setGroupChatPopUp] = useState(false);
+  const [manageGroupChat, setManageGroupChat] = useState(false);
+  const [groups, setGroups] = useState([]);
+  const [groupRefresh, setGroupRefresh] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [allAgents, setAllAgents] = useState([]);
+  const [agent, setAgent] = useState([]);
+  const [selectAll, setSelectAll] = useState(false);
+  const [groupSelecedAgents, setGroupSelecedAgents] = useState([]);
+  const [groupNameEdit, setGroupNameEdit] = useState("");
+  const [saveEditToggleGroupNameChange, setSaveEditToggleGroupNameChange] =
+    useState(false);
+  const [addMember, setAddMember] = useState(false);
+  const [selectedgroupUsers, setSelectedgroupUsers] = useState([]);
 
-  console.log("isAnyDateHeaderVisible", contact);
+  const {
+    register,
+    setError: setErr,
+    clearErrors,
+    formState: { errors },
+    handleSubmit,
+    reset,
+    setValue,
+    watch,
+  } = useForm();
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -331,7 +358,9 @@ function Messages({
       console.error("UserAgent or session not ready.");
     }
   };
-
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
   // Logic to recieve messages from differnt users
   const userAgent = sipProvider?.sessionManager?.userAgent;
   if (userAgent) {
@@ -463,6 +492,16 @@ function Messages({
   }, []);
 
   useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction("/user-all");
+      if (apiData?.status) {
+        // setUser(apiData.data.filter((item) => item.extension_id !== null));
+        setAllAgents(apiData.data.filter((item) => item.extension_id !== null));
+      }
+    }
+    getData();
+  }, []);
+  useEffect(() => {
     if (loginUser.length > 0) {
       const updatedOnlineUsers = loginUser
         .map((item) => {
@@ -554,7 +593,10 @@ function Messages({
 
         // If tracks are already present, attach immediately
         if (remoteStream.getTracks().length > 0) {
-          console.log("Remote stream tracks available immediately:", remoteStream);
+          console.log(
+            "Remote stream tracks available immediately:",
+            remoteStream
+          );
           playRemoteStream(remoteStream);
         }
       }
@@ -614,6 +656,7 @@ function Messages({
       const parsedData = {
         name: newTag,
       };
+
       const apiData = await generalPostFunction(`/tags/store`, parsedData);
       if (apiData.status) {
         setLoading(false);
@@ -658,7 +701,30 @@ function Messages({
       }
     }
   }
-  console.log("testingData", unreadMessage, recipient);
+
+  useEffect(() => {
+    const getGroups = async () => {
+      setLoading(true);
+      const apiData = await generalGetFunction(`/groups/all`);
+      if (apiData?.status) {
+        setGroups(apiData.data);
+        const isGroupSelected = apiData.data.find(
+          (group) => group.id == recipient[1]
+        );
+        if (isGroupSelected) {
+          setRecipient([isGroupSelected.group_name, isGroupSelected.id]);
+          setGroupNameEdit(isGroupSelected.group_name);
+          getGroupDataById(isGroupSelected.id);
+          setSelectedgroupUsers(isGroupSelected.groupusers);
+        }
+        setLoading(false);
+      } else {
+        setLoading(false);
+      }
+    };
+    getGroups();
+  }, [groupRefresh]);
+
   // Delete tag
   async function handleDeleteTag(id) {
     setLoading(true);
@@ -716,6 +782,142 @@ function Messages({
       navigate("/");
     }
   }
+  const filteredUsers = allAgents.filter(
+    (user) =>
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (user?.extension?.extension || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+  );
+
+  // Filter out agents already added
+  const availableUsers = filteredUsers.filter(
+    (user) => !agent.some((agent) => user.id == agent.name)
+  );
+  const handleCheckboxChange = (item) => {
+    setGroupSelecedAgents((prevSelected) => {
+      if (prevSelected.some((agent) => agent.name == item.name)) {
+        // If the item is already in the array, remove it
+        return prevSelected.filter((agent) => agent.name != item.name);
+      } else {
+        // Otherwise, add the item
+        return [...prevSelected, item];
+      }
+    });
+  };
+
+  const handleSelectAll = () => {
+    const newSelectAllState = !selectAll; // Toggle Select All state
+    setSelectAll(newSelectAllState);
+
+    if (newSelectAllState) {
+      // Add all visible users to bulkUploadSelectedAgents
+      availableUsers.forEach((item) => {
+        if (!groupSelecedAgents.some((agent) => agent.name == item.name)) {
+          handleCheckboxChange(item);
+        }
+      });
+    } else {
+      // Remove all visible users from bulkUploadSelectedAgents
+      availableUsers.forEach((item) => {
+        if (groupSelecedAgents.some((agent) => agent.name == item.name)) {
+          handleCheckboxChange(item);
+        }
+      });
+    }
+  };
+
+  const handleCreateGroup = handleSubmit(async (data) => {
+    const parsedData = {
+      group_name: data.group_name,
+      user_id: groupSelecedAgents.map((agent) => agent.id),
+    };
+    setLoading(true);
+    const apiData = await generalPostFunction("/groups/store", parsedData);
+    if (apiData.status) {
+      setGroupRefresh(groupRefresh + 1);
+
+      toast.success("Group created successfully");
+      setAddMember(false);
+      setGroupChatPopUp(false);
+      setGroupSelecedAgents([]);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  });
+
+  const handleEditGroupName = async () => {
+    const parsedData = {
+      group_name: groupNameEdit,
+      // members: groupSelecedAgents.map((agent) => {
+      //   return { user_id: agent.id, status: agent.status };
+      // }),
+    };
+    setLoading(true);
+    const apiData = await generalPutFunction(
+      `/groups/update/${recipient[1]}`,
+      parsedData
+    );
+    if (apiData.status) {
+      setGroupRefresh(groupRefresh + 1);
+      toast.success("Group updated successfully");
+      setSaveEditToggleGroupNameChange(false);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
+
+  const getGroupDataById = async (id) => {
+    const apiData = generalGetFunction(`/groups/show/${id}`);
+    if (apiData.status) {
+      console.log(apiData);
+    }
+  };
+
+  const handleAddNewMemberToGroup = async () => {
+    // const payload = groupSelecedAgents.map((agent) => agent.id);
+    const payLoad = {
+      group_id: recipient[1],
+      user_id: groupSelecedAgents.map((agent) => agent.id),
+    };
+    setLoading(true);
+    const apiData = await generalPostFunction("/group-users/store", payLoad);
+    if (apiData.status) {
+      console.log(apiData);
+      setGroupRefresh(groupRefresh + 1);
+      setGroupChatPopUp(false);
+      setAddMember(false);
+      setGroupSelecedAgents([]);
+      setLoading(false);
+      // setSelectedgroupUsers((prevUsers) => [...prevUsers, ...apiData.data]);
+    } else {
+      setLoading(false);
+      console.log(apiData);
+    }
+  };
+  // console.log(groupSelecedAgents);
+  const handleremoveUserFromGroup = async (id) => {
+    setLoading(true);
+    const apiData = await generalDeleteFunction(
+      `/group-users/destroy/${id}`
+      // payload
+    );
+    if (apiData.status) {
+      console.log(apiData);
+      toast.success(apiData.message);
+      setSelectedgroupUsers(
+        selectedgroupUsers.filter((item) => item.id !== id)
+      );
+      setLoading(false);
+      // setGroupRefresh(groupRefresh + 1);
+    } else {
+      setLoading(false);
+      console.log(apiData);
+    }
+  };
+
   return (
     <>
       <main
@@ -763,7 +965,11 @@ function Messages({
                       />
                     </div>
                     <div className="col-auto ms-2">
-                      <button className="clearButton2 xl" effect="ripple" onClick={() => featureUnderdevelopment()}>
+                      <button
+                        className="clearButton2 xl"
+                        effect="ripple"
+                        onClick={() => featureUnderdevelopment()}
+                      >
                         <i className="fa-regular fa-bell" />
                       </button>
                     </div>
@@ -837,7 +1043,7 @@ function Messages({
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <button
                     className="clearColorButton dark"
-                    onClick={() => featureUnderdevelopment()}
+                    onClick={() => setGroupChatPopUp(true)}
                   >
                     <i class="fa-light fa-pen-to-square"></i> New Chat
                   </button>
@@ -894,6 +1100,16 @@ function Messages({
                         data-category="incoming"
                       >
                         Tags
+                      </button>
+                      <button
+                        onClick={() => setActiveTab("group")}
+                        className={
+                          activeTab === "group" ? "tabLink active" : "tabLink"
+                        }
+                        effect="ripple"
+                        data-category="incoming"
+                      >
+                        Group
                       </button>
                     </div>
                   </nav>
@@ -1035,9 +1251,21 @@ function Messages({
                         </div>
 
                         <div className="chatHeading">
-                          <h5 data-bs-toggle="collapse" href="#collapse3" role="button" aria-expanded="false" aria-controls="collapse3">Group Chat <i class="fa-solid fa-chevron-down"></i></h5>
+                          <h5
+                            data-bs-toggle="collapse"
+                            href="#collapse3"
+                            role="button"
+                            aria-expanded="false"
+                            aria-controls="collapse3"
+                          >
+                            Group Chat <i class="fa-solid fa-chevron-down"></i>
+                          </h5>
                         </div>
-                        <div class="collapse show" id="collapse3" style={{ borderBottom: '1px solid #ddd' }}>
+                        <div
+                          class="collapse show"
+                          id="collapse3"
+                          style={{ borderBottom: "1px solid #ddd" }}
+                        >
                           <div className="contactListItem" data-bell={""}>
                             <div className="row justify-content-between">
                               <div className="col-xl-12 d-flex">
@@ -1073,41 +1301,54 @@ function Messages({
                         className="callList"
                         style={{ height: "calc(100vh - 270px)" }}
                       >
-                        {onlineUser.map((item) => {
-                          return (
-                            <div
-                              data-bell=""
-                              className={
-                                recipient[0] === item?.extension.extension
-                                  ? "contactListItem selected"
-                                  : "contactListItem"
-                              }
-                            >
+                        <div className="chatHeading">
+                          <h5
+                            data-bs-toggle="collapse"
+                            href="#collapse4"
+                            role="button"
+                            aria-expanded="false"
+                            aria-controls="collapse2"
+                          >
+                            Online <i class="fa-solid fa-chevron-down"></i>
+                          </h5>
+                        </div>
+                        <div className="collapse show" id="collapse4" style={{ borderBottom: "1px solid var(--border-color)" }}>
+                          {onlineUser.map((item) => {
+                            return (
                               <div
-                                onClick={() =>
-                                  setRecipient([
-                                    item?.extension.extension,
-                                    item.id,
-                                  ])
+                                data-bell=""
+                                className={
+                                  recipient[0] === item?.extension.extension
+                                    ? "contactListItem selected"
+                                    : "contactListItem"
                                 }
-                                className="row justify-content-between"
                               >
-                                <div className="col-xl-12 d-flex">
-                                  <div
-                                    className="profileHolder"
-                                    id="profileOnlineNav"
-                                  >
-                                    <i className="fa-light fa-user fs-5"></i>
-                                  </div>
-                                  <div className="my-auto ms-2 ms-xl-3">
-                                    <h4>{item?.username}</h4>
-                                    <h5>{item?.extension.extension}</h5>
+                                <div
+                                  onClick={() =>
+                                    setRecipient([
+                                      item?.extension.extension,
+                                      item.id,
+                                    ])
+                                  }
+                                  className="row justify-content-between"
+                                >
+                                  <div className="col-xl-12 d-flex">
+                                    <div
+                                      className="profileHolder"
+                                      id="profileOnlineNav"
+                                    >
+                                      <i className="fa-light fa-user fs-5"></i>
+                                    </div>
+                                    <div className="my-auto ms-2 ms-xl-3">
+                                      <h4>{item?.username}</h4>
+                                      <h5>{item?.extension.extension}</h5>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          );
-                        })}
+                            );
+                          })}
+                        </div>
                         {onlineUser.length === 0 && (
                           <div className="chatHeading" data-bell={""}>
                             <h5>No Online user found</h5>
@@ -1115,7 +1356,7 @@ function Messages({
                         )}
                       </div>
                     </div>
-                  ) : (
+                  ) : activeTab === "tags" ? (
                     <div className="tab-content">
                       {/* <AgentSearch
                         getDropdownValue={setRecipient}
@@ -1244,6 +1485,216 @@ function Messages({
                         )}
                       </div>
                     </div>
+                  ) : (
+                    <div className="tab-content">
+                      <div
+                        className="callList"
+                        style={{ height: "calc(100vh - 270px)" }}
+                      >
+                        <div className="chatHeading" data-bell={""}>
+                          <h5>
+                            Group Chats{" "}
+                            <Tippy content="Click to create a new group!">
+                              <i
+                                onClick={() => setGroupChatPopUp(true)}
+                                class="fa-regular fa-circle-plus fs-5"
+                                style={{ cursor: "pointer", fontSize: 18 }}
+                              ></i>
+                            </Tippy>
+                          </h5>
+                        </div>
+                        {groupChatPopUp ? (
+                          <div
+                            className="addNewContactPopup pb-0"
+                            style={{
+                              position: "static",
+                              transform: "none",
+                              width: "100%",
+                              boxShadow: "none",
+                              background: "transparent",
+                            }}
+                          >
+                            <div className="row">
+                              <div className="col-12 heading mb-0">
+                                <i className="fa-light fa-users" />
+                                <h5>Create a Group Chat</h5>
+                                <p>
+                                  Add people to a group chat effortlessly, keeping your
+                                  connections organized and efficient
+                                </p>
+                                <div className="border-bottom col-12" />
+                              </div>
+                              <div className="col-xl-12 mt-2">
+                                {/* <div className="col-12 d-flex justify-content-between align-items-center"> */}
+                                <div className="formRow px-0">
+                                  <div className="formLabel">
+                                    <label htmlFor="">
+                                      Group Name <span className="text-danger">*</span>
+                                    </label>
+                                  </div>
+                                  <div className="col-xl-6 col-12">
+                                    <input
+                                      {...register("group_name", {
+                                        ...requiredValidator,
+                                      })}
+                                      type="text"
+                                      className="formItem"
+                                    />
+                                    {errors.group_name && (
+                                      <ErrorMessage text={errors.group_name} />
+                                    )}
+                                  </div>
+                                </div>
+                                {/* </div> */}
+                              </div>
+                              <div className="col-xl-12 mt-2">
+                                <div className="col-12 d-flex justify-content-between align-items-center">
+                                  <input
+                                    type="text"
+                                    className="formItem"
+                                    placeholder="Search"
+                                    name="name"
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-xl-12 mt-2">
+                                <div className="col-xl-12 mt-2">
+                                  <div
+                                    className="tableContainer mt-0"
+                                    style={{
+                                      maxHeight: "calc(100vh - 670px)",
+                                    }}
+                                  >
+                                    <table>
+                                      <thead>
+                                        <tr>
+                                          <th>S.No</th>
+                                          <th>Name</th>
+                                          <th>Extension</th>
+                                          <th>
+                                            <input
+                                              type="checkbox"
+                                              onChange={handleSelectAll} // Call handler on change
+                                            // checked={selectAll ? true : false} // Keep checkbox state in sync
+                                            />
+                                          </th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {allAgents
+                                          .sort((a, b) => {
+                                            const aMatches =
+                                              a.name
+                                                .toLowerCase()
+                                                .includes(searchQuery.toLowerCase()) ||
+                                              (a?.extension?.extension || "")
+                                                .toLowerCase()
+                                                .includes(searchQuery.toLowerCase());
+                                            const bMatches =
+                                              b.name
+                                                .toLowerCase()
+                                                .includes(searchQuery.toLowerCase()) ||
+                                              (b?.extension?.extension || "")
+                                                .toLowerCase()
+                                                .includes(searchQuery.toLowerCase());
+                                            // Items that match come first
+                                            return bMatches - aMatches;
+                                          })
+                                          .filter(
+                                            (user) =>
+                                              !agent.some((agent) => user.id == agent.name)
+                                          ) // Exclude agents already in `agent`
+                                          .map((item, index) => (
+                                            <tr key={""}>
+                                              <td>{index + 1}.</td>
+                                              <td>{item.name}</td>
+                                              <td>{item?.extension?.extension}</td>
+                                              <td>
+                                                <input
+                                                  type="checkbox"
+                                                  onChange={() =>
+                                                    handleCheckboxChange(item)
+                                                  } // Call handler on change
+                                                  checked={groupSelecedAgents.some(
+                                                    (agent) => agent.name == item.name
+                                                  )} // Keep checkbox state in sync
+                                                />
+                                              </td>
+                                            </tr>
+                                          ))}
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="col-xl-12 mt-2">
+                                <div className="d-flex justify-content-between">
+                                  <button
+                                    className="panelButton gray ms-0"
+                                    onClick={() => {
+                                      setGroupChatPopUp(false);
+                                      setAddMember(false);
+                                    }}
+                                  >
+                                    <span className="text">Close</span>
+                                    <span className="icon">
+                                      <i className="fa-solid fa-caret-left" />
+                                    </span>
+                                  </button>
+                                  <button
+                                    className="panelButton me-0"
+                                    onClick={() => handleCreateGroup()}
+                                  >
+                                    <span className="text">Create</span>
+                                    <span className="icon">
+                                      <i className="fa-solid fa-check" />
+                                    </span>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) :
+                          groups.map((item, index) => {
+                            return (
+                              <div
+                                className="contactListItem"
+                                data-bell={""}
+                                onClick={() => {
+                                  setRecipient([item.group_name, item.id]);
+                                  setGroupNameEdit(item.group_name);
+                                  getGroupDataById(item.id);
+                                  setSelectedgroupUsers(item.groupusers);
+                                }}
+                              >
+                                <div className="row justify-content-between">
+                                  <div className="col-xl-12 d-flex">
+                                    <div
+                                      className="profileHolder"
+                                      id={"profileOfflineNav"}
+                                    >
+                                      <i className="fa-light fa-users fs-5"></i>
+                                    </div>
+                                    <div className="my-auto ms-2 ms-xl-3">
+                                      <h4>{item.group_name}</h4>
+                                      <h5>Alright</h5>
+                                      <div className="contactTags">
+                                        <span data-id="3">Priority</span>
+                                      </div>
+                                    </div>
+                                    <div className="col text-end">
+                                      <p className="timeAgo">5min ago</p>
+                                    </div>
+                                  </div>{" "}
+                                </div>
+                              </div>
+                            );
+                          })
+                        }
+                      </div>
+                    </div>
                   )}
                 </div>
               </div>
@@ -1252,59 +1703,74 @@ function Messages({
                 style={{ height: "100%" }}
                 id="callDetails"
               >
-                <div className="messageOverlay">
-                  {recipient[0] ? (
-                    <div className="contactHeader">
-                      <div>
-                        <h4>{recipient[0]}</h4>
-                        <div className="contactTags">
-                          {contact
-                            .find(
-                              (contact) => contact.extension == recipient[0]
-                            )
-                            ?.tags?.map((item, key) => {
-                              return (
-                                <span
-                                  data-id={key}
-                                  onClick={() => handleUnassignTask(item?.id)}
-                                  className="removableTag"
-                                >
-                                  {item.tag?.[0]?.name}
-                                </span>
-                              );
-                            })}
-                          {/* <span data-id="1">Work</span> */}
+                <div className="row">
+                  <div className="col">
+                    <div className="messageOverlay">
+                      {/* {console.log(recipient)} */}
+                      {recipient[0] ? (
+                        <div className="contactHeader">
+                          <div>
+                            <h4 className="">
+                              {
+                                contact?.find(
+                                  (contact) => contact.extension == recipient[0]
+                                )?.name
+                              }{" "}-{" "}{recipient[0]}
+                            </h4>
+                            {/* <h4>{recipient[0]}</h4> */}
+                            <div className="contactTags">
+                              {contact
+                                .find(
+                                  (contact) => contact.extension == recipient[0]
+                                )
+                                ?.tags?.map((item, key) => {
+                                  return (
+                                    <span
+                                      data-id={key}
+                                      onClick={() =>
+                                        handleUnassignTask(item?.id)
+                                      }
+                                      className="removableTag"
+                                    >
+                                      {item.tag?.[0]?.name}
+                                    </span>
+                                  );
+                                })}
+                              {/* <span data-id="1">Work</span> */}
 
-                          <div class="dropdown">
-                            <span
-                              className="add"
-                              type="button"
-                              data-bs-toggle="dropdown"
-                              aria-expanded="false"
-                            >
-                              <i class="fa-solid fa-circle-plus me-1"></i> Add
-                              tag
-                            </span>
-                            <ul class="dropdown-menu">
-                              {allTags.map((item) => {
-                                return (
-                                  <li
-                                    className="dropdown-item"
-                                    onClick={() =>
-                                      handleAssignTask(item.id, recipient[0])
-                                    }
-                                  >
-                                    {item.name}
-                                  </li>
-                                );
-                              })}
-                            </ul>
+                              <div class="dropdown">
+                                <span
+                                  className="add"
+                                  type="button"
+                                  data-bs-toggle="dropdown"
+                                  aria-expanded="false"
+                                >
+                                  <i class="fa-solid fa-circle-plus me-1"></i>{" "}
+                                  Add tag
+                                </span>
+                                <ul class="dropdown-menu">
+                                  {allTags.map((item) => {
+                                    return (
+                                      <li
+                                        className="dropdown-item"
+                                        onClick={() =>
+                                          handleAssignTask(
+                                            item.id,
+                                            recipient[0]
+                                          )
+                                        }
+                                      >
+                                        {item.name}
+                                      </li>
+                                    );
+                                  })}
+                                </ul>
+                              </div>
+                            </div>
+                            {/* <span className="status online">Online</span> */}
                           </div>
-                        </div>
-                        {/* <span className="status online">Online</span> */}
-                      </div>
-                      <div className="d-flex my-auto">
-                        {/* <div className="d-flex align-items-center me-2">
+                          <div className="d-flex my-auto">
+                            {/* <div className="d-flex align-items-center me-2">
                           <label className="gray14 me-2">Assigned to:</label>
                           <select className="ovalSelect">
                             <option>
@@ -1316,301 +1782,634 @@ function Messages({
                             </option>
                           </select>
                         </div> */}
-                        <button
-                          onClick={() => onSubmit("audio", recipient[0])}
-                          className="clearButton2 xl"
-                          effect="ripple"
-                        >
-                          <i className="fa-regular fa-phone" />
-                        </button>
-                        {isVideoOn ? (
-                          <button
-                            onClick={() => onSubmit("video", recipient[0])}
-                            className="clearButton2 xl"
-                            effect="ripple"
-                          >
-                            <i className="fa-regular fa-video" />
-                          </button>
+                            <button
+                              onClick={() => onSubmit("audio", recipient[0])}
+                              className="clearButton2 xl"
+                              effect="ripple"
+                            >
+                              <i className="fa-regular fa-phone" />
+                            </button>
+                            {isVideoOn ? (
+                              <button
+                                onClick={() => onSubmit("video", recipient[0])}
+                                className="clearButton2 xl"
+                                effect="ripple"
+                              >
+                                <i className="fa-regular fa-video" />
+                              </button>
+                            ) : (
+                              ""
+                            )}
+                            <div class="dropdown">
+                              <button
+                                class="clearButton2 xl"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                              >
+                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                              </button>
+                              <ul class="dropdown-menu">
+                                <li>
+                                  <a
+                                    class="dropdown-item"
+                                    href="#"
+                                    onClick={() => featureUnderdevelopment()}
+                                  >
+                                    Mark as unread
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    class="dropdown-item"
+                                    href="#"
+                                    onClick={() => featureUnderdevelopment()}
+                                  >
+                                    Archive this chat
+                                  </a>
+                                </li>
+                                {activeTab === "group" && groupNameEdit && (
+                                  <li>
+                                    <a
+                                      class="dropdown-item"
+                                      href="#"
+                                      onClick={() => setManageGroupChat(true)}
+                                    >
+                                      Manage Group Chat
+                                    </a>
+                                  </li>
+                                )}
+
+                                <li>
+                                  <a
+                                    class="dropdown-item text-danger"
+                                    href="#"
+                                    onClick={() => featureUnderdevelopment()}
+                                  >
+                                    Close this chat
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                      <div className="messageContent">
+                        <div className="messageList" ref={messageListRef}>
+                          {allMessage?.[recipient[0]]?.map(
+                            (item, index, arr) => {
+                              const messageDate = item.time?.split(" ")[0]; // Extract date from the time string
+                              const todayDate = new Date()
+                                .toISOString()
+                                ?.split("T")[0]; // Get today's date in "YYYY-MM-DD" format
+                              const isNewDate =
+                                index === 0 ||
+                                messageDate !==
+                                arr[index - 1].time?.split(" ")[0];
+
+                              return (
+                                <React.Fragment key={index}>
+                                  {isNewDate && (
+                                    <div
+                                      className="dateHeader"
+                                      ref={(el) =>
+                                        (dateHeaderRefs.current[index] = el)
+                                      }
+                                    >
+                                      <p>
+                                        {messageDate === todayDate
+                                          ? "Today"
+                                          : messageDate}
+                                      </p>
+                                    </div>
+                                  )}
+                                  {!isAnyDateHeaderVisible && isNewDate && (
+                                    <div className="dateHeader sticky">
+                                      <p>
+                                        {messageDate === todayDate
+                                          ? "Today"
+                                          : messageDate}
+                                      </p>
+                                    </div>
+                                  )}
+                                  {/* Message content */}
+                                  {item.from === extension ? (
+                                    <div className="messageItem sender">
+                                      <div className="second">
+                                        <h6>
+                                          {item.from},
+                                          <span>
+                                            {item.time
+                                              ?.split(" ")[1]
+                                              ?.split(":")
+                                              .slice(0, 2)
+                                              .join(":")}
+                                          </span>
+                                        </h6>
+                                        <div className="messageDetails">
+                                          <p>{item.body}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <div className="messageItem receiver">
+                                      <div className="second">
+                                        <h6>
+                                          {item.from},
+                                          <span>
+                                            {item.time
+                                              ?.split(" ")[1]
+                                              ?.split(":")
+                                              .slice(0, 2)
+                                              .join(":")}
+                                          </span>
+                                        </h6>
+                                        <div className="messageDetails">
+                                          <p>{item.body}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )}
+                                </React.Fragment>
+                              );
+                            }
+                          )}
+
+                          {recipient[0] ? (
+                            ""
+                          ) : (
+                            <div className="startAJob">
+                              <div class="text-center mt-3">
+                                <img
+                                  src={require("../../assets/images/empty-box.png")}
+                                  alt="Empty"
+                                ></img>
+                                <div>
+                                  <h5>
+                                    Please select a <b>Agent</b> to start{" "}
+                                    <span>a conversation</span>.
+                                  </h5>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                        {recipient[0] ? (
+                          <div className="messageInput">
+                            <div className="col-12">
+                              <nav>
+                                <div
+                                  class="nav nav-tabs"
+                                  id="nav-tab"
+                                  role="tablist"
+                                >
+                                  <button
+                                    class="tabLink active"
+                                    id="nav-im-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#nav-im"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="nav-im"
+                                    aria-selected="true"
+                                  >
+                                    IM
+                                  </button>
+                                  <button
+                                    class="tabLink"
+                                    id="nav-sms-tab"
+                                    // data-bs-toggle="tab"
+                                    // data-bs-target="#nav-whatsapp"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="nav-whatsapp"
+                                    aria-selected="false"
+                                    onClick={() => featureUnderdevelopment()}
+                                  >
+                                    SMS
+                                  </button>
+                                  <button
+                                    class="tabLink"
+                                    id="nav-whatsapp-tab"
+                                    // data-bs-toggle="tab"
+                                    // data-bs-target="#nav-whatsapp"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="nav-whatsapp"
+                                    aria-selected="false"
+                                    onClick={() => featureUnderdevelopment()}
+                                  >
+                                    WhatsApp
+                                  </button>
+                                  <button
+                                    class="tabLink"
+                                    id="nav-messenger-tab"
+                                    // data-bs-toggle="tab"
+                                    // data-bs-target="#nav-messenger"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="nav-messenger"
+                                    aria-selected="false"
+                                    onClick={() => featureUnderdevelopment()}
+                                  >
+                                    Messenger
+                                  </button>
+                                </div>
+                              </nav>
+                            </div>
+                            <div class="tab-content col-12" id="nav-tabContent">
+                              <div
+                                class="tab-pane fade show active"
+                                id="nav-im"
+                                role="tabpanel"
+                                aria-labelledby="nav-im-tab"
+                              >
+                                <textarea
+                                  type="text"
+                                  name=""
+                                  className="input"
+                                  placeholder="Please enter your message"
+                                  value={messageInput}
+                                  onChange={(e) =>
+                                    setMessageInput(e.target.value)
+                                  }
+                                  onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                      sendMessage();
+                                    }
+                                  }}
+                                />
+                              </div>
+                              <div
+                                class="tab-pane fade"
+                                id="nav-whatsapp"
+                                role="tabpanel"
+                                aria-labelledby="nav-whatsapp-tab"
+                              >
+                                ...
+                              </div>
+                              <div
+                                class="tab-pane fade"
+                                id="nav-messenger"
+                                role="tabpanel"
+                                aria-labelledby="nav-messenger-tab"
+                              >
+                                ...
+                              </div>
+                            </div>
+
+                            <div className="col-12 d-flex justify-content-between align-items-center">
+                              <div className="d-flex">
+                                <button
+                                  className="clearButton2"
+                                  onClick={() => featureUnderdevelopment()}
+                                >
+                                  <i className="fa-light fa-eraser" />
+                                </button>
+                                <button
+                                  className="clearButton2"
+                                  onClick={() => featureUnderdevelopment()}
+                                >
+                                  <i class="fa-regular fa-image"></i>
+                                </button>
+                                <button
+                                  className="clearButton2"
+                                  onClick={() => featureUnderdevelopment()}
+                                >
+                                  <i class="fa-solid fa-paperclip"></i>
+                                </button>
+                                <button
+                                  className="clearButton2"
+                                  onClick={() => featureUnderdevelopment()}
+                                >
+                                  <i class="fa-regular fa-face-smile"></i>
+                                </button>
+                              </div>
+                              <div>
+                                <button
+                                  effect="ripple"
+                                  className="clearColorButton dark"
+                                  onClick={() => sendMessage()}
+                                >
+                                  Send Now{" "}
+                                  <i className="fa-solid fa-paper-plane-top" />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
                         ) : (
                           ""
                         )}
-                        <div class="dropdown">
-                          <button
-                            class="clearButton2 xl"
-                            type="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                          </button>
-                          <ul class="dropdown-menu">
-                            <li>
-                              <a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>
-                                Mark as unread
-                              </a>
-                            </li>
-                            <li>
-                              <a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>
-                                Archive this chat
-                              </a>
-                            </li>
-                            <li>
-                              <a class="dropdown-item" href="#" onClick={() => featureUnderdevelopment()}>
-                                Close this chat
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
                       </div>
                     </div>
-                  ) : (
-                    ""
-                  )}
-                  <div className="messageContent">
-                    <div className="messageList" ref={messageListRef}>
-                      {allMessage?.[recipient[0]]?.map((item, index, arr) => {
-                        const messageDate = item.time?.split(" ")[0]; // Extract date from the time string
-                        const todayDate = new Date()
-                          .toISOString()
-                          ?.split("T")[0]; // Get today's date in "YYYY-MM-DD" format
-                        const isNewDate =
-                          index === 0 ||
-                          messageDate !== arr[index - 1].time?.split(" ")[0];
-
-                        return (
-                          <React.Fragment key={index}>
-                            {isNewDate && (
-                              <div
-                                className="dateHeader"
-                                ref={(el) =>
-                                  (dateHeaderRefs.current[index] = el)
-                                }
-                              >
-                                <p>
-                                  {messageDate === todayDate
-                                    ? "Today"
-                                    : messageDate}
-                                </p>
-                              </div>
-                            )}
-                            {!isAnyDateHeaderVisible && isNewDate && (
-                              <div className="dateHeader sticky">
-                                <p>
-                                  {messageDate === todayDate
-                                    ? "Today"
-                                    : messageDate}
-                                </p>
-                              </div>
-                            )}
-                            {/* Message content */}
-                            {item.from === extension ? (
-                              <div className="messageItem sender">
-                                <div className="second">
-                                  <h6>
-                                    {item.from},
-                                    <span>
-                                      {item.time
-                                        ?.split(" ")[1]
-                                        ?.split(":")
-                                        .slice(0, 2)
-                                        .join(":")}
-                                    </span>
-                                  </h6>
-                                  <div className="messageDetails">
-                                    <p>{item.body}</p>
-                                  </div>
-                                </div>
-                              </div>
-                            ) : (
-                              <div className="messageItem receiver">
-                                <div className="second">
-                                  <h6>
-                                    {item.from},
-                                    <span>
-                                      {item.time
-                                        ?.split(" ")[1]
-                                        ?.split(":")
-                                        .slice(0, 2)
-                                        .join(":")}
-                                    </span>
-                                  </h6>
-                                  <div className="messageDetails">
-                                    <p>{item.body}</p>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-                          </React.Fragment>
-                        );
-                      })}
-
-                      {recipient[0] ? (
-                        ""
-                      ) : (
-                        <div className="startAJob">
-                          <div class="text-center mt-3">
-                            <img
-                              src={require("../../assets/images/empty-box.png")}
-                              alt="Empty"
-                            ></img>
-                            <div>
-                              <h5>
-                                Please select a <b>Agent</b> to start{" "}
-                                <span>a conversation</span>.
-                              </h5>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    {recipient[0] ? (
-                      <div className="messageInput">
-                        <div className="col-12">
-                          <nav>
-                            <div
-                              class="nav nav-tabs"
-                              id="nav-tab"
-                              role="tablist"
-                            >
-                              <button
-                                class="tabLink active"
-                                id="nav-im-tab"
-                                data-bs-toggle="tab"
-                                data-bs-target="#nav-im"
-                                type="button"
-                                role="tab"
-                                aria-controls="nav-im"
-                                aria-selected="true"
-                              >
-                                IM
-                              </button>
-                              <button
-                                class="tabLink"
-                                id="nav-sms-tab"
-                                // data-bs-toggle="tab"
-                                // data-bs-target="#nav-whatsapp"
-                                type="button"
-                                role="tab"
-                                aria-controls="nav-whatsapp"
-                                aria-selected="false"
-                                onClick={() => featureUnderdevelopment()}
-                              >
-                                SMS
-                              </button>
-                              <button
-                                class="tabLink"
-                                id="nav-whatsapp-tab"
-                                // data-bs-toggle="tab"
-                                // data-bs-target="#nav-whatsapp"
-                                type="button"
-                                role="tab"
-                                aria-controls="nav-whatsapp"
-                                aria-selected="false"
-                                onClick={() => featureUnderdevelopment()}
-                              >
-                                WhatsApp
-                              </button>
-                              <button
-                                class="tabLink"
-                                id="nav-messenger-tab"
-                                // data-bs-toggle="tab"
-                                // data-bs-target="#nav-messenger"
-                                type="button"
-                                role="tab"
-                                aria-controls="nav-messenger"
-                                aria-selected="false"
-                                onClick={() => featureUnderdevelopment()}
-                              >
-                                Messenger
-                              </button>
-                            </div>
-                          </nav>
-                        </div>
-                        <div class="tab-content col-12" id="nav-tabContent">
-                          <div
-                            class="tab-pane fade show active"
-                            id="nav-im"
-                            role="tabpanel"
-                            aria-labelledby="nav-im-tab"
-                          >
-                            <textarea
-                              type="text"
-                              name=""
-                              className="input"
-                              placeholder="Please enter your message"
-                              value={messageInput}
-                              onChange={(e) => setMessageInput(e.target.value)}
-                              onKeyDown={(e) => {
-                                if (e.key === "Enter") {
-                                  sendMessage();
-                                }
-                              }}
-                            />
-                          </div>
-                          <div
-                            class="tab-pane fade"
-                            id="nav-whatsapp"
-                            role="tabpanel"
-                            aria-labelledby="nav-whatsapp-tab"
-                          >
-                            ...
-                          </div>
-                          <div
-                            class="tab-pane fade"
-                            id="nav-messenger"
-                            role="tabpanel"
-                            aria-labelledby="nav-messenger-tab"
-                          >
-                            ...
-                          </div>
-                        </div>
-
-                        <div className="col-12 d-flex justify-content-between align-items-center">
-                          <div className="d-flex">
-                            <button className="clearButton2" onClick={() => featureUnderdevelopment()}>
-                              <i className="fa-light fa-eraser" />
-                            </button>
-                            <button className="clearButton2" onClick={() => featureUnderdevelopment()}>
-                              <i class="fa-regular fa-image"></i>
-                            </button>
-                            <button className="clearButton2" onClick={() => featureUnderdevelopment()}>
-                              <i class="fa-solid fa-paperclip"></i>
-                            </button>
-                            <button className="clearButton2" onClick={() => featureUnderdevelopment()}>
-                              <i class="fa-regular fa-face-smile"></i>
-                            </button>
-                          </div>
-                          <div>
-                            <button
-                              effect="ripple"
-                              className="clearColorButton dark"
-                              onClick={() => sendMessage()}
-                            >
-                              Send Now{" "}
-                              <i className="fa-solid fa-paper-plane-top" />
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      ""
-                    )}
                   </div>
+                  {manageGroupChat && (
+                    <div
+                      className="col-xl-3"
+                      style={{ borderLeft: "1px solid var(--border-color)" }}
+                    >
+                      <div className="messageOverlay">
+                        <div class="contactHeader" style={{ height: "71px" }}>
+                          <div>
+                            <h4>
+                              <input
+                                value={groupNameEdit}
+                                disabled={!saveEditToggleGroupNameChange}
+                                onChange={(e) =>
+                                  setGroupNameEdit(e.target.value)
+                                }
+                                className="border-0 bg-transparent"
+                                style={{ fontSize: "18px", fontWeight: 500 }}
+                              />
+                              {!saveEditToggleGroupNameChange ? (
+                                <button
+                                  onClick={() =>
+                                    setSaveEditToggleGroupNameChange(true)
+                                  }
+                                >
+                                  Edit
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={() =>
+                                    // setSaveEditToggleGroupNameChange(false)
+                                    handleEditGroupName()
+                                  }
+                                >
+                                  Save
+                                </button>
+                              )}
+                            </h4>
+                          </div>
+                          <div class="d-flex my-auto">
+                            <button class="clearButton2 xl" effect="ripple">
+                              <i class="fa-regular fa-pen"></i>
+                            </button>
+                          </div>
+                        </div>
+
+                        <div
+                          data-bell=""
+                          className="contactListItem bg-transparent"
+                          style={{ minHeight: "auto" }}
+                        >
+                          <div className="row justify-content-between">
+                            <div
+                              className="col-xl-12 d-flex"
+                              onClick={() => {
+                                setAddMember(true);
+                                // setGroupChatPopUp(true);
+                              }}
+                            >
+                              <div className="profileHolder">
+                                <i className="fa-light fa-plus fs-5" />
+                              </div>
+                              <div className="my-auto ms-2 ms-xl-3">
+                                <h4 style={{ color: "var(--ui-accent)" }}>
+                                  Add Member
+                                </h4>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        {addMember ? (
+                          <div
+                            className="addNewContactPopup px-0"
+                            style={{
+                              position: "static",
+                              transform: "none",
+                              width: "100%",
+                              boxShadow: "none",
+                              background: "transparent",
+                            }}
+                          >
+                            <div className="row">
+                              <div className="col-12 heading mb-0">
+                                <i className="fa-light fa-users" />
+                                <h5>Add Members</h5>
+                                {/* <p>
+                                Add people to a group chat effortlessly,
+                                keeping your connections organized and
+                                efficient
+                              </p> */}
+                                <div className="border-bottom col-12" />
+                              </div>
+                              <div className="col-xl-12 mt-2">
+                                {/* <div className="col-12 d-flex justify-content-between align-items-center"> */}
+                                {/* <div className="formRow px-0">
+                                <div className="formLabel">
+                                  <label htmlFor="">
+                                    Group Name{" "}
+                                    <span className="text-danger">*</span>
+                                  </label>
+                                </div>
+                                <div className="col-xl-6 col-12">
+                                  <input
+                                    {...register("group_name", {
+                                      ...requiredValidator,
+                                    })}
+                                    type="text"
+                                    className="formItem"
+                                  />
+                                  {errors.group_name && (
+                                    <ErrorMessage text={errors.group_name} />
+                                  )}
+                                </div>
+                              </div> */}
+                                {/* </div> */}
+                              </div>
+
+                              <div className="col-xl-12 mt-2">
+                                <div className="col-12 d-flex justify-content-between align-items-center">
+                                  <input
+                                    type="text"
+                                    className="formItem"
+                                    placeholder="Search"
+                                    name="name"
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
+                                  />
+                                  {/* <button
+                                    className="tableButton ms-2"
+                                    onClick={() => navigate("/users-add")}
+                                  >
+                                    <i className="fa-solid fa-user-plus"></i>
+                                  </button> */}
+                                </div>
+                              </div>
+                              <div className="col-xl-12 mt-2">
+                                <div className="col-xl-12 mt-2">
+                                  <div
+                                    className="tableContainer mt-0"
+                                    style={{
+                                      maxHeight: "calc(100vh - 400px)",
+                                    }}
+                                  >
+                                    <table>
+                                      <thead>
+                                        <tr>
+                                          <th>S.No</th>
+                                          <th>Name</th>
+                                          <th>Extension</th>
+                                          <th>
+                                            <input
+                                              type="checkbox"
+                                              onChange={handleSelectAll} // Call handler on change
+                                            // checked={selectAll ? true : false} // Keep checkbox state in sync
+                                            />
+                                          </th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {allAgents
+                                          .sort((a, b) => {
+                                            const aMatches =
+                                              a.name
+                                                .toLowerCase()
+                                                .includes(searchQuery.toLowerCase()) ||
+                                              (a?.extension?.extension || "")
+                                                .toLowerCase()
+                                                .includes(searchQuery.toLowerCase());
+                                            const bMatches =
+                                              b.name
+                                                .toLowerCase()
+                                                .includes(searchQuery.toLowerCase()) ||
+                                              (b?.extension?.extension || "")
+                                                .toLowerCase()
+                                                .includes(searchQuery.toLowerCase());
+                                            // Items that match come first
+                                            return bMatches - aMatches;
+                                          })
+                                          .filter(
+                                            (user) =>
+                                              !agent.some(
+                                                (agent) => user.id == agent.name
+                                              ) &&
+                                              !selectedgroupUsers.some(
+                                                (users) => users.user_id == user.id
+                                              )
+                                          ) // Exclude agents already in `agent`
+                                          .map((item, index) => (
+                                            <tr key={""}>
+                                              <td>{index + 1}.</td>
+                                              <td>{item.name}</td>
+                                              <td>{item?.extension?.extension}</td>
+                                              <td>
+                                                <input
+                                                  type="checkbox"
+                                                  onChange={() =>
+                                                    handleCheckboxChange(item)
+                                                  } // Call handler on change
+                                                  checked={groupSelecedAgents.some(
+                                                    (agent) => agent.name == item.name
+                                                  )} // Keep checkbox state in sync
+                                                />
+                                              </td>
+                                            </tr>
+                                          ))}
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="col-xl-12 mt-2">
+                                <div className="d-flex justify-content-between">
+                                  <button
+                                    className="panelButton gray ms-0"
+                                    onClick={() => {
+                                      setAddMember(false);
+                                      setGroupChatPopUp(false);
+                                    }}
+                                  >
+                                    <span className="text">Close</span>
+                                    <span className="icon">
+                                      <i className="fa-solid fa-caret-left" />
+                                    </span>
+                                  </button>
+                                  <button
+                                    className="panelButton me-0"
+                                    // onClick={() => handleCreateGroup()}
+                                    onClick={() => handleAddNewMemberToGroup()}
+                                  >
+                                    <span className="text">Add</span>
+                                    <span className="icon">
+                                      <i className="fa-solid fa-check" />
+                                    </span>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) :
+                          allAgents
+                            .filter((item) => {
+                              return selectedgroupUsers.some(
+                                (agent) => agent.user_id === item.id
+                              );
+                            })
+                            .map((item) => {
+                              const matchingAgent = selectedgroupUsers.find(
+                                (agent) => agent.user_id === item.id
+                              );
+                              return {
+                                ...item, // Include all existing properties of the agent
+                                agentId: matchingAgent?.id, // Include the user_id from selectedgroupUsers
+                              };
+                            })
+
+                            .map((item, index) => {
+                              return (
+                                <div
+                                  data-bell=""
+                                  className="contactListItem bg-transparent"
+                                  style={{ minHeight: "auto" }}
+                                >
+                                  <div className="row justify-content-between">
+                                    <div className="col-xl-12 d-flex">
+                                      <div className="profileHolder">
+                                        <i className="fa-light fa-user fs-5" />
+                                      </div>
+                                      <div className="my-auto ms-2 ms-xl-3">
+                                        <h4>{item.name}</h4>
+                                      </div>
+                                      <div className="col text-end my-auto">
+                                        <button
+                                          class="clearButton2"
+                                          effect="ripple"
+                                          onClick={() =>
+                                            handleremoveUserFromGroup(
+                                              item.agentId
+                                            )
+                                          }
+                                        >
+                                          <i class="fa-regular fa-xmark"></i>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </section>
-      </main >
-      {
-        loading ? (
-          <div colSpan={99} >
+
+        {loading ? (
+          <div colSpan={99}>
             <CircularLoader />
           </div>
         ) : (
           ""
-        )
-      }
+        )}
+      </main>
     </>
   );
 }

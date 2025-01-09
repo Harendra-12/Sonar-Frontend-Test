@@ -86,7 +86,7 @@ const RingGroupEdit = () => {
       delay: 0,
       timeOut: "30",
       // prompt: "",
-      status: "inactive",
+      status: "active",
     },
   ]);
 
@@ -181,7 +181,12 @@ const RingGroupEdit = () => {
               call_timeout: call_timeout !== null ? call_timeout : "",
             },
           };
-
+          if (updatedEditData.destination_type != "Disabled") {
+            setShowTimeoutDestinationToggle(true);
+            if (updatedEditData.destination_type == "PSTN") {
+              setTimeoutDestPstnToggle(true);
+            }
+          }
           reset(updatedEditData);
 
           if (successMessage) {
@@ -528,7 +533,7 @@ const RingGroupEdit = () => {
           destination: selectedDestination?.extension?.extension,
           delay: 0,
           timeOut: "30",
-          status: "inactive",
+          status: "active",
         })
       );
 
@@ -549,7 +554,7 @@ const RingGroupEdit = () => {
             delay: 0,
             timeOut: "30",
 
-            status: "inactive",
+            status: "active",
           });
         }
       });
@@ -900,39 +905,66 @@ const RingGroupEdit = () => {
                       </div>
                       <div className="col-6">
                         <div className="row">
-                          <div className="col-5">
+                          <div className={`col-${showTimeoutDestinationToggle ? '5' : '12'}`}>
                             <select
                               className="formItem"
-                              onChange={(e) => {
-                                if (e.target.value == "extension") {
-                                  setTimeoutDestPstnToggle(false);
-                                  setShowTimeoutDestinationToggle(true);
-                                  if (watch().call_timeout == "") {
-                                    setValue("call_timeout", `${60}`);
+                              // onChange={(e) => {
+                              //   if (e.target.value == "Extension") {
+                              //     setTimeoutDestPstnToggle(false);
+                              //     setShowTimeoutDestinationToggle(true);
+                              //     if (watch().call_timeout == "") {
+                              //       setValue("call_timeout", `${60}`);
+                              //     }
+                              //     setValue("timeout_destination", "");
+                              //   } else if (e.target.value == "PSTN") {
+                              //     setTimeoutDestPstnToggle(true);
+                              //     setShowTimeoutDestinationToggle(true);
+                              //     if (watch().call_timeout == "") {
+                              //       setValue("call_timeout", `${60}`);
+                              //     }
+                              //     setValue("timeout_destination", "");
+                              //   } else if (e.target.value == "Disabled") {
+                              //     setTimeoutDestPstnToggle(true);
+                              //     setShowTimeoutDestinationToggle(false);
+                              //     setValue("timeout_destination", "");
+                              //   }
+                              // }}
+                              // {...register("destination_type")}
+                              {...register("destination_type", {
+                                onChange: (e) => {
+                                  const value = e.target.value;
+
+                                  // Custom logic
+                                  if (e.target.value == "Extension") {
+                                    setTimeoutDestPstnToggle(false);
+                                    setShowTimeoutDestinationToggle(true);
+                                    if (watch().call_timeout == "") {
+                                      setValue("call_timeout", `${60}`);
+                                    }
+                                    setValue("timeout_destination", "");
+                                  } else if (e.target.value == "PSTN") {
+                                    setTimeoutDestPstnToggle(true);
+                                    setShowTimeoutDestinationToggle(true);
+                                    if (watch().call_timeout == "") {
+                                      setValue("call_timeout", `${60}`);
+                                    }
+                                    setValue("timeout_destination", "");
+                                  } else if (e.target.value == "Disabled") {
+                                    setTimeoutDestPstnToggle(true);
+                                    setShowTimeoutDestinationToggle(false);
+                                    setValue("timeout_destination", "");
                                   }
-                                  setValue("timeout_destination", "");
-                                } else if (e.target.value == "pstn") {
-                                  setTimeoutDestPstnToggle(true);
-                                  setShowTimeoutDestinationToggle(true);
-                                  if (watch().call_timeout == "") {
-                                    setValue("call_timeout", `${60}`);
-                                  }
-                                  setValue("timeout_destination", "");
-                                } else if (e.target.value == "") {
-                                  setTimeoutDestPstnToggle(true);
-                                  setShowTimeoutDestinationToggle(false);
-                                  setValue("timeout_destination", "");
-                                }
-                              }}
+                                },
+                              })}
                               id="selectFormRow"
-                              defaultValue={""}
+                              defaultValue={"Disabled"}
                             >
-                              <option value="">Disabled</option>
-                              <option value="extension">Extension</option>
-                              <option value="pstn">PSTN</option>
+                              <option value="Disabled">Disabled</option>
+                              <option value="Extension">Extension</option>
+                              <option value="PSTN">PSTN</option>
                             </select>
                           </div>
-                          <div className="col-7">
+                          {showTimeoutDestinationToggle && <div className="col-7">
                             {showTimeoutDestinationToggle ? (
                               timeoutDestPstnToggle ? (
                                 <input
@@ -960,7 +992,7 @@ const RingGroupEdit = () => {
                                 })}
                               ></input>
                             )}
-                          </div>
+                          </div>}
                           {errors?.timeout_destination && (
                             <ErrorMessage
                               text={errors?.timeout_destination?.message}
@@ -1285,6 +1317,28 @@ const RingGroupEdit = () => {
                         </select>
                       </div>
                     </div>
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="selectFormRow">Tag</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Enter the tag.
+                        </label>
+                      </div>
+                      <div className="col-6">
+                        <input
+                          type="text"
+                          name="extension"
+                          className="formItem"
+                          {...register("tag", {
+                            ...noSpecialCharactersValidator,
+                          })}
+                          onKeyDown={restrictToAllowedChars}
+                        />
+                        {errors.tag && (
+                          <ErrorMessage text={errors.tag.message} />
+                        )}
+                      </div>
+                    </div>
                     {/* <div className="formRow  col-xl-3">
                 <div className="d-flex flex-wrap align-items-center">
                   <div className="formLabel">
@@ -1445,8 +1499,16 @@ const RingGroupEdit = () => {
                                             key={item.id}
                                           >
                                             {item.alias
-                                              ? truncateString(item?.alias)
-                                              : truncateString(item?.name)}
+                                              ? `${truncateString(
+                                                  item?.alias
+                                                )} - ${
+                                                  item.extension?.extension
+                                                }`
+                                              : `${truncateString(
+                                                  item?.name
+                                                )} - ${
+                                                  item.extension?.extension
+                                                }`}
                                           </option>
                                         );
                                       })}
