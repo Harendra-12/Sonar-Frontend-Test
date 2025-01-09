@@ -59,7 +59,13 @@ const RingGroupAdd = () => {
   const [bulkUploadSelectedAgents, setBulkUploadSelectedAgents] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectAll, setSelectAll] = useState(false);
-
+  const [bulkEditPopup, setBulkEditPopup] = useState(false);
+  const [selectedAgentToEdit, setSelectedAgentToEdit] = useState([]);
+  const [settingsForBulkEdit, setSettingsForBulkEdit] = useState({
+    delay: "",
+    timeOut: "",
+    status: "",
+  });
   const {
     register,
     watch,
@@ -584,6 +590,37 @@ const RingGroupAdd = () => {
         }
       });
     }
+  };
+  const handleApplyEditSettings = (data) => {
+    const updatedAgents = selectedAgentToEdit.map((item) => {
+      return {
+        ...item,
+        delay: data.delay,
+        timeOut: data.timeOut,
+        status: data.status,
+      };
+    });
+
+    // Merge unselected agents with updated selected agents
+    const mergedAgents = destination.map((agent) => {
+      // Check if the agent is in the selectedAgentToEdit array
+      const updatedAgent = updatedAgents.find(
+        (updated) => updated.id === agent.id // Assuming `id` is the unique identifier
+      );
+      return updatedAgent || agent; // Use the updated agent if found, otherwise keep the original
+    });
+
+    setDestination(mergedAgents);
+    setBulkEditPopup(false);
+  };
+  const handleSelectUserToEdit = (item) => {
+    setSelectedAgentToEdit((prevSelected) => {
+      if (prevSelected.some((agent) => agent.id == item.id)) {
+        return prevSelected.filter((agent) => agent.id !== item.id);
+      } else {
+        return [...prevSelected, item];
+      }
+    });
   };
   return (
     <main className="mainContent">
@@ -1378,6 +1415,36 @@ const RingGroupAdd = () => {
                       <p>You can see the list of agents in this ring group.</p>
                     </div>
                     <div class="buttonGroup">
+                      {destination.length > 0 &&
+                        (selectedAgentToEdit.length > 0 &&
+                        selectedAgentToEdit.length != destination.length ? (
+                          <button
+                            type="button"
+                            class="panelButton"
+                            onClick={() => {
+                              setBulkEditPopup(true);
+                            }}
+                          >
+                            <span class="text">Edit</span>
+                            <span class="icon">
+                              <i class="fa-solid fa-plus"></i>
+                            </span>
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            class="panelButton"
+                            onClick={() => {
+                              setSelectedAgentToEdit(destination);
+                              setBulkEditPopup(true);
+                            }}
+                          >
+                            <span class="text">Edit All</span>
+                            <span class="icon">
+                              <i class="fa-solid fa-plus"></i>
+                            </span>
+                          </button>
+                        ))}
                       <button
                         type="button"
                         class="panelButton"
@@ -1408,6 +1475,18 @@ const RingGroupAdd = () => {
                                     : { width: 30 }
                                 }
                               >
+                                <div>
+                                  <input
+                                    type="checkbox"
+                                    onChange={() =>
+                                      handleSelectUserToEdit(item)
+                                    }
+                                    checked={selectedAgentToEdit.some(
+                                      (agent) =>
+                                        agent.destination == item.destination
+                                    )}
+                                  ></input>
+                                </div>
                                 <label>{index + 1}.</label>
                               </div>
                               <div className="col-3 pe-2">
@@ -1891,6 +1970,157 @@ const RingGroupAdd = () => {
                     setBulkAddPopUp(false);
                   }}
                   className="panelButton"
+                >
+                  <span className="text">Done</span>
+                  <span className="icon">
+                    <i className="fa-solid fa-check" />
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+      {bulkEditPopup ? (
+        <div className="addNewContactPopup">
+          <div className="row">
+            <div className="col-12 heading mb-0">
+              <i className="fa-light fa-user-plus" />
+              <h5>Edit People to the selected Queue</h5>
+            </div>
+            <div>
+              Affected user:{" "}
+              {selectedAgentToEdit
+                .map((item) => destination.find((user) => item.id == user.id))
+                .map((items) => items.destination)
+                .join(", ")}
+            </div>
+            <div className="col-xl-12">
+              <div className="col-12 d-flex justify-content-between align-items-center"></div>
+            </div>
+            <div className="mt-3 row g-2">
+              <div className="col-2 pe-2">
+                <div className="formLabel">
+                  <label htmlFor="">Delay</label>
+                </div>
+
+                <select
+                  className="formItem me-0"
+                  style={{ width: "100%" }}
+                  name="delay"
+                  id="selectFormRow"
+                  value={settingsForBulkEdit.delay}
+                  onChange={(e) => {
+                    setSettingsForBulkEdit({
+                      ...settingsForBulkEdit,
+                      delay: e.target.value,
+                    });
+                  }}
+                >
+                  <option>Delay</option>
+                  {(() => {
+                    const numbers = [];
+                    for (let i = 0; i <= 100; i++) {
+                      if (i % 5 === 0) {
+                        numbers.push(<span key={i}>{i}</span>);
+                      }
+                    }
+                    return numbers.map((item) => {
+                      return <option>{item}</option>;
+                    });
+                  })()}
+                </select>
+              </div>
+              <div className="col-2 pe-2">
+                <div className="formLabel">
+                  <label htmlFor="">Timeout</label>
+                </div>
+
+                <select
+                  className="formItem me-0"
+                  style={{ width: "100%" }}
+                  name="timeOut"
+                  value={settingsForBulkEdit.timeOut}
+                  onChange={(e) => {
+                    setSettingsForBulkEdit({
+                      ...settingsForBulkEdit,
+                      timeOut: e.target.value,
+                    });
+                  }}
+                  id="selectFormRow"
+                >
+                  <option>Timeout</option>
+                  {(() => {
+                    const numbers = [];
+                    for (let i = 0; i <= 100; i++) {
+                      if (i % 5 === 0) {
+                        numbers.push(<span key={i}>{i}</span>);
+                      }
+                    }
+                    return numbers.map((item) => {
+                      return <option>{item}</option>;
+                    });
+                  })()}
+                </select>
+              </div>
+
+              <div className="col-2 pe-2">
+                <div className="formLabel">
+                  <label htmlFor="">Status</label>
+                </div>
+
+                <select
+                  className="formItem me-0"
+                  style={{ width: "100%" }}
+                  value={settingsForBulkEdit.status}
+                  onChange={(e) => {
+                    setSettingsForBulkEdit({
+                      ...settingsForBulkEdit,
+                      status: e.target.value,
+                    });
+                  }}
+                  id="selectFormRow"
+                  name="status"
+                >
+                  <option className="status" value="active">
+                    True
+                  </option>
+                  <option value="inactive">False</option>
+                </select>
+              </div>
+            </div>
+            <div className="col-xl-12 mt-2">
+              <div className="d-flex justify-content-between">
+                <button
+                  className="panelButton gray ms-0"
+                  onClick={() => {
+                    setBulkEditPopup(false);
+                    setSettingsForBulkEdit({
+                      tier_level: "",
+                      tier_position: "",
+                      call_timeout: "",
+                      reject_delay: "",
+                      max_no_answer: "",
+                      busy_delay: "",
+                      no_answer_delay: "",
+                      wrap_up_time: "",
+                      reserve_agents: "",
+                      truncate_agents_on_load: "",
+                      truncate_tiers_on_load: "",
+                    });
+                  }}
+                >
+                  <span className="text">Close</span>
+                  <span className="icon">
+                    <i className="fa-solid fa-caret-left" />
+                  </span>
+                </button>
+                <button
+                  className="panelButton me-0"
+                  // onClick={() => handleBulkUpload(bulkUploadSelectedAgents)}
+                  onClick={() => handleApplyEditSettings(settingsForBulkEdit)}
                 >
                   <span className="text">Done</span>
                   <span className="icon">
