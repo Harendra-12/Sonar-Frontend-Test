@@ -19,7 +19,7 @@
     height: calc(100vh - 275px)
 }
 
-.mainContentApp .tab-content .callListItem {
+.callListItem {
     padding: 10px 10px;
     position: relative;
     cursor: pointer;
@@ -32,14 +32,14 @@
     border-right: 4px solid transparent;
 }
 
-.mainContentApp .tab-content .callListItem h4 {
+.callListItem h4 {
     font-size: 16px !important;
     margin: 0;
     font-family: 'Roboto' !important;
 }
 
-.mainContentApp .tab-content .callListItem h5,
-.mainContentApp .tab-content .callList .callListDiff {
+.callListItem h5,
+.callList .callListDiff {
     font-size: 14px !important;
     margin: 5px 0;
     /* font-family: Outfit; */
@@ -47,11 +47,11 @@
     color: var(--color-subtext);
 }
 
-.mainContentApp .tab-content .callList .callListDiff {
+.callList .callListDiff {
     padding: 10px 0;
 }
 
-.mainContentApp .tab-content .callListItem h6 {
+.callListItem h6 {
     font-size: 12px;
     margin: 0;
     font-family: Open sans;
@@ -59,7 +59,7 @@
     color: #505050d6;
 }
 
-.mainContentApp .tab-content .callListItem span {
+.callListItem span {
     font-size: 16px;
     margin: 0;
     font-family: Roboto;
@@ -405,7 +405,7 @@
     font-size: 13px;
 }
 
-.mainContentApp .tab-content .callListItem.selected {
+.callListItem.selected {
     /* background-color: #439fdd25; */
     background: var(--searchBg);
     border-right: 4px solid var(--ui-accent);
@@ -415,7 +415,7 @@
     z-index: 1;
 }
 
-.mainContentApp .tab-content .callListItem.selected h4 {
+.callListItem.selected h4 {
     color: var(--immortalBlack);
 }
 
@@ -429,7 +429,7 @@
     z-index: 1;
 }
 
-.mainContentApp .tab-content .callListItem:hover,
+.callListItem:hover,
 .mainContentApp .tab-content .contactListItem:hover {
     background-color: #00000015;
 }

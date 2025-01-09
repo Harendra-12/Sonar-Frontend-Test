@@ -654,8 +654,8 @@ const UsersEdit = ({ page }) => {
                                     e.target.value === ""
                                       ? ""
                                       : roleName.permissions.map((item) => {
-                                          return item.permission_id;
-                                        })
+                                        return item.permission_id;
+                                      })
                                   );
                                 }}
                               >
@@ -727,10 +727,10 @@ const UsersEdit = ({ page }) => {
                                       e.preventDefault();
                                       setPopUp(true);
                                     }}
-                                    // onClick={(e) => {
-                                    //   e.preventDefault();
-                                    //   setValue("extension_id", null);
-                                    // }}
+                                  // onClick={(e) => {
+                                  //   e.preventDefault();
+                                  //   setValue("extension_id", null);
+                                  // }}
                                   >
                                     <span className="text">Edit</span>
                                     {/* <span className="icon">
@@ -889,12 +889,12 @@ const UsersEdit = ({ page }) => {
                   </div>
                   <div className="col-10 ps-0">
                     <h4>Note</h4>
-                    <p>
+                    <p className="mb-0">
                       Updating this extension will remove the current extension
                       access from this user.
                     </p>
                     <div>
-                      <div className="formRow col-xl-12">
+                      <div className="formRow col-xl-12 px-0 pt-0 pb-3">
                         <div className="formLabel">
                           <label htmlFor="selectFormRow">
                             Select extension
@@ -931,9 +931,8 @@ const UsersEdit = ({ page }) => {
                               </select>
                             </div>
                             <div
-                              className={`${
-                                watch().extension_id ? "col-5" : "col-5"
-                              }`}
+                              className={`${watch().extension_id ? "col-5" : "col-5"
+                                }`}
                             >
                               <select
                                 className="formItem"
@@ -942,8 +941,8 @@ const UsersEdit = ({ page }) => {
                                 {...register("usages", {
                                   ...requiredValidator,
                                 })}
-                                // value={watch().extension_id}
-                                // {...register("extension_id")}
+                              // value={watch().extension_id}
+                              // {...register("extension_id")}
                               >
                                 <option value="pbx">PBX</option>
                                 <option value="dialer">Dialer</option>
@@ -993,7 +992,7 @@ const UsersEdit = ({ page }) => {
                       <button
                         type="button"
                         effect="ripple"
-                        className="panelButton"
+                        className="panelButton ms-0"
                         onClick={() => {
                           if (Object.keys(errors).length === 0) {
                             handleFormSubmit();
@@ -1007,7 +1006,8 @@ const UsersEdit = ({ page }) => {
                           <i class="fa-solid fa-floppy-disk"></i>
                         </span>
                       </button>
-                      <button className="" onClick={() => setPopUp(false)}>
+                      <button className="panelButton gray" onClick={() => setPopUp(false)}>
+                        <span className="text">Close</span>
                         <span className="icon">
                           <i class="fa-solid fa-xmark"></i>
                         </span>

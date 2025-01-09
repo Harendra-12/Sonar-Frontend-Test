@@ -2123,30 +2123,29 @@ function Messages({
                                 className="border-0 bg-transparent"
                                 style={{ fontSize: "18px", fontWeight: 500 }}
                               />
-                              {!saveEditToggleGroupNameChange ? (
-                                <button
-                                  onClick={() =>
-                                    setSaveEditToggleGroupNameChange(true)
-                                  }
-                                >
-                                  Edit
-                                </button>
-                              ) : (
-                                <button
-                                  onClick={() =>
-                                    // setSaveEditToggleGroupNameChange(false)
-                                    handleEditGroupName()
-                                  }
-                                >
-                                  Save
-                                </button>
-                              )}
                             </h4>
                           </div>
                           <div class="d-flex my-auto">
-                            <button class="clearButton2 xl" effect="ripple">
-                              <i class="fa-regular fa-pen"></i>
-                            </button>
+                            {!saveEditToggleGroupNameChange ? (
+                              <button
+                                className="clearButton2 xl"
+                                onClick={() =>
+                                  setSaveEditToggleGroupNameChange(true)
+                                }
+                              >
+                                <i class="fa-regular fa-pen"></i>
+                              </button>
+                            ) : (
+                              <button
+                                className="clearButton2 xl"
+                                onClick={() =>
+                                  // setSaveEditToggleGroupNameChange(false)
+                                  handleEditGroupName()
+                                }
+                              >
+                                <i class="fa-regular fa-check"></i>
+                              </button>
+                            )}
                           </div>
                         </div>
 
