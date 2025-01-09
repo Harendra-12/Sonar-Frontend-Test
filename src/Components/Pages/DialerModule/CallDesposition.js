@@ -87,7 +87,6 @@ function CallDesposition() {
                                                 <tbody>
 
                                                     <tr>
-
                                                         <td>1212</td>
                                                         <td>Rishabh</td>
                                                         <td>45544</td>

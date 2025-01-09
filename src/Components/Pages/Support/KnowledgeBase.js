@@ -337,7 +337,6 @@ function KnowledgeBase() {
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>

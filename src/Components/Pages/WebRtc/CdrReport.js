@@ -725,7 +725,7 @@ function CdrReport({ page }) {
                       </thead>
                       <tbody>
                         {loading ? (
-                          <SkeletonTableLoader col={16} row={15} />
+                          <SkeletonTableLoader col={12} row={15} />
                         ) : (
                           <>
                             {cdr?.data &&
