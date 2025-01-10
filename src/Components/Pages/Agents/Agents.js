@@ -16,6 +16,8 @@ function Agents({ type }) {
   const [agents, setAgents] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([0]);
   const [loading, setLoading] = useState(true);
+  const [entriesPerPage, setEntriesPerPage] = useState(10);
+  const [pageNumber, setPageNumber] = useState(1);
 
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
@@ -30,7 +32,9 @@ function Agents({ type }) {
   useEffect(() => {
     const getData = async () => {
       setLoading(false);
-      const apiData = await generalGetFunction(`/agents?usages=${type}`);
+      const apiData = await generalGetFunction(
+        `/agents?usages=${type}&row_per_page=${entriesPerPage}`
+      );
       if (apiData?.status) {
         console.log(apiData);
         setAgents(apiData.data);
@@ -40,7 +44,7 @@ function Agents({ type }) {
       }
     };
     getData();
-  }, []);
+  }, [entriesPerPage]);
 
   return (
     <main className="mainContent">
@@ -95,7 +99,11 @@ function Agents({ type }) {
                     <div className="tableHeader">
                       <div className="showEntries">
                         <label>Show</label>
-                        <select className="formItem">
+                        <select
+                          value={entriesPerPage}
+                          onChange={(e) => setEntriesPerPage(e.target.value)}
+                          className="formItem"
+                        >
                           <option value={10}>10</option>
                           <option value={20}>20</option>
                           <option value={30}>30</option>
@@ -173,11 +181,11 @@ function Agents({ type }) {
                     </div>
                     <div className="tableHeader mb-3">
                       <PaginationComponent
-                      // pageNumber={(e) => setPageNumber(e)}
-                      // totalPage={extension.last_page}
-                      // from={(pageNumber - 1) * extension.per_page + 1}
-                      // to={extension.to}
-                      // total={extension.total}
+                        pageNumber={(e) => setPageNumber(e)}
+                        totalPage={agents.last_page}
+                        from={(pageNumber - 1) * agents.per_page + 1}
+                        to={agents.to}
+                        total={agents.total}
                       />
                     </div>
                   </div>
@@ -186,12 +194,14 @@ function Agents({ type }) {
             </div>
           </div>
         </div>
-        {loading && (
-          <div colSpan={99}>
-            <CircularLoader />
-          </div>
-        )}
       </section>
+      {loading ? (
+        <div colSpan={99}>
+          <CircularLoader />
+        </div>
+      ) : (
+        ""
+      )}
       {/* {popUp ? (
                 <div className="popup">
                     <div className="container h-100">
